@@ -1,4 +1,4 @@
-package uiza.activity;
+package uiza.activity.splash;
 
 import android.os.Bundle;
 

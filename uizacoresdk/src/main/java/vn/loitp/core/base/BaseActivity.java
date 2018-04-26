@@ -6,15 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-
-import com.google.android.gms.ads.InterstitialAd;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,10 +21,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -128,24 +120,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (throwable != null) {
             showDialogError(throwable.getMessage());
         }
-    }
-
-    protected void showDialogError(String errMsg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.warning), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-        });
-    }
-
-    protected void showDialogMsg(String errMsg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.app_name), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //do nothing
-            }
-        });
     }
 
     protected abstract boolean setFullScreen();
@@ -249,4 +223,38 @@ public abstract class BaseActivity extends AppCompatActivity {
             showTvNoConnect();
         }
     }*/
+
+    protected void showDialogOne(String msg) {
+        showDialogOne(msg, false);
+    }
+
+    protected void showDialogOne(String msg, final boolean isExit) {
+        LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                if (isExit) {
+                    activity.onBackPressed();
+                }
+            }
+        });
+    }
+
+    protected void showDialogError(String msg) {
+        LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                onBackPressed();
+            }
+        });
+    }
+
+    protected void showDialogMsg(String errMsg) {
+        LDialogUtil.showDialog1(activity, getString(R.string.app_name), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                //do nothing
+            }
+        });
+    }
+
 }

@@ -27,6 +27,7 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
+        Constants.setIsDebug(true);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
         //userAgent = Util.getUserAgent(this, Constants.USER_AGENT);
 
