@@ -2,21 +2,78 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uiza.uiza.com.demo">
 
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+
     <application
-        android:name="uiza.app.LSApplication"
+        android:name="uiza.LSApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name="uiza.uiza.com.demo.MainActivity">
+
+        <!--support 18:9-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <!--FOR DEMO UIZA-->
+        <!--<activity
+            android:name="vn.loitp.app.uiza.splash.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
+
+        <activity
+            android:name="uiza.uiza.splash.OptionActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name="uiza.uiza.home.v2.cannotslide.HomeV2CannotSlideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.uiza.login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="uiza.uiza.setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.uiza.home.v2.cansilde.HomeV2CanSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.uiza.home.v1.cannotslide.SearchV1Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name="uiza.uiza.home.v2.cannotslide.SearchV2Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name="uiza.uiza.home.v1.cannotslide.HomeV1CannotSlideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.uiza.home.v1.cansilde.HomeV1CanSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <!--FOR DEMO UIZA-->
+
+    </application>
 </manifest>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding_5"
+    android:paddingTop="@dimen/padding_5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/w_20"
+            android:layout_height="@dimen/w_5"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:background="@drawable/bt_login" />
+
+        <TextView
+            android:id="@+id/tv_channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:textAllCaps="true"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_20"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView
+        android:id="@+id/placeholderview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:scrollbars="none" />
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_5"
+        app:cardBackgroundColor="@color/fbutton_color_wet_asphalt"
+        app:cardCornerRadius="@dimen/w_5"
+        app:cardElevation="@dimen/w_3">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop" />
+
+            <vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView
+                android:id="@+id/avi"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="@dimen/w_20"
+                android:layout_height="@dimen/w_20"
+                android:layout_centerInParent="true"
+                app:indicatorColor="@color/White"
+                app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:padding="@dimen/padding_3"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_10" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

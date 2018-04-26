@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/margin_55"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/uiza_logo_512" />
+
+    <vn.loitp.views.realtimeblurview.RealtimeBlurView
+        android:id="@+id/blur_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="@dimen/round_55"
+        app:realtimeOverlayColor="@color/black_65" />
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="@dimen/w_80"
+                android:layout_height="@dimen/w_80"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/uiza_logo_512" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bt_start"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose your Video skin"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group_skin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/radio_skin_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="Skin 1"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/radio_skin_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:text="Skin 2"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/radio_skin_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:text="Skin 3"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/w_1"
+                    android:layout_margin="@dimen/margin_10"
+                    android:background="@color/White" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Video can slide or not?"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group_slide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/radio_cannot_slide"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="Cannot slide"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/radio_can_slide"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:text="Can slide"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/w_1"
+                    android:layout_margin="@dimen/margin_10"
+                    android:background="@color/White" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select API Environment"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/radio_environment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/radio_environment_dev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="DEV (API V2)"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/radio_environment_stag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="STAG (API V1)"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <RadioButton
+                        android:id="@+id/radio_environment_prod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="WEBTRETHO (API V1)"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/w_1"
+                    android:layout_margin="@dimen/margin_10"
+                    android:background="@color/White" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/bt_login"
+                android:text="START"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_30"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+

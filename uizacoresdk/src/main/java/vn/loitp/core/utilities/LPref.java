@@ -3,7 +3,10 @@ package vn.loitp.core.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import vn.loitp.core.common.Constants;
+import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 
 /**
  * File created on 11/15/2016.
@@ -24,6 +27,8 @@ public class LPref {
     public static final String NOT_READY_USE_APPLICATION = "not.ready.use.application";
 
     public static final String INDEX = "INDEX";
+    public static String AUTH = "AUTH";
+
     //object
     /*public User getUser() {
         SharedPreferences pref = context.getSharedPreferences(Const.PREFERENCES_FILE_NAME, 0);
@@ -80,6 +85,19 @@ public class LPref {
     public static void setIndex(Context context, int value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(INDEX, value);
+        editor.apply();
+    }
+
+    //Object
+    public static Auth getAuth(Context context, Gson gson) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        String json = pref.getString(AUTH, null);
+        return gson.fromJson(json, Auth.class);
+    }
+
+    public static void setAuth(Context context, Auth auth, Gson gson) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(AUTH, gson.toJson(auth));
         editor.apply();
     }
 }

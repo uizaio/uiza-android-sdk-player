@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="vip1">#d3131f</color>
+    <color name="vip2">#19875c</color>
+    <color name="vip3">#1660d1</color>
+    <color name="vip4">#fec835</color>
+    <color name="vip5">#fd8833</color>
+
+    <color name="black_65">#A6000000</color>
+    <color name="black_85">#D9000000</color>
+
+    <color name="grey">#818181</color>
+    <color name="white">#ffffff</color>
+    <color name="black_2">#05000000</color>
+    <color name="black_5">#10000000</color>
+
+    <color name="primaryColor">#0a0f20</color>
+    <color name="colorPrimary">#0a0f20</color>
+    <color name="colorAccent">#0a0f20</color>
+    <color name="colorPrimaryDark">#0a0f20</color>
+    <color name="transparent">#00000000</color>
+    <color name="White">#FFFFFF</color>
+    <color name="WhiteTrans">#55FFFFFF</color>
+    <color name="WhiteTrans99">#99FFFFFF</color>
+    <color name="DeepPink">#FF1493</color>
+    <color name="bottom_press_icon">#b41482</color>
+    <color name="Red">#FF0000</color>
+    <color name="LightGrey">#D3D3D3</color>
+    <color name="DimGray">#696969</color>
+    <color name="Blue">#0000FF</color>
+    <color name="Black">#000000</color>
+
+    <color name="alarm_title_active">#444444</color>
+    <color name="alarm_title_outdated">#888888</color>
+    <color name="alarm_details">#888888</color>
+
+    <color name="default_background_label">#ff303030</color>
+    <color name="hint_color">#999999</color>
+    <color name="remember_me">#3e4b5b</color>
+    <color name="bt_login">#047bf8</color>
+    <color name="fbutton_color_wet_asphalt">#34495e</color>
 </resources>
