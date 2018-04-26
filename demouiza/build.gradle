@@ -27,5 +27,5 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //compile 'com.github.tplloi:basemaster:1.0.11'
+    //compile 'com.github.tplloi:uizasdk:1.0.0'
 }

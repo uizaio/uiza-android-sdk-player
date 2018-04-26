@@ -444,7 +444,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void testAPI() {
         //TODO
 
-        RestClient.init("https://api.stackexchange.com");
+        /*RestClient.init("https://api.stackexchange.com");
         //RestClient.init("https://api.stackexchange.com", "token");
         APIServices service = RestClient.createService(APIServices.class);
         ((BaseActivity) getContext()).subscribe(service.test(), new ApiSubscriber<Object>() {
@@ -457,6 +457,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
             }
-        });
+        });*/
     }
 }

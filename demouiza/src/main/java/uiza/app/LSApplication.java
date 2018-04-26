@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import uiza.uiza.com.demo.BuildConfig;
 import vn.loitp.core.common.Constants;
 import vn.loitp.data.ActivityData;
+import vn.loitp.utils.util.Utils;
 
 public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();
@@ -28,7 +29,8 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Constants.setIsDebug(true);
-        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
+        Utils.init(this);
+        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT);
         //userAgent = Util.getUserAgent(this, Constants.USER_AGENT);
 
         //RestClientV2.init(getString(R.string.dev_uiza_URL), Constants.TOKEN);

@@ -14,6 +14,7 @@ import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -145,6 +146,8 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    private Intent intent = null;
+
     private void goToHome() {
         LLog.d(TAG, "goToHome token: " + token);
 
@@ -153,7 +156,6 @@ public class SplashActivity extends BaseActivity {
             return;
         }
 
-        Intent intent = null;
         RestClientV2.init(currentApiEndPoint, token);
         //UizaData.getInstance().init(currentApiEndPoint, currentApiTrackingEndPoint, token, currentPlayerId);
         //UizaData.getInstance().setVideoCanSlide(canSlide);
@@ -180,9 +182,14 @@ public class SplashActivity extends BaseActivity {
                 break;
         }
         if (intent != null) {
-            startActivity(intent);
-            LActivityUtil.tranIn(activity);
-            finish();
+            LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    startActivity(intent);
+                    LActivityUtil.tranIn(activity);
+                    finish();
+                }
+            });
         }
     }
 

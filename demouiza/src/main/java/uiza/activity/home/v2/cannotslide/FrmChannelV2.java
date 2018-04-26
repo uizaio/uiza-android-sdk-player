@@ -2,6 +2,7 @@ package uiza.activity.home.v2.cannotslide;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,7 @@ public class FrmChannelV2 extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        LLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
