@@ -204,12 +204,12 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
         uizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, "ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, "video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
         /*ALL CALLBACK*/

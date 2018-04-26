@@ -166,15 +166,32 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         seekbarBirghtness.setOnSeekBarChangeListener(this);
     }
 
+    private ProgressCallback progressCallback;
+
     public void setProgressCallback(ProgressCallback progressCallback) {
-        if (progressCallback != null) {
-            uizaPlayerManager.setProgressCallback(progressCallback);
-        }
+        this.progressCallback = progressCallback;
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(playerView, progressBar, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
+        uizaPlayerManager.setProgressCallback(new ProgressCallback() {
+            @Override
+            public void onAdProgress(float currentMls, float duration, int percent) {
+                LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                if (progressCallback != null) {
+                    progressCallback.onAdProgress(currentMls, duration, percent);
+                }
+            }
+
+            @Override
+            public void onVideoProgress(float currentMls, float duration, int percent) {
+                LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                if (progressCallback != null) {
+                    progressCallback.onVideoProgress(currentMls, duration, percent);
+                }
+            }
+        });
         uizaPlayerManager.setDebugCallback(new UizaPlayerManager.DebugCallback() {
             @Override
             public void onUpdateButtonVisibilities() {
