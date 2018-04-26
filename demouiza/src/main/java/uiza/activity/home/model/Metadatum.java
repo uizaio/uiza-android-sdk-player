@@ -1,5 +1,5 @@
 
-package vn.loitp.restapi.uiza.model.v1.listallentity;
+package uiza.activity.home.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

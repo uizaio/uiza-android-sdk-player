@@ -1,14 +1,12 @@
 
-package vn.loitp.restapi.uiza.model.v1.listallentityrelation;
+package uiza.activity.home.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import vn.loitp.restapi.uiza.model.v1.listallentity.Item;
-
-public class ListAllEntityRelation {
+public class GetAll {
 
     @SerializedName("items")
     @Expose

@@ -141,4 +141,17 @@ public class LImageUtil {
                         .override(sizeW, sizeH)
                 ).into(imageView);
     }
+
+    public static void load(Activity activity, final String[] url, ImageView imageView, final AVLoadingIndicatorView avLoadingIndicatorView) {
+        String u = null;
+        for (int i = 0; i < url.length; i++) {
+            if (url[i] != null) {
+                u = url[i];
+                break;
+            }
+        }
+        if (u != null) {
+            load(activity, u, imageView, avLoadingIndicatorView);
+        }
+    }
 }

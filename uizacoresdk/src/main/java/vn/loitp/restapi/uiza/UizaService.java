@@ -10,8 +10,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v1.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v1.listallmetadata.ListAllMetadata;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -104,33 +102,9 @@ public interface UizaService {
     //=====================================================end v2 dev-api.uiza.io/resource/index.html
 
 
-    //=====================================================v1 http://dev-api.uiza.io/data/index.html
-    @FormUrlEncoded
-    @POST("/api/data/v1/metadata/list")
-    Observable<ListAllMetadata> listAllMetadataV1(@Field("limit") int limit, @Field("orderBy") String orderBy, @Field("orderType") String orderType);
-
-    @Headers("Content-Type: application/json")
-    @POST("/api/data/v1/entity/list")
-    Observable<vn.loitp.restapi.uiza.model.v1.listallentity.ListAllEntity> listAllEntityV1(@Body JsonBodyListAllEntity jsonBodyListAllEntity);
-
-    @GET("/api/public/v1/media/entity/get-link-play")
-    Observable<GetLinkPlay> getLinkPlayV1(@Query("entityId") String entityId, @Query("appId") String appId);
-
     //getPlayerConfig
     @GET("/api/public/v1/player/info/{id}")
     Observable<PlayerConfig> getPlayerInfo(@Path("id") String playerId);
-
-    @FormUrlEncoded
-    @POST("/api/data/v1/entity/detail")
-    Observable<vn.loitp.restapi.uiza.model.v1.getdetailentity.GetDetailEntity> getDetailEntityV1(@Field("id") String id);
-
-    @FormUrlEncoded
-    @POST("/api/data/v1/entity/related")
-    Observable<vn.loitp.restapi.uiza.model.v1.listallentityrelation.ListAllEntityRelation> getListAllEntityRalationV1(@Field("id") String id);
-
-    @FormUrlEncoded
-    @POST("/api/data/v1/search")
-    Observable<vn.loitp.restapi.uiza.model.v1.search.Search> searchEntityV1(@Field("keyword") String keyword, @Field("limit") int limit, @Field("page") int page);
 
     //=====================================================end v1 http://dev-api.uiza.io/data/index.html
 

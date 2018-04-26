@@ -38,6 +38,12 @@
         <activity
             android:name="uiza.activity.splash.SplashActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.activity.home.v2.cannotslide.SearchV2Activity"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

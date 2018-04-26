@@ -1,10 +1,12 @@
 
-package vn.loitp.restapi.uiza.model.v1.listallentity;
+package uiza.activity.home.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import vn.loitp.core.common.Constants;
 
 public class Item {
 
@@ -23,12 +25,9 @@ public class Item {
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
-    @SerializedName("ingestMetadataId")
+    @SerializedName("extendData")
     @Expose
-    private String ingestMetadataId;
-    @SerializedName("adminUserId")
-    @Expose
-    private String adminUserId;
+    private ExtendData extendData;
     @SerializedName("poster")
     @Expose
     private String poster;
@@ -41,30 +40,9 @@ public class Item {
     @SerializedName("thumbnail")
     @Expose
     private String thumbnail;
-    @SerializedName("duration")
-    @Expose
-    private String duration;
-    @SerializedName("ownerName")
-    @Expose
-    private String ownerName;
-    @SerializedName("ownerEmail")
-    @Expose
-    private String ownerEmail;
-    @SerializedName("ownerAvatar")
-    @Expose
-    private String ownerAvatar;
-    @SerializedName("ownerFullName")
-    @Expose
-    private String ownerFullName;
     @SerializedName("metadata")
     @Expose
     private List<Metadatum> metadata = null;
-    @SerializedName("extendData")
-    @Expose
-    private ExtendData extendData;
-    @SerializedName("subtitle")
-    @Expose
-    private List<Subtitle> subtitle = null;
 
     public String getId() {
         return id;
@@ -106,23 +84,17 @@ public class Item {
         this.shortDescription = shortDescription;
     }
 
-    public String getIngestMetadataId() {
-        return ingestMetadataId;
+    public ExtendData getExtendData() {
+        return extendData;
     }
 
-    public void setIngestMetadataId(String ingestMetadataId) {
-        this.ingestMetadataId = ingestMetadataId;
-    }
-
-    public String getAdminUserId() {
-        return adminUserId;
-    }
-
-    public void setAdminUserId(String adminUserId) {
-        this.adminUserId = adminUserId;
+    public void setExtendData(ExtendData extendData) {
+        this.extendData = extendData;
     }
 
     public String getPoster() {
+        if (poster == null || poster == "")
+            return Constants.URL_IMG_POSTER;
         return poster;
     }
 
@@ -147,51 +119,13 @@ public class Item {
     }
 
     public String getThumbnail() {
+        if (thumbnail == null || thumbnail == "")
+            return Constants.URL_IMG_THUMBNAIL;
         return thumbnail;
     }
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public String getOwnerEmail() {
-        return ownerEmail;
-    }
-
-    public void setOwnerEmail(String ownerEmail) {
-        this.ownerEmail = ownerEmail;
-    }
-
-    public String getOwnerAvatar() {
-        return ownerAvatar;
-    }
-
-    public void setOwnerAvatar(String ownerAvatar) {
-        this.ownerAvatar = ownerAvatar;
-    }
-
-    public String getOwnerFullName() {
-        return ownerFullName;
-    }
-
-    public void setOwnerFullName(String ownerFullName) {
-        this.ownerFullName = ownerFullName;
     }
 
     public List<Metadatum> getMetadata() {
@@ -202,19 +136,4 @@ public class Item {
         this.metadata = metadata;
     }
 
-    public ExtendData getExtendData() {
-        return extendData;
-    }
-
-    public void setExtendData(ExtendData extendData) {
-        this.extendData = extendData;
-    }
-
-    public List<Subtitle> getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(List<Subtitle> subtitle) {
-        this.subtitle = subtitle;
-    }
 }

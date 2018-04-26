@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity;
 import uiza.app.LSApplication;
 import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
@@ -164,7 +165,7 @@ public class SplashActivity extends BaseActivity {
                     //intent = new Intent(activity, HomeV2CanSlideActivity.class);
                 } else {
                     LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
-                    //intent = new Intent(activity, HomeV2CannotSlideActivity.class);
+                    intent = new Intent(activity, HomeV2CannotSlideActivity.class);
                 }
                 break;
             case Constants.URL_DEV_UIZA_VERSION_2_STAG:

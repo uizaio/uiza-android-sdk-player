@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Core Basemaster</string>
     <string name="warning">Warning</string>
-    <string name="confirm">Confirm</string>
     <string name="cannot_find_messenger_app">Cannot find Messenger App!</string>
-    <string name="err">Error</string>
+
     <string name="ok">OK</string>
     <string name="url_dash">https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd</string>
     <string name="url_thumbnails">https://bitdash-a.akamaihd.net/content/MI201109210084_1/thumbnails/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.jpg</string>
@@ -16,4 +15,14 @@
     <string name="text">Subtitle</string>
     <string name="selection_disabled">Disabled</string>
     <string name="selection_default">Default</string>
+
+    <string name="err">Error</string>
+    <string name="err_400">Bad Request: The request was unacceptable, often due to missing a required parameter.</string>
+    <string name="err_401">Unauthorized: No valid API key provided.</string>
+    <string name="err_404">Not Found: The requested resource does not exist.</string>
+    <string name="err_422">Unprocessable: The syntax of the request entity is incorrect (often is wrong parameter).</string>
+    <string name="err_500">Internal Server Error: We had a problem with our server. Try again later.</string>
+    <string name="err_503">Service Unavailable: The server is overloaded or down for maintenance.</string>
+    <string name="err_unknow">Unknow Error</string>
+    <string name="confirm">Confirm</string>
 </resources>
