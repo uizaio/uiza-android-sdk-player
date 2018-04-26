@@ -1,4 +1,4 @@
-package uiza;
+package uiza.app;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
