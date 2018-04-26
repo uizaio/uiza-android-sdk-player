@@ -1,6 +1,5 @@
 package testlibuiza.uiza.com.dummy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -87,7 +86,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void uizaVideoRl() {
-        Intent intent = new Intent(activity, TestUizaVideoIMActivity1.class);
+        Intent intent = new Intent(activity, TestUizaVideoIMActivityRl.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }

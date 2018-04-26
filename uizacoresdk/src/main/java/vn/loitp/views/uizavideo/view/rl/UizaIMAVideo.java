@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,13 +27,12 @@ import com.github.rubensousa.previewseekbar.base.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
@@ -81,6 +81,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ImageView ivVolumeSeekbar;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView ivBirghtnessSeekbar;
+    private FrameLayout previewFrameLayout;
 
     private LinearLayout debugRootView;
     private int firstBrightness;
@@ -139,6 +140,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LUIUtil.setColorSeekBar(seekbarBirghtness, ContextCompat.getColor(getContext(), R.color.White));
         ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
         ivBirghtnessSeekbar = (ImageView) playerView.findViewById(R.id.exo_birghtness_seekbar);
+        previewFrameLayout = (FrameLayout) playerView.findViewById(R.id.previewFrameLayout);
 
         debugRootView = findViewById(R.id.controls_root);
         if (Constants.IS_DEBUG) {
@@ -163,38 +165,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         seekbarBirghtness.setOnSeekBarChangeListener(this);
     }
 
-    private List<Subtitle> createDummySubtitle() {
-        String json = "[\n" +
-                "                {\n" +
-                "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_en_1522812430080.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"en\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"id\": \"271787a0-5d23-4a35-a10a-5c43fdcb71a8\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"vi\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                }\n" +
-                "            ]";
-        Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
-        List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
-        return subtitleList;
-    }
-
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
-        List<Subtitle> subtitleList = createDummySubtitle();
-
+    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(playerView, progressBar, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
@@ -451,5 +422,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LToast.show(getContext(), "initializePiP");
         getContext().startService(new Intent(getContext(), FloatingUizaVideoService.class));
         ((BaseActivity) getContext()).onBackPressed();
+    }
+
+    public SimpleExoPlayer getPlayer() {
+        return uizaPlayerManager.getPlayer();
     }
 }
