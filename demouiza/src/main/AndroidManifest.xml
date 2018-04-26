@@ -44,6 +44,9 @@
         <activity
             android:name="uiza.activity.home.v2.cannotslide.SearchV2Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

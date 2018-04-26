@@ -25,4 +25,10 @@
     <string name="err_503">Service Unavailable: The server is overloaded or down for maintenance.</string>
     <string name="err_unknow">Unknow Error</string>
     <string name="confirm">Confirm</string>
+    <string name="more_like_this">More like this</string>
+    <string name="cannot_play_any_videos">Cannot play any linkplays.</string>
+    <string name="has_no_linkplay">Không có link play</string>
+    <string name="no_data">Không có dữ liệu</string>
+    <string name="err_list_relation_null">listAllEntityRelation == null -> should init related list before by using UizaData.putToListAllEntityRelation()</string>
+    <string name="search">Tìm kiếm</string>
 </resources>

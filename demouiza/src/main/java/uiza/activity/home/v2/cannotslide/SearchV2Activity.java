@@ -274,12 +274,12 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
 
     private void onClickVideo(Item item, int position) {
         LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        /*Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
+        Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
         intent.putExtra(KEY_UIZA_ENTITY_TITLE, item.getName());
         startActivity(intent);
-        LActivityUtil.tranIn(activity);*/
+        LActivityUtil.tranIn(activity);
     }
 
     private void swipeToRefresh() {

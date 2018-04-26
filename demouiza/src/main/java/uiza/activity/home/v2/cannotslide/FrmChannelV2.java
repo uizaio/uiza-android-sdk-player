@@ -239,11 +239,11 @@ public class FrmChannelV2 extends BaseFragment {
 
     private void onClickVideo(Item item, int position) {
         LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        /*Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
+        Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
         intent.putExtra(KEY_UIZA_ENTITY_TITLE, item.getName());
-        startActivity(intent);*/
+        startActivity(intent);
 
         LLog.d(TAG, "onClickVideo " + item.getId());
         LLog.d(TAG, "onClickVideo " + item.getThumbnail());
