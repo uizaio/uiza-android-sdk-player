@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="video_frame_width">2dp</dimen>
+    <dimen name="video_frame_width">1dp</dimen>
     <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="txt_10">10dp</dimen>
