@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="@dimen/padding_5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Menu Activity Transition"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/txt_20" />
+
+            <Button
+                android:id="@+id/bt_no_anim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No animation" />
+
+            <Button
+                android:id="@+id/bt_system_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="System default" />
+
+            <Button
+                android:id="@+id/bt_slide_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="slide Left" />
+
+            <Button
+                android:id="@+id/bt_slide_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="slide Right" />
+
+            <Button
+                android:id="@+id/bt_slide_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="slide down" />
+
+            <Button
+                android:id="@+id/bt_slide_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="slide up" />
+
+            <Button
+                android:id="@+id/bt_fade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="fade" />
+
+            <Button
+                android:id="@+id/bt_zoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="zoom" />
+
+            <Button
+                android:id="@+id/bt_windmill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="windmill" />
+
+            <Button
+                android:id="@+id/bt_diagonal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="diagonal" />
+
+            <Button
+                android:id="@+id/bt_spin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="spin" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+

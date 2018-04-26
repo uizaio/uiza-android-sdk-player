@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="@dimen/padding_5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Menu Video View"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/txt_20" />
+
+            <Button
+                android:id="@+id/bt_jzvideoplayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="JZVideoPlayer" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2_fullscreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 FullScreen" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2_with_dragpanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 With DragPanel" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2_with_dragpanel_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 With DragPanel 2" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2_with_dragpanel_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 With DragPanel 3" />
+
+            <Button
+                android:id="@+id/bt_exoplayer2_with_preview_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2WithPreviewSeekbar" />
+
+            <Button
+                android:id="@+id/bt_exo_player2_from_gg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 Demo From GG" />
+
+            <Button
+                android:id="@+id/bt_exo_player2_from_gg_ima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ExoPlayer2 Demo From GG IMA" />
+
+            <Button
+                android:id="@+id/bt_pip_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PiPVideo" />
+
+            <Button
+                android:id="@+id/bt_uiza_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Uiza Video" />
+
+            <Button
+                android:id="@+id/bt_uiza_video_ima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Uiza Video IMA" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
