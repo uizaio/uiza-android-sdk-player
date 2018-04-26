@@ -2,6 +2,7 @@ package testlibuiza.uiza.com.dummy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -10,8 +11,13 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
+import com.google.android.exoplayer2.metadata.Metadata;
+import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.text.Cue;
+import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Arrays;
@@ -24,6 +30,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.UizaPlayerManager;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
+import vn.loitp.views.uizavideo.listerner.VideoEventListener;
 import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity {
@@ -34,8 +41,10 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         String linkPlay = getString(loitp.core.R.string.url_dash);
-        String urlIMAAd = getString(loitp.core.R.string.ad_tag_url);
-        String urlThumnailsPreviewSeekbar = getString(loitp.core.R.string.url_thumbnails);
+        //String urlIMAAd = getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
+        //String urlThumnailsPreviewSeekbar = getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
         uizaIMAVideo.initData(linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, createDummySubtitle());
     }
 
@@ -212,11 +221,53 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
                 LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        /*ALL CALLBACK*/
-        /*player.addListener(new UizaPlayerManager.PlayerEventListener());
-        player.addAudioDebugListener(new UizaPlayerManager.AudioEventListener());
-        player.addVideoDebugListener(new UizaPlayerManager.VideoEventListener());
-        player.addMetadataOutput(new UizaPlayerManager.MetadataOutputListener());
-        player.addTextOutput(new UizaPlayerManager.TextOutputListener());*/
+        uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+            @Override
+            public void onVideoEnabled(DecoderCounters counters) {
+                LLog.d(TAG, "onVideoEnabled");
+            }
+
+            @Override
+            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+                LLog.d(TAG, "onVideoDecoderInitialized");
+            }
+
+            @Override
+            public void onVideoInputFormatChanged(Format format) {
+                LLog.d(TAG, "onVideoInputFormatChanged");
+            }
+
+            @Override
+            public void onDroppedFrames(int count, long elapsedMs) {
+                LLog.d(TAG, "onDroppedFrames");
+            }
+
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                LLog.d(TAG, "onAudioDisabled");
+            }
+
+            @Override
+            public void onRenderedFirstFrame(Surface surface) {
+                LLog.d(TAG, "onRenderedFirstFrame");
+            }
+
+            @Override
+            public void onVideoDisabled(DecoderCounters counters) {
+                LLog.d(TAG, "onVideoDisabled");
+            }
+        });
+        uizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+            @Override
+            public void onMetadata(Metadata metadata) {
+                LLog.d(TAG, "onMetadata");
+            }
+        });
+        uizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
+            @Override
+            public void onCues(List<Cue> cues) {
+                LLog.d(TAG, "onCues");
+            }
+        });
     }
 }
