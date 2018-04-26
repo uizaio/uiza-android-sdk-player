@@ -1,4 +1,4 @@
-package testlibuiza.uiza.com.dummy.app;
+package vn.loitp.restapi.dummy;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

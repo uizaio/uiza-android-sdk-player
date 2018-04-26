@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +42,10 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.dummy.APIServices;
+import vn.loitp.restapi.restclient.RestClient;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 import vn.loitp.views.uizavideo.UizaPlayerManager;
@@ -110,6 +112,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         findViews();
         UizaUtil.resizeLayout(playerView, llMid);
         initUI();
+        testAPI();
     }
 
     private void findViews() {
@@ -419,5 +422,24 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public SimpleExoPlayer getPlayer() {
         return uizaPlayerManager.getPlayer();
+    }
+
+    private void testAPI() {
+        //TODO
+
+        RestClient.init("https://api.stackexchange.com");
+        //RestClient.init("https://api.stackexchange.com", "token");
+        APIServices service = RestClient.createService(APIServices.class);
+        ((BaseActivity) getContext()).subscribe(service.test(), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                Gson gson = new Gson();
+                LLog.d(TAG, "testAPI onSuccess " + gson.toJson(result));
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+            }
+        });
     }
 }

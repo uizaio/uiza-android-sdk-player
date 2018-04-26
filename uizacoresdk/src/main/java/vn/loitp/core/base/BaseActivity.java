@@ -105,7 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unchecked")
-    protected void subscribe(Observable observable, Subscriber subscriber) {
+    public void subscribe(Observable observable, Subscriber subscriber) {
         //TODO maybe in some cases we don't need to check internet connection
         /*if (!NetworkUtils.hasConnection(this)) {
             subscriber.onError(new NoConnectionException());
