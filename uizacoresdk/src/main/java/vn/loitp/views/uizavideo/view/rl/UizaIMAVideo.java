@@ -81,7 +81,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ImageView ivVolumeSeekbar;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView ivBirghtnessSeekbar;
-    private FrameLayout previewFrameLayout;
 
     private LinearLayout debugRootView;
     private int firstBrightness;
@@ -140,7 +139,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LUIUtil.setColorSeekBar(seekbarBirghtness, ContextCompat.getColor(getContext(), R.color.White));
         ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
         ivBirghtnessSeekbar = (ImageView) playerView.findViewById(R.id.exo_birghtness_seekbar);
-        previewFrameLayout = (FrameLayout) playerView.findViewById(R.id.previewFrameLayout);
 
         debugRootView = findViewById(R.id.controls_root);
         if (Constants.IS_DEBUG) {
@@ -165,20 +163,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         seekbarBirghtness.setOnSeekBarChangeListener(this);
     }
 
+    public void setProgressCallback(ProgressCallback progressCallback) {
+        if (progressCallback != null) {
+            uizaPlayerManager.setProgressCallback(progressCallback);
+        }
+    }
+
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(playerView, progressBar, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
-        uizaPlayerManager.setProgressCallback(new ProgressCallback() {
-            @Override
-            public void onAdProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, "ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-            }
-
-            @Override
-            public void onVideoProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, "video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-            }
-        });
         uizaPlayerManager.setDebugCallback(new UizaPlayerManager.DebugCallback() {
             @Override
             public void onUpdateButtonVisibilities() {

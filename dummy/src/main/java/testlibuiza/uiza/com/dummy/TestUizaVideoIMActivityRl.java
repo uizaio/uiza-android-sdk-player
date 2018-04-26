@@ -23,6 +23,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.UizaPlayerManager;
+import vn.loitp.views.uizavideo.listerner.ProgressCallback;
 import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity {
@@ -200,7 +201,17 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
                 LLog.d(TAG, "onAudioDisabled");
             }
         });
+        uizaIMAVideo.setProgressCallback(new ProgressCallback() {
+            @Override
+            public void onAdProgress(float currentMls, float duration, int percent) {
+                LLog.d(TAG, "ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            }
 
+            @Override
+            public void onVideoProgress(float currentMls, float duration, int percent) {
+                LLog.d(TAG, "video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            }
+        });
         /*ALL CALLBACK*/
         /*player.addListener(new UizaPlayerManager.PlayerEventListener());
         player.addAudioDebugListener(new UizaPlayerManager.AudioEventListener());
