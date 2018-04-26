@@ -37,15 +37,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
     protected Activity activity;
     protected String TAG;
-    private RelativeLayout rootView;
+    //private RelativeLayout rootView;
 
-    private InterstitialAd interstitialAd;
-
-    protected boolean isShowAdWhenExist = true;
-
-    protected RelativeLayout getRootView() {
+    /*protected RelativeLayout getRootView() {
         return rootView;
-    }
+    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setContentView(setLayoutResourceId());
 
-        interstitialAd = LUIUtil.createAdFull(activity);
-
-        View view = activity.findViewById(R.id.scroll_view);
+        /*View view = activity.findViewById(R.id.scroll_view);
         if (view != null) {
             if (view instanceof ScrollView) {
                 LUIUtil.setPullLikeIOSVertical((ScrollView) view);
@@ -74,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 LUIUtil.setPullLikeIOSVertical((NestedScrollView) view);
             }
         }
-        rootView = (RelativeLayout) activity.findViewById(R.id.root_view);
+        rootView = (RelativeLayout) activity.findViewById(R.id.root_view);*/
     }
 
     protected void setCustomStatusBar(int colorStatusBar, int colorNavigationBar) {
@@ -164,9 +158,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         LActivityUtil.tranOut(activity);
-        if (isShowAdWhenExist && !Constants.IS_DEBUG) {
-            LUIUtil.displayInterstitial(interstitialAd, 50);
-        }
     }
 
     //private TextView tvConnectStt;

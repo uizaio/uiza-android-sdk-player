@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -51,7 +50,6 @@ import java.util.Random;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
-import vn.loitp.data.AdmobData;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollDecor;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollUpdateListener;
 import vn.loitp.views.overscroll.lib.overscroll.OverScrollDecoratorHelper;
@@ -63,63 +61,6 @@ import vn.loitp.views.overscroll.lib.overscroll.OverScrollDecoratorHelper;
  */
 public class LUIUtil {
     private static String TAG = LUIUtil.class.getSimpleName();
-
-    public static AdView createAdBanner(Activity activity, int adViewId) {
-        AdView adView = (AdView) activity.findViewById(adViewId);
-        createAdBanner(adView);
-        return adView;
-    }
-
-    public static AdView createAdBanner(AdView adView) {
-        adView.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(Constants.TEST_0)
-                .addTestDevice(Constants.TEST_1)
-                .addTestDevice(Constants.TEST_2)
-                .addTestDevice(Constants.TEST_3)
-                .addTestDevice(Constants.TEST_4)
-                .addTestDevice(Constants.TEST_5)
-                .addTestDevice(Constants.TEST_6)
-                .addTestDevice(Constants.TEST_7)
-                .build());
-        return adView;
-    }
-
-    public static InterstitialAd createAdFull(Context context) {
-        InterstitialAd interstitial = new InterstitialAd(context);
-        interstitial.setAdUnitId(AdmobData.getInstance().getIdAdmobFull());
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(Constants.TEST_0)
-                .addTestDevice(Constants.TEST_1)
-                .addTestDevice(Constants.TEST_2)
-                .addTestDevice(Constants.TEST_3)
-                .addTestDevice(Constants.TEST_4)
-                .addTestDevice(Constants.TEST_5)
-                .addTestDevice(Constants.TEST_6)
-                .addTestDevice(Constants.TEST_7)
-                .build();
-        interstitial.loadAd(adRequest);
-        return interstitial;
-    }
-
-    public static void displayInterstitial(InterstitialAd interstitial) {
-        displayInterstitial(interstitial, 100);
-    }
-
-    public static void displayInterstitial(InterstitialAd interstitial, int maxNumber) {
-        /*if (LPref.getIsShowedGift(activity.getApplicationContext())) {
-            return;
-        }*/
-        if (interstitial == null) {
-            return;
-        }
-        if (interstitial.isLoaded()) {
-            Random r = new Random();
-            int x = r.nextInt(100);
-            if (x < maxNumber) {
-                interstitial.show();
-            }
-        }
-    }
 
     /*
       * settext marquee
