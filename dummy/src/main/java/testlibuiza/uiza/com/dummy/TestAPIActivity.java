@@ -16,6 +16,8 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
+import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
+import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
@@ -36,6 +38,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_search).setOnClickListener(this);
         findViewById(R.id.bt_list_entity).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_entity).setOnClickListener(this);
+        findViewById(R.id.bt_entity_ralation).setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +76,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_get_detail_entity:
                 getDetailEntity();
+                break;
+            case R.id.bt_entity_ralation:
+                getListAllEntityRelation();
                 break;
         }
     }
@@ -193,6 +199,23 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(GetDetailEntity getDetailEntityV2) {
                 showTv(getDetailEntityV2);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                handleException(e);
+            }
+        });
+    }
+
+    private void getListAllEntityRelation() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
+        jsonBodyListAllEntityRelation.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
+        subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
+            @Override
+            public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
+                showTv(listAllEntityRelation);
             }
 
             @Override

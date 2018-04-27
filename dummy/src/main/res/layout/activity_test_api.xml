@@ -77,23 +77,36 @@
                 android:layout_height="wrap_content"
                 android:text="Entity" />
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-                <Button
-                    android:id="@+id/bt_list_entity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="List Entity" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/bt_get_detail_entity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Get detail Entity" />
+                    <Button
+                        android:id="@+id/bt_list_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List Entity" />
 
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/bt_get_detail_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get detail Entity" />
+
+                    <Button
+                        android:id="@+id/bt_entity_ralation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List entity relation" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
         </LinearLayout>
     </ScrollView>
 
