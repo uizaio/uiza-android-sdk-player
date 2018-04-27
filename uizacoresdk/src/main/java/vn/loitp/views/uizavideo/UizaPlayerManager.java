@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Surface;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -399,8 +398,8 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void hideProgress() {
-        if (avLoadingIndicatorView != null && avLoadingIndicatorView.isShown()) {
-            avLoadingIndicatorView.smoothToHide();
+        if (avLoadingIndicatorView != null) {
+            avLoadingIndicatorView.hide();
             LLog.d(TAG, "hideProgress !null");
         } else {
             LLog.d(TAG, "hideProgress null");
@@ -408,8 +407,8 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void showProgress() {
-        if (avLoadingIndicatorView != null && !avLoadingIndicatorView.isShown()) {
-            avLoadingIndicatorView.smoothToShow();
+        if (avLoadingIndicatorView != null) {
+            avLoadingIndicatorView.show();
             LLog.d(TAG, "showProgress !null");
         } else {
             LLog.d(TAG, "showProgress null");
