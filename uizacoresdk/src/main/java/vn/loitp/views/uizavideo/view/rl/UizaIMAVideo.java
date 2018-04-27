@@ -107,6 +107,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         getLinkPlay();
     }
 
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+        if (uizaPlayerManager != null) {
+            uizaPlayerManager.release();
+        }
+        getLinkPlay();
+    }
+
     public UizaIMAVideo(Context context) {
         super(context);
         onCreate();

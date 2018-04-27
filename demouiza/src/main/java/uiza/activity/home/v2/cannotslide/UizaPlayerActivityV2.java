@@ -30,9 +30,11 @@ import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
+import vn.loitp.views.uizavideo.view.rl.ItemAdapterV2;
 import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
 import vn.loitp.views.uizavideo.view.rl.UizaIMAVideoInfo;
 
@@ -71,21 +73,21 @@ public class UizaPlayerActivityV2 extends BaseActivity {
                 setListener();
             }
         });
-        uizaIMAVideo.setTitle("ABC");
+        uizaIMAVideo.setTitle(entityTitle);
 
-        uizaIMAVideoInfo.setEntityId(entityId);
-
-        /*findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
+        uizaIMAVideoInfo.setEntityId(entityId, new ItemAdapterV2.Callback() {
             @Override
-            public void onClick(View v) {
-                uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
-                    @Override
-                    public void isInitResult(boolean isInitSuccess) {
-                        //do nothing
-                    }
-                });
+            public void onClick(Item movie, int position) {
+                uizaIMAVideo.setEntityId(movie.getId());
+                uizaIMAVideoInfo.setEntityId(movie.getId());
+                uizaIMAVideo.setTitle(movie.getName());
             }
-        });*/
+
+            @Override
+            public void onLoadMore() {
+                //do nothing
+            }
+        });
     }
 
     private void init() {

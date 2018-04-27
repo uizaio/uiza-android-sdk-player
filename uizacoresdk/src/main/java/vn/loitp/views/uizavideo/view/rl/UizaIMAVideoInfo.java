@@ -6,6 +6,7 @@ package vn.loitp.views.uizavideo.view.rl;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,16 +53,27 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private TextView tvVideoGenres;
     private TextView tvDebug;
     private TextView tvMoreLikeThisMsg;
-
+    private NestedScrollView nestedScrollView;
     private Item mItem;
 
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ItemAdapterV2 mAdapter;
+    private ItemAdapterV2.Callback callback;
+
+    public void setEntityId(String entityId, ItemAdapterV2.Callback callback) {
+        this.entityId = entityId;
+        LLog.d(TAG, "setEntityId " + entityId);
+        this.callback = callback;
+        getDetailEntity();
+    }
 
     public void setEntityId(String entityId) {
         this.entityId = entityId;
         LLog.d(TAG, "setEntityId " + entityId);
+        if (itemList != null) {
+            itemList.clear();
+        }
         getDetailEntity();
     }
 
@@ -92,10 +104,9 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void findViews() {
-        //nestedScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view);
+        nestedScrollView = (NestedScrollView) findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
         avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
-        avLoadingIndicatorView.smoothToShow();
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         tvVideoName = (TextView) findViewById(R.id.tv_video_name);
         tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
@@ -113,11 +124,17 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onClick(Item item, int position) {
                 LLog.d(TAG, "onClick " + position);
+                if (callback != null) {
+                    callback.onClick(item, position);
+                }
             }
 
             @Override
             public void onLoadMore() {
                 loadMore();
+                if (callback != null) {
+                    callback.onLoadMore();
+                }
             }
         });
 
@@ -132,6 +149,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void getDetailEntity() {
+        avLoadingIndicatorView.smoothToShow();
         //API v2
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
@@ -140,7 +158,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntityV2) {
-                LLog.d(TAG, "getDetailEntityV2 onSuccess " + gson.toJson(getDetailEntityV2));
+                LLog.d(TAG, "getDetailEntityV2 entityId " + entityId + " -> " + gson.toJson(getDetailEntityV2));
                 mItem = getDetailEntityV2.getData().get(0);
                 updateUI();
             }
