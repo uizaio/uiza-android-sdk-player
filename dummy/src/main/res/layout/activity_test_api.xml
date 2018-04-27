@@ -87,6 +87,12 @@
                     android:layout_height="wrap_content"
                     android:text="List Entity" />
 
+                <Button
+                    android:id="@+id/bt_get_detail_entity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Get detail Entity" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -12,6 +12,8 @@ import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
@@ -33,6 +35,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_search).setOnClickListener(this);
         findViewById(R.id.bt_list_entity).setOnClickListener(this);
+        findViewById(R.id.bt_get_detail_entity).setOnClickListener(this);
     }
 
     @Override
@@ -67,6 +70,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_list_entity:
                 listEntity();
+                break;
+            case R.id.bt_get_detail_entity:
+                getDetailEntity();
                 break;
         }
     }
@@ -170,6 +176,23 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(ListAllEntity listAllEntity) {
                 showTv(listAllEntity);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                handleException(e);
+            }
+        });
+    }
+
+    private void getDetailEntity() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
+        jsonBodyGetDetailEntity.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
+        subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
+            @Override
+            public void onSuccess(GetDetailEntity getDetailEntityV2) {
+                showTv(getDetailEntityV2);
             }
 
             @Override
