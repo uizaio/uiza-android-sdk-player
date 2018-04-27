@@ -267,6 +267,10 @@ All listener
         });  
     }
 
-**Support**
+## Support
 
 Please feel free to contact me anytime: loitp@uiza.io
+
+## License
+
+UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
