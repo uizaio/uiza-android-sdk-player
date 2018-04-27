@@ -403,12 +403,13 @@ import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadi
     @Override
     public void loadPreview(long currentPosition, long max) {
         player.setPlayWhenReady(false);
-        GlideApp.with(imageView)
-                .load(thumbnailsUrl)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .transform(new GlideThumbnailTransformationPB(currentPosition))
-                .into(imageView);
-
+        if (thumbnailsUrl != null) {
+            GlideApp.with(imageView)
+                    .load(thumbnailsUrl)
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .transform(new GlideThumbnailTransformationPB(currentPosition))
+                    .into(imageView);
+        }
     }
 
     private void hideProgress() {
