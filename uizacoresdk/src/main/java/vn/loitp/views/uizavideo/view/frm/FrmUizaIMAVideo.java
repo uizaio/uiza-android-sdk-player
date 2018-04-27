@@ -84,7 +84,9 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
     private VerticalSeekBar seekbarBirghtness;
     private ImageView ivBirghtnessSeekbar;
 
+    private LinearLayout debugLayout;
     private LinearLayout debugRootView;
+    private TextView debugTextView;
     private int firstBrightness;
 
     @Override
@@ -123,11 +125,13 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
         ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
         ivBirghtnessSeekbar = (ImageView) playerView.findViewById(R.id.exo_birghtness_seekbar);
 
-        debugRootView = view.findViewById(R.id.controls_root);
+        debugLayout = playerView.findViewById(R.id.debug_layout);
+        debugRootView = playerView.findViewById(R.id.controls_root);
+        debugTextView = playerView.findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            debugRootView.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
-            debugRootView.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.GONE);
         }
 
         //onclick
@@ -187,7 +191,7 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         List<Subtitle> subtitleList = createDummySubtitle();
 
-        uizaPlayerManager = new UizaPlayerManager(playerView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(playerView, debugTextView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override

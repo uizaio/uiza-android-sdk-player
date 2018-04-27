@@ -93,7 +93,7 @@ public class SimpleUizaIMAVideo extends RelativeLayout {
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         List<Subtitle> subtitleList = createDummySubtitle();
 
-        uizaPlayerManager = new UizaPlayerManager(playerView, null, null, null, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(playerView, null, null, null, null, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, float duration, int percent) {

@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.base.PreviewLoader;
@@ -60,6 +61,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -90,7 +92,11 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     private final String TAG = getClass().getSimpleName();
     private Gson gson = new Gson();//TODO remove later
     private Context context;
+
+    private DebugTextViewHelper debugViewHelper;
+
     private PlayerView playerView;
+    private TextView debugTextView;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
@@ -127,9 +133,10 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
         this.progressCallback = progressCallback;
     }
 
-    public UizaPlayerManager(PlayerView playerView, AVLoadingIndicatorView avLoadingIndicatorView, PreviewTimeBarLayout previewTimeBarLayout, ImageView imageView, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public UizaPlayerManager(PlayerView playerView, TextView debugTextView, AVLoadingIndicatorView avLoadingIndicatorView, PreviewTimeBarLayout previewTimeBarLayout, ImageView imageView, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = playerView.getContext();
         this.playerView = playerView;
+        this.debugTextView = debugTextView;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
@@ -235,6 +242,11 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
+
+        if (debugTextView != null) {
+            debugViewHelper = new DebugTextViewHelper(player, debugTextView);
+            debugViewHelper.start();
+        }
     }
 
     private MediaSource createMediaSourceVideo() {
@@ -330,6 +342,11 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
             runnable = null;
 
             trackSelectionHelper = null;
+
+            if (debugViewHelper != null) {
+                debugViewHelper.stop();
+                debugViewHelper = null;
+            }
         }
     }
 

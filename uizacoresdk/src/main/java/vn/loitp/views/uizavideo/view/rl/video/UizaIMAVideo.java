@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,6 +29,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -96,7 +96,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private VerticalSeekBar seekbarBirghtness;
     private ImageView ivBirghtnessSeekbar;
 
+    private LinearLayout debugLayout;
     private LinearLayout debugRootView;
+    private TextView debugTextView;
+
     private int firstBrightness = Constants.NOT_FOUND;
 
     public void setEntityId(String entityId, Callback callback) {
@@ -170,11 +173,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
         ivBirghtnessSeekbar = (ImageView) playerView.findViewById(R.id.exo_birghtness_seekbar);
 
+        debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
+        debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            debugRootView.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
-            debugRootView.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.GONE);
         }
 
         //onclick
@@ -200,7 +205,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        uizaPlayerManager = new UizaPlayerManager(playerView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(playerView, debugTextView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
