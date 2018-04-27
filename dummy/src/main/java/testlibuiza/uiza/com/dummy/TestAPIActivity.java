@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import testlibuiza.uiza.com.dummy.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -14,6 +18,8 @@ import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
+import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
@@ -39,6 +45,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_list_entity).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_entity).setOnClickListener(this);
         findViewById(R.id.bt_entity_ralation).setOnClickListener(this);
+        findViewById(R.id.bt_get_link_play).setOnClickListener(this);
     }
 
     @Override
@@ -80,12 +87,17 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             case R.id.bt_entity_ralation:
                 getListAllEntityRelation();
                 break;
+            case R.id.bt_get_link_play:
+                getLinkPlay();
+                break;
         }
     }
 
     private void showTv(Object o) {
         LUIUtil.printBeautyJson(o, tv);
     }
+
+    private String appId;
 
     private void auth() {
         UizaService service = RestClientV2.createService(UizaService.class);
@@ -101,6 +113,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             public void onSuccess(Auth auth) {
                 showTv(auth);
                 RestClientV2.addAuthorization(auth.getData().getToken());
+                appId = auth.getData().getAppId();
             }
 
             @Override
@@ -216,6 +229,30 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
                 showTv(listAllEntityRelation);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                handleException(e);
+            }
+        });
+    }
+
+    private void getLinkPlay() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        LLog.d(TAG, "appId " + appId);
+        subscribe(service.getLinkPlayV2("e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7", appId), new ApiSubscriber<GetLinkPlay>() {
+            @Override
+            public void onSuccess(GetLinkPlay getLinkPlay) {
+                List<String> listLinkPlay = new ArrayList<>();
+                List<Mpd> mpdList = getLinkPlay.getMpd();
+                for (Mpd mpd : mpdList) {
+                    if (mpd.getUrl() != null) {
+                        listLinkPlay.add(mpd.getUrl());
+                    }
+                }
+                LLog.d(TAG, "getLinkPlayV2 toJson: " + LSApplication.getInstance().getGson().toJson(listLinkPlay));
+                showTv(listLinkPlay);
             }
 
             @Override
