@@ -6,11 +6,6 @@ package vn.loitp.core.common;
 public class Constants {
     public static boolean IS_DEBUG = false;
 
-    public static void setIsDebug(boolean isDebug) {
-        IS_DEBUG = isDebug;
-    }
-
-
     public final static String LOITP = "LoitpDebug";
 
     public static String ASSET_FILE_GIFT = "img/ic_gift.png";

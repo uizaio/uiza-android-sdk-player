@@ -83,10 +83,6 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         });
     }
 
-    private void init() {
-        LLog.d(TAG, "init");
-    }
-
     @Override
     protected boolean setFullScreen() {
         return false;

@@ -29,6 +29,7 @@
         android:id="@+id/bt_uiza_float_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test uiza float view" />
+        android:text="Test uiza float view"
+        android:visibility="gone" />
 
 </LinearLayout>

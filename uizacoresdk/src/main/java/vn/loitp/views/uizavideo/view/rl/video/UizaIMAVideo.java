@@ -103,6 +103,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private int firstBrightness = Constants.NOT_FOUND;
 
     public void setEntityId(String entityId, Callback callback) {
+        if (entityId == null || entityId.isEmpty()) {
+            ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
+            return;
+        }
         this.entityId = entityId;
         this.callback = callback;
         if (uizaPlayerManager != null) {

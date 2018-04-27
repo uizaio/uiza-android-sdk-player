@@ -38,41 +38,14 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        String linkPlay = getString(loitp.core.R.string.url_dash);
-        //String urlIMAAd = getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        uizaIMAVideo.initData(linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, createDummySubtitle());
-    }
-
-    private List<Subtitle> createDummySubtitle() {
-        String json = "[\n" +
-                "                {\n" +
-                "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_en_1522812430080.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"en\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"id\": \"271787a0-5d23-4a35-a10a-5c43fdcb71a8\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"vi\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                }\n" +
-                "            ]";
-        Subtitle[] subtitles = LSApplication.getInstance().getGson().fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + LSApplication.getInstance().getGson().toJson(subtitles));
-        List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + LSApplication.getInstance().getGson().toJson(subtitleList));
-        return subtitleList;
+        String entityId = "e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7";
+        uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
+            @Override
+            public void isInitResult(boolean isInitSuccess) {
+                setListener();
+            }
+        });
+        uizaIMAVideo.setTitle("Dummy title");
     }
 
     @Override
@@ -100,7 +73,6 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
     protected void onResume() {
         super.onResume();
         uizaIMAVideo.onResume();
-        setListener();
     }
 
     @Override
