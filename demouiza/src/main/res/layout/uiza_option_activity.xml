@@ -25,7 +25,9 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_above="@id/bt_start"
+        android:fillViewport="true"
+        android:visibility="invisible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -41,7 +43,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/bt_start"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -194,18 +195,18 @@
                     android:layout_margin="@dimen/margin_10"
                     android:background="@color/White" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/bt_start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/bt_login"
-                android:text="START"
-                android:textColor="@color/White"
-                android:textSize="@dimen/txt_30"
-                android:textStyle="bold" />
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/bt_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bt_login"
+        android:text="START"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_30"
+        android:textStyle="bold" />
 </RelativeLayout>
 
