@@ -72,6 +72,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private String entityId;
+    private String videoCoverUrl;
 
     private Gson gson = new Gson();//TODO remove
     private RelativeLayout rootView;
@@ -125,12 +126,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return ivThumbnail;
     }
 
-    public void setEntityId(String entityId, Callback callback) {
+    public void setEntityId(String entityId, String videoCoverUrl, Callback callback) {
         if (entityId == null || entityId.isEmpty()) {
             ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
             return;
         }
         this.entityId = entityId;
+        this.videoCoverUrl = videoCoverUrl;
+        LLog.d(TAG, "entityId " + entityId);
+        LLog.d(TAG, "videoCoverUrl " + videoCoverUrl);
         this.callback = callback;
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
@@ -152,7 +156,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             ivVideoCover.setLayoutParams(layoutParamsIv);
-            LImageUtil.load(activity, "http://images6.fanpop.com/image/photos/40200000/-Mina-mina-twice-40200406-500-333.jpg", ivVideoCover);
+            LImageUtil.load(activity, videoCoverUrl == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + videoCoverUrl, ivVideoCover);
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);

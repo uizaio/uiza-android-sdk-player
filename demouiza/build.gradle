@@ -27,6 +27,5 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //compile 'com.github.tplloi:uizasdk:1.0.0'
-    //compile 'com.github.uizaio:uiza-android-sdk-player:1.0.0'
+    //compile 'com.github.uizaio:uiza-android-sdk-player:1.0.2'
 }

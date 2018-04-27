@@ -60,7 +60,7 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
+        uizaIMAVideo.setEntityId(entityId, entityCover, new UizaIMAVideo.Callback() {
             @Override
             public void isInitResult(boolean isInitSuccess) {
                 setListener();
