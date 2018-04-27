@@ -18,6 +18,8 @@ import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
+import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.view.floatview.FloatingUizaVideoService;
@@ -32,6 +34,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         findViewById(R.id.bt_get_token).setOnClickListener(this);
         findViewById(R.id.bt_check_token).setOnClickListener(this);
+        findViewById(R.id.bt_list_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -57,6 +60,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_check_token:
                 checkToken();
+                break;
+            case R.id.bt_list_metadata:
+                listMetadata();
                 break;
         }
     }
@@ -95,6 +101,29 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(Auth auth) {
                 showTv(auth);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "auth onFail " + e.getMessage());
+                handleException(e);
+            }
+        });
+    }
+
+    private void listMetadata() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        int limit = 999;
+        String orderBy = "name";
+        String orderType = "ASC";
+        JsonBodyMetadataList jsonBodyMetadataList = new JsonBodyMetadataList();
+        jsonBodyMetadataList.setLimit(limit);
+        jsonBodyMetadataList.setOrderBy(orderBy);
+        jsonBodyMetadataList.setOrderType(orderType);
+        subscribe(service.listAllMetadataV2(jsonBodyMetadataList), new ApiSubscriber<ListAllMetadata>() {
+            @Override
+            public void onSuccess(ListAllMetadata listAllMetadata) {
+                showTv(listAllMetadata);
             }
 
             @Override

@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,12 +37,30 @@
                     android:layout_height="wrap_content"
                     android:text="Check token" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Metadata" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/bt_list_metadata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="List metadata" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/tv"
