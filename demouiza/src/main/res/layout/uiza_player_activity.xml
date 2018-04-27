@@ -10,28 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <vn.loitp.views.uizavideo.view.rl.UizaIMAVideoInfo
+        android:id="@+id/uiza_video_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/uiza_video">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/bt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TEST" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/large_text"
-                android:textColor="@color/White" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/uiza_video" />
 
 </RelativeLayout>

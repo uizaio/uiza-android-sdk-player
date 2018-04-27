@@ -34,6 +34,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
 import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
+import vn.loitp.views.uizavideo.view.rl.UizaIMAVideoInfo;
 
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
@@ -44,11 +45,13 @@ public class UizaPlayerActivityV2 extends BaseActivity {
     private String entityCover;
     private String entityTitle;
     private UizaIMAVideo uizaIMAVideo;
+    private UizaIMAVideoInfo uizaIMAVideoInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+        uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
         entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
         entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
         entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
@@ -69,9 +72,10 @@ public class UizaPlayerActivityV2 extends BaseActivity {
             }
         });
         uizaIMAVideo.setTitle("ABC");
-        getDetailEntity();
 
-        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
+        uizaIMAVideoInfo.setEntityId(entityId);
+
+        /*findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
@@ -81,7 +85,7 @@ public class UizaPlayerActivityV2 extends BaseActivity {
                     }
                 });
             }
-        });
+        });*/
     }
 
     private void init() {
@@ -101,28 +105,6 @@ public class UizaPlayerActivityV2 extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.uiza_player_activity;
-    }
-
-    private void getDetailEntity() {
-        //API v2
-        UizaService service = RestClientV2.createService(UizaService.class);
-        JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
-        jsonBodyGetDetailEntity.setId(entityId);
-
-        subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
-            @Override
-            public void onSuccess(GetDetailEntity getDetailEntityV2) {
-                LLog.d(TAG, "getDetailEntityV2 onSuccess " + LSApplication.getInstance().getGson().toJson(getDetailEntityV2));
-                init();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getDetailEntityV2 onFail " + e.toString());
-                handleException(e);
-            }
-        });
-        //EndAPI v2
     }
 
     @Override

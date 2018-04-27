@@ -128,7 +128,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void onCreate() {
-        inflate(getContext(), R.layout.uiza_ima_video_core_frm, this);
+        inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
         activity = ((BaseActivity) getContext());
         findViews();
         UizaUtil.resizeLayout(playerView, llMid);
