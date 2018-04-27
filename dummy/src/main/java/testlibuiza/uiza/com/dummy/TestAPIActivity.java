@@ -29,7 +29,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         findViewById(R.id.bt_get_token).setOnClickListener(this);
+        findViewById(R.id.bt_check_token).setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +55,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             case R.id.bt_get_token:
                 auth();
                 break;
+            case R.id.bt_check_token:
+                checkToken();
+                break;
         }
     }
 
@@ -61,8 +66,6 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void auth() {
-        LLog.d(TAG, ">>>>>>>>>auth");
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         UizaService service = RestClientV2.createService(UizaService.class);
         String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
         String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
@@ -75,6 +78,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(Auth auth) {
                 showTv(auth);
+                RestClientV2.addAuthorization(auth.getData().getToken());
             }
 
             @Override
@@ -85,4 +89,19 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
+    private void checkToken() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
+            @Override
+            public void onSuccess(Auth auth) {
+                showTv(auth);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "auth onFail " + e.getMessage());
+                handleException(e);
+            }
+        });
+    }
 }
