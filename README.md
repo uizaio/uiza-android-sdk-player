@@ -68,6 +68,7 @@ or
 
 **API doc**
 https://dev-web.uiza.io/api-reference/#create-output-storage
+
 This class help you know how to use all Uiza API, please refer to
 https://github.com/uizaio/uiza-android-sdk-player/blob/master/dummy/src/main/java/testlibuiza/uiza/com/dummy/TestAPIActivity.java
 
