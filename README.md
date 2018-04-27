@@ -88,7 +88,7 @@ https://github.com/uizaio/uiza-android-sdk-player/blob/master/dummy/src/main/jav
             setListener();  
         }  
     });  
-    uizaIMAVideo.setTitle("Dummy title");
+    uizaIMAVideo.setTitle("Add video title here");
 
 Dont forget to add in activity life cycle event:
 
@@ -266,3 +266,6 @@ All listener
             }  
         });  
     }
+
+**Support**
+Please feel free to contact me anytime: loitp@uiza.io
