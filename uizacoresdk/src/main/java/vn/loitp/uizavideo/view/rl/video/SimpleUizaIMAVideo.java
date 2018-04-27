@@ -20,6 +20,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.views.LToast;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -93,7 +94,8 @@ public class SimpleUizaIMAVideo extends RelativeLayout {
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         List<Subtitle> subtitleList = createDummySubtitle();
 
-        uizaPlayerManager = new UizaPlayerManager(playerView, null, null, null, null, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        LToast.show(getContext(), "todotodo");
+        /*uizaPlayerManager = new UizaPlayerManager(playerView, null, null, null, null, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, float duration, int percent) {
@@ -104,7 +106,7 @@ public class SimpleUizaIMAVideo extends RelativeLayout {
             public void onVideoProgress(float currentMls, float duration, int percent) {
                 LLog.d(TAG, "video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
-        });
+        });*/
     }
 
     public void onDestroy() {

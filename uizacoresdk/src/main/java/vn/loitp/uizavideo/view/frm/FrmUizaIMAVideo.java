@@ -190,7 +190,7 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         List<Subtitle> subtitleList = createDummySubtitle();
 
-        uizaPlayerManager = new UizaPlayerManager(playerView, debugTextView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(null, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override

@@ -16,7 +16,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,14 +55,14 @@ import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.views.LToast;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
-import vn.loitp.views.realtimeblurview.RealtimeBlurView;
-import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.views.LToast;
+import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
+import vn.loitp.views.realtimeblurview.RealtimeBlurView;
+import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -106,6 +105,26 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private int firstBrightness = Constants.NOT_FOUND;
 
+    public PlayerView getPlayerView() {
+        return playerView;
+    }
+
+    public TextView getDebugTextView() {
+        return debugTextView;
+    }
+
+    public AVLoadingIndicatorView getAvLoadingIndicatorView() {
+        return avLoadingIndicatorView;
+    }
+
+    public PreviewTimeBarLayout getPreviewTimeBarLayout() {
+        return previewTimeBarLayout;
+    }
+
+    public ImageView getIvThumbnail() {
+        return ivThumbnail;
+    }
+
     public void setEntityId(String entityId, Callback callback) {
         if (entityId == null || entityId.isEmpty()) {
             ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
@@ -137,10 +156,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
+
+            avLoadingIndicatorView.bringToFront();
         }
     }
 
-    private void removeVideoCover() {
+    public void removeVideoCover() {
         if (ivVideoCover != null && realtimeBlurView != null) {
             rootView.removeView(ivVideoCover);
             rootView.removeView(realtimeBlurView);
@@ -244,7 +265,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        uizaPlayerManager = new UizaPlayerManager(playerView, debugTextView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override

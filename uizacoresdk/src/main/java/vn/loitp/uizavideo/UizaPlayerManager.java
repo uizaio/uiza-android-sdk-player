@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.base.PreviewLoader;
@@ -62,7 +61,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -79,11 +77,12 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.uizavideo.glide.GlideApp;
 import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
+import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -93,16 +92,14 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
     private Gson gson = new Gson();//TODO remove later
     private Context context;
 
-    private DebugTextViewHelper debugViewHelper;
-
-    private PlayerView playerView;
-    private TextView debugTextView;
+    private UizaIMAVideo uizaIMAVideo;
+    private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
-    private AVLoadingIndicatorView avLoadingIndicatorView;
-    private SimpleExoPlayer player;
     private long contentPosition;
+
+    private SimpleExoPlayer player;
 
     private String userAgent;
     private String linkPlay;
@@ -133,10 +130,9 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         this.progressCallback = progressCallback;
     }
 
-    public UizaPlayerManager(PlayerView playerView, TextView debugTextView, AVLoadingIndicatorView avLoadingIndicatorView, PreviewTimeBarLayout previewTimeBarLayout, ImageView imageView, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
-        this.context = playerView.getContext();
-        this.playerView = playerView;
-        this.debugTextView = debugTextView;
+    public UizaPlayerManager(final UizaIMAVideo uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        this.context = uizaIMAVideo.getContext();
+        this.uizaIMAVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
@@ -144,7 +140,6 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
-        this.avLoadingIndicatorView = avLoadingIndicatorView;
         userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
@@ -158,7 +153,7 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (player != null) {
+                if (uizaIMAVideo.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
@@ -173,11 +168,13 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
                         }
                     } else {
                         if (progressCallback != null) {
-                            float mls = player.getCurrentPosition();
-                            float duration = player.getDuration();
-                            int percent = (int) (mls * 100 / duration);
-                            //LLog.d(TAG, "video progress: " + mls + "/" + duration + " -> " + percent + "%");
-                            progressCallback.onVideoProgress(mls, duration, percent);
+                            if (player != null) {
+                                float mls = player.getCurrentPosition();
+                                float duration = player.getDuration();
+                                int percent = (int) (mls * 100 / duration);
+                                //LLog.d(TAG, "video progress: " + mls + "/" + duration + " -> " + percent + "%");
+                                progressCallback.onVideoProgress(mls, duration, percent);
+                            }
                         }
                     }
                     if (handler != null && runnable != null) {
@@ -189,7 +186,7 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         handler.postDelayed(runnable, 0);
 
         //playerView.setControllerAutoShow(false);
-        playerView.setControllerShowTimeoutMs(0);
+        uizaIMAVideo.getPlayerView().setControllerShowTimeoutMs(0);
     }
 
     private DefaultTrackSelector trackSelector;
@@ -211,7 +208,7 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        playerView.setPlayer(player);
+        uizaIMAVideo.getPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -243,9 +240,9 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
             debugCallback.onUpdateButtonVisibilities();
         }
 
-        if (debugTextView != null) {
-            debugViewHelper = new DebugTextViewHelper(player, debugTextView);
-            debugViewHelper.start();
+        if (uizaIMAVideo.getDebugTextView() != null) {
+            debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideo.getDebugTextView());
+            debugTextViewHelper.start();
         }
     }
 
@@ -318,7 +315,7 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
                 mediaSource,
                 this,
                 adsLoader,
-                playerView.getOverlayFrameLayout(),
+                uizaIMAVideo.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -343,9 +340,9 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
 
             trackSelectionHelper = null;
 
-            if (debugViewHelper != null) {
-                debugViewHelper.stop();
-                debugViewHelper = null;
+            if (debugTextViewHelper != null) {
+                debugTextViewHelper.stop();
+                debugTextViewHelper = null;
             }
         }
     }
@@ -415,8 +412,8 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void hideProgress() {
-        if (avLoadingIndicatorView != null) {
-            avLoadingIndicatorView.hide();
+        if (uizaIMAVideo.getAvLoadingIndicatorView() != null) {
+            uizaIMAVideo.getAvLoadingIndicatorView().hide();
             LLog.d(TAG, "hideProgress !null");
         } else {
             LLog.d(TAG, "hideProgress null");
@@ -424,8 +421,8 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void showProgress() {
-        if (avLoadingIndicatorView != null) {
-            avLoadingIndicatorView.show();
+        if (uizaIMAVideo.getAvLoadingIndicatorView() != null) {
+            uizaIMAVideo.getAvLoadingIndicatorView().show();
             LLog.d(TAG, "showProgress !null");
         } else {
             LLog.d(TAG, "showProgress null");
@@ -574,6 +571,7 @@ import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             LLog.d(TAG, "onRenderedFirstFrame");
+            uizaIMAVideo.removeVideoCover();
         }
 
         @Override
