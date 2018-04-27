@@ -12,8 +12,10 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -46,6 +48,16 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_get_detail_entity).setOnClickListener(this);
         findViewById(R.id.bt_entity_ralation).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
+
+        //for track
+        findViewById(R.id.bt_track_1_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_2_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_3_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_4_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_5_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_6_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_7_dev).setOnClickListener(this);
+        findViewById(R.id.bt_track_8_dev).setOnClickListener(this);
     }
 
     @Override
@@ -65,6 +77,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        String json;
         switch (v.getId()) {
             case R.id.bt_get_token:
                 auth();
@@ -89,6 +102,38 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_get_link_play:
                 getLinkPlay();
+                break;
+            case R.id.bt_track_1_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"0\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"0\",\"event_type\":\"display\",\"timestamp\":\"2018-01-12T05:57:55.735Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_2_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"0\",\"event_type\":\"plays_requested\",\"timestamp\":\"2018-01-12T05:57:56.546Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_3_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"0\",\"event_type\":\"video_starts\",\"timestamp\":\"2018-01-12T05:58:14.563Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_4_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"25\",\"event_type\":\"play_through\",\"timestamp\":\"2018-01-12T05:58:17.817Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_5_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"50\",\"event_type\":\"play_through\",\"timestamp\":\"2018-01-12T05:58:17.816Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_6_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"75\",\"event_type\":\"play_through\",\"timestamp\":\"2018-01-12T05:58:17.815Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_7_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"100\",\"event_type\":\"play_through\",\"timestamp\":\"2018-01-12T05:58:17.815Z\"}";
+                init(create(json));
+                break;
+            case R.id.bt_track_8_dev:
+                json = "{\"app_id\":\"a204e9cdeca44948a33e0d012ef74e90\",\"page_type\":\"iframe\",\"viewer_user_id\":\"\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36\",\"referrer\":\"\",\"device_id\":\"5cb442458ae4cca6ceda2f541c718cd8\",\"player_id\":\"658347e9-e516-4f7d-b4f2-02b23e640724\",\"player_name\":\"DuyQT's Player\",\"player_version\":\"1.0.4\",\"entity_id\":\"513c49db-7b91-4485-949e-80bd0c57d189\",\"entity_name\":\"20170406_031552000_iOS\",\"entity_series\":\"\",\"entity_producer\":\"\",\"entity_content_type\":\"video\",\"entity_language_code\":\"\",\"entity_variant_name\":\"\",\"entity_variant_id\":\"\",\"entity_duration\":\"35\",\"entity_stream_type\":\"on-demand\",\"entity_encoding_variant\":\"\",\"entity_cdn\":\"\",\"play_through\":\"0\",\"event_type\":\"replay\",\"timestamp\":\"2018-01-12T05:58:17.834Z\"}";
+                init(create(json));
                 break;
         }
     }
@@ -253,6 +298,31 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 }
                 LLog.d(TAG, "getLinkPlayV2 toJson: " + LSApplication.getInstance().getGson().toJson(listLinkPlay));
                 showTv(listLinkPlay);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                handleException(e);
+            }
+        });
+    }
+
+    //for track
+    private UizaTracking create(String json) {
+        return LSApplication.getInstance().getGson().fromJson(json, UizaTracking.class);
+    }
+
+    private String s;
+
+    public void init(final UizaTracking uizaTracking) {
+        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        s = LSApplication.getInstance().getGson().toJson(uizaTracking);
+        UizaService service = RestClientTracking.createService(UizaService.class);
+        subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object tracking) {
+                s += "\n\n\n->>>>>>\n\n\n" + LSApplication.getInstance().getGson().toJson(tracking);
+                tv.setText(s);
             }
 
             @Override

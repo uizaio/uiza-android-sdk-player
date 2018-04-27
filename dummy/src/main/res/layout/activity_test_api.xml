@@ -123,6 +123,73 @@
                     android:text="Get link streaming" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tracking" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/bt_track_1_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Display" />
+
+                    <Button
+                        android:id="@+id/bt_track_2_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Play requested" />
+
+                    <Button
+                        android:id="@+id/bt_track_3_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Video starts" />
+
+                    <Button
+                        android:id="@+id/bt_track_4_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Play throught 25" />
+
+                    <Button
+                        android:id="@+id/bt_track_5_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Play throught 50" />
+
+                    <Button
+                        android:id="@+id/bt_track_6_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Play throught 75" />
+
+                    <Button
+                        android:id="@+id/bt_track_7_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Play throught 100" />
+
+                    <Button
+                        android:id="@+id/bt_track_8_dev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Replay" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
         </LinearLayout>
     </ScrollView>
 

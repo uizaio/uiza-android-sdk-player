@@ -110,7 +110,7 @@ public interface UizaService {
 
     //=====================================================tracking
     //@Headers("Content-Type: application/json")
-    @POST("v1/tracking/mobile")
+    @POST("/analytic-tracking/v1/tracking/mobile")
     Observable<Object> track(@Body UizaTracking uizaTracking);
     //end =====================================================tracking
 }
