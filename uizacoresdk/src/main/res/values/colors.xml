@@ -39,4 +39,31 @@
     <color name="pdlg_color_blue">#1976D2</color>
     <color name="pdlg_color_black">#212121</color>
 
+    <color name="black_85">#D9000000</color>
+
+    <color name="grey">#818181</color>
+    <color name="grey_description">#eeeeee</color>
+    <color name="white">#ffffff</color>
+    <color name="black_2">#05000000</color>
+
+    <color name="df_buffered_color">#55ffffff</color>
+    <color name="df_played_color">#097cff</color>
+    <color name="df_scrubber_color">#ffffff</color>
+    <color name="df_unplayed_color">#33ffffff</color>
+    <color name="WhiteTrans">#55FFFFFF</color>
+    <color name="WhiteTrans99">#99FFFFFF</color>
+    <color name="DeepPink">#FF1493</color>
+    <color name="bottom_press_icon">#b41482</color>
+    <color name="Red">#FF0000</color>
+    <color name="DimGray">#696969</color>
+    <color name="Blue">#0000FF</color>
+
+    <color name="alarm_title_active">#444444</color>
+    <color name="alarm_title_outdated">#888888</color>
+    <color name="alarm_details">#888888</color>
+
+    <color name="default_background_label">#ff303030</color>
+    <color name="info_video_gray">#999999</color>
+    <color name="info_video_description">#888888</color>
+    <color name="fbutton_color_wet_asphalt">#34495e</color>
 </resources>

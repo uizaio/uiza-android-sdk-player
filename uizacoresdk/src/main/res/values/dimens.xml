@@ -69,4 +69,6 @@
     <dimen name="w_15">15dp</dimen>
     <dimen name="w_200">200dp</dimen>
     <dimen name="padding_30">30dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
+    <dimen name="size_icon">40dp</dimen>
 </resources>

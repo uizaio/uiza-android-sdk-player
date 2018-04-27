@@ -31,4 +31,7 @@
     <string name="no_data">Không có dữ liệu</string>
     <string name="err_list_relation_null">listAllEntityRelation == null -> should init related list before by using UizaData.putToListAllEntityRelation()</string>
     <string name="search">Tìm kiếm</string>
+    <string name="starring">Starring:</string>
+    <string name="director">Director:</string>
+    <string name="genres">Genres:</string>
 </resources>

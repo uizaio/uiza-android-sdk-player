@@ -6,19 +6,29 @@ package vn.loitp.views.uizavideo.view.rl;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -29,6 +39,23 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private Activity activity;
     private Gson gson = new Gson();//TODO remove
     private String entityId;
+    private AVLoadingIndicatorView avLoadingIndicatorView;
+    private TextView tvVideoName;
+    private TextView tvVideoTime;
+    private TextView tvVideoRate;
+    private TextView tvVideoDescription;
+    private TextView tvVideoStarring;
+    private TextView tvVideoDirector;
+    private TextView tvVideoGenres;
+    private TextView tvDebug;
+    private TextView tvMoreLikeThisMsg;
+
+    private Item mItem;
+
+    //private NestedScrollView nestedScrollView;
+    private List<Item> itemList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ItemAdapterV2 mAdapter;
 
     public void setEntityId(String entityId) {
         this.entityId = entityId;
@@ -63,7 +90,43 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void findViews() {
-        //llMid = (RelativeLayout) findViewById(R.id.ll_mid);
+        //nestedScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view);
+        //nestedScrollView.setNestedScrollingEnabled(false);
+        avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        avLoadingIndicatorView.smoothToShow();
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        tvVideoName = (TextView) findViewById(R.id.tv_video_name);
+        tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
+        tvVideoRate = (TextView) findViewById(R.id.tv_video_rate);
+        tvVideoDescription = (TextView) findViewById(R.id.tv_video_description);
+        tvVideoStarring = (TextView) findViewById(R.id.tv_video_starring);
+        tvVideoDirector = (TextView) findViewById(R.id.tv_video_director);
+        tvVideoGenres = (TextView) findViewById(R.id.tv_video_genres);
+        tvDebug = (TextView) findViewById(R.id.tv_debug);
+        tvMoreLikeThisMsg = (TextView) findViewById(R.id.tv_more_like_this_msg);
+
+        int sizeW = LDisplayUtils.getScreenW(activity) / 2;
+        int sizeH = sizeW * 9 / 16;
+        mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
+            @Override
+            public void onClick(Item item, int position) {
+                LLog.d(TAG, "onClick " + position);
+            }
+
+            @Override
+            public void onLoadMore() {
+                loadMore();
+            }
+        });
+
+        recyclerView.setNestedScrollingEnabled(false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        setup();
+        LLog.d(TAG, "setup finish");
     }
 
     private void getDetailEntity() {
@@ -85,5 +148,92 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             }
         });
         //EndAPI v2
+    }
+
+    private void setup() {
+        LLog.d(TAG, "setup");
+    }
+
+    private void updateUI() {
+        final String emptyS = "Empty string";
+        final String nullS = "Data is null";
+        try {
+            tvVideoName.setText(mItem.getName());
+        } catch (NullPointerException e) {
+            tvVideoName.setText(nullS);
+        }
+        //TODO
+        tvVideoTime.setText("Dummy Time");
+        //TODO
+        tvVideoRate.setText("Dummy 18+");
+
+        try {
+            tvVideoDescription.setText(mItem.getDescription().isEmpty() ? mItem.getShortDescription().isEmpty() ? emptyS : mItem.getShortDescription() : mItem.getDescription());
+        } catch (NullPointerException e) {
+            tvVideoDescription.setText(nullS);
+        }
+
+        //TODO
+        tvVideoStarring.setText("Dummy starring");
+
+        if (mItem.getExtendData() == null || mItem.getExtendData().getDirector() == null) {
+            tvVideoDirector.setText(nullS);
+        } else {
+            tvVideoDirector.setText(mItem.getExtendData().getDirector());
+        }
+
+        //TODO
+        tvVideoGenres.setText(emptyS);
+
+        //get more like this video
+        //getListAllEntityRelation();
+    }
+
+    /*private void getListAllEntityRelation() {
+        LLog.d(TAG, "getListAllEntityRelation");
+        if (mInputModel == null) {
+            LLog.d(TAG, "mInputModel == null");
+            return;
+        }
+        UizaService service = RestClientV2.createService(UizaService.class);
+        final String entityId = mInputModel.getEntityID();
+        LLog.d(TAG, "entityId: " + entityId);
+
+        JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
+        jsonBodyListAllEntityRelation.setId(entityId);
+
+        subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
+            @Override
+            public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
+                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + ((UizaPlayerActivityV2) getActivity()).getGson().toJson(listAllEntityRelation));
+                if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
+                    tvMoreLikeThisMsg.setText(R.string.no_data);
+                    tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
+                } else {
+                    tvMoreLikeThisMsg.setVisibility(View.GONE);
+                    setupUIMoreLikeThis(listAllEntityRelation.getItemList());
+                }
+                UizaData.getInstance().putToListAllEntityRelation(entityId, listAllEntityRelation);
+                avLoadingIndicatorView.smoothToHide();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
+                handleException(e);
+                avLoadingIndicatorView.smoothToHide();
+            }
+        });
+    }*/
+
+    private void setupUIMoreLikeThis(List<Item> itemList) {
+        LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
+        this.itemList.addAll(itemList);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void loadMore() {
+        //TODO
+        LLog.d(TAG, "loadMore");
     }
 }
