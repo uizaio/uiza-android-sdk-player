@@ -19,27 +19,17 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import uiza.app.LSApplication;
 import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
@@ -62,19 +52,23 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
         entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
         entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
+
+        if (entityId == null || entityId.isEmpty()) {
+            showDialogError("entityId == null || entityId.isEmpty()");
+            return;
+        }
+
+        LLog.d(TAG, "entityId " + entityId);
+        LLog.d(TAG, "entityCover " + entityCover);
+        LLog.d(TAG, "entityTitle " + entityTitle);
+
         uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
             @Override
             public void isInitResult(boolean isInitSuccess) {
                 setListener();
             }
         });
-        LLog.d(TAG, "entityId " + entityId);
-        LLog.d(TAG, "entityCover " + entityCover);
-        LLog.d(TAG, "entityTitle " + entityTitle);
-        if (entityId == null || entityId.isEmpty()) {
-            showDialogError("entityId == null || entityId.isEmpty()");
-            return;
-        }
+        uizaIMAVideo.setTitle("ABC");
         getDetailEntity();
 
         findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
@@ -129,16 +123,6 @@ public class UizaPlayerActivityV2 extends BaseActivity {
             }
         });
         //EndAPI v2
-    }
-
-    public void playOnClickItem(Item item, int position) {
-        LLog.d(TAG, "onClick " + position);
-        Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
-        intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
-        intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
-        intent.putExtra(KEY_UIZA_ENTITY_TITLE, item.getName());
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 
     @Override

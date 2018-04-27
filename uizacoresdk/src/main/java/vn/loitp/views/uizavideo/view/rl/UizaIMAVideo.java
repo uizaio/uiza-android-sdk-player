@@ -129,7 +129,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         activity = ((BaseActivity) getContext());
         findViews();
         UizaUtil.resizeLayout(playerView, llMid);
-        initUI();
     }
 
     private void findViews() {
@@ -335,12 +334,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaUtil.resizeLayout(playerView, llMid);
     }
 
-    public void initUI() {
-        String title = "Dummy Video";
-        updateUIPlayController(title);
-    }
-
-    private void updateUIPlayController(String title) {
+    public void setTitle(String title) {
         tvTitle.setText(title);
         LUIUtil.setTextShadow(tvTitle);
     }
@@ -486,12 +480,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
 
                 String linkPlay = listLinkPlay.get(0);
-                String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-                String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+                //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
 
                 //String linkPlay = activity.getString(loitp.core.R.string.url_dash);
-                //String urlIMAAd = null;
-                //String urlThumnailsPreviewSeekbar = null;
+                String urlIMAAd = null;
+                String urlThumnailsPreviewSeekbar = null;
 
                 initData(linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, createDummySubtitle());
                 onResume();
