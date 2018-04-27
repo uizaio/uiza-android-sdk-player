@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.rl;
+package vn.loitp.views.uizavideo.view.rl.video;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -55,6 +55,7 @@ import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
+import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 import vn.loitp.views.uizavideo.UizaPlayerManager;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
@@ -80,7 +81,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private PreviewTimeBar previewTimeBar;
     private ImageButton exoFullscreenIcon;
     private ImageView ivThumbnail;
-    private ProgressBar progressBar;
+    private AVLoadingIndicatorView avLoadingIndicatorView;
     private TextView tvTitle;
     private ImageButton exoBackScreen;
     private ImageButton exoVolume;
@@ -144,8 +145,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void findViews() {
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(progressBar.getContext(), R.color.White));
+        avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
         playerView = findViewById(R.id.player_view);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
@@ -200,7 +200,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        uizaPlayerManager = new UizaPlayerManager(playerView, progressBar, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uizaPlayerManager = new UizaPlayerManager(playerView, avLoadingIndicatorView, previewTimeBarLayout, ivThumbnail, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override

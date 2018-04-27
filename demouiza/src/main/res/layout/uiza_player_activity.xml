@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor">
 
-    <vn.loitp.views.uizavideo.view.rl.UizaIMAVideo
+    <vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <vn.loitp.views.uizavideo.view.rl.UizaIMAVideoInfo
+    <vn.loitp.views.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo
         android:id="@+id/uiza_video_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

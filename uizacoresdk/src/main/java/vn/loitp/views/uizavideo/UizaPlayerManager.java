@@ -23,7 +23,6 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.base.PreviewLoader;
@@ -79,6 +78,7 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.views.uizavideo.glide.GlideApp;
 import vn.loitp.views.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
@@ -95,7 +95,7 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
-    private ProgressBar progressBar;
+    private AVLoadingIndicatorView avLoadingIndicatorView;
     private SimpleExoPlayer player;
     private long contentPosition;
 
@@ -128,7 +128,7 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
         this.progressCallback = progressCallback;
     }
 
-    public UizaPlayerManager(PlayerView playerView, ProgressBar progressBar, PreviewTimeBarLayout previewTimeBarLayout, ImageView imageView, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public UizaPlayerManager(PlayerView playerView, AVLoadingIndicatorView avLoadingIndicatorView, PreviewTimeBarLayout previewTimeBarLayout, ImageView imageView, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = playerView.getContext();
         this.playerView = playerView;
         this.linkPlay = linkPlay;
@@ -138,7 +138,7 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
-        this.progressBar = progressBar;
+        this.avLoadingIndicatorView = avLoadingIndicatorView;
         userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
@@ -399,8 +399,8 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void hideProgress() {
-        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
-            progressBar.setVisibility(View.GONE);
+        if (avLoadingIndicatorView != null && avLoadingIndicatorView.isShown()) {
+            avLoadingIndicatorView.smoothToHide();
             LLog.d(TAG, "hideProgress !null");
         } else {
             LLog.d(TAG, "hideProgress null");
@@ -408,8 +408,8 @@ import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
     }
 
     private void showProgress() {
-        if (progressBar != null && progressBar.getVisibility() != View.VISIBLE) {
-            progressBar.setVisibility(View.VISIBLE);
+        if (avLoadingIndicatorView != null && !avLoadingIndicatorView.isShown()) {
+            avLoadingIndicatorView.smoothToShow();
             LLog.d(TAG, "showProgress !null");
         } else {
             LLog.d(TAG, "showProgress null");

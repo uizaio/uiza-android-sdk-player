@@ -29,7 +29,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
+import vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity {
     private UizaIMAVideo uizaIMAVideo;

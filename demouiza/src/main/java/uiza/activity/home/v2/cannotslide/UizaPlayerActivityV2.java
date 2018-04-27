@@ -3,7 +3,6 @@ package uiza.activity.home.v2.cannotslide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Surface;
-import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -22,21 +21,15 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.List;
 
-import uiza.app.LSApplication;
 import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.view.rl.ItemAdapterV2;
-import vn.loitp.views.uizavideo.view.rl.UizaIMAVideo;
-import vn.loitp.views.uizavideo.view.rl.UizaIMAVideoInfo;
+import vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.views.uizavideo.view.rl.videoinfo.ItemAdapterV2;
+import vn.loitp.views.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
