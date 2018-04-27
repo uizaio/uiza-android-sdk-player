@@ -22,7 +22,9 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testAPI();
+                Intent intent = new Intent(activity, TestAPIActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_video).setOnClickListener(new View.OnClickListener() {
@@ -59,24 +61,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_main;
-    }
-
-    private void testAPI() {
-        RestClient.init("https://api.stackexchange.com");
-        //RestClient.init("https://api.stackexchange.com", "token");
-        APIServices service = RestClient.createService(APIServices.class);
-        subscribe(service.test(), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                LLog.d(TAG, "testAPI onSuccess " + LSApplication.getInstance().getGson().toJson(result));
-                LToast.show(activity, LSApplication.getInstance().getGson().toJson(result));
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                handleException(e);
-            }
-        });
     }
 
     private void uizaVideo() {
