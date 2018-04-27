@@ -54,6 +54,23 @@
                     android:text="List metadata" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/bt_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search with key /lol/" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

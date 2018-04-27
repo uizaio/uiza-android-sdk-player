@@ -1,28 +1,23 @@
 package testlibuiza.uiza.com.dummy;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import testlibuiza.uiza.com.dummy.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.dummy.APIServices;
-import vn.loitp.restapi.restclient.RestClient;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
+import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
+import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
-import vn.loitp.views.uizavideo.view.floatview.FloatingUizaVideoService;
 
 public class TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
@@ -35,6 +30,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_get_token).setOnClickListener(this);
         findViewById(R.id.bt_check_token).setOnClickListener(this);
         findViewById(R.id.bt_list_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_search).setOnClickListener(this);
     }
 
     @Override
@@ -63,6 +59,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_list_metadata:
                 listMetadata();
+                break;
+            case R.id.bt_search:
+                search();
                 break;
         }
     }
@@ -129,6 +128,26 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
+                handleException(e);
+            }
+        });
+    }
+
+    private void search() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        JsonBodySearch jsonBodySearch = new JsonBodySearch();
+        jsonBodySearch.setKeyword("lol");
+        jsonBodySearch.setLimit(50);
+        jsonBodySearch.setPage(0);
+
+        subscribe(service.searchEntityV2(jsonBodySearch), new ApiSubscriber<Search>() {
+            @Override
+            public void onSuccess(Search search) {
+                showTv(search);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
                 handleException(e);
             }
         });
