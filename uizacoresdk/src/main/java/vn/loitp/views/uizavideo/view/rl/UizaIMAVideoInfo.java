@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
+import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
@@ -52,7 +55,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     private Item mItem;
 
-    //private NestedScrollView nestedScrollView;
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ItemAdapterV2 mAdapter;
@@ -139,6 +141,8 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntityV2) {
                 LLog.d(TAG, "getDetailEntityV2 onSuccess " + gson.toJson(getDetailEntityV2));
+                mItem = getDetailEntityV2.getData().get(0);
+                updateUI();
             }
 
             @Override
@@ -186,26 +190,22 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         tvVideoGenres.setText(emptyS);
 
         //get more like this video
-        //getListAllEntityRelation();
+        getListAllEntityRelation();
     }
 
-    /*private void getListAllEntityRelation() {
+    private void getListAllEntityRelation() {
         LLog.d(TAG, "getListAllEntityRelation");
-        if (mInputModel == null) {
-            LLog.d(TAG, "mInputModel == null");
-            return;
-        }
+
         UizaService service = RestClientV2.createService(UizaService.class);
-        final String entityId = mInputModel.getEntityID();
         LLog.d(TAG, "entityId: " + entityId);
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
         jsonBodyListAllEntityRelation.setId(entityId);
 
-        subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
+        ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
             public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
-                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + ((UizaPlayerActivityV2) getActivity()).getGson().toJson(listAllEntityRelation));
+                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
                 if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
                     tvMoreLikeThisMsg.setText(R.string.no_data);
                     tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
@@ -213,18 +213,17 @@ public class UizaIMAVideoInfo extends RelativeLayout {
                     tvMoreLikeThisMsg.setVisibility(View.GONE);
                     setupUIMoreLikeThis(listAllEntityRelation.getItemList());
                 }
-                UizaData.getInstance().putToListAllEntityRelation(entityId, listAllEntityRelation);
                 avLoadingIndicatorView.smoothToHide();
             }
 
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                handleException(e);
+                ((BaseActivity) activity).handleException(e);
                 avLoadingIndicatorView.smoothToHide();
             }
         });
-    }*/
+    }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {
         LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());

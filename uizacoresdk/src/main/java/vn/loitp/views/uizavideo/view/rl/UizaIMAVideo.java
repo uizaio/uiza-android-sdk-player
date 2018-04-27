@@ -96,7 +96,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ImageView ivBirghtnessSeekbar;
 
     private LinearLayout debugRootView;
-    private int firstBrightness;
+    private int firstBrightness = Constants.NOT_FOUND;
 
     public void setEntityId(String entityId, Callback callback) {
         this.entityId = entityId;
@@ -240,7 +240,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onDestroy() {
-        LScreenUtil.setBrightness(getContext(), firstBrightness);
+        if (firstBrightness != Constants.NOT_FOUND) {
+            LScreenUtil.setBrightness(getContext(), firstBrightness);
+        }
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
