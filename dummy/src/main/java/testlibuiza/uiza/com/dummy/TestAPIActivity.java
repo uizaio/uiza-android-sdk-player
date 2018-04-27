@@ -12,12 +12,13 @@ import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
+import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.views.LToast;
 
 public class TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
@@ -31,6 +32,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.bt_check_token).setOnClickListener(this);
         findViewById(R.id.bt_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_search).setOnClickListener(this);
+        findViewById(R.id.bt_list_entity).setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +64,9 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_search:
                 search();
+                break;
+            case R.id.bt_list_entity:
+                listEntity();
                 break;
         }
     }
@@ -144,6 +149,27 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(Search search) {
                 showTv(search);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                handleException(e);
+            }
+        });
+    }
+
+    private void listEntity() {
+        UizaService service = RestClientV2.createService(UizaService.class);
+        JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
+        //jsonBodyListAllEntity.setMetadataId(metadataId);
+        jsonBodyListAllEntity.setLimit(50);
+        jsonBodyListAllEntity.setPage(0);
+        jsonBodyListAllEntity.setOrderBy("createdAt");
+        jsonBodyListAllEntity.setOrderType("DESC");
+        subscribe(service.listAllEntityV2(jsonBodyListAllEntity), new ApiSubscriber<ListAllEntity>() {
+            @Override
+            public void onSuccess(ListAllEntity listAllEntity) {
+                showTv(listAllEntity);
             }
 
             @Override

@@ -71,6 +71,23 @@
                     android:text="Search with key /lol/" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entity" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/bt_list_entity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="List Entity" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
