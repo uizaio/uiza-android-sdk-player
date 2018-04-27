@@ -116,8 +116,8 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, ">>>>>>>>>auth");
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
-        String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+        String accessKeyId = "xxx";
+        String secretKeyId = "xxx";
 
         JsonBodyAuth jsonBodyAuth = new JsonBodyAuth();
         jsonBodyAuth.setAccessKeyId(accessKeyId);
