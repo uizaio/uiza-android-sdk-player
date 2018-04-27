@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void handleException(Throwable throwable) {
+    public void handleException(Throwable throwable) {
         //LLog.e("handleException", throwable.toString());
         if (throwable != null) {
             showDialogError(throwable.getMessage());
@@ -224,11 +224,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }*/
 
-    protected void showDialogOne(String msg) {
+    public void showDialogOne(String msg) {
         showDialogOne(msg, false);
     }
 
-    protected void showDialogOne(String msg, final boolean isExit) {
+    public void showDialogOne(String msg, final boolean isExit) {
         LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
@@ -239,7 +239,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    protected void showDialogError(String msg) {
+    public void showDialogError(String msg) {
         LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
@@ -248,7 +248,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
-    protected void showDialogMsg(String errMsg) {
+    public void showDialogMsg(String errMsg) {
         LDialogUtil.showDialog1(activity, getString(R.string.app_name), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

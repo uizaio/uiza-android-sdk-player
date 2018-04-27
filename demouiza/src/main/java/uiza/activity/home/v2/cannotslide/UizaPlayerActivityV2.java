@@ -61,6 +61,12 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
         entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
         entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
+        uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
+            @Override
+            public void isInitResult(boolean isInitSuccess) {
+                setListener();
+            }
+        });
         LLog.d(TAG, "entityId " + entityId);
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
@@ -68,48 +74,11 @@ public class UizaPlayerActivityV2 extends BaseActivity {
             showDialogError("entityId == null || entityId.isEmpty()");
             return;
         }
-        getLinkPlay();
-    }
-
-    private List<Subtitle> createDummySubtitle() {
-        String json = "[\n" +
-                "                {\n" +
-                "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_en_1522812430080.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"en\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"id\": \"271787a0-5d23-4a35-a10a-5c43fdcb71a8\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"vi\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                }\n" +
-                "            ]";
-        Subtitle[] subtitles = LSApplication.getInstance().getGson().fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + LSApplication.getInstance().getGson().toJson(subtitles));
-        List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + LSApplication.getInstance().getGson().toJson(subtitleList));
-        return subtitleList;
+        getDetailEntity();
     }
 
     private void init() {
         LLog.d(TAG, "init");
-        String linkPlay = getString(loitp.core.R.string.url_dash);
-        String urlIMAAd = getString(loitp.core.R.string.ad_tag_url);
-        //String urlIMAAd = null;
-        String urlThumnailsPreviewSeekbar = getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
-        uizaIMAVideo.initData(linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, createDummySubtitle());
-        uizaIMAVideo.onResume();
-        setListener();
     }
 
     @Override
@@ -126,95 +95,6 @@ public class UizaPlayerActivityV2 extends BaseActivity {
     protected int setLayoutResourceId() {
         return R.layout.uiza_player_activity;
     }
-
-    private void getLinkPlay() {
-        UizaService service = RestClientV2.createService(UizaService.class);
-        Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
-        if (auth == null || auth.getData().getAppId() == null) {
-            showDialogError("Error auth == null || auth.getAppId() == null");
-            return;
-        }
-        String appId = auth.getData().getAppId();
-        //API v2
-        subscribe(service.getLinkPlayV2(entityId, appId), new ApiSubscriber<GetLinkPlay>() {
-            @Override
-            public void onSuccess(GetLinkPlay getLinkPlay) {
-                List<String> listLinkPlay = new ArrayList<>();
-                List<Mpd> mpdList = getLinkPlay.getMpd();
-                for (Mpd mpd : mpdList) {
-                    if (mpd.getUrl() != null) {
-                        listLinkPlay.add(mpd.getUrl());
-                    }
-                }
-                LLog.d(TAG, "getLinkPlayV2 toJson: " + LSApplication.getInstance().getGson().toJson(listLinkPlay));
-                if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    LLog.d(TAG, "listLinkPlay == null || listLinkPlay.isEmpty()");
-                    showDialogOne(getString(R.string.has_no_linkplay), true);
-                    return;
-                }
-                getDetailEntity();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.d(TAG, "onFail getLinkDownloadV2: " + e.toString());
-                handleException(e);
-            }
-        });
-        //End API v2
-    }
-
-    /*private void getLinkDownload() {
-        LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
-        UizaService service = RestClientV2.createService(UizaService.class);
-        Auth auth = LPref.getAuth(activity, gson);
-        if (auth == null || auth.getData().getAppId() == null) {
-            showDialogError("Error auth == null || auth.getAppId() == null");
-            return;
-        }
-        LLog.d(TAG, ">>>getLinkDownload appId: " + auth.getData().getAppId());
-
-        JsonBodyGetLinkDownload jsonBodyGetLinkDownload = new JsonBodyGetLinkDownload();
-        List<String> listEntityIds = new ArrayList<>();
-        listEntityIds.add(inputModel.getEntityID());
-        jsonBodyGetLinkDownload.setListEntityIds(listEntityIds);
-
-        //API v2
-        subscribe(service.getLinkDownloadV2(jsonBodyGetLinkDownload), new ApiSubscriber<GetLinkDownload>() {
-            @Override
-            public void onSuccess(GetLinkDownload getLinkDownload) {
-                LLog.d(TAG, "getLinkDownloadV2 onSuccess " + gson.toJson(getLinkDownload));
-                //UizaData.getInstance().setLinkPlay("http://demos.webmproject.org/dash/201410/vp9_glass/manifest_vp9_opus.mpd");
-                //UizaData.getInstance().setLinkPlay("http://dev-preview.uiza.io/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJVSVpBIiwiYXVkIjoidWl6YS5pbyIsImlhdCI6MTUxNjMzMjU0NSwiZXhwIjoxNTE2NDE4OTQ1LCJlbnRpdHlfaWQiOiIzYWUwOWJhNC1jMmJmLTQ3MjQtYWRmNC03OThmMGFkZDY1MjAiLCJlbnRpdHlfbmFtZSI6InRydW5nbnQwMV8xMiIsImVudGl0eV9zdHJlYW1fdHlwZSI6InZvZCIsImFwcF9pZCI6ImEyMDRlOWNkZWNhNDQ5NDhhMzNlMGQwMTJlZjc0ZTkwIiwic3ViIjoiYTIwNGU5Y2RlY2E0NDk0OGEzM2UwZDAxMmVmNzRlOTAifQ.ktZsaoGA3Dp4J1cGR00bt4UIiMtcsjxgzJWSTnxnxKk/a204e9cdeca44948a33e0d012ef74e90-data/transcode-output/unzKBIUm/package/playlist.mpd");
-
-                List<String> listLinkPlay = new ArrayList<>();
-                List<Mpd> mpdList = getLinkDownload.getData().get(0).getMpd();
-                for (Mpd mpd : mpdList) {
-                    if (mpd.getUrl() != null) {
-                        listLinkPlay.add(mpd.getUrl());
-                    }
-                }
-                LLog.d(TAG, "getLinkDownloadV2 toJson: " + gson.toJson(listLinkPlay));
-
-                if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    LLog.d(TAG, "listLinkPlay == null || listLinkPlay.isEmpty()");
-                    showDialogOne(getString(R.string.has_no_linkplay), true);
-                    return;
-                }
-
-                UizaData.getInstance().setLinkPlay(listLinkPlay);
-                isGetLinkPlayDone = true;
-                init();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.d(TAG, "onFail getLinkDownloadV2: " + e.toString());
-                handleException(e);
-            }
-        });
-        //End API v2
-    }*/
 
     private void getDetailEntity() {
         //API v2
@@ -237,8 +117,6 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         });
         //EndAPI v2
     }
-
-    ;
 
     public void playOnClickItem(Item item, int position) {
         LLog.d(TAG, "onClick " + position);
