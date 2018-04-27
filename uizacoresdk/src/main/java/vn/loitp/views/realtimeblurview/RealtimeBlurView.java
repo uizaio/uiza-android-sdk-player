@@ -53,6 +53,13 @@ public class RealtimeBlurView extends View {
     private boolean mDifferentRoot;
     private static int RENDERING_COUNT;
 
+    public RealtimeBlurView(Context context, int mBlurRadius, int mOverlayColor) {
+        super(context);
+        this.mBlurRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mBlurRadius, context.getResources().getDisplayMetrics());
+        this.mDownsampleFactor = 4;
+        this.mOverlayColor = mOverlayColor;
+    }
+
     public RealtimeBlurView(Context context, AttributeSet attrs) {
         super(context, attrs);
 

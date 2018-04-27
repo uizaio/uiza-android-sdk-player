@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.glide;
+package vn.loitp.uizavideo.glide;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

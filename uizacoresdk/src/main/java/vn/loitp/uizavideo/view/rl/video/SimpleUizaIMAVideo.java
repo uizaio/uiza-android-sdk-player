@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.rl.video;
+package vn.loitp.uizavideo.view.rl.video;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -18,8 +18,8 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.loitp.views.uizavideo.UizaPlayerManager;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.UizaPlayerManager;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.

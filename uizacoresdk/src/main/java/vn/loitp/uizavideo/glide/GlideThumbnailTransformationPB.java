@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package vn.loitp.views.uizavideo.glide;
+package vn.loitp.uizavideo.glide;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;

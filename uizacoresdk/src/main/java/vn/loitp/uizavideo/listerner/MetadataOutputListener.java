@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.listerner;
+package vn.loitp.uizavideo.listerner;
 
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;

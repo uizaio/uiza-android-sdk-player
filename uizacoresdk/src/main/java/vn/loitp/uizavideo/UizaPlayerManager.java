@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.views.uizavideo;
+package vn.loitp.uizavideo;
 
 import android.content.Context;
 import android.net.Uri;
@@ -80,10 +80,10 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
-import vn.loitp.views.uizavideo.glide.GlideApp;
-import vn.loitp.views.uizavideo.glide.GlideThumbnailTransformationPB;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.listerner.VideoAdPlayerListerner;
+import vn.loitp.uizavideo.glide.GlideApp;
+import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.

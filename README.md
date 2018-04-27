@@ -75,7 +75,7 @@ https://github.com/uizaio/uiza-android-sdk-player/blob/master/dummy/src/main/jav
 # How to play the video?:
 **XML**
 
-    <vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo  
+    <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo  
       android:id="@id/uiza_video"  
       android:layout_width="match_parent"  
       android:layout_height="wrap_content" />

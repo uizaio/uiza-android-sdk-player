@@ -26,10 +26,10 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.views.LToast;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.views.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.views.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
+import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;

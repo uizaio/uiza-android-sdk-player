@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.rl.video;
+package vn.loitp.uizavideo.view.rl.video;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -14,7 +14,9 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +31,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,6 +43,7 @@ import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -56,11 +58,12 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
+import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
-import vn.loitp.views.uizavideo.UizaPlayerManager;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.view.floatview.FloatingUizaVideoService;
-import vn.loitp.views.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideo.UizaPlayerManager;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -72,6 +75,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private String entityId;
 
     private Gson gson = new Gson();//TODO remove
+    private RelativeLayout rootView;
     private PlayerView playerView;
     private UizaPlayerManager uizaPlayerManager;
 
@@ -112,7 +116,37 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
+        setVideoCover();
         getLinkPlay();
+    }
+
+    private ImageView ivVideoCover;
+    private RealtimeBlurView realtimeBlurView;
+
+    private void setVideoCover() {
+        if (ivVideoCover == null && realtimeBlurView == null) {
+            realtimeBlurView = new RealtimeBlurView(activity, 15, ContextCompat.getColor(activity, R.color.black_35));
+            ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            realtimeBlurView.setLayoutParams(layoutParamsBlur);
+
+            ivVideoCover = new ImageView(activity);
+            ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            ivVideoCover.setLayoutParams(layoutParamsIv);
+            LImageUtil.load(activity, "http://images6.fanpop.com/image/photos/40200000/-Mina-mina-twice-40200406-500-333.jpg", ivVideoCover);
+
+            rootView.addView(ivVideoCover);
+            rootView.addView(realtimeBlurView);
+        }
+    }
+
+    private void removeVideoCover() {
+        if (ivVideoCover != null && realtimeBlurView != null) {
+            rootView.removeView(ivVideoCover);
+            rootView.removeView(realtimeBlurView);
+            ivVideoCover = null;
+            realtimeBlurView = null;
+        }
     }
 
     public void setEntityId(String entityId) {
@@ -147,10 +181,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
         activity = ((BaseActivity) getContext());
         findViews();
-        UizaUtil.resizeLayout(playerView, llMid);
+        UizaUtil.resizeLayout(rootView, llMid);
     }
 
     private void findViews() {
+        rootView = (RelativeLayout) findViewById(R.id.root_view);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
         playerView = findViewById(R.id.player_view);
@@ -353,7 +388,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 isLandscape = false;
             }
         }
-        UizaUtil.resizeLayout(playerView, llMid);
+        UizaUtil.resizeLayout(rootView, llMid);
     }
 
     public void setTitle(String title) {

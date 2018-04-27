@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.rl.videoinfo;
+package vn.loitp.uizavideo.view.rl.videoinfo;
 
 /**
  * Created by www.muathu@gmail.com on 12/8/2017.

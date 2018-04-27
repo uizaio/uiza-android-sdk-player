@@ -18,18 +18,14 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.Arrays;
 import java.util.List;
 
-import testlibuiza.uiza.com.dummy.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
-import vn.loitp.views.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity {
     private UizaIMAVideo uizaIMAVideo;

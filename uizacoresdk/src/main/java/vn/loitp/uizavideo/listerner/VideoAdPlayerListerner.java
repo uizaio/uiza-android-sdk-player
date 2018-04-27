@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.listerner;
+package vn.loitp.uizavideo.listerner;
 
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 

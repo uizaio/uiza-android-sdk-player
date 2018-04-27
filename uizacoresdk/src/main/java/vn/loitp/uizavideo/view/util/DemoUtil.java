@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.views.uizavideo.view.util;
+package vn.loitp.uizavideo.view.util;
 
 import android.text.TextUtils;
 

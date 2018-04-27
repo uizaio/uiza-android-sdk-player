@@ -4,15 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import vn.loitp.restapi.dummy.APIServices;
-import testlibuiza.uiza.com.dummy.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.restclient.RestClient;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.views.LToast;
-import vn.loitp.views.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 
 public class MainActivity extends BaseActivity {
 

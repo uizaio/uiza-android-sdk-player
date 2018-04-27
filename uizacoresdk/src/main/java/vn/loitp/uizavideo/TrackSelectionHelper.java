@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.views.uizavideo;
+package vn.loitp.uizavideo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -43,7 +43,7 @@ import java.util.Arrays;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.views.uizavideo.view.util.DemoUtil;
+import vn.loitp.uizavideo.view.util.DemoUtil;
 
 /**
  * Helper class for displaying track selection dialogs.

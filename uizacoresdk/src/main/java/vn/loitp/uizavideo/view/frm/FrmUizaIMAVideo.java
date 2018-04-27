@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.frm;
+package vn.loitp.uizavideo.view.frm;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -47,10 +46,10 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
-import vn.loitp.views.uizavideo.UizaPlayerManager;
-import vn.loitp.views.uizavideo.view.floatview.FloatingUizaVideoService;
-import vn.loitp.views.uizavideo.view.util.UizaUtil;
-import vn.loitp.views.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.UizaPlayerManager;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
 
 import static android.app.Activity.RESULT_OK;
 

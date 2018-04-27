@@ -1,4 +1,4 @@
-package vn.loitp.views.uizavideo.view.floatview;
+package vn.loitp.uizavideo.view.floatview;
 
 import android.app.Service;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import loitp.core.R;
-import vn.loitp.views.uizavideo.view.rl.video.SimpleUizaIMAVideo;
+import vn.loitp.uizavideo.view.rl.video.SimpleUizaIMAVideo;
 
 /**
  * Created by LENOVO on 3/27/2018.
