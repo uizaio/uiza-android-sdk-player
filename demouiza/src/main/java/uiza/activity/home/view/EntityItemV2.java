@@ -31,7 +31,7 @@ import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadi
 @Layout(R.layout.uiza_entity_item)
 public class EntityItemV2 {
 
-    @View(R.id.imageView)
+    @View(R.id.image_view)
     private ImageView imageView;
     @View(R.id.avi)
     private AVLoadingIndicatorView avi;
@@ -86,7 +86,7 @@ public class EntityItemV2 {
         mPlaceHolderView.removeView(this);
     }*/
 
-    @Click(R.id.imageView)
+    @Click(R.id.image_view)
     private void onClick() {
         LAnimationUtil.play(imageView, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
