@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Surface;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -203,6 +202,8 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public void init() {
+        reset();
+
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -340,7 +341,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
             runnable = null;
 
             trackSelectionHelper = null;
-
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -357,6 +357,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
             runnable = null;
 
             trackSelectionHelper = null;
+            if (debugTextViewHelper != null) {
+                debugTextViewHelper.stop();
+                debugTextViewHelper = null;
+            }
         }
         if (adsLoader != null) {
             adsLoader.release();
