@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.uiza.module.dummy"
+        applicationId "com.uiza.module.sample"
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 1

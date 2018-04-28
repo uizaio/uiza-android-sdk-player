@@ -1,1 +1,1 @@
-include ':uizacoresdk', ':dummy', ':demouiza'
+include ':uizacoresdk', ':sample', ':demouiza'
