@@ -49,16 +49,15 @@ public class ChannelItem {
         this.item = item;
         mPosition = position;
         mCallback = callback;
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
     }
 
     @Resolve
     private void onResolved() {
-        //LImageUtil.load((Activity) mContext, item.getThumbnail(), imageView, avi);
         String[] urls = new String[2];
         urls[0] = item.getPoster();
         urls[1] = item.getThumbnail();
         LImageUtil.load((Activity) mContext, urls, imageView, progressBar);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
     }
 
     /*@LongClick(R.id.imageView)
