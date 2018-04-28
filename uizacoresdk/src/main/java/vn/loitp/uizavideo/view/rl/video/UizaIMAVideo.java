@@ -78,14 +78,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private RelativeLayout rootView;
     private PlayerView playerView;
     private UizaPlayerManager uizaPlayerManager;
-
+    private AVLoadingIndicatorView avLoadingIndicatorView;
     //play controller
     private RelativeLayout llMid;
     private PreviewTimeBarLayout previewTimeBarLayout;
     private PreviewTimeBar previewTimeBar;
     private ImageButton exoFullscreenIcon;
     private ImageView ivThumbnail;
-    private AVLoadingIndicatorView avLoadingIndicatorView;
     private TextView tvTitle;
     private ImageButton exoBackScreen;
     private ImageButton exoVolume;

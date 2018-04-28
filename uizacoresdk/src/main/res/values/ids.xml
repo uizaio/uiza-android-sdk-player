@@ -22,5 +22,10 @@
     <item name="exo_fullscreen_toggle_icon" type="id" />
     <item name="viewHeader" type="id" />
     <item name="viewDesc" type="id" />
-    <item name="uiza_video" type="id" />
+    <item name="root_view" type="id" />
+    <item name="player_view" type="id" />
+    <item name="avi" type="id" />
+    <item name="debug_layout" type="id" />
+    <item name="debug_text_view" type="id" />
+    <item name="controls_root" type="id" />
 </resources>

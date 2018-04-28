@@ -14,7 +14,7 @@
         android:animateLayoutChanges="true"
         android:keepScreenOn="true"
         app:auto_show="false"
-        app:controller_layout_id="@layout/uiza_controller_skin_1"
+        app:controller_layout_id="@layout/uiza_controller_skin_default"
         app:fastforward_increment="3000"
         app:rewind_increment="3000"
         app:use_controller="true" />

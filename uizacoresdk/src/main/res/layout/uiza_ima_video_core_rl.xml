@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_view"
+    android:id="@id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:background="@color/Black">
 
     <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/player_view"
+        android:id="@id/player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:keepScreenOn="true"
         app:auto_show="false"
-        app:controller_layout_id="@layout/uiza_controller_skin_1"
+        app:controller_layout_id="@layout/uiza_controller_skin_default"
         app:fastforward_increment="3000"
         app:rewind_increment="3000"
         app:use_controller="true" />
 
     <vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
+        android:id="@id/avi"
         style="@style/AVLoadingIndicatorView"
         android:layout_width="@dimen/w_20"
         android:layout_height="@dimen/w_20"
@@ -29,14 +29,14 @@
         app:indicatorName="BallSpinFadeLoaderIndicator" />
 
     <LinearLayout
-        android:id="@+id/debug_layout"
+        android:id="@id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/Red"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/debug_text_view"
+            android:id="@id/debug_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_3"
@@ -45,7 +45,7 @@
             android:textSize="@dimen/txt_10" />
 
         <LinearLayout
-            android:id="@+id/controls_root"
+            android:id="@id/controls_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
