@@ -1,13 +1,12 @@
 package uiza.activity.splash;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import uiza.R;
 import uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity;
 import uiza.app.LSApplication;
-import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -113,11 +112,15 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void auth() {
-        LLog.d(TAG, ">>>>>>>>>auth");
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = "xxx";
-        String secretKeyId = "xxx";
+        String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
+        String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+
+        if (accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
+            showDialogOne(getString(R.string.key_not_found), true);
+            return;
+        }
 
         JsonBodyAuth jsonBodyAuth = new JsonBodyAuth();
         jsonBodyAuth.setAccessKeyId(accessKeyId);
@@ -157,9 +160,6 @@ public class SplashActivity extends BaseActivity {
         }
 
         RestClientV2.init(currentApiEndPoint, token);
-        //UizaData.getInstance().init(currentApiEndPoint, currentApiTrackingEndPoint, token, currentPlayerId);
-        //UizaData.getInstance().setVideoCanSlide(canSlide);
-
         switch (currentApiEndPoint) {
             case Constants.URL_DEV_UIZA_VERSION_2:
                 if (canSlide) {

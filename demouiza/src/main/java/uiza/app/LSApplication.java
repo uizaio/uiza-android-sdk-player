@@ -10,7 +10,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.gson.Gson;
 
-import uiza.uiza.com.demo.BuildConfig;
+import uiza.BuildConfig;
 import vn.loitp.core.common.Constants;
 import vn.loitp.data.ActivityData;
 import vn.loitp.utils.util.Utils;

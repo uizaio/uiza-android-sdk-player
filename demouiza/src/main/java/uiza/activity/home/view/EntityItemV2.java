@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 
-import uiza.uiza.com.demo.R;
+import uiza.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;

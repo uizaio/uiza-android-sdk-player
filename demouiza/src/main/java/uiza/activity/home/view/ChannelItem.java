@@ -6,8 +6,8 @@ import android.widget.ImageView;
 
 import com.daimajia.androidanimations.library.Techniques;
 
+import uiza.R;
 import uiza.activity.home.model.Item;
-import uiza.uiza.com.demo.R;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.views.placeholderview.lib.placeholderview.Animation;

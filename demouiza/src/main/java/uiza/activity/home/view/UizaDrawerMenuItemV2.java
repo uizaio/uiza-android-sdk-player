@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uiza.R;
 import uiza.activity.data.HomeDataV2;
-import uiza.uiza.com.demo.R;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;

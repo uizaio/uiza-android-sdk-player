@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uiza.R;
 import uiza.activity.home.model.ChannelObject;
 import uiza.activity.home.model.Item;
-import uiza.uiza.com.demo.R;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;

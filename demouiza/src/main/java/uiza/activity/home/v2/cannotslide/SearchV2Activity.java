@@ -13,10 +13,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uiza.R;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.LoadingView;
 import uiza.app.LSApplication;
-import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;

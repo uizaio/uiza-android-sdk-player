@@ -2,7 +2,7 @@ package uiza.activity.splash;
 
 import android.os.Bundle;
 
-import uiza.uiza.com.demo.R;
+import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {

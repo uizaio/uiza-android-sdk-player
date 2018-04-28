@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uiza.uiza.com.demo">
-
-    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+    package="uiza">
 
     <application
-        android:name="uiza.app.LSApplication"
+        android:name=".app.LSApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +16,7 @@
             android:value="2.1" />
 
         <activity
-            android:name="uiza.activity.splash.OptionActivity"
+            android:name=".activity.splash.OptionActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,20 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="uiza.activity.splash.MainActivity"
+            android:name=".activity.splash.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="uiza.activity.splash.SplashActivity"
+            android:name=".activity.splash.SplashActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity"
+            android:name=".activity.home.v2.cannotslide.HomeV2CannotSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name="uiza.activity.home.v2.cannotslide.SearchV2Activity"
+            android:name=".activity.home.v2.cannotslide.SearchV2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2"
+            android:name=".activity.home.v2.cannotslide.UizaPlayerActivityV2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
 

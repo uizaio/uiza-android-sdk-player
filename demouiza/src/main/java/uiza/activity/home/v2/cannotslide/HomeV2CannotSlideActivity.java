@@ -12,12 +12,12 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import uiza.R;
 import uiza.activity.data.HomeDataV2;
 import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
 import uiza.app.LSApplication;
-import uiza.uiza.com.demo.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;

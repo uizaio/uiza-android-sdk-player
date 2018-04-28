@@ -34,4 +34,5 @@
     <string name="starring">Starring:</string>
     <string name="director">Director:</string>
     <string name="genres">Genres:</string>
+    <string name="key_not_found">You must enter your accessKeyId and secretKeyId first</string>
 </resources>

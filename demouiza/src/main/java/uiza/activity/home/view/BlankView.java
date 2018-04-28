@@ -1,6 +1,6 @@
 package uiza.activity.home.view;
 
-import uiza.uiza.com.demo.R;
+import uiza.R;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
