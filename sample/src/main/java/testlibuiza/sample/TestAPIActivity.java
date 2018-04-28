@@ -1,4 +1,4 @@
-package testlibuiza.uiza.com.dummy;
+package testlibuiza.sample;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import testlibuiza.uiza.com.dummy.app.LSApplication;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
