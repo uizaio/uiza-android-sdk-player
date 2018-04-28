@@ -2,7 +2,9 @@ package uiza.activity.home.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.daimajia.androidanimations.library.Techniques;
 
@@ -10,6 +12,7 @@ import uiza.R;
 import uiza.activity.home.model.Item;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.views.placeholderview.lib.placeholderview.Animation;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Animate;
@@ -18,7 +21,6 @@ import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.
@@ -32,8 +34,8 @@ public class ChannelItem {
 
     @View(R.id.imageView)
     private ImageView imageView;
-    @View(R.id.avi)
-    private AVLoadingIndicatorView avi;
+    @View(R.id.pb)
+    private ProgressBar progressBar;
 
     private Item item;
     private Context mContext;
@@ -55,7 +57,8 @@ public class ChannelItem {
         String[] urls = new String[2];
         urls[0] = item.getPoster();
         urls[1] = item.getThumbnail();
-        LImageUtil.load((Activity) mContext, urls, imageView, avi);
+        LImageUtil.load((Activity) mContext, urls, imageView, progressBar);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
     }
 
     /*@LongClick(R.id.imageView)

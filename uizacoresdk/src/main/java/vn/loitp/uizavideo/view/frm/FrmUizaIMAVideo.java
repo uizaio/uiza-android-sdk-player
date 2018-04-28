@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -44,7 +45,6 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
@@ -69,7 +69,7 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
     private PreviewTimeBar previewTimeBar;
     private ImageButton exoFullscreenIcon;
     private ImageView ivThumbnail;
-    private AVLoadingIndicatorView avLoadingIndicatorView;
+    private ProgressBar progressBar;
     private TextView tvTitle;
     private ImageButton exoBackScreen;
     private ImageButton exoVolume;
@@ -100,7 +100,8 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
 
     private void findViews(View view) {
         llMid = (RelativeLayout) view.findViewById(R.id.ll_mid);
-        avLoadingIndicatorView = (AVLoadingIndicatorView) view.findViewById(R.id.avi);
+        progressBar = (ProgressBar) view.findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
         playerView = view.findViewById(R.id.player_view);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);

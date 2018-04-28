@@ -1,9 +1,14 @@
 package uiza.activity.home.view;
 
+import android.support.v4.content.ContextCompat;
+import android.widget.ProgressBar;
+
 import uiza.R;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
+import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.
@@ -14,12 +19,15 @@ import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
 @NonReusable
 @Layout(R.layout.uiza_loading_view)
 public class LoadingView {
+    @View(R.id.pb)
+    private ProgressBar progressBar;
 
     public LoadingView() {
     }
 
     @Resolve
     private void onResolved() {
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(progressBar.getContext(), R.color.White));
     }
 
     /*@LongClick(R.id.imageView)

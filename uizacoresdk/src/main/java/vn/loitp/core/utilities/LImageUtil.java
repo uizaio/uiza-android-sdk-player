@@ -7,15 +7,15 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Created by www.muathu@gmail.com on 10/7/2017.
@@ -97,7 +97,7 @@ public class LImageUtil {
                 .into(imageView);
     }
 
-    public static void load(Activity activity, String url, ImageView imageView, final AVLoadingIndicatorView avLoadingIndicatorView, int resPlaceHolder, int resError) {
+    public static void load(Activity activity, String url, ImageView imageView, final ProgressBar progressBar, int resPlaceHolder, int resError) {
         Glide.with(activity).load(url)
                 .apply(new RequestOptions()
                         .placeholder(resPlaceHolder)
@@ -108,16 +108,16 @@ public class LImageUtil {
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        if (avLoadingIndicatorView != null) {
-                            avLoadingIndicatorView.smoothToHide();
+                        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
+                            progressBar.setVisibility(View.GONE);
                         }
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
-                        if (avLoadingIndicatorView != null) {
-                            avLoadingIndicatorView.smoothToHide();
+                        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
+                            progressBar.setVisibility(View.GONE);
                         }
                         return false;
                     }
@@ -125,12 +125,12 @@ public class LImageUtil {
                 .into(imageView);
     }
 
-    public static void load(Activity activity, String url, ImageView imageView, final AVLoadingIndicatorView avLoadingIndicatorView, int resPlaceHolder) {
-        load(activity, url, imageView, avLoadingIndicatorView, resPlaceHolder, Color.TRANSPARENT);
+    public static void load(Activity activity, String url, ImageView imageView, final ProgressBar progressBar, int resPlaceHolder) {
+        load(activity, url, imageView, progressBar, resPlaceHolder, Color.TRANSPARENT);
     }
 
-    public static void load(Activity activity, String url, ImageView imageView, final AVLoadingIndicatorView avLoadingIndicatorView) {
-        load(activity, url, imageView, avLoadingIndicatorView, Color.TRANSPARENT, Color.TRANSPARENT);
+    public static void load(Activity activity, String url, ImageView imageView, final ProgressBar progressBar) {
+        load(activity, url, imageView, progressBar, Color.TRANSPARENT, Color.TRANSPARENT);
     }
 
     public static void load(Activity activity, String url, ImageView imageView, int sizeW, int sizeH) {
@@ -142,7 +142,7 @@ public class LImageUtil {
                 ).into(imageView);
     }
 
-    public static void load(Activity activity, final String[] url, ImageView imageView, final AVLoadingIndicatorView avLoadingIndicatorView) {
+    public static void load(Activity activity, final String[] url, ImageView imageView, final ProgressBar progressBar) {
         String u = null;
         for (int i = 0; i < url.length; i++) {
             if (url[i] != null) {
@@ -151,7 +151,7 @@ public class LImageUtil {
             }
         }
         if (u != null) {
-            load(activity, u, imageView, avLoadingIndicatorView);
+            load(activity, u, imageView, progressBar);
         }
     }
 }

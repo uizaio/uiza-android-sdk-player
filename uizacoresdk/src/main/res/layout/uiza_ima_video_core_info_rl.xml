@@ -185,12 +185,10 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        style="@style/AVLoadingIndicatorView"
+    <ProgressBar
+        android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="@dimen/w_20"
         android:layout_height="@dimen/w_20"
-        android:layout_centerInParent="true"
-        app:indicatorColor="@color/White"
-        app:indicatorName="BallSpinFadeLoaderIndicator" />
+        android:layout_centerInParent="true" />
 </RelativeLayout>

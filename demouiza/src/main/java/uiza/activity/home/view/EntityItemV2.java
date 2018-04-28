@@ -2,7 +2,9 @@ package uiza.activity.home.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -19,7 +21,6 @@ import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusabl
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Position;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.
@@ -33,8 +34,8 @@ public class EntityItemV2 {
 
     @View(R.id.image_view)
     private ImageView imageView;
-    @View(R.id.avi)
-    private AVLoadingIndicatorView avi;
+    @View(R.id.pb)
+    private ProgressBar progressBar;
     @View(R.id.tv_name)
     private TextView tvName;
 
@@ -62,10 +63,12 @@ public class EntityItemV2 {
         imageView.getLayoutParams().height = mSizeH;
         imageView.requestLayout();
 
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
+
         if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
-            LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, imageView, avi);
+            LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, imageView, progressBar);
         } else {
-            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), imageView, avi);
+            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), imageView, progressBar);
         }
 
         /*String[] urls = new String[2];

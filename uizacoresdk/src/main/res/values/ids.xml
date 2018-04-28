@@ -24,7 +24,7 @@
     <item name="viewDesc" type="id" />
     <item name="root_view" type="id" />
     <item name="player_view" type="id" />
-    <item name="avi" type="id" />
+    <item name="pb" type="id" />
     <item name="debug_layout" type="id" />
     <item name="debug_text_view" type="id" />
     <item name="controls_root" type="id" />

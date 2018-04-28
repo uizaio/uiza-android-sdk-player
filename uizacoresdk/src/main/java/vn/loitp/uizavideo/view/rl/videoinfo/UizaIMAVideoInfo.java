@@ -6,12 +6,14 @@ package vn.loitp.uizavideo.view.rl.videoinfo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -33,7 +36,6 @@ import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntit
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -43,7 +45,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private Gson gson = new Gson();//TODO remove
-    private AVLoadingIndicatorView avLoadingIndicatorView;
+    private ProgressBar progressBar;
     private TextView tvVideoName;
     private TextView tvVideoTime;
     private TextView tvVideoRate;
@@ -102,7 +104,8 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private void findViews() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
-        avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         tvVideoName = (TextView) findViewById(R.id.tv_video_name);
         tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
@@ -145,7 +148,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void getDetailEntity() {
-        avLoadingIndicatorView.smoothToShow();
+        LUIUtil.showProgressBar(progressBar);
         //API v2
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
@@ -227,14 +230,14 @@ public class UizaIMAVideoInfo extends RelativeLayout {
                     tvMoreLikeThisMsg.setVisibility(View.GONE);
                     setupUIMoreLikeThis(listAllEntityRelation.getItemList());
                 }
-                avLoadingIndicatorView.smoothToHide();
+                LUIUtil.hideProgressBar(progressBar);
             }
 
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
                 ((BaseActivity) activity).handleException(e);
-                avLoadingIndicatorView.smoothToHide();
+                LUIUtil.hideProgressBar(progressBar);
             }
         });
     }

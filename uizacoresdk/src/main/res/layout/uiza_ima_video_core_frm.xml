@@ -19,14 +19,12 @@
         app:rewind_increment="3000"
         app:use_controller="true" />
 
-    <vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        style="@style/AVLoadingIndicatorView"
-        android:layout_width="@dimen/w_40"
-        android:layout_height="@dimen/w_40"
-        android:layout_centerInParent="true"
-        app:indicatorColor="@color/White"
-        app:indicatorName="BallSpinFadeLoaderIndicator" />
+    <ProgressBar
+        android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/w_20"
+        android:layout_height="@dimen/w_20"
+        android:layout_centerInParent="true" />
 
     <LinearLayout
         android:id="@+id/debug_layout"

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,7 +64,6 @@ import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
@@ -78,7 +78,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private RelativeLayout rootView;
     private PlayerView playerView;
     private UizaPlayerManager uizaPlayerManager;
-    private AVLoadingIndicatorView avLoadingIndicatorView;
+    private ProgressBar progressBar;
     //play controller
     private RelativeLayout llMid;
     private PreviewTimeBarLayout previewTimeBarLayout;
@@ -113,8 +113,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return debugTextView;
     }
 
-    public AVLoadingIndicatorView getAvLoadingIndicatorView() {
-        return avLoadingIndicatorView;
+    public ProgressBar getProgressBar() {
+        return progressBar;
     }
 
     public PreviewTimeBarLayout getPreviewTimeBarLayout() {
@@ -160,7 +160,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
 
-            avLoadingIndicatorView.bringToFront();
+            progressBar.bringToFront();
         }
     }
 
@@ -211,7 +211,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void findViews() {
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
-        avLoadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);

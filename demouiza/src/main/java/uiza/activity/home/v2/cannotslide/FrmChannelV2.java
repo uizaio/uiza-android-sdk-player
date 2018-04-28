@@ -2,11 +2,12 @@ package uiza.activity.home.v2.cannotslide;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -33,7 +34,6 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
@@ -48,7 +48,7 @@ public class FrmChannelV2 extends BaseFragment {
     private TextView tv;
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
-    private AVLoadingIndicatorView avLoadingIndicatorView;
+    private ProgressBar progressBar;
 
     private final int NUMBER_OF_COLUMN_1 = 1;
     private final int NUMBER_OF_COLUMN_2 = 2;
@@ -133,8 +133,8 @@ public class FrmChannelV2 extends BaseFragment {
             }
         });
 
-        avLoadingIndicatorView = (AVLoadingIndicatorView) view.findViewById(R.id.avi);
-        avLoadingIndicatorView.smoothToShow();
+        progressBar = (ProgressBar) view.findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
         getData(false);
         return view;
@@ -223,7 +223,7 @@ public class FrmChannelV2 extends BaseFragment {
             }));
         }
         if (!isCallFromLoadMore) {
-            avLoadingIndicatorView.smoothToHide();
+            LUIUtil.hideProgressBar(progressBar);
         } else {
             isLoadMoreCalling = false;
         }
@@ -321,7 +321,7 @@ public class FrmChannelV2 extends BaseFragment {
                         tvMsg.setText(getString(R.string.empty_list));
                     }
                     if (!isCallFromLoadMore) {
-                        avLoadingIndicatorView.smoothToHide();
+                        LUIUtil.hideProgressBar(progressBar);
                     } else {
                         isLoadMoreCalling = false;
                     }
@@ -340,7 +340,7 @@ public class FrmChannelV2 extends BaseFragment {
                     }
                 }
                 if (!isCallFromLoadMore) {
-                    avLoadingIndicatorView.smoothToHide();
+                    LUIUtil.hideProgressBar(progressBar);
                 } else {
                     isLoadMoreCalling = false;
                 }

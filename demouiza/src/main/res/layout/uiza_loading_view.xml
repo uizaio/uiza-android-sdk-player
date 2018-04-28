@@ -6,10 +6,9 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView
-        style="@style/AVLoadingIndicatorView"
+    <ProgressBar
+        android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="@dimen/w_20"
-        android:layout_height="@dimen/w_20"
-        app:indicatorColor="@color/White"
-        app:indicatorName="BallSpinFadeLoaderIndicator" />
+        android:layout_height="@dimen/w_20" />
 </LinearLayout>

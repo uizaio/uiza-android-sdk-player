@@ -2,6 +2,8 @@ package uiza.activity.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import uiza.R;
@@ -31,6 +33,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
         currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
         canSlide = getIntent().getBooleanExtra(OptionActivity.KEY_CAN_SLIDE, false);

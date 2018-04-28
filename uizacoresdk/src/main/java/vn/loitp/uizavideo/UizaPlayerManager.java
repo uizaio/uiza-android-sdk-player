@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Surface;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -76,13 +77,13 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.glide.GlideApp;
 import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -413,21 +414,11 @@ import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadi
     }
 
     private void hideProgress() {
-        if (uizaIMAVideo.getAvLoadingIndicatorView() != null) {
-            uizaIMAVideo.getAvLoadingIndicatorView().hide();
-            LLog.d(TAG, "hideProgress !null");
-        } else {
-            LLog.d(TAG, "hideProgress null");
-        }
+        LUIUtil.hideProgressBar(uizaIMAVideo.getProgressBar());
     }
 
     private void showProgress() {
-        if (uizaIMAVideo.getAvLoadingIndicatorView() != null) {
-            uizaIMAVideo.getAvLoadingIndicatorView().show();
-            LLog.d(TAG, "showProgress !null");
-        } else {
-            LLog.d(TAG, "showProgress null");
-        }
+        LUIUtil.showProgressBar(uizaIMAVideo.getProgressBar());
     }
 
     public class PlayerEventListener implements Player.EventListener {

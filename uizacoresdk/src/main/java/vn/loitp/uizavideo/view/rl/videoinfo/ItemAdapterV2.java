@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -23,7 +24,6 @@ import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHolder> {
 
@@ -41,13 +41,13 @@ public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHo
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
-        public AVLoadingIndicatorView avi;
+        public ProgressBar progressBar;
         private TextView tvName;
 
         public ItemViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.imageView);
-            avi = (AVLoadingIndicatorView) view.findViewById(R.id.avi);
+            progressBar = (ProgressBar) view.findViewById(R.id.pb);
             tvName = (TextView) view.findViewById(R.id.tv_name);
         }
     }
@@ -74,9 +74,9 @@ public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHo
         holder.imageView.requestLayout();
 
         if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
-            LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, holder.imageView, holder.avi);
+            LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, holder.imageView, holder.progressBar);
         } else {
-            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), holder.imageView, holder.avi);
+            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), holder.imageView, holder.progressBar);
         }
 
         holder.tvName.setText(item.getName());

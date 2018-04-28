@@ -39,9 +39,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,7 +46,6 @@ import java.io.InputStream;
 import java.util.Random;
 
 import loitp.core.R;
-import vn.loitp.core.common.Constants;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollDecor;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollUpdateListener;
 import vn.loitp.views.overscroll.lib.overscroll.OverScrollDecoratorHelper;
@@ -565,6 +561,18 @@ public class LUIUtil {
             return;
         }
         progressBar.getIndeterminateDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY);
+    }
+
+    public static void showProgressBar(ProgressBar progressBar) {
+        if (progressBar != null && progressBar.getVisibility() != View.VISIBLE) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void hideProgressBar(ProgressBar progressBar) {
+        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     public static void setColorSeekBar(SeekBar seekBar, int color) {
