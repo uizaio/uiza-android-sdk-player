@@ -3,6 +3,7 @@ package uiza.activity.home.v2.cannotslide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Surface;
+import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -256,7 +257,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
+        LLog.d(TAG, "isInitResult " + isInitSuccess);
         setListener();
+        if (isInitSuccess && uizaIMAVideoInfo != null) {
+            uizaIMAVideoInfo.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

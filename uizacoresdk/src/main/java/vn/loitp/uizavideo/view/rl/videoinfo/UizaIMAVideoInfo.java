@@ -65,9 +65,8 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     public void init(ItemAdapterV2.Callback callback) {
         this.callback = callback;
-        if (itemList != null) {
-            itemList.clear();
-        }
+        itemList.clear();
+        notifyViews();
         getDetailEntity();
     }
 
@@ -119,6 +118,8 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onClick(Item item, int position) {
                 LLog.d(TAG, "onClick " + position);
+                itemList.clear();
+                notifyViews();
                 if (callback != null) {
                     callback.onClick(item, position);
                 }
@@ -138,14 +139,10 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
-        setup();
-        LLog.d(TAG, "setup finish");
     }
 
     private void getDetailEntity() {
         LUIUtil.showProgressBar(progressBar);
-        //API v2
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
@@ -164,14 +161,9 @@ public class UizaIMAVideoInfo extends RelativeLayout {
                 ((BaseActivity) activity).handleException(e);
             }
         });
-        //EndAPI v2
     }
 
-    private void setup() {
-        LLog.d(TAG, "setup");
-    }
-
-    private void updateUI() {
+    public void updateUI() {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
@@ -241,7 +233,13 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private void setupUIMoreLikeThis(List<Item> itemList) {
         LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
         this.itemList.addAll(itemList);
-        mAdapter.notifyDataSetChanged();
+        notifyViews();
+    }
+
+    private void notifyViews() {
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void loadMore() {

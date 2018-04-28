@@ -333,6 +333,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onStartFirstFrameUizaVideo() {
+        if (callback != null) {
+            callback.isInitResult(true);
+        }
         //track event video_starts
         trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
     }
@@ -593,9 +596,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 String linkPlay = listLinkPlay.get(0);
                 initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), createDummySubtitle());
                 onResume();
-                if (callback != null) {
-                    callback.isInitResult(true);
-                }
             }
 
             @Override
