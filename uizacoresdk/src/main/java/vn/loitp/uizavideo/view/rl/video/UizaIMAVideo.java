@@ -591,14 +591,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
 
                 String linkPlay = listLinkPlay.get(0);
-                //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-                //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-
-                //String linkPlay = activity.getString(loitp.core.R.string.url_dash);
-                String urlIMAAd = null;
-                String urlThumnailsPreviewSeekbar = null;
-
-                initData(linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, createDummySubtitle());
+                initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), createDummySubtitle());
                 onResume();
                 if (callback != null) {
                     callback.isInitResult(true);

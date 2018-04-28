@@ -28,6 +28,8 @@ public class UizaData {
     private String entityId = "";
     private String entityName = "";
     private String entityCover = "";
+    private String urlIMAAd = "";
+    private String urlThumnailsPreviewSeekbar = "";
 
     public String getPlayerId() {
         return playerId;
@@ -59,6 +61,22 @@ public class UizaData {
 
     public void setEntityCover(String entityCover) {
         this.entityCover = entityCover;
+    }
+
+    public String getUrlIMAAd() {
+        return urlIMAAd;
+    }
+
+    public void setUrlIMAAd(String urlIMAAd) {
+        this.urlIMAAd = urlIMAAd;
+    }
+
+    public String getUrlThumnailsPreviewSeekbar() {
+        return urlThumnailsPreviewSeekbar;
+    }
+
+    public void setUrlThumnailsPreviewSeekbar(String urlThumnailsPreviewSeekbar) {
+        this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
     }
 
     public void clear() {

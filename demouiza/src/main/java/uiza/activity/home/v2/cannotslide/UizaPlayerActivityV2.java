@@ -2,6 +2,7 @@ package uiza.activity.home.v2.cannotslide;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -37,9 +38,6 @@ import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
-    private String entityId;
-    private String entityCover;
-    private String entityTitle;
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
 
@@ -48,9 +46,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
-        entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
-        entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
-        entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
+        String entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
+        String entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
+        String entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
 
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
@@ -61,13 +59,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setPlayerId("Skin default");
-
-        uizaIMAVideo.init(this);
-        uizaIMAVideoInfo.init(this);
+        setupVideo(entityId, entityCover, entityTitle);
     }
 
     @Override
@@ -270,17 +262,28 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClick(Item movie, int position) {
-        UizaData.getInstance().setEntityId(movie.getId());
-        UizaData.getInstance().setEntityName(movie.getName());
-        UizaData.getInstance().setEntityCover(movie.getThumbnail());
-        UizaData.getInstance().setPlayerId("Skin default");
-
-        uizaIMAVideo.init(this);
-        uizaIMAVideoInfo.init(this);
+        setupVideo(movie.getId(), movie.getName(), movie.getThumbnail());
     }
 
     @Override
     public void onLoadMore() {
         //do nothing
+    }
+
+    private void setupVideo(String entityId, String entityTitle, String entityCover) {
+        UizaData.getInstance().setEntityId(entityId);
+        UizaData.getInstance().setEntityName(entityTitle);
+        UizaData.getInstance().setEntityCover(entityCover);
+        UizaData.getInstance().setPlayerId("Skin default");
+
+        String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
+
+        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        //String urlThumnailsPreviewSeekbar = null;
+        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+        uizaIMAVideo.init(this);
+        uizaIMAVideoInfo.init(this);
     }
 }
