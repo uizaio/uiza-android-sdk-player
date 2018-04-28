@@ -179,6 +179,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
+    //onRenderedFirstFrame
+    public void onStartFirstFrameUizaVideo() {
+        //track event video_starts
+        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
+    }
+
     public UizaIMAVideo(Context context) {
         super(context);
         onCreate();

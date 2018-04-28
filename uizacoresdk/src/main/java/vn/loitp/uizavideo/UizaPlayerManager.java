@@ -568,6 +568,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         public void onRenderedFirstFrame(Surface surface) {
             LLog.d(TAG, "onRenderedFirstFrame");
             uizaIMAVideo.removeVideoCover();
+            uizaIMAVideo.onStartFirstFrameUizaVideo();
         }
 
         @Override

@@ -63,9 +63,7 @@ public class EntityItemV2 {
         imageView.getLayoutParams().height = mSizeH;
         imageView.requestLayout();
 
-        /*if (progressBar.getVisibility() == android.view.View.VISIBLE) {
-            LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
-        }*/
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
 
         if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
             LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, imageView, progressBar);
