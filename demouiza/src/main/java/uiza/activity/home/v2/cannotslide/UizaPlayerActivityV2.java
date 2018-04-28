@@ -2,7 +2,6 @@ package uiza.activity.home.v2.cannotslide;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
