@@ -32,6 +32,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
 
 /**
@@ -42,7 +43,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private Gson gson = new Gson();//TODO remove
-    private String entityId;
     private AVLoadingIndicatorView avLoadingIndicatorView;
     private TextView tvVideoName;
     private TextView tvVideoTime;
@@ -61,16 +61,12 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     private ItemAdapterV2 mAdapter;
     private ItemAdapterV2.Callback callback;
 
-    public void setEntityId(String entityId, ItemAdapterV2.Callback callback) {
-        this.entityId = entityId;
-        LLog.d(TAG, "setEntityId " + entityId);
+    public void init(ItemAdapterV2.Callback callback) {
         this.callback = callback;
         getDetailEntity();
     }
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-        LLog.d(TAG, "setEntityId " + entityId);
+    public void init() {
         if (itemList != null) {
             itemList.clear();
         }
@@ -153,12 +149,12 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         //API v2
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
-        jsonBodyGetDetailEntity.setId(entityId);
+        jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntityV2) {
-                LLog.d(TAG, "getDetailEntityV2 entityId " + entityId + " -> " + gson.toJson(getDetailEntityV2));
+                LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntityV2));
                 mItem = getDetailEntityV2.getData().get(0);
                 updateUI();
             }
@@ -215,10 +211,10 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         LLog.d(TAG, "getListAllEntityRelation");
 
         UizaService service = RestClientV2.createService(UizaService.class);
-        LLog.d(TAG, "entityId: " + entityId);
+        LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(entityId);
+        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override

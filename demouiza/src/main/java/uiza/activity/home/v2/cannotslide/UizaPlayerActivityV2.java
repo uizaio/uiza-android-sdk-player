@@ -73,7 +73,7 @@ public class UizaPlayerActivityV2 extends BaseActivity {
             }
         });
 
-        uizaIMAVideoInfo.setEntityId(entityId, new ItemAdapterV2.Callback() {
+        uizaIMAVideoInfo.init(new ItemAdapterV2.Callback() {
             @Override
             public void onClick(Item movie, int position) {
 
@@ -83,7 +83,7 @@ public class UizaPlayerActivityV2 extends BaseActivity {
                 UizaData.getInstance().setPlayerId("Skin default");
 
                 uizaIMAVideo.init();
-                uizaIMAVideoInfo.setEntityId(movie.getId());
+                uizaIMAVideoInfo.init();
             }
 
             @Override
