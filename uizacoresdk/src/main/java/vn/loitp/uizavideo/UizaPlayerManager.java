@@ -575,8 +575,8 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
             LLog.d(TAG, "onRenderedFirstFrame");
             uizaIMAVideo.removeVideoCover();
             if (!isRenderedFirstFrame) {
-                uizaIMAVideo.onStartFirstFrameUizaVideo();
                 isRenderedFirstFrame = true;
+                uizaIMAVideo.onStartFirstFrameUizaVideo();
             }
         }
 

@@ -281,13 +281,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
-
-                //track event view (after video is played 5s)
-                if (s == 5) {
-                    LLog.d(TAG, "onVideoProgress -> track view");
-                    trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIEW));
-                }
-
+                trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
@@ -311,6 +305,31 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LLog.d(TAG, "firstBrightness " + firstBrightness);
         seekbarBirghtness.setMax(100);
         setProgressSeekbar(seekbarBirghtness, firstBrightness);
+    }
+
+    private int oldPercent = Constants.NOT_FOUND;
+
+    private void trackProgress(int s, int percent) {
+        //track event view (after video is played 5s)
+        if (s == 5) {
+            LLog.d(TAG, "onVideoProgress -> track view");
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIEW));
+        }
+
+        if (oldPercent == percent) {
+            return;
+        }
+        LLog.d(TAG, "trackProgress percent: " + percent);
+        oldPercent = percent;
+        if (percent == 25) {
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, "25", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+        } else if (percent == 50) {
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, "50", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+        } else if (percent == 75) {
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, "75", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+        } else if (percent == 99) {
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, "100", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+        }
     }
 
     public void onStartFirstFrameUizaVideo() {
@@ -690,7 +709,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "trackUiza getEntityName: " + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, "trackUiza getEntityName: " + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
             }
 
             @Override
