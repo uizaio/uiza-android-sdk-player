@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import testlibuiza.R;
 import testlibuiza.sample.api.TestAPIActivity;
 import testlibuiza.sample.uizavideo.TestUizaVideoIMActivity;
 import testlibuiza.sample.uizavideo.TestUizaVideoIMActivityRl;

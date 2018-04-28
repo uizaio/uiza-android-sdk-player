@@ -7,8 +7,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import testlibuiza.sample.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;

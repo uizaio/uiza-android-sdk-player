@@ -21,7 +21,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.List;
 
-import testlibuiza.sample.R;
+import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.LToast;
@@ -36,7 +36,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         String entityId = "e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7";
-        uizaIMAVideo.setEntityId(entityId, new UizaIMAVideo.Callback() {
+        String videoCoverUrl = null;
+        uizaIMAVideo.setEntityId(entityId, videoCoverUrl, new UizaIMAVideo.Callback() {
             @Override
             public void isInitResult(boolean isInitSuccess) {
                 setListener();
