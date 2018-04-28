@@ -24,11 +24,12 @@ import java.util.List;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
-public class TestUizaVideoIMActivityRl extends BaseActivity {
+public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
     private UizaIMAVideo uizaIMAVideo;
 
     @Override
@@ -36,14 +37,22 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         String entityId = "e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7";
+        String entityTitle = "Dummy title";
         String videoCoverUrl = null;
-        uizaIMAVideo.setEntityId(entityId, videoCoverUrl, new UizaIMAVideo.Callback() {
-            @Override
-            public void isInitResult(boolean isInitSuccess) {
-                setListener();
-            }
-        });
-        uizaIMAVideo.setTitle("Dummy title");
+
+        UizaData.getInstance().setEntityId(entityId);
+        UizaData.getInstance().setEntityName(entityTitle);
+        UizaData.getInstance().setEntityCover(videoCoverUrl);
+        UizaData.getInstance().setPlayerId("Skin default");
+
+        String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
+
+        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        //String urlThumnailsPreviewSeekbar = null;
+        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+        uizaIMAVideo.init(this);
     }
 
     @Override
@@ -180,12 +189,12 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
         });
         uizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
-            public void onAdProgress(float currentMls, float duration, int percent) {
+            public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
 
             @Override
-            public void onVideoProgress(float currentMls, float duration, int percent) {
+            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
@@ -237,5 +246,10 @@ public class TestUizaVideoIMActivityRl extends BaseActivity {
                 LLog.d(TAG, "onCues");
             }
         });
+    }
+
+    @Override
+    public void isInitResult(boolean isInitSuccess) {
+        setListener();
     }
 }
