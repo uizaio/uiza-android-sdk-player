@@ -1,8 +1,9 @@
-package testlibuiza.sample;
+package testlibuiza.sample.uizavideo;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import testlibuiza.sample.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LScreenUtil;

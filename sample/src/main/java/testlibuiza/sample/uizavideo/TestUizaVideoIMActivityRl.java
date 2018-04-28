@@ -1,4 +1,4 @@
-package testlibuiza.sample;
+package testlibuiza.sample.uizavideo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.List;
 
+import testlibuiza.sample.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.LToast;

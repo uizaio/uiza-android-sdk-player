@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="testlibuiza.sample">
+    package="testlibuiza">
 
     <application
         android:name="testlibuiza.app.LSApplication"
@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="testlibuiza.uiza.com.sample.MainActivity">
+        <activity android:name=".sample.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,16 +18,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="testlibuiza.uiza.com.sample.TestUizaVideoIMActivity"
+            android:name=".sample.uizavideo.TestUizaVideoIMActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name="testlibuiza.uiza.com.sample.TestUizaVideoIMActivityRl"
+            android:name=".sample.uizavideo.TestUizaVideoIMActivityRl"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name="testlibuiza.uiza.com.sample.TestAPIActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:name=".sample.api.TestAPIActivity"
             android:screenOrientation="portrait" />
     </application>
 

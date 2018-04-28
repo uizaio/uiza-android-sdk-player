@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import testlibuiza.sample.api.TestAPIActivity;
+import testlibuiza.sample.uizavideo.TestUizaVideoIMActivity;
+import testlibuiza.sample.uizavideo.TestUizaVideoIMActivityRl;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
