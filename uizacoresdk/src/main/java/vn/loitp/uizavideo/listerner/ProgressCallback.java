@@ -5,7 +5,7 @@ package vn.loitp.uizavideo.listerner;
  */
 
 public interface ProgressCallback {
-    public void onAdProgress(float currentMls, float duration, int percent);
+    public void onAdProgress(float currentMls, int s, float duration, int percent);
 
-    public void onVideoProgress(float currentMls, float duration, int percent);
+    public void onVideoProgress(float currentMls, int s, float duration, int percent);
 }

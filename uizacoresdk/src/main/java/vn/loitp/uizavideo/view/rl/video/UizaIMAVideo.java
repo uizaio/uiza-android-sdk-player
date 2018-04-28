@@ -179,12 +179,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    //onRenderedFirstFrame
-    public void onStartFirstFrameUizaVideo() {
-        //track event video_starts
-        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
-    }
-
     public UizaIMAVideo(Context context) {
         super(context);
         onCreate();
@@ -277,18 +271,25 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
-            public void onAdProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+                LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {
-                    progressCallback.onAdProgress(currentMls, duration, percent);
+                    progressCallback.onAdProgress(currentMls, s, duration, percent);
                 }
             }
 
             @Override
-            public void onVideoProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+                LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+
+                //track event view (after video is played 5s)
+                if (s == 5) {
+                    LLog.d(TAG, "onVideoProgress -> track view");
+                    trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIEW));
+                }
+
                 if (progressCallback != null) {
-                    progressCallback.onVideoProgress(currentMls, duration, percent);
+                    progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
             }
         });
@@ -310,6 +311,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LLog.d(TAG, "firstBrightness " + firstBrightness);
         seekbarBirghtness.setMax(100);
         setProgressSeekbar(seekbarBirghtness, firstBrightness);
+    }
+
+    public void onStartFirstFrameUizaVideo() {
+        //track event video_starts
+        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
     }
 
     private void setProgressSeekbar(SeekBar seekbar, int progressSeekbar) {

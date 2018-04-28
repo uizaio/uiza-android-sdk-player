@@ -163,8 +163,9 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                             float mls = videoProgressUpdate.getCurrentTime();
                             float duration = videoProgressUpdate.getDuration();
                             int percent = (int) (mls * 100 / duration);
-                            //LLog.d(TAG, "ad progress: " + mls + "/" + duration + " -> " + percent + "%");
-                            progressCallback.onAdProgress(mls, duration, percent);
+                            int s = Math.round(mls / 1000);
+                            LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            progressCallback.onAdProgress(mls, s, duration, percent);
                         }
                     } else {
                         if (progressCallback != null) {
@@ -172,8 +173,9 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                                 float mls = player.getCurrentPosition();
                                 float duration = player.getDuration();
                                 int percent = (int) (mls * 100 / duration);
-                                //LLog.d(TAG, "video progress: " + mls + "/" + duration + " -> " + percent + "%");
-                                progressCallback.onVideoProgress(mls, duration, percent);
+                                int s = Math.round(mls / 1000);
+                                LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
                         }
                     }
@@ -365,6 +367,8 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         if (adsLoader != null) {
             adsLoader.release();
         }
+
+        isRenderedFirstFrame = false;
     }
 
     // AdsMediaSource.MediaSourceFactory implementation.
@@ -536,6 +540,8 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         }
     }
 
+    private boolean isRenderedFirstFrame;
+
     public class VideoEventListener implements VideoRendererEventListener {
         private final String TAG = Constants.LOITP;
 
@@ -568,7 +574,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         public void onRenderedFirstFrame(Surface surface) {
             LLog.d(TAG, "onRenderedFirstFrame");
             uizaIMAVideo.removeVideoCover();
-            uizaIMAVideo.onStartFirstFrameUizaVideo();
+            if (!isRenderedFirstFrame) {
+                uizaIMAVideo.onStartFirstFrameUizaVideo();
+                isRenderedFirstFrame = true;
+            }
         }
 
         @Override

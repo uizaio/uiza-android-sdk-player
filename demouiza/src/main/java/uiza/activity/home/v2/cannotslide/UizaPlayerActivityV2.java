@@ -204,13 +204,13 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         });
         uizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
-            public void onAdProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+                LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
             }
 
             @Override
-            public void onVideoProgress(float currentMls, float duration, int percent) {
-                LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+                LLog.d(TAG, TAG + " video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
             }
         });
         uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
