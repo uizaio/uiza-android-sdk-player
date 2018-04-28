@@ -142,6 +142,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         //track event eventype display
         trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
+
+        //track event plays_requested
+        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
     }
 
     private ImageView ivVideoCover;
