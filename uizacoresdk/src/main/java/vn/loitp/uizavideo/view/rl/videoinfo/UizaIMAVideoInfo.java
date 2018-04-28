@@ -65,10 +65,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     public void init(ItemAdapterV2.Callback callback) {
         this.callback = callback;
-        getDetailEntity();
-    }
-
-    public void init() {
         if (itemList != null) {
             itemList.clear();
         }

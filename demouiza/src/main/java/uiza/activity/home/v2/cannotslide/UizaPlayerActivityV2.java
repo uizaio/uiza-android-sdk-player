@@ -36,7 +36,7 @@ import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
-public class UizaPlayerActivityV2 extends BaseActivity {
+public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private String entityId;
     private String entityCover;
     private String entityTitle;
@@ -66,31 +66,8 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         UizaData.getInstance().setEntityCover(entityCover);
         UizaData.getInstance().setPlayerId("Skin default");
 
-        uizaIMAVideo.init(new UizaIMAVideo.Callback() {
-            @Override
-            public void isInitResult(boolean isInitSuccess) {
-                setListener();
-            }
-        });
-
-        uizaIMAVideoInfo.init(new ItemAdapterV2.Callback() {
-            @Override
-            public void onClick(Item movie, int position) {
-
-                UizaData.getInstance().setEntityId(movie.getId());
-                UizaData.getInstance().setEntityName(movie.getName());
-                UizaData.getInstance().setEntityCover(movie.getThumbnail());
-                UizaData.getInstance().setPlayerId("Skin default");
-
-                uizaIMAVideo.init();
-                uizaIMAVideoInfo.init();
-            }
-
-            @Override
-            public void onLoadMore() {
-                //do nothing
-            }
-        });
+        uizaIMAVideo.init(this);
+        uizaIMAVideoInfo.init(this);
     }
 
     @Override
@@ -284,5 +261,26 @@ public class UizaPlayerActivityV2 extends BaseActivity {
                 LLog.d(TAG, "onCues");
             }
         });
+    }
+
+    @Override
+    public void isInitResult(boolean isInitSuccess) {
+        setListener();
+    }
+
+    @Override
+    public void onClick(Item movie, int position) {
+        UizaData.getInstance().setEntityId(movie.getId());
+        UizaData.getInstance().setEntityName(movie.getName());
+        UizaData.getInstance().setEntityCover(movie.getThumbnail());
+        UizaData.getInstance().setPlayerId("Skin default");
+
+        uizaIMAVideo.init(this);
+        uizaIMAVideoInfo.init(this);
+    }
+
+    @Override
+    public void onLoadMore() {
+        //do nothing
     }
 }
