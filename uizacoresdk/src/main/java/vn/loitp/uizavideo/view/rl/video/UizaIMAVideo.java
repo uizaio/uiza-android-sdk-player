@@ -138,6 +138,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         setVideoCover();
         getLinkPlay();
 
+        LUIUtil.showProgressBar(progressBar);
+
         //track event eventype display
         //trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
     }
@@ -150,6 +152,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             realtimeBlurView = new RealtimeBlurView(activity, 15, ContextCompat.getColor(activity, R.color.black_35));
             ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             realtimeBlurView.setLayoutParams(layoutParamsBlur);
+            realtimeBlurView.setVisibility(GONE);
 
             ivVideoCover = new ImageView(activity);
             ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
