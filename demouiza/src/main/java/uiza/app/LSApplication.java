@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import uiza.BuildConfig;
 import vn.loitp.core.common.Constants;
 import vn.loitp.data.ActivityData;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.utils.util.Utils;
 
 public class LSApplication extends MultiDexApplication {
@@ -30,16 +31,8 @@ public class LSApplication extends MultiDexApplication {
         }
         Utils.init(this);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT);
-        //userAgent = Util.getUserAgent(this, Constants.USER_AGENT);
 
-        //RestClientV2.init(getString(R.string.dev_uiza_URL), Constants.TOKEN);
-        //UizaData.getInstance().init(getString(R.string.dev_uiza_URL), Constants.TOKEN, UizaData.PLAYER_ID_SKIN_1);
-
-        //RestClientV2.init("http://wtt-api.uiza.io/", "BIH80NYmucZwCoqPvrdI3ZU9ATB909Gi-1512972145301");
-        //UizaData.getInstance().init(getString(R.string.dev_uiza_wtt_URL), Constants.TOKEN_WTT, UizaData.PLAYER_ID_SKIN_1);
-
-        //RestClientV2.init(getString(R.string.dev_uiza_v2_URL));
-        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        RestClientTracking.init(Constants.URL_TRACKING_DEV);
     }
 
     public Gson getGson() {

@@ -32,7 +32,7 @@
         android:id="@id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Red"
+        android:background="@color/Black"
         android:orientation="vertical">
 
         <TextView
@@ -48,7 +48,8 @@
             android:id="@id/controls_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>
 

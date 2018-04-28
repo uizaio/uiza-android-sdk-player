@@ -48,8 +48,10 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -58,6 +60,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.progressloadingview.avloadingindicatorview.lib.avi.AVLoadingIndicatorView;
@@ -71,9 +74,6 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
-    private String entityId;
-    private String videoCoverUrl;
-
     private Gson gson = new Gson();//TODO remove
     private RelativeLayout rootView;
     private PlayerView playerView;
@@ -125,21 +125,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return ivThumbnail;
     }
 
-    public void setEntityId(String entityId, String videoCoverUrl, Callback callback) {
-        if (entityId == null || entityId.isEmpty()) {
+    public void init(Callback callback) {
+        if (UizaData.getInstance().getEntityId() == null || UizaData.getInstance().getEntityId().isEmpty()) {
             ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
             return;
         }
-        this.entityId = entityId;
-        this.videoCoverUrl = videoCoverUrl;
-        LLog.d(TAG, "entityId " + entityId);
-        LLog.d(TAG, "videoCoverUrl " + videoCoverUrl);
         this.callback = callback;
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
+        setTitle();
         setVideoCover();
         getLinkPlay();
+
+        //track event eventype display
+        //trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
     }
 
     private ImageView ivVideoCover;
@@ -155,7 +155,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             ivVideoCover.setLayoutParams(layoutParamsIv);
-            LImageUtil.load(activity, videoCoverUrl == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + videoCoverUrl, ivVideoCover);
+            LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover);
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
@@ -173,11 +173,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+    public void init() {
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
+        setTitle();
         getLinkPlay();
     }
 
@@ -389,7 +389,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             clickPiP();
         } else if (v == exoShare) {
             //TODO
-            LSocialUtil.share((BaseActivity) getContext(), "This is dummy share by Loitp");
+            LSocialUtil.share((BaseActivity) getContext(), "Share");
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
@@ -415,8 +415,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaUtil.resizeLayout(rootView, llMid);
     }
 
-    public void setTitle(String title) {
-        tvTitle.setText(title);
+    public void setTitle() {
+        tvTitle.setText(UizaData.getInstance().getEntityName());
         LUIUtil.setTextShadow(tvTitle);
     }
 
@@ -541,9 +541,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
         String appId = auth.getData().getAppId();
-        LLog.d(TAG, "getLinkPlay entityId: " + entityId + ", appId: " + appId);
+        LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
         //API v2
-        ((BaseActivity) getContext()).subscribe(service.getLinkPlayV2(entityId, appId), new ApiSubscriber<GetLinkPlay>() {
+        ((BaseActivity) getContext()).subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
                 List<String> listLinkPlay = new ArrayList<>();
@@ -673,4 +673,19 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         });
         //End API v2
     }*/
+
+    private void trackUiza(final UizaTracking uizaTracking) {
+        UizaService service = RestClientTracking.createService(UizaService.class);
+        ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object tracking) {
+                LLog.d(TAG, "trackUiza " + uizaTracking.getEventType() + " -> " + gson.toJson(tracking));
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                ((BaseActivity) getContext()).handleException(e);
+            }
+        });
+    }
 }

@@ -25,11 +25,12 @@ import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.views.LToast;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
+import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.views.LToast;
 
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
 import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
@@ -60,20 +61,29 @@ public class UizaPlayerActivityV2 extends BaseActivity {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        uizaIMAVideo.setEntityId(entityId, entityCover, new UizaIMAVideo.Callback() {
+        UizaData.getInstance().setEntityId(entityId);
+        UizaData.getInstance().setEntityName(entityTitle);
+        UizaData.getInstance().setEntityCover(entityCover);
+        UizaData.getInstance().setPlayerId("Skin default");
+
+        uizaIMAVideo.init(new UizaIMAVideo.Callback() {
             @Override
             public void isInitResult(boolean isInitSuccess) {
                 setListener();
             }
         });
-        uizaIMAVideo.setTitle(entityTitle);
 
         uizaIMAVideoInfo.setEntityId(entityId, new ItemAdapterV2.Callback() {
             @Override
             public void onClick(Item movie, int position) {
-                uizaIMAVideo.setEntityId(movie.getId());
+
+                UizaData.getInstance().setEntityId(movie.getId());
+                UizaData.getInstance().setEntityName(movie.getName());
+                UizaData.getInstance().setEntityCover(movie.getThumbnail());
+                UizaData.getInstance().setPlayerId("Skin default");
+
+                uizaIMAVideo.init();
                 uizaIMAVideoInfo.setEntityId(movie.getId());
-                uizaIMAVideo.setTitle(movie.getName());
             }
 
             @Override
