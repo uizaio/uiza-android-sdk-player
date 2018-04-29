@@ -38,6 +38,9 @@
             android:name=".activity.home.v2.cannotslide.SearchV2Activity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.home.v2.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.home.v2.cannotslide.UizaPlayerActivityV2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />

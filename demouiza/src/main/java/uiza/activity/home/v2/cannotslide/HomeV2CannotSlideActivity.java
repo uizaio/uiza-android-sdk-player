@@ -14,6 +14,7 @@ import java.util.List;
 
 import uiza.R;
 import uiza.activity.data.HomeDataV2;
+import uiza.activity.home.v2.login.LoginActivity;
 import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
@@ -80,9 +81,9 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mDrawerLayout.closeDrawers();
                 }
-                /*Intent intent = new Intent(activity, LoginActivity.class);
+                Intent intent = new Intent(activity, LoginActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);*/
+                LActivityUtil.tranIn(activity);
             }
 
             /*@Override
