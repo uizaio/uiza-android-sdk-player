@@ -610,16 +610,18 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         if (player == null || exoVolume == null) {
             return;
         }
-        if (player.getVolume() == 0f) {
-            //off -> on
-            setVolume(currentVolume);
+        if (player.getVolume() < currentVolume) {
+            //LLog.d(TAG, "toggleVolumeMute off -> on");
+            uizaIMAVideo.setProgressVolumeSeekbar((int) (currentVolume * 100));
             exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
-            //on -> off
+            //LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
-            setVolume(0f);
+            uizaIMAVideo.setProgressVolumeSeekbar(0);
             exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
         }
+        LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
+        LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());
     }
 
     public SimpleExoPlayer getPlayer() {
