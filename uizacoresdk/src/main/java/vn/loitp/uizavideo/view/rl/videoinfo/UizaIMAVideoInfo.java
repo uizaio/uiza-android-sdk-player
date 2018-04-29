@@ -65,9 +65,22 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     public void init(ItemAdapterV2.Callback callback) {
         this.callback = callback;
+        clearAllViews();
+    }
+
+    private void clearAllViews() {
         itemList.clear();
         notifyViews();
-        getDetailEntity();
+        LUIUtil.showProgressBar(progressBar);
+
+        String s = "...";
+        tvVideoName.setText(s);
+        tvVideoTime.setText(s);
+        tvVideoRate.setText(s);
+        tvVideoDescription.setText(s);
+        tvVideoStarring.setText(s);
+        tvVideoDirector.setText(s);
+        tvVideoGenres.setText(s);
     }
 
     public UizaIMAVideoInfo(Context context) {
@@ -141,8 +154,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void getDetailEntity() {
-        LUIUtil.showProgressBar(progressBar);
+    public void getDetailEntity() {
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
@@ -199,8 +211,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void getListAllEntityRelation() {
-        LLog.d(TAG, "getListAllEntityRelation");
-
         UizaService service = RestClientV2.createService(UizaService.class);
         LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 

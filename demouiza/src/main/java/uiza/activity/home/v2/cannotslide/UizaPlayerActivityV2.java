@@ -260,7 +260,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         LLog.d(TAG, "isInitResult " + isInitSuccess);
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {
-            uizaIMAVideoInfo.setVisibility(View.VISIBLE);
+            uizaIMAVideoInfo.getDetailEntity();
         }
     }
 
@@ -280,11 +280,12 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         UizaData.getInstance().setEntityCover(entityCover);
         UizaData.getInstance().setPlayerId("Skin default");
 
-        String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
         UizaData.getInstance().setUrlIMAAd(urlIMAAd);
 
-        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
         UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
         uizaIMAVideo.init(this);
