@@ -5,7 +5,9 @@ import android.provider.Settings;
 
 import com.google.gson.Gson;
 
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -15,6 +17,7 @@ import vn.loitp.restapi.uiza.model.v2.auth.Auth;
  */
 
 public class UizaData {
+    private final String TAG = getClass().getSimpleName();
     private static final UizaData ourInstance = new UizaData();
 
     public static UizaData getInstance() {
@@ -152,6 +155,10 @@ public class UizaData {
         uizaTracking.setPlayThrough(playThrough);
         //event_type
         uizaTracking.setEventType(eventType);
+        if (Constants.IS_DEBUG) {
+            Gson gson = new Gson();
+            LLog.d(TAG, "createTrackingInput " + gson.toJson(uizaTracking));
+        }
         return uizaTracking;
     }
 }

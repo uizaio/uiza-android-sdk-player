@@ -3,7 +3,6 @@ package uiza.activity.home.v2.cannotslide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Surface;
-import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -59,7 +58,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        setupVideo(entityId, entityCover, entityTitle);
+        setupVideo(entityId, entityTitle, entityCover);
     }
 
     @Override
@@ -112,6 +111,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     private void setListener() {
         LLog.d(TAG, TAG + " addListener");
+        if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
+            return;
+        }
         uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
@@ -275,6 +277,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setupVideo(String entityId, String entityTitle, String entityCover) {
+        LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
         UizaData.getInstance().setEntityId(entityId);
         UizaData.getInstance().setEntityName(entityTitle);
         UizaData.getInstance().setEntityCover(entityCover);
