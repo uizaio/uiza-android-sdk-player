@@ -298,7 +298,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
-        //uizaPlayerManager.setVolume(100f);
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
@@ -341,11 +340,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void setProgressSeekbar(SeekBar seekbar, int progressSeekbar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             seekbar.setProgress(progressSeekbar, true);
         } else {
             seekbar.setProgress(progressSeekbar);
-        }
+        }*/
+        seekbar.setProgress(progressSeekbar);
     }
 
     public void setProgressVolumeSeekbar(int progress) {
