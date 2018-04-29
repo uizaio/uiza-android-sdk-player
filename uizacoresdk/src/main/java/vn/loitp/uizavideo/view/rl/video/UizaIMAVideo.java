@@ -176,6 +176,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             rootView.removeView(realtimeBlurView);
             ivVideoCover = null;
             realtimeBlurView = null;
+            onStateReadyFirst();
         }
     }
 
@@ -331,7 +332,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    public void onStartFirstFrameUizaVideo() {
+    public void onStateReadyFirst() {
+        LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true);
         }

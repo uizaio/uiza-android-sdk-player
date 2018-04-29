@@ -367,8 +367,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         if (adsLoader != null) {
             adsLoader.release();
         }
-
-        isRenderedFirstFrame = false;
     }
 
     // AdsMediaSource.MediaSourceFactory implementation.
@@ -540,8 +538,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         }
     }
 
-    private boolean isRenderedFirstFrame;
-
     public class VideoEventListener implements VideoRendererEventListener {
         private final String TAG = Constants.LOITP;
 
@@ -574,10 +570,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         public void onRenderedFirstFrame(Surface surface) {
             LLog.d(TAG, "onRenderedFirstFrame");
             uizaIMAVideo.removeVideoCover();
-            if (!isRenderedFirstFrame) {
-                isRenderedFirstFrame = true;
-                uizaIMAVideo.onStartFirstFrameUizaVideo();
-            }
         }
 
         @Override
