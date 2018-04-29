@@ -364,14 +364,22 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onResume() {
-        if (uizaPlayerManager != null) {
-            uizaPlayerManager.init();
+        if (isExoShareClicked) {
+            isExoShareClicked = false;
+        } else {
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.init();
+            }
         }
     }
 
     public void onPause() {
-        if (uizaPlayerManager != null) {
-            uizaPlayerManager.reset();
+        if (isExoShareClicked) {
+            //do nothing
+        } else {
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.reset();
+            }
         }
     }
 
@@ -390,6 +398,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         LLog.d(TAG, "onPreview progress " + progress);
     }
+
+    private boolean isExoShareClicked;
 
     @Override
     public void onClick(View v) {
@@ -429,6 +439,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else if (v == exoShare) {
             //TODO
             LSocialUtil.share((BaseActivity) getContext(), isLandscape, "Share");
+            isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {

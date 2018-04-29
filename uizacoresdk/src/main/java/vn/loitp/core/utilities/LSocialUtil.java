@@ -60,29 +60,12 @@ public class LSocialUtil {
 
     public static void share(Activity activity, boolean isLandscape, String msg) {
         try {
-            /*if (isLandscape) {
-                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                activity.getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            }*/
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, "Share via"));
-            //LActivityUtil.tranIn(activity);
-
-            if (isLandscape) {
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-                //LScreenUtil.hideDefaultControls(activity);
-                LScreenUtil.hideNavigationBar(activity);
-            }
+            LActivityUtil.tranIn(activity);
         } catch (Exception e) {
             LLog.d(TAG, "Exception shareApp: " + e.toString());
         }

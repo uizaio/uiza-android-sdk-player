@@ -304,7 +304,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_share_black_48dp"
                 android:tint="@color/White"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_fullscreen_toggle_icon"
