@@ -182,6 +182,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
                 LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
+                if (subtitleList == null || subtitleList.isEmpty()) {
+                    exoCc.setVisibility(GONE);
+                } else {
+                    exoCc.setVisibility(VISIBLE);
+                }
+
                 //initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), UizaUtil.createDummySubtitle(gson));
                 initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
@@ -366,13 +372,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
         LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
-        if (percent == 25) {
+        if (percent == Constants.PLAYTHROUGH_25) {
             trackUiza(UizaData.getInstance().createTrackingInput(activity, "25", UizaData.EVENT_TYPE_PLAY_THROUGHT));
-        } else if (percent == 50) {
+        } else if (percent == Constants.PLAYTHROUGH_50) {
             trackUiza(UizaData.getInstance().createTrackingInput(activity, "50", UizaData.EVENT_TYPE_PLAY_THROUGHT));
-        } else if (percent == 75) {
+        } else if (percent == Constants.PLAYTHROUGH_75) {
             trackUiza(UizaData.getInstance().createTrackingInput(activity, "75", UizaData.EVENT_TYPE_PLAY_THROUGHT));
-        } else if (percent == 99) {
+        } else if (percent == Constants.PLAYTHROUGH_100) {
             trackUiza(UizaData.getInstance().createTrackingInput(activity, "100", UizaData.EVENT_TYPE_PLAY_THROUGHT));
         }
     }
@@ -669,8 +675,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getDetailEntity() {
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
-        //jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
-        jsonBodyGetDetailEntity.setId("56a4f990-17e6-473c-8434-ef6c7e40bba1");
+        jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
+        //jsonBodyGetDetailEntity.setId(Constants.ENTITYID_WITH_SUBTITLE);
 
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
