@@ -18,7 +18,6 @@ package vn.loitp.uizavideo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
@@ -101,15 +100,15 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         isDisabled = selector.getRendererDisabled(rendererIndex);
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(title)
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
+        builder
+                .setTitle(title)
                 .setView(buildView(builder.getContext()))
                 .setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, null);
-        //.create()
-        //.show();
 
-        Dialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
         boolean isFullScreen = LScreenUtil.isFullScreen(activity);
         if (isFullScreen) {
             dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -125,6 +124,12 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         dialog.show();
         if (isFullScreen) {
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+        try {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
+        } catch (Exception e) {
+            //do nothing
         }
     }
 
@@ -188,8 +193,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
 
         if (haveAdaptiveTracks) {
             // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(
-                    android.R.layout.simple_list_item_multiple_choice, root, false);
+            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
             enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setOnClickListener(this);

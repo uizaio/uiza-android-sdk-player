@@ -53,4 +53,15 @@
         <attr name="aw_canCancelAnswer" format="boolean" />
     </declare-styleable>
 
+    <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="colorAccent">@color/White</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="uiza_dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/fade_enter</item>
+        <item name="android:windowExitAnimation">@anim/fade_exit</item>
+    </style>
 </resources>
