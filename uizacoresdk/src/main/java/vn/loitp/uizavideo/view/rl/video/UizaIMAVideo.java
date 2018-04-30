@@ -4,7 +4,6 @@ package vn.loitp.uizavideo.view.rl.video;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -364,7 +363,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onResume() {
-        LLog.d(TAG, "fuck onResume");
         if (isExoShareClicked) {
             isExoShareClicked = false;
         } else {
@@ -461,15 +459,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         super.onConfigurationChanged(newConfig);
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                LLog.d(TAG, "fuck onConfigurationChanged ORIENTATION_LANDSCAPE");
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
             } else {
-                LLog.d(TAG, "fuck onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
 
-                LLog.d(TAG, "fuck isSetShowNavigationBarByClickShare " + isSetShowNavigationBarByClickShare);
                 if (isSetShowNavigationBarByClickShare) {
                     LScreenUtil.showNavigationBar(activity);
                     isSetShowNavigationBarByClickShare = false;
@@ -606,7 +601,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
         String appId = auth.getData().getAppId();
         LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
-        //API v2
         activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
@@ -623,7 +617,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     ((BaseActivity) activity).showDialogOne(activity.getString(R.string.has_no_linkplay), true);
                     return;
                 }
-
                 String linkPlay = listLinkPlay.get(0);
                 initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), createDummySubtitle());
                 onResume();
@@ -638,7 +631,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
             }
         });
-        //End API v2
     }
 
     private List<Subtitle> createDummySubtitle() {
