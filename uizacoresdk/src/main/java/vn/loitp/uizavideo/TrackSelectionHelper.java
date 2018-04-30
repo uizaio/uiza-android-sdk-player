@@ -123,7 +123,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         }
         dialog.show();
         try {
-            dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
+            //dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
         } catch (Exception e) {
             //do nothing

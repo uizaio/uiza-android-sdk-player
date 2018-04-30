@@ -73,7 +73,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    private BaseActivity activity;
     private Gson gson = new Gson();//TODO remove
     private RelativeLayout rootView;
     private PlayerView playerView;
@@ -364,6 +364,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onResume() {
+        LLog.d(TAG, "fuck onResume");
         if (isExoShareClicked) {
             isExoShareClicked = false;
         } else {
@@ -438,31 +439,41 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             clickPiP();
         } else if (v == exoShare) {
             //TODO
-            LSocialUtil.share((BaseActivity) getContext(), isLandscape, "Share");
-            if(isLandscape){
+            LSocialUtil.share(activity, isLandscape, "Share");
+            if (isLandscape) {
                 LScreenUtil.hideNavigationBar(activity);
+                isSetShowNavigationBarByClickShare = true;
             }
             isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
-                uizaPlayerManager.getTrackSelectionHelper().showSelectionDialog((BaseActivity) getContext(), ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
+                uizaPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         }
     }
 
     private boolean isLandscape;
+    private boolean isSetShowNavigationBarByClickShare;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if ((BaseActivity) getContext() != null) {
+        if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                LScreenUtil.hideDefaultControls((BaseActivity) getContext());
+                LLog.d(TAG, "fuck onConfigurationChanged ORIENTATION_LANDSCAPE");
+                LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
             } else {
-                LScreenUtil.showDefaultControls((BaseActivity) getContext());
+                LLog.d(TAG, "fuck onConfigurationChanged !ORIENTATION_LANDSCAPE");
+                LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
+
+                LLog.d(TAG, "fuck isSetShowNavigationBarByClickShare " + isSetShowNavigationBarByClickShare);
+                if (isSetShowNavigationBarByClickShare) {
+                    LScreenUtil.showNavigationBar(activity);
+                    isSetShowNavigationBarByClickShare = false;
+                }
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);
@@ -485,7 +496,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
             if (trackGroups.length != 0) {
-                Button button = new Button(getContext());
+                Button button = new Button(activity);
                 int label;
                 switch (uizaPlayerManager.getPlayer().getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
@@ -539,7 +550,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             } else {
                 ivBirghtnessSeekbar.setImageResource(R.drawable.ic_brightness_1_black_48dp);
             }
-            LScreenUtil.setBrightness(getContext(), progress);
+            LScreenUtil.setBrightness(activity, progress);
         }
     }
 
@@ -558,15 +569,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void clickPiP() {
         LLog.d(TAG, "clickPiP");
-        if (getContext() == null) {
+        if (activity == null) {
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
             //If the draw over permission is not available open the settings screen
             //to grant the permission.
             LLog.d(TAG, "clickPiP if");
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getContext().getPackageName()));
-            ((BaseActivity) getContext()).startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
+            activity.startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
             LLog.d(TAG, "clickPiP else");
             initializePiP();
@@ -574,12 +585,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void initializePiP() {
-        if (getContext() == null) {
+        if (activity == null) {
             return;
         }
-        LToast.show(getContext(), "initializePiP");
-        getContext().startService(new Intent(getContext(), FloatingUizaVideoService.class));
-        ((BaseActivity) getContext()).onBackPressed();
+        LToast.show(activity, "initializePiP");
+        activity.startService(new Intent(activity, FloatingUizaVideoService.class));
+        (activity).onBackPressed();
     }
 
     public SimpleExoPlayer getPlayer() {
@@ -596,7 +607,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         String appId = auth.getData().getAppId();
         LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
         //API v2
-        ((BaseActivity) getContext()).subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
+        activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
                 List<String> listLinkPlay = new ArrayList<>();
@@ -621,7 +632,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.d(TAG, "onFail getLinkDownloadV2: " + e.toString());
-                ((BaseActivity) getContext()).handleException(e);
+                activity.handleException(e);
                 if (callback != null) {
                     callback.isInitResult(false);
                 }
