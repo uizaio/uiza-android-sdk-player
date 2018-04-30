@@ -154,7 +154,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void getDetailEntity() {
+    /*public void getDetailEntity() {
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
@@ -173,6 +173,15 @@ public class UizaIMAVideoInfo extends RelativeLayout {
                 ((BaseActivity) activity).handleException(e);
             }
         });
+    }*/
+
+    public void setup(GetDetailEntity getDetailEntity) {
+        if (getDetailEntity == null) {
+            return;
+        }
+        LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+        mItem = getDetailEntity.getData().get(0);
+        updateUI();
     }
 
     public void updateUI() {

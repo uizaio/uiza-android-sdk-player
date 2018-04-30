@@ -24,6 +24,8 @@ import java.util.List;
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
@@ -258,11 +260,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess) {
+    public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "isInitResult " + isInitSuccess);
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {
-            uizaIMAVideoInfo.getDetailEntity();
+            uizaIMAVideoInfo.setup(getDetailEntity);
         }
     }
 
