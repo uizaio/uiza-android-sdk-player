@@ -122,14 +122,14 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
         dialog.show();
-        if (isFullScreen) {
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        }
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
         } catch (Exception e) {
             //do nothing
+        }
+        if (isFullScreen) {
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
     }
 
