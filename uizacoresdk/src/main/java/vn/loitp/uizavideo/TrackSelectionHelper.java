@@ -307,5 +307,4 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         }
         return tracks;
     }
-
 }

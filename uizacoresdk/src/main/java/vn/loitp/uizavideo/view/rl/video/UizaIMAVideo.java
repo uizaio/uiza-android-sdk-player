@@ -32,10 +32,8 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
@@ -171,7 +169,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         listLinkPlay.add(mpd.getUrl());
                     }
                 }
-                LLog.d(TAG, "getLinkPlayV2 toJson: " + gson.toJson(listLinkPlay));
+                LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.d(TAG, "listLinkPlay == null || listLinkPlay.isEmpty()");
                     ((BaseActivity) activity).showDialogOne(activity.getString(R.string.has_no_linkplay), true);
@@ -179,7 +177,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 //TODO thu tat ca cac link play
                 String linkPlay = listLinkPlay.get(0);
-                initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), createDummySubtitle());
+
+                LLog.d(TAG, "mGetDetailEntity toJson: " + gson.toJson(mGetDetailEntity));
+                List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
+                LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
+
+                //initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), UizaUtil.createDummySubtitle(gson));
+                initData(linkPlay, UizaData.getInstance().getUrlIMAAd(), UizaData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
             } else {
                 ((BaseActivity) activity).showDialogOne(activity.getString(R.string.err_setup), true);
@@ -653,7 +657,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                LLog.d(TAG, "onFail getLinkDownloadV2: " + e.toString());
+                LLog.d(TAG, "onFail getLinkPlay: " + e.toString());
                 activity.handleException(e);
                 if (callback != null) {
                     callback.isInitResult(false, null, null);
@@ -665,12 +669,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getDetailEntity() {
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
-        jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
+        //jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
+        jsonBodyGetDetailEntity.setId("56a4f990-17e6-473c-8434-ef6c7e40bba1");
 
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntity) {
-                LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+                LLog.d(TAG, "getDetailEntity entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
                 mGetDetailEntity = getDetailEntity;
                 isGetDetailEntityDone = true;
                 checkToSetUp();
@@ -678,39 +683,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getDetailEntityV2 onFail " + e.toString());
+                LLog.e(TAG, "getDetailEntity onFail " + e.toString());
                 ((BaseActivity) activity).handleException(e);
             }
         });
-    }
-
-    private List<Subtitle> createDummySubtitle() {
-        String json = "[\n" +
-                "                {\n" +
-                "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_en_1522812430080.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"en\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"id\": \"271787a0-5d23-4a35-a10a-5c43fdcb71a8\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"vi\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                }\n" +
-                "            ]";
-        Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
-        List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
-        return subtitleList;
     }
 
     public interface Callback {
