@@ -439,6 +439,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else if (v == exoShare) {
             //TODO
             LSocialUtil.share((BaseActivity) getContext(), isLandscape, "Share");
+            if(isLandscape){
+                LScreenUtil.hideNavigationBar(activity);
+            }
             isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
