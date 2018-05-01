@@ -42,10 +42,10 @@ public class SplashActivity extends BaseActivity {
         currentApiEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_END_POINT);
         currentApiTrackingEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_TRACKING_END_POINT);
 
-        LLog.d(TAG, "currentPlayerId " + currentPlayerId);
-        LLog.d(TAG, "canSlide " + canSlide);
-        LLog.d(TAG, "currentApiEndPoint " + currentApiEndPoint);
-        LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
+        LLog.d(TAG, "getIntent currentPlayerId " + currentPlayerId);
+        LLog.d(TAG, "getIntent canSlide " + canSlide);
+        LLog.d(TAG, "getIntent currentApiEndPoint " + currentApiEndPoint);
+        LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
         switch (currentApiEndPoint) {
             case Constants.URL_DEV_UIZA_VERSION_2:

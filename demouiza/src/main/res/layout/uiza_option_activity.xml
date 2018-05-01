@@ -26,8 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bt_start"
-        android:fillViewport="true"
-        android:visibility="invisible">
+        android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -65,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
                         android:checked="true"
-                        android:text="Skin 1"
+                        android:text="Uiza Skin 1"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
                         android:textStyle="bold" />
@@ -75,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
-                        android:text="Skin 2"
+                        android:text="Uiza  Skin 2"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
                         android:textStyle="bold" />
@@ -85,7 +84,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
-                        android:text="Skin 3"
+                        android:text="Uiza  Skin 3"
+                        android:textColor="@color/White"
+                        android:textSize="@dimen/txt_15"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/radio_skin_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:text="Uiza Skin default"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
                         android:textStyle="bold" />

@@ -23,6 +23,7 @@ public class OptionActivity extends BaseActivity {
     private RadioButton radioSkin1;
     private RadioButton radioSkin2;
     private RadioButton radioSkin3;
+    private RadioButton radioSkin0;
     private String currentPlayerId;
 
     private RadioGroup radioGroupSlide;
@@ -59,6 +60,7 @@ public class OptionActivity extends BaseActivity {
         radioSkin1 = (RadioButton) findViewById(R.id.radio_skin_1);
         radioSkin2 = (RadioButton) findViewById(R.id.radio_skin_2);
         radioSkin3 = (RadioButton) findViewById(R.id.radio_skin_3);
+        radioSkin0 = (RadioButton) findViewById(R.id.radio_skin_0);
         //setting slide
         radioGroupSlide = (RadioGroup) findViewById(R.id.radio_group_slide);
         radioCanSlide = (RadioButton) findViewById(R.id.radio_can_slide);
@@ -133,6 +135,8 @@ public class OptionActivity extends BaseActivity {
                         break;
                     case R.id.radio_skin_3:
                         currentPlayerId = Constants.PLAYER_ID_SKIN_3;
+                    case R.id.radio_skin_0:
+                        currentPlayerId = Constants.PLAYER_ID_SKIN_0;
                         break;
                 }
             }

@@ -4,7 +4,7 @@ package vn.loitp.core.common;
  * Created by loitp
  */
 public class Constants {
-    public static boolean IS_DEBUG = false;
+    public static boolean IS_DEBUG = true;
 
     public final static String LOITP = "LoitpDebug";
 
@@ -85,6 +85,7 @@ public class Constants {
 
     public final static String USER_AGENT = "AndroidUserAgent";
 
+    public final static String PLAYER_ID_SKIN_0 = "PLAYER_ID_SKIN_0";
     public final static String PLAYER_ID_SKIN_1 = "b825c07e-2ed2-48a8-a8ee-012baf8614e8";
     public final static String PLAYER_ID_SKIN_2 = "29c2bb31-e1f9-4992-ac89-e7d2759a2d6b";
     public final static String PLAYER_ID_SKIN_3 = "d1a9eca0-8bef-4985-8260-af3300191200";
