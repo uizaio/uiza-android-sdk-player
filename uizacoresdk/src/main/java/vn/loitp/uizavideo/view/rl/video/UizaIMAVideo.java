@@ -514,10 +514,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else if (v == exoShare) {
             //TODO
             LSocialUtil.share(activity, isLandscape, "Share");
-            if (isLandscape) {
-                LScreenUtil.hideNavigationBar(activity);
-                isSetShowNavigationBarByClickShare = true;
-            }
             isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
@@ -528,7 +524,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private boolean isLandscape;
-    private boolean isSetShowNavigationBarByClickShare;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -540,11 +535,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
-
-                if (isSetShowNavigationBarByClickShare) {
-                    LScreenUtil.showNavigationBar(activity);
-                    isSetShowNavigationBarByClickShare = false;
-                }
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);

@@ -48,10 +48,8 @@ public class TextViewWithSize extends TextView {
     protected void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.txt_18));
-            setPadding(10, 0, 10, 0);
         } else {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.txt_12));
-            setPadding(0, 0, 0, 0);
         }
     }
 
