@@ -21,6 +21,7 @@ import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 
 public class SplashActivity extends BaseActivity {
@@ -163,7 +164,7 @@ public class SplashActivity extends BaseActivity {
             showDialogOne("token==null", true);
             return;
         }
-
+        UizaData.getInstance().setPlayerId(currentPlayerId);
         RestClientV2.init(currentApiEndPoint, token);
         switch (currentApiEndPoint) {
             case Constants.URL_DEV_UIZA_VERSION_2:

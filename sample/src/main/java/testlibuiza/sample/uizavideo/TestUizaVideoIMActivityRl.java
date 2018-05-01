@@ -23,7 +23,10 @@ import java.util.List;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
@@ -43,7 +46,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         UizaData.getInstance().setEntityId(entityId);
         UizaData.getInstance().setEntityName(entityTitle);
         UizaData.getInstance().setEntityCover(videoCoverUrl);
-        UizaData.getInstance().setPlayerId("Skin default");
+        UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
 
         String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         UizaData.getInstance().setUrlIMAAd(urlIMAAd);
@@ -249,7 +252,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess) {
+    public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         setListener();
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -34,10 +35,6 @@ import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
-
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
@@ -47,9 +44,10 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
-        String entityId = getIntent().getStringExtra(KEY_UIZA_ENTITY_ID);
-        String entityCover = getIntent().getStringExtra(KEY_UIZA_ENTITY_COVER);
-        String entityTitle = getIntent().getStringExtra(KEY_UIZA_ENTITY_TITLE);
+
+        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+        String entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
+        String entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
 
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
@@ -279,11 +277,18 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setupVideo(String entityId, String entityTitle, String entityCover) {
+        if (entityId == null || entityId.isEmpty()) {
+            showDialogMsg("Entity ID cannot be null or empty");
+            return;
+        }
+        if (UizaData.getInstance().getPlayerId() == null || UizaData.getInstance().getPlayerId().isEmpty()) {
+            showDialogMsg("Player Skin ID cannot be null or empty");
+            return;
+        }
         LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
         UizaData.getInstance().setEntityId(entityId);
         UizaData.getInstance().setEntityName(entityTitle);
         UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setPlayerId("Skin default");
 
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
