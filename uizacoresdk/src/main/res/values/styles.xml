@@ -61,7 +61,7 @@
     </style>
 
     <style name="uiza_dialog_animation">
-        <item name="android:windowEnterAnimation">@anim/fade_enter</item>
-        <item name="android:windowExitAnimation">@anim/fade_exit</item>
+        <item name="android:windowEnterAnimation">@anim/slide_up_enter</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_exit</item>
     </style>
 </resources>

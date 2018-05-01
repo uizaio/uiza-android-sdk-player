@@ -20,10 +20,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.Pair;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,16 +126,22 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         }
         dialog.show();
         try {
-            //dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
+            dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
+
+            //set dialog position
+            WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
+            wlp.gravity = Gravity.BOTTOM;
+            wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            dialog.getWindow().setAttributes(wlp);
 
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.7);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.7);
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6);
             } else {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.9);
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
             }
             dialog.getWindow().setLayout(width, height);
@@ -159,22 +165,25 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         //attributeArray.recycle();
 
         // View for disabling the renderer.
-        disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        //disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        disableView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
         //disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         disableView.setTextColor(Color.WHITE);
+        //disableView.setCheckMarkDrawable(R.drawable.default_checkbox);
         disableView.setOnClickListener(this);
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
-        defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        defaultView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
         //defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         defaultView.setTextColor(Color.WHITE);
+        //defaultView.setCheckMarkDrawable(R.drawable.default_checkbox);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView);
@@ -191,8 +200,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                 if (trackIndex == 0) {
                     root.addView(inflater.inflate(R.layout.list_divider, root, false));
                 }
-                int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_multiple_choice
-                        : android.R.layout.simple_list_item_single_choice;
+                int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
                 //trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
@@ -207,6 +215,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                 }
                 trackView.setTextColor(Color.WHITE);
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                //trackView.setCheckMarkDrawable(R.drawable.default_checkbox);
                 trackViews[groupIndex][trackIndex] = trackView;
                 root.addView(trackView);
             }
@@ -219,6 +228,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setTextColor(Color.WHITE);
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            //enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
             root.addView(enableRandomAdaptationView);
