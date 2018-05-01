@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-    android:checkMarkTint="@color/White"
     android:gravity="center_vertical"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"

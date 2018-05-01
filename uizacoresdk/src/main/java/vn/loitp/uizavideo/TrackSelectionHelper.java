@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -102,9 +103,9 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         isDisabled = selector.getRendererDisabled(rendererIndex);
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-        //AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         //AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
                 .setTitle(title)
                 .setView(buildView(activity))
@@ -138,8 +139,8 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.6);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.4);
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.65);
+                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
             } else {
                 width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
@@ -171,7 +172,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        disableView.setTextColor(Color.WHITE);
+        disableView.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
         //disableView.setCheckMarkDrawable(R.drawable.default_checkbox);
         disableView.setOnClickListener(this);
         root.addView(disableView);
@@ -182,7 +183,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        defaultView.setTextColor(Color.WHITE);
+        defaultView.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
         //defaultView.setCheckMarkDrawable(R.drawable.default_checkbox);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
@@ -213,7 +214,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                     trackView.setFocusable(false);
                     trackView.setEnabled(false);
                 }
-                trackView.setTextColor(Color.WHITE);
+                trackView.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 //trackView.setCheckMarkDrawable(R.drawable.default_checkbox);
                 trackViews[groupIndex][trackIndex] = trackView;
@@ -223,10 +224,10 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
 
         if (haveAdaptiveTracks) {
             // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.view_setting_mutiple_choice, root, false);
             //enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            enableRandomAdaptationView.setTextColor(Color.WHITE);
+            enableRandomAdaptationView.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             //enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
             enableRandomAdaptationView.setOnClickListener(this);
