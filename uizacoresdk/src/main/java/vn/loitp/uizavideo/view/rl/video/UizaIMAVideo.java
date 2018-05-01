@@ -252,14 +252,20 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void onCreate() {
-        inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
         activity = ((BaseActivity) getContext());
+        inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
+        rootView = (RelativeLayout) findViewById(R.id.root_view);
+        addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid);
     }
 
+    private void addPlayerView() {
+        PlayerView playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+        rootView.addView(playerView);
+    }
+
     private void findViews() {
-        rootView = (RelativeLayout) findViewById(R.id.root_view);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
