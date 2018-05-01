@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
@@ -69,12 +70,31 @@ public class ImageButtonWithSize extends ImageButton {
         }
         //LLog.d(TAG, "screenWidth " + screenWidth);
         if (isFullScreen) {
-            size = screenWidth / 16;
+            size = screenWidth / getRatioLand();
         } else {
-            size = screenWidth / 12;
+            size = screenWidth / getRatioPort();
         }
         LLog.d(TAG, size + "x" + size);
         setMeasuredDimension(size, size);
         isSetSize = true;
+    }
+
+    private int ratioLand = Constants.NOT_FOUND;
+    private int ratioPort = Constants.NOT_FOUND;
+
+    public int getRatioLand() {
+        return ratioLand == Constants.NOT_FOUND ? 16 : ratioLand;
+    }
+
+    public void setRatioLand(int ratioLand) {
+        this.ratioLand = ratioLand;
+    }
+
+    public int getRatioPort() {
+        return ratioPort == Constants.NOT_FOUND ? 12 : ratioPort;
+    }
+
+    public void setRatioPort(int ratioPort) {
+        this.ratioPort = ratioPort;
     }
 }
