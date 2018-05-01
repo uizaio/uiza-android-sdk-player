@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 
 /**
@@ -148,6 +150,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
+        disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         disableView.setOnClickListener(this);
         root.addView(disableView);
 
@@ -156,6 +159,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
+        defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView);
@@ -186,6 +190,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                     trackView.setFocusable(false);
                     trackView.setEnabled(false);
                 }
+                trackView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 trackViews[groupIndex][trackIndex] = trackView;
                 root.addView(trackView);
             }
@@ -196,6 +201,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
             enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
+            enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
             root.addView(enableRandomAdaptationView);
