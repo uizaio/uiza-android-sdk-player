@@ -56,8 +56,8 @@
     <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/White</item>
-        <item name="colorAccent">@color/White</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/White</item>
     </style>
 
     <style name="uiza_dialog_animation">

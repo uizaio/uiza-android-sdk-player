@@ -18,9 +18,10 @@ package vn.loitp.uizavideo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -43,7 +44,6 @@ import java.util.Arrays;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 
 /**
@@ -87,7 +87,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
      * @param trackInfo     The current track information.
      * @param rendererIndex The index of the renderer.
      */
-    public void showSelectionDialog(Activity activity, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
+    public void showSelectionDialog(final Activity activity, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
         this.trackInfo = trackInfo;
         this.rendererIndex = rendererIndex;
 
@@ -102,15 +102,16 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         isDisabled = selector.getRendererDisabled(rendererIndex);
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
                 .setTitle(title)
-                .setView(buildView(builder.getContext()))
+                .setView(buildView(activity))
                 .setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, null);
 
-        AlertDialog dialog = builder.create();
+        final Dialog dialog = builder.create();
         boolean isFullScreen = LScreenUtil.isFullScreen(activity);
         if (isFullScreen) {
             dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -127,6 +128,17 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         try {
             //dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
+
+            int width = 0;
+            int height = 0;
+            if (isFullScreen) {
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.7);
+                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.7);
+            } else {
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.9);
+                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+            }
+            dialog.getWindow().setLayout(width, height);
         } catch (Exception e) {
             //do nothing
         }
@@ -136,30 +148,33 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
     }
 
     @SuppressLint("InflateParams")
-    private View buildView(Context context) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+    private View buildView(Activity activity) {
+        LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
+
         ViewGroup root = view.findViewById(R.id.root);
 
-        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        attributeArray.recycle();
+        //TypedArray attributeArray = activity.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        //int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        //attributeArray.recycle();
 
         // View for disabling the renderer.
         disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
+        //disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        disableView.setTextColor(Color.WHITE);
         disableView.setOnClickListener(this);
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
         defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
+        //defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        defaultView.setTextColor(Color.WHITE);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView);
@@ -179,7 +194,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                 int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_multiple_choice
                         : android.R.layout.simple_list_item_single_choice;
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                //trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
                 trackView.setText(DemoUtil.buildShortTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex) == RendererCapabilities.FORMAT_HANDLED) {
@@ -190,6 +205,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                     trackView.setFocusable(false);
                     trackView.setEnabled(false);
                 }
+                trackView.setTextColor(Color.WHITE);
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 trackViews[groupIndex][trackIndex] = trackView;
                 root.addView(trackView);
@@ -199,8 +215,9 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
         if (haveAdaptiveTracks) {
             // View for using random adaptation.
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
-            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
+            //enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
+            enableRandomAdaptationView.setTextColor(Color.WHITE);
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
