@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import loitp.core.R;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LUIUtil;
 
 /**
@@ -47,12 +47,30 @@ public class TextViewWithSize extends TextView {
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.txt_18));
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, getTextSizeLand());
         } else {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.txt_12));
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, getTextSizePortrait());
         }
     }
 
+    private int textSizeLand = Constants.NOT_FOUND;
+    private int textSizePortrait = Constants.NOT_FOUND;
+
+    public int getTextSizeLand() {
+        return textSizeLand == Constants.NOT_FOUND ? 17 : textSizeLand;
+    }
+
+    public void setTextSizeLand(int textSizeLand) {
+        this.textSizeLand = textSizeLand;
+    }
+
+    public int getTextSizePortrait() {
+        return textSizePortrait == Constants.NOT_FOUND ? 12 : textSizePortrait;
+    }
+
+    public void setTextSizePortrait(int textSizePortrait) {
+        this.textSizePortrait = textSizePortrait;
+    }
     /*private int screenWPortrait;
     private int screenWLandscape;
 
