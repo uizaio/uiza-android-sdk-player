@@ -135,6 +135,7 @@ public class OptionActivity extends BaseActivity {
                         break;
                     case R.id.radio_skin_3:
                         currentPlayerId = Constants.PLAYER_ID_SKIN_3;
+                        break;
                     case R.id.radio_skin_0:
                         currentPlayerId = Constants.PLAYER_ID_SKIN_0;
                         break;
