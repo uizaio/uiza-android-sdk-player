@@ -288,6 +288,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void updateUIEachSkin() {
         switch (UizaData.getInstance().getPlayerId()) {
             case Constants.PLAYER_ID_SKIN_2:
+            case Constants.PLAYER_ID_SKIN_3:
                 ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
                 exoPlay.setRatioLand(7);
                 exoPlay.setRatioPort(5);
