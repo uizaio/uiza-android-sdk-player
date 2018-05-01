@@ -152,6 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
@@ -170,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_play_arrow_black_48dp"
                 android:tint="@color/White" />
 
@@ -180,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_pause_black_48dp"
                 android:tint="@color/White" />
 

@@ -74,7 +74,7 @@ public class ImageButtonWithSize extends ImageButton {
         } else {
             size = screenWidth / getRatioPort();
         }
-        LLog.d(TAG, size + "x" + size);
+        LLog.d(TAG, "onMeasure: " + size + "x" + size);
         setMeasuredDimension(size, size);
         isSetSize = true;
     }
@@ -88,6 +88,7 @@ public class ImageButtonWithSize extends ImageButton {
 
     public void setRatioLand(int ratioLand) {
         this.ratioLand = ratioLand;
+        requestLayout();
     }
 
     public int getRatioPort() {
@@ -96,5 +97,6 @@ public class ImageButtonWithSize extends ImageButton {
 
     public void setRatioPort(int ratioPort) {
         this.ratioPort = ratioPort;
+        requestLayout();
     }
 }

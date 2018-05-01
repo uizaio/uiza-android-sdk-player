@@ -63,6 +63,7 @@ import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
+import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
@@ -258,6 +259,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid);
+        updateUIEachSkin();
     }
 
     private void addPlayerView() {
@@ -281,6 +283,19 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 break;
         }
         rootView.addView(playerView);
+    }
+
+    private void updateUIEachSkin() {
+        switch (UizaData.getInstance().getPlayerId()) {
+            case Constants.PLAYER_ID_SKIN_2:
+                ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+                exoPlay.setRatioLand(7);
+                exoPlay.setRatioPort(5);
+                ImageButtonWithSize exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
+                exoPause.setRatioLand(7);
+                exoPause.setRatioPort(5);
+                break;
+        }
     }
 
     private void findViews() {
