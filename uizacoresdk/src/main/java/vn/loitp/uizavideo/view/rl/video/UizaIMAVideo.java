@@ -165,6 +165,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Mpd> mpdList = mGetLinkPlay.getMpd();
+
+                listLinkPlay.add(0, "dummylink");
                 for (Mpd mpd : mpdList) {
                     if (mpd.getUrl() != null) {
                         listLinkPlay.add(mpd.getUrl());

@@ -134,6 +134,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         this.context = uizaIMAVideo.getContext();
         this.uizaIMAVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
+        LLog.d(TAG, "UizaPlayerManager fuck linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
@@ -482,7 +483,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
-            LLog.d(TAG, "onPlayerError " + error.toString());
+            LLog.d(TAG, "fuck onPlayerError " + error.toString());
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
