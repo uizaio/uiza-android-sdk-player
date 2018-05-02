@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 activity.startService(new Intent(activity, FloatingUizaVideoService.class));
-                //onBackPressed();
+                onBackPressed();
             }
         });
     }
