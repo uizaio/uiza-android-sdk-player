@@ -24,6 +24,7 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
     private ImageView btFb;
     private ImageView btInstagram;
     private ImageView btTwiter;
+    private ImageView bt_pinterest;
 
     public UizaDialogShare(Activity activity) {
         super(activity);
@@ -38,10 +39,12 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
         btFb = (ImageView) findViewById(R.id.bt_fb);
         btInstagram = (ImageView) findViewById(R.id.bt_instagram);
         btTwiter = (ImageView) findViewById(R.id.bt_twiter);
+        bt_pinterest = (ImageView) findViewById(R.id.bt_pinterest);
 
         btFb.setOnClickListener(this);
         btInstagram.setOnClickListener(this);
         btTwiter.setOnClickListener(this);
+        bt_pinterest.setOnClickListener(this);
     }
 
     @Override
@@ -52,6 +55,8 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
             onClickInstagram();
         } else if (v == btTwiter) {
             onClickTwiter();
+        } else if (v == bt_pinterest) {
+            onClickPinterest();
         }
         dismiss();
     }
@@ -67,5 +72,9 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
 
     private void onClickTwiter() {
         LSocialUtil.sharingToSocialMedia(activity, "com.twitter.android", SUBJECT, MESSAGE);
+    }
+
+    private void onClickPinterest() {
+        LSocialUtil.sharingToSocialMedia(activity, "com.pinterest", SUBJECT, MESSAGE);
     }
 }
