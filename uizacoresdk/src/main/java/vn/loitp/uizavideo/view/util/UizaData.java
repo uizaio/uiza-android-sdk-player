@@ -1,9 +1,12 @@
 package vn.loitp.uizavideo.view.util;
 
 import android.content.Context;
+import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
@@ -161,4 +164,17 @@ public class UizaData {
         }
         return uizaTracking;
     }
+
+    //dialog share
+    private List<ResolveInfo> resolveInfoList;
+
+    public List<ResolveInfo> getResolveInfoList() {
+        return resolveInfoList;
+    }
+
+    public void setResolveInfoList(List<ResolveInfo> resolveInfoList) {
+        this.resolveInfoList = resolveInfoList;
+    }
+
+    //end dialog share
 }

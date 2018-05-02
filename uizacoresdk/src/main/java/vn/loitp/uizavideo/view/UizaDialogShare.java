@@ -18,6 +18,7 @@ import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.layout.flowlayout.FlowLayout;
 
 /**
@@ -61,9 +62,18 @@ public class UizaDialogShare extends Dialog {
         } else {
             sizeIv = screenW / 7;
         }
-        Intent template = new Intent(Intent.ACTION_SEND);
-        template.setType("text/plain");
-        List<ResolveInfo> resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
+
+        List<ResolveInfo> resolveInfoList;
+        if (UizaData.getInstance().getResolveInfoList() == null) {
+            LLog.d(TAG, "queryIntentActivities");
+            Intent template = new Intent(Intent.ACTION_SEND);
+            template.setType("text/plain");
+            resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
+            UizaData.getInstance().setResolveInfoList(resolveInfoList);
+        } else {
+            LLog.d(TAG, "!queryIntentActivities");
+            resolveInfoList = UizaData.getInstance().getResolveInfoList();
+        }
 
         //LLog.d(TAG, "resolveInfoList size: " + resolveInfoList.size());
         for (final ResolveInfo resolveInfo : resolveInfoList) {
@@ -87,10 +97,11 @@ public class UizaDialogShare extends Dialog {
     }
 
     private void click(ResolveInfo resolveInfo) {
-        LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
-        LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
         String pkgName = resolveInfo.activityInfo.packageName;
-        if (pkgName.equals("com.google.android.apps.docs")) {
+        String label = (String) resolveInfo.loadLabel(activity.getPackageManager());
+        LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + label);
+        LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + pkgName);
+        if (pkgName.equals("com.google.android.apps.docs") && label.toLowerCase().contains("clipboard")) {
             LDeviceUtil.setClipboard(activity, MESSAGE);
         } else if (pkgName.equals("com.facebook.katana")) {
             //TODO fb not work
