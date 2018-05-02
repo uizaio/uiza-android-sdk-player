@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.rl;
+package testlibuiza.sample.uizavideo.slide;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 
-public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
+public class TestUizaVideoIMActivityRlSlide extends BaseActivity implements UizaIMAVideo.Callback {
     private UizaIMAVideo uizaIMAVideo;
 
     @Override

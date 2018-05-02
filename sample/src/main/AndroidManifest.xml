@@ -28,6 +28,9 @@
         <activity
             android:name=".sample.api.TestAPIActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

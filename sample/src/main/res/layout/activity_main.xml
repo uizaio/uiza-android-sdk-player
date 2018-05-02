@@ -27,6 +27,12 @@
         android:text="Uiza Video relativelayout" />
 
     <Button
+        android:id="@+id/bt_uiza_video_rl_slide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Uiza Video Slide" />
+
+    <Button
         android:id="@+id/bt_uiza_float_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
