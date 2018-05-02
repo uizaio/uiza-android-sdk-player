@@ -487,6 +487,9 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
+            if (uizaIMAVideo != null) {
+                uizaIMAVideo.tryNextLinkPlay();
+            }
         }
 
         @Override

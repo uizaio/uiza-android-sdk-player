@@ -36,4 +36,5 @@
     <string name="director">Director:</string>
     <string name="genres">Genres:</string>
     <string name="key_not_found">You must enter your accessKeyId and secretKeyId first</string>
+    <string name="cannot_play_will_try">Cannot play, Uiza will try to play the next link...</string>
 </resources>

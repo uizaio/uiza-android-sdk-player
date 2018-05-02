@@ -143,6 +143,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             mGetDetailEntity = null;
             isGetLinkPlayDone = false;
             isGetDetailEntityDone = false;
+            countTryLinkPlayError = 0;
         }
         setTitle();
         setVideoCover();
@@ -158,15 +159,23 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
     }
 
+    private int countTryLinkPlayError = 0;
+
+    public void tryNextLinkPlay() {
+        countTryLinkPlayError++;
+        LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
+        LLog.d(TAG, "fuck tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
+        uizaPlayerManager.release();
+        checkToSetUp();
+    }
+
     private void checkToSetUp() {
         if (isGetLinkPlayDone && isGetDetailEntityDone) {
-            LLog.d(TAG, "checkToSetUp");
+            LLog.d(TAG, "fuck checkToSetUp");
             if (mGetLinkPlay != null && mGetDetailEntity != null) {
                 LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Mpd> mpdList = mGetLinkPlay.getMpd();
-
-                listLinkPlay.add(0, "dummylink");
                 for (Mpd mpd : mpdList) {
                     if (mpd.getUrl() != null) {
                         listLinkPlay.add(mpd.getUrl());
@@ -178,9 +187,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     ((BaseActivity) activity).showDialogOne(activity.getString(R.string.has_no_linkplay), true);
                     return;
                 }
-                //TODO thu tat ca cac link play
-                String linkPlay = listLinkPlay.get(0);
-
+                if (countTryLinkPlayError >= listLinkPlay.size()) {
+                    activity.showDialogOne("Đã thử play tất cả các link nhưng đều không thành công", true);
+                    return;
+                }
+                String linkPlay = listLinkPlay.get(countTryLinkPlayError);
                 LLog.d(TAG, "mGetDetailEntity toJson: " + gson.toJson(mGetDetailEntity));
                 List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
                 LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
@@ -206,6 +217,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void setVideoCover() {
         if (ivVideoCover == null && realtimeBlurView == null) {
+            countTryLinkPlayError = 0;
             realtimeBlurView = new RealtimeBlurView(activity, 15, ContextCompat.getColor(activity, R.color.black_35));
             ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             realtimeBlurView.setLayoutParams(layoutParamsBlur);
