@@ -48,19 +48,9 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, "getIntent currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
         RestClientV2.init(currentApiEndPoint);
-        switch (currentApiEndPoint) {
+        /*switch (currentApiEndPoint) {
             case Constants.URL_DEV_UIZA_VERSION_2:
                 LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2; -> gettoken");
-                Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
-                LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
-                if (auth == null) {
-                    LLog.d(TAG, "auth == null -> get token");
-                    auth();
-                } else {
-                    LLog.d(TAG, "auth != null -> check token");
-                    token = auth.getData().getToken();
-                    checkToken(token);
-                }
                 break;
             case Constants.URL_DEV_UIZA_VERSION_2_STAG:
                 LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_STAG; -> token hardcode");
@@ -68,6 +58,16 @@ public class SplashActivity extends BaseActivity {
             case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
                 LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_DEMO; -> token hardcode");
                 break;
+        }*/
+        Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
+        LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
+        if (auth == null) {
+            LLog.d(TAG, "auth == null -> get token");
+            auth();
+        } else {
+            LLog.d(TAG, "auth != null -> check token");
+            token = auth.getData().getToken();
+            checkToken(token);
         }
     }
 
@@ -107,10 +107,24 @@ public class SplashActivity extends BaseActivity {
 
     private void auth() {
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = Constants.A_K_DEV;
-        String secretKeyId = Constants.S_K_DEV;
+        String accessKeyId = null;
+        String secretKeyId = null;
+        switch (currentApiEndPoint) {
+            case Constants.URL_DEV_UIZA_VERSION_2:
+                accessKeyId = Constants.A_K_DEV;
+                secretKeyId = Constants.S_K_DEV;
+                break;
+            case Constants.URL_DEV_UIZA_VERSION_2_STAG:
+                accessKeyId = Constants.A_K_UQC;
+                secretKeyId = Constants.S_K_UQC;
+                break;
+            case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
+                accessKeyId = Constants.A_K_DEMO;
+                secretKeyId = Constants.S_K_DEMO;
+                break;
+        }
 
-        if (accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
+        if (accessKeyId == null || secretKeyId == null || accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
             showDialogOne(getString(R.string.key_not_found), true);
             return;
         }
@@ -153,34 +167,12 @@ public class SplashActivity extends BaseActivity {
         }
         UizaData.getInstance().setPlayerId(currentPlayerId);
         RestClientV2.init(currentApiEndPoint, token);
-        switch (currentApiEndPoint) {
-            case Constants.URL_DEV_UIZA_VERSION_2:
-                if (canSlide) {
-                    LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
-                    //intent = new Intent(activity, HomeV2CanSlideActivity.class);
-                } else {
-                    LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
-                    intent = new Intent(activity, HomeV2CannotSlideActivity.class);
-                }
-                break;
-            case Constants.URL_DEV_UIZA_VERSION_2_STAG:
-                /*if (canSlide) {
-                    LLog.d(TAG, "goToHome HomeV1CanSlideActivity");
-                    //intent = new Intent(activity, HomeV1CanSlideActivity.class);
-                } else {
-                    LLog.d(TAG, "goToHome HomeV1CannotSlideActivity");
-                    //intent = new Intent(activity, HomeV1CannotSlideActivity.class);
-                }*/
-                break;
-            case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
-                /*if (canSlide) {
-                    LLog.d(TAG, "goToHome HomeV1CanSlideActivity");
-                    //intent = new Intent(activity, HomeV1CanSlideActivity.class);
-                } else {
-                    LLog.d(TAG, "goToHome HomeV1CannotSlideActivity");
-                    //intent = new Intent(activity, HomeV1CannotSlideActivity.class);
-                }*/
-                break;
+        if (canSlide) {
+            LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
+            //intent = new Intent(activity, HomeV2CanSlideActivity.class);
+        } else {
+            LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
+            intent = new Intent(activity, HomeV2CannotSlideActivity.class);
         }
         if (intent != null) {
             LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
