@@ -269,7 +269,7 @@ All listener
     }
 
 ## Docs
-[Docs](https://uizaio/uiza-android-sdk-player/)
+[Docs](https://uizaio.github.io/uiza-android-sdk-player/)
 
 
 ## Support
