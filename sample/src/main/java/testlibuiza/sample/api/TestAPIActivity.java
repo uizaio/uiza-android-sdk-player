@@ -78,6 +78,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        tv.setText("Loading...");
         String json;
         switch (v.getId()) {
             case R.id.bt_get_token:
