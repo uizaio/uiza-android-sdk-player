@@ -51,6 +51,18 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_instagram" />
 
+                <View
+                    android:layout_width="@dimen/w_50"
+                    android:layout_height="@dimen/w_50" />
+
+                <ImageView
+                    android:id="@+id/bt_twiter"
+                    android:layout_width="@dimen/w_50"
+                    android:layout_height="@dimen/w_50"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_twiter" />
+
             </LinearLayout>
 
             <LinearLayout

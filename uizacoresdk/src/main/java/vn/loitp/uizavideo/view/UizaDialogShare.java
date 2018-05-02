@@ -27,6 +27,7 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
 
     private ImageView btFb;
     private ImageView btInstagram;
+    private ImageView bt_twiter;
 
     public UizaDialogShare(Activity activity) {
         super(activity);
@@ -40,40 +41,23 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
         setContentView(R.layout.dialog_share);
         btFb = (ImageView) findViewById(R.id.bt_fb);
         btInstagram = (ImageView) findViewById(R.id.bt_instagram);
+        bt_twiter = (ImageView) findViewById(R.id.bt_twiter);
 
         btFb.setOnClickListener(this);
         btInstagram.setOnClickListener(this);
+        bt_twiter.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.bt_fb) {
+        if (v == btFb) {
             onClickFb();
-        } else if (id == R.id.bt_instagram) {
+        } else if (v == btInstagram) {
             onClickInstagram();
+        } else if (v == bt_twiter) {
+            onClickTwiter();
         }
-        LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
-            @Override
-            public void onCancel() {
-                //do nothing
-            }
-
-            @Override
-            public void onEnd() {
-                dismiss();
-            }
-
-            @Override
-            public void onRepeat() {
-                //do nothing
-            }
-
-            @Override
-            public void onStart() {
-                //do nothing
-            }
-        });
+        dismiss();
     }
 
     private void onClickFb() {
@@ -83,5 +67,9 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
 
     private void onClickInstagram() {
         LSocialUtil.sharingToSocialMedia(activity, "com.instagram.android", SUBJECT, MESSAGE);
+    }
+
+    private void onClickTwiter() {
+        LSocialUtil.sharingToSocialMedia(activity, "com.twitter.android", SUBJECT, MESSAGE);
     }
 }
