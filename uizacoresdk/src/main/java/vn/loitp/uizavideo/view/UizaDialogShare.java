@@ -2,29 +2,41 @@ package vn.loitp.uizavideo.view;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.google.gson.Gson;
+import com.google.obf.ac;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LSocialUtil;
 
 /**
  * Created by LENOVO on 5/2/2018.
  */
 
-public class UizaDialogShare extends Dialog implements android.view.View.OnClickListener {
+public class UizaDialogShare extends Dialog {
+    private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private Dialog dialog;
-
+    private LinearLayout ll;
     public static final String SUBJECT = "Uiza SUBJECT";
     public static final String MESSAGE = "Uiza MESSAGE";
-
-    private ImageView btFb;
-    private ImageView btInstagram;
-    private ImageView btTwiter;
-    private ImageView bt_pinterest;
 
     public UizaDialogShare(Activity activity) {
         super(activity);
@@ -36,18 +48,31 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_share);
-        btFb = (ImageView) findViewById(R.id.bt_fb);
-        btInstagram = (ImageView) findViewById(R.id.bt_instagram);
-        btTwiter = (ImageView) findViewById(R.id.bt_twiter);
-        bt_pinterest = (ImageView) findViewById(R.id.bt_pinterest);
 
-        btFb.setOnClickListener(this);
-        btInstagram.setOnClickListener(this);
-        btTwiter.setOnClickListener(this);
-        bt_pinterest.setOnClickListener(this);
+        ll = (LinearLayout) findViewById(R.id.ll);
+        genUI();
     }
 
-    @Override
+    private void genUI() {
+        Intent template = new Intent(Intent.ACTION_SEND);
+        template.setType("text/plain");
+        List<ResolveInfo> resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
+
+        LLog.d(TAG, "resolveInfoList size: " + resolveInfoList.size());
+        for (ResolveInfo resolveInfo : resolveInfoList) {
+            LLog.d(TAG, "resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
+            LLog.d(TAG, "resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
+
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageDrawable(resolveInfo.loadIcon(activity.getPackageManager()));
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(100, 100);
+            imageView.setLayoutParams(layoutParams);
+            ll.addView(imageView);
+        }
+    }
+
+    /*@Override
     public void onClick(View v) {
         if (v == btFb) {
             onClickFb();
@@ -76,5 +101,5 @@ public class UizaDialogShare extends Dialog implements android.view.View.OnClick
 
     private void onClickPinterest() {
         LSocialUtil.sharingToSocialMedia(activity, "com.pinterest", SUBJECT, MESSAGE);
-    }
+    }*/
 }

@@ -12,6 +12,7 @@ import android.net.Uri;
 
 import java.util.List;
 
+import loitp.core.BuildConfig;
 import loitp.core.R;
 import vn.loitp.uizavideo.view.UizaDialogShare;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -88,6 +89,7 @@ public class LSocialUtil {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
         boolean installed = checkAppInstall(activity, application);
+        LLog.d(TAG, "share sharingToSocialMedia installed " + installed);
         if (installed) {
             intent.setPackage(application);
             activity.startActivity(intent);

@@ -20,12 +20,13 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -74,32 +75,6 @@
                     android:contentDescription="@string/app_name"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_pinterest" />
-
-            </LinearLayout>
-
-            <!--<LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/w_50"
-                    android:layout_height="@dimen/w_50"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_pause_circle_outline_black_48dp" />
-
-                <View
-                    android:layout_width="@dimen/w_50"
-                    android:layout_height="@dimen/w_50" />
-
-                <ImageView
-                    android:layout_width="@dimen/w_50"
-                    android:layout_height="@dimen/w_50"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_pause_circle_outline_black_48dp" />
 
             </LinearLayout>-->
         </LinearLayout>
