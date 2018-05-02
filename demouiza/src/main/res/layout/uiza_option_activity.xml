@@ -179,11 +179,10 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
                         android:checked="true"
-                        android:text="STAG (API V1)"
+                        android:text="STAG (API V2)"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/radio_environment_prod"
@@ -191,11 +190,10 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
                         android:checked="true"
-                        android:text="WEBTRETHO (API V1)"
+                        android:text="DEMO (API V2)"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textStyle="bold" />
                 </RadioGroup>
 
                 <View

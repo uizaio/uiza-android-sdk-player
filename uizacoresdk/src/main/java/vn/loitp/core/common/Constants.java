@@ -68,7 +68,8 @@ public class Constants {
     public final static String URL_DEV_UIZA_VERSION_1 = "https://demo-api.uiza.io/";
 
     public final static String URL_DEV_UIZA_VERSION_2 = "http://dev-api.uiza.io/";
-    public final static String URL_DEV_UIZA_VERSION_2_STAG = "https://uqc-api.uiza.io/";
+    public final static String URL_DEV_UIZA_VERSION_2_STAG = "http://uqc-api.uiza.io/";
+    public final static String URL_DEV_UIZA_VERSION_2_DEMO = "http://demo-api.uiza.io/";
     public final static String URL_WTT = "https://wtt-api.uiza.io";
 
     //UQC
@@ -97,4 +98,7 @@ public class Constants {
     public final static int PLAYTHROUGH_100 = 99;
 
     public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
+
+    public final static String A_K_DEV = "Y0ZW0XM7HZL2CB8ODNDV";
+    public final static String S_K_DEV = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
 }

@@ -47,10 +47,10 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, "getIntent canSlide " + canSlide);
         LLog.d(TAG, "getIntent currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
-
+        RestClientV2.init(currentApiEndPoint);
         switch (currentApiEndPoint) {
             case Constants.URL_DEV_UIZA_VERSION_2:
-                LLog.d(TAG, "Constants.TOKEN_DEV_V1; -> gettoken");
+                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2; -> gettoken");
                 Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
                 LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
                 if (auth == null) {
@@ -63,22 +63,10 @@ public class SplashActivity extends BaseActivity {
                 }
                 break;
             case Constants.URL_DEV_UIZA_VERSION_2_STAG:
-                LLog.d(TAG, "Constants.TOKEN_STAG; -> token hardcode");
-                token = Constants.TOKEN_STAG;
-
-                //TODO dummy auth for api vs1
-                LPref.setAuth(activity, getDummyAuth(), LSApplication.getInstance().getGson());
-
-                goToHome();
+                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_STAG; -> token hardcode");
                 break;
-            case Constants.URL_WTT:
-                LLog.d(TAG, "Constants.TOKEN_WTT; -> token hardcode");
-                token = Constants.TOKEN_WTT;
-
-                //TODO dummy auth for api vs1
-                LPref.setAuth(activity, getDummyAuth(), LSApplication.getInstance().getGson());
-
-                goToHome();
+            case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
+                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_DEMO; -> token hardcode");
                 break;
         }
     }
@@ -118,10 +106,9 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void auth() {
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
-        String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+        String accessKeyId = Constants.A_K_DEV;
+        String secretKeyId = Constants.S_K_DEV;
 
         if (accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
             showDialogOne(getString(R.string.key_not_found), true);
@@ -177,14 +164,22 @@ public class SplashActivity extends BaseActivity {
                 }
                 break;
             case Constants.URL_DEV_UIZA_VERSION_2_STAG:
-            case Constants.URL_WTT:
-                if (canSlide) {
+                /*if (canSlide) {
                     LLog.d(TAG, "goToHome HomeV1CanSlideActivity");
                     //intent = new Intent(activity, HomeV1CanSlideActivity.class);
                 } else {
                     LLog.d(TAG, "goToHome HomeV1CannotSlideActivity");
                     //intent = new Intent(activity, HomeV1CannotSlideActivity.class);
-                }
+                }*/
+                break;
+            case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
+                /*if (canSlide) {
+                    LLog.d(TAG, "goToHome HomeV1CanSlideActivity");
+                    //intent = new Intent(activity, HomeV1CanSlideActivity.class);
+                } else {
+                    LLog.d(TAG, "goToHome HomeV1CannotSlideActivity");
+                    //intent = new Intent(activity, HomeV1CannotSlideActivity.class);
+                }*/
                 break;
         }
         if (intent != null) {

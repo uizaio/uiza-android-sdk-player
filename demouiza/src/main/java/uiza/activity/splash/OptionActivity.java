@@ -8,10 +8,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";
@@ -83,7 +85,7 @@ public class OptionActivity extends BaseActivity {
                 currentApiTrackingEndPoint = Constants.URL_TRACKING_STAG;
                 break;
             case Constants.ENVIRONMENT_PROD:
-                currentApiEndPoint = Constants.URL_WTT;
+                currentApiEndPoint = Constants.URL_DEV_UIZA_VERSION_2_DEMO;
                 currentApiTrackingEndPoint = Constants.URL_TRACKING_PROD;
                 break;
         }
@@ -186,6 +188,7 @@ public class OptionActivity extends BaseActivity {
                         currentEnvironment = Constants.ENVIRONMENT_PROD;
                         break;
                 }
+                LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
             }
         });
     }
