@@ -49,7 +49,7 @@ public class UizaDialogShare extends Dialog {
         ll = (FlowLayout) findViewById(R.id.ll);
         ll.setChildSpacing(FlowLayout.SPACING_AUTO);
         ll.setChildSpacingForLastRow(FlowLayout.SPACING_ALIGN);
-        ll.setRowSpacing(10f);
+        ll.setRowSpacing(20f);
         genUI();
     }
 
@@ -73,6 +73,7 @@ public class UizaDialogShare extends Dialog {
             ImageView imageView = new ImageView(activity);
             imageView.setImageDrawable(resolveInfo.loadIcon(activity.getPackageManager()));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setPadding(sizeIv / 10, sizeIv / 10, sizeIv / 10, sizeIv / 10);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
