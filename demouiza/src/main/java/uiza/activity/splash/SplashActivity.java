@@ -47,18 +47,8 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, "getIntent canSlide " + canSlide);
         LLog.d(TAG, "getIntent currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
+
         RestClientV2.init(currentApiEndPoint);
-        /*switch (currentApiEndPoint) {
-            case Constants.URL_DEV_UIZA_VERSION_2:
-                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2; -> gettoken");
-                break;
-            case Constants.URL_DEV_UIZA_VERSION_2_STAG:
-                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_STAG; -> token hardcode");
-                break;
-            case Constants.URL_DEV_UIZA_VERSION_2_DEMO:
-                LLog.d(TAG, "Constants.URL_DEV_UIZA_VERSION_2_DEMO; -> token hardcode");
-                break;
-        }*/
         Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
