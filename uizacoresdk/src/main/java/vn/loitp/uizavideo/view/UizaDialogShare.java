@@ -1,6 +1,7 @@
 package vn.loitp.uizavideo.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -26,7 +27,7 @@ import vn.loitp.views.layout.flowlayout.FlowLayout;
 public class UizaDialogShare extends Dialog {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
-    private Dialog dialog;
+    private AlertDialog dialog;
     private FlowLayout ll;
     //TODO change this
     public static final String SUBJECT = "Uiza Sharing";
