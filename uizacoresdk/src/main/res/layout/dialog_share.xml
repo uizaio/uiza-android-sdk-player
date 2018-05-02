@@ -17,14 +17,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbarSize="@dimen/w_1"
+        android:scrollbarThumbVertical="@color/colorPrimary">
 
-        <LinearLayout
+        <vn.loitp.views.layout.flowlayout.FlowLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <!--<LinearLayout
                 android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                     android:src="@drawable/ic_pinterest" />
 
             </LinearLayout>-->
-        </LinearLayout>
+        </vn.loitp.views.layout.flowlayout.FlowLayout>
     </ScrollView>
 
 </LinearLayout>

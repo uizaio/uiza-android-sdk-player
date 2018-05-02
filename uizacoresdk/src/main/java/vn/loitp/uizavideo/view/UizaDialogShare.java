@@ -2,29 +2,22 @@ package vn.loitp.uizavideo.view;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
-import com.google.obf.ac;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
+import vn.loitp.views.layout.flowlayout.FlowLayout;
 
 /**
  * Created by LENOVO on 5/2/2018.
@@ -34,13 +27,15 @@ public class UizaDialogShare extends Dialog {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private Dialog dialog;
-    private LinearLayout ll;
+    private FlowLayout ll;
     public static final String SUBJECT = "Uiza SUBJECT";
     public static final String MESSAGE = "Uiza MESSAGE";
+    private boolean isLandscape;
 
-    public UizaDialogShare(Activity activity) {
+    public UizaDialogShare(Activity activity, boolean isLandscape) {
         super(activity);
         this.activity = activity;
+        this.isLandscape = isLandscape;
     }
 
     @Override
@@ -49,27 +44,58 @@ public class UizaDialogShare extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_share);
 
-        ll = (LinearLayout) findViewById(R.id.ll);
+        ll = (FlowLayout) findViewById(R.id.ll);
+        ll.setChildSpacing(FlowLayout.SPACING_AUTO);
+        ll.setChildSpacingForLastRow(FlowLayout.SPACING_ALIGN);
+        ll.setRowSpacing(10f);
         genUI();
     }
 
     private void genUI() {
+        int screenW = LScreenUtil.getScreenWidth();
+        int sizeIv;
+        if (isLandscape) {
+            sizeIv = screenW / 12;
+        } else {
+            sizeIv = screenW / 7;
+        }
         Intent template = new Intent(Intent.ACTION_SEND);
         template.setType("text/plain");
         List<ResolveInfo> resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
 
-        LLog.d(TAG, "resolveInfoList size: " + resolveInfoList.size());
-        for (ResolveInfo resolveInfo : resolveInfoList) {
-            LLog.d(TAG, "resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
-            LLog.d(TAG, "resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
+        //LLog.d(TAG, "resolveInfoList size: " + resolveInfoList.size());
+        for (final ResolveInfo resolveInfo : resolveInfoList) {
+            //LLog.d(TAG, "resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
+            //LLog.d(TAG, "resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
 
             ImageView imageView = new ImageView(activity);
             imageView.setImageDrawable(resolveInfo.loadIcon(activity.getPackageManager()));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(100, 100);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    click(resolveInfo);
+                }
+            });
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(sizeIv, sizeIv);
             imageView.setLayoutParams(layoutParams);
             ll.addView(imageView);
         }
+    }
+
+    private void click(ResolveInfo resolveInfo) {
+        LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
+        LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
+        String pkgName = resolveInfo.activityInfo.packageName;
+        if (pkgName.equals("com.google.android.apps.docs")) {
+            LDeviceUtil.setClipboard(activity, MESSAGE);
+        } else if (pkgName.equals("com.facebook.katana")) {
+            //TODO fb not work
+            LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);
+        } else {
+            LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);
+        }
+        dismiss();
     }
 
     /*@Override

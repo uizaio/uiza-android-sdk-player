@@ -77,8 +77,8 @@ public class LSocialUtil {
         }
     }
 
-    public static void share(Activity activity) {
-        UizaDialogShare uizaDialogShare = new UizaDialogShare(activity);
+    public static void share(Activity activity, boolean isLandscape) {
+        UizaDialogShare uizaDialogShare = new UizaDialogShare(activity, isLandscape);
         UizaUtil.showUizaDialog(activity, uizaDialogShare);
     }
 

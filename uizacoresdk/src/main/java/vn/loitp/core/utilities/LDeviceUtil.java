@@ -12,6 +12,8 @@ import android.view.KeyEvent;
 
 import java.util.Random;
 
+import vn.loitp.views.LToast;
+
 
 /**
  * File created on 11/14/2016.
@@ -59,6 +61,7 @@ public class LDeviceUtil {
             android.content.ClipData clip = android.content.ClipData.newPlainText("Copy", text);
             clipboard.setPrimaryClip(clip);
         }
+        LToast.show(context, "Copied!");
     }
 
     public static void vibrate(Context context, int length) {
