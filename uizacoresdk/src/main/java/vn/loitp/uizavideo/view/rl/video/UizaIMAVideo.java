@@ -528,10 +528,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else if (v == exoPictureInPicture) {
             clickPiP();
         } else if (v == exoShare) {
-            //TODO
-            //LSocialUtil.share(activity, isLandscape, "Share");
-            LSocialUtil.sharingToSocialMedia(activity, "com.instagram.android");
-
+            LSocialUtil.share(activity);
             isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();

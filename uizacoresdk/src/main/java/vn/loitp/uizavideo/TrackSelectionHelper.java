@@ -46,6 +46,7 @@ import java.util.Arrays;
 import loitp.core.R;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 
 /**
  * Helper class for displaying track selection dialogs.
@@ -113,45 +114,7 @@ import vn.loitp.uizavideo.view.util.DemoUtil;
                 .setNegativeButton(android.R.string.cancel, null);
 
         final Dialog dialog = builder.create();
-        boolean isFullScreen = LScreenUtil.isFullScreen(activity);
-        if (isFullScreen) {
-            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            dialog.getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        }
-        dialog.show();
-        try {
-            dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
-
-            //set dialog position
-            WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
-            wlp.gravity = Gravity.BOTTOM;
-            wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            dialog.getWindow().setAttributes(wlp);
-
-            int width = 0;
-            int height = 0;
-            if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.65);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
-            } else {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
-            }
-            dialog.getWindow().setLayout(width, height);
-        } catch (Exception e) {
-            //do nothing
-        }
-        if (isFullScreen) {
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        }
+        UizaUtil.showUizaDialog(activity, dialog);
     }
 
     @SuppressLint("InflateParams")

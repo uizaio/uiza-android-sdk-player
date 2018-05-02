@@ -1,16 +1,21 @@
 package vn.loitp.core.utilities;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.view.View;
-import android.view.WindowManager;
+
+import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.uizavideo.view.UizaDialogShare;
+import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.views.LToast;
 
 
 /**
@@ -71,20 +76,24 @@ public class LSocialUtil {
         }
     }
 
-    public static void sharingToSocialMedia(Activity activity, String application) {
+    public static void share(Activity activity) {
+        UizaDialogShare uizaDialogShare = new UizaDialogShare(activity);
+        UizaUtil.showUizaDialog(activity, uizaDialogShare);
+    }
+
+    public static void sharingToSocialMedia(Activity activity, String application, String subject, String message) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
-        intent.putExtra(Intent.EXTRA_TEXT, "EXTRA_TEXT");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
         boolean installed = checkAppInstall(activity, application);
         if (installed) {
             intent.setPackage(application);
             activity.startActivity(intent);
         } else {
-            LLog.d(TAG, "Installed application first");
+            LToast.show(activity, "Không tìm thấy ứng dụng này trên thiết bị của bạn.");
         }
-
     }
 
     private static boolean checkAppInstall(Activity activity, String uri) {
@@ -96,6 +105,26 @@ public class LSocialUtil {
         }
 
         return false;
+    }
+
+    public static void shareViaFb(final Activity activity) {
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, UizaDialogShare.SUBJECT);
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, UizaDialogShare.MESSAGE);
+        PackageManager pm = activity.getPackageManager();
+        List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
+        for (final ResolveInfo app : activityList) {
+            if ((app.activityInfo.name).contains("facebook")) {
+                final ActivityInfo activityInfo = app.activityInfo;
+                final ComponentName name = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
+                shareIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                shareIntent.setComponent(name);
+                activity.startActivity(shareIntent);
+                break;
+            }
+        }
     }
 
     //like fanpage
