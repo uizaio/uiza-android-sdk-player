@@ -28,8 +28,9 @@ public class UizaDialogShare extends Dialog {
     private Activity activity;
     private Dialog dialog;
     private FlowLayout ll;
-    public static final String SUBJECT = "Uiza SUBJECT";
-    public static final String MESSAGE = "Uiza MESSAGE";
+    //TODO change this
+    public static final String SUBJECT = "Uiza Sharing";
+    public static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
     private boolean isLandscape;
 
     public UizaDialogShare(Activity activity, boolean isLandscape) {
