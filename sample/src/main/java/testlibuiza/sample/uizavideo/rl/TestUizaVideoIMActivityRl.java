@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo;
+package testlibuiza.sample.uizavideo.rl;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,10 +27,10 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.views.LToast;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.views.LToast;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
     private UizaIMAVideo uizaIMAVideo;
@@ -39,7 +39,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        String entityId = "e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7";
+        String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         String entityTitle = "Dummy title";
         String videoCoverUrl = null;
 
@@ -48,11 +48,12 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         UizaData.getInstance().setEntityCover(videoCoverUrl);
         UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
 
-        String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
         UizaData.getInstance().setUrlIMAAd(urlIMAAd);
 
-        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
         UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
         uizaIMAVideo.init(this);

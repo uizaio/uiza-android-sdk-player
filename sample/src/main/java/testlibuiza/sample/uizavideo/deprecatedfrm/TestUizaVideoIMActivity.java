@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo;
+package testlibuiza.sample.uizavideo.deprecatedfrm;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;

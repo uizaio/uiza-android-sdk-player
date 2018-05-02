@@ -4,7 +4,7 @@ package vn.loitp.core.common;
  * Created by loitp
  */
 public class Constants {
-    public static boolean IS_DEBUG = false;
+    public static boolean IS_DEBUG = true;
 
     public final static String LOITP = "LoitpDebug";
 

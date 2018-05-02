@@ -6,8 +6,8 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.sample.api.TestAPIActivity;
-import testlibuiza.sample.uizavideo.TestUizaVideoIMActivity;
-import testlibuiza.sample.uizavideo.TestUizaVideoIMActivityRl;
+import testlibuiza.sample.uizavideo.deprecatedfrm.TestUizaVideoIMActivity;
+import testlibuiza.sample.uizavideo.rl.TestUizaVideoIMActivityRl;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;

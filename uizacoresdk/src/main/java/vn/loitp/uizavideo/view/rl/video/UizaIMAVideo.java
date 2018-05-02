@@ -164,14 +164,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     public void tryNextLinkPlay() {
         countTryLinkPlayError++;
         LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
-        LLog.d(TAG, "fuck tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
+        LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
         uizaPlayerManager.release();
         checkToSetUp();
     }
 
     private void checkToSetUp() {
         if (isGetLinkPlayDone && isGetDetailEntityDone) {
-            LLog.d(TAG, "fuck checkToSetUp");
             if (mGetLinkPlay != null && mGetDetailEntity != null) {
                 LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
