@@ -71,6 +71,33 @@ public class LSocialUtil {
         }
     }
 
+    public static void sharingToSocialMedia(Activity activity, String application) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, "EXTRA_TEXT");
+        boolean installed = checkAppInstall(activity, application);
+        if (installed) {
+            intent.setPackage(application);
+            activity.startActivity(intent);
+        } else {
+            LLog.d(TAG, "Installed application first");
+        }
+
+    }
+
+    private static boolean checkAppInstall(Activity activity, String uri) {
+        PackageManager pm = activity.getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
+    }
+
     //like fanpage
     public static void likeFacebookFanpage(Activity activity) {
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW);

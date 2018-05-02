@@ -120,8 +120,8 @@ public class SplashActivity extends BaseActivity {
     private void auth() {
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = "";
-        String secretKeyId = "";
+        String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
+        String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
 
         if (accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
             showDialogOne(getString(R.string.key_not_found), true);
