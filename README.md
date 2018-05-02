@@ -268,6 +268,10 @@ All listener
         });  
     }
 
+## Docs
+[Docs](https://uizaio/uiza-android-sdk-player/)
+
+
 ## Support
 
 Please feel free to contact me anytime: loitp@uiza.io
