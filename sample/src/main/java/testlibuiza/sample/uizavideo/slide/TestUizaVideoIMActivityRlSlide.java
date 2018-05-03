@@ -1,6 +1,5 @@
 package testlibuiza.sample.uizavideo.slide;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
