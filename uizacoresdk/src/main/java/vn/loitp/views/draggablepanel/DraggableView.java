@@ -153,6 +153,12 @@ public class DraggableView extends RelativeLayout {
         this.isEnableSlide = isEnableSlide;
     }
 
+    public void onViewPositionChanged(int left, int top, int dx, int dy) {
+        if (listener != null) {
+            listener.onDrag(left, top, dx, dy);
+        }
+    }
+
     /**
      * Slide the view based on scroll of the nav drawer.
      * "setEnableTouch" user prevents click to expand while the drawer is moving, it will be
@@ -344,18 +350,18 @@ public class DraggableView extends RelativeLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (!isEnabled()) {
-            LLog.d(TAG, "onInterceptTouchEvent !isEnabled() -> return");
+            //LLog.d(TAG, "onInterceptTouchEvent !isEnabled() -> return");
             return false;
         }
         switch (MotionEventCompat.getActionMasked(ev) & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_CANCEL:
-                LLog.d(TAG, "onInterceptTouchEvent ACTION_CANCEL");
+                //LLog.d(TAG, "onInterceptTouchEvent ACTION_CANCEL");
             case MotionEvent.ACTION_UP:
-                LLog.d(TAG, "onInterceptTouchEvent ACTION_UP");
+                //LLog.d(TAG, "onInterceptTouchEvent ACTION_UP");
                 viewDragHelper.cancel();
                 return false;
             case MotionEvent.ACTION_DOWN:
-                LLog.d(TAG, "onInterceptTouchEvent ACTION_DOWN");
+                //LLog.d(TAG, "onInterceptTouchEvent ACTION_DOWN");
                 int index = MotionEventCompat.getActionIndex(ev);
                 activePointerId = MotionEventCompat.getPointerId(ev, index);
                 if (activePointerId == INVALID_POINTER) {
@@ -387,25 +393,25 @@ public class DraggableView extends RelativeLayout {
         int actionMasked = MotionEventCompat.getActionMasked(ev);
         if ((actionMasked & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
             activePointerId = MotionEventCompat.getPointerId(ev, actionMasked);
-            LLog.d(TAG, "onTouchEvent ACTION_DOWN");
+            //LLog.d(TAG, "onTouchEvent ACTION_DOWN");
         }
         if (activePointerId == INVALID_POINTER) {
-            LLog.d(TAG, "onTouchEvent INVALID_POINTER");
+            //LLog.d(TAG, "onTouchEvent INVALID_POINTER");
             return false;
         }
         viewDragHelper.processTouchEvent(ev);
         if (isClosed()) {
-            LLog.d(TAG, "onTouchEvent isClosed return false");
+            //LLog.d(TAG, "onTouchEvent isClosed return false");
             return false;
         }
         boolean isDragViewHit = isViewHit(dragView, (int) ev.getX(), (int) ev.getY());
         boolean isSecondViewHit = isViewHit(secondView, (int) ev.getX(), (int) ev.getY());
         analyzeTouchToMaximizeIfNeeded(ev, isDragViewHit);
         if (isMaximized()) {
-            LLog.d(TAG, "isMaximized");
+            //LLog.d(TAG, "isMaximized");
             dragView.dispatchTouchEvent(ev);
         } else {
-            LLog.d(TAG, "!isMaximized");
+            //LLog.d(TAG, "!isMaximized");
             dragView.dispatchTouchEvent(cloneMotionEventWithAction(ev, MotionEvent.ACTION_CANCEL));
         }
         return isDragViewHit || isSecondViewHit;
@@ -426,6 +432,9 @@ public class DraggableView extends RelativeLayout {
                     }
                 }
                 break;
+            /*case MotionEvent.ACTION_MOVE:
+                LLog.d(TAG, "fuck ACTION_MOVE");
+                break;*/
             default:
                 break;
         }

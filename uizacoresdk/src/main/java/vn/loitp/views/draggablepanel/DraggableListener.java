@@ -42,4 +42,6 @@ public interface DraggableListener {
      * Called when the view is closed to the right.
      */
     void onClosedToRight();
+
+    void onDrag(int left, int top, int dx, int dy);
 }

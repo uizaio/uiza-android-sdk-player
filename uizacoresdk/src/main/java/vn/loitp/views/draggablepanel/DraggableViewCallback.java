@@ -18,6 +18,8 @@ package vn.loitp.views.draggablepanel;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.View;
 
+import vn.loitp.core.utilities.LLog;
+
 /**
  * ViewDragHelper.Callback implementation used to work with DraggableView to perform the scale
  * effect and other animation when the view is released.
@@ -55,6 +57,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      */
     @Override
     public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+        draggableView.onViewPositionChanged(left, top, dx, dy);
         if (draggableView.isDragViewAtBottom()) {
             draggableView.changeDragViewViewAlpha();
         } else {

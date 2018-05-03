@@ -51,6 +51,12 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
                 LLog.d(TAG, "onClosedToRight");
                 frmTop.getUizaIMAVideo().onDestroy();
             }
+
+            @Override
+            public void onDrag(int left, int top, int dx, int dy) {
+                LLog.d("fuck", "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
+                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+            }
         });
     }
 
