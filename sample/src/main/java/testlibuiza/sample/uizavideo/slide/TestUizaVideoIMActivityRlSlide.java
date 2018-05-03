@@ -8,7 +8,6 @@ import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.layout.draggablepanel.DraggableListener;
 import vn.loitp.views.layout.draggablepanel.DraggablePanel;
 
