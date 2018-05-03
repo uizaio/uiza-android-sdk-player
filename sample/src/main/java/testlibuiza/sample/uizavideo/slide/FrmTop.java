@@ -50,6 +50,16 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         return uizaIMAVideo;
     }
 
+    public interface FrmTopCallback {
+        public void initDone();
+    }
+
+    private FrmTopCallback frmTopCallback;
+
+    public void setFrmTopCallback(FrmTopCallback frmTopCallback) {
+        this.frmTopCallback = frmTopCallback;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -252,6 +262,9 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         setListener();
+        if (frmTopCallback != null) {
+            frmTopCallback.initDone();
+        }
     }
 
     @Override

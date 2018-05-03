@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.exoplayer2.ui.PlayerControlView;
+
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
@@ -92,29 +94,58 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         draggablePanel.setClickToMaximizeEnabled(false);
         draggablePanel.setClickToMinimizeEnabled(false);
         draggablePanel.setEnableHorizontalAlphaEffect(false);
-        setSizeFrmTop(false);
+        setSizeFrmTop();
         draggablePanel.initializeView();
+
+        frmTop.setFrmTopCallback(new FrmTop.FrmTopCallback() {
+            @Override
+            public void initDone() {
+                LLog.d(TAG, "initDone");
+                frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                    @Override
+                    public void onVisibilityChange(int visibility) {
+                        if (draggablePanel != null && !isLandscape) {
+                            if (draggablePanel.isMaximized()) {
+                                if (visibility == View.VISIBLE) {
+                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                                    draggablePanel.setEnableSlide(false);
+                                } else {
+                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                                    draggablePanel.setEnableSlide(true);
+                                }
+                            } else {
+                                draggablePanel.setEnableSlide(true);
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void play() {
         initializeDraggablePanel();
     }
 
+    private boolean isLandscape;
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                setSizeFrmTop(true);
+                isLandscape = true;
+                setSizeFrmTop();
                 draggablePanel.setEnableSlide(false);
             } else {
-                setSizeFrmTop(false);
+                isLandscape = false;
+                setSizeFrmTop();
                 draggablePanel.setEnableSlide(true);
             }
         }
     }
 
-    private void setSizeFrmTop(boolean isLandscape) {
+    private void setSizeFrmTop() {
         if (isLandscape) {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
