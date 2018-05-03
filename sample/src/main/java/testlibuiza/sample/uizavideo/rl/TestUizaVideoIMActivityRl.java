@@ -63,7 +63,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl_slide;
+        return R.layout.test_uiza_ima_video_activity_rl;
     }
 
     @Override
