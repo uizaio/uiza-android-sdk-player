@@ -31,8 +31,7 @@ public class LSApplication extends MultiDexApplication {
         }
         Utils.init(this);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT);
-
-        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        //RestClientTracking.init(Constants.URL_TRACKING_DEV);
     }
 
     public Gson getGson() {

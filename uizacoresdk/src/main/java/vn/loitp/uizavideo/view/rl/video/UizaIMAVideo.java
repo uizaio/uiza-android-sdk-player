@@ -805,6 +805,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
+                LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 ((BaseActivity) getContext()).handleException(e);
             }
         });

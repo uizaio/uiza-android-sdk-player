@@ -16,6 +16,7 @@ import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -49,6 +50,8 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
         RestClientV2.init(currentApiEndPoint);
+        RestClientTracking.init(currentApiTrackingEndPoint);
+
         Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
@@ -57,6 +60,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             LLog.d(TAG, "auth != null -> check token");
             token = auth.getData().getToken();
+            RestClientV2.addAuthorization(token);
             checkToken(token);
         }
     }
@@ -156,7 +160,7 @@ public class SplashActivity extends BaseActivity {
             return;
         }
         UizaData.getInstance().setPlayerId(currentPlayerId);
-        RestClientV2.init(currentApiEndPoint, token);
+        RestClientV2.addAuthorization(token);
         if (canSlide) {
             LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
             //intent = new Intent(activity, HomeV2CanSlideActivity.class);
@@ -178,7 +182,6 @@ public class SplashActivity extends BaseActivity {
 
     private void checkToken(String token) {
         LLog.d(TAG, "checkToken: " + token);
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2, token);
         UizaService service = RestClientV2.createService(UizaService.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override

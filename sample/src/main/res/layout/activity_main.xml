@@ -17,7 +17,7 @@
         android:id="@+id/bt_uiza_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Uiza Video Frm"
+        android:text="Uiza Video Frm (Deprecated)"
         android:visibility="gone" />
 
     <Button

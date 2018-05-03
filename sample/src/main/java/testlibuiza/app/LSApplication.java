@@ -31,6 +31,7 @@ public class LSApplication extends MultiDexApplication {
         //init uiza
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
         RestClientTracking.init(Constants.URL_TRACKING_PROD);
+
         Auth auth = getDummyAuth();
         RestClientV2.addAuthorization(auth.getData().getToken());
         LPref.setAuth(getContext(), auth, gson);
@@ -48,7 +49,7 @@ public class LSApplication extends MultiDexApplication {
         return instance.getApplicationContext();
     }
 
-    public Auth getDummyAuth() {
+    private Auth getDummyAuth() {
         String json = "{\"code\":200,\"data\":{\"appId\":\"0fa01cc4bc264023850069c3e07a0a38\",\"expired\":\"01/06/2018 10:43:17\",\"token\":\"3fcc5411-399e-4607-9991-6ab5d1c99e6e\"},\"datetime\":\"2018-05-02T10:43:17.180Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
         return gson.fromJson(json, Auth.class);
     }

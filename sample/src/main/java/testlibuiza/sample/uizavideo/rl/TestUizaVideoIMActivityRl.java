@@ -39,24 +39,16 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+
+        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
         String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         String entityTitle = "Dummy title";
         String videoCoverUrl = null;
-
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(videoCoverUrl);
-        UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
-
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
-
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-
-        uizaIMAVideo.init(this);
+        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
@@ -109,6 +101,9 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     private void setListener() {
         LLog.d(TAG, TAG + " addListener");
+        if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
+            return;
+        }
         uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
@@ -255,5 +250,24 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         setListener();
+    }
+
+    private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+        if (entityId == null || entityId.isEmpty()) {
+            showDialogMsg("Entity ID cannot be null or empty");
+            return;
+        }
+        if (playerSkinId == null || playerSkinId.isEmpty()) {
+            showDialogMsg("Player Skin ID cannot be null or empty");
+            return;
+        }
+        UizaData.getInstance().setPlayerId(playerSkinId);
+        UizaData.getInstance().setEntityId(entityId);
+        UizaData.getInstance().setEntityName(entityTitle);
+        UizaData.getInstance().setEntityCover(entityCover);
+        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
+        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+        uizaIMAVideo.init(this);
     }
 }
