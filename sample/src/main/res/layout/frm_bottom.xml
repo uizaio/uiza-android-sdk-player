@@ -13,6 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/padding_5"
-            android:text="@string/large_text" />
+            android:text="@string/video_info" />
     </ScrollView>
 </LinearLayout>
