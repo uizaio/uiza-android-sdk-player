@@ -31,30 +31,30 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
             public void onMaximized() {
-                LLog.d(TAG, "onMaximized");
+                //LLog.d(TAG, "onMaximized");
             }
 
             @Override
             public void onMinimized() {
-                LLog.d(TAG, "onMinimized");
+                //LLog.d(TAG, "onMinimized");
                 frmTop.getUizaIMAVideo().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
-                LLog.d(TAG, "onClosedToLeft");
+                //LLog.d(TAG, "onClosedToLeft");
                 frmTop.getUizaIMAVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                LLog.d(TAG, "onClosedToRight");
+                //LLog.d(TAG, "onClosedToRight");
                 frmTop.getUizaIMAVideo().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
-                LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
+                //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
                 frmTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
