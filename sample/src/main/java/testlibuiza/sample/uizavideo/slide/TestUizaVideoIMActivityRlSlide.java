@@ -2,6 +2,7 @@ package testlibuiza.sample.uizavideo.slide;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
@@ -16,7 +17,13 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
-        initializeDraggablePanel();
+
+        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                play();
+            }
+        });
 
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -56,9 +63,17 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         return R.layout.test_uiza_ima_video_activity_rl_slide;
     }
 
-    private void initializeDraggablePanel() throws Resources.NotFoundException {
-        FrmTop frmTop = new FrmTop();
-        FrmBottom frmBottom = new FrmBottom();
+    private FrmTop frmTop;
+    private FrmBottom frmBottom;
+
+    private void initializeDraggablePanel() {
+        if (frmTop != null || frmBottom != null) {
+            LLog.d(TAG, "initializeDraggablePanel exist");
+            draggablePanel.minimize();
+            return;
+        }
+        frmTop = new FrmTop();
+        frmBottom = new FrmBottom();
 
         draggablePanel.setFragmentManager(getSupportFragmentManager());
         draggablePanel.setTopFragment(frmTop);
@@ -73,5 +88,9 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         draggablePanel.setClickToMinimizeEnabled(false);
 
         draggablePanel.initializeView();
+    }
+
+    private void play() {
+        initializeDraggablePanel();
     }
 }
