@@ -106,17 +106,19 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 setSizeFrmTop(true);
+                draggablePanel.setEnableSlide(false);
             } else {
                 setSizeFrmTop(false);
+                draggablePanel.setEnableSlide(true);
             }
         }
     }
 
     private void setSizeFrmTop(boolean isLandscape) {
         if (isLandscape) {
-            draggablePanel.setTopViewHeight(LScreenUtil.getScreenHeight());
+            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
-            draggablePanel.setTopViewHeight(LScreenUtil.getScreenWidth() * 9 / 16);
+            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
         }
     }
 }
