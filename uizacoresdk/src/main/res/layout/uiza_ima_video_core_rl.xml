@@ -6,18 +6,6 @@
     android:animateLayoutChanges="true"
     android:background="@color/colorPrimary">
 
-    <!--<com.google.android.exoplayer2.ui.PlayerView
-        android:id="@id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:keepScreenOn="true"
-        app:auto_show="false"
-        app:controller_layout_id="@layout/uiza_controller_skin_default"
-        app:fastforward_increment="3000"
-        app:rewind_increment="3000"
-        app:use_controller="true" />-->
-
     <ProgressBar
         android:id="@id/pb"
         style="?android:attr/progressBarStyleLarge"

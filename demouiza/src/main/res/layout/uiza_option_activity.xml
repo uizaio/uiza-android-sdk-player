@@ -139,7 +139,8 @@
                         android:text="Can slide"
                         android:textColor="@color/White"
                         android:textSize="@dimen/txt_15"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                 </RadioGroup>
 

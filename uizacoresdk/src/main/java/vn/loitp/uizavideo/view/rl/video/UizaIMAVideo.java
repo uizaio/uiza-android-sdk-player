@@ -566,9 +566,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
+                exoPlaylist.setVisibility(VISIBLE);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
+                exoPlaylist.setVisibility(GONE);
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);

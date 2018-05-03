@@ -196,8 +196,8 @@ public class UizaUtil {
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.65);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.4);
             } else {
                 width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
