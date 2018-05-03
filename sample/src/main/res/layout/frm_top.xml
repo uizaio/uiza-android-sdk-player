@@ -5,9 +5,8 @@
     android:background="@color/Black"
     android:orientation="vertical">
 
-    <ImageView
+    <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo
+        android:id="@id/uiza_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/exo_controls_fullscreen_exit" />
+        android:layout_height="wrap_content" />
 </LinearLayout>
