@@ -26,7 +26,7 @@ public class LSApplication extends MultiDexApplication {
         }
         Utils.init(this);
         //config activity transition default
-        //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_SLIDEUP);
+        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         //init uiza
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
