@@ -5,28 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/White">
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/bt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Play" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/padding_5"
-                android:text="@string/large_text" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent" />
 
     <vn.loitp.views.draggablepanel.DraggablePanel
         android:id="@+id/draggable_panel"

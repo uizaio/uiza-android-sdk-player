@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
@@ -20,13 +21,6 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
-
-        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play();
-            }
-        });
 
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -58,6 +52,11 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
                 frmTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
+        replaceFragment(new FrmHome());
+    }
+
+    public void replaceFragment(BaseFragment baseFragment) {
+        LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
     }
 
     @Override
@@ -129,7 +128,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         });
     }
 
-    private void play() {
+    public void play() {
         initializeDraggablePanel();
     }
 

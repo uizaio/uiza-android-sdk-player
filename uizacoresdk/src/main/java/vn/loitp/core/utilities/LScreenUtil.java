@@ -22,6 +22,7 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
+import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 
 /**
