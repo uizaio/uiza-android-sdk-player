@@ -27,6 +27,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
@@ -250,6 +251,19 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         setListener();
+    }
+
+    @Override
+    public void onClickListEntityRelation(Item item, int position) {
+        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
+        String entityId = item.getId();
+        String entityTitle = item.getName();
+        String videoCoverUrl = null;
+        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
+        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
