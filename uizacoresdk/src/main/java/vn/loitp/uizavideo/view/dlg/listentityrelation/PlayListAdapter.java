@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.views.autosize.textviewwithsize.TextViewWithSize;
 
 public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -29,43 +29,25 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
     private PlayListCallback playListCallback;
 
     public class PlayListHolder extends RecyclerView.ViewHolder {
-        private TextViewWithSize tvDuration;
-        private TextViewWithSize tvDuration2;
+        private TextView tvDuration;
+        private TextView tvDuration2;
         private ImageView ivCover;
-        private TextViewWithSize tvName;
-        private TextViewWithSize tvYear;
-        private TextViewWithSize tvRate;
-        private TextViewWithSize tvDescription;
+        private TextView tvName;
+        private TextView tvYear;
+        private TextView tvRate;
+        private TextView tvDescription;
         private LinearLayout rootView;
 
         public PlayListHolder(View view) {
             super(view);
             rootView = (LinearLayout) view.findViewById(R.id.root_view);
-            tvDuration = (TextViewWithSize) view.findViewById(R.id.tv_duration);
-            tvDuration2 = (TextViewWithSize) view.findViewById(R.id.tv_duration_2);
-            tvName = (TextViewWithSize) view.findViewById(R.id.tv_name);
-            tvYear = (TextViewWithSize) view.findViewById(R.id.tv_year);
-            tvRate = (TextViewWithSize) view.findViewById(R.id.tv_rate);
-            tvDescription = (TextViewWithSize) view.findViewById(R.id.tv_description);
+            tvDuration = (TextView) view.findViewById(R.id.tv_duration);
+            tvDuration2 = (TextView) view.findViewById(R.id.tv_duration_2);
+            tvName = (TextView) view.findViewById(R.id.tv_name);
+            tvYear = (TextView) view.findViewById(R.id.tv_year);
+            tvRate = (TextView) view.findViewById(R.id.tv_rate);
+            tvDescription = (TextView) view.findViewById(R.id.tv_description);
             ivCover = (ImageView) view.findViewById(R.id.iv_cover);
-
-            tvDuration.setTextSizePortrait(5);
-            tvDuration.setTextSizeLand(8);
-
-            tvDuration2.setTextSizePortrait(5);
-            tvDuration2.setTextSizeLand(8);
-
-            tvName.setTextSizePortrait(5);
-            tvName.setTextSizeLand(8);
-
-            tvYear.setTextSizePortrait(5);
-            tvYear.setTextSizeLand(8);
-
-            tvRate.setTextSizePortrait(5);
-            tvRate.setTextSizeLand(8);
-
-            tvDescription.setTextSizePortrait(5);
-            tvDescription.setTextSizeLand(8);
         }
     }
 
