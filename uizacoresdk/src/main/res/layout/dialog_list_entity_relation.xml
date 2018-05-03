@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:padding="@dimen/padding_10">
 
     <TextView
@@ -14,4 +13,29 @@
         android:textSize="@dimen/txt_18"
         android:textStyle="bold" />
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@id/pb"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="@dimen/w_20"
+            android:layout_height="@dimen/w_20"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_10"
+            android:text="@string/empty_list"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</RelativeLayout>

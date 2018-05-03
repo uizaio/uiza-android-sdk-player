@@ -16,6 +16,7 @@
     <string name="selection_disabled">Disabled</string>
     <string name="selection_default">Default</string>
 
+    <string name="empty_list">Danh sách rỗng</string>
     <string name="err">Error</string>
     <string name="err_setup">Cannot get link play or detail entity</string>
     <string name="err_400">Bad Request: The request was unacceptable, often due to missing a required parameter.</string>
