@@ -8,8 +8,8 @@ import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.views.layout.draggablepanel.DraggableListener;
-import vn.loitp.views.layout.draggablepanel.DraggablePanel;
+import vn.loitp.views.draggablepanel.DraggableListener;
+import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     private DraggablePanel draggablePanel;
@@ -35,16 +35,19 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             @Override
             public void onMinimized() {
                 LLog.d(TAG, "onMinimized");
+                frmTop.getUizaIMAVideo().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
                 LLog.d(TAG, "onClosedToLeft");
+                frmTop.getUizaIMAVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 LLog.d(TAG, "onClosedToRight");
+                frmTop.getUizaIMAVideo().onDestroy();
             }
         });
     }
@@ -71,6 +74,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         if (frmTop != null || frmBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
             draggablePanel.minimize();
+            frmTop.onResume();
             return;
         }
         frmTop = new FrmTop();

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.views.layout.draggablepanel;
+package vn.loitp.views.draggablepanel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,19 +31,17 @@ import android.widget.RelativeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
 import loitp.core.R;
-import vn.loitp.views.layout.draggablepanel.transformer.Transformer;
-import vn.loitp.views.layout.draggablepanel.transformer.TransformerFactory;
+import vn.loitp.core.utilities.LLog;
+import vn.loitp.views.draggablepanel.transformer.Transformer;
+import vn.loitp.views.draggablepanel.transformer.TransformerFactory;
 
 /**
  * Class created to extends a ViewGroup and simulate the YoutubeLayoutComponent
  *
  * @author Pedro Vicente Gómez Sánchez
  */
-
-//https://github.com/pedrovgs/DraggablePanel
-
 public class DraggableView extends RelativeLayout {
-
+    private final String TAG = getClass().getSimpleName();
     private static final int DEFAULT_SCALE_FACTOR = 2;
     private static final int DEFAULT_TOP_VIEW_MARGIN = 30;
     private static final int DEFAULT_TOP_VIEW_HEIGHT = -1;
@@ -146,6 +144,13 @@ public class DraggableView extends RelativeLayout {
      */
     public void setTouchEnabled(boolean touchEnabled) {
         this.touchEnabled = touchEnabled;
+    }
+
+    private boolean isEnableSlide = true;
+
+    public void setEnableSlide(boolean isEnableSlide) {
+        LLog.d(TAG, "setEnableSlide " + isEnableSlide);
+        this.isEnableSlide = isEnableSlide;
     }
 
     /**
@@ -339,14 +344,18 @@ public class DraggableView extends RelativeLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (!isEnabled()) {
+            LLog.d(TAG, "onInterceptTouchEvent !isEnabled() -> return");
             return false;
         }
         switch (MotionEventCompat.getActionMasked(ev) & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_CANCEL:
+                LLog.d(TAG, "onInterceptTouchEvent ACTION_CANCEL");
             case MotionEvent.ACTION_UP:
+                LLog.d(TAG, "onInterceptTouchEvent ACTION_UP");
                 viewDragHelper.cancel();
                 return false;
             case MotionEvent.ACTION_DOWN:
+                LLog.d(TAG, "onInterceptTouchEvent ACTION_DOWN");
                 int index = MotionEventCompat.getActionIndex(ev);
                 activePointerId = MotionEventCompat.getPointerId(ev, index);
                 if (activePointerId == INVALID_POINTER) {
@@ -356,8 +365,15 @@ public class DraggableView extends RelativeLayout {
             default:
                 break;
         }
-        boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
-        return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;
+        /*boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
+        return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;*/
+
+        if (isEnableSlide) {
+            boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
+            return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -371,20 +387,25 @@ public class DraggableView extends RelativeLayout {
         int actionMasked = MotionEventCompat.getActionMasked(ev);
         if ((actionMasked & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
             activePointerId = MotionEventCompat.getPointerId(ev, actionMasked);
+            LLog.d(TAG, "onTouchEvent ACTION_DOWN");
         }
         if (activePointerId == INVALID_POINTER) {
+            LLog.d(TAG, "onTouchEvent INVALID_POINTER");
             return false;
         }
         viewDragHelper.processTouchEvent(ev);
         if (isClosed()) {
+            LLog.d(TAG, "onTouchEvent isClosed return false");
             return false;
         }
         boolean isDragViewHit = isViewHit(dragView, (int) ev.getX(), (int) ev.getY());
         boolean isSecondViewHit = isViewHit(secondView, (int) ev.getX(), (int) ev.getY());
         analyzeTouchToMaximizeIfNeeded(ev, isDragViewHit);
         if (isMaximized()) {
+            LLog.d(TAG, "isMaximized");
             dragView.dispatchTouchEvent(ev);
         } else {
+            LLog.d(TAG, "!isMaximized");
             dragView.dispatchTouchEvent(cloneMotionEventWithAction(ev, MotionEvent.ACTION_CANCEL));
         }
         return isDragViewHit || isSecondViewHit;
@@ -427,8 +448,7 @@ public class DraggableView extends RelativeLayout {
      * @return cloned motion event
      */
     private MotionEvent cloneMotionEventWithAction(MotionEvent event, int action) {
-        return MotionEvent.obtain(event.getDownTime(), event.getEventTime(), action, event.getX(),
-                event.getY(), event.getMetaState());
+        return MotionEvent.obtain(event.getDownTime(), event.getEventTime(), action, event.getX(), event.getY(), event.getMetaState());
     }
 
     /**
@@ -669,31 +689,17 @@ public class DraggableView extends RelativeLayout {
      */
     private void initializeAttributes(AttributeSet attrs) {
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.draggable_view);
-        this.enableHorizontalAlphaEffect =
-                attributes.getBoolean(R.styleable.draggable_view_enable_minimized_horizontal_alpha_effect,
-                        DEFAULT_ENABLE_HORIZONTAL_ALPHA_EFFECT);
-        this.enableClickToMaximize =
-                attributes.getBoolean(R.styleable.draggable_view_enable_click_to_maximize_view,
-                        DEFAULT_ENABLE_CLICK_TO_MAXIMIZE);
-        this.enableClickToMinimize =
-                attributes.getBoolean(R.styleable.draggable_view_enable_click_to_minimize_view,
-                        DEFAULT_ENABLE_CLICK_TO_MINIMIZE);
-        this.topViewResize =
-                attributes.getBoolean(R.styleable.draggable_view_top_view_resize, DEFAULT_TOP_VIEW_RESIZE);
-        this.topViewHeight = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_height,
-                DEFAULT_TOP_VIEW_HEIGHT);
-        this.scaleFactorX = attributes.getFloat(R.styleable.draggable_view_top_view_x_scale_factor,
-                DEFAULT_SCALE_FACTOR);
-        this.scaleFactorY = attributes.getFloat(R.styleable.draggable_view_top_view_y_scale_factor,
-                DEFAULT_SCALE_FACTOR);
-        this.marginBottom = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_margin_bottom,
-                DEFAULT_TOP_VIEW_MARGIN);
-        this.marginRight = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_margin_right,
-                DEFAULT_TOP_VIEW_MARGIN);
-        this.dragViewId =
-                attributes.getResourceId(R.styleable.draggable_view_top_view_id, R.id.drag_view);
-        this.secondViewId =
-                attributes.getResourceId(R.styleable.draggable_view_bottom_view_id, R.id.second_view);
+        this.enableHorizontalAlphaEffect = attributes.getBoolean(R.styleable.draggable_view_enable_minimized_horizontal_alpha_effect, DEFAULT_ENABLE_HORIZONTAL_ALPHA_EFFECT);
+        this.enableClickToMaximize = attributes.getBoolean(R.styleable.draggable_view_enable_click_to_maximize_view, DEFAULT_ENABLE_CLICK_TO_MAXIMIZE);
+        this.enableClickToMinimize = attributes.getBoolean(R.styleable.draggable_view_enable_click_to_minimize_view, DEFAULT_ENABLE_CLICK_TO_MINIMIZE);
+        this.topViewResize = attributes.getBoolean(R.styleable.draggable_view_top_view_resize, DEFAULT_TOP_VIEW_RESIZE);
+        this.topViewHeight = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_height, DEFAULT_TOP_VIEW_HEIGHT);
+        this.scaleFactorX = attributes.getFloat(R.styleable.draggable_view_top_view_x_scale_factor, DEFAULT_SCALE_FACTOR);
+        this.scaleFactorY = attributes.getFloat(R.styleable.draggable_view_top_view_y_scale_factor, DEFAULT_SCALE_FACTOR);
+        this.marginBottom = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_margin_bottom, DEFAULT_TOP_VIEW_MARGIN);
+        this.marginRight = attributes.getDimensionPixelSize(R.styleable.draggable_view_top_view_margin_right, DEFAULT_TOP_VIEW_MARGIN);
+        this.dragViewId = attributes.getResourceId(R.styleable.draggable_view_top_view_id, R.id.drag_view);
+        this.secondViewId = attributes.getResourceId(R.styleable.draggable_view_bottom_view_id, R.id.second_view);
         attributes.recycle();
     }
 
@@ -705,6 +711,7 @@ public class DraggableView extends RelativeLayout {
      * @return true if the view is slided.
      */
     private boolean smoothSlideTo(float slideOffset) {
+        //LLog.d(TAG, "smoothSlideTo " + slideOffset);
         final int topBound = getPaddingTop();
         int x = (int) (slideOffset * (getWidth() - transformer.getMinWidthPlusMarginRight()));
         int y = (int) (topBound + slideOffset * getVerticalDragRange());

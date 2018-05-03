@@ -46,6 +46,10 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideo uizaIMAVideo;
 
+    public UizaIMAVideo getUizaIMAVideo() {
+        return uizaIMAVideo;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
