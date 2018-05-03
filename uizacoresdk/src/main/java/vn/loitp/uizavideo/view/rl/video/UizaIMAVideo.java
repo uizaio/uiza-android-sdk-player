@@ -152,11 +152,17 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         LUIUtil.showProgressBar(progressBar);
 
-        //track event eventype display
-        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
+        //cannot delete delay below, only works after 500mls
+        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                //track event eventype display
+                trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
 
-        //track event plays_requested
-        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
+                //track event plays_requested
+                trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
+            }
+        });
     }
 
     private int countTryLinkPlayError = 0;
