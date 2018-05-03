@@ -12,56 +12,66 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LImageUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.views.autosize.textviewwithsize.TextViewWithSize;
 
 public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
     private List<Item> itemList;
     private Context context;
-    private int sizeWRoot;
-    private int sizeHRoot;
     private PlayListCallback playListCallback;
 
     public class PlayListHolder extends RecyclerView.ViewHolder {
-        private TextView tvDuration;
-        private TextView tvDuration2;
+        private TextViewWithSize tvDuration;
+        private TextViewWithSize tvDuration2;
         private ImageView ivCover;
-        private TextView tvName;
-        private TextView tvYear;
-        private TextView tvRate;
-        private TextView tvDescription;
+        private TextViewWithSize tvName;
+        private TextViewWithSize tvYear;
+        private TextViewWithSize tvRate;
+        private TextViewWithSize tvDescription;
         private LinearLayout rootView;
 
         public PlayListHolder(View view) {
             super(view);
             rootView = (LinearLayout) view.findViewById(R.id.root_view);
-            tvDuration = (TextView) view.findViewById(R.id.tv_duration);
-            tvDuration2 = (TextView) view.findViewById(R.id.tv_duration_2);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            tvYear = (TextView) view.findViewById(R.id.tv_year);
-            tvRate = (TextView) view.findViewById(R.id.tv_rate);
-            tvDescription = (TextView) view.findViewById(R.id.tv_description);
+            tvDuration = (TextViewWithSize) view.findViewById(R.id.tv_duration);
+            tvDuration2 = (TextViewWithSize) view.findViewById(R.id.tv_duration_2);
+            tvName = (TextViewWithSize) view.findViewById(R.id.tv_name);
+            tvYear = (TextViewWithSize) view.findViewById(R.id.tv_year);
+            tvRate = (TextViewWithSize) view.findViewById(R.id.tv_rate);
+            tvDescription = (TextViewWithSize) view.findViewById(R.id.tv_description);
             ivCover = (ImageView) view.findViewById(R.id.iv_cover);
+
+            tvDuration.setTextSizePortrait(5);
+            tvDuration.setTextSizeLand(8);
+
+            tvDuration2.setTextSizePortrait(5);
+            tvDuration2.setTextSizeLand(8);
+
+            tvName.setTextSizePortrait(5);
+            tvName.setTextSizeLand(8);
+
+            tvYear.setTextSizePortrait(5);
+            tvYear.setTextSizeLand(8);
+
+            tvRate.setTextSizePortrait(5);
+            tvRate.setTextSizeLand(8);
+
+            tvDescription.setTextSizePortrait(5);
+            tvDescription.setTextSizeLand(8);
         }
     }
 
-    public PlayListAdapter(Context context, List<Item> itemList, int sizeWRoot, int sizeHRoot, PlayListCallback playListCallback) {
+    public PlayListAdapter(Context context, List<Item> itemList, PlayListCallback playListCallback) {
         this.itemList = itemList;
         this.playListCallback = playListCallback;
-        this.sizeWRoot = sizeWRoot;
-        this.sizeHRoot = sizeHRoot;
         this.context = context;
     }
 
@@ -74,7 +84,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
     @Override
     public void onBindViewHolder(PlayListHolder playListHolder, final int position) {
         final Item item = itemList.get(position);
-        LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
+        //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
+
         //playListHolder.tvDuration.setText(item.getDuration());
         UizaUtil.setDuration(playListHolder.tvDuration, item.getDuration());
         //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
@@ -89,8 +100,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
         playListHolder.tvRate.setText("18+");
         if (item.getShortDescription() == null || item.getShortDescription().isEmpty()) {
             if (item.getDescription() == null || item.getDescription().isEmpty()) {
-                //playListHolder.tvDescription.setText("No description");
-                playListHolder.tvDescription.setVisibility(View.INVISIBLE);
+                playListHolder.tvDescription.setVisibility(View.GONE);
             } else {
                 playListHolder.tvDescription.setText(item.getDescription());
                 playListHolder.tvDescription.setVisibility(View.VISIBLE);
@@ -99,11 +109,11 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
             playListHolder.tvDescription.setText(item.getShortDescription());
         }
 
-        RelativeLayout.LayoutParams rootLayoutParams = new RelativeLayout.LayoutParams((int) (sizeWRoot / 3.5), sizeHRoot);
-        playListHolder.rootView.setLayoutParams(rootLayoutParams);
+        //RelativeLayout.LayoutParams rootLayoutParams = new RelativeLayout.LayoutParams((int) (sizeWRoot / 3.5), sizeHRoot);
+        //playListHolder.rootView.setLayoutParams(rootLayoutParams);
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (sizeWRoot / 3.5 / 2));
-        playListHolder.ivCover.setLayoutParams(layoutParams);
+        //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (sizeWRoot / 3.5 / 2));
+        //playListHolder.ivCover.setLayoutParams(layoutParams);
 
         String thumbnail;
         if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {

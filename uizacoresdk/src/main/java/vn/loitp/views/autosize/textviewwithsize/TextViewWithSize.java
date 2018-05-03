@@ -60,6 +60,7 @@ public class TextViewWithSize extends TextView {
         return textSizeLand == Constants.NOT_FOUND ? 17 : textSizeLand;
     }
 
+    //sp
     public void setTextSizeLand(int textSizeLand) {
         this.textSizeLand = textSizeLand;
     }
@@ -68,6 +69,7 @@ public class TextViewWithSize extends TextView {
         return textSizePortrait == Constants.NOT_FOUND ? 12 : textSizePortrait;
     }
 
+    //sp
     public void setTextSizePortrait(int textSizePortrait) {
         this.textSizePortrait = textSizePortrait;
     }

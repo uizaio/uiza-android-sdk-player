@@ -5,11 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
@@ -44,7 +42,6 @@ public class UizaDialogListEntityRelation extends Dialog {
 
     private ProgressBar progressBar;
     private TextView tvMsg;
-
     private List<Item> itemList;
     private RecyclerView recyclerView;
     private PlayListAdapter playListAdapter;
@@ -118,36 +115,22 @@ public class UizaDialogListEntityRelation extends Dialog {
                 tvMsg.setVisibility(View.GONE);
             }
             LLog.d(TAG, "itemList size: " + itemList.size());
-            recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
 
-            int widthRecyclerView;
-            int heightRecyclerView;
-
-            if (isLandscape) {
+            /*if (isLandscape) {
                 LLog.d(TAG, "isLandscape");
-                widthRecyclerView = LScreenUtil.getScreenWidth();
-                heightRecyclerView = LScreenUtil.getScreenHeight() / 2;
-
-                ViewGroup.LayoutParams recyclerViewParams = recyclerView.getLayoutParams();
-                recyclerViewParams.width = widthRecyclerView;
-                recyclerViewParams.height = heightRecyclerView;
-                recyclerView.setLayoutParams(recyclerViewParams);
+                recyclerView.setLayoutManager(new GridLayoutManager(activity, 4));
             } else {
                 LLog.d(TAG, "!isLandscape");
-                widthRecyclerView = LScreenUtil.getScreenWidth();
-                heightRecyclerView = LScreenUtil.getScreenHeight() / 5;
+                recyclerView.setLayoutManager(new GridLayoutManager(activity, 3));
+            }*/
 
-                ViewGroup.LayoutParams recyclerViewParams = recyclerView.getLayoutParams();
-                recyclerViewParams.width = widthRecyclerView;
-                recyclerViewParams.height = heightRecyclerView;
-                recyclerView.setLayoutParams(recyclerViewParams);
-            }
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
-            playListAdapter = new PlayListAdapter(activity, itemList, widthRecyclerView, heightRecyclerView, null);
+            recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+
+            //recyclerView.setItemAnimator(new DefaultItemAnimator());
+            //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
+            playListAdapter = new PlayListAdapter(activity, itemList, null);
             recyclerView.setAdapter(playListAdapter);
             LUIUtil.setPullLikeIOSHorizontal(recyclerView);
-            LLog.d(TAG, "init done");
         }
         LUIUtil.hideProgressBar(progressBar);
     }

@@ -3,9 +3,9 @@
 
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/colorPrimary" />
+            <solid android:color="@color/df_played_color" />
 
-            <stroke android:width="@dimen/w_1" android:color="@color/colorPrimary" />
+            <stroke android:width="@dimen/w_1" android:color="@color/df_played_color" />
 
             <corners android:radius="@dimen/round_5" />
 
