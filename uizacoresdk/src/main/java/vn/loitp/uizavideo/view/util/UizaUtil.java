@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -208,6 +209,22 @@ public class UizaUtil {
         }
         if (isFullScreen) {
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+    }
+
+    public static void setDuration(TextView textView, String duration) {
+        //LLog.d(TAG, "duration: " + duration);
+        if (textView == null || duration == null || duration.isEmpty()) {
+            return;
+        }
+        try {
+            int min = (int) Double.parseDouble(duration) + 1;
+            String minutes = Integer.toString(min % 60);
+            minutes = minutes.length() == 1 ? "0" + minutes : minutes;
+            textView.setText((min / 60) + ":" + minutes);
+        } catch (Exception e) {
+            //LLog.e(TAG, "setDuration " + e.toString());
+            textView.setText(" - ");
         }
     }
 }

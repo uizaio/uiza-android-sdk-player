@@ -59,8 +59,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.UizaDialogListEntityRelation;
-import vn.loitp.uizavideo.view.UizaDialogShare;
+import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -337,6 +336,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoSetting = (ImageButton) playerView.findViewById(R.id.exo_setting);
         exoCc = (ImageButton) playerView.findViewById(R.id.exo_cc);
         exoPlaylist = (ImageButton) playerView.findViewById(R.id.exo_playlist);
+        exoPlaylist.setVisibility(VISIBLE);
         exoHearing = (ImageButton) playerView.findViewById(R.id.exo_hearing);
         exoPictureInPicture = (ImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButton) playerView.findViewById(R.id.exo_share);
@@ -568,11 +568,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
-                exoPlaylist.setVisibility(VISIBLE);
+                //exoPlaylist.setVisibility(VISIBLE);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
-                exoPlaylist.setVisibility(GONE);
+                //exoPlaylist.setVisibility(GONE);
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);

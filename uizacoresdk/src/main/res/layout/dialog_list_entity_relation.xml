@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="@dimen/padding_10">
 
     <TextView
@@ -14,9 +15,8 @@
         android:textStyle="bold" />
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ProgressBar
             android:id="@id/pb"
@@ -33,9 +33,16 @@
             android:layout_margin="@dimen/margin_10"
             android:text="@string/empty_list"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_18"
-            android:textStyle="bold"
+            android:textSize="@dimen/txt_14"
             android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarSize="@dimen/w_1"
+            android:scrollbarThumbVertical="@color/White"
+            android:scrollbars="vertical" />
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package vn.loitp.uizavideo.view;
+package vn.loitp.uizavideo.view.dlg.share;
 
 import android.app.Activity;
 import android.app.AlertDialog;

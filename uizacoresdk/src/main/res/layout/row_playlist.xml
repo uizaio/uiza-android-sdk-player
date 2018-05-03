@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_5"
+        android:gravity="center|center_vertical"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/iv_cover"
+                android:layout_margin="@dimen/margin_3"
+                android:background="@drawable/bt_duration"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_8" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/iv_cover"
+            android:layout_marginTop="@dimen/margin_5"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_15"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="@dimen/w_1"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:background="@color/White" />
+
+            <TextView
+                android:id="@+id/tv_duration_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="@dimen/w_1"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:background="@color/White" />
+
+            <TextView
+                android:id="@+id/tv_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:background="@drawable/bt_rate"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_description"
+            android:textSize="@dimen/txt_8" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,9 +12,8 @@ import android.net.Uri;
 
 import java.util.List;
 
-import loitp.core.BuildConfig;
 import loitp.core.R;
-import vn.loitp.uizavideo.view.UizaDialogShare;
+import vn.loitp.uizavideo.view.dlg.share.UizaDialogShare;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 
