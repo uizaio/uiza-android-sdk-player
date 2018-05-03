@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -269,6 +270,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         onCreate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public UizaIMAVideo(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
@@ -545,6 +547,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 @Override
                 public void onClickItem(Item item, int position) {
                     LLog.d(TAG, "onClickItem " + gson.toJson(item));
+                    if (callback != null) {
+                        callback.onClickListEntityRelation(item, position);
+                    }
                 }
 
                 @Override
@@ -761,6 +766,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public interface Callback {
         public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
+
+        public void onClickListEntityRelation(Item item, int position);
     }
 
     private Callback callback;

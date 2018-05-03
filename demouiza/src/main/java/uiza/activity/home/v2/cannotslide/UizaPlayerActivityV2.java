@@ -267,8 +267,13 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
-    public void onClick(Item movie, int position) {
-        setupVideo(movie.getId(), movie.getName(), movie.getThumbnail());
+    public void onClickListEntityRelation(Item item, int position) {
+        setupVideo(item.getId(), item.getName(), item.getThumbnail());
+    }
+
+    @Override
+    public void onClick(Item item, int position) {
+        setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 
     @Override
