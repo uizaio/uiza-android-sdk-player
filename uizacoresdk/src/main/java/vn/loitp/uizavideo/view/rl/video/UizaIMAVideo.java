@@ -59,6 +59,8 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.UizaDialogListEntityRelation;
+import vn.loitp.uizavideo.view.UizaDialogShare;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -537,8 +539,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 UizaUtil.getBtText(debugRootView).performClick();
             }
         } else if (v == exoPlaylist) {
-            //TODO
-            LToast.show(getContext(), "Click exoPlaylist");
+            UizaDialogListEntityRelation uizaDialogListEntityRelation = new UizaDialogListEntityRelation(activity, isLandscape);
+            UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
         } else if (v == exoHearing) {
             View view = UizaUtil.getBtAudio(debugRootView);
             if (view != null) {
