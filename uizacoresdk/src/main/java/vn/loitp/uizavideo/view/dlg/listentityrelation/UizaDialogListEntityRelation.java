@@ -46,10 +46,13 @@ public class UizaDialogListEntityRelation extends Dialog {
     private RecyclerView recyclerView;
     private PlayListAdapter playListAdapter;
 
-    public UizaDialogListEntityRelation(Activity activity, boolean isLandscape) {
+    private PlayListCallback playListCallback;
+
+    public UizaDialogListEntityRelation(Activity activity, boolean isLandscape, PlayListCallback playListCallback) {
         super(activity);
         this.activity = activity;
         this.isLandscape = isLandscape;
+        this.playListCallback = playListCallback;
     }
 
     @Override
@@ -128,7 +131,22 @@ public class UizaDialogListEntityRelation extends Dialog {
 
             //recyclerView.setItemAnimator(new DefaultItemAnimator());
             //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
-            playListAdapter = new PlayListAdapter(activity, itemList, null);
+            playListAdapter = new PlayListAdapter(activity, itemList, new PlayListCallback() {
+                @Override
+                public void onClickItem(Item item, int position) {
+                    dismiss();
+                    if (playListCallback != null) {
+                        playListCallback.onClickItem(item, position);
+                    }
+                }
+
+                @Override
+                public void onDismiss() {
+                    if (playListCallback != null) {
+                        playListCallback.onDismiss();
+                    }
+                }
+            });
             recyclerView.setAdapter(playListAdapter);
             LUIUtil.setPullLikeIOSHorizontal(recyclerView);
         }

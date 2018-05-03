@@ -14,10 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+
 import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -110,9 +113,29 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
             @Override
             public void onClick(View v) {
                 //LLog.d(TAG, TAG + " click: " + item.getName() + ", position: " + position);
-                if (playListCallback != null) {
-                    playListCallback.onClickItem(item, position);
-                }
+                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+                    @Override
+                    public void onCancel() {
+                        //do nothing
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        if (playListCallback != null) {
+                            playListCallback.onClickItem(item, position);
+                        }
+                    }
+
+                    @Override
+                    public void onRepeat() {
+                        //do nothing
+                    }
+
+                    @Override
+                    public void onStart() {
+                        //do nothing
+                    }
+                });
             }
         });
     }

@@ -55,10 +55,12 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
@@ -539,7 +541,17 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 UizaUtil.getBtText(debugRootView).performClick();
             }
         } else if (v == exoPlaylist) {
-            UizaDialogListEntityRelation uizaDialogListEntityRelation = new UizaDialogListEntityRelation(activity, isLandscape);
+            UizaDialogListEntityRelation uizaDialogListEntityRelation = new UizaDialogListEntityRelation(activity, isLandscape, new PlayListCallback() {
+                @Override
+                public void onClickItem(Item item, int position) {
+                    LLog.d(TAG, "onClickItem " + gson.toJson(item));
+                }
+
+                @Override
+                public void onDismiss() {
+                    //do nothing
+                }
+            });
             UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
         } else if (v == exoHearing) {
             View view = UizaUtil.getBtAudio(debugRootView);
