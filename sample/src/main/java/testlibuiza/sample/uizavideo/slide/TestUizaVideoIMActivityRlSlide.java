@@ -56,7 +56,11 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     }
 
     public void replaceFragment(BaseFragment baseFragment) {
-        LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
+        if (baseFragment instanceof FrmHome) {
+            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
+        } else {
+            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
+        }
     }
 
     @Override
