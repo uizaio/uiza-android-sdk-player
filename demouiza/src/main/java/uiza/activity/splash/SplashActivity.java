@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import uiza.R;
 import uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity;
+import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
@@ -163,7 +164,7 @@ public class SplashActivity extends BaseActivity {
         RestClientV2.addAuthorization(token);
         if (canSlide) {
             LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
-            //intent = new Intent(activity, HomeV2CanSlideActivity.class);
+            intent = new Intent(activity, HomeV2CanSlideActivity.class);
         } else {
             LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
             intent = new Intent(activity, HomeV2CannotSlideActivity.class);
