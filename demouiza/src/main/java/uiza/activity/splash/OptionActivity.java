@@ -192,6 +192,7 @@ public class OptionActivity extends BaseActivity {
                         currentEnvironment = Constants.ENVIRONMENT_PROD;
                         break;
                 }
+                LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
             }
         });
     }
