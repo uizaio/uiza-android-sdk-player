@@ -732,7 +732,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                LLog.d(TAG, "onFail getLinkPlay: " + e.toString());
+                LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
                 activity.handleException(e);
                 if (callback != null) {
                     callback.isInitResult(false, null, null);
@@ -817,7 +817,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                LLog.d(TAG, "onFail getLinkDownloadV2: " + e.toString());
+                LLog.e(TAG, "onFail getLinkDownloadV2: " + e.toString());
                 handleException(e);
             }
         });

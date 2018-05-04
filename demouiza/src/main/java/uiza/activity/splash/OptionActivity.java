@@ -50,6 +50,10 @@ public class OptionActivity extends BaseActivity {
                 goToSplashScreen();
             }
         });
+
+        //set auth null every run this app
+        LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
+
         findViews();
         setupSkin();
         setupSlide();
@@ -188,7 +192,6 @@ public class OptionActivity extends BaseActivity {
                         currentEnvironment = Constants.ENVIRONMENT_PROD;
                         break;
                 }
-                LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
             }
         });
     }

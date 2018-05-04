@@ -67,7 +67,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
 
         String playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+        String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988___";
         String entityTitle = "Dummy title";
         String videoCoverUrl = null;
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
@@ -261,9 +261,13 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        setListener();
-        if (frmTopCallback != null) {
-            frmTopCallback.initDone();
+        if (isInitSuccess) {
+            setListener();
+            if (frmTopCallback != null) {
+                frmTopCallback.initDone();
+            } else {
+                LLog.e(TAG, "isInitResult else");
+            }
         }
     }
 
