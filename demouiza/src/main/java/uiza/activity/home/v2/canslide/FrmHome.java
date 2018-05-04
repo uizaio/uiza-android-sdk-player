@@ -18,8 +18,8 @@ import java.util.List;
 
 import uiza.R;
 import uiza.activity.data.HomeDataV2;
-import uiza.activity.home.v2.cannotslide.FrmChannelV2;
 import uiza.activity.home.v2.cannotslide.SearchV2Activity;
+import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
@@ -32,6 +32,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
@@ -204,14 +205,42 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
                     HomeDataV2.getInstance().setCurrentPosition(pos);
                     HomeDataV2.getInstance().setDatum(datumList.get(pos));
                     mDrawerLayout.closeDrawers();
-                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, new FrmChannelV2(), false);
+                    FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
+                    frmHomeChannel.setCallback(new EntityItemV2.Callback() {
+                        @Override
+                        public void onClick(Item item, int position) {
+                            onClickVideo(item, position);
+                        }
+
+                        @Override
+                        public void onPosition(int position) {
+                            //do nothing
+                        }
+                    });
+                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
                 }
             }));
         }
 
         //init data first
         HomeDataV2.getInstance().setDatum(datumList.get(0));
-        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, new FrmChannelV2(), false);
+        FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
+        frmHomeChannel.setCallback(new EntityItemV2.Callback() {
+            @Override
+            public void onClick(Item item, int position) {
+                onClickVideo(item, position);
+            }
+
+            @Override
+            public void onPosition(int position) {
+                //do nothing
+            }
+        });
+        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
+    }
+
+    private void onClickVideo(Item item, int position) {
+        LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
     }
 
     private long backPressed;
