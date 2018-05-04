@@ -23,24 +23,10 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 public class HomeV2CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
 
-    private Auth getDummyAuth() {
-        String json = "{\"code\":200,\"data\":{\"appId\":\"0fa01cc4bc264023850069c3e07a0a38\",\"expired\":\"01/06/2018 10:43:17\",\"token\":\"3fcc5411-399e-4607-9991-6ab5d1c99e6e\"},\"datetime\":\"2018-05-02T10:43:17.180Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
-        return LSApplication.getInstance().getGson().fromJson(json, Auth.class);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //init uiza
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
-        RestClientTracking.init(Constants.URL_TRACKING_PROD);
-
-        Auth auth = getDummyAuth();
-        RestClientV2.addAuthorization(auth.getData().getToken());
-        LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
-
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
-
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
             public void onMaximized() {
