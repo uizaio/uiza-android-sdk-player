@@ -240,20 +240,12 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Item item, int position) {
-        LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
+        //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
+        ((HomeV2CanSlideActivity) getActivity()).play(item, position);
     }
-
-    private long backPressed;
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            return false;
-        } else {
-            LToast.show(getActivity(), getString(R.string.press_again_to_exit));
-        }
-        backPressed = System.currentTimeMillis();
-        return true;
+        return false;
     }
 }

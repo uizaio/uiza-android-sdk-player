@@ -12,13 +12,17 @@ import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -92,14 +96,21 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     private FrmTop frmTop;
     private FrmBottom frmBottom;
 
-    private void initializeDraggablePanel() {
+    private void initializeDraggablePanel(final Item item, final int position) {
         if (frmTop != null || frmBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
-            draggablePanel.minimize();
-            frmTop.onResume();
+            initFrmTop(item, position);
+            draggablePanel.maximize();
             return;
         }
         frmTop = new FrmTop();
+        frmTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
+                initFrmTop(item, position);
+            }
+        });
         frmBottom = new FrmBottom();
 
         draggablePanel.setFragmentManager(getSupportFragmentManager());
@@ -143,8 +154,30 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         });
     }
 
-    public void play() {
-        initializeDraggablePanel();
+    private void initFrmTop(Item item, int position) {
+        String playerSkinId = UizaData.getInstance().getPlayerId();
+
+        //String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+        String entityId = item.getId();
+
+        //String entityTitle = "Dummy title";
+        String entityTitle = item.getName();
+
+        //String videoCoverUrl = null;
+        String videoCoverUrl = item.getThumbnail();
+
+        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
+
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
+
+        frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+    }
+
+    public void play(Item item, int position) {
+        LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
+        initializeDraggablePanel(item, position);
     }
 
     private boolean isLandscape;
@@ -173,8 +206,11 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         }
     }
 
+    private long backPressed;
+
     @Override
     public void onBackPressed() {
+        LLog.d(TAG, "onBackPressed");
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             super.onBackPressed();

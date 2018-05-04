@@ -65,16 +65,6 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frm_top, container, false);
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
-
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
-        String entityTitle = "Dummy title";
-        String videoCoverUrl = null;
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
         return view;
     }
 
@@ -284,7 +274,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
-    private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogMsg("Entity ID cannot be null or empty");
             return;
@@ -300,6 +290,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         UizaData.getInstance().setUrlIMAAd(urlIMAAd);
         UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
+        LLog.d(TAG, "setupVideo");
         uizaIMAVideo.init(this);
     }
 }
