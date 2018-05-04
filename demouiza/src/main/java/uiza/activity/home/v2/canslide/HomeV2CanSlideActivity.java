@@ -145,7 +145,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         //draggablePanel.setTopViewHeight(800);
         //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
         //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
-        draggablePanel.setClickToMaximizeEnabled(false);
+        draggablePanel.setClickToMaximizeEnabled(true);
         draggablePanel.setClickToMinimizeEnabled(false);
         draggablePanel.setEnableHorizontalAlphaEffect(false);
         setSizeFrmTop();
