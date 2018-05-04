@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide;
+package vn.loitp.uizavideo.view;
 
 /**
  * Created by LENOVO on 5/4/2018.
