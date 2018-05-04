@@ -147,9 +147,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                 context,
                 userAgent,
                 new DefaultBandwidthMeter());
-        this.imageView = imageView;
-        this.previewTimeBarLayout = previewTimeBarLayout;
+        this.imageView = uizaIMAVideo.getIvThumbnail();
+        this.previewTimeBarLayout = uizaIMAVideo.getPreviewTimeBarLayout();
         this.thumbnailsUrl = thumbnailsUrl;
+        //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
             @Override
