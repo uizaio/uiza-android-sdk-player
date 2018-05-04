@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
-    android:orientation="vertical">
+    android:background="@color/primaryColor">
 
-    <ScrollView
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/bt"
+            <FrameLayout
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Play" />
+                android:layout_height="match_parent" />
 
-            <Button
-                android:id="@+id/bt_switch_screen"
+            <uiza.activity.home.view.UizaActionBar
+                android:id="@+id/uiza_action_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login" />
+                android:layout_height="?android:attr/actionBarSize" />
 
-            <TextView
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="@dimen/w_250"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@color/black_65">
+
+            <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
+                android:id="@+id/blur_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/padding_5"
-                android:text="@string/large_text" />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                app:realtimeBlurRadius="@dimen/round_55"
+                app:realtimeOverlayColor="@color/black_5" />-->
+
+            <vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView
+                android:id="@+id/drawerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+        </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>
+

@@ -41,7 +41,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "onCreate");
+        //LLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
