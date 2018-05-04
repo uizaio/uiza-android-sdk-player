@@ -103,8 +103,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         if (frmTop != null || frmBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
             LLog.d(TAG, "onClickItem FrmChannel " + item.getName());
-            initFrmTop(item, position);
             clearUIFrmBottom();
+            initFrmTop(item, position);
             draggablePanel.maximize();
             return;
         }
@@ -124,6 +124,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                     @Override
                     public void onClick(Item item, int position) {
                         LLog.d(TAG, "onClickItem frmBottom " + item.getName());
+                        clearUIFrmBottom();
+                        initFrmTop(item, position);
                     }
 
                     @Override
@@ -177,6 +179,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onClickListEntityRelation(Item item, int position) {
                 LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
+                clearUIFrmBottom();
                 initFrmTop(item, position);
             }
         });
