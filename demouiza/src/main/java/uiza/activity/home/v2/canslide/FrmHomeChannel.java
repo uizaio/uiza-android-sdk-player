@@ -251,7 +251,7 @@ public class FrmHomeChannel extends BaseFragment {
         this.callback = callback;
     }
 
-    private void onClickVideo(Item item, int position) {
+    /*private void onClickVideo(Item item, int position) {
         LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
@@ -264,7 +264,7 @@ public class FrmHomeChannel extends BaseFragment {
         LLog.d(TAG, "onClickVideo " + item.getName());
 
         LActivityUtil.tranIn(getActivity());
-    }
+    }*/
 
     private boolean isLastPage;
 

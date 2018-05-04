@@ -51,7 +51,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     public interface FrmTopCallback {
-        public void initDone();
+        public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
     }
 
     private FrmTopCallback frmTopCallback;
@@ -254,7 +254,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
-                frmTopCallback.initDone();
+                frmTopCallback.initDone(isInitSuccess, getLinkPlay, getDetailEntity);
             } else {
                 LLog.e(TAG, "isInitResult else");
             }

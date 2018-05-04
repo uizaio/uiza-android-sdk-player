@@ -19,6 +19,8 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
+import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.util.UizaData;
@@ -130,7 +132,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
         frmTop.setFrmTopCallback(new FrmTop.FrmTopCallback() {
             @Override
-            public void initDone() {
+            public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 LLog.d(TAG, "initDone");
                 frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
@@ -150,6 +152,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                         }
                     }
                 });
+                intFrmBottom(getLinkPlay, getDetailEntity);
             }
         });
     }
@@ -173,6 +176,11 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         String urlThumnailsPreviewSeekbar = null;
 
         frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+    }
+
+    private void intFrmBottom(GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
+        LLog.d(TAG, "intFrmBottom");
+        frmBottom.setup(getDetailEntity);
     }
 
     public void play(Item item, int position) {
