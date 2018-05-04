@@ -19,6 +19,10 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     private DraggablePanel draggablePanel;
 
+    public DraggablePanel getDraggablePanel(){
+        return draggablePanel;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +106,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         //draggablePanel.setTopViewHeight(800);
         //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
         //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
-        draggablePanel.setClickToMaximizeEnabled(false);
+        draggablePanel.setClickToMaximizeEnabled(true);
         draggablePanel.setClickToMinimizeEnabled(false);
         draggablePanel.setEnableHorizontalAlphaEffect(false);
         setSizeFrmTop();
