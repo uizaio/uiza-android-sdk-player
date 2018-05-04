@@ -93,13 +93,7 @@ public class Constants {
 
     public final static String A_K_DEV = "Y0ZW0XM7HZL2CB8ODNDV";
     public final static String S_K_DEV = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
-
-    //UQC
-    //token aa4da628-a58a-49a1-b79b-94c1b02c5809
-    /*{
- “accessKeyId”:“S2O8JGAPI3OICRTHR2DS”,
- “secretKeyId”:“UHf9LWrTHuQ5Zy99foX36IavJ4NRQhpo411sFYry”
-    }*/
+    
     public final static String A_K_UQC = "NPGRU7CIJBYO6XLAHT9P";
     public final static String S_K_UQC = "DzzQukulJV6tmw59i7AwO7deK5qgDysLKZXBSL8X";
 
