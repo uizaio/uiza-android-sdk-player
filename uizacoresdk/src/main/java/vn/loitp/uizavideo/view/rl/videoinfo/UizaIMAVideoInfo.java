@@ -68,7 +68,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         clearAllViews();
     }
 
-    private void clearAllViews() {
+    public void clearAllViews() {
         itemList.clear();
         notifyViews();
         LUIUtil.showProgressBar(progressBar);

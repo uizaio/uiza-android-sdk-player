@@ -23,6 +23,7 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
@@ -101,7 +102,9 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     private void initializeDraggablePanel(final Item item, final int position) {
         if (frmTop != null || frmBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
+            LLog.d(TAG, "onClickItem FrmChannel " + item.getName());
             initFrmTop(item, position);
+            clearUIFrmBottom();
             draggablePanel.maximize();
             return;
         }
@@ -114,6 +117,22 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             }
         });
         frmBottom = new FrmBottom();
+        frmBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                frmBottom.init(new ItemAdapterV2.Callback() {
+                    @Override
+                    public void onClick(Item item, int position) {
+                        LLog.d(TAG, "onClickItem frmBottom " + item.getName());
+                    }
+
+                    @Override
+                    public void onLoadMore() {
+                        //do nothing
+                    }
+                });
+            }
+        });
 
         draggablePanel.setFragmentManager(getSupportFragmentManager());
         draggablePanel.setTopFragment(frmTop);
@@ -133,17 +152,17 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         frmTop.setFrmTopCallback(new FrmTop.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-                LLog.d(TAG, "initDone");
+                LLog.d(TAG, "setFrmTopCallback initDone");
                 frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
                                 if (visibility == View.VISIBLE) {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                                     draggablePanel.setEnableSlide(false);
                                 } else {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                                     draggablePanel.setEnableSlide(true);
                                 }
                             } else {
@@ -152,7 +171,13 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                         }
                     }
                 });
-                intFrmBottom(getLinkPlay, getDetailEntity);
+                intFrmBottom(getDetailEntity);
+            }
+
+            @Override
+            public void onClickListEntityRelation(Item item, int position) {
+                LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
+                initFrmTop(item, position);
             }
         });
     }
@@ -178,9 +203,13 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
-    private void intFrmBottom(GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
+    private void intFrmBottom(GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "intFrmBottom");
         frmBottom.setup(getDetailEntity);
+    }
+
+    private void clearUIFrmBottom() {
+        frmBottom.clearAllViews();
     }
 
     public void play(Item item, int position) {

@@ -32,7 +32,6 @@ import java.util.List;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -52,6 +51,8 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     public interface FrmTopCallback {
         public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
+
+        public void onClickListEntityRelation(Item item, int position);
     }
 
     private FrmTopCallback frmTopCallback;
@@ -264,7 +265,10 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     @Override
     public void onClickListEntityRelation(Item item, int position) {
         LLog.d(TAG, "onClickListEntityRelation " + item.getName());
-        String playerSkinId = UizaData.getInstance().getPlayerId();
+        if (frmTopCallback != null) {
+            frmTopCallback.onClickListEntityRelation(item, position);
+        }
+        /*String playerSkinId = UizaData.getInstance().getPlayerId();
         String entityId = item.getId();
         String entityTitle = item.getName();
         String videoCoverUrl = item.getThumbnail();
@@ -272,7 +276,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);*/
     }
 
     public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {

@@ -34,12 +34,20 @@ public class FrmBottom extends BaseFragment implements ItemAdapterV2.Callback{
     }
 
     @Override
-    public void onClick(Item movie, int position) {
+    public void onClick(Item item, int position) {
 
     }
 
     @Override
     public void onLoadMore() {
         //do nothing
+    }
+
+    public void init(ItemAdapterV2.Callback callback){
+        uizaIMAVideoInfo.init(callback);
+    }
+
+    public void clearAllViews(){
+        uizaIMAVideoInfo.clearAllViews();
     }
 }

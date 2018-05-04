@@ -28,7 +28,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHolder> {
 
     public interface Callback {
-        public void onClick(Item movie, int position);
+        public void onClick(Item item, int position);
 
         public void onLoadMore();
     }
