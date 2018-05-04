@@ -70,6 +70,10 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         }
     }
 
+    public void addFragment(BaseFragment baseFragment, boolean isAddToBackstack) {
+        LScreenUtil.addFragment(activity, R.id.fl_container, baseFragment, isAddToBackstack);
+    }
+
     @Override
     protected boolean setFullScreen() {
         return false;

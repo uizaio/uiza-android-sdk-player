@@ -20,7 +20,6 @@ import uiza.R;
 import uiza.activity.data.HomeDataV2;
 import uiza.activity.home.v2.cannotslide.FrmChannelV2;
 import uiza.activity.home.v2.cannotslide.SearchV2Activity;
-import uiza.activity.home.v2.login.LoginActivity;
 import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
@@ -77,9 +76,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mDrawerLayout.closeDrawers();
                 }
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                LActivityUtil.tranIn(getActivity());
+                ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmLogin(), true);
             }
 
             /*@Override
