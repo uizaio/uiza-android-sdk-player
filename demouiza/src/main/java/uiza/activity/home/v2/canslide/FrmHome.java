@@ -252,6 +252,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
+            if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                return true;
+            }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));
         }
         backPressed = System.currentTimeMillis();

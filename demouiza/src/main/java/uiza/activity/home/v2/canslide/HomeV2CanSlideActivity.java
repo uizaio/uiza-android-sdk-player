@@ -247,4 +247,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
+
+    public DraggablePanel getDraggablePanel() {
+        return draggablePanel;
+    }
 }
