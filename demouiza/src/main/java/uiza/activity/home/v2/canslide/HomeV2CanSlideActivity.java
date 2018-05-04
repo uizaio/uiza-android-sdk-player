@@ -2,6 +2,7 @@ package uiza.activity.home.v2.canslide;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
@@ -17,6 +18,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
+import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -164,6 +166,14 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            super.onBackPressed();
         }
     }
 }
