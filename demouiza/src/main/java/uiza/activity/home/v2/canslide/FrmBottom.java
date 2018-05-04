@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 
-public class FrmBottom extends BaseFragment {
+public class FrmBottom extends BaseFragment implements ItemAdapterV2.Callback{
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfo uizaIMAVideoInfo;
 
@@ -29,5 +31,15 @@ public class FrmBottom extends BaseFragment {
 
     public void setup(GetDetailEntity getDetailEntity){
         uizaIMAVideoInfo.setup(getDetailEntity);
+    }
+
+    @Override
+    public void onClick(Item movie, int position) {
+
+    }
+
+    @Override
+    public void onLoadMore() {
+        //do nothing
     }
 }

@@ -263,10 +263,11 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
+        LLog.d(TAG, "onClickListEntityRelation " + item.getName());
+        String playerSkinId = UizaData.getInstance().getPlayerId();
         String entityId = item.getId();
         String entityTitle = item.getName();
-        String videoCoverUrl = null;
+        String videoCoverUrl = item.getThumbnail();
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
