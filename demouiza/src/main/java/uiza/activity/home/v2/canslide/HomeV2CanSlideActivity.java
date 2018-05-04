@@ -206,8 +206,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         }
     }
 
-    private long backPressed;
-
     @Override
     public void onBackPressed() {
         LLog.d(TAG, "onBackPressed");
