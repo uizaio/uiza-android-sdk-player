@@ -38,25 +38,25 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmVideoTop.getUizaIMAVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmVideoTop.getUizaIMAVideo().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
         replaceFragment(new FrmHome());
@@ -89,11 +89,11 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         return R.layout.test_uiza_ima_video_activity_rl_slide;
     }
 
-    private FrmTop frmTop;
-    private FrmBottom frmBottom;
+    private FrmVideoTop frmVideoTop;
+    private FrmVideoBottom frmVideoBottom;
 
     private void initializeDraggablePanel(final Item item, final int position) {
-        if (frmTop != null || frmBottom != null) {
+        if (frmVideoTop != null || frmVideoBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
             LLog.d(TAG, "onClickItem FrmChannel " + item.getName());
             clearUIFrmBottom();
@@ -101,22 +101,22 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             draggablePanel.maximize();
             return;
         }
-        frmTop = new FrmTop();
-        frmTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+        frmVideoTop = new FrmVideoTop();
+        frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
                 LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
                 initFrmTop(item, position);
             }
         });
-        frmBottom = new FrmBottom();
-        frmBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
+        frmVideoBottom = new FrmVideoBottom();
+        frmVideoBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                frmBottom.init(new ItemAdapterV2.Callback() {
+                frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClick(Item item, int position) {
-                        LLog.d(TAG, "onClickItem frmBottom " + item.getName());
+                        LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         clearUIFrmBottom();
                         initFrmTop(item, position);
                     }
@@ -130,8 +130,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         });
 
         draggablePanel.setFragmentManager(getSupportFragmentManager());
-        draggablePanel.setTopFragment(frmTop);
-        draggablePanel.setBottomFragment(frmBottom);
+        draggablePanel.setTopFragment(frmVideoTop);
+        draggablePanel.setBottomFragment(frmVideoBottom);
 
         //draggablePanel.setXScaleFactor(xScaleFactor);
         //draggablePanel.setYScaleFactor(yScaleFactor);
@@ -144,11 +144,11 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         setSizeFrmTop();
         draggablePanel.initializeView();
 
-        frmTop.setFrmTopCallback(new FrmTop.FrmTopCallback() {
+        frmVideoTop.setFrmTopCallback(new FrmVideoTop.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 LLog.d(TAG, "setFrmTopCallback initDone");
-                frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         if (draggablePanel != null && !isLandscape) {
@@ -196,16 +196,16 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        frmVideoTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     private void intFrmBottom(GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "intFrmBottom");
-        frmBottom.setup(getDetailEntity);
+        frmVideoBottom.setup(getDetailEntity);
     }
 
     private void clearUIFrmBottom() {
-        frmBottom.clearAllViews();
+        frmVideoBottom.clearAllViews();
     }
 
     public void play(Item item, int position) {

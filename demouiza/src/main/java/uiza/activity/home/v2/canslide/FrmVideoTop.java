@@ -41,7 +41,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 
-public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
+public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideo uizaIMAVideo;
 

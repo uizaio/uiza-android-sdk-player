@@ -17,7 +17,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 
-public class FrmBottom extends BaseFragment implements ItemAdapterV2.Callback{
+public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callback{
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfo uizaIMAVideoInfo;
 
