@@ -244,8 +244,17 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         ((HomeV2CanSlideActivity) getActivity()).play(item, position);
     }
 
+    private long backPressed;
+
     @Override
     public boolean onBackPressed() {
-        return false;
+        LLog.d(TAG, "onBackPressed");
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            return false;
+        } else {
+            LToast.show(getActivity(), getString(R.string.press_again_to_exit));
+        }
+        backPressed = System.currentTimeMillis();
+        return true;
     }
 }
