@@ -272,6 +272,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
+    public void onClickBack() {
+        onBackPressed();
+    }
+
+    @Override
     public void onClick(Item item, int position) {
         setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }

@@ -530,8 +530,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (isLandscape) {
                 exoFullscreenIcon.performClick();
             } else {
-                if ((BaseActivity) getContext() != null) {
+                /*if ((BaseActivity) getContext() != null) {
                     ((BaseActivity) getContext()).onBackPressed();
+                }*/
+                if (callback != null) {
+                    callback.onClickBack();
                 }
             }
         } else if (v == exoVolume) {
@@ -772,6 +775,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
 
         public void onClickListEntityRelation(Item item, int position);
+
+        public void onClickBack();
     }
 
     private Callback callback;

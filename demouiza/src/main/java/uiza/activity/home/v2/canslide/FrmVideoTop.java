@@ -268,15 +268,11 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         if (frmTopCallback != null) {
             frmTopCallback.onClickListEntityRelation(item, position);
         }
-        /*String playerSkinId = UizaData.getInstance().getPlayerId();
-        String entityId = item.getId();
-        String entityTitle = item.getName();
-        String videoCoverUrl = item.getThumbnail();
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);*/
+    }
+
+    @Override
+    public void onClickBack() {
+        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
     }
 
     public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
