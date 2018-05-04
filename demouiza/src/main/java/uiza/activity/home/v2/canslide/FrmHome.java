@@ -133,9 +133,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onClickRight() {
-                Intent intent = new Intent(getActivity(), SearchV2Activity.class);
+                /*Intent intent = new Intent(getActivity(), SearchV2Activity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(getActivity());
+                LActivityUtil.tranIn(getActivity());*/
+                ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmSearch(), true);
             }
         });
         uizaActionBar.showMenuIcon();
