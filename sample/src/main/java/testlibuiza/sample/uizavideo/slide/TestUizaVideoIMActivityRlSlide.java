@@ -2,6 +2,7 @@ package testlibuiza.sample.uizavideo.slide;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
@@ -159,6 +160,14 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            super.onBackPressed();
         }
     }
 }

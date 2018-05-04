@@ -12,12 +12,20 @@ import android.view.ViewGroup;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LLog;
 
-public class FrmUser extends BaseFragment {
+public class FrmUser extends BaseFragment implements IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frm_user, container, false);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        LLog.d(TAG, "onBackPressed");
+        return false;
     }
 }

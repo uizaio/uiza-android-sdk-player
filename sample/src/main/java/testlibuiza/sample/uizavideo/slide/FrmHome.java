@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LLog;
 
-public class FrmHome extends BaseFragment {
+public class FrmHome extends BaseFragment implements IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
 
     @Nullable
     @Override
@@ -33,5 +35,11 @@ public class FrmHome extends BaseFragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        LLog.d(TAG, "onBackPressed");
+        return false;
     }
 }
