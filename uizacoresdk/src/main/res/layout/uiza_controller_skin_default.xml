@@ -117,6 +117,7 @@
             <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout
                 android:id="@id/previewSeekBarLayout"
                 android:layout_width="match_parent"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginRight="@dimen/margin_15"
