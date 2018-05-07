@@ -168,10 +168,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     private void setListener() {
         LLog.d(TAG, TAG + " addListener");
-        /*if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
+        if (floatUizaIMAVideo == null || floatUizaIMAVideo.getPlayer() == null) {
             return;
         }
-        uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
+        floatUizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 LLog.d(TAG, "onTimelineChanged");
@@ -222,7 +222,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LLog.d(TAG, "onTimelineChanged");
             }
         });
-        uizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        floatUizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 LLog.d(TAG, "onAudioEnabled");
@@ -253,7 +253,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uizaIMAVideo.setProgressCallback(new ProgressCallback() {
+        //TODO
+        /*floatUizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -263,8 +264,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
-        });
-        uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        });*/
+        floatUizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 LLog.d(TAG, "onVideoEnabled");
@@ -300,18 +301,18 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LLog.d(TAG, "onVideoDisabled");
             }
         });
-        uizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        floatUizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 LLog.d(TAG, "onMetadata");
             }
         });
-        uizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
+        floatUizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 LLog.d(TAG, "onCues");
             }
-        });*/
+        });
     }
 
     @Override

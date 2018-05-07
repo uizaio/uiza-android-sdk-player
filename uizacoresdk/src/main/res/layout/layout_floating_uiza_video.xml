@@ -24,6 +24,7 @@
             android:id="@+id/bt_exit"
             android:layout_width="@dimen/w_30"
             android:layout_height="@dimen/w_30"
+            android:layout_alignEnd="@+id/uiza_video"
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
