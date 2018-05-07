@@ -16,7 +16,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -344,6 +343,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void findViews() {
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
+        //TODO revert to visible
+        llMid.setVisibility(GONE);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
@@ -351,7 +352,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         /*flBar = (FrameLayout) findViewById(R.id.fl_bar);
         LLog.d(TAG, "findViews thumbnailsUrl: " + UizaData.getInstance().getUrlThumnailsPreviewSeekbar());
         addTimeBar();
-        if (!UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty()) {
+        if (UizaData.getInstance().getUrlThumnailsPreviewSeekbar() != null || !UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty()) {
             previewTimeBar = playerView.findViewById(R.id.exo_progress);
             previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
             previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
@@ -359,11 +360,16 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
         }*/
 
-        previewTimeBar = playerView.findViewById(R.id.exo_progress);
-        previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
-        previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
-        previewTimeBar.addOnPreviewChangeListener(this);
-        ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
+        if (UizaData.getInstance().getUrlThumnailsPreviewSeekbar() == null || UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty()) {
+            //use default timebar
+        } else {
+            //use preview timebar
+            previewTimeBar = playerView.findViewById(R.id.exo_progress);
+            previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
+            previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
+            previewTimeBar.addOnPreviewChangeListener(this);
+            ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
+        }
 
         exoFullscreenIcon = (ImageButton) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
@@ -374,8 +380,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoPlaylist = (ImageButton) playerView.findViewById(R.id.exo_playlist);
         exoPlaylist.setVisibility(VISIBLE);
         exoHearing = (ImageButton) playerView.findViewById(R.id.exo_hearing);
+        //TODO revert to visible
+        exoHearing.setVisibility(GONE);
         exoPictureInPicture = (ImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButton) playerView.findViewById(R.id.exo_share);
+        //TODO revert to visible
+        exoShare.setVisibility(GONE);
 
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
         seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
@@ -417,7 +427,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-        if (UizaData.getInstance().getUrlThumnailsPreviewSeekbar() != null) {
+        if (previewTimeBarLayout != null) {
             previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         }
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
@@ -765,7 +775,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                activity.handleException(e);
+                activity.showDialogError("Không có linkplay");
                 if (callback != null) {
                     callback.isInitResult(false, null, null);
                 }
@@ -791,7 +801,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailEntity onFail " + e.toString());
-                ((BaseActivity) activity).handleException(e);
+                ((BaseActivity) activity).showDialogError("Cannot get detail of this entity.");
             }
         });
     }
@@ -869,7 +879,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-                ((BaseActivity) getContext()).handleException(e);
+                ((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
         });
     }

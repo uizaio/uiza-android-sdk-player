@@ -146,7 +146,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Auth Failed " + e.getMessage());
             }
         });
     }
@@ -209,7 +209,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Cannot check token");
             }
         });
     }

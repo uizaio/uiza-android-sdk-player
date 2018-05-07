@@ -243,7 +243,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                ((BaseActivity) activity).handleException(e);
+                ((BaseActivity) activity).showDialogError("Lỗi không tải được danh sách entity liên quan");
                 LUIUtil.hideProgressBar(progressBar);
             }
         });

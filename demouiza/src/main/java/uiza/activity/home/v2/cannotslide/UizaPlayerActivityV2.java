@@ -288,11 +288,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     private void setupVideo(String entityId, String entityTitle, String entityCover) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogMsg("Entity ID cannot be null or empty");
+            showDialogOne("Entity ID cannot be null or empty");
             return;
         }
         if (UizaData.getInstance().getPlayerId() == null || UizaData.getInstance().getPlayerId().isEmpty()) {
-            showDialogMsg("Player Skin ID cannot be null or empty");
+            showDialogOne("Player Skin ID cannot be null or empty");
             return;
         }
         LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);

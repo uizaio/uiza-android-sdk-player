@@ -193,7 +193,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Lỗi lấy danh sách metadata");
                 genListDrawerLayout(null);
             }
         });

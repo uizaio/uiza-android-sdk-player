@@ -115,13 +115,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void handleException(Throwable throwable) {
-        //LLog.e("handleException", throwable.toString());
-        if (throwable != null) {
-            showDialogError(throwable.getMessage());
-        }
-    }
-
     protected abstract boolean setFullScreen();
 
     protected abstract String setTag();
@@ -229,7 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showDialogOne(String msg, final boolean isExit) {
-        LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1(activity, getString(R.string.warning), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 if (isExit) {
@@ -240,21 +233,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showDialogError(String msg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1(activity, getString(R.string.err), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();
             }
         });
     }
-
-    public void showDialogMsg(String errMsg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.app_name), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //do nothing
-            }
-        });
-    }
-
 }

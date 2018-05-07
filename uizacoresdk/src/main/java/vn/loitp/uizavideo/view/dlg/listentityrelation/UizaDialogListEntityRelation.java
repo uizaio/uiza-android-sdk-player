@@ -81,7 +81,7 @@ public class UizaDialogListEntityRelation extends Dialog {
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
             public void onSuccess(final ListAllEntityRelation listAllEntityRelation) {
-                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
+                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
@@ -92,7 +92,7 @@ public class UizaDialogListEntityRelation extends Dialog {
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
+                //LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
