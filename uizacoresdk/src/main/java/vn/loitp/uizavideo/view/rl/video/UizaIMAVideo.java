@@ -80,7 +80,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private BaseActivity activity;
     private Gson gson = new Gson();//TODO remove
     private RelativeLayout rootView;
-    //private FrameLayout flBar;
     private PlayerView playerView;
     private UizaPlayerManager uizaPlayerManager;
     private ProgressBar progressBar;
@@ -328,19 +327,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    /*private void addTimeBar() {
-        boolean isHasUrlPreviewThumnail = !UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty();
-        LLog.d(TAG, "addTimeBar isHasUrlPreviewThumnail " + isHasUrlPreviewThumnail);
-        LinearLayout linearLayout = null;
-        if (isHasUrlPreviewThumnail) {
-            linearLayout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.timerbar_preview, null);
-            flBar.addView(linearLayout);
-        } else {
-            linearLayout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.timerbar_default, null);
-            flBar.addView(linearLayout);
-        }
-    }*/
-
     private void findViews() {
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         //TODO revert to visible
@@ -349,27 +335,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
 
-        /*flBar = (FrameLayout) findViewById(R.id.fl_bar);
-        LLog.d(TAG, "findViews thumbnailsUrl: " + UizaData.getInstance().getUrlThumnailsPreviewSeekbar());
-        addTimeBar();
-        if (UizaData.getInstance().getUrlThumnailsPreviewSeekbar() != null || !UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty()) {
-            previewTimeBar = playerView.findViewById(R.id.exo_progress);
-            previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
-            previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
-            previewTimeBar.addOnPreviewChangeListener(this);
-            ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
-        }*/
-
-        if (UizaData.getInstance().getUrlThumnailsPreviewSeekbar() == null || UizaData.getInstance().getUrlThumnailsPreviewSeekbar().isEmpty()) {
-            //use default timebar
-        } else {
-            //use preview timebar
-            previewTimeBar = playerView.findViewById(R.id.exo_progress);
-            previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
-            previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
-            previewTimeBar.addOnPreviewChangeListener(this);
-            ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
-        }
+        previewTimeBar = playerView.findViewById(R.id.exo_progress);
+        previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
+        previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
+        previewTimeBar.addOnPreviewChangeListener(this);
+        ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
         exoFullscreenIcon = (ImageButton) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
@@ -427,8 +397,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-        if (previewTimeBarLayout != null) {
-            previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
+        if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
+            previewTimeBarLayout.setEnabled(false);
+        } else {
+            previewTimeBarLayout.setEnabled(true);
+            if (previewTimeBarLayout != null) {
+                previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
+            }
         }
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override

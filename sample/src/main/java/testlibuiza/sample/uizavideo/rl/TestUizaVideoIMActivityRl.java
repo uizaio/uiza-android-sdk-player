@@ -48,8 +48,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
 
-        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
         setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
