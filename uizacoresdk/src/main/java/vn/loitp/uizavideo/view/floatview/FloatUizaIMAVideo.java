@@ -1,4 +1,4 @@
-package vn.loitp.uizavideo.view.rl.video;
+package vn.loitp.uizavideo.view.floatview;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -10,14 +10,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -26,33 +22,24 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.FloatUizaPlayerManager;
+import vn.loitp.uizavideo.manager.FloatUizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
-import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.

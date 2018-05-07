@@ -46,7 +46,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
-import vn.loitp.uizavideo.UizaPlayerManager;
+import vn.loitp.uizavideo.manager.UizaPlayerManager;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideo.listerner.ProgressCallback;

@@ -59,7 +59,7 @@ import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.UizaPlayerManager;
+import vn.loitp.uizavideo.manager.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;

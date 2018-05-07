@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.uizavideo;
+package vn.loitp.uizavideo.manager;
 
 import android.content.Context;
 import android.net.Uri;
@@ -78,6 +78,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.uizavideo.TrackSelectionHelper;
 import vn.loitp.uizavideo.glide.GlideApp;
 import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
