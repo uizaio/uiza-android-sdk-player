@@ -48,8 +48,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
 
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
+        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        //String urlThumnailsPreviewSeekbar = null;
         setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
@@ -274,11 +274,11 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogMsg("Entity ID cannot be null or empty");
+            showDialogOne("Entity ID cannot be null or empty");
             return;
         }
         if (playerSkinId == null || playerSkinId.isEmpty()) {
-            showDialogMsg("Player Skin ID cannot be null or empty");
+            showDialogOne("Player Skin ID cannot be null or empty");
             return;
         }
         UizaData.getInstance().setPlayerId(playerSkinId);

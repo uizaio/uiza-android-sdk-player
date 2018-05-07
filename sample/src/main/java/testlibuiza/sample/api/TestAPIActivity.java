@@ -166,7 +166,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("auth onFail "+e.getMessage());
             }
         });
     }
@@ -181,8 +181,8 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
-                handleException(e);
+                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                showDialogError("checkToken onFail "+e.getMessage());
             }
         });
     }
@@ -204,8 +204,8 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
-                handleException(e);
+                LLog.e(TAG, "listAllMetadataV2 onFail " + e.getMessage());
+                showDialogError("listAllMetadataV2 onFail "+e.getMessage());
             }
         });
     }
@@ -225,7 +225,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("searchEntityV2 onFail "+e.getMessage());
             }
         });
     }
@@ -246,7 +246,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("listAllEntityV2 onFail "+e.getMessage());
             }
         });
     }
@@ -263,7 +263,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("getDetailEntityV2 onFail "+e.getMessage());
             }
         });
     }
@@ -280,7 +280,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("getListAllEntityRalationV2 onFail "+e.getMessage());
             }
         });
     }
@@ -304,7 +304,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("getLinkPlayV2 onFail "+e.getMessage());
             }
         });
     }
@@ -329,7 +329,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                handleException(e);
+                showDialogError("track onFail "+e.getMessage());
             }
         });
     }
