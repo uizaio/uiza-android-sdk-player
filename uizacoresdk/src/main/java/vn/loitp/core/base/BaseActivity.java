@@ -1,11 +1,15 @@
 package vn.loitp.core.base;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,8 +25,10 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.data.EventBusData;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -61,6 +67,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         rootView = (RelativeLayout) activity.findViewById(R.id.root_view);*/
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(Constants.FLOAT_EVENT_CLICK_FULL_SCREEN));
     }
 
     protected void setCustomStatusBar(int colorStatusBar, int colorNavigationBar) {
@@ -93,6 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
 
@@ -240,4 +249,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Our handler for received Intents. This will be called whenever an Intent
+    // with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            boolean isFullscreenClicked = intent.getBooleanExtra(Constants.FLOAT_CLICK_FULL_SCREEN, false);
+            LLog.d(TAG, "onReceive FLOAT_CLICK_FULL_SCREEN isFullscreenClicked: " + isFullscreenClicked);
+            if (isFullscreenClicked) {
+                //TODO
+            }
+        }
+    };
 }

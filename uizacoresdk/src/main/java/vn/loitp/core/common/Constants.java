@@ -102,4 +102,6 @@ public class Constants {
 
     public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
+    public final static String FLOAT_EVENT_CLICK_FULL_SCREEN = "FLOAT_EVENT_CLICK_FULL_SCREEN";
+    public final static String FLOAT_CLICK_FULL_SCREEN = "FLOAT_CLICK_FULL_SCREEN";
 }

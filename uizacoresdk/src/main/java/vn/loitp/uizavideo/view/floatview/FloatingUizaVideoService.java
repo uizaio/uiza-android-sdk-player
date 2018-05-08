@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -143,6 +144,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 stopSelf();*/
 
                 //slideToLeft();
+                Intent intent = new Intent(Constants.FLOAT_EVENT_CLICK_FULL_SCREEN);
+                // You can also include some extra data.
+                intent.putExtra(Constants.FLOAT_CLICK_FULL_SCREEN, true);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             }
         });
     }
