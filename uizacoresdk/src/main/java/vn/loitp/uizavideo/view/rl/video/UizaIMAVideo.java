@@ -59,8 +59,8 @@ import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.manager.UizaPlayerManager;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.manager.UizaPlayerManager;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
@@ -721,9 +721,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (activity == null) {
             return;
         }
-        LToast.show(activity, "initializePiP");
-        activity.startService(new Intent(activity, FloatingUizaVideoService.class));
-        (activity).onBackPressed();
+        Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+        intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
+        intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
+        activity.startService(intent);
+        activity.onBackPressed();
     }
 
     public SimpleExoPlayer getPlayer() {

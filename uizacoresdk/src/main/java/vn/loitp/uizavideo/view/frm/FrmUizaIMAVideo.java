@@ -459,7 +459,9 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
         if (getActivity() == null) {
             return;
         }
-        getActivity().startService(new Intent(getActivity(), FloatingUizaVideoService.class));
+        Intent intent = new Intent(getActivity(), FloatingUizaVideoService.class);
+        intent.putExtra("currentPositionPlayer", 5000);
+        getActivity().startService(intent);
         //getActivity().onBackPressed();
     }
 }

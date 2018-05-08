@@ -58,8 +58,28 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        LLog.d(TAG, "onStartCommand");
+        if (intent != null && intent.getExtras() != null) {
+            String linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
+            LLog.d(TAG, "linkPlay " + linkPlay);
+
+            float currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
+            LLog.d(TAG, "currentPositionPlayer " + currentPositionPlayer);
+
+            setupVideo();
+            if (floatUizaIMAVideo != null) {
+                floatUizaIMAVideo.onResume();
+            }
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onCreate() {
+        LLog.d(TAG, "onCreate");
         super.onCreate();
+
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         //Add the view to the window.
@@ -83,21 +103,9 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
         floatUizaIMAVideo = (FloatUizaIMAVideo) mFloatingView.findViewById(R.id.uiza_video);
 
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
-        String entityTitle = "Dummy title";
-        String videoCoverUrl = null;
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
-
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
-        floatUizaIMAVideo.onResume();
 
         //Drag and move floating view using user's touch action.
         mFloatingView.findViewById(R.id.move_view).setOnTouchListener(new View.OnTouchListener() {
@@ -159,8 +167,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
-        floatUizaIMAVideo.onDestroy();
+        if (mFloatingView != null) {
+            mWindowManager.removeView(mFloatingView);
+        }
+        if (floatUizaIMAVideo != null) {
+            floatUizaIMAVideo.onDestroy();
+        }
     }
 
     private void setListener() {
@@ -319,38 +331,15 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        String entityId = item.getId();
-        String entityTitle = item.getName();
-        String videoCoverUrl = null;
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        //do nothing
     }
 
     @Override
     public void onClickBack() {
-
+        //do nothing
     }
 
-    private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
-        if (entityId == null || entityId.isEmpty()) {
-            //showDialogOne("Entity ID cannot be null or empty");
-            return;
-        }
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            //showDialogOne("Player Skin ID cannot be null or empty");
-            return;
-        }
-        UizaData.getInstance().setPlayerId(playerSkinId);
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-
+    private void setupVideo() {
         floatUizaIMAVideo.init(this);
     }
 }

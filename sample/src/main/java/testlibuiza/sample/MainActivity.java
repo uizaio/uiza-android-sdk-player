@@ -45,13 +45,6 @@ public class MainActivity extends BaseActivity {
                 uizaVideoRlSlide();
             }
         });
-        findViewById(R.id.bt_uiza_float_view).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.startService(new Intent(activity, FloatingUizaVideoService.class));
-                onBackPressed();
-            }
-        });
     }
 
     @Override

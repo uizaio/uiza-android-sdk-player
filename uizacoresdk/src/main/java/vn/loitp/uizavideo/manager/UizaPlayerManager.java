@@ -106,6 +106,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     private String linkPlay;
     private List<Subtitle> subtitleList;
 
+    public String getLinkPlay(){
+        return linkPlay;
+    }
+
     private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
 
     private PreviewTimeBarLayout previewTimeBarLayout;

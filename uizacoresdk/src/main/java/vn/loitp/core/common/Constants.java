@@ -99,4 +99,7 @@ public class Constants {
 
     public final static String A_K_DEMO = "S2O8JGAPI3OICRTHR2DS";
     public final static String S_K_DEMO = "UHf9LWrTHuQ5Zy99foX36IavJ4NRQhpo411sFYry";
+
+    public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
+    public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
 }
