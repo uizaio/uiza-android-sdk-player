@@ -147,6 +147,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 //slideToLeft();
 
                 Intent intent = new Intent();
+                intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);

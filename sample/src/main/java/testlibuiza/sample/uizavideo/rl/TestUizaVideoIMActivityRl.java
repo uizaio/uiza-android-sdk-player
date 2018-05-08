@@ -35,11 +35,14 @@ import vn.loitp.views.LToast;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
     private UizaIMAVideo uizaIMAVideo;
+    private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+
+        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
 
         String playerSkinId = Constants.PLAYER_ID_SKIN_0;
         String entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
@@ -251,6 +254,9 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
+        if (positionFromPipService != 0) {
+            uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
+        }
         setListener();
     }
 
