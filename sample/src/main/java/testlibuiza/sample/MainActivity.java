@@ -11,7 +11,6 @@ import testlibuiza.sample.uizavideo.rl.TestUizaVideoIMActivityRl;
 import testlibuiza.sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 
 public class MainActivity extends BaseActivity {
 
