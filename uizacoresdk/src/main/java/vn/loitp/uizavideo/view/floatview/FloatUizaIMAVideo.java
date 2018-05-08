@@ -25,9 +25,6 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
@@ -127,6 +124,12 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         playerView = findViewById(R.id.player_view);
     }
 
+    private ProgressCallback progressCallback;
+
+    public void setProgressCallback(ProgressCallback progressCallback) {
+        this.progressCallback = progressCallback;
+    }
+
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         LLog.d(TAG, "initData");
         floatUizaPlayerManager = new FloatUizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
@@ -134,11 +137,19 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                if (progressCallback != null) {
+                    progressCallback.onAdProgress(currentMls, s, duration, percent);
+                }
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                //TODO
+                //trackProgress(s, percent);
+                if (progressCallback != null) {
+                    progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                }
             }
         });
     }

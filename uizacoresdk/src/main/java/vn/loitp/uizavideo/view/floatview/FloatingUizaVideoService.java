@@ -35,6 +35,7 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.uizavideo.listerner.ProgressCallback;
 
 /**
  * Created by LENOVO on 3/27/2018.
@@ -117,7 +118,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
         //Drag and move floating view using user's touch action.
         dragAndMove(params);
-        
+
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +128,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO
                 /*Intent intent = new Intent(this, TestUizaVideoIMActivityRl.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -286,8 +288,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LLog.d(TAG, "onAudioDisabled");
             }
         });
-        //TODO
-        /*floatUizaIMAVideo.setProgressCallback(new ProgressCallback() {
+        floatUizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -297,7 +298,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
-        });*/
+        });
         floatUizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
