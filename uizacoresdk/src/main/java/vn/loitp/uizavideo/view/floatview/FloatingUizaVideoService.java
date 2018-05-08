@@ -116,6 +116,27 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         mWindowManager.addView(mFloatingView, params);
 
         //Drag and move floating view using user's touch action.
+        dragAndMove(params);
+        
+        btExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopSelf();
+            }
+        });
+        btFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(this, TestUizaVideoIMActivityRl.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                stopSelf();*/
+            }
+        });
+        setSizeMoveView();
+    }
+
+    private void dragAndMove(final WindowManager.LayoutParams params){
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
@@ -158,19 +179,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 return false;
             }
         });
-        btExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopSelf();
-            }
-        });
-        btFullScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-            }
-        });
-        setSizeMoveView();
     }
 
     private void clickRoot(long lastTouchDown) {
