@@ -20,11 +20,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Surface;
-import android.widget.ImageView;
 
-import com.bumptech.glide.request.target.Target;
-import com.github.rubensousa.previewseekbar.base.PreviewLoader;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -78,8 +74,6 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
-import vn.loitp.uizavideo.glide.GlideApp;
-import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
 import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
@@ -87,7 +81,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-/* package */ public final class FloatUizaPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
+/* package */ public final class FloatUizaPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
     private Gson gson = new Gson();//TODO remove later
     private Context context;
@@ -106,20 +100,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
     private List<Subtitle> subtitleList;
 
     private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
-
-    private PreviewTimeBarLayout previewTimeBarLayout;
-    private String thumbnailsUrl;
-    private ImageView imageView;
-    private Player.EventListener eventListener = new Player.DefaultEventListener() {
-        @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            if (playbackState == Player.STATE_READY && playWhenReady) {
-                if (previewTimeBarLayout != null) {
-                    previewTimeBarLayout.hidePreview();
-                }
-            }
-        }
-    };
 
     private Handler handler;
     private Runnable runnable;
@@ -147,7 +127,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
                 context,
                 userAgent,
                 new DefaultBandwidthMeter());
-        this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
@@ -203,8 +182,10 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         return trackSelectionHelper;
     }
 
-    public void init() {
+    public void init(long currentPosition) {
         reset();
+        this.contentPosition = currentPosition;
+        LLog.d(TAG, "init contentPosition " + contentPosition);
 
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -227,7 +208,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
 
         // Prepare the player with the source.
         player.seekTo(contentPosition);
-        player.addListener(eventListener);
         player.addListener(new PlayerEventListener());
         player.addAudioDebugListener(new AudioEventListener());
         player.addVideoDebugListener(new VideoEventListener());
@@ -239,10 +219,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         }
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(true);
-
-        if (debugCallback != null) {
-            debugCallback.onUpdateButtonVisibilities();
-        }
     }
 
     private MediaSource createMediaSourceVideo() {
@@ -281,29 +257,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
             }
         }
         return mediaSourceWithSubtitle;
-
-
-        //ADD SUBTITLE MANUAL -> WORK PERFECTLY
-        /*DefaultBandwidthMeter bandwidthMeter2 = new DefaultBandwidthMeter();
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, bandwidthMeter2);
-        //Text Format Initialization
-        Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE, Format.NO_VALUE, "ar", null, Format.OFFSET_SAMPLE_RELATIVE);
-
-        String linkSub = "https://dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt";
-        //String linkSub = "https://s3-ap-southeast-1.amazonaws.com/58aa3a0eb555420a945a27b47ce9ef2f-data/static/type_caption__entityId_81__language_en.vtt";
-        //Arabic Subtitles
-        SingleSampleMediaSource textMediaSourceAr = new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkSub), textFormat, C.TIME_UNSET);
-        //English Subtitles
-        SingleSampleMediaSource textMediaSourceEn = new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkSub), textFormat, C.TIME_UNSET);
-        //French Subtitles
-        SingleSampleMediaSource textMediaSourceFr = new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkSub), textFormat, C.TIME_UNSET);
-
-        //Final MediaSource
-        MediaSource mediaSourceWithSubtitle = new MergingMediaSource(mediaSource, textMediaSourceAr, textMediaSourceEn, textMediaSourceFr);
-        //player.prepare(mediaSource);
-        //player.setPlayWhenReady(true);
-
-        return mediaSourceWithSubtitle;*/
     }
 
     private MediaSource createMediaSourceWithAds(MediaSource mediaSource) {
@@ -330,7 +283,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
 
     public void reset() {
         if (player != null) {
-            contentPosition = player.getContentPosition();
+            //contentPosition = player.getContentPosition();
             player.release();
             player = null;
 
@@ -378,7 +331,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
     }
 
     // Internal methods.
-
     private MediaSource buildMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
@@ -402,18 +354,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         }
     }
 
-    @Override
-    public void loadPreview(long currentPosition, long max) {
-        player.setPlayWhenReady(false);
-        if (thumbnailsUrl != null) {
-            GlideApp.with(imageView)
-                    .load(thumbnailsUrl)
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .transform(new GlideThumbnailTransformationPB(currentPosition))
-                    .into(imageView);
-        }
-    }
-
     private void hideProgress() {
         LUIUtil.hideProgressBar(floatUizaIMAVideo.getProgressBar());
     }
@@ -433,9 +373,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         @Override
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
             LLog.d(TAG, "onTracksChanged");
-            if (debugCallback != null) {
-                debugCallback.onUpdateButtonVisibilities();
-            }
         }
 
         @Override
@@ -460,9 +397,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
                     hideProgress();
                     break;
             }
-            if (debugCallback != null) {
-                debugCallback.onUpdateButtonVisibilities();
-            }
         }
 
         @Override
@@ -478,13 +412,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             LLog.d(TAG, "onPlayerError " + error.toString());
-            if (debugCallback != null) {
-                debugCallback.onUpdateButtonVisibilities();
-            }
-            //TODO
-            /*if (floatUizaIMAVideo != null) {
-                floatUizaIMAVideo.tryNextLinkPlay();
-            }*/
         }
 
         @Override
@@ -568,6 +495,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             LLog.d(TAG, "onRenderedFirstFrame");
+            floatUizaIMAVideo.onStateReadyFirst();
         }
 
         @Override
@@ -594,40 +522,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         }
     }
 
-    private float currentVolume;
-
     public SimpleExoPlayer getPlayer() {
         return player;
-    }
-
-    public void setVolume(float volume) {
-        if (player != null) {
-            //LLog.d(TAG, "volume " + volume);
-            player.setVolume(volume);
-            //LLog.d(TAG, "-> setVolume done: " + player.getVolume());
-        }
-    }
-
-    public float getVolume() {
-        if (player != null) {
-            return player.getVolume();
-        }
-        return 0;
-    }
-
-    public void seekTo(long positionMs) {
-        if (player != null) {
-            player.seekTo(positionMs);
-        }
-    }
-
-    public interface DebugCallback {
-        public void onUpdateButtonVisibilities();
-    }
-
-    private DebugCallback debugCallback;
-
-    public void setDebugCallback(DebugCallback debugCallback) {
-        this.debugCallback = debugCallback;
     }
 }

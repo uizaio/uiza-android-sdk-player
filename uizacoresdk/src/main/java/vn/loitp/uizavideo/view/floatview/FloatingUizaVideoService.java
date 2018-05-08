@@ -64,13 +64,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             String linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             LLog.d(TAG, "linkPlay " + linkPlay);
 
-            float currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
+            long currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
             LLog.d(TAG, "currentPositionPlayer " + currentPositionPlayer);
 
-            setupVideo();
-            if (floatUizaIMAVideo != null) {
-                floatUizaIMAVideo.onResume();
-            }
+            setupVideo(linkPlay, currentPositionPlayer);
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -325,21 +322,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
+    public void isInitResult(boolean isInitSuccess) {
+        LLog.d(TAG, "isInitResult isInitSuccess: " + isInitSuccess);
         setListener();
     }
 
-    @Override
-    public void onClickListEntityRelation(Item item, int position) {
-        //do nothing
-    }
-
-    @Override
-    public void onClickBack() {
-        //do nothing
-    }
-
-    private void setupVideo() {
-        floatUizaIMAVideo.init(this);
+    private void setupVideo(String linkPlay, long currentPosition) {
+        floatUizaIMAVideo.init(linkPlay, currentPosition, this);
     }
 }
