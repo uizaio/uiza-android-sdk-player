@@ -4,6 +4,7 @@ package vn.loitp.uizavideo.view.rl.video;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -66,10 +67,13 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelati
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.utils.util.ServiceUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -136,11 +140,37 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return ivThumbnail;
     }
 
+    private void stopServicePiPIfRunning() {
+        LLog.d(TAG, "stopServicePiPIfRunning");
+        boolean isSvPipRunning = checkServiceRunning();
+        LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
+        if (isSvPipRunning) {
+            //stop service if running
+            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+            activity.stopService(intent);
+        }
+    }
+
+    private boolean checkServiceRunning() {
+        ActivityManager manager = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoService.class.getName());
+            //LLog.d(TAG, "checkServiceRunning: " + service.service.getClassName());
+            if (FloatingUizaVideoService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void init(Callback callback) {
         if (UizaData.getInstance().getEntityId() == null || UizaData.getInstance().getEntityId().isEmpty()) {
             ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
             return;
         }
+
+        stopServicePiPIfRunning();
+
         this.callback = callback;
         if (uizaPlayerManager != null) {
             LLog.d(TAG, "init uizaPlayerManager != null");
@@ -604,9 +634,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
+                exoPictureInPicture.setVisibility(GONE);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
+                exoPictureInPicture.setVisibility(VISIBLE);
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);
