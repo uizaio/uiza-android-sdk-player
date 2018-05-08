@@ -346,4 +346,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private void setupVideo(String linkPlay, long currentPosition) {
         floatUizaIMAVideo.init(linkPlay, currentPosition, this);
     }
+
+    private void setSizeMoveView(boolean isShowingControl) {
+        if (isShowingControl) {
+
+        } else {
+
+        }
+    }
 }
