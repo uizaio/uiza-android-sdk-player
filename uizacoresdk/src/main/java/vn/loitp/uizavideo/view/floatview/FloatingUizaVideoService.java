@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -105,10 +106,16 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
+        setSizeMoveView();
+
         //Specify the view position
-        params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
-        params.x = 0;
-        params.y = 100;
+        //params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
+        //params.x = 0;
+        //params.y = 0;
+        
+        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.x = LScreenUtil.getScreenWidth() - getWidth();
+        params.y = LScreenUtil.getScreenHeight() - getHeight();
 
         floatUizaIMAVideo = (FloatUizaIMAVideo) mFloatingView.findViewById(R.id.uiza_video);
 
@@ -135,10 +142,9 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 stopSelf();*/
             }
         });
-        setSizeMoveView();
     }
 
-    private void dragAndMove(final WindowManager.LayoutParams params){
+    private void dragAndMove(final WindowManager.LayoutParams params) {
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
@@ -374,5 +380,13 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             moveView.getLayoutParams().height = widthScreen * 25 / 100 * 9 / 16;
         }
         moveView.requestLayout();
+    }
+
+    private int getWidth() {
+        return moveView.getLayoutParams().width;
+    }
+
+    private int getHeight() {
+        return moveView.getLayoutParams().height;
     }
 }
