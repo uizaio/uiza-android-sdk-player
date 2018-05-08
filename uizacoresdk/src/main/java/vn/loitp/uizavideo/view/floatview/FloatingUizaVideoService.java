@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -147,9 +147,32 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     }
 
     private void slideToLeft() {
-        params.x = 0;
-        params.y = 100;
-        mWindowManager.updateViewLayout(mFloatingView, params);
+        //params.x = 0;
+        //params.y = 100;
+        //mWindowManager.updateViewLayout(mFloatingView, params);
+
+        int goToPosX = 0;
+        int goToPosY = 0;
+
+        int currentPosX = params.x;
+        int currentPosY = params.y;
+        LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
+
+        final int d = (int) (Math.sqrt((goToPosX - currentPosX) * (goToPosX - currentPosX) + (goToPosY - currentPosY) * (goToPosY - currentPosY)));
+        LLog.d(TAG, "slideToLeft d: " + d);
+
+        new CountDownTimer(500, 5) {
+            public void onTick(long t) {
+                long step = (500 - t) / 5;
+                //LLog.d(TAG, "slideToLeft onTick step: " + step);
+                LLog.d(TAG, "slideToLeft onTick: " + d * step / 100);
+            }
+
+            public void onFinish() {
+                //LLog.d(TAG, "slideToLeft onFinish");
+                LLog.d(TAG, "slideToLeft onTick: " + d);
+            }
+        }.start();
     }
 
     private void dragAndMove() {
