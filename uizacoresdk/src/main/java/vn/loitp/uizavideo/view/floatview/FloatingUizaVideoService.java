@@ -141,38 +141,43 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 stopSelf();*/
-                slideToLeft();
+
+                //slideToLeft();
             }
         });
     }
 
-    private void slideToLeft() {
-        //params.x = 0;
-        //params.y = 100;
-        //mWindowManager.updateViewLayout(mFloatingView, params);
-
-        int goToPosX = 0;
-        int goToPosY = 0;
-
+    private void slideToPosition(int goToPosX, int goToPosY) {
         int currentPosX = params.x;
         int currentPosY = params.y;
         LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
 
-        final int d = (int) (Math.sqrt((goToPosX - currentPosX) * (goToPosX - currentPosX) + (goToPosY - currentPosY) * (goToPosY - currentPosY)));
-        LLog.d(TAG, "slideToLeft d: " + d);
+        final int a = (int) Math.abs(goToPosX - currentPosX);
+        final int b = (int) Math.abs(goToPosY - currentPosY);
+        LLog.d(TAG, "slideToLeft " + a + " : " + b);
+
+        rlControl.setVisibility(View.GONE);
+        setSizeMoveView();
 
         new CountDownTimer(500, 5) {
             public void onTick(long t) {
-                long step = (500 - t) / 5;
-                //LLog.d(TAG, "slideToLeft onTick step: " + step);
-                LLog.d(TAG, "slideToLeft onTick: " + d * step / 100);
+                float step = (500 - t) / 5;
+                LLog.d(TAG, "slideToLeft onTick step: " + step);
+                //LLog.d(TAG, "slideToLeft onTick: " + a * step / 100 + " - " + b * step / 100);
+                updateUISlide((int) (a * step / 100), (int) (b * step / 100));
             }
 
             public void onFinish() {
                 //LLog.d(TAG, "slideToLeft onFinish");
-                LLog.d(TAG, "slideToLeft onTick: " + d);
+                updateUISlide(a, b);
             }
         }.start();
+    }
+
+    private void updateUISlide(int x, int y) {
+        params.x = x;
+        params.y = y;
+        mWindowManager.updateViewLayout(mFloatingView, params);
     }
 
     private void dragAndMove() {
