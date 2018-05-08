@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import testlibuiza.sample.api.TestAPIActivity;
 import testlibuiza.sample.uizavideo.deprecatedfrm.TestUizaVideoIMActivity;
 import testlibuiza.sample.uizavideo.rl.TestUizaVideoIMActivityRl;
 import testlibuiza.sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LPref;
 
 public class MainActivity extends BaseActivity {
 
@@ -68,12 +70,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void uizaVideoRl() {
+        LPref.setSlideUizaVideoEnabled(activity, false);
         Intent intent = new Intent(activity, TestUizaVideoIMActivityRl.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
 
     private void uizaVideoRlSlide() {
+        LPref.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, TestUizaVideoIMActivityRlSlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);

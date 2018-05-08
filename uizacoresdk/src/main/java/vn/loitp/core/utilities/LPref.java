@@ -19,6 +19,7 @@ public class LPref {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
+    private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
     public static final String JSON_LIST_DATA = "JSON_LIST_DATA";
     public static final String JSON_FAV_DATA = "JSON_FAV_DATA";
     public static final String JSON_AD_DATA = "JSON_AD_DATA";
@@ -73,6 +74,17 @@ public class LPref {
     public static void setPreLoad(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(PRE_LOAD, value);
+        editor.apply();
+    }
+
+    public static Boolean getSlideUizaVideoEnabled(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(SLIDE_UIZA_VIDEO_ENABLED, false);
+    }
+
+    public static void setSlideUizaVideoEnabled(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
         editor.apply();
     }
 

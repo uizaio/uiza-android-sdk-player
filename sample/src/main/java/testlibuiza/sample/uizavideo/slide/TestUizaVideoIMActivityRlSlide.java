@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
@@ -18,16 +19,19 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     private DraggablePanel draggablePanel;
+    private long positionFromPipService;
 
-    public DraggablePanel getDraggablePanel(){
+    public DraggablePanel getDraggablePanel() {
         return draggablePanel;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
+        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        LLog.d(TAG, "positionFromPipService " + positionFromPipService);
 
+        draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
             public void onMaximized() {
@@ -59,6 +63,9 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             }
         });
         replaceFragment(new FrmHome());
+        if (positionFromPipService != 0) {
+            play();
+        }
     }
 
     public void replaceFragment(BaseFragment baseFragment) {
@@ -116,6 +123,9 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             @Override
             public void initDone() {
                 LLog.d(TAG, "initDone");
+                if (positionFromPipService != 0) {
+                    frmTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
+                }
                 frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
