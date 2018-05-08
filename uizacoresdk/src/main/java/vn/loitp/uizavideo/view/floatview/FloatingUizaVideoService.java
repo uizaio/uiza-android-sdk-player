@@ -12,6 +12,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -33,10 +34,6 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideo.view.util.UizaData;
 
 /**
  * Created by LENOVO on 3/27/2018.
@@ -46,7 +43,9 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private final String TAG = getClass().getSimpleName();
     private WindowManager mWindowManager;
     private View mFloatingView;
+    private RelativeLayout rlControl;
     private ImageButton btExit;
+    private ImageButton btFullScreen;
     private FloatUizaIMAVideo floatUizaIMAVideo;
 
     public FloatingUizaVideoService() {
@@ -72,6 +71,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         return super.onStartCommand(intent, flags, startId);
     }
 
+    private void findViews() {
+        rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
+        btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
+        btFullScreen = (ImageButton) mFloatingView.findViewById(R.id.bt_full_screen);
+    }
+
     @Override
     public void onCreate() {
         LLog.d(TAG, "onCreate");
@@ -79,6 +84,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
+        findViews();
+
         //Add the view to the window.
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -135,7 +142,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
                         //on Click event
                         if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-                            btExit.setVisibility(btExit.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                            rlControl.setVisibility(rlControl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                         }
 
                         return true;
@@ -151,12 +158,16 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 return false;
             }
         });
-
-        btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopSelf();
+            }
+        });
+        btFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
             }
         });
     }

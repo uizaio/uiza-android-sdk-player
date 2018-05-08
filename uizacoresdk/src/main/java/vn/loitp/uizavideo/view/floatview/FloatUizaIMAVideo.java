@@ -64,6 +64,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
+        LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
         this.currentPosition = currentPosition;
         this.callback = callback;
@@ -71,7 +72,6 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             LLog.d(TAG, "init uizaPlayerManager != null");
             floatUizaPlayerManager.release();
         }
-        LUIUtil.showProgressBar(progressBar);
         checkToSetUp();
 
         //cannot delete delay below, only works after 500mls
