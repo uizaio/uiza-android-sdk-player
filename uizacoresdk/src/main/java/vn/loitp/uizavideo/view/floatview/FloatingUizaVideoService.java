@@ -41,9 +41,11 @@ import vn.loitp.core.utilities.LLog;
 
 public class FloatingUizaVideoService extends Service implements FloatUizaIMAVideo.Callback {
     private final String TAG = getClass().getSimpleName();
+    private final int CLICK_ACTION_THRESHHOLD = 200;
     private WindowManager mWindowManager;
     private View mFloatingView;
     private RelativeLayout rlControl;
+    private RelativeLayout moveView;
     private ImageButton btExit;
     private ImageButton btFullScreen;
     private FloatUizaIMAVideo floatUizaIMAVideo;
@@ -73,6 +75,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     private void findViews() {
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
+        moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
         btFullScreen = (ImageButton) mFloatingView.findViewById(R.id.bt_full_screen);
     }
@@ -112,14 +115,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         mWindowManager.addView(mFloatingView, params);
 
         //Drag and move floating view using user's touch action.
-        mFloatingView.findViewById(R.id.move_view).setOnTouchListener(new View.OnTouchListener() {
+        moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
             private float initialTouchX;
             private float initialTouchY;
-
             private long lastTouchDown;
-            private final int CLICK_ACTION_THRESHHOLD = 200;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -141,9 +142,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                         //int Ydiff = (int) (event.getRawY() - initialTouchY);
 
                         //on Click event
-                        if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-                            rlControl.setVisibility(rlControl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                        }
+                        clickRoot(lastTouchDown);
 
                         return true;
                     case MotionEvent.ACTION_MOVE:
@@ -170,6 +169,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 //TODO
             }
         });
+    }
+
+    private void clickRoot(long lastTouchDown) {
+        if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
+            rlControl.setVisibility(rlControl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        }
     }
 
     @Override
