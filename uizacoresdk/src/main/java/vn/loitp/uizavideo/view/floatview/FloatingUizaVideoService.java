@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -52,6 +52,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private ImageButton btExit;
     private ImageButton btFullScreen;
     private FloatUizaIMAVideo floatUizaIMAVideo;
+    private WindowManager.LayoutParams params;
 
     public FloatingUizaVideoService() {
     }
@@ -99,7 +100,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 LAYOUT_FLAG,
@@ -112,7 +113,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         //params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
         //params.x = 0;
         //params.y = 0;
-        
+
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = LScreenUtil.getScreenWidth() - getWidth();
         params.y = LScreenUtil.getScreenHeight() - getHeight();
@@ -124,7 +125,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         mWindowManager.addView(mFloatingView, params);
 
         //Drag and move floating view using user's touch action.
-        dragAndMove(params);
+        dragAndMove();
 
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,11 +141,18 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 stopSelf();*/
+                slideToLeft();
             }
         });
     }
 
-    private void dragAndMove(final WindowManager.LayoutParams params) {
+    private void slideToLeft() {
+        params.x = 0;
+        params.y = 100;
+        mWindowManager.updateViewLayout(mFloatingView, params);
+    }
+
+    private void dragAndMove() {
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
@@ -168,12 +176,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                         lastTouchDown = System.currentTimeMillis();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        //int Xdiff = (int) (event.getRawX() - initialTouchX);
-                        //int Ydiff = (int) (event.getRawY() - initialTouchY);
-
                         //on Click event
                         clickRoot(lastTouchDown);
-
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         //Calculate the X and Y coordinates of the view.
