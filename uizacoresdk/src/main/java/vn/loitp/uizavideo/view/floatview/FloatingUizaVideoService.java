@@ -34,6 +34,7 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
 
 /**
  * Created by LENOVO on 3/27/2018.
@@ -169,11 +170,13 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 //TODO
             }
         });
+        setSizeMoveView();
     }
 
     private void clickRoot(long lastTouchDown) {
         if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
             rlControl.setVisibility(rlControl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            setSizeMoveView();
         }
     }
 
@@ -201,47 +204,47 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onTracksChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onLoadingChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onPlayerStateChanged");
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onRepeatModeChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onShuffleModeEnabledChanged");
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onPlayerError");
             }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onPositionDiscontinuity");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onPlaybackParametersChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                LLog.d(TAG, "onTimelineChanged");
+                LLog.d(TAG, "onSeekProcessed");
             }
         });
         floatUizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
@@ -347,11 +350,20 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         floatUizaIMAVideo.init(linkPlay, currentPosition, this);
     }
 
-    private void setSizeMoveView(boolean isShowingControl) {
-        if (isShowingControl) {
-
+    private void setSizeMoveView() {
+        if (rlControl.getVisibility() == View.VISIBLE) {
+            LLog.d(TAG, "setSizeMoveView if");
+            int widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(getApplicationContext());
+            LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
+            moveView.getLayoutParams().width = widthScreen * 35 / 100;
+            moveView.getLayoutParams().height = widthScreen * 35 / 100 * 9 / 16;
         } else {
-
+            LLog.d(TAG, "setSizeMoveView else");
+            int widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(getApplicationContext());
+            LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
+            moveView.getLayoutParams().width = widthScreen * 25 / 100;
+            moveView.getLayoutParams().height = widthScreen * 25 / 100 * 9 / 16;
         }
+        moveView.requestLayout();
     }
 }
