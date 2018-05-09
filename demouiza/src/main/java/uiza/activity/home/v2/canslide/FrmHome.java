@@ -22,8 +22,10 @@ import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
 import uiza.app.LSApplication;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -37,6 +39,7 @@ import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -268,9 +271,14 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
-            if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-                return true;
+            boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
+            if (isLandscapeScreen) {
+                LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
+            } else {
+                if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                    ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                    return true;
+                }
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));
         }

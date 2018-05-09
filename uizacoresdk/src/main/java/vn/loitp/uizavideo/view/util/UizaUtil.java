@@ -33,19 +33,11 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 public class UizaUtil {
     private final static String TAG = UizaUtil.class.getSimpleName();
 
-    public static void setUIFullScreenIcon(Context context, ImageButton imageButton) {
-        if (LScreenUtil.isFullScreen(context)) {
-            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
-        } else {
+    public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
+        if (isFullScreen) {
             imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_exit_black_48dp);
-        }
-    }
-
-    public static void setUIFullScreenIcon(Context context, ImageView imageView) {
-        if (LScreenUtil.isFullScreen(context)) {
-            imageView.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
         } else {
-            imageView.setImageResource(loitp.core.R.drawable.ic_fullscreen_exit_black_48dp);
+            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
         }
     }
 

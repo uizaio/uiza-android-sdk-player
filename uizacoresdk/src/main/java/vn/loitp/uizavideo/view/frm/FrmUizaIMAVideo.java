@@ -276,7 +276,6 @@ public class FrmUizaIMAVideo extends BaseFragment implements PreviewView.OnPrevi
     @Override
     public void onClick(View v) {
         if (v == exoFullscreenIcon) {
-            UizaUtil.setUIFullScreenIcon(getActivity(), exoFullscreenIcon);
             LActivityUtil.toggleScreenOritation(getActivity());
         } else if (v == exoBackScreen) {
             if (isLandscape) {

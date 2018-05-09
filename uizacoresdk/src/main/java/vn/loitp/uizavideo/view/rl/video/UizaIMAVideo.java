@@ -67,7 +67,6 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelati
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.utils.util.ServiceUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.realtimeblurview.RealtimeBlurView;
@@ -569,7 +568,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     @Override
     public void onClick(View v) {
         if (v == exoFullscreenIcon) {
-            UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon);
             LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
         } else if (v == exoBackScreen) {
             if (isLandscape) {
@@ -635,10 +633,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 exoPictureInPicture.setVisibility(GONE);
+                UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 exoPictureInPicture.setVisibility(VISIBLE);
+                UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);
