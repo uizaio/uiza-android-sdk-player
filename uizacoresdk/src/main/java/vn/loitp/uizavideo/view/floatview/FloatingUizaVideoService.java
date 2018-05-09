@@ -3,10 +3,10 @@ package vn.loitp.uizavideo.view.floatview;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.os.Binder;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -250,6 +250,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         }
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
     private void setListener() {
         LLog.d(TAG, TAG + " addListener");
         if (floatUizaIMAVideo == null || floatUizaIMAVideo.getPlayer() == null) {
@@ -401,9 +407,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     @Override
     public void isInitResult(boolean isInitSuccess) {
         LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
-        if (serviceCallbacks != null) {
-            serviceCallbacks.isPiPInitResult(isInitSuccess);
-        }
         setListener();
     }
 
@@ -433,31 +436,5 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     private int getHeight() {
         return moveView.getLayoutParams().height;
-    }
-
-    public interface ServiceCallbacks {
-        public void isPiPInitResult(boolean isInitSuccess);
-    }
-
-    // Binder given to clients
-    private final IBinder binder = new LocalBinder();
-    // Registered callbacks
-    private ServiceCallbacks serviceCallbacks;
-
-    // Class used for the client Binder.
-    public class LocalBinder extends Binder {
-        public FloatingUizaVideoService getService() {
-            // Return this instance of MyService so clients can call public methods
-            return FloatingUizaVideoService.this;
-        }
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
-
-    public void setCallbacks(ServiceCallbacks callbacks) {
-        serviceCallbacks = callbacks;
     }
 }

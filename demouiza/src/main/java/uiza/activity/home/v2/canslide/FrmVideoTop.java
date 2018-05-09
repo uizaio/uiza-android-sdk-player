@@ -33,6 +33,7 @@ import java.util.List;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -277,7 +278,13 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void onClickPip(Intent intent) {
-        //do nothing
+        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        LUIUtil.setDelay(600, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+            }
+        });
     }
 
     public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
