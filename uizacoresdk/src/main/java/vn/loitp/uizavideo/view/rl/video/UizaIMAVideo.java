@@ -760,8 +760,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getEntityCover());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getEntityName());
         activity.startService(intent);
+
         if (callback != null) {
-            callback.onClickPiP();
+            callback.onClickPip(intent);
         }
     }
 
@@ -827,7 +828,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         public void onClickBack();
 
-        public void onClickPiP();
+        public void onClickPip(Intent intent);
     }
 
     private Callback callback;

@@ -1,7 +1,11 @@
 package uiza.activity.home.v2.cannotslide;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -29,13 +33,14 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 
-public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
+public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback, FloatingUizaVideoService.ServiceCallbacks {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
     private long positionFromPipService;
@@ -272,7 +277,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isInitResult " + isInitSuccess);
+        LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
         if (positionFromPipService != 0) {
             uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
         }
@@ -293,8 +298,10 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
-    public void onClickPiP() {
-        activity.onBackPressed();
+    public void onClickPip(Intent intent) {
+        LLog.d(TAG, "onClickPip");
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -331,4 +338,51 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         uizaIMAVideo.init(this);
         uizaIMAVideoInfo.init(this);
     }
+
+    private FloatingUizaVideoService myService;
+    private boolean bound = false;
+
+    @Override
+    public void isPiPInitResult(boolean isInitSuccess) {
+        LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
+        onBackPressed();
+    }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        // bind to Service
+        Intent intent = new Intent(this, FloatingUizaVideoService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }*/
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Unbind from service
+        if (bound) {
+            myService.setCallbacks(null); // unregister
+            unbindService(serviceConnection);
+            bound = false;
+        }
+    }
+
+    /**
+     * Callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            FloatingUizaVideoService.LocalBinder binder = (FloatingUizaVideoService.LocalBinder) service;
+            myService = binder.getService();
+            bound = true;
+            myService.setCallbacks(UizaPlayerActivityV2.this);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            bound = false;
+        }
+    };
 }

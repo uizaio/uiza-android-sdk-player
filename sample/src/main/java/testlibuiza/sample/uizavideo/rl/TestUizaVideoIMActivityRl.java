@@ -296,11 +296,6 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         onBackPressed();
     }
 
-    @Override
-    public void onClickPiP() {
-        onBackPressed();
-    }
-
     private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogOne("Entity ID cannot be null or empty");

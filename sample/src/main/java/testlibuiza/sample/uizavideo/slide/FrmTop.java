@@ -266,7 +266,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
             if (frmTopCallback != null) {
                 frmTopCallback.initDone();
             } else {
-                LLog.e(TAG, "isInitResult else");
+                LLog.e(TAG, "isPiPInitResult else");
             }
         }
     }
@@ -287,11 +287,6 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     @Override
     public void onClickBack() {
         ((TestUizaVideoIMActivityRlSlide) getActivity()).getDraggablePanel().minimize();
-    }
-
-    @Override
-    public void onClickPiP() {
-        getActivity().onBackPressed();
     }
 
     public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {

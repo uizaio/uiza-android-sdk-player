@@ -3,6 +3,7 @@ package vn.loitp.uizavideo.view.floatview;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Binder;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
@@ -61,11 +62,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private String entityTitle;
 
     public FloatingUizaVideoService() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     @Override
@@ -404,7 +400,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        LLog.d(TAG, "isInitResult isInitSuccess: " + isInitSuccess);
+        LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
+        if (serviceCallbacks != null) {
+            serviceCallbacks.isPiPInitResult(isInitSuccess);
+        }
         setListener();
     }
 
@@ -415,13 +414,13 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private void setSizeMoveView() {
         int widthScreen = LScreenUtil.getScreenWidth();
         if (rlControl.getVisibility() == View.VISIBLE) {
-            LLog.d(TAG, "setSizeMoveView if");
-            LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
+            //LLog.d(TAG, "setSizeMoveView if");
+            //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
             moveView.getLayoutParams().width = widthScreen * 70 / 100;
             moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
         } else {
-            LLog.d(TAG, "setSizeMoveView else");
-            LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
+            //LLog.d(TAG, "setSizeMoveView else");
+            //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
             moveView.getLayoutParams().width = widthScreen * 50 / 100;
             moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;
         }
@@ -434,5 +433,31 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     private int getHeight() {
         return moveView.getLayoutParams().height;
+    }
+
+    public interface ServiceCallbacks {
+        public void isPiPInitResult(boolean isInitSuccess);
+    }
+
+    // Binder given to clients
+    private final IBinder binder = new LocalBinder();
+    // Registered callbacks
+    private ServiceCallbacks serviceCallbacks;
+
+    // Class used for the client Binder.
+    public class LocalBinder extends Binder {
+        public FloatingUizaVideoService getService() {
+            // Return this instance of MyService so clients can call public methods
+            return FloatingUizaVideoService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    public void setCallbacks(ServiceCallbacks callbacks) {
+        serviceCallbacks = callbacks;
     }
 }
