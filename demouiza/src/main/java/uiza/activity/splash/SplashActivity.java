@@ -42,6 +42,7 @@ public class SplashActivity extends BaseActivity {
 
         currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
         canSlide = getIntent().getBooleanExtra(OptionActivity.KEY_CAN_SLIDE, false);
+        LPref.setSlideUizaVideoEnabled(activity, canSlide);
         currentApiEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_END_POINT);
         currentApiTrackingEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_TRACKING_END_POINT);
 

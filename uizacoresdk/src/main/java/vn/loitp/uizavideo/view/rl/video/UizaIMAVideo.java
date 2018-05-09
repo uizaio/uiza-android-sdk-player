@@ -756,6 +756,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         Intent intent = new Intent(activity, FloatingUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
+        intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getEntityId());
+        intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getEntityCover());
+        intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getEntityName());
         activity.startService(intent);
         activity.onBackPressed();
     }

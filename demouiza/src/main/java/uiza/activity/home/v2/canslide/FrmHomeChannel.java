@@ -1,6 +1,5 @@
 package uiza.activity.home.v2.canslide;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,14 +14,12 @@ import java.util.List;
 
 import uiza.R;
 import uiza.activity.data.HomeDataV2;
-import uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2;
 import uiza.activity.home.view.BlankView;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.LoadingView;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -34,10 +31,6 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
-
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.

@@ -102,6 +102,9 @@ public class Constants {
 
     public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
+    public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
+    public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
+    public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
     public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
     public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
 }

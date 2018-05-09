@@ -4,7 +4,6 @@ package uiza.activity.home.v2.canslide;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,12 +19,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
-import uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.LoadingView;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LKeyBoardUtil;
 import vn.loitp.core.utilities.LLog;
@@ -39,10 +36,6 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
-
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {
     private final String TAG = getClass().getSimpleName();

@@ -94,6 +94,42 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     private FrmTop frmTop;
     private FrmBottom frmBottom;
 
+    private void initFrmTop() {
+        frmTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                String playerSkinId = Constants.PLAYER_ID_SKIN_0;
+                String entityId = null;
+                String entityTitle = null;
+                String videoCoverUrl = null;
+
+                if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
+                    entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+                } else {
+                    entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+                }
+
+                if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE) == null) {
+                    entityTitle = "Dummy title";
+                } else {
+                    entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
+                }
+
+                if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER) == null) {
+                    videoCoverUrl = "https://motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
+                } else {
+                    videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+                }
+                //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                String urlIMAAd = null;
+
+                //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+                String urlThumnailsPreviewSeekbar = null;
+                frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+            }
+        });
+    }
+
     private void initializeDraggablePanel() {
         if (frmTop != null || frmBottom != null) {
             LLog.d(TAG, "initializeDraggablePanel exist");
@@ -102,6 +138,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             return;
         }
         frmTop = new FrmTop();
+        initFrmTop();
         frmBottom = new FrmBottom();
 
         draggablePanel.setFragmentManager(getSupportFragmentManager());

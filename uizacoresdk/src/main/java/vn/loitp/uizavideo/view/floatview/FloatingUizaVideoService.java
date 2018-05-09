@@ -54,6 +54,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private FloatUizaIMAVideo floatUizaIMAVideo;
     private WindowManager.LayoutParams params;
 
+    private String linkPlay;
+    private long currentPositionPlayer;
+    private String entityId;
+    private String entityCover;
+    private String entityTitle;
+
     public FloatingUizaVideoService() {
     }
 
@@ -66,13 +72,18 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     public int onStartCommand(Intent intent, int flags, int startId) {
         LLog.d(TAG, "onStartCommand");
         if (intent != null && intent.getExtras() != null) {
-            String linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
+            linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
+            currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
+            entityId = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+            entityCover = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+            entityTitle = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             LLog.d(TAG, "linkPlay " + linkPlay);
-
-            long currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
             LLog.d(TAG, "currentPositionPlayer " + currentPositionPlayer);
+            LLog.d(TAG, "entityId " + entityId);
+            LLog.d(TAG, "entityCover " + entityCover);
+            LLog.d(TAG, "entityTitle " + entityTitle);
 
-            setupVideo(linkPlay, currentPositionPlayer);
+            setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -141,6 +152,9 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
@@ -394,8 +408,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         setListener();
     }
 
-    private void setupVideo(String linkPlay, long currentPosition) {
-        floatUizaIMAVideo.init(linkPlay, currentPosition, this);
+    private void setupVideo() {
+        floatUizaIMAVideo.init(linkPlay, currentPositionPlayer, this);
     }
 
     private void setSizeMoveView() {
