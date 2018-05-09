@@ -413,18 +413,17 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     }
 
     private void setSizeMoveView() {
+        int widthScreen = LScreenUtil.getScreenWidth();
         if (rlControl.getVisibility() == View.VISIBLE) {
             LLog.d(TAG, "setSizeMoveView if");
-            int widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(getApplicationContext());
             LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
-            moveView.getLayoutParams().width = widthScreen * 35 / 100;
-            moveView.getLayoutParams().height = widthScreen * 35 / 100 * 9 / 16;
+            moveView.getLayoutParams().width = widthScreen * 70 / 100;
+            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
         } else {
             LLog.d(TAG, "setSizeMoveView else");
-            int widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(getApplicationContext());
             LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
-            moveView.getLayoutParams().width = widthScreen * 25 / 100;
-            moveView.getLayoutParams().height = widthScreen * 25 / 100 * 9 / 16;
+            moveView.getLayoutParams().width = widthScreen * 50 / 100;
+            moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;
         }
         moveView.requestLayout();
     }

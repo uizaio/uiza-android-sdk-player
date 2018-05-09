@@ -31,7 +31,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        LLog.d(TAG, "positionFromPipService " + positionFromPipService);
+        LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -69,11 +69,15 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             String videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+            LLog.d(TAG, "onCreate pip entityId: " + entityId);
+            LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
+            LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
             if (entityId == null || entityId.isEmpty()) {
                 LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
                 return;
             }
             play(entityId, entityTitle, videoCoverUrl);
+            LLog.d(TAG, "onCreate positionFromPipService != 0 -> play");
         }
     }
 
@@ -96,12 +100,12 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl_slide;
+        return R.layout.uiza_ima_video_activity_rl_slide;
     }
 
     private FrmVideoTop frmVideoTop;
@@ -109,8 +113,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     private void initializeDraggablePanel(final String entityId, final String entityTitle, final String entityCover) {
         if (frmVideoTop != null || frmVideoBottom != null) {
-            LLog.d(TAG, "initializeDraggablePanel exist");
-            LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
+            //LLog.d(TAG, "initializeDraggablePanel exist");
+            //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
             clearUIFrmBottom();
             initFrmTop(entityId, entityTitle, entityCover);
             draggablePanel.maximize();
@@ -120,7 +124,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
+                //LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
                 initFrmTop(entityId, entityTitle, entityCover);
             }
         });
@@ -131,7 +135,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClick(Item item, int position) {
-                        LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
+                        //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         clearUIFrmBottom();
                         initFrmTop(item.getId(), item.getName(), item.getThumbnail());
                     }
@@ -162,7 +166,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTop.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-                LLog.d(TAG, "setFrmTopCallback initDone");
+                //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (positionFromPipService != 0) {
                     frmVideoTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
                 }
@@ -189,7 +193,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
+                //LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
                 clearUIFrmBottom();
                 initFrmTop(item.getId(), item.getName(), item.getThumbnail());
             }
@@ -216,7 +220,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     private void intFrmBottom(GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "intFrmBottom");
+        //LLog.d(TAG, "intFrmBottom");
         frmVideoBottom.setup(getDetailEntity);
     }
 
@@ -225,7 +229,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     public void play(String entityId, String entityTitle, String entityCover) {
-        LLog.d(TAG, "onClickVideo entityId:" + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
+        //LLog.d(TAG, "onClickVideo entityId:" + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
         initializeDraggablePanel(entityId, entityTitle, entityCover);
     }
 
