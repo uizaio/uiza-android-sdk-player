@@ -760,7 +760,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getEntityCover());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getEntityName());
         activity.startService(intent);
-        activity.onBackPressed();
+        if (callback != null) {
+            callback.onClickPiP();
+        }
     }
 
     public SimpleExoPlayer getPlayer() {
@@ -824,6 +826,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         public void onClickListEntityRelation(Item item, int position);
 
         public void onClickBack();
+
+        public void onClickPiP();
     }
 
     private Callback callback;

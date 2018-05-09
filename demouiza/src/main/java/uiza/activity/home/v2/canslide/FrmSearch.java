@@ -256,13 +256,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
 
     private void onClickVideo(Item item, int position) {
         LLog.d(TAG, "onClickItem at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        /*Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
-        intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
-        intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
-        intent.putExtra(KEY_UIZA_ENTITY_TITLE, item.getName());
-        startActivity(intent);
-        LActivityUtil.tranIn(getActivity());*/
-        ((HomeV2CanSlideActivity) getActivity()).play(item, position);
+        ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 
     private void swipeToRefresh() {

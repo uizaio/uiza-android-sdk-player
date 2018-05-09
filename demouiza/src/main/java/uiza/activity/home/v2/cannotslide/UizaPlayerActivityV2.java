@@ -38,12 +38,15 @@ import vn.loitp.views.LToast;
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
+    private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
+
+        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         String entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
@@ -260,6 +263,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "isInitResult " + isInitSuccess);
+        if (positionFromPipService != 0) {
+            uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
+        }
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {
             uizaIMAVideoInfo.setup(getDetailEntity);
@@ -274,6 +280,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onClickBack() {
         onBackPressed();
+    }
+
+    @Override
+    public void onClickPiP() {
+        activity.onBackPressed();
     }
 
     @Override
@@ -292,8 +303,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             return;
         }
         if (UizaData.getInstance().getPlayerId() == null || UizaData.getInstance().getPlayerId().isEmpty()) {
-            showDialogOne("Player Skin ID cannot be null or empty");
-            return;
+            UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
         }
         LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
         UizaData.getInstance().setEntityId(entityId);

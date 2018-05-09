@@ -242,7 +242,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     private void onClickVideo(Item item, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        ((HomeV2CanSlideActivity) getActivity()).play(item, position);
+        ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 
     private long backPressed;
