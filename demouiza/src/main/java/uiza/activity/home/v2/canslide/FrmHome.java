@@ -4,7 +4,6 @@ package uiza.activity.home.v2.canslide;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import uiza.R;
 import uiza.activity.data.HomeDataV2;
-import uiza.activity.home.v2.cannotslide.SearchV2Activity;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.UizaActionBar;
 import uiza.activity.home.view.UizaDrawerHeader;
@@ -26,10 +24,11 @@ import uiza.activity.home.view.UizaDrawerMenuItemV2;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -162,8 +161,24 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void getListAllMetadata() {
-        LLog.d(TAG, "getListAllMetadata");
+        //LLog.d(TAG, "getListAllMetadata");
         genHomeMenu();
+
+        if (RestClientV2.getRetrofit() == null) {
+            LLog.d(TAG, "RestClientV2.getRetrofit() == null");
+            String apiEndPoint = LPref.getApiEndPoint(getActivity());
+            String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getActivity());
+            String token = LPref.getToken(getActivity());
+
+            LLog.d(TAG, "getRetrofit apiEndPoint " + apiEndPoint);
+            LLog.d(TAG, "getRetrofit currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
+            LLog.d(TAG, "getRetrofit token " + token);
+
+            RestClientV2.init(apiEndPoint);
+            RestClientV2.addAuthorization(token);
+            RestClientTracking.init(currentApiTrackingEndPoint);
+        }
+
         UizaService service = RestClientV2.createService(UizaService.class);
         int limit = 999;
         String orderBy = "name";

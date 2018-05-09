@@ -279,7 +279,6 @@ public class FrmHomeChannel extends BaseFragment {
             tvMsg.setVisibility(View.GONE);
         }
         UizaService service = RestClientV2.createService(UizaService.class);
-
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         if (HomeDataV2.getInstance().getDatum().getId().equals(String.valueOf(Constants.NOT_FOUND))) {
             LLog.d(TAG, "HOME category");
@@ -324,6 +323,7 @@ public class FrmHomeChannel extends BaseFragment {
                     if (tvMsg.getVisibility() != View.VISIBLE) {
                         tvMsg.setVisibility(View.VISIBLE);
                         tvMsg.setText(getString(R.string.empty_list));
+                        placeHolderView.setVisibility(View.GONE);
                     }
                     if (!isCallFromLoadMore) {
                         LUIUtil.hideProgressBar(progressBar);
@@ -343,6 +343,7 @@ public class FrmHomeChannel extends BaseFragment {
                     if (e != null && e.getMessage() != null) {
                         tvMsg.setText("onFail " + e.getMessage());
                     }
+                    placeHolderView.setVisibility(View.GONE);
                 }
                 if (!isCallFromLoadMore) {
                     LUIUtil.hideProgressBar(progressBar);

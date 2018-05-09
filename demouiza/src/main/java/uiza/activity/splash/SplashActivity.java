@@ -54,6 +54,9 @@ public class SplashActivity extends BaseActivity {
         RestClientV2.init(currentApiEndPoint);
         RestClientTracking.init(currentApiTrackingEndPoint);
 
+        LPref.setApiEndPoint(activity, currentApiEndPoint);
+        LPref.setApiTrackEndPoint(activity, currentApiTrackingEndPoint);
+
         Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
@@ -163,6 +166,7 @@ public class SplashActivity extends BaseActivity {
         }
         UizaData.getInstance().setPlayerId(currentPlayerId);
         RestClientV2.addAuthorization(token);
+        LPref.setToken(activity, token);
         if (canSlide) {
             LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
             intent = new Intent(activity, HomeV2CanSlideActivity.class);

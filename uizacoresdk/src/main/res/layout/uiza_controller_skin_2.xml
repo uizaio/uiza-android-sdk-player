@@ -117,8 +117,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/ic_picture_in_picture_alt_black_48dp"
-            android:tint="@color/White"
-            android:visibility="gone" />
+            android:tint="@color/White" />
     </LinearLayout>
 
     <RelativeLayout
