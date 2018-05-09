@@ -136,18 +136,11 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                /*Intent intent = new Intent(this, TestUizaVideoIMActivityRl.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                stopSelf();*/
-
                 stopSelf();
-
-                //slideToLeft();
-
                 Intent intent = new Intent();
+                LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
+                intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);

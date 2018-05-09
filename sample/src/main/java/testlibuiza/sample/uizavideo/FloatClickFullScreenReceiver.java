@@ -20,13 +20,16 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent i) {
         long positionOfPlayer = i.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        String packageNameReceived = i.getStringExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME);
         LLog.d(TAG, "positionOfPlayer " + positionOfPlayer);
+        LLog.d(TAG, "packageNameReceived " + packageNameReceived);
 
         boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
-
-        Intent intent = new Intent(context, isSlideUizaVideoEnabled ? TestUizaVideoIMActivityRlSlide.class : TestUizaVideoIMActivityRl.class);
-        intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
+            Intent intent = new Intent(context, isSlideUizaVideoEnabled ? TestUizaVideoIMActivityRlSlide.class : TestUizaVideoIMActivityRl.class);
+            intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 }
