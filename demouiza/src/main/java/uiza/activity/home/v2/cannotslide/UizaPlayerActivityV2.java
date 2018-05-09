@@ -339,7 +339,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         uizaIMAVideoInfo.init(this);
     }
 
-    private FloatingUizaVideoService myService;
+    private FloatingUizaVideoService floatingUizaVideoService;
     private boolean bound = false;
 
     @Override
@@ -361,7 +361,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         super.onStop();
         // Unbind from service
         if (bound) {
-            myService.setCallbacks(null); // unregister
+            floatingUizaVideoService.setCallbacks(null); // unregister
             unbindService(serviceConnection);
             bound = false;
         }
@@ -375,9 +375,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             FloatingUizaVideoService.LocalBinder binder = (FloatingUizaVideoService.LocalBinder) service;
-            myService = binder.getService();
+            floatingUizaVideoService = binder.getService();
             bound = true;
-            myService.setCallbacks(UizaPlayerActivityV2.this);
+            floatingUizaVideoService.setCallbacks(UizaPlayerActivityV2.this);
         }
 
         @Override
