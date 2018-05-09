@@ -47,19 +47,29 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
 
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
 
-        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        String entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
-        String entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
-
+        String entityId = null;
+        String entityCover = null;
+        String entityTitle = null;
+        if (positionFromPipService != 0) {
+            //called from PiP Service
+            entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+            entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
+            entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+        } else {
+            entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
+            entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
+        }
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
             return;
         }
 
-        LLog.d(TAG, "entityId " + entityId);
-        LLog.d(TAG, "entityCover " + entityCover);
-        LLog.d(TAG, "entityTitle " + entityTitle);
+        LLog.d(TAG, ">>> entityId " + entityId);
+        LLog.d(TAG, ">>> entityCover " + entityCover);
+        LLog.d(TAG, ">>> entityTitle " + entityTitle);
 
         setupVideo(entityId, entityTitle, entityCover);
     }
@@ -102,7 +112,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
-                LLog.d(TAG, "onActivityResult RESULT_OK");
+                //LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
@@ -113,7 +123,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setListener() {
-        LLog.d(TAG, TAG + " addListener");
+        //LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
             return;
         }
