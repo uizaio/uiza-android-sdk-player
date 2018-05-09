@@ -1,8 +1,11 @@
 package vn.loitp.uizavideo.view.util;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.content.Context;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,10 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by LENOVO on 4/11/2018.
@@ -217,6 +224,24 @@ public class UizaUtil {
         } catch (Exception e) {
             //LLog.e(TAG, "setDuration " + e.toString());
             textView.setText(" - ");
+        }
+    }
+
+    public static boolean isAppInForeground(Context context) {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+            String foregroundTaskPackageName = foregroundTaskInfo.topActivity.getPackageName();
+            return foregroundTaskPackageName.toLowerCase().equals(context.getPackageName().toLowerCase());
+        } else {
+            ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+            ActivityManager.getMyMemoryState(appProcessInfo);
+            if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+                return true;
+            }
+            KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            // App is foreground, but screen is locked, so show notification
+            return km.inKeyguardRestrictedInputMode();
         }
     }
 }

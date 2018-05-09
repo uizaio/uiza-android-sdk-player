@@ -1,22 +1,16 @@
 package uiza.activity.home.v2;
 
-import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 import uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2;
 import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
-
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
-import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by LENOVO on 5/8/2018.
@@ -38,7 +32,7 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        boolean isAppInForeground = isAppInForeground(context);
+        boolean isAppInForeground = UizaUtil.isAppInForeground(context);
         LLog.d(TAG, "isAppInForeground " + isAppInForeground);
 
         if (isAppInForeground) {
@@ -59,21 +53,5 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         }
     }
 
-    private boolean isAppInForeground(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-            ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
-            String foregroundTaskPackageName = foregroundTaskInfo.topActivity.getPackageName();
-            return foregroundTaskPackageName.toLowerCase().equals(context.getPackageName().toLowerCase());
-        } else {
-            ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
-            ActivityManager.getMyMemoryState(appProcessInfo);
-            if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
-                return true;
-            }
-            KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-            // App is foreground, but screen is locked, so show notification
-            return km.inKeyguardRestrictedInputMode();
-        }
-    }
+
 }
