@@ -759,6 +759,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (activity == null) {
             return;
         }
+        exoPictureInPicture.setVisibility(GONE);
         Intent intent = new Intent(activity, FloatingUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
@@ -766,7 +767,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getEntityCover());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getEntityName());
         activity.startService(intent);
-
         if (callback != null) {
             callback.onClickPip(intent);
         }
