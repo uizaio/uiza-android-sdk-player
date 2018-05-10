@@ -5,8 +5,10 @@ package vn.loitp.uizavideo.view.rl.video;
  */
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -535,6 +537,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.init();
             }
         }
+        registerReceiverPiPInitSuccess();
     }
 
     public void onPause() {
@@ -545,6 +548,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.reset();
             }
         }
+        unregisterReceiverPiPInitSuccess();
     }
 
     @Override
@@ -899,5 +903,26 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 ((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
         });
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                boolean isInitSuccess = intent.getBooleanExtra(Constants.FLOAT_VIDEO_INIT_RESULT, false);
+                LLog.d(TAG, "broadcastReceiver onReceive isInitSuccess: " + isInitSuccess);
+                if (isInitSuccess) {
+                    activity.onBackPressed();
+                }
+            }
+        }
+    };
+
+    private void registerReceiverPiPInitSuccess() {
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(FloatingUizaVideoService.BROADCAST_ACTION));
+    }
+
+    private void unregisterReceiverPiPInitSuccess() {
+        activity.unregisterReceiver(broadcastReceiver);
     }
 }

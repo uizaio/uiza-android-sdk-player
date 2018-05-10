@@ -1,9 +1,6 @@
 package testlibuiza.sample.uizavideo.rl;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Surface;
 
@@ -32,7 +29,6 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
@@ -302,7 +298,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void onClickPip(Intent intent) {
-        //onBackPressed();
+        //do nothing
     }
 
     private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
@@ -322,30 +318,5 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
         uizaIMAVideo.init(this);
-    }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                boolean isInitSuccess = intent.getBooleanExtra(Constants.FLOAT_VIDEO_INIT_RESULT, false);
-                LLog.d(TAG, "broadcastReceiver onReceive isInitSuccess: " + isInitSuccess);
-                if (isInitSuccess) {
-                    onBackPressed();
-                }
-            }
-        }
-    };
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        registerReceiver(broadcastReceiver, new IntentFilter(FloatingUizaVideoService.BROADCAST_ACTION));
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        unregisterReceiver(broadcastReceiver);
     }
 }
