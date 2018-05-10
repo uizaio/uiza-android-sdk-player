@@ -50,7 +50,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String videoCoverUrl = null;
 
         if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-            entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+            //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+            entityId = "64706d7d-5db5-4dfd-86d1-4a8ccce8b057";
         } else {
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
         }
@@ -62,7 +63,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         }
 
         if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER) == null) {
-            videoCoverUrl = "https://motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
+            videoCoverUrl = "//motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
         } else {
             videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
         }

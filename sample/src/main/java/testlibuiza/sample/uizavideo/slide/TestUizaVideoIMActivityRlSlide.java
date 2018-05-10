@@ -116,7 +116,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
                 }
 
                 if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER) == null) {
-                    videoCoverUrl = "https://motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
+                    videoCoverUrl = "//motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
                 } else {
                     videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
                 }

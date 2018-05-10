@@ -29,10 +29,13 @@ public class LSApplication extends MultiDexApplication {
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         //init uiza
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
-        RestClientTracking.init(Constants.URL_TRACKING_PROD);
+        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
+        //RestClientTracking.init(Constants.URL_TRACKING_PROD);
 
-        Auth auth = getDummyAuth();
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+
+        Auth auth = getDummyAuthDev();
         RestClientV2.addAuthorization(auth.getData().getToken());
         LPref.setAuth(getContext(), auth, gson);
     }
@@ -49,7 +52,12 @@ public class LSApplication extends MultiDexApplication {
         return instance.getApplicationContext();
     }
 
-    private Auth getDummyAuth() {
+    private Auth getDummyAuthDev() {
+        String json = "{\"code\":200,\"data\":{\"appId\":\"a204e9cdeca44948a33e0d012ef74e90\",\"expired\":\"09/06/2018 08:08:37\",\"token\":\"12af7152-9f55-4af0-89eb-77b64b00d5b2\"},\"datetime\":\"2018-05-10T08:08:37.295Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
+        return gson.fromJson(json, Auth.class);
+    }
+
+    private Auth getDummyAuthDemo() {
         String json = "{\"code\":200,\"data\":{\"appId\":\"0fa01cc4bc264023850069c3e07a0a38\",\"expired\":\"01/06/2018 10:43:17\",\"token\":\"3fcc5411-399e-4607-9991-6ab5d1c99e6e\"},\"datetime\":\"2018-05-02T10:43:17.180Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
         return gson.fromJson(json, Auth.class);
     }
