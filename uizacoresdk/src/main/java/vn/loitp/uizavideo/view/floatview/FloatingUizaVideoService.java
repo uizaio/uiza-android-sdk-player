@@ -61,6 +61,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private String entityCover;
     private String entityTitle;
 
+    public static final String BROADCAST_ACTION = "com.mukesh.service";
+
     public FloatingUizaVideoService() {
     }
 
@@ -93,7 +95,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void onCreate() {
-        LLog.d(TAG, "onCreate");
+        //LLog.d(TAG, "onCreate");
         super.onCreate();
 
         //Inflate the floating view layout we created
@@ -143,7 +145,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopSelf();
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
@@ -154,6 +155,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
+                stopSelf();
             }
         });
     }
@@ -408,6 +410,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     public void isInitResult(boolean isInitSuccess) {
         LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
         setListener();
+
+        Intent intent = new Intent(BROADCAST_ACTION);
+        intent.setPackage(getPackageName());
+        intent.putExtra(Constants.FLOAT_VIDEO_INIT_RESULT, isInitSuccess);
+        sendBroadcast(intent);
+        stopService(intent);
     }
 
     private void setupVideo() {
