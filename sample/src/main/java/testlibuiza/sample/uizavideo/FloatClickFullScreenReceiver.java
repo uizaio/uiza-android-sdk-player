@@ -35,6 +35,8 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         boolean isAppInForeground = UizaUtil.isAppInForeground(context);
         LLog.d(TAG, "isAppInForeground " + isAppInForeground);
 
+        //TODO moi lan switch giua activity va service thi duplicate track
+
         /*if (isAppInForeground) {
             //TODO
             LToast.show(context, "TODO isAppInForeground");
