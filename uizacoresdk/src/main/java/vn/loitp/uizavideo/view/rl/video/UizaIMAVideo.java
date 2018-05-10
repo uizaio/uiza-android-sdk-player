@@ -434,9 +434,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             previewTimeBarLayout.setEnabled(false);
         } else {
             previewTimeBarLayout.setEnabled(true);
-            if (previewTimeBarLayout != null) {
-                previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
-            }
+        }
+        if (previewTimeBarLayout != null) {
+            previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
         }
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
@@ -797,9 +797,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
                 activity.showDialogError("Không có linkplay");
-                if (callback != null) {
+                /*if (callback != null) {
                     callback.isInitResult(false, null, null);
-                }
+                }*/
             }
         });
     }
