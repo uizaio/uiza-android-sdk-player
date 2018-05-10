@@ -275,9 +275,17 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
             } else {
-                if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                    ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-                    return true;
+                LLog.d(TAG, "onBackPressed !isLandscapeScreen");
+                if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
+                    if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                        return true;
+                    } else {
+                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                    }
+                } else {
+                    LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
                 }
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));
