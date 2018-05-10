@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import testlibuiza.sample.api.TestAPIActivity;
-import testlibuiza.sample.uizavideo.deprecatedfrm.TestUizaVideoIMActivity;
 import testlibuiza.sample.uizavideo.rl.TestUizaVideoIMActivityRl;
 import testlibuiza.sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide;
 import vn.loitp.core.base.BaseActivity;
@@ -26,12 +24,6 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(activity, TestAPIActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
-            }
-        });
-        findViewById(R.id.bt_uiza_video).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uizaVideo();
             }
         });
         findViewById(R.id.bt_uiza_video_rl).setOnClickListener(new View.OnClickListener() {
@@ -61,12 +53,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_main;
-    }
-
-    private void uizaVideo() {
-        Intent intent = new Intent(activity, TestUizaVideoIMActivity.class);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 
     private void uizaVideoRl() {
