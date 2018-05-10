@@ -35,7 +35,7 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         boolean isAppInForeground = UizaUtil.isAppInForeground(context);
         LLog.d(TAG, "isAppInForeground " + isAppInForeground);
 
-        if (isAppInForeground) {
+        /*if (isAppInForeground) {
             //TODO
             LToast.show(context, "TODO isAppInForeground");
         } else {
@@ -50,6 +50,16 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
+        }*/
+        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
+        if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
+            Intent intent = new Intent(context, isSlideUizaVideoEnabled ? HomeV2CanSlideActivity.class : UizaPlayerActivityV2.class);
+            intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityCover);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityTitle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 
