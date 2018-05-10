@@ -278,13 +278,14 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void onClickPip(Intent intent) {
-        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-        LUIUtil.setDelay(600, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-            }
-        });
+        LLog.d(TAG, "onClickPip");
+        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
+        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
     public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {

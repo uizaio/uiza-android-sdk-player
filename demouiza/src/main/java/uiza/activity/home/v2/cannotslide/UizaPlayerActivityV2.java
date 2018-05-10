@@ -295,7 +295,14 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onClickPip(Intent intent) {
         LLog.d(TAG, "onClickPip");
-        onBackPressed();
+    }
+
+    @Override
+    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
+        if (isInitSuccess) {
+            onBackPressed();
+        }
     }
 
     @Override

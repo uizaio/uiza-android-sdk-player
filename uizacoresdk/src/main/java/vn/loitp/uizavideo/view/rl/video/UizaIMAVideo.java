@@ -398,11 +398,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
-        if (Constants.IS_DEBUG) {
+        //TODO
+        /*if (Constants.IS_DEBUG) {
             debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
-        }
+        }*/
+        debugLayout.setVisibility(View.GONE);
 
         //onclick
         exoFullscreenIcon.setOnClickListener(this);
@@ -826,13 +828,20 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public interface Callback {
+        //when video init done with result
         public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
 
+        //user click an item in entity relation
         public void onClickListEntityRelation(Item item, int position);
 
+        //user click button back in controller
         public void onClickBack();
 
+        //user click button pip in controller
         public void onClickPip(Intent intent);
+
+        //when pip video is inited success
+        public void onClickPipVideoInitSuccess(boolean isInitSuccess);
     }
 
     private Callback callback;
@@ -911,8 +920,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (intent != null) {
                 boolean isInitSuccess = intent.getBooleanExtra(Constants.FLOAT_VIDEO_INIT_RESULT, false);
                 LLog.d(TAG, "broadcastReceiver onReceive isInitSuccess: " + isInitSuccess);
-                if (isInitSuccess) {
-                    activity.onBackPressed();
+                if (callback != null) {
+                    callback.onClickPipVideoInitSuccess(isInitSuccess);
                 }
             }
         }

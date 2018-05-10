@@ -112,6 +112,9 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     private FrmVideoBottom frmVideoBottom;
 
     private void initializeDraggablePanel(final String entityId, final String entityTitle, final String entityCover) {
+        if (draggablePanel.getVisibility() != View.VISIBLE) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
         if (frmVideoTop != null || frmVideoBottom != null) {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
