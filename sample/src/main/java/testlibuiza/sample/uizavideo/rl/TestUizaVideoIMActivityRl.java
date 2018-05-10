@@ -50,8 +50,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String videoCoverUrl = null;
 
         if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-            //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
-            entityId = "64706d7d-5db5-4dfd-86d1-4a8ccce8b057";
+            entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         } else {
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
         }
