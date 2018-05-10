@@ -53,7 +53,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private long currentPosition;
 
     public long getCurrentPosition() {
-        return currentPosition;
+        return getPlayer().getCurrentPosition();
     }
 
     public void init(String linkPlay, long currentPosition, Callback callback) {
@@ -214,6 +214,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     private Callback callback;
 
+    //TODO
     private void trackUiza(final UizaTracking uizaTracking) {
         UizaService service = RestClientTracking.createService(UizaService.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {

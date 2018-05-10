@@ -21,12 +21,12 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent i) {
-        //long positionOfPlayer = i.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        long positionOfPlayer = i.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
         String packageNameReceived = i.getStringExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME);
         String entityId = i.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
         String entityCover = i.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
         String entityTitle = i.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
-        //LLog.d(TAG, "positionOfPlayer " + positionOfPlayer);
+        LLog.d(TAG, "positionOfPlayer " + positionOfPlayer);
         LLog.d(TAG, "packageNameReceived " + packageNameReceived);
         LLog.d(TAG, "entityId " + entityId);
         LLog.d(TAG, "entityCover " + entityCover);
@@ -35,27 +35,30 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         boolean isAppInForeground = UizaUtil.isAppInForeground(context);
         LLog.d(TAG, "isAppInForeground " + isAppInForeground);
 
-        if (isAppInForeground) {
+        /*if (isAppInForeground) {
             //TODO
             LToast.show(context, "TODO isAppInForeground");
         } else {
             boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
             if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
                 Intent intent = new Intent(context, isSlideUizaVideoEnabled ? TestUizaVideoIMActivityRlSlide.class : TestUizaVideoIMActivityRl.class);
-                //intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+                intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
+        }*/
+        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
+        if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
+            Intent intent = new Intent(context, isSlideUizaVideoEnabled ? TestUizaVideoIMActivityRlSlide.class : TestUizaVideoIMActivityRl.class);
+            intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
-        /*Intent intent = new Intent(context, TestUizaVideoIMActivityRl.class);
-        intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
-        intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-        intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
-        intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);*/
     }
 }
