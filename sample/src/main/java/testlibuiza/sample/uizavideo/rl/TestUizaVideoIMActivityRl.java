@@ -301,6 +301,11 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         //do nothing
     }
 
+    @Override
+    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        onBackPressed();
+    }
+
     private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogOne("Entity ID cannot be null or empty");
