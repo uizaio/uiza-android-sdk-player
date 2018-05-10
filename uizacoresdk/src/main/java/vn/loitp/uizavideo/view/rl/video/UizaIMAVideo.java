@@ -928,7 +928,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     };
 
     private void registerReceiverPiPInitSuccess() {
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(FloatingUizaVideoService.BROADCAST_ACTION));
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
     }
 
     private void unregisterReceiverPiPInitSuccess() {

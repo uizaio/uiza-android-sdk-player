@@ -61,8 +61,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private String entityCover;
     private String entityTitle;
 
-    public static final String BROADCAST_ACTION = "com.mukesh.service";
-
     public FloatingUizaVideoService() {
     }
 
@@ -411,7 +409,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
         setListener();
 
-        Intent intent = new Intent(BROADCAST_ACTION);
+        Intent intent = new Intent(Constants.BROADCAST_ACTION);
         intent.setPackage(getPackageName());
         intent.putExtra(Constants.FLOAT_VIDEO_INIT_RESULT, isInitSuccess);
         sendBroadcast(intent);
