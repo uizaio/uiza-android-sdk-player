@@ -56,8 +56,8 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
             Intent intent = new Intent(context, isSlideUizaVideoEnabled ? HomeV2CanSlideActivity.class : UizaPlayerActivityV2.class);
             intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
             intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityCover);
-            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityTitle);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
