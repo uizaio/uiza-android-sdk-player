@@ -29,13 +29,13 @@ public class LSApplication extends MultiDexApplication {
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         //init uiza
-        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
-        //RestClientTracking.init(Constants.URL_TRACKING_PROD);
-        //Auth auth = getDummyAuthDemo();
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
+        RestClientTracking.init(Constants.URL_TRACKING_PROD);
+        Auth auth = getDummyAuthDemo();
 
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
-        RestClientTracking.init(Constants.URL_TRACKING_DEV);
-        Auth auth = getDummyAuthDev();
+        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        //RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        //Auth auth = getDummyAuthDev();
 
         RestClientV2.addAuthorization(auth.getData().getToken());
         LPref.setAuth(getContext(), auth, gson);

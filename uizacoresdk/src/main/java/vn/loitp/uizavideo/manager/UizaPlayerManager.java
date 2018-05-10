@@ -489,7 +489,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
-            LLog.d(TAG, "onPlayerError " + error.toString());
+            LLog.e(TAG, "onPlayerError " + error.toString());
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
