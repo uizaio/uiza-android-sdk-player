@@ -66,6 +66,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         });
         replaceFragment(new FrmHome());
         if (positionFromPipService != 0) {
+            //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             String videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
@@ -114,6 +115,12 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     private void initializeDraggablePanel(final String entityId, final String entityTitle, final String entityCover) {
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
+        }
+
+        if (positionFromPipService != 0) {
+            LLog.d(TAG, "initializeDraggablePanel positionFromPipService called from pip service");
+        } else {
+            LLog.d(TAG, "initializeDraggablePanel positionFromPipService !called from pip service");
         }
         if (frmVideoTop != null || frmVideoBottom != null) {
             //LLog.d(TAG, "initializeDraggablePanel exist");
@@ -172,6 +179,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (positionFromPipService != 0) {
                     frmVideoTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
+                    positionFromPipService = 0;
                 }
                 frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
