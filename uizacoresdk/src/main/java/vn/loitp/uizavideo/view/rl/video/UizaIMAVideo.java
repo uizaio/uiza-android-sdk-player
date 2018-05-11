@@ -301,6 +301,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
+        registerReceiverPiPInitSuccess();
         inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
@@ -520,6 +521,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
+        unregisterReceiverPiPInitSuccess();
     }
 
     public void onResume() {
@@ -530,7 +532,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.init();
             }
         }
-        registerReceiverPiPInitSuccess();
     }
 
     public void onPause() {
@@ -541,7 +542,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.reset();
             }
         }
-        unregisterReceiverPiPInitSuccess();
     }
 
     @Override
