@@ -30,7 +30,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Utils.init(this);
-        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
+        //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
     }
 
     public Gson getGson() {
