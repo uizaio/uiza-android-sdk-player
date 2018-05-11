@@ -143,7 +143,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void stopServicePiPIfRunning() {
         LLog.d(TAG, "stopServicePiPIfRunning");
-        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity);
+        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
         LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
