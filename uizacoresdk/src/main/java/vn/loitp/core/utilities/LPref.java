@@ -25,6 +25,7 @@ public class LPref {
     public final static String API_END_POINT = "API_END_POINT";
     public final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     public final static String TOKEN = "TOKEN";
+    public final static String CLICKED_PIP = "CLICKED_PIP";
 
     //object
     /*public User getUser() {
@@ -103,6 +104,17 @@ public class LPref {
     public static void setSlideUizaVideoEnabled(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
+        editor.apply();
+    }
+
+    public static Boolean getClickedPip(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(CLICKED_PIP, false);
+    }
+
+    public static void setClickedPip(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(CLICKED_PIP, value);
         editor.apply();
     }
 

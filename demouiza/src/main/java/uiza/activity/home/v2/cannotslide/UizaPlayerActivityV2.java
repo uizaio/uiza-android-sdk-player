@@ -25,6 +25,7 @@ import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -52,17 +53,15 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         String entityId = null;
         String entityCover = null;
         String entityTitle = null;
-        if (positionFromPipService != 0) {
-            //called from PiP Service
+        if (LPref.getClickedPip(activity)) {
+            //activity is called from PiP Service
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-            uizaIMAVideo.setResumeFromPipClick(true);
         } else {
             entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
-            uizaIMAVideo.setResumeFromPipClick(false);
         }
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
@@ -275,7 +274,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
-        if (positionFromPipService != 0) {
+        if (LPref.getClickedPip(activity)) {
             uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
         }
         setListener();
@@ -286,7 +285,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        positionFromPipService = 0;
+        LPref.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 
@@ -310,7 +309,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickItemBottom(Item item, int position) {
-        positionFromPipService = 0;
+        LPref.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 

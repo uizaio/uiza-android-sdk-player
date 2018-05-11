@@ -91,7 +91,7 @@ public class Constants {
     public final static int PLAYTHROUGH_25 = 25;
     public final static int PLAYTHROUGH_50 = 50;
     public final static int PLAYTHROUGH_75 = 75;
-    public final static int PLAYTHROUGH_100 = 99;
+    public final static int PLAYTHROUGH_100 = 98;
 
     public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
 

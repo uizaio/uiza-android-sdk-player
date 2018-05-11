@@ -175,7 +175,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         LUIUtil.showProgressBar(progressBar);
 
-        if (!isResumeFromPipClick) {
+        //ko track neu play tu clicked pip
+        if (!LPref.getClickedPip(activity)) {
             //cannot delete delay below, only works after 500mls
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -189,14 +190,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             });
         }
     }
-
-    private boolean isResumeFromPipClick;
-
-    public void setResumeFromPipClick(boolean isResumeFromPipClick) {
-        this.isResumeFromPipClick = isResumeFromPipClick;
-        LLog.d(TAG, "setResumeFromPipClick isResumeFromPipClick: " + isResumeFromPipClick);
-    }
-
 
     private int countTryLinkPlayError = 0;
 
@@ -501,7 +494,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
-        if (!isResumeFromPipClick) {
+        //ko track neu play tu clicked pip
+        if (!LPref.getClickedPip(activity)) {
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
         }
