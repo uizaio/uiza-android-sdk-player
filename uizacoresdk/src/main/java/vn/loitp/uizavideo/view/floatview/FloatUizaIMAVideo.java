@@ -21,12 +21,18 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.ApiMaster;
+import vn.loitp.restapi.restclient.RestClientTracking;
+import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.FloatUizaPlayerManager;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.views.LToast;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -187,9 +193,17 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     public void onDestroy() {
+        LLog.d(TAG, "trackUiza onDestroy");
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.release();
         }
+        //TODO dell hieu phai set delay 500 thi moi track play_through 100
+        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                ApiMaster.getInstance().destroy();
+            }
+        });
     }
 
     public void onResume() {
@@ -215,21 +229,31 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        //TODO
-        LLog.d(TAG, "trackUiza getEventType: " + uizaTracking.getEventType() + ", getEntityName: " + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-
-        /*UizaService service = RestClientTracking.createService(UizaService.class);
-        ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+        LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+        if (RestClientTracking.getRetrofit() == null) {
+            String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getContext());
+            LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
+            if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
+                LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");
+                return;
+            }
+            RestClientTracking.init(currentApiTrackingEndPoint);
+        }
+        UizaService service = RestClientTracking.createService(UizaService.class);
+        ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "trackUiza getEntityName: " + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                if (Constants.IS_DEBUG) {
+                    LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
+                }
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-                ((BaseActivity) getContext()).showDialogError("Cannot track this entity");
+                //TODO
+                LLog.e(TAG, "trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
-        });*/
+        });
     }
 }
