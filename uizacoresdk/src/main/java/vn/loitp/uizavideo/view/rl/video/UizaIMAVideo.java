@@ -49,6 +49,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClient;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
@@ -773,7 +774,26 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return uizaPlayerManager.getPlayer();
     }
 
+    private void setupRestClientV2() {
+        if (RestClientV2.getRetrofit() == null) {
+            String currentApi = LPref.getApiEndPoint(activity);
+            LLog.d(TAG, "setupRestClientV2 trackUiza currentApi: " + currentApi);
+            if (currentApi == null || currentApi.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
+                return;
+            }
+            String token = LPref.getToken(activity);
+            if (token == null || token.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza token==null||token.isEmpty()");
+                return;
+            }
+            RestClientV2.init(currentApi);
+            RestClient.addAuthorization(token);
+        }
+    }
+
     private void getLinkPlay() {
+        setupRestClientV2();
         UizaService service = RestClientV2.createService(UizaService.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
@@ -802,6 +822,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void getDetailEntity() {
+        setupRestClientV2();
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());

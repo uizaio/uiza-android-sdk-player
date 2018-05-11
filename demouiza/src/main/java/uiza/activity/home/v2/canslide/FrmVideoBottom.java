@@ -34,7 +34,7 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
     }
 
     @Override
-    public void onClick(Item item, int position) {
+    public void onClickItemBottom(Item item, int position) {
 
     }
 

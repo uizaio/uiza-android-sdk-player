@@ -286,6 +286,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
+        positionFromPipService = 0;
         setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 
@@ -308,7 +309,8 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
-    public void onClick(Item item, int position) {
+    public void onClickItemBottom(Item item, int position) {
+        positionFromPipService = 0;
         setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 

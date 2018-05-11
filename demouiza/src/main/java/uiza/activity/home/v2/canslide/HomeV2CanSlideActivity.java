@@ -144,7 +144,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             public void onViewCreated() {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
-                    public void onClick(Item item, int position) {
+                    public void onClickItemBottom(Item item, int position) {
                         //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         clearUIFrmBottom();
                         initFrmTop(item.getId(), item.getName(), item.getThumbnail());

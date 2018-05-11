@@ -198,12 +198,12 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             floatUizaPlayerManager.release();
         }
         //TODO dell hieu phai set delay 500 thi moi track play_through 100
-        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+        /*LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 ApiMaster.getInstance().destroy();
             }
-        });
+        });*/
     }
 
     public void onResume() {

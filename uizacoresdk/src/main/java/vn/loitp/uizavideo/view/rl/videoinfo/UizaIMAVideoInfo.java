@@ -129,12 +129,12 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
-            public void onClick(Item item, int position) {
+            public void onClickItemBottom(Item item, int position) {
                 LLog.d(TAG, "onClick " + position);
                 itemList.clear();
                 notifyViews();
                 if (callback != null) {
-                    callback.onClick(item, position);
+                    callback.onClickItemBottom(item, position);
                 }
             }
 
