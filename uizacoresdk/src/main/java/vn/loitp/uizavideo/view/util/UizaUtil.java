@@ -26,7 +26,10 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.restapi.restclient.RestClient;
+import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 
@@ -256,5 +259,23 @@ public class UizaUtil {
             }
         }
         return false;
+    }
+
+    public static void setupRestClientV2(Activity activity) {
+        if (RestClientV2.getRetrofit() == null) {
+            String currentApi = LPref.getApiEndPoint(activity);
+            LLog.d(TAG, "setupRestClientV2 trackUiza currentApi: " + currentApi);
+            if (currentApi == null || currentApi.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
+                return;
+            }
+            String token = LPref.getToken(activity);
+            if (token == null || token.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza token==null||token.isEmpty()");
+                return;
+            }
+            RestClientV2.init(currentApi);
+            RestClient.addAuthorization(token);
+        }
     }
 }

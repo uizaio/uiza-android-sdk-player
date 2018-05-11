@@ -12,6 +12,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -19,6 +20,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
@@ -64,8 +66,9 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
+        UizaUtil.setupRestClientV2(activity);
         replaceFragment(new FrmHome());
-        if (positionFromPipService != 0) {
+        if (LPref.getClickedPip(activity)) {
             //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
@@ -117,11 +120,11 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             draggablePanel.setVisibility(View.VISIBLE);
         }
 
-        if (positionFromPipService != 0) {
+        /*if (LPref.getClickedPip(activity)) {
             LLog.d(TAG, "initializeDraggablePanel positionFromPipService called from pip service");
         } else {
             LLog.d(TAG, "initializeDraggablePanel positionFromPipService !called from pip service");
-        }
+        }*/
         if (frmVideoTop != null || frmVideoBottom != null) {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
@@ -146,6 +149,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
                         //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
+                        LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(item.getId(), item.getName(), item.getThumbnail());
                     }
@@ -177,9 +181,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
-                if (positionFromPipService != 0) {
+                if (LPref.getClickedPip(activity)) {
                     frmVideoTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
-                    positionFromPipService = 0;
                 }
                 frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
@@ -205,6 +208,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onClickListEntityRelation(Item item, int position) {
                 //LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
+                LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(item.getId(), item.getName(), item.getThumbnail());
             }
