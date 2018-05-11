@@ -273,7 +273,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (positionFromPipService != 0) {
-            uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
+            uizaIMAVideo.seekTo(positionFromPipService);
         }
         setListener();
     }

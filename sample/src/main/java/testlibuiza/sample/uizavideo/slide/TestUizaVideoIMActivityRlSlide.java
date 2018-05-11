@@ -161,7 +161,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             public void initDone() {
                 LLog.d(TAG, "initDone");
                 if (positionFromPipService != 0) {
-                    frmTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
+                    frmTop.getUizaIMAVideo().seekTo(positionFromPipService);
                 }
                 frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override

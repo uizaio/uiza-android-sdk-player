@@ -182,7 +182,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (LPref.getClickedPip(activity)) {
-                    frmVideoTop.getUizaIMAVideo().getPlayer().seekTo(positionFromPipService);
+                    frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
                 }
                 frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override

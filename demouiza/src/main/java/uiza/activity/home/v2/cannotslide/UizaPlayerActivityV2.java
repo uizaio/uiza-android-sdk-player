@@ -275,7 +275,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
         if (LPref.getClickedPip(activity)) {
-            uizaIMAVideo.getPlayer().seekTo(positionFromPipService);
+            uizaIMAVideo.seekTo(positionFromPipService);
         }
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {

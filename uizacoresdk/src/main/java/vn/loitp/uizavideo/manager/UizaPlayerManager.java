@@ -106,7 +106,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     private String linkPlay;
     private List<Subtitle> subtitleList;
 
-    public String getLinkPlay(){
+    public String getLinkPlay() {
         return linkPlay;
     }
 
@@ -233,7 +233,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
 
         // Prepare the player with the source.
-        player.seekTo(contentPosition);
+
         player.addListener(eventListener);
         player.addListener(new PlayerEventListener());
         player.addAudioDebugListener(new AudioEventListener());
@@ -246,6 +246,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         }
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(true);
+        seekTo(contentPosition);
 
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
@@ -646,8 +647,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public void seekTo(long positionMs) {
+        LLog.d(TAG, "seekTo positionMs: " + positionMs);
         if (player != null) {
             player.seekTo(positionMs);
+            LLog.d(TAG, "seekTo positionMs done");
         }
     }
 

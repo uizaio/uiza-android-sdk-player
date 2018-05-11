@@ -49,7 +49,6 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClient;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
@@ -930,5 +929,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void unregisterReceiverPiPInitSuccess() {
         activity.unregisterReceiver(broadcastReceiver);
+    }
+
+    public void seekTo(long positionMs) {
+        if (uizaPlayerManager != null) {
+            uizaPlayerManager.seekTo(positionMs);
+        }
     }
 }
