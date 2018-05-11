@@ -930,7 +930,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void unregisterReceiverPiPInitSuccess() {
-        activity.unregisterReceiver(broadcastReceiver);
+        if (broadcastReceiver != null) {
+            activity.unregisterReceiver(broadcastReceiver);
+            broadcastReceiver = null;
+        }
     }
 
     public void seekTo(long positionMs) {
