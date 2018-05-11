@@ -62,6 +62,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
         this.currentPosition = currentPosition;
+        LLog.d(TAG, "init currentPosition: " + currentPosition);
         this.callback = callback;
         if (floatUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -69,8 +70,9 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         }
         checkToSetUp();
 
+        //duong nhu ko bao h track EVENT_TYPE_DISPLAY, EVENT_TYPE_PLAYS_REQUESTED, EVENT_TYPE_VIDEO_STARTS
         //cannot delete delay below, only works after 500mls
-        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+        /*LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 //track event eventype display
@@ -79,7 +81,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
                 //track event plays_requested
                 trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_PLAYS_REQUESTED));
             }
-        });
+        });*/
     }
 
     private void checkToSetUp() {
@@ -155,7 +157,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
         if (s == 5) {
-            LLog.d(TAG, "onVideoProgress -> track view");
+            //LLog.d(TAG, "onVideoProgress -> track view");
             trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_VIEW));
         }
 
@@ -181,7 +183,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             callback.isInitResult(true);
         }
         //track event video_starts
-        trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_VIDEO_STARTS));
+        //trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_VIDEO_STARTS));
     }
 
     public void onDestroy() {
@@ -214,7 +216,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     private void trackUiza(final UizaTracking uizaTracking) {
         //TODO
-        LLog.d(TAG, "trackUiza getEntityName: " + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+        LLog.d(TAG, "trackUiza getEventType: " + uizaTracking.getEventType() + ", getEntityName: " + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
 
         /*UizaService service = RestClientTracking.createService(UizaService.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {

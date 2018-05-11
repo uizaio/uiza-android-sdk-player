@@ -207,9 +207,8 @@ public class OptionActivity extends BaseActivity {
     }
 
     private void setupDebugMode() {
-        //default is disabled
-        radioDebugModeDisable.setChecked(true);
-        Constants.setDebugMode(false);
+        radioDebugModeEnable.setChecked(true);
+        Constants.setDebugMode(true);
 
         radioDebugMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
