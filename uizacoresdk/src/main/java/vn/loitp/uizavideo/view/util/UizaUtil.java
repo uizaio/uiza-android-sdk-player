@@ -28,6 +28,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -243,5 +244,17 @@ public class UizaUtil {
             // App is foreground, but screen is locked, so show notification
             return km.inKeyguardRestrictedInputMode();
         }
+    }
+
+    public static boolean checkServiceRunning(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoService.class.getName());
+            //LLog.d(TAG, "checkServiceRunning: " + service.service.getClassName());
+            if (FloatingUizaVideoService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
