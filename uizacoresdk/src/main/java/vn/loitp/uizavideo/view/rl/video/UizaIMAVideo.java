@@ -4,7 +4,6 @@ package vn.loitp.uizavideo.view.rl.video;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -73,8 +72,6 @@ import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
-
-import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -177,18 +174,28 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         LUIUtil.showProgressBar(progressBar);
 
-        //cannot delete delay below, only works after 500mls
-        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                //track event eventype display
-                trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
+        if (!isResumeFromPipClick) {
+            //cannot delete delay below, only works after 500mls
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    //track event eventype display
+                    trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_DISPLAY));
 
-                //track event plays_requested
-                trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
-            }
-        });
+                    //track event plays_requested
+                    trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_PLAYS_REQUESTED));
+                }
+            });
+        }
     }
+
+    private boolean isResumeFromPipClick;
+
+    public void setResumeFromPipClick(boolean isResumeFromPipClick) {
+        this.isResumeFromPipClick = isResumeFromPipClick;
+        LLog.d(TAG, "setResumeFromPipClick isResumeFromPipClick: " + isResumeFromPipClick);
+    }
+
 
     private int countTryLinkPlayError = 0;
 
@@ -493,8 +500,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
-        //track event video_starts
-        trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
+        if (!isResumeFromPipClick) {
+            //track event video_starts
+            trackUiza(UizaData.getInstance().createTrackingInput(activity, UizaData.EVENT_TYPE_VIDEO_STARTS));
+        }
     }
 
     public void setProgressSeekbar(SeekBar seekbar, int progressSeekbar) {

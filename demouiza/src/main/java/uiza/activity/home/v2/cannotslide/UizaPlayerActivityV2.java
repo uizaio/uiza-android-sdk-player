@@ -57,10 +57,12 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+            uizaIMAVideo.setResumeFromPipClick(true);
         } else {
             entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
+            uizaIMAVideo.setResumeFromPipClick(false);
         }
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
