@@ -213,6 +213,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
+        //TODO
         LLog.d(TAG, "trackUiza getEntityName: " + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
 
         /*UizaService service = RestClientTracking.createService(UizaService.class);
