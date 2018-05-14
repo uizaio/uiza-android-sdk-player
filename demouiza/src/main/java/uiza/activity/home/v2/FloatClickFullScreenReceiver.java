@@ -10,7 +10,6 @@ import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
-import vn.loitp.uizavideo.view.util.UizaUtil;
 
 /**
  * Created by LENOVO on 5/8/2018.
@@ -43,7 +42,7 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
                 boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
                 LLog.d(TAG, "isActivityRunning " + isActivityRunning);
                 if (isActivityRunning) {
-                    EventBusManager.MessageEvent messageEvent=new EventBusManager.MessageEvent();
+                    EventBusManager.MessageEvent messageEvent = new EventBusManager.MessageEvent();
                     messageEvent.setPositionOfPlayer(positionOfPlayer);
                     messageEvent.setEntityId(entityId);
                     messageEvent.setEntityTitle(entityTitle);
