@@ -107,12 +107,13 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
                 //.setTitle(title)
                 .setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
                 .setView(buildView(activity))
-                .setPositiveButton(android.R.string.ok, this)
-                .setNegativeButton(android.R.string.cancel, null);
+                .setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
+                .setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
 
         final AlertDialog dialog = builder.create();
         UizaUtil.showUizaDialog(activity, dialog);
     }
+
 
     @SuppressLint("InflateParams")
     private View buildView(Activity activity) {
