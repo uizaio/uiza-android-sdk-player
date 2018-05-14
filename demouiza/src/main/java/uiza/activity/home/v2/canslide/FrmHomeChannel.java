@@ -250,7 +250,9 @@ public class FrmHomeChannel extends BaseFragment {
         LLog.d(TAG, ">>>getData " + page + "/" + totalPage);
         if (page >= totalPage) {
             LLog.d(TAG, "page >= totalPage -> return");
-            LToast.show(getActivity(), getString(R.string.this_is_last_page));
+            if (Constants.IS_DEBUG) {
+                LToast.show(getActivity(), getString(R.string.this_is_last_page));
+            }
             placeHolderView.removeView(getListSize() - 1);//remove loading view
             if (isCallFromLoadMore) {
                 isLoadMoreCalling = false;
@@ -259,7 +261,9 @@ public class FrmHomeChannel extends BaseFragment {
             return;
         }
 
-        LToast.show(getActivity(), getString(R.string.load_page) + page);
+        if (Constants.IS_DEBUG) {
+            LToast.show(getActivity(), getString(R.string.load_page) + page);
+        }
         if (tvMsg.getVisibility() != View.GONE) {
             tvMsg.setVisibility(View.GONE);
         }
