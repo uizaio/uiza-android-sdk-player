@@ -62,6 +62,4 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
             context.startActivity(intent);
         }
     }
-
-
 }
