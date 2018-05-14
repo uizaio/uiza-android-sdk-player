@@ -9,6 +9,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -20,6 +22,7 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
@@ -33,6 +36,7 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.FloatUizaPlayerManager;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
+import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -44,6 +48,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private PlayerView playerView;
     private FloatUizaPlayerManager floatUizaPlayerManager;
     private ProgressBar progressBar;
+    private RelativeLayout rootView;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -92,6 +97,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     private void checkToSetUp() {
         //LLog.d(TAG, "checkToSetUp");
+        setVideoCover();
         initData(linkPlay, null, null, null);
         onResume();
     }
@@ -124,6 +130,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void findViews() {
+        rootView = (RelativeLayout) findViewById(R.id.root_view);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.White));
         playerView = findViewById(R.id.player_view);
@@ -188,6 +195,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         if (callback != null) {
             callback.isInitResult(true);
         }
+        removeVideoCover();
         //track event video_starts
         //trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_VIDEO_STARTS));
     }
@@ -197,13 +205,6 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.release();
         }
-        //TODO dell hieu phai set delay 500 thi moi track play_through 100
-        /*LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                ApiMaster.getInstance().destroy();
-            }
-        });*/
     }
 
     public void onResume() {
@@ -255,5 +256,42 @@ public class FloatUizaIMAVideo extends RelativeLayout {
                 LLog.e(TAG, "trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
+    }
+
+    private ImageView ivVideoCover;
+    private RealtimeBlurView realtimeBlurView;
+
+    private void setVideoCover() {
+        if (ivVideoCover == null && realtimeBlurView == null) {
+            LLog.d(TAG, "fuck setVideoCover");
+            realtimeBlurView = new RealtimeBlurView(getContext(), 15, ContextCompat.getColor(getContext(), R.color.black_35));
+            ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            realtimeBlurView.setLayoutParams(layoutParamsBlur);
+            realtimeBlurView.setVisibility(GONE);
+
+            ivVideoCover = new ImageView(getContext());
+            ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            ivVideoCover.setLayoutParams(layoutParamsIv);
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+            ivVideoCover.setImageResource(R.drawable.uiza);
+            //LImageUtil.load(getContext(), UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.color.Red);
+
+            rootView.addView(ivVideoCover);
+            rootView.addView(realtimeBlurView);
+
+            progressBar.bringToFront();
+        }
+    }
+
+    public void removeVideoCover() {
+        if (ivVideoCover != null && realtimeBlurView != null) {
+            LLog.d(TAG, "fuck removeVideoCover");
+            rootView.removeView(ivVideoCover);
+            rootView.removeView(realtimeBlurView);
+            ivVideoCover = null;
+            realtimeBlurView = null;
+            onStateReadyFirst();
+        }
     }
 }

@@ -246,7 +246,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void setVideoCover() {
         if (ivVideoCover == null && realtimeBlurView == null) {
-            //LLog.d(TAG, "setVideoCover");
+            LLog.d(TAG, "fuck setVideoCover");
             countTryLinkPlayError = 0;
             realtimeBlurView = new RealtimeBlurView(activity, 15, ContextCompat.getColor(activity, R.color.black_35));
             ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -258,7 +258,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             ivVideoCover.setLayoutParams(layoutParamsIv);
             //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover);
+            ivVideoCover.setImageResource(R.drawable.uiza);
+            //LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.color.Red);
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
@@ -269,7 +270,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void removeVideoCover() {
         if (ivVideoCover != null && realtimeBlurView != null) {
-            //LLog.d(TAG, "removeVideoCover");
+            LLog.d(TAG, "fuck removeVideoCover");
             rootView.removeView(ivVideoCover);
             rootView.removeView(realtimeBlurView);
             ivVideoCover = null;

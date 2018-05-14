@@ -27,9 +27,8 @@ public class LImageUtil {
         Glide.with(context).load(url).into(imageView);
     }
 
-    public static void load(Activity activity, String url, ImageView imageView, int resPlaceHolder) {
-        //Glide.with(activity).load(url).placeholder(resPlaceHolder).into(imageView);
-        Glide.with(activity)
+    public static void load(Context context, String url, ImageView imageView, int resPlaceHolder) {
+        Glide.with(context)
                 .load(url)
                 .apply(new RequestOptions()
                                 .placeholder(resPlaceHolder)
