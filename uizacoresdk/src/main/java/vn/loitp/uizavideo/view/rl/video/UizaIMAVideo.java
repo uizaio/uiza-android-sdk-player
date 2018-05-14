@@ -263,7 +263,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
-
+            
             progressBar.bringToFront();
         }
     }
@@ -740,7 +740,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    public void setExoPictureInPictureVisibility(int visibility){
+    public void setExoPictureInPictureVisibility(int visibility) {
         exoPictureInPicture.setVisibility(visibility);
     }
 
