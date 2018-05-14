@@ -746,11 +746,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
+    public void setExoPictureInPictureVisibility(int visibility){
+        exoPictureInPicture.setVisibility(visibility);
+    }
+
     public void initializePiP() {
         if (activity == null) {
             return;
         }
-        exoPictureInPicture.setVisibility(GONE);
+        setExoPictureInPictureVisibility(GONE);
         Intent intent = new Intent(activity, FloatingUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
@@ -898,7 +902,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -906,7 +910,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                //LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+                LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 ((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
         });
