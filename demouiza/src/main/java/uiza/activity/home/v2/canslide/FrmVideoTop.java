@@ -67,7 +67,14 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frm_top, container, false);
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
+        uizaIMAVideo.registerReceiverPiPInitSuccess();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        uizaIMAVideo.unregisterReceiverPiPInitSuccess();
     }
 
     @Override

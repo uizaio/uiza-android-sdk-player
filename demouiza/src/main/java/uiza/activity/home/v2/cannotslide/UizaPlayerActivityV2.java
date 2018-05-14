@@ -45,6 +45,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+        uizaIMAVideo.registerReceiverPiPInitSuccess();
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
 
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
@@ -94,6 +95,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     protected void onDestroy() {
         super.onDestroy();
         uizaIMAVideo.onDestroy();
+        uizaIMAVideo.unregisterReceiverPiPInitSuccess();
     }
 
     @Override
