@@ -38,7 +38,8 @@ public class UizaDialogListEntityRelation extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private boolean isLandscape;
-    private Gson gson = new Gson();//TODO remove gson
+    //TODO remove gson
+    //private Gson gson = new Gson();
 
     private ProgressBar progressBar;
     private TextView tvMsg;
@@ -62,7 +63,7 @@ public class UizaDialogListEntityRelation extends Dialog {
         setContentView(R.layout.dialog_list_entity_relation);
 
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
 
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -73,7 +74,7 @@ public class UizaDialogListEntityRelation extends Dialog {
     private void getListAllEntityRelation() {
         LUIUtil.showProgressBar(progressBar);
         UizaService service = RestClientV2.createService(UizaService.class);
-        LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
+        //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
         jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
@@ -111,13 +112,13 @@ public class UizaDialogListEntityRelation extends Dialog {
             itemList = listAllEntityRelation.getItemList();
             //LLog.d(TAG, "listAllEntityRelation: " + gson.toJson(listAllEntityRelation));
             if (itemList == null || itemList.isEmpty()) {
-                LLog.d(TAG, "itemList == null || itemList.isEmpty() -> return");
+                //LLog.d(TAG, "itemList == null || itemList.isEmpty() -> return");
                 tvMsg.setVisibility(View.VISIBLE);
                 return;
             } else {
                 tvMsg.setVisibility(View.GONE);
             }
-            LLog.d(TAG, "itemList size: " + itemList.size());
+            //LLog.d(TAG, "itemList size: " + itemList.size());
 
             /*if (isLandscape) {
                 LLog.d(TAG, "isLandscape");

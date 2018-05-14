@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -103,7 +104,8 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
-                .setTitle(title)
+                //.setTitle(title)
+                .setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
                 .setView(buildView(activity))
                 .setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, null);
@@ -130,8 +132,8 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        disableView.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        disableView.setCheckMarkDrawable(R.drawable.default_checkbox);
+        disableView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+        //disableView.setCheckMarkDrawable(R.drawable.default_checkbox);
         disableView.setOnClickListener(this);
         root.addView(disableView);
 
@@ -141,8 +143,8 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        defaultView.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        defaultView.setCheckMarkDrawable(R.drawable.default_checkbox);
+        defaultView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+        //defaultView.setCheckMarkDrawable(R.drawable.default_checkbox);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView);
@@ -172,9 +174,9 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
                     trackView.setFocusable(false);
                     trackView.setEnabled(false);
                 }
-                trackView.setTextColor(ContextCompat.getColor(activity, R.color.White));
+                trackView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                trackView.setCheckMarkDrawable(R.drawable.default_checkbox);
+                //trackView.setCheckMarkDrawable(R.drawable.default_checkbox);
                 trackViews[groupIndex][trackIndex] = trackView;
                 root.addView(trackView);
             }
@@ -185,9 +187,9 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.view_setting_mutiple_choice, root, false);
             //enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            enableRandomAdaptationView.setTextColor(ContextCompat.getColor(activity, R.color.White));
+            enableRandomAdaptationView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
+            //enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
             root.addView(enableRandomAdaptationView);

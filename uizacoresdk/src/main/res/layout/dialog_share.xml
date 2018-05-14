@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_10"
         android:text="Share via:"
-        android:textColor="@color/White"
+        android:textColor="@color/Black"
         android:textSize="@dimen/txt_18"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         <vn.loitp.views.layout.flowlayout.FlowLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </ScrollView>
 
 </RelativeLayout>
