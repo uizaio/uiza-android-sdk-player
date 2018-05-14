@@ -16,7 +16,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -70,7 +69,6 @@ import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
-import vn.loitp.views.realtimeblurview.RealtimeBlurView;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 /**
@@ -92,6 +90,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
 
+    private ImageView ivVideoCover;
     private ImageButton exoFullscreenIcon;
     private TextView tvTitle;
     private ImageButton exoBackScreen;
@@ -241,42 +240,22 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    private ImageView ivVideoCover;
-    private RealtimeBlurView realtimeBlurView;
-
     private void setVideoCover() {
-        if (ivVideoCover == null && realtimeBlurView == null) {
-            LLog.d(TAG, "fuck setVideoCover");
-            countTryLinkPlayError = 0;
-            realtimeBlurView = new RealtimeBlurView(activity, 15, ContextCompat.getColor(activity, R.color.black_35));
-            ViewGroup.LayoutParams layoutParamsBlur = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            realtimeBlurView.setLayoutParams(layoutParamsBlur);
-            realtimeBlurView.setVisibility(GONE);
+        LLog.d(TAG, "fuck setVideoCover null");
+        countTryLinkPlayError = 0;
 
-            ivVideoCover = new ImageView(activity);
-            ivVideoCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            ivVideoCover.setLayoutParams(layoutParamsIv);
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            //ivVideoCover.setImageResource(R.drawable.uiza);
-            LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
+        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+        LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
 
-            rootView.addView(ivVideoCover);
-            rootView.addView(realtimeBlurView);
-
-            progressBar.bringToFront();
-        }
+        ivVideoCover.setVisibility(VISIBLE);
     }
 
     public void removeVideoCover() {
-        if (ivVideoCover != null && realtimeBlurView != null) {
-            LLog.d(TAG, "fuck removeVideoCover");
-            rootView.removeView(ivVideoCover);
-            rootView.removeView(realtimeBlurView);
-            ivVideoCover = null;
-            realtimeBlurView = null;
-            onStateReadyFirst();
-        }
+        rootView.removeView(ivVideoCover);
+        ivVideoCover.setVisibility(GONE);
+        //ivVideoCover = null;
+        onStateReadyFirst();
     }
 
     public UizaIMAVideo(Context context) {
@@ -349,6 +328,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void findViews() {
+        ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
