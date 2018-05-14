@@ -40,7 +40,7 @@ public class LToast {
             textView.setText(msg);
             Toast toast = new Toast(context);
             //toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.setGravity(Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0);
+            toast.setGravity(Gravity.FILL_HORIZONTAL, 0, 0);
             toast.setDuration(length);
             toast.setView(layout);
             toast.show();

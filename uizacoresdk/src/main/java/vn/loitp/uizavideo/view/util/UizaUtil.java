@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -32,6 +33,7 @@ import vn.loitp.restapi.restclient.RestClient;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -276,6 +278,9 @@ public class UizaUtil {
             }
             RestClientV2.init(currentApi);
             RestClient.addAuthorization(token);
+            if (Constants.IS_DEBUG) {
+                LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token);
+            }
         }
     }
 }

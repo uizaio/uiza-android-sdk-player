@@ -558,7 +558,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     @Override
     public void onClick(View v) {
         if (v == exoFullscreenIcon) {
-            LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
+            LActivityUtil.toggleScreenOritation(activity);
         } else if (v == exoBackScreen) {
             if (isLandscape) {
                 exoFullscreenIcon.performClick();
