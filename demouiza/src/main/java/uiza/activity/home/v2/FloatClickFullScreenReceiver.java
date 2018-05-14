@@ -10,7 +10,6 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.views.LToast;
 
 /**
  * Created by LENOVO on 5/8/2018.
@@ -32,34 +31,36 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        boolean isAppInForeground = UizaUtil.isAppInForeground(context);
-        LLog.d(TAG, "isAppInForeground " + isAppInForeground);
+        //boolean isAppInForeground = UizaUtil.isAppInForeground(context);
+        //LLog.d(TAG, "isAppInForeground " + isAppInForeground);
 
-        /*if (isAppInForeground) {
-            //TODO
-            LToast.show(context, "TODO isAppInForeground");
-        } else {
-            boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
-            LLog.d(TAG, "isSlideUizaVideoEnabled " + isSlideUizaVideoEnabled);
-            if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
-                Intent intent = new Intent(context, isSlideUizaVideoEnabled ? HomeV2CanSlideActivity.class : UizaPlayerActivityV2.class);
+        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
+        LLog.d(TAG, "isSlideUizaVideoEnabled " + isSlideUizaVideoEnabled);
+
+        if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
+            if (isSlideUizaVideoEnabled) {
+                boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
+                LLog.d(TAG, "isActivityRunning " + isActivityRunning);
+                if (isActivityRunning) {
+                    
+                } else {
+                    Intent intent = new Intent(context, HomeV2CanSlideActivity.class);
+                    intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+                    intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+                    intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+                    intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            } else {
+                Intent intent = new Intent(context, UizaPlayerActivityV2.class);
                 intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityCover);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityTitle);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
-        }*/
-        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
-        if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
-            Intent intent = new Intent(context, isSlideUizaVideoEnabled ? HomeV2CanSlideActivity.class : UizaPlayerActivityV2.class);
-            intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
-            intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
-            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
         }
     }
 }

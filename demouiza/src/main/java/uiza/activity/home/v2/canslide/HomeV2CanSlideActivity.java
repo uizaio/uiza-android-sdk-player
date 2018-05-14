@@ -287,4 +287,16 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LPref.setAcitivityCanSlideIsRunning(activity, true);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LPref.setAcitivityCanSlideIsRunning(activity, false);
+    }
 }

@@ -43,7 +43,6 @@
         <activity
             android:name=".activity.home.v2.cannotslide.UizaPlayerActivityV2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.home.v2.canslide.HomeV2CanSlideActivity"

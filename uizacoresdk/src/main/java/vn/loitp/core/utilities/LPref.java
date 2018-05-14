@@ -26,6 +26,7 @@ public class LPref {
     public final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     public final static String TOKEN = "TOKEN";
     public final static String CLICKED_PIP = "CLICKED_PIP";
+    public final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
 
     //object
     /*public User getUser() {
@@ -115,6 +116,17 @@ public class LPref {
     public static void setClickedPip(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(CLICKED_PIP, value);
+        editor.apply();
+    }
+
+    public static Boolean getAcitivityCanSlideIsRunning(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, false);
+    }
+
+    public static void setAcitivityCanSlideIsRunning(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, value);
         editor.apply();
     }
 
