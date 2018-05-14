@@ -745,7 +745,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void getLinkPlay() {
-        LLog.d(TAG, "getLinkPlay");
+        //LLog.d(TAG, "getLinkPlay");
         UizaUtil.setupRestClientV2(activity);
         UizaService service = RestClientV2.createService(UizaService.class);
         Auth auth = LPref.getAuth(activity, gson);
@@ -767,9 +767,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
                 activity.showDialogError("Không có linkplay");
-                /*if (callback != null) {
-                    callback.isInitResult(false, null, null);
-                }*/
             }
         });
     }
