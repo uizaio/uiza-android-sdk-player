@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
@@ -266,5 +268,6 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     public void removeVideoCover() {
         //rootView.removeView(ivVideoCover);
         ivVideoCover.setVisibility(GONE);
+        //ivVideoCover = null;
     }
 }
