@@ -241,7 +241,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void setVideoCover() {
-        LLog.d(TAG, "fuck setVideoCover null");
         countTryLinkPlayError = 0;
 
         //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
@@ -252,7 +251,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void removeVideoCover() {
-        rootView.removeView(ivVideoCover);
+        //rootView.removeView(ivVideoCover);
         ivVideoCover.setVisibility(GONE);
         //ivVideoCover = null;
         onStateReadyFirst();
