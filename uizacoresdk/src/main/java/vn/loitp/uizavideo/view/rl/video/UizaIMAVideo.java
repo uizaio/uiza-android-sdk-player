@@ -258,12 +258,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             ViewGroup.LayoutParams layoutParamsIv = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             ivVideoCover.setLayoutParams(layoutParamsIv);
             //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            ivVideoCover.setImageResource(R.drawable.uiza);
-            //LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.color.Red);
+            //ivVideoCover.setImageResource(R.drawable.uiza);
+            LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
 
             rootView.addView(ivVideoCover);
             rootView.addView(realtimeBlurView);
-            
+
             progressBar.bringToFront();
         }
     }
