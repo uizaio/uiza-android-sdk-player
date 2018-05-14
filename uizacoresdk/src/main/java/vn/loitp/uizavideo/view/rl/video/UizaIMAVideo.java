@@ -387,13 +387,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
-        //TODO
-        /*if (Constants.IS_DEBUG) {
+
+        if (Constants.IS_DEBUG) {
             debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
-        }*/
-        debugLayout.setVisibility(View.GONE);
+        }
 
         //onclick
         exoFullscreenIcon.setOnClickListener(this);

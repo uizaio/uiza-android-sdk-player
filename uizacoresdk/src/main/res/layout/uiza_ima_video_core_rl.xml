@@ -31,7 +31,7 @@
             android:paddingLeft="@dimen/padding_3"
             android:paddingRight="@dimen/padding_3"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_10" />
+            android:textSize="@dimen/txt_8" />
 
         <LinearLayout
             android:id="@id/controls_root"
