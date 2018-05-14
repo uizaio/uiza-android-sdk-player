@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import uiza.activity.data.EventBusManager;
 import uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2;
 import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
@@ -42,7 +43,12 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
                 boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
                 LLog.d(TAG, "isActivityRunning " + isActivityRunning);
                 if (isActivityRunning) {
-                    
+                    EventBusManager.MessageEvent messageEvent=new EventBusManager.MessageEvent();
+                    messageEvent.setPositionOfPlayer(positionOfPlayer);
+                    messageEvent.setEntityId(entityId);
+                    messageEvent.setEntityTitle(entityTitle);
+                    messageEvent.setEntityCover(entityCover);
+                    EventBusManager.sendEventClickFullScreenFromService(messageEvent);
                 } else {
                     Intent intent = new Intent(context, HomeV2CanSlideActivity.class);
                     intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);

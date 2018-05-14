@@ -7,7 +7,11 @@ import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import uiza.R;
+import uiza.activity.data.EventBusManager;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
@@ -298,5 +302,17 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         LPref.setAcitivityCanSlideIsRunning(activity, false);
+    }
+
+    //get event from FloatClickFullScreenReceiver if isSlideUizaVideoEnabled && isActivityRunning
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusManager.MessageEvent event) {
+        if (event != null) {
+            LLog.d(TAG, "onMessageEvent");
+            LPref.setClickedPip(activity, true);
+            positionFromPipService = event.getPositionOfPlayer();
+            LLog.d(TAG, "onMessageEvent positionFromPipService " + positionFromPipService);
+            initializeDraggablePanel(event.getEntityId(), event.getEntityTitle(), event.getEntityCover());
+        }
     }
 }
