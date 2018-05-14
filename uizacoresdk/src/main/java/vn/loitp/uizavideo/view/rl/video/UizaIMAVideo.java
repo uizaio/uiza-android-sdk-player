@@ -349,8 +349,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void findViews() {
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
-        //TODO revert to visible
-        llMid.setVisibility(GONE);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
@@ -370,12 +368,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoPlaylist = (ImageButton) playerView.findViewById(R.id.exo_playlist);
         exoPlaylist.setVisibility(VISIBLE);
         exoHearing = (ImageButton) playerView.findViewById(R.id.exo_hearing);
-        //TODO revert to visible
-        exoHearing.setVisibility(GONE);
         exoPictureInPicture = (ImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButton) playerView.findViewById(R.id.exo_share);
-        //TODO revert to visible
-        exoShare.setVisibility(GONE);
 
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
         seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
@@ -628,12 +622,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
-                exoPictureInPicture.setVisibility(GONE);
+                setExoPictureInPictureVisibility(GONE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
-                exoPictureInPicture.setVisibility(VISIBLE);
+                setExoPictureInPictureVisibility(VISIBLE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
             }
         }
