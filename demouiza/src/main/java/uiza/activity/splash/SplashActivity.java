@@ -178,6 +178,7 @@ public class SplashActivity extends BaseActivity {
             LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
+                    LPref.setClickedPip(activity, false);
                     startActivity(intent);
                     LActivityUtil.tranIn(activity);
                     finish();

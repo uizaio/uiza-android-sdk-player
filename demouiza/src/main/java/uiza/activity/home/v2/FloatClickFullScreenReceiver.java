@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import uiza.activity.data.EventBusManager;
 import uiza.activity.home.v2.cannotslide.UizaPlayerActivityV2;
 import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
@@ -41,13 +40,14 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
             if (isSlideUizaVideoEnabled) {
                 boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
                 LLog.d(TAG, "isActivityRunning " + isActivityRunning);
-                if (isActivityRunning) {
+                /*if (isActivityRunning) {
                     EventBusManager.MessageEvent messageEvent = new EventBusManager.MessageEvent();
                     messageEvent.setPositionOfPlayer(positionOfPlayer);
                     messageEvent.setEntityId(entityId);
                     messageEvent.setEntityTitle(entityTitle);
                     messageEvent.setEntityCover(entityCover);
                     EventBusManager.sendEventClickFullScreenFromService(messageEvent);
+                    LLog.d(TAG, "isActivityRunning true sendEventClickFullScreenFromService");
                 } else {
                     Intent intent = new Intent(context, HomeV2CanSlideActivity.class);
                     intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
@@ -56,13 +56,24 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
                     intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
-                }
+                    LLog.d(TAG, "isActivityRunning false new HomeV2CanSlideActivity");
+                }*/
+
+                Intent intent = new Intent(context, HomeV2CanSlideActivity.class);
+                intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             } else {
                 Intent intent = new Intent(context, UizaPlayerActivityV2.class);
                 intent.putExtra(Constants.FLOAT_CURRENT_POSITION, positionOfPlayer);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

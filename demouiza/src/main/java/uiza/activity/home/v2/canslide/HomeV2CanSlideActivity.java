@@ -1,5 +1,6 @@
 package uiza.activity.home.v2.canslide;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LPref.setAcitivityCanSlideIsRunning(activity, true);
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
         LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
 
@@ -85,7 +87,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 return;
             }
             play(entityId, entityTitle, videoCoverUrl);
-            LLog.d(TAG, "onCreate positionFromPipService != 0 -> play");
         }
     }
 
@@ -293,19 +294,13 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        LPref.setAcitivityCanSlideIsRunning(activity, true);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         LPref.setAcitivityCanSlideIsRunning(activity, false);
     }
 
     //get event from FloatClickFullScreenReceiver if isSlideUizaVideoEnabled && isActivityRunning
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusManager.MessageEvent event) {
         if (event != null) {
             LLog.d(TAG, "onMessageEvent");
@@ -314,5 +309,5 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             LLog.d(TAG, "onMessageEvent positionFromPipService " + positionFromPipService);
             initializeDraggablePanel(event.getEntityId(), event.getEntityTitle(), event.getEntityCover());
         }
-    }
+    }*/
 }
