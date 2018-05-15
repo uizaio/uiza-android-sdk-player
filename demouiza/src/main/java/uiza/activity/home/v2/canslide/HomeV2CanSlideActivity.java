@@ -1,6 +1,5 @@
 package uiza.activity.home.v2.canslide;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +7,7 @@ import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import uiza.R;
-import uiza.activity.data.EventBusManager;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
