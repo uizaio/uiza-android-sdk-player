@@ -78,7 +78,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
             LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
             if (entityId == null || entityId.isEmpty()) {
-                LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
+                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
+                LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
                 return;
             }
             play(entityId, entityTitle, videoCoverUrl);
