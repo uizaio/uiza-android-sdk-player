@@ -190,11 +190,11 @@ public class UizaUtil {
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
-
             //set dialog position
             WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
             wlp.gravity = Gravity.BOTTOM;
-            wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            //wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.65f;
             dialog.getWindow().setAttributes(wlp);
 
             int width = 0;
