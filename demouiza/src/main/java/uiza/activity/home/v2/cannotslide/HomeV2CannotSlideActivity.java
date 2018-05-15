@@ -41,7 +41,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "onCreate");
+        //LLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
@@ -193,7 +193,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Lỗi lấy danh sách metadata");
                 genListDrawerLayout(null);
             }
         });

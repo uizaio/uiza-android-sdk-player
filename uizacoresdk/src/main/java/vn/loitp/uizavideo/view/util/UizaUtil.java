@@ -1,8 +1,11 @@
 package vn.loitp.uizavideo.view.util;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.content.Context;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,9 +24,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.restapi.restclient.RestClient;
+import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.views.LToast;
+
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by LENOVO on 4/11/2018.
@@ -32,19 +44,11 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 public class UizaUtil {
     private final static String TAG = UizaUtil.class.getSimpleName();
 
-    public static void setUIFullScreenIcon(Context context, ImageButton imageButton) {
-        if (LScreenUtil.isFullScreen(context)) {
-            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
-        } else {
+    public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
+        if (isFullScreen) {
             imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_exit_black_48dp);
-        }
-    }
-
-    public static void setUIFullScreenIcon(Context context, ImageView imageView) {
-        if (LScreenUtil.isFullScreen(context)) {
-            imageView.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
         } else {
-            imageView.setImageResource(loitp.core.R.drawable.ic_fullscreen_exit_black_48dp);
+            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
         }
     }
 
@@ -186,17 +190,17 @@ public class UizaUtil {
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog_uiza);
-
             //set dialog position
             WindowManager.LayoutParams wlp = dialog.getWindow().getAttributes();
             wlp.gravity = Gravity.BOTTOM;
-            wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            //wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.65f;
             dialog.getWindow().setAttributes(wlp);
 
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.65);
+                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
             } else {
                 width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
@@ -208,6 +212,73 @@ public class UizaUtil {
         }
         if (isFullScreen) {
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+    }
+
+    public static void setDuration(TextView textView, String duration) {
+        //LLog.d(TAG, "duration: " + duration);
+        if (textView == null || duration == null || duration.isEmpty()) {
+            return;
+        }
+        try {
+            int min = (int) Double.parseDouble(duration) + 1;
+            String minutes = Integer.toString(min % 60);
+            minutes = minutes.length() == 1 ? "0" + minutes : minutes;
+            textView.setText((min / 60) + ":" + minutes);
+        } catch (Exception e) {
+            //LLog.e(TAG, "setDuration " + e.toString());
+            textView.setText(" - ");
+        }
+    }
+
+    public static boolean isAppInForeground(Context context) {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+            String foregroundTaskPackageName = foregroundTaskInfo.topActivity.getPackageName();
+            return foregroundTaskPackageName.toLowerCase().equals(context.getPackageName().toLowerCase());
+        } else {
+            ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+            ActivityManager.getMyMemoryState(appProcessInfo);
+            if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+                return true;
+            }
+            KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            // App is foreground, but screen is locked, so show notification
+            return km.inKeyguardRestrictedInputMode();
+        }
+    }
+
+    public static boolean checkServiceRunning(Context context, String serviceName) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoService.class.getName());
+            //LLog.d(TAG, "checkServiceRunning: " + service.service.getClassName());
+            if (serviceName.equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void setupRestClientV2(Activity activity) {
+        if (RestClientV2.getRetrofit() == null) {
+            String currentApi = LPref.getApiEndPoint(activity);
+            LLog.d(TAG, "setupRestClientV2 trackUiza currentApi: " + currentApi);
+            if (currentApi == null || currentApi.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
+                return;
+            }
+            String token = LPref.getToken(activity);
+            if (token == null || token.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 trackUiza token==null||token.isEmpty()");
+                return;
+            }
+            RestClientV2.init(currentApi);
+            RestClient.addAuthorization(token);
+            if (Constants.IS_DEBUG) {
+                LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token);
+            }
         }
     }
 }

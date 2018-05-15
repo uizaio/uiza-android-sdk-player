@@ -14,5 +14,5 @@
 -->
 <View xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="1px"
-    android:background="?android:attr/listDivider" />
+    android:layout_height="0.5px"
+    android:background="@color/Gray" />

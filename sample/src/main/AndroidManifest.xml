@@ -18,16 +18,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".sample.uizavideo.TestUizaVideoIMActivity"
+            android:name=".sample.uizavideo.deprecatedfrm.TestUizaVideoIMActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".sample.uizavideo.TestUizaVideoIMActivityRl"
+            android:name=".sample.uizavideo.rl.TestUizaVideoIMActivityRl"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
             android:name=".sample.api.TestAPIActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".sample.uizavideo.FloatClickFullScreenReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="FLOAT_CLICKED_FULLSCREEN" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

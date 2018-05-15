@@ -25,6 +25,7 @@ import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -38,25 +39,39 @@ import vn.loitp.views.LToast;
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
+    private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+        uizaIMAVideo.registerReceiverPiPInitSuccess();
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
 
-        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        String entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
-        String entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
+        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
 
+        String entityId = null;
+        String entityCover = null;
+        String entityTitle = null;
+        if (LPref.getClickedPip(activity)) {
+            //activity is called from PiP Service
+            entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+            entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
+            entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+        } else {
+            entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
+            entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
+        }
         if (entityId == null || entityId.isEmpty()) {
             showDialogError("entityId == null || entityId.isEmpty()");
             return;
         }
 
-        LLog.d(TAG, "entityId " + entityId);
-        LLog.d(TAG, "entityCover " + entityCover);
-        LLog.d(TAG, "entityTitle " + entityTitle);
+        LLog.d(TAG, ">>> entityId " + entityId);
+        LLog.d(TAG, ">>> entityCover " + entityCover);
+        LLog.d(TAG, ">>> entityTitle " + entityTitle);
 
         setupVideo(entityId, entityTitle, entityCover);
     }
@@ -80,6 +95,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     protected void onDestroy() {
         super.onDestroy();
         uizaIMAVideo.onDestroy();
+        uizaIMAVideo.unregisterReceiverPiPInitSuccess();
     }
 
     @Override
@@ -99,7 +115,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
-                LLog.d(TAG, "onActivityResult RESULT_OK");
+                //LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
@@ -110,7 +126,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setListener() {
-        LLog.d(TAG, TAG + " addListener");
+        //LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
             return;
         }
@@ -259,7 +275,10 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isInitResult " + isInitSuccess);
+        LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
+        if (LPref.getClickedPip(activity)) {
+            uizaIMAVideo.seekTo(positionFromPipService);
+        }
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {
             uizaIMAVideoInfo.setup(getDetailEntity);
@@ -267,8 +286,33 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     @Override
-    public void onClick(Item movie, int position) {
-        setupVideo(movie.getId(), movie.getName(), movie.getThumbnail());
+    public void onClickListEntityRelation(Item item, int position) {
+        LPref.setClickedPip(activity, false);
+        setupVideo(item.getId(), item.getName(), item.getThumbnail());
+    }
+
+    @Override
+    public void onClickBack() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onClickPip(Intent intent) {
+        LLog.d(TAG, "onClickPip");
+    }
+
+    @Override
+    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
+        if (isInitSuccess) {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onClickItemBottom(Item item, int position) {
+        LPref.setClickedPip(activity, false);
+        setupVideo(item.getId(), item.getName(), item.getThumbnail());
     }
 
     @Override
@@ -278,12 +322,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     private void setupVideo(String entityId, String entityTitle, String entityCover) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogMsg("Entity ID cannot be null or empty");
+            showDialogOne("Entity ID cannot be null or empty");
             return;
         }
         if (UizaData.getInstance().getPlayerId() == null || UizaData.getInstance().getPlayerId().isEmpty()) {
-            showDialogMsg("Player Skin ID cannot be null or empty");
-            return;
+            UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
         }
         LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
         UizaData.getInstance().setEntityId(entityId);

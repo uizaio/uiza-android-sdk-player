@@ -44,6 +44,18 @@
             android:name=".activity.home.v2.cannotslide.UizaPlayerActivityV2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.home.v2.canslide.HomeV2CanSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
 
+        <receiver
+            android:name=".activity.home.v2.FloatClickFullScreenReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="FLOAT_CLICKED_FULLSCREEN" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

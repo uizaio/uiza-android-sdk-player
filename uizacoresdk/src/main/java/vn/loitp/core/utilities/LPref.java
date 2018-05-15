@@ -19,15 +19,14 @@ public class LPref {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
-    public static final String JSON_LIST_DATA = "JSON_LIST_DATA";
-    public static final String JSON_FAV_DATA = "JSON_FAV_DATA";
-    public static final String JSON_AD_DATA = "JSON_AD_DATA";
-    public static final String FIRST_RUN_APP = "FIRST_RUN_APP";
-    public static final String SAVED_NUMBER_VERSION = "saved.number.version";
-    public static final String NOT_READY_USE_APPLICATION = "not.ready.use.application";
-
-    public static final String INDEX = "INDEX";
-    public static String AUTH = "AUTH";
+    private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
+    public final static String INDEX = "INDEX";
+    public final static String AUTH = "AUTH";
+    public final static String API_END_POINT = "API_END_POINT";
+    public final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
+    public final static String TOKEN = "TOKEN";
+    public final static String CLICKED_PIP = "CLICKED_PIP";
+    public final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
 
     //object
     /*public User getUser() {
@@ -42,16 +41,38 @@ public class LPref {
     }*/
 
     /////////////////////////////////STRING
-    /*public static String getJsonListData(Context context) {
+    public static String getApiEndPoint(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(JSON_LIST_DATA, null);
+        return pref.getString(API_END_POINT, null);
     }
 
-    public static void setJsonListData(Context context, String value) {
+    public static void setApiEndPoint(Context context, String value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(JSON_LIST_DATA, value);
+        editor.putString(API_END_POINT, value);
         editor.apply();
-    }*/
+    }
+
+    public static String getApiTrackEndPoint(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(API_TRACK_END_POINT, null);
+    }
+
+    public static void setApiTrackEndPoint(Context context, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(API_TRACK_END_POINT, value);
+        editor.apply();
+    }
+
+    public static String getToken(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(TOKEN, null);
+    }
+
+    public static void setToken(Context context, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(TOKEN, value);
+        editor.apply();
+    }
     /////////////////////////////////BOOLEAN
 
     public static Boolean getCheckAppReady(Context context) {
@@ -73,6 +94,39 @@ public class LPref {
     public static void setPreLoad(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(PRE_LOAD, value);
+        editor.apply();
+    }
+
+    public static Boolean getSlideUizaVideoEnabled(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(SLIDE_UIZA_VIDEO_ENABLED, false);
+    }
+
+    public static void setSlideUizaVideoEnabled(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
+        editor.apply();
+    }
+
+    public static Boolean getClickedPip(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(CLICKED_PIP, false);
+    }
+
+    public static void setClickedPip(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(CLICKED_PIP, value);
+        editor.apply();
+    }
+
+    public static Boolean getAcitivityCanSlideIsRunning(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, false);
+    }
+
+    public static void setAcitivityCanSlideIsRunning(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, value);
         editor.apply();
     }
 

@@ -6,6 +6,10 @@ package vn.loitp.core.common;
 public class Constants {
     public static boolean IS_DEBUG = false;
 
+    public static void setDebugMode(boolean isDebugEnable) {
+        IS_DEBUG = isDebugEnable;
+    }
+
     public final static String LOITP = "LoitpDebug";
 
     public static String ASSET_FILE_GIFT = "img/ic_gift.png";
@@ -15,7 +19,6 @@ public class Constants {
     //public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     //public final static String URL_IMG_LONG = "https://c2.staticflickr.com/6/5476/29412311793_8067369e64_b.jpg";
 
-    //public static final String MAIN_LINK_TRUYENTRANHTUAN = "http://truyentranhtuan.com/danh-sach-truyen";F
     public static final String SPACE = " ";
 
     public static final String ACTION_VIEW = "com.google.android.exoplayer.demo.action.VIEW";
@@ -88,22 +91,27 @@ public class Constants {
     public final static int PLAYTHROUGH_25 = 25;
     public final static int PLAYTHROUGH_50 = 50;
     public final static int PLAYTHROUGH_75 = 75;
-    public final static int PLAYTHROUGH_100 = 99;
+    public final static int PLAYTHROUGH_100 = 98;
 
     public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
 
     public final static String A_K_DEV = "Y0ZW0XM7HZL2CB8ODNDV";
     public final static String S_K_DEV = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
 
-    //UQC
-    //token aa4da628-a58a-49a1-b79b-94c1b02c5809
-    /*{
- “accessKeyId”:“S2O8JGAPI3OICRTHR2DS”,
- “secretKeyId”:“UHf9LWrTHuQ5Zy99foX36IavJ4NRQhpo411sFYry”
-    }*/
     public final static String A_K_UQC = "NPGRU7CIJBYO6XLAHT9P";
     public final static String S_K_UQC = "DzzQukulJV6tmw59i7AwO7deK5qgDysLKZXBSL8X";
 
     public final static String A_K_DEMO = "S2O8JGAPI3OICRTHR2DS";
     public final static String S_K_DEMO = "UHf9LWrTHuQ5Zy99foX36IavJ4NRQhpo411sFYry";
+
+    public static final String BROADCAST_ACTION = "BROADCAST_ACTION_SERVICE_ACITIVY";
+
+    public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
+    public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
+    public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
+    public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
+    public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
+    public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
+    public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
+    public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
 }

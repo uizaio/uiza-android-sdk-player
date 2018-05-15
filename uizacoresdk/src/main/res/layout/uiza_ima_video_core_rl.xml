@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:background="@color/colorPrimary">
 
-    <!--<com.google.android.exoplayer2.ui.PlayerView
-        android:id="@id/player_view"
+    <RelativeLayout
+        android:id="@id/root_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:keepScreenOn="true"
-        app:auto_show="false"
-        app:controller_layout_id="@layout/uiza_controller_skin_default"
-        app:fastforward_increment="3000"
-        app:rewind_increment="3000"
-        app:use_controller="true" />-->
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop" />
 
     <ProgressBar
         android:id="@id/pb"
@@ -29,7 +28,7 @@
         android:id="@id/debug_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Black"
+        android:background="@color/Red"
         android:orientation="vertical">
 
         <TextView
@@ -39,7 +38,7 @@
             android:paddingLeft="@dimen/padding_3"
             android:paddingRight="@dimen/padding_3"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_10" />
+            android:textSize="@dimen/txt_8" />
 
         <LinearLayout
             android:id="@id/controls_root"

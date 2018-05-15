@@ -23,13 +23,12 @@ import com.bumptech.glide.request.target.Target;
 
 public class LImageUtil {
     //for flide
-    public static void load(Activity activity, String url, ImageView imageView) {
-        Glide.with(activity).load(url).into(imageView);
+    public static void load(Context context, String url, ImageView imageView) {
+        Glide.with(context).load(url).into(imageView);
     }
 
-    public static void load(Activity activity, String url, ImageView imageView, int resPlaceHolder) {
-        //Glide.with(activity).load(url).placeholder(resPlaceHolder).into(imageView);
-        Glide.with(activity)
+    public static void load(Context context, String url, ImageView imageView, int resPlaceHolder) {
+        Glide.with(context)
                 .load(url)
                 .apply(new RequestOptions()
                                 .placeholder(resPlaceHolder)

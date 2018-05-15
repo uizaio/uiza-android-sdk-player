@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryTrans">#553F51B5</color>
-    <color name="colorPrimaryDark">#1A237E</color>
-    <color name="colorAccent">#1A237E</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryTrans">#55607D8B</color>
+    <color name="colorPrimaryDark">#263238</color>
+    <color name="colorAccent">#455A64</color>
 
     <color name="vip1">#d3131f</color>
     <color name="vip2">#19875c</color>

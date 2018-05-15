@@ -38,7 +38,7 @@ public class UizaData {
     private String urlThumnailsPreviewSeekbar = "";
 
     public String getPlayerId() {
-        return playerId;
+        return playerId == null ? Constants.PLAYER_ID_SKIN_0 : playerId;
     }
 
     public void setPlayerId(String playerId) {

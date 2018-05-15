@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import uiza.R;
 import uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity;
+import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
@@ -16,6 +17,7 @@ import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -40,6 +42,7 @@ public class SplashActivity extends BaseActivity {
 
         currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
         canSlide = getIntent().getBooleanExtra(OptionActivity.KEY_CAN_SLIDE, false);
+        LPref.setSlideUizaVideoEnabled(activity, canSlide);
         currentApiEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_END_POINT);
         currentApiTrackingEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_TRACKING_END_POINT);
 
@@ -49,6 +52,11 @@ public class SplashActivity extends BaseActivity {
         LLog.d(TAG, "getIntent currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
         RestClientV2.init(currentApiEndPoint);
+        RestClientTracking.init(currentApiTrackingEndPoint);
+
+        LPref.setApiEndPoint(activity, currentApiEndPoint);
+        LPref.setApiTrackEndPoint(activity, currentApiTrackingEndPoint);
+
         Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
@@ -57,6 +65,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             LLog.d(TAG, "auth != null -> check token");
             token = auth.getData().getToken();
+            RestClientV2.addAuthorization(token);
             checkToken(token);
         }
     }
@@ -141,7 +150,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Auth Failed " + e.getMessage());
             }
         });
     }
@@ -156,10 +165,11 @@ public class SplashActivity extends BaseActivity {
             return;
         }
         UizaData.getInstance().setPlayerId(currentPlayerId);
-        RestClientV2.init(currentApiEndPoint, token);
+        RestClientV2.addAuthorization(token);
+        LPref.setToken(activity, token);
         if (canSlide) {
             LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
-            //intent = new Intent(activity, HomeV2CanSlideActivity.class);
+            intent = new Intent(activity, HomeV2CanSlideActivity.class);
         } else {
             LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
             intent = new Intent(activity, HomeV2CannotSlideActivity.class);
@@ -168,6 +178,7 @@ public class SplashActivity extends BaseActivity {
             LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
+                    LPref.setClickedPip(activity, false);
                     startActivity(intent);
                     LActivityUtil.tranIn(activity);
                     finish();
@@ -178,7 +189,6 @@ public class SplashActivity extends BaseActivity {
 
     private void checkToken(String token) {
         LLog.d(TAG, "checkToken: " + token);
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2, token);
         UizaService service = RestClientV2.createService(UizaService.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override
@@ -205,7 +215,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
-                handleException(e);
+                showDialogError("Cannot check token");
             }
         });
     }

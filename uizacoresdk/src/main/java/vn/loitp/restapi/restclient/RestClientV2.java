@@ -15,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.DateTypeDeserializer;
 
 public class RestClientV2 {

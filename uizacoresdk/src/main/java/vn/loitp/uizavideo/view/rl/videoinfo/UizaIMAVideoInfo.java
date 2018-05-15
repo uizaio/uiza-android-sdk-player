@@ -68,7 +68,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         clearAllViews();
     }
 
-    private void clearAllViews() {
+    public void clearAllViews() {
         itemList.clear();
         notifyViews();
         LUIUtil.showProgressBar(progressBar);
@@ -129,12 +129,12 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
-            public void onClick(Item item, int position) {
+            public void onClickItemBottom(Item item, int position) {
                 LLog.d(TAG, "onClick " + position);
                 itemList.clear();
                 notifyViews();
                 if (callback != null) {
-                    callback.onClick(item, position);
+                    callback.onClickItemBottom(item, position);
                 }
             }
 
@@ -243,7 +243,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                ((BaseActivity) activity).handleException(e);
+                ((BaseActivity) activity).showDialogError("Lỗi không tải được danh sách entity liên quan");
                 LUIUtil.hideProgressBar(progressBar);
             }
         });

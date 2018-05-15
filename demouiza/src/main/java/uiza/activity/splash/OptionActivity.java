@@ -41,6 +41,10 @@ public class OptionActivity extends BaseActivity {
     String currentApiTrackingEndPoint = null;
     String currentApiEndPoint = null;
 
+    private RadioGroup radioDebugMode;
+    private RadioButton radioDebugModeEnable;
+    private RadioButton radioDebugModeDisable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +54,15 @@ public class OptionActivity extends BaseActivity {
                 goToSplashScreen();
             }
         });
+
+        //set auth null every run this app
+        LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
+
         findViews();
         setupSkin();
         setupSlide();
         setupEnvironment();
+        setupDebugMode();
     }
 
     private void findViews() {
@@ -72,6 +81,10 @@ public class OptionActivity extends BaseActivity {
         radioEnvironmentDev = (RadioButton) findViewById(R.id.radio_environment_dev);
         radioEnvironmentStag = (RadioButton) findViewById(R.id.radio_environment_stag);
         radioEnvironmentProd = (RadioButton) findViewById(R.id.radio_environment_prod);
+        //setting debug mode
+        radioDebugMode = (RadioGroup) findViewById(R.id.radio_debug_mode);
+        radioDebugModeDisable = (RadioButton) findViewById(R.id.radio_debug_mode_disable);
+        radioDebugModeEnable = (RadioButton) findViewById(R.id.radio_debug_mode_enable);
     }
 
     private void goToSplashScreen() {
@@ -189,6 +202,26 @@ public class OptionActivity extends BaseActivity {
                         break;
                 }
                 LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
+            }
+        });
+    }
+
+    private void setupDebugMode() {
+        radioDebugModeEnable.setChecked(true);
+        Constants.setDebugMode(true);
+
+        radioDebugMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                int selectedId = radioDebugMode.getCheckedRadioButtonId();
+                switch (selectedId) {
+                    case R.id.radio_debug_mode_enable:
+                        Constants.setDebugMode(true);
+                        break;
+                    case R.id.radio_debug_mode_disable:
+                        Constants.setDebugMode(false);
+                        break;
+                }
             }
         });
     }

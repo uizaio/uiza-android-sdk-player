@@ -1,11 +1,13 @@
 <resources>
     <dimen name="video_frame_width">1dp</dimen>
+    <dimen name="padding_2">2dp</dimen>
     <dimen name="padding_5">5dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="txt_10">10dp</dimen>
     <dimen name="txt_8">8dp</dimen>
     <dimen name="txt_12">12dp</dimen>
     <dimen name="txt_15">15dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="txt_20">20dp</dimen>
     <dimen name="txt_25">25dp</dimen>
@@ -13,6 +15,7 @@
     <dimen name="txt_80">80dp</dimen>
     <dimen name="padding_3">3dp</dimen>
     <dimen name="round_5">5dp</dimen>
+    <dimen name="round_2">2dp</dimen>
     <dimen name="round_15">15dp</dimen>
     <dimen name="round_55">55dp</dimen>
     <dimen name="round_80">80dp</dimen>
