@@ -257,15 +257,19 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void setVideoCover() {
-        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-        LImageUtil.load(getContext(), UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
-        ivVideoCover.setVisibility(VISIBLE);
+        if (ivVideoCover.getVisibility() != VISIBLE) {
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+            LImageUtil.load(getContext(), UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
+            ivVideoCover.setVisibility(VISIBLE);
+        }
     }
 
     public void removeVideoCover() {
-        //rootView.removeView(ivVideoCover);
-        ivVideoCover.setVisibility(GONE);
-        //ivVideoCover = null;
+        if (ivVideoCover.getVisibility() != GONE) {
+            //rootView.removeView(ivVideoCover);
+            ivVideoCover.setVisibility(GONE);
+            //ivVideoCover = null;
+        }
     }
 }

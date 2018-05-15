@@ -241,20 +241,23 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void setVideoCover() {
-        countTryLinkPlayError = 0;
+        if (ivVideoCover.getVisibility() != VISIBLE) {
+            countTryLinkPlayError = 0;
 
-        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-        LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
-
-        ivVideoCover.setVisibility(VISIBLE);
+            ivVideoCover.setVisibility(VISIBLE);
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+            LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
+        }
     }
 
     public void removeVideoCover() {
-        //rootView.removeView(ivVideoCover);
-        ivVideoCover.setVisibility(GONE);
-        //ivVideoCover = null;
-        onStateReadyFirst();
+        if (ivVideoCover.getVisibility() != GONE) {
+            //rootView.removeView(ivVideoCover);
+            ivVideoCover.setVisibility(GONE);
+            //ivVideoCover = null;
+            onStateReadyFirst();
+        }
     }
 
     public UizaIMAVideo(Context context) {
@@ -462,7 +465,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
@@ -910,6 +913,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void seekTo(long positionMs) {
         if (uizaPlayerManager != null) {
+            LLog.d(TAG, "seekTo positionMs: " + positionMs);
             uizaPlayerManager.seekTo(positionMs);
         }
     }

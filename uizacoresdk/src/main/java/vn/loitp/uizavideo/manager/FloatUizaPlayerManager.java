@@ -208,7 +208,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
 
         // Prepare the player with the source.
         //player.seekTo(contentPosition);
-        LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
+        //LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
         player.addListener(new PlayerEventListener());
         player.addAudioDebugListener(new AudioEventListener());
         player.addVideoDebugListener(new VideoEventListener());

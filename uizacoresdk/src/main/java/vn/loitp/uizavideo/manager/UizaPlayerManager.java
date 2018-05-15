@@ -647,10 +647,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public void seekTo(long positionMs) {
-        LLog.d(TAG, "seekTo positionMs: " + positionMs);
+        //LLog.d(TAG, "seekTo positionMs: " + positionMs);
         if (player != null) {
             player.seekTo(positionMs);
-            LLog.d(TAG, "seekTo positionMs done");
+            //LLog.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>seekTo positionMs done");
         }
     }
 
