@@ -95,8 +95,8 @@ public class Constants {
 
     public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
 
-    public final static String A_K_DEV = "Y0ZW0XM7HZL2CB8ODNDV";
-    public final static String S_K_DEV = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+    public final static String A_K_DEV = "YMR7O94W63J0EAX8VNGP";
+    public final static String S_K_DEV = "zqMcXRt81TC82Il69db4sUMkNzdyx5SJusxFpC1F";
 
     public final static String A_K_UQC = "NPGRU7CIJBYO6XLAHT9P";
     public final static String S_K_UQC = "DzzQukulJV6tmw59i7AwO7deK5qgDysLKZXBSL8X";
