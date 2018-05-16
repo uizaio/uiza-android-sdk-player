@@ -139,10 +139,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         this.context = uizaIMAVideo.getContext();
         this.uizaIMAVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
-        LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
+        //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
+           // LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -171,7 +171,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                             float duration = videoProgressUpdate.getDuration();
                             int percent = (int) (mls * 100 / duration);
                             int s = Math.round(mls / 1000);
-                            LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onAdProgress(mls, s, duration, percent);
                         }
                     } else {
@@ -181,7 +181,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                                 float duration = player.getDuration();
                                 int percent = (int) (mls * 100 / duration);
                                 int s = Math.round(mls / 1000);
-                                LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
                         }
@@ -269,7 +269,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         if (subtitleList == null || subtitleList.isEmpty()) {
             return mediaSource;
         }
-        LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
+        //LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
 
         List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
         for (int i = 0; i < subtitleList.size(); i++) {
@@ -436,16 +436,15 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public class PlayerEventListener implements Player.EventListener {
-        private final String TAG = Constants.LOITP;
 
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            LLog.d(TAG, "onTimelineChanged");
+            //LLog.d(TAG, "onTimelineChanged");
         }
 
         @Override
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            LLog.d(TAG, "onTracksChanged");
+            //LLog.d(TAG, "onTracksChanged");
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
@@ -453,12 +452,12 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onLoadingChanged(boolean isLoading) {
-            LLog.d(TAG, "onLoadingChanged isLoading " + isLoading);
+            //LLog.d(TAG, "onLoadingChanged isLoading " + isLoading);
         }
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            LLog.d(TAG, "onPlayerStateChanged playWhenReady: " + playWhenReady);
+            //LLog.d(TAG, "onPlayerStateChanged playWhenReady: " + playWhenReady);
             switch (playbackState) {
                 case Player.STATE_BUFFERING:
                     showProgress();
@@ -480,17 +479,17 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onRepeatModeChanged(int repeatMode) {
-            LLog.d(TAG, "onRepeatModeChanged repeatMode: " + repeatMode);
+            //LLog.d(TAG, "onRepeatModeChanged repeatMode: " + repeatMode);
         }
 
         @Override
         public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-            LLog.d(TAG, "onShuffleModeEnabledChanged shuffleModeEnabled: " + shuffleModeEnabled);
+            //LLog.d(TAG, "onShuffleModeEnabledChanged shuffleModeEnabled: " + shuffleModeEnabled);
         }
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
-            LLog.e(TAG, "onPlayerError " + error.toString());
+            //LLog.e(TAG, "onPlayerError " + error.toString());
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
@@ -501,109 +500,105 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onPositionDiscontinuity(int reason) {
-            LLog.d(TAG, "onPositionDiscontinuity");
+            //LLog.d(TAG, "onPositionDiscontinuity");
         }
 
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-            LLog.d(TAG, "onPlaybackParametersChanged");
+            //LLog.d(TAG, "onPlaybackParametersChanged");
         }
 
         @Override
         public void onSeekProcessed() {
-            LLog.d(TAG, "onSeekProcessed");
+            //LLog.d(TAG, "onSeekProcessed");
         }
     }
 
     public class AudioEventListener implements AudioRendererEventListener {
-        private final String TAG = Constants.LOITP;
 
         @Override
         public void onAudioEnabled(DecoderCounters counters) {
-            LLog.d(TAG, "onAudioEnabled");
+            //LLog.d(TAG, "onAudioEnabled");
         }
 
         @Override
         public void onAudioSessionId(int audioSessionId) {
-            LLog.d(TAG, "onAudioSessionId audioSessionId: " + audioSessionId);
+            //LLog.d(TAG, "onAudioSessionId audioSessionId: " + audioSessionId);
         }
 
         @Override
         public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            LLog.d(TAG, "onAudioDecoderInitialized");
+            //LLog.d(TAG, "onAudioDecoderInitialized");
         }
 
         @Override
         public void onAudioInputFormatChanged(Format format) {
-            LLog.d(TAG, "onAudioInputFormatChanged");
+            //LLog.d(TAG, "onAudioInputFormatChanged");
         }
 
         @Override
         public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-            LLog.d(TAG, "onAudioSinkUnderrun");
+            //LLog.d(TAG, "onAudioSinkUnderrun");
         }
 
         @Override
         public void onAudioDisabled(DecoderCounters counters) {
-            LLog.d(TAG, "onAudioDisabled");
+            //LLog.d(TAG, "onAudioDisabled");
         }
     }
 
     public class VideoEventListener implements VideoRendererEventListener {
-        private final String TAG = Constants.LOITP;
 
         @Override
         public void onVideoEnabled(DecoderCounters counters) {
-            LLog.d(TAG, "onVideoEnabled");
+            //LLog.d(TAG, "onVideoEnabled");
         }
 
         @Override
         public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            LLog.d(TAG, "onVideoDecoderInitialized decoderName: " + decoderName + ", initializedTimestampMs " + initializedTimestampMs + ", initializationDurationMs " + initializationDurationMs);
+            //LLog.d(TAG, "onVideoDecoderInitialized decoderName: " + decoderName + ", initializedTimestampMs " + initializedTimestampMs + ", initializationDurationMs " + initializationDurationMs);
         }
 
         @Override
         public void onVideoInputFormatChanged(Format format) {
-            LLog.d(TAG, "onVideoInputFormatChanged");
+            //LLog.d(TAG, "onVideoInputFormatChanged");
         }
 
         @Override
         public void onDroppedFrames(int count, long elapsedMs) {
-            LLog.d(TAG, "onDroppedFrames count " + count + ",elapsedMs " + elapsedMs);
+            //LLog.d(TAG, "onDroppedFrames count " + count + ",elapsedMs " + elapsedMs);
         }
 
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + ", pixelWidthHeightRatio " + pixelWidthHeightRatio);
+            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + ", pixelWidthHeightRatio " + pixelWidthHeightRatio);
         }
 
         @Override
         public void onRenderedFirstFrame(Surface surface) {
-            LLog.d(TAG, "onRenderedFirstFrame");
+            //LLog.d(TAG, "onRenderedFirstFrame");
             uizaIMAVideo.removeVideoCover();
         }
 
         @Override
         public void onVideoDisabled(DecoderCounters counters) {
-            LLog.d(TAG, "onVideoDisabled");
+            //LLog.d(TAG, "onVideoDisabled");
         }
     }
 
     public class MetadataOutputListener implements MetadataOutput {
-        private final String TAG = Constants.LOITP;
 
         @Override
         public void onMetadata(Metadata metadata) {
-            LLog.d(TAG, "onMetadata " + metadata.length());
+            //LLog.d(TAG, "onMetadata " + metadata.length());
         }
     }
 
     public class TextOutputListener implements TextOutput {
-        private final String TAG = Constants.LOITP;
 
         @Override
         public void onCues(List<Cue> cues) {
-            LLog.d(TAG, "onCues " + cues.size());
+            //LLog.d(TAG, "onCues " + cues.size());
         }
     }
 

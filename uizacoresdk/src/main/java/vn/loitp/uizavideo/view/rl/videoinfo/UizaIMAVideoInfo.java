@@ -130,7 +130,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
             public void onClickItemBottom(Item item, int position) {
-                LLog.d(TAG, "onClick " + position);
+                //LLog.d(TAG, "onClick " + position);
                 itemList.clear();
                 notifyViews();
                 if (callback != null) {
@@ -179,7 +179,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         if (getDetailEntity == null) {
             return;
         }
-        LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+        //LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
         mItem = getDetailEntity.getData().get(0);
         updateUI();
     }
@@ -221,7 +221,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     private void getListAllEntityRelation() {
         UizaService service = RestClientV2.createService(UizaService.class);
-        LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
+        //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
         jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
@@ -229,7 +229,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
             public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
-                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
+                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
                 if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
                     tvMoreLikeThisMsg.setText(R.string.no_data);
                     tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
@@ -250,7 +250,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {
-        LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
+        //LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
         this.itemList.addAll(itemList);
         notifyViews();
     }
@@ -263,6 +263,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     private void loadMore() {
         //TODO
-        LLog.d(TAG, "loadMore");
+        //LLog.d(TAG, "loadMore");
     }
 }

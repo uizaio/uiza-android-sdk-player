@@ -158,7 +158,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         this.callback = callback;
         if (uizaPlayerManager != null) {
-            LLog.d(TAG, "init uizaPlayerManager != null");
+            //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManager.release();
             mGetLinkPlay = null;
             mGetDetailEntity = null;
@@ -757,7 +757,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
         String appId = auth.getData().getAppId();
-        LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
+        //LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
         activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
@@ -775,7 +775,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void getDetailEntity() {
-        LLog.d(TAG, "getDetailEntity");
+        //LLog.d(TAG, "getDetailEntity");
         UizaUtil.setupRestClientV2(activity);
         UizaService service = RestClientV2.createService(UizaService.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
@@ -785,7 +785,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntity) {
-                LLog.d(TAG, "getDetailEntity entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+                //LLog.d(TAG, "getDetailEntity entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
                 mGetDetailEntity = getDetailEntity;
                 isGetDetailEntityDone = true;
                 checkToSetUp();
@@ -875,7 +875,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -884,7 +884,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-                ((BaseActivity) getContext()).showDialogError("Cannot track this entity");
+                //((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
         });
     }
@@ -915,7 +915,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void seekTo(long positionMs) {
         if (uizaPlayerManager != null) {
-            LLog.d(TAG, "seekTo positionMs: " + positionMs);
+            //LLog.d(TAG, "seekTo positionMs: " + positionMs);
             uizaPlayerManager.seekTo(positionMs);
         }
     }
