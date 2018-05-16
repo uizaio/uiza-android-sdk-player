@@ -110,10 +110,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         compositeSubscription.add(subscription);
     }
 
-    public void startActivity(Class<? extends Activity> clazz) {
+    /*public void startActivity(Class<? extends Activity> clazz) {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
-    }
+    }*/
 
     protected abstract boolean setFullScreen();
 
@@ -156,12 +156,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }*/
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         //TAG = "onMessageEvent";
         //LLog.d(TAG, "onMessageEvent " + event.isConnected());
         //onNetworkChange(event);
-        /*if (!event.isConnected()) {//no network
+        *//*if (!event.isConnected()) {//no network
             showTvNoConnect();
         } else {
             if (tvConnectStt != null) {
@@ -190,14 +190,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 });
                 tvConnectStt = null;
             }
-        }*/
-    }
+        }*//*
+    }*/
 
     /*protected void onNetworkChange(EventBusData.ConnectEvent event){
 
     }*/
 
-    @Override
+    /*@Override
     public void onStart() {
         EventBus.getDefault().register(this);
         super.onStart();
@@ -207,7 +207,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
-    }
+    }*/
 
     /*@Override
     protected void onResume() {
