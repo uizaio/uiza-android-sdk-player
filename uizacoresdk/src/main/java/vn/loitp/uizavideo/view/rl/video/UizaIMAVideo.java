@@ -352,6 +352,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoHearing = (ImageButton) playerView.findViewById(R.id.exo_hearing);
         exoPictureInPicture = (ImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         //TODO revert
+        exoHearing.setVisibility(GONE);
         exoShare = (ImageButton) playerView.findViewById(R.id.exo_share);
 
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
