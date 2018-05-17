@@ -59,7 +59,6 @@ public class UizaUtil {
         if (isFullScreen) {
             widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
             heightScreen = LScreenUtil.getScreenHeight();
-
         } else {
             widthScreen = LScreenUtil.getScreenWidth();
             heightScreen = widthScreen * 9 / 16;
