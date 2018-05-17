@@ -44,6 +44,7 @@ import java.util.Arrays;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LAnimationUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -170,10 +171,9 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
             haveAdaptiveTracks |= groupIsAdaptive;
             trackViews[groupIndex] = new CheckedTextView[group.length];
             for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
-                if (trackIndex == 0) {
-                    root.addView(inflater.inflate(R.layout.list_divider, root, false));
-                }
-                int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
+                root.addView(inflater.inflate(R.layout.list_divider, root, false));
+                //int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
+                int trackViewLayoutId = R.layout.view_setting_single_choice;
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
@@ -204,7 +204,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
             //enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
-            root.addView(enableRandomAdaptationView);
+            //root.addView(enableRandomAdaptationView);
         }
 
         updateViews();
@@ -254,28 +254,30 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
     // View.OnClickListener
     @Override
     public void onClick(View view) {
-        boolean isNeedToDissmissNow = false;
         if (view == btExit) {
             LAnimationUtil.play(btExit, Techniques.Pulse);
-            isNeedToDissmissNow = true;
         } else if (view == disableView) {
             isDisabled = true;
             override = null;
-            isNeedToDissmissNow = true;
         } else if (view == defaultView) {
             isDisabled = false;
             override = null;
-            isNeedToDissmissNow = true;
         } else if (view == enableRandomAdaptationView) {
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
-            isNeedToDissmissNow = true;
         } else {
             isDisabled = false;
             @SuppressWarnings("unchecked")
             Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
             int groupIndex = tag.first;
             int trackIndex = tag.second;
-            if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
+
+            //C1 chon quality nao thi play video voi quality do
+            override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+
+
+            //dont remove
+            //C2 chon mutiply quality, chu y nho go rao comment root.addView(enableRandomAdaptationView);
+            /*if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
                 override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
             } else {
                 // The group being modified is adaptive and we already have a non-null override.
@@ -296,13 +298,13 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
                     setOverride(groupIndex, getTracksAdding(override, trackIndex),
                             enableRandomAdaptationView.isChecked());
                 }
-            }
+            }*/
         }
         // Update the views with the new state.
         updateViews();
         apply();
 
-        if (dialog != null && isNeedToDissmissNow) {
+        if (dialog != null) {
             LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {

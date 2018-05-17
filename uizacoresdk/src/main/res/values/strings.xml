@@ -14,7 +14,7 @@
     <string name="audio">Audio</string>
     <string name="text">Subtitle</string>
     <string name="selection_disabled">Disabled</string>
-    <string name="selection_default">Default</string>
+    <string name="selection_default">Auto</string>
 
     <string name="empty_list">Danh sách rỗng</string>
     <string name="err">Error</string>
