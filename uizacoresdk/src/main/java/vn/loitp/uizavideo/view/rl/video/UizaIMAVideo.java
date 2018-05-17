@@ -210,10 +210,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         listLinkPlay.add(mpd.getUrl());
                     }
                 }
-                //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+                LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    //LLog.d(TAG, "listLinkPlay == null || listLinkPlay.isEmpty()");
-                    ((BaseActivity) activity).showDialogOne(activity.getString(R.string.has_no_linkplay), true);
+                    LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
+                    ((BaseActivity) activity).showDialogError(activity.getString(R.string.has_no_linkplay));
                     return;
                 }
                 if (countTryLinkPlayError >= listLinkPlay.size()) {
@@ -776,6 +776,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
+                LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
                 mGetLinkPlay = getLinkPlay;
                 isGetLinkPlayDone = true;
                 checkToSetUp();
@@ -784,7 +785,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                activity.showDialogError("Không có linkplay");
+                activity.showDialogError("Entity này không có linkplay");
             }
         });
     }

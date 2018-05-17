@@ -233,7 +233,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showDialogError(String msg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.err), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1(activity, getString(R.string.err), msg, getString(R.string.confirm), false, new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();
