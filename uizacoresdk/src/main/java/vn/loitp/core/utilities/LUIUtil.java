@@ -29,6 +29,7 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -47,6 +48,7 @@ import java.io.InputStream;
 import java.util.Random;
 
 import loitp.core.R;
+import vn.loitp.utils.util.ConvertUtils;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollDecor;
 import vn.loitp.views.overscroll.lib.overscroll.IOverScrollUpdateListener;
 import vn.loitp.views.overscroll.lib.overscroll.OverScrollDecoratorHelper;
@@ -586,5 +588,10 @@ public class LUIUtil {
 
     public static void setTextViewUnderLine(TextView textView) {
         textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+    }
+
+    public static void setMarginDimen(View view, int dpL, int dpT, int dpR, int dpB) {
+        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        mlp.setMargins(ConvertUtils.dp2px(dpL), ConvertUtils.dp2px(dpT), ConvertUtils.dp2px(dpR), ConvertUtils.dp2px(dpB));
     }
 }

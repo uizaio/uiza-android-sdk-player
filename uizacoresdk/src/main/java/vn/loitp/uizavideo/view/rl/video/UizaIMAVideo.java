@@ -16,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -289,6 +290,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         findViews();
         UizaUtil.resizeLayout(rootView, llMid);
         updateUIEachSkin();
+        setMarginPreviewTimeBarLayout(false);
     }
 
     private void addPlayerView() {
@@ -608,14 +610,26 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 isLandscape = true;
                 setExoPictureInPictureVisibility(GONE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
+
+                setMarginPreviewTimeBarLayout(true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 setExoPictureInPictureVisibility(VISIBLE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
+
+                setMarginPreviewTimeBarLayout(false);
             }
         }
         UizaUtil.resizeLayout(rootView, llMid);
+    }
+
+    private void setMarginPreviewTimeBarLayout(boolean isLandscape) {
+        if (isLandscape) {
+            LUIUtil.setMarginDimen(previewTimeBarLayout, 24, 0, 24, 0);
+        } else {
+            LUIUtil.setMarginDimen(previewTimeBarLayout, 15, 0, 15, 0);
+        }
     }
 
     public void setTitle() {
@@ -724,8 +738,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void setExoPictureInPictureVisibility(int visibility) {
-        //TODO go code
-        //exoPictureInPicture.setVisibility(visibility);
+        exoPictureInPicture.setVisibility(visibility);
     }
 
     public void initializePiP() {
