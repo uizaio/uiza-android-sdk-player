@@ -47,7 +47,6 @@
             android:layout_width="@dimen/w_30"
             android:layout_height="@dimen/w_30"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/margin_10"
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
