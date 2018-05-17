@@ -142,7 +142,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-           // LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
+            // LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -334,7 +334,9 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public void resumeVideo() {
-        player.setPlayWhenReady(true);
+        if (player != null) {
+            player.setPlayWhenReady(true);
+        }
     }
 
     public void pauseVideo() {
