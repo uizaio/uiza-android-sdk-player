@@ -116,7 +116,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/ic_picture_in_picture_alt_black_48dp"
-            android:tint="@color/White"/>
+            android:tint="@color/White" />
     </LinearLayout>
 
     <RelativeLayout
@@ -142,8 +142,10 @@
 
             <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar
                 android:id="@id/seekbar_volume"
-                android:layout_width="@dimen/w_50"
-                android:layout_height="match_parent" />
+                android:layout_width="@dimen/w_100"
+                android:layout_height="match_parent"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@color/transparent" />
         </RelativeLayout>
 
         <LinearLayout
@@ -201,10 +203,12 @@
 
             <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar
                 android:id="@id/seekbar_birghtness"
-                android:layout_width="@dimen/w_50"
+                android:layout_width="@dimen/w_100"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@color/transparent" />
 
             <ImageView
                 android:id="@id/exo_birghtness_seekbar"

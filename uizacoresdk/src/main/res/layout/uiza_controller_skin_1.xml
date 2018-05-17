@@ -70,8 +70,10 @@
 
             <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar
                 android:id="@id/seekbar_volume"
-                android:layout_width="@dimen/w_50"
-                android:layout_height="match_parent" />
+                android:layout_width="@dimen/w_100"
+                android:layout_height="match_parent"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@color/transparent" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -84,7 +86,9 @@
                 android:layout_width="@dimen/w_50"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@color/transparent" />
 
             <ImageView
                 android:id="@id/exo_birghtness_seekbar"
