@@ -38,7 +38,6 @@ public class UizaDialogListEntityRelation extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private boolean isLandscape;
-    //TODO remove gson
     //private Gson gson = new Gson();
 
     private ProgressBar progressBar;
