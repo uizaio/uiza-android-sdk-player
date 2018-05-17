@@ -18,6 +18,7 @@ package vn.loitp.uizavideo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -133,14 +134,13 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
 
         ViewGroup root = view.findViewById(R.id.root);
 
-        //TypedArray attributeArray = activity.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        //int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        //attributeArray.recycle();
+        TypedArray attributeArray = activity.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        attributeArray.recycle();
 
         // View for disabling the renderer.
-        //disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
         disableView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
-        //disableView.setBackgroundResource(selectableItemBackgroundResourceId);
+        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -151,7 +151,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
 
         // View for clearing the override to allow the selector to use its default selection logic.
         defaultView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
-        //defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
+        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -175,7 +175,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
                 }
                 int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                //trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
                 trackView.setText(DemoUtil.buildShortTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex) == RendererCapabilities.FORMAT_HANDLED) {
@@ -197,7 +197,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         if (haveAdaptiveTracks) {
             // View for using random adaptation.
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.view_setting_mutiple_choice, root, false);
-            //enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
+            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
