@@ -67,6 +67,13 @@ public class UizaDialogListEntityRelation extends Dialog {
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
         getListAllEntityRelation();
     }
 
@@ -82,7 +89,7 @@ public class UizaDialogListEntityRelation extends Dialog {
             @Override
             public void onSuccess(final ListAllEntityRelation listAllEntityRelation) {
                 //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
-                LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         setupUI(listAllEntityRelation);
@@ -93,7 +100,7 @@ public class UizaDialogListEntityRelation extends Dialog {
             @Override
             public void onFail(Throwable e) {
                 //LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         LUIUtil.hideProgressBar(progressBar);
