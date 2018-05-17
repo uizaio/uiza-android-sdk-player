@@ -28,6 +28,7 @@ import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -41,6 +42,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import java.util.Arrays;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 import vn.loitp.uizavideo.view.util.UizaUtil;
@@ -254,6 +256,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
     public void onClick(View view) {
         boolean isNeedToDissmissNow = false;
         if (view == btExit) {
+            LAnimationUtil.play(btExit, Techniques.Pulse);
             isNeedToDissmissNow = true;
         } else if (view == disableView) {
             isDisabled = true;

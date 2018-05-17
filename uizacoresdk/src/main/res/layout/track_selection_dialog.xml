@@ -6,18 +6,19 @@
 
     <ScrollView
         android:id="@+id/scroll_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/rl"
-        android:layout_centerInParent="true"
         android:fadeScrollbars="false"
+        android:fillViewport="true"
         android:scrollbarSize="@dimen/w_1"
         android:scrollbarThumbVertical="@color/colorPrimary">
 
         <LinearLayout
             android:id="@+id/root"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical" />
 
     </ScrollView>

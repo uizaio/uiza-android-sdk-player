@@ -44,8 +44,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/ic_picture_in_picture_alt_black_48dp"
-            android:tint="@color/White"
-            android:visibility="gone" />
+            android:tint="@color/White" />
     </LinearLayout>
 
     <RelativeLayout
@@ -293,8 +292,7 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_playlist_play_black_48dp"
-                android:tint="@color/White"
-                android:visibility="gone" />
+                android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_hearing"
