@@ -16,7 +16,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -247,6 +246,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             ivVideoCover.setVisibility(VISIBLE);
             //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+            //ivVideoCover.setBackgroundColor(Color.RED);
             //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
             LImageUtil.load(activity, UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
         }
@@ -288,7 +288,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
         findViews();
-        UizaUtil.resizeLayout(rootView, llMid);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout(false);
     }
@@ -621,7 +621,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 setMarginPreviewTimeBarLayout(false);
             }
         }
-        UizaUtil.resizeLayout(rootView, llMid);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
     }
 
     private void setMarginPreviewTimeBarLayout(boolean isLandscape) {

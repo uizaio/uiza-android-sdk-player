@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ public class UizaUtil {
         }
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid) {
+    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover) {
         int widthScreen = 0;
         int heightScreen = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
@@ -67,6 +68,12 @@ public class UizaUtil {
         viewGroup.getLayoutParams().width = widthScreen;
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
+
+        if (ivVideoCover != null) {
+            ivVideoCover.getLayoutParams().width = widthScreen;
+            ivVideoCover.getLayoutParams().height = heightScreen;
+            ivVideoCover.requestLayout();
+        }
 
         //edit size of seekbar volume and brightness
         if (llMid != null) {
