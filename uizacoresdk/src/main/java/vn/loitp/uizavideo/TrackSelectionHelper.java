@@ -18,15 +18,15 @@ package vn.loitp.uizavideo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
 
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -41,13 +41,14 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import java.util.Arrays;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 
 /**
  * Helper class for displaying track selection dialogs.
  */
-/* package */public final class TrackSelectionHelper implements View.OnClickListener, DialogInterface.OnClickListener {
+/* package */public final class TrackSelectionHelper implements View.OnClickListener {
 
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
@@ -66,6 +67,8 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
     private CheckedTextView defaultView;
     private CheckedTextView enableRandomAdaptationView;
     private CheckedTextView[][] trackViews;
+
+    private ImageButton btExit;
 
     /**
      * @param selector                      The track selector.
@@ -104,21 +107,27 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
-                //.setTitle(title)
-                .setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
-                .setView(buildView(activity))
-                .setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
-                .setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
+                //.setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
+                .setView(buildView(activity));
+        //.setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
+        //.setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
 
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
         UizaUtil.showUizaDialog(activity, dialog);
     }
 
+    private AlertDialog dialog;
 
     @SuppressLint("InflateParams")
     private View buildView(Activity activity) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
+
+        btExit = (ImageButton) view.findViewById(R.id.bt_exit);
+        btExit.setOnClickListener(this);
+
+        ScrollView scrollView = (ScrollView) view.findViewById(R.id.scroll_view);
+        LUIUtil.setPullLikeIOSVertical(scrollView);
 
         ViewGroup root = view.findViewById(R.id.root);
 
@@ -220,10 +229,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         }
     }
 
-    // DialogInterface.OnClickListener
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
+    private void apply() {
         selector.setRendererDisabled(rendererIndex, isDisabled);
         if (override != null) {
             selector.setSelectionOverride(rendererIndex, trackGroups, override);
@@ -232,18 +238,34 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         }
     }
 
-    // View.OnClickListener
+    // DialogInterface.OnClickListener
+    /*@Override
+    public void onClick(DialogInterface dialog, int which) {
+        selector.setRendererDisabled(rendererIndex, isDisabled);
+        if (override != null) {
+            selector.setSelectionOverride(rendererIndex, trackGroups, override);
+        } else {
+            selector.clearSelectionOverrides(rendererIndex);
+        }
+    }*/
 
+    // View.OnClickListener
     @Override
     public void onClick(View view) {
-        if (view == disableView) {
+        boolean isNeedToDissmissNow = false;
+        if (view == btExit) {
+            isNeedToDissmissNow = true;
+        } else if (view == disableView) {
             isDisabled = true;
             override = null;
+            isNeedToDissmissNow = true;
         } else if (view == defaultView) {
             isDisabled = false;
             override = null;
+            isNeedToDissmissNow = true;
         } else if (view == enableRandomAdaptationView) {
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
+            isNeedToDissmissNow = true;
         } else {
             isDisabled = false;
             @SuppressWarnings("unchecked")
@@ -275,6 +297,16 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         }
         // Update the views with the new state.
         updateViews();
+        apply();
+
+        if (dialog != null && isNeedToDissmissNow) {
+            LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
