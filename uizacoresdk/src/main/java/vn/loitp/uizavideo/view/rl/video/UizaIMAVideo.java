@@ -240,7 +240,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 String linkPlay = listLinkPlay.get(countTryLinkPlayError);
                 //LLog.d(TAG, "mGetDetailEntity toJson: " + gson.toJson(mGetDetailEntity));
-                List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
+                final List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
                 if (subtitleList == null || subtitleList.isEmpty()) {

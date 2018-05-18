@@ -281,8 +281,7 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_closed_caption_black_48dp"
-                android:tint="@color/White"
-                android:visibility="gone" />
+                android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_playlist"
@@ -322,8 +321,7 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_share_black_48dp"
-                android:tint="@color/White"
-                android:visibility="visible" />
+                android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_fullscreen_toggle_icon"
