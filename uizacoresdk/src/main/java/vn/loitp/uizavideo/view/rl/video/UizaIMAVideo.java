@@ -67,7 +67,6 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
@@ -244,9 +243,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
                 if (subtitleList == null || subtitleList.isEmpty()) {
-                    exoCc.setVisibility(GONE);
+                    exoCc.setVisibility(View.GONE);
                 } else {
-                    exoCc.setVisibility(VISIBLE);
+                    exoCc.setVisibility(View.VISIBLE);
                 }
 
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
