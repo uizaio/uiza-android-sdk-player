@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -267,8 +268,9 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             }
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            LLog.d(TAG, "fuck " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
-                getActivity().onBackPressed();
+                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
             } else {
                 setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
             }

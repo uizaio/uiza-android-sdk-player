@@ -67,7 +67,14 @@ public class UizaData {
 
     public void setUizaInput(UizaInput uizaInput) {
         this.uizaInput = uizaInput;
+
+        //add new uiza input to last position
+        //remove the first item
+        //uizaInputList is always have 2 item everytime
         getUizaInputList().add(uizaInput);
+        if (getUizaInputList().size() >= 3) {
+            getUizaInputList().remove(0);
+        }
     }
 
     public void clear() {
