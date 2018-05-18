@@ -230,6 +230,7 @@
 
             <View
                 android:layout_width="0dp"
+                android:background="@color/Red"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
