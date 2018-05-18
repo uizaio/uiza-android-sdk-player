@@ -242,13 +242,18 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 final List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-                if (subtitleList == null || subtitleList.isEmpty()) {
-                    exoCc.setVisibility(View.GONE);
-                    LLog.d(TAG, "exoCc GONE");
-                } else {
-                    exoCc.setVisibility(View.VISIBLE);
-                    LLog.d(TAG, "exoCc VISIBLE");
-                }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (subtitleList == null || subtitleList.isEmpty()) {
+                            exoCc.setVisibility(View.GONE);
+                            LLog.d(TAG, "exoCc GONE");
+                        } else {
+                            exoCc.setVisibility(View.VISIBLE);
+                            LLog.d(TAG, "exoCc VISIBLE");
+                        }
+                    }
+                });
 
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
