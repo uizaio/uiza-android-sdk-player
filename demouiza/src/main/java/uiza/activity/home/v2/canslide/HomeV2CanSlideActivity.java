@@ -217,11 +217,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl) {
-        String playerSkinId = UizaData.getInstance().getPlayerId();
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        }
-
         //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         //entityTitle = "Dummy title";
         //videoCoverUrl = null;
@@ -233,7 +228,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         String urlThumnailsPreviewSeekbar = null;
 
         frmVideoTop.getUizaIMAVideo().setExoPictureInPictureVisibility(View.VISIBLE);
-        frmVideoTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        frmVideoTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     private void intFrmBottom(GetDetailEntity getDetailEntity) {

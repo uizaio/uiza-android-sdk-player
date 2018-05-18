@@ -34,6 +34,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.views.LToast;
 
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
@@ -325,21 +326,23 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             showDialogOne("Entity ID cannot be null or empty");
             return;
         }
-        if (UizaData.getInstance().getPlayerId() == null || UizaData.getInstance().getPlayerId().isEmpty()) {
-            UizaData.getInstance().setPlayerId(Constants.PLAYER_ID_SKIN_0);
-        }
         LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
+
+        UizaInput uizaInput = new UizaInput();
+
+        uizaInput.setEntityId(entityId);
+        uizaInput.setEntityName(entityTitle);
+        uizaInput.setEntityCover(entityCover);
 
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
+        uizaInput.setUrlIMAAd(urlIMAAd);
 
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+        UizaData.getInstance().setUizaInput(uizaInput);
 
         uizaIMAVideo.init(this);
         uizaIMAVideoInfo.init(this);

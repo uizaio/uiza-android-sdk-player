@@ -33,13 +33,13 @@ import java.util.List;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
@@ -295,21 +295,18 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
-    public void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogMsg("Entity ID cannot be null or empty");
             return;
         }
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            showDialogMsg("Player Skin ID cannot be null or empty");
-            return;
-        }
-        UizaData.getInstance().setPlayerId(playerSkinId);
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaInput uizaInput = new UizaInput();
+        uizaInput.setEntityId(entityId);
+        uizaInput.setEntityName(entityTitle);
+        uizaInput.setEntityCover(entityCover);
+        uizaInput.setUrlIMAAd(urlIMAAd);
+        uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaData.getInstance().setUizaInput(uizaInput);
 
         LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
         uizaIMAVideo.init(this);

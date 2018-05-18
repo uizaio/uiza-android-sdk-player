@@ -148,8 +148,8 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
     private void auth() {
         UizaService service = RestClientV2.createService(UizaService.class);
-        String accessKeyId = "Y0ZW0XM7HZL2CB8ODNDV";
-        String secretKeyId = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+        String accessKeyId = Constants.A_K_DEV;
+        String secretKeyId = Constants.S_K_DEV;
 
         JsonBodyAuth jsonBodyAuth = new JsonBodyAuth();
         jsonBodyAuth.setAccessKeyId(accessKeyId);

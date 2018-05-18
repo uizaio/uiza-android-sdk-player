@@ -114,4 +114,11 @@ public class Constants {
     public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
     public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
     public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
+
+    public static final String EVENT_TYPE_DISPLAY = "display";
+    public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";
+    public static final String EVENT_TYPE_VIDEO_STARTS = "video_starts";
+    public static final String EVENT_TYPE_VIEW = "view";
+    public static final String EVENT_TYPE_REPLAY = "replay";
+    public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
 }

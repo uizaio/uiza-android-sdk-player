@@ -150,7 +150,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                showDialogError("Auth Failed " + e.getMessage());
+                showDialogError(TAG + " Auth Failed " + e.getMessage());
             }
         });
     }
@@ -164,7 +164,7 @@ public class SplashActivity extends BaseActivity {
             showDialogOne("token==null", true);
             return;
         }
-        UizaData.getInstance().setPlayerId(currentPlayerId);
+        UizaData.getInstance().setCurrentPlayerId(currentPlayerId);
         RestClientV2.addAuthorization(token);
         LPref.setToken(activity, token);
         if (canSlide) {

@@ -31,6 +31,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.views.LToast;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
@@ -41,10 +42,9 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
 
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
+        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
         String entityId = null;
         String entityTitle = null;
         String videoCoverUrl = null;
@@ -71,7 +71,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
@@ -280,7 +280,6 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
         String entityId = item.getId();
         String entityTitle = item.getName();
         String videoCoverUrl = null;
@@ -288,7 +287,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String urlIMAAd = null;
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
+        setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
@@ -306,21 +306,18 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         onBackPressed();
     }
 
-    private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    private void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogOne("Entity ID cannot be null or empty");
             return;
         }
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            showDialogOne("Player Skin ID cannot be null or empty");
-            return;
-        }
-        UizaData.getInstance().setPlayerId(playerSkinId);
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaInput uizaInput = new UizaInput();
+        uizaInput.setEntityId(entityId);
+        uizaInput.setEntityName(entityTitle);
+        uizaInput.setEntityCover(entityCover);
+        uizaInput.setUrlIMAAd(urlIMAAd);
+        uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaData.getInstance().setUizaInput(uizaInput);
 
         uizaIMAVideo.init(this);
     }

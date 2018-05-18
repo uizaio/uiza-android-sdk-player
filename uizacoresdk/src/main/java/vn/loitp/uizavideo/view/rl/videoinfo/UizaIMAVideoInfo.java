@@ -224,7 +224,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
+        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
