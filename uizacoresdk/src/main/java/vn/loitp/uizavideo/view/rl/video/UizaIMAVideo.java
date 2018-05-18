@@ -775,6 +775,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public SimpleExoPlayer getPlayer() {
+        if (uizaPlayerManager == null) {
+            return null;
+        }
         return uizaPlayerManager.getPlayer();
     }
 
