@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -284,12 +285,17 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         if (isInitSuccess && uizaIMAVideoInfo != null) {
             uizaIMAVideoInfo.setup(getDetailEntity);
         } else {
-            UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            //TODO
+            activity.onBackPressed();
+
+            /*UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            LLog.d(TAG, "prevUizaInput " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
                 activity.onBackPressed();
             } else {
+                LPref.setClickedPip(activity, false);
                 setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
-            }
+            }*/
         }
     }
 
