@@ -68,14 +68,11 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
@@ -90,7 +87,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
  */
 /* package */ public final class UizaPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
     private final String TAG = getClass().getSimpleName();
-    private Gson gson = new Gson();//TODO remove later
+    //private Gson gson = new Gson();//TODO remove later
     private Context context;
 
     private UizaIMAVideo uizaIMAVideo;
@@ -157,6 +154,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
+
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -167,20 +165,20 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                         hideProgress();
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            float mls = videoProgressUpdate.getCurrentTime();
-                            float duration = videoProgressUpdate.getDuration();
-                            int percent = (int) (mls * 100 / duration);
-                            int s = Math.round(mls / 1000);
+                            mls = videoProgressUpdate.getCurrentTime();
+                            duration = videoProgressUpdate.getDuration();
+                            percent = (int) (mls * 100 / duration);
+                            s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onAdProgress(mls, s, duration, percent);
                         }
                     } else {
                         if (progressCallback != null) {
                             if (player != null) {
-                                float mls = player.getCurrentPosition();
-                                float duration = player.getDuration();
-                                int percent = (int) (mls * 100 / duration);
-                                int s = Math.round(mls / 1000);
+                                mls = player.getCurrentPosition();
+                                duration = player.getDuration();
+                                percent = (int) (mls * 100 / duration);
+                                s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
@@ -197,6 +195,11 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         //playerView.setControllerAutoShow(false);
         uizaIMAVideo.getPlayerView().setControllerShowTimeoutMs(0);
     }
+
+    private float mls;
+    private float duration;
+    private int percent;
+    private int s;
 
     private DefaultTrackSelector trackSelector;
 
