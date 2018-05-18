@@ -6,6 +6,7 @@ import android.provider.Settings;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.loitp.core.common.Constants;
@@ -40,6 +41,24 @@ public class UizaData {
         this.currentPlayerId = currentPlayerId;
     }
 
+    private List<UizaInput> uizaInputList = new ArrayList<>();
+
+    public List<UizaInput> getUizaInputList() {
+        return uizaInputList;
+    }
+
+    /*public void setUizaInputList(List<UizaInput> uizaInputList) {
+        this.uizaInputList = uizaInputList;
+    }*/
+
+    public UizaInput getUizaInputPrev() {
+        if (uizaInputList == null || uizaInputList.isEmpty() || uizaInputList.size() <= 1) {
+            return null;
+        } else {
+            return uizaInputList.get(uizaInputList.size() - 2);//-1: current, -2 previous item
+        }
+    }
+
     private UizaInput uizaInput;
 
     public UizaInput getUizaInput() {
@@ -48,10 +67,12 @@ public class UizaData {
 
     public void setUizaInput(UizaInput uizaInput) {
         this.uizaInput = uizaInput;
+        getUizaInputList().add(uizaInput);
     }
 
     public void clear() {
         uizaInput = null;
+        uizaInputList.clear();
     }
 
     public UizaTracking createTrackingInput(Context context, String eventType) {

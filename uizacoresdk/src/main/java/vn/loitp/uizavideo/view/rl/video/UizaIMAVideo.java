@@ -42,6 +42,7 @@ import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
@@ -66,6 +67,7 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
@@ -204,7 +206,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //neu co thi se play
     //khong co thi bao loi
     private void handleErrorNoData() {
-        ((BaseActivity) activity).showDialogError(activity.getString(R.string.has_no_linkplay));
+        LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), false, new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                LLog.d(TAG, "handleErrorNoData");
+                if (callback != null) {
+                    callback.isInitResult(false, null, null);
+                }
+            }
+        });
     }
 
     private void checkToSetUp() {

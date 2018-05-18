@@ -264,8 +264,13 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             setListener();
             if (frmTopCallback != null) {
                 frmTopCallback.initDone(isInitSuccess, getLinkPlay, getDetailEntity);
+            }
+        } else {
+            UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            if (prevUizaInput == null) {
+                getActivity().onBackPressed();
             } else {
-                LLog.e(TAG, "isPiPInitResult else");
+                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
             }
         }
     }

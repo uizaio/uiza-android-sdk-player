@@ -134,155 +134,162 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
         });
         uizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
-                LLog.d(TAG, "onAudioEnabled");
+                //LLog.d(TAG, "onAudioEnabled");
             }
 
             @Override
             public void onAudioSessionId(int audioSessionId) {
-                LLog.d(TAG, "onAudioSessionId");
+                //LLog.d(TAG, "onAudioSessionId");
             }
 
             @Override
             public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                LLog.d(TAG, "onAudioDecoderInitialized");
+                //LLog.d(TAG, "onAudioDecoderInitialized");
             }
 
             @Override
             public void onAudioInputFormatChanged(Format format) {
-                LLog.d(TAG, "onAudioInputFormatChanged");
+                //LLog.d(TAG, "onAudioInputFormatChanged");
             }
 
             @Override
             public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                LLog.d(TAG, "onAudioSinkUnderrun");
+                //LLog.d(TAG, "onAudioSinkUnderrun");
             }
 
             @Override
             public void onAudioDisabled(DecoderCounters counters) {
-                LLog.d(TAG, "onAudioDisabled");
+                //LLog.d(TAG, "onAudioDisabled");
             }
         });
         uizaIMAVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                LLog.d(TAG, TAG + " video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                //LLog.d(TAG, TAG + " video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
             }
         });
         uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
-                LLog.d(TAG, "onVideoEnabled");
+                //LLog.d(TAG, "onVideoEnabled");
             }
 
             @Override
             public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                LLog.d(TAG, "onVideoDecoderInitialized");
+                //LLog.d(TAG, "onVideoDecoderInitialized");
             }
 
             @Override
             public void onVideoInputFormatChanged(Format format) {
-                LLog.d(TAG, "onVideoInputFormatChanged");
+                //LLog.d(TAG, "onVideoInputFormatChanged");
             }
 
             @Override
             public void onDroppedFrames(int count, long elapsedMs) {
-                LLog.d(TAG, "onDroppedFrames");
+                //LLog.d(TAG, "onDroppedFrames");
             }
 
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                LLog.d(TAG, "onAudioDisabled");
+                //LLog.d(TAG, "onAudioDisabled");
             }
 
             @Override
             public void onRenderedFirstFrame(Surface surface) {
-                LLog.d(TAG, "onRenderedFirstFrame");
+                //LLog.d(TAG, "onRenderedFirstFrame");
             }
 
             @Override
             public void onVideoDisabled(DecoderCounters counters) {
-                LLog.d(TAG, "onVideoDisabled");
+                //LLog.d(TAG, "onVideoDisabled");
             }
         });
         uizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
-                LLog.d(TAG, "onMetadata");
+                //LLog.d(TAG, "onMetadata");
             }
         });
         uizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
-                LLog.d(TAG, "onCues");
+                //LLog.d(TAG, "onCues");
             }
         });
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
+        //LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
         if (LPref.getClickedPip(activity)) {
             uizaIMAVideo.seekTo(positionFromPipService);
         }
         setListener();
         if (isInitSuccess && uizaIMAVideoInfo != null) {
             uizaIMAVideoInfo.setup(getDetailEntity);
+        } else {
+            UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            if (prevUizaInput == null) {
+                activity.onBackPressed();
+            } else {
+                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
+            }
         }
     }
 
@@ -304,7 +311,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
+        //LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -326,7 +333,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             showDialogOne("Entity ID cannot be null or empty");
             return;
         }
-        LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
+        //LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
 
         UizaInput uizaInput = new UizaInput();
 
