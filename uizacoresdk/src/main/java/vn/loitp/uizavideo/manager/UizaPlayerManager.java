@@ -103,6 +103,10 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     private String linkPlay;
     private List<Subtitle> subtitleList;
 
+    public List<Subtitle> getSubtitleList() {
+        return subtitleList;
+    }
+
     public String getLinkPlay() {
         return linkPlay;
     }

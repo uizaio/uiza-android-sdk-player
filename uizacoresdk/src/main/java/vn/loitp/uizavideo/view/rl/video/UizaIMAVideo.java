@@ -239,17 +239,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 String linkPlay = listLinkPlay.get(countTryLinkPlayError);
                 //LLog.d(TAG, "mGetDetailEntity toJson: " + gson.toJson(mGetDetailEntity));
-                final List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
+                List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
-
-
-                if (subtitleList == null || subtitleList.isEmpty()) {
-                    exoCc.setVisibility(View.GONE);
-                    LLog.d(TAG, "exoCc GONE");
-                } else {
-                    exoCc.setVisibility(View.VISIBLE);
-                    LLog.d(TAG, "exoCc VISIBLE");
-                }
 
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
@@ -498,6 +489,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (!LPref.getClickedPip(activity)) {
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
+        }
+        if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
+            exoCc.setVisibility(View.GONE);
+        } else {
+            exoCc.setVisibility(View.VISIBLE);
         }
     }
 
