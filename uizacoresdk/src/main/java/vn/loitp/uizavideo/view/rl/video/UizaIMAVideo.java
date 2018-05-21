@@ -216,7 +216,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), false, new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
-                LLog.d(TAG, "handleErrorNoData");
+                //LLog.d(TAG, "handleErrorNoData");
                 if (callback != null) {
                     //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
@@ -496,7 +496,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
@@ -536,7 +536,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void onResume() {
         activityIsPausing = false;
-        LLog.d(TAG, "onMessageEvent onResume " + isExoShareClicked);
+        //LLog.d(TAG, "onMessageEvent onResume " + isExoShareClicked);
         if (isExoShareClicked) {
             isExoShareClicked = false;
 
@@ -1012,7 +1012,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         uizaPlayerManager.init();*/
                         isCalledFromConnectionEventBus = true;
                         uizaPlayerManager.setResumeIfConnectionError();
-                        LLog.d(TAG, "onMessageEvent activityIsPausing " + activityIsPausing);
+                        //LLog.d(TAG, "onMessageEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             if (uizaPlayerManager != null) {
                                 uizaPlayerManager.init();
@@ -1024,7 +1024,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         } else {
                             //auto call onResume() again
                         }
-                        LLog.d(TAG, "onMessageEvent resumeVideo");
+                        //LLog.d(TAG, "onMessageEvent resumeVideo");
                     }
                 }
             } else {

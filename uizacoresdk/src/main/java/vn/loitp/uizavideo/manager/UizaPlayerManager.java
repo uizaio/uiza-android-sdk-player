@@ -162,12 +162,12 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public void setRunnable() {
-        LLog.d(TAG, "runnable setRunnable");
+        //LLog.d(TAG, "runnable setRunnable");
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
-                LLog.d(TAG, "runnable run");
+                //LLog.d(TAG, "runnable run");
                 if (uizaIMAVideo.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
@@ -189,7 +189,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                                 duration = player.getDuration();
                                 percent = (int) (mls * 100 / duration);
                                 s = Math.round(mls / 1000);
-                                LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
                         }
@@ -684,7 +684,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     //if player is playing then turn off connection -> player is error -> store current position
     //then if connection is connected again, resume position
     public void setResumeIfConnectionError() {
-        LLog.d(TAG, "onMessageEvent setResumeIfConnectionError player current position mls: " + mls);
+        //LLog.d(TAG, "onMessageEvent setResumeIfConnectionError player current position mls: " + mls);
         contentPosition = (long) mls;
     }
 }
