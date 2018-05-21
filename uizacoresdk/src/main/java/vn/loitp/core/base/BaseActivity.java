@@ -9,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import org.greenrobot.eventbus.EventBus;
-
 import loitp.core.R;
 import rx.Observable;
 import rx.Subscriber;
@@ -96,7 +94,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(activity)) {
-            showDialogError(getString(R.string.err_no_internet));
+            //showDialogError(getString(R.string.err_no_internet));
+            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
         }
 
@@ -193,7 +192,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }*/
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -203,7 +202,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-    }
+    }*/
 
     /*@Override
     protected void onResume() {

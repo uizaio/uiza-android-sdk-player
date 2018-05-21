@@ -51,7 +51,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
 
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
+        //LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
 
         String entityId = null;
         String entityCover = null;
@@ -75,7 +75,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         LLog.d(TAG, ">>> entityCover " + entityCover);
         LLog.d(TAG, ">>> entityTitle " + entityTitle);
 
-        setupVideo(entityId, entityTitle, entityCover);
+        setupVideo(entityId, entityTitle, entityCover, false);
     }
 
     @Override
@@ -110,6 +110,18 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     protected void onPause() {
         super.onPause();
         uizaIMAVideo.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        uizaIMAVideo.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        uizaIMAVideo.onStop();
     }
 
     @Override
@@ -278,20 +290,29 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         //LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
-        if (LPref.getClickedPip(activity)) {
-            uizaIMAVideo.seekTo(positionFromPipService);
-        }
-        setListener();
-        if (isInitSuccess && uizaIMAVideoInfo != null) {
-            uizaIMAVideoInfo.setup(getDetailEntity);
+        if (isInitSuccess) {
+            if (LPref.getClickedPip(activity)) {
+                uizaIMAVideo.seekTo(positionFromPipService);
+            }
+            setListener();
+            if (uizaIMAVideoInfo != null) {
+                uizaIMAVideoInfo.setup(getDetailEntity);
+            }
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
-            LLog.d(TAG, "prevUizaInput " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
+                LLog.d(TAG, "isInitResult prevUizaInput null -> exit");
                 activity.onBackPressed();
             } else {
-                LPref.setClickedPip(activity, false);
-                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
+                LLog.d(TAG, "isInitResult prevUizaInput: " + prevUizaInput.getEntityName());
+                boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
+                LLog.d(TAG, "isInitResult isPlayPrev: " + isPlayPrev);
+                if (isPlayPrev) {
+                    LPref.setClickedPip(activity, false);
+                    setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                } else {
+                    activity.onBackPressed();
+                }
             }
         }
     }
@@ -299,7 +320,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onClickListEntityRelation(Item item, int position) {
         LPref.setClickedPip(activity, false);
-        setupVideo(item.getId(), item.getName(), item.getThumbnail());
+        setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 
     @Override
@@ -323,7 +344,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onClickItemBottom(Item item, int position) {
         LPref.setClickedPip(activity, false);
-        setupVideo(item.getId(), item.getName(), item.getThumbnail());
+        setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 
     @Override
@@ -331,7 +352,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         //do nothing
     }
 
-    private void setupVideo(String entityId, String entityTitle, String entityCover) {
+    private void setupVideo(String entityId, String entityTitle, String entityCover, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogOne("Entity ID cannot be null or empty");
             return;
@@ -352,7 +373,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         String urlThumnailsPreviewSeekbar = null;
         uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
-        UizaData.getInstance().setUizaInput(uizaInput);
+        UizaData.getInstance().setUizaInput(uizaInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
         uizaIMAVideo.init(this);
         uizaIMAVideoInfo.init(this);

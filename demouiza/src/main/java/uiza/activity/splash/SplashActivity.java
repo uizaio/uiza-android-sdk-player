@@ -150,7 +150,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                showDialogError(TAG + " Auth Failed " + e.getMessage());
+                showDialogError(TAG + " Auth Failed\n" + e.getMessage());
             }
         });
     }

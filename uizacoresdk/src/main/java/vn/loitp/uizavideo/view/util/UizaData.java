@@ -52,10 +52,13 @@ public class UizaData {
     }*/
 
     public UizaInput getUizaInputPrev() {
-        if (uizaInputList == null || uizaInputList.isEmpty() || uizaInputList.size() <= 1) {
+        LLog.d(TAG, "getUizaInputPrev " + uizaInputList.size());
+        if (uizaInputList.isEmpty() || uizaInputList.size() <= 1) {
             return null;
         } else {
-            return uizaInputList.get(uizaInputList.size() - 2);//-1: current, -2 previous item
+            UizaInput uizaInput = uizaInputList.get(uizaInputList.size() - 2);//-1: current, -2 previous item;
+            uizaInputList.remove(uizaInputList.size() - 1);
+            return uizaInput;
         }
     }
 
@@ -65,15 +68,46 @@ public class UizaData {
         return uizaInput;
     }
 
-    public void setUizaInput(UizaInput uizaInput) {
+    private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+
+    public boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed() {
+        return isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+    }
+
+    public void setUizaInput(UizaInput uizaInput, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         this.uizaInput = uizaInput;
+        this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
 
         //add new uiza input to last position
         //remove the first item
         //uizaInputList is always have 2 item everytime
-        getUizaInputList().add(uizaInput);
-        if (getUizaInputList().size() >= 3) {
-            getUizaInputList().remove(0);
+
+        int existAt = Constants.NOT_FOUND;
+        for (int i = 0; i < uizaInputList.size(); i++) {
+            if (uizaInput.getEntityId().equals(uizaInputList.get(i).getEntityId())) {
+                existAt = i;
+                break;
+            }
+        }
+        if (existAt != Constants.NOT_FOUND) {
+            uizaInputList.remove(existAt);
+        }
+        uizaInputList.add(uizaInput);
+        if (uizaInputList.size() > 2) {
+            uizaInputList.remove(0);
+        }
+        if (Constants.IS_DEBUG) {
+            String x = "";
+            for (UizaInput u : uizaInputList) {
+                x += " > " + u.getEntityName();
+            }
+            LLog.d(TAG, "fuck " + x);
+        }
+    }
+
+    public void removeLastUizaInput() {
+        if (uizaInputList != null && !uizaInputList.isEmpty()) {
+            uizaInputList.remove(uizaInputList.size() - 1);
         }
     }
 

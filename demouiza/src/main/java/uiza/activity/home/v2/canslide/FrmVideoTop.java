@@ -272,7 +272,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             if (prevUizaInput == null) {
                 ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
             } else {
-                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
+                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
             }
         }
     }
@@ -302,7 +302,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
-    public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (entityId == null || entityId.isEmpty()) {
             showDialogMsg("Entity ID cannot be null or empty");
             return;
@@ -313,7 +313,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         uizaInput.setEntityCover(entityCover);
         uizaInput.setUrlIMAAd(urlIMAAd);
         uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-        UizaData.getInstance().setUizaInput(uizaInput);
+        UizaData.getInstance().setUizaInput(uizaInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
         //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
         uizaIMAVideo.init(this);

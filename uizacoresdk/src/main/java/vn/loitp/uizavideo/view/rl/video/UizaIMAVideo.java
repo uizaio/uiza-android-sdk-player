@@ -35,6 +35,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -45,6 +46,7 @@ import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
@@ -214,6 +216,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             public void onClick1() {
                 //LLog.d(TAG, "handleErrorNoData");
                 if (callback != null) {
+                    //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
                 }
             }
@@ -238,7 +241,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     return;
                 }
                 if (countTryLinkPlayError >= listLinkPlay.size()) {
-                    activity.showDialogOne("Đã thử play tất cả các link nhưng đều không thành công", true);
+                    if (LConnectivityUtil.isConnected(activity)) {
+                        activity.showDialogError("Đã thử play tất cả các link nhưng đều không thành công");
+                    } else {
+                        activity.showDialogError(activity.getString(R.string.err_no_internet));
+                    }
                     return;
                 }
                 String linkPlay = listLinkPlay.get(countTryLinkPlayError);
@@ -549,6 +556,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.reset();
             }
         }
+    }
+
+    public void onStart() {
+        EventBus.getDefault().register(this);
+    }
+
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -970,6 +985,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
-        LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
+        if (event != null && event.isConnected()) {
+            LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
+
+        }
     }
 }

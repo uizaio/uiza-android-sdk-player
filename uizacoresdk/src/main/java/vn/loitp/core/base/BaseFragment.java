@@ -45,7 +45,8 @@ public abstract class BaseFragment extends Fragment {
     @SuppressWarnings("unchecked")
     protected void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(getActivity())) {
-            showDialogError(getString(R.string.err_no_internet));
+            //showDialogError(getString(R.string.err_no_internet));
+            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
         }
 
