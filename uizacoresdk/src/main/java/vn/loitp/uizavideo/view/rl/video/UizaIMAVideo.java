@@ -970,8 +970,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
-
+        LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
     }
-
-    ;
 }

@@ -1,7 +1,6 @@
 package vn.loitp.core.base;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +10,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import loitp.core.R;
 import rx.Observable;
@@ -24,7 +21,6 @@ import rx.subscriptions.CompositeSubscription;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.data.EventBusData;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -197,17 +193,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }*/
 
-    /*@Override
+    @Override
     public void onStart() {
-        EventBus.getDefault().register(this);
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
         super.onStop();
-    }*/
+        EventBus.getDefault().unregister(this);
+    }
 
     /*@Override
     protected void onResume() {
