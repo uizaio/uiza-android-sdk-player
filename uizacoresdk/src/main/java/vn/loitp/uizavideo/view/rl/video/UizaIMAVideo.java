@@ -994,10 +994,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             if (event.isConnected()) {
                 if (uizaPlayerManager != null) {
                     LDialogUtil.clearAll();
-                    uizaPlayerManager.setResumeIfConnectionError();
-                    uizaPlayerManager.setRunnable();
-                    uizaPlayerManager.init();
-                    LLog.d(TAG, "onMessageEvent resumeVideo");
+                    if (uizaPlayerManager.getExoPlaybackException() == null) {
+                        LLog.d(TAG, "onMessageEvent do nothing");
+                    } else {
+                        uizaPlayerManager.setResumeIfConnectionError();
+                        uizaPlayerManager.setRunnable();
+                        uizaPlayerManager.init();
+                        LLog.d(TAG, "onMessageEvent resumeVideo");
+                    }
                 }
             } else {
                 /*if (uizaPlayerManager != null) {

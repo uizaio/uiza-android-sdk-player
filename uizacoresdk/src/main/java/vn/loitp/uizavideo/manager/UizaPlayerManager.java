@@ -448,6 +448,12 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         LUIUtil.showProgressBar(uizaIMAVideo.getProgressBar());
     }
 
+    private ExoPlaybackException exoPlaybackException;
+
+    public ExoPlaybackException getExoPlaybackException() {
+        return exoPlaybackException;
+    }
+
     public class PlayerEventListener implements Player.EventListener {
 
         @Override
@@ -502,6 +508,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
+            exoPlaybackException = error;
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
@@ -589,6 +596,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
+            exoPlaybackException = null;
             uizaIMAVideo.removeVideoCover(false);
         }
 
