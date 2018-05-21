@@ -285,17 +285,14 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         if (isInitSuccess && uizaIMAVideoInfo != null) {
             uizaIMAVideoInfo.setup(getDetailEntity);
         } else {
-            //TODO
-            activity.onBackPressed();
-
-            /*UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
+            UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             LLog.d(TAG, "prevUizaInput " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
                 activity.onBackPressed();
             } else {
                 LPref.setClickedPip(activity, false);
                 setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar());
-            }*/
+            }
         }
     }
 
