@@ -138,6 +138,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     }
 
     public UizaPlayerManager(final UizaIMAVideo uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        this.mls = 0;
         this.context = uizaIMAVideo.getContext();
         this.uizaIMAVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
