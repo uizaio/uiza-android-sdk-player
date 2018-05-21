@@ -34,6 +34,8 @@ import uiza.R;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -261,6 +263,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
+        LLog.d(TAG, "isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
@@ -268,11 +271,30 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             }
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
-            LLog.d(TAG, "isInitResult " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
-                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                LLog.d(TAG, "prevUizaInput == null -> exit");
+                ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                    }
+                });
             } else {
-                setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                LLog.d(TAG, "prevUizaInput " + prevUizaInput.getEntityName());
+                boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
+                LLog.d(TAG, "isPlayPrev: " + isPlayPrev);
+                if (isPlayPrev) {
+                    setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                } else {
+                    ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                    LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
+                        @Override
+                        public void doAfter(int mls) {
+                            ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                        }
+                    });
+                }
             }
         }
     }

@@ -299,6 +299,10 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed");
+        if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+            ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            return true;
+        }
         return false;
     }
 }

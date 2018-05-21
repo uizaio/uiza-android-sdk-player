@@ -211,10 +211,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //neu co thi se play
     //khong co thi bao loi
     private void handleErrorNoData() {
+        removeVideoCover(true);
         LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), false, new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
-                //LLog.d(TAG, "handleErrorNoData");
+                LLog.d(TAG, "handleErrorNoData");
                 if (callback != null) {
                     //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
@@ -274,12 +275,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    public void removeVideoCover() {
+    public void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
             //rootView.removeView(ivVideoCover);
             ivVideoCover.setVisibility(GONE);
             //ivVideoCover = null;
-            onStateReadyFirst();
+            if (!isFromHandleError) {
+                onStateReadyFirst();
+            }
         }
     }
 
@@ -492,7 +495,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
