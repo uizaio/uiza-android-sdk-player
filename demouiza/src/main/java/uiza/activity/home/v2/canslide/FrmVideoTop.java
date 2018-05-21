@@ -268,7 +268,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             }
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
-            LLog.d(TAG, "fuck " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
+            LLog.d(TAG, "isInitResult " + LSApplication.getInstance().getGson().toJson(prevUizaInput));
             if (prevUizaInput == null) {
                 ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
             } else {

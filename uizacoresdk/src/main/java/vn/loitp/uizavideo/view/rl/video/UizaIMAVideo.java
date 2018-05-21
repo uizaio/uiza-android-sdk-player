@@ -208,7 +208,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), false, new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
-                LLog.d(TAG, "handleErrorNoData");
+                //LLog.d(TAG, "handleErrorNoData");
                 if (callback != null) {
                     callback.isInitResult(false, null, null);
                 }
@@ -481,7 +481,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
