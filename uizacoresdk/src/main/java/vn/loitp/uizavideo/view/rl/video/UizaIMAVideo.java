@@ -520,8 +520,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onResume() {
+        //LLog.d(TAG, "onResume " + isExoShareClicked);
         if (isExoShareClicked) {
             isExoShareClicked = false;
+
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.resumeVideo();
+            }
         } else {
             if (uizaPlayerManager != null) {
                 uizaPlayerManager.init();
@@ -530,8 +535,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onPause() {
+        //LLog.d(TAG, "onPause " + isExoShareClicked);
         if (isExoShareClicked) {
-            //do nothing
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.pauseVideo();
+            }
         } else {
             if (uizaPlayerManager != null) {
                 uizaPlayerManager.reset();
@@ -910,7 +918,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
