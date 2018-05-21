@@ -535,7 +535,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void onResume() {
-        //LLog.d(TAG, "onResume " + isExoShareClicked);
+        activityIsPausing = false;
+        LLog.d(TAG, "onMessageEvent onResume " + isExoShareClicked);
         if (isExoShareClicked) {
             isExoShareClicked = false;
 
@@ -545,12 +546,19 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else {
             if (uizaPlayerManager != null) {
                 uizaPlayerManager.init();
+                if (isCalledFromConnectionEventBus) {
+                    uizaPlayerManager.setRunnable();
+                    isCalledFromConnectionEventBus = false;
+                }
             }
         }
     }
 
+    private boolean activityIsPausing = false;
+
     public void onPause() {
         //LLog.d(TAG, "onPause " + isExoShareClicked);
+        activityIsPausing = true;
         if (isExoShareClicked) {
             if (uizaPlayerManager != null) {
                 uizaPlayerManager.pauseVideo();
@@ -987,8 +995,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
-    @Subscribe(sticky = true,
-            threadMode = ThreadMode.MAIN)
+    private boolean isCalledFromConnectionEventBus = false;
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
             LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
@@ -998,9 +1007,23 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     if (uizaPlayerManager.getExoPlaybackException() == null) {
                         LLog.d(TAG, "onMessageEvent do nothing");
                     } else {
-                        uizaPlayerManager.setResumeIfConnectionError();
+                        /*uizaPlayerManager.setResumeIfConnectionError();
                         uizaPlayerManager.setRunnable();
-                        uizaPlayerManager.init();
+                        uizaPlayerManager.init();*/
+                        isCalledFromConnectionEventBus = true;
+                        uizaPlayerManager.setResumeIfConnectionError();
+                        LLog.d(TAG, "onMessageEvent activityIsPausing " + activityIsPausing);
+                        if (!activityIsPausing) {
+                            if (uizaPlayerManager != null) {
+                                uizaPlayerManager.init();
+                                if (isCalledFromConnectionEventBus) {
+                                    uizaPlayerManager.setRunnable();
+                                    isCalledFromConnectionEventBus = false;
+                                }
+                            }
+                        } else {
+                            //auto call onResume() again
+                        }
                         LLog.d(TAG, "onMessageEvent resumeVideo");
                     }
                 }
