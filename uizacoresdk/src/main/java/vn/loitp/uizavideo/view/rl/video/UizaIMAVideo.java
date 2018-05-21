@@ -85,7 +85,8 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
-    private Gson gson = new Gson();//TODO remove
+    //TODO remove
+    private Gson gson = new Gson();
     private RelativeLayout rootView;
     private PlayerView playerView;
     private UizaPlayerManager uizaPlayerManager;
@@ -859,7 +860,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailEntity onFail " + e.toString());
-                ((BaseActivity) activity).showDialogError("Cannot get detail of this entity.");
+                ((BaseActivity) activity).showDialogError("Error getDetailEntity\n" + e.getMessage());
             }
         });
     }
@@ -988,9 +989,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
-        if (event != null && event.isConnected()) {
+        if (event != null) {
             LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
-
+            if (event.isConnected()) {
+                if (uizaPlayerManager != null) {
+                    LDialogUtil.clearAll();
+                    uizaPlayerManager.setResumeIfConnectionError();
+                    uizaPlayerManager.setRunnable();
+                    uizaPlayerManager.init();
+                    LLog.d(TAG, "onMessageEvent resumeVideo");
+                }
+            } else {
+                /*if (uizaPlayerManager != null) {
+                    uizaPlayerManager.pauseVideo();
+                }*/
+            }
         }
     }
 }

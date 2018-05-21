@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
@@ -157,8 +158,11 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         this.previewTimeBarLayout = uizaIMAVideo.getPreviewTimeBarLayout();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
-        handler = new Handler();
+        setRunnable();
+    }
 
+    public void setRunnable() {
+        handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -183,7 +187,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
                                 duration = player.getDuration();
                                 percent = (int) (mls * 100 / duration);
                                 s = Math.round(mls / 1000);
-                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
                         }
@@ -498,7 +502,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
-            //LLog.e(TAG, "onPlayerError " + error.toString());
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
@@ -666,5 +669,12 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
     public void setDebugCallback(DebugCallback debugCallback) {
         this.debugCallback = debugCallback;
+    }
+
+    //if player is playing then turn off connection -> player is error -> store current position
+    //then if connection is connected again, resume position
+    public void setResumeIfConnectionError() {
+        LLog.d(TAG, "setResumeIfConnectionError player current position mls: " + mls);
+        contentPosition = (long) mls;
     }
 }

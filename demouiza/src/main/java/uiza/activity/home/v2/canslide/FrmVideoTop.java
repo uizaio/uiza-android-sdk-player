@@ -99,6 +99,18 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        uizaIMAVideo.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        uizaIMAVideo.onStop();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
