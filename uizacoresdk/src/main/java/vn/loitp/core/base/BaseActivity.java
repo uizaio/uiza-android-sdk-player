@@ -22,6 +22,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.data.EventBusData;
 
@@ -98,11 +99,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
-        //TODO maybe in some cases we don't need to check internet connection
-        /*if (!NetworkUtils.hasConnection(this)) {
-            subscriber.onError(new NoConnectionException());
+        if (!LConnectivityUtil.isConnected(activity)) {
+            showDialogError(getString(R.string.err_no_internet));
             return;
-        }*/
+        }
 
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
