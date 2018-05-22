@@ -94,6 +94,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ProgressBar progressBar;
     //play controller
     private RelativeLayout llMid;
+    private View llMidSub;
 
     private PreviewTimeBarLayout previewTimeBarLayout;
     private PreviewTimeBar previewTimeBar;
@@ -364,6 +365,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void findViews() {
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
+        llMidSub = (View) findViewById(R.id.ll_mid_sub);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
@@ -776,6 +778,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LLog.d(TAG, "fuck onStartTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.WHITE);
         exoIvPreview.setVisibility(VISIBLE);
+        if (llMidSub != null) {
+            llMidSub.setVisibility(INVISIBLE);
+        }
     }
 
     @Override
@@ -783,6 +788,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LLog.d(TAG, "fuck`onStopTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.TRANSPARENT);
         exoIvPreview.setVisibility(INVISIBLE);
+        if (llMidSub != null) {
+            llMidSub.setVisibility(VISIBLE);
+        }
     }
     //end on seekbar change
 

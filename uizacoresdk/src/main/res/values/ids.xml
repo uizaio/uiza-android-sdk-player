@@ -2,6 +2,7 @@
 <resources>
     <item name="ll_top" type="id" />
     <item name="ll_mid" type="id" />
+    <item name="ll_mid_sub" type="id" />
     <item name="ll_bottom" type="id" />
     <item name="exo_back_screen" type="id" />
     <item name="tv_title" type="id" />
