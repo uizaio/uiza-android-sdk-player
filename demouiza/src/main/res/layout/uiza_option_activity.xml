@@ -7,19 +7,18 @@
     android:background="@color/primaryColor">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/w_200"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin_55"
         android:contentDescription="@string/app_name"
         android:src="@drawable/uiza_logo_512" />
 
-    <vn.loitp.views.realtimeblurview.RealtimeBlurView
+    <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
         android:id="@+id/blur_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:realtimeBlurRadius="@dimen/round_55"
-        app:realtimeOverlayColor="@color/black_65" />
+        app:realtimeOverlayColor="@color/black_65" />-->
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -32,12 +31,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <!--<ImageView
                 android:layout_width="@dimen/w_80"
                 android:layout_height="@dimen/w_80"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/uiza_logo_512" />
+                android:src="@drawable/uiza_logo_512" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -25,6 +25,7 @@ import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
+import vn.loitp.views.smoothtransition.SwitchAnimationUtil;
 
 public class SplashActivity extends BaseActivity {
     private String currentPlayerId;
@@ -36,7 +37,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 

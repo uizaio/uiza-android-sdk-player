@@ -19,6 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
+import vn.loitp.views.smoothtransition.SwitchAnimationUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
