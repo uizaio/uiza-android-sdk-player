@@ -594,4 +594,12 @@ public class LUIUtil {
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         mlp.setMargins(ConvertUtils.dp2px(dpL), ConvertUtils.dp2px(dpT), ConvertUtils.dp2px(dpR), ConvertUtils.dp2px(dpB));
     }
+
+    public static void setTintSeekbar(SeekBar seekBar, int color) {
+        if (seekBar == null) {
+            return;
+        }
+        seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    }
 }

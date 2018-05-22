@@ -10,7 +10,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
 
+import vn.loitp.core.utilities.LLog;
+
 public class VerticalSeekBar extends SeekBar {
+
+    private final String TAG = getClass().getSimpleName();
 
     public VerticalSeekBar(Context context) {
         super(context);
@@ -53,7 +57,6 @@ public class VerticalSeekBar extends SeekBar {
         if (!isEnabled()) {
             return false;
         }
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
@@ -61,8 +64,8 @@ public class VerticalSeekBar extends SeekBar {
                 setProgress(getMax() - (int) (getMax() * event.getY() / getHeight()));
                 onSizeChanged(getWidth(), getHeight(), 0, 0);
                 break;
-
             case MotionEvent.ACTION_CANCEL:
+                LLog.d(TAG, "ACTION_CANCEL");
                 break;
         }
         return true;

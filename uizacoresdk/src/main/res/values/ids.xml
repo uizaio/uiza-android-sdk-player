@@ -6,6 +6,7 @@
     <item name="exo_back_screen" type="id" />
     <item name="tv_title" type="id" />
     <item name="exo_picture_in_picture" type="id" />
+    <item name="exo_iv_preview" type="id" />
     <item name="exo_volume_seekbar" type="id" />
     <item name="seekbar_volume" type="id" />
     <item name="seekbar_birghtness" type="id" />
