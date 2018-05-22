@@ -68,8 +68,4 @@
     <color name="info_video_gray">#999999</color>
     <color name="info_video_description">#888888</color>
     <color name="fbutton_color_wet_asphalt">#34495e</color>
-
-    <color name="color_text">@android:color/black</color>
-    <color name="color_progress">#fbfbfb</color>
-    <color name="color_background">#4b4b4b</color>
 </resources>

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -839,12 +838,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "onStartTrackingTouch");
+        LLog.d(TAG, "fuck onStartTrackingTouch");
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "`onStopTrackingTouch");
+        LLog.d(TAG, "fuck`onStopTrackingTouch");
     }
     //end on seekbar change
 
