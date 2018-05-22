@@ -767,7 +767,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     exoIvPreview.setImageResource(0);
                     isSetSeekbarColorVolume = false;
                 }
-            }, 1500);
+            }, 1000);
         } else if (seekBar == seekbarBirghtness) {
             if (!isSetSeekbarColorBrightness) {
                 LUIUtil.setTintSeekbar(seekbarBirghtness, Color.WHITE);
@@ -799,18 +799,18 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     exoIvPreview.setImageResource(0);
                     isSetSeekbarColorBrightness = false;
                 }
-            }, 1500);
+            }, 1000);
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "fuck onStartTrackingTouch");
+        LLog.d(TAG, "onStartTrackingTouch");
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "fuck onStopTrackingTouch");
+        LLog.d(TAG, "`onStopTrackingTouch");
     }
     //end on seekbar change
 
