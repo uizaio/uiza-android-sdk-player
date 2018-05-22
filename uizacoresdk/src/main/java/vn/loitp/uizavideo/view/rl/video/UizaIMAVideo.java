@@ -1000,12 +1000,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
+            //LLog.d(TAG, "onMessageEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uizaPlayerManager != null) {
                     LDialogUtil.clearAll();
                     if (uizaPlayerManager.getExoPlaybackException() == null) {
-                        LLog.d(TAG, "onMessageEvent do nothing");
+                        //LLog.d(TAG, "onMessageEvent do nothing");
                     } else {
                         /*uizaPlayerManager.setResumeIfConnectionError();
                         uizaPlayerManager.setRunnable();
@@ -1023,8 +1023,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                             }
                         } else {
                             //auto call onResume() again
+                            //LLog.d(TAG, "onMessageEvent auto call onResume() again");
                         }
-                        //LLog.d(TAG, "onMessageEvent resumeVideo");
                     }
                 }
             } else {
