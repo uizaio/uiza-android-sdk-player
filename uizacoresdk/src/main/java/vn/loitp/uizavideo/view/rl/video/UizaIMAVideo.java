@@ -758,6 +758,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
         if (seekBar == seekbarVolume) {
+            exoIvPreviewBrightness.setImageResource(0);
+
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress);
             if (progress >= 66) {
                 exoIvPreviewVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -791,6 +793,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
             }, 1000);
         } else if (seekBar == seekbarBirghtness) {
+            exoIvPreviewVolume.setImageResource(0);
+
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (progress >= 85) {
                 exoIvPreviewBrightness.setImageResource(R.drawable.ic_brightness_7_black_48dp);
