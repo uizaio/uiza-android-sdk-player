@@ -235,11 +235,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Mpd> mpdList = mGetLinkPlay.getMpd();
+
                 for (Mpd mpd : mpdList) {
                     if (mpd.getUrl() != null) {
                         listLinkPlay.add(mpd.getUrl());
                     }
                 }
+                //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
+
                 LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
@@ -463,6 +466,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 updateButtonVisibilities();
             }
         });
+
+        LLog.d(TAG, "fuck fuck init");
+        isFirstSetProgressVolume = true;
+        isFirstSetProgressBrightness = true;
+        exoIvPreview.setImageResource(0);
+        handlerVolume.removeCallbacksAndMessages(null);
+        handlerBrightness.removeCallbacksAndMessages(null);
 
         //set volume max in first play
         seekbarVolume.setMax(100);
@@ -734,8 +744,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private Handler handlerVolume = new Handler();
     private Handler handlerBrightness = new Handler();
-    private boolean isSetSeekbarColorVolume;
-    private boolean isSetSeekbarColorBrightness;
+    private boolean isFirstSetProgressVolume;
+    private boolean isFirstSetProgressBrightness;
 
     //on seekbar change
     @Override
@@ -744,10 +754,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
         if (seekBar == seekbarVolume) {
-            if (!isSetSeekbarColorVolume) {
-                LUIUtil.setTintSeekbar(seekbarVolume, Color.WHITE);
-                isSetSeekbarColorVolume = true;
-            }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress);
             if (progress >= 66) {
                 exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -758,6 +764,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             uizaPlayerManager.setVolume(((float) progress / 100));
+
+            if (isFirstSetProgressVolume) {
+                LUIUtil.setTintSeekbar(seekbarVolume, Color.TRANSPARENT);
+                exoIvPreview.setImageResource(0);
+                isFirstSetProgressVolume = false;
+            } else {
+                LUIUtil.setTintSeekbar(seekbarVolume, Color.WHITE);
+            }
+
             handlerVolume.removeCallbacksAndMessages(null);
             handlerVolume.postDelayed(new Runnable() {
                 @Override
@@ -765,14 +780,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     //LLog.d(TAG, "seekbarVolume onProgressChanged STOP");
                     LUIUtil.setTintSeekbar(seekbarVolume, Color.TRANSPARENT);
                     exoIvPreview.setImageResource(0);
-                    isSetSeekbarColorVolume = false;
                 }
             }, 1000);
         } else if (seekBar == seekbarBirghtness) {
-            if (!isSetSeekbarColorBrightness) {
-                LUIUtil.setTintSeekbar(seekbarBirghtness, Color.WHITE);
-                isSetSeekbarColorBrightness = true;
-            }
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (progress >= 85) {
                 exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
@@ -790,6 +800,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
             }
             LScreenUtil.setBrightness(activity, progress);
+
+            if (isFirstSetProgressBrightness) {
+                LUIUtil.setTintSeekbar(seekbarBirghtness, Color.TRANSPARENT);
+                exoIvPreview.setImageResource(0);
+                isFirstSetProgressBrightness = false;
+            } else {
+                LUIUtil.setTintSeekbar(seekbarBirghtness, Color.WHITE);
+            }
+
             handlerBrightness.removeCallbacksAndMessages(null);
             handlerBrightness.postDelayed(new Runnable() {
                 @Override
@@ -797,7 +816,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     //LLog.d(TAG, "seekbarVolume onProgressChanged STOP");
                     LUIUtil.setTintSeekbar(seekbarBirghtness, Color.TRANSPARENT);
                     exoIvPreview.setImageResource(0);
-                    isSetSeekbarColorBrightness = false;
                 }
             }, 1000);
         }

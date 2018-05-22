@@ -96,13 +96,12 @@ public class UizaData {
         if (uizaInputList.size() > 2) {
             uizaInputList.remove(0);
         }
-        if (Constants.IS_DEBUG) {
+        /*if (Constants.IS_DEBUG) {
             String x = "";
             for (UizaInput u : uizaInputList) {
                 x += " > " + u.getEntityName();
             }
-            LLog.d(TAG, "fuck " + x);
-        }
+        }*/
     }
 
     public void removeLastUizaInput() {
