@@ -317,7 +317,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         uizaInput.setEntityCover(entityCover);
         uizaInput.setUrlIMAAd(urlIMAAd);
         uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-        UizaData.getInstance().setUizaInput(uizaInput);
+        UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
     }
