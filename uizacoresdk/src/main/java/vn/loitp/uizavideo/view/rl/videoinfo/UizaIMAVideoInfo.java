@@ -30,7 +30,6 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
@@ -130,7 +129,9 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
             public void onClickItemBottom(Item item, int position) {
-                //LLog.d(TAG, "onClick " + position);
+                if (UizaData.getInstance().isSettingPlayer()) {
+                    return;
+                }
                 itemList.clear();
                 notifyViews();
                 if (callback != null) {

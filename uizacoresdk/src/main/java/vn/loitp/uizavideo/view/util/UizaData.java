@@ -192,4 +192,14 @@ public class UizaData {
         this.resolveInfoList = resolveInfoList;
     }
     //end dialog share
+
+    private boolean isSettingPlayer;
+
+    public boolean isSettingPlayer() {
+        return isSettingPlayer;
+    }
+
+    public void setSettingPlayer(boolean settingPlayer) {
+        isSettingPlayer = settingPlayer;
+    }
 }

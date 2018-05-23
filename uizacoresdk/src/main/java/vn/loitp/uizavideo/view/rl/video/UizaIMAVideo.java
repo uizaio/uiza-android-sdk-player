@@ -160,6 +160,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     public void init(Callback callback) {
+        UizaData.getInstance().setSettingPlayer(true);
         if (UizaData.getInstance().getUizaInput().getEntityId() == null || UizaData.getInstance().getUizaInput().getEntityId().isEmpty()) {
             ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
             return;
@@ -223,6 +224,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 if (callback != null) {
                     //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
+                    UizaData.getInstance().setSettingPlayer(false);
                 }
             }
         });
@@ -518,6 +520,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else {
             exoCc.setVisibility(View.VISIBLE);
         }
+        UizaData.getInstance().setSettingPlayer(false);
     }
 
     public void setProgressSeekbar(SeekBar seekbar, int progressSeekbar) {
@@ -540,6 +543,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (uizaPlayerManager != null) {
             uizaPlayerManager.release();
         }
+        UizaData.getInstance().setSettingPlayer(false);
     }
 
     public void onResume() {

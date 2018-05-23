@@ -141,6 +141,9 @@ public class UizaDialogListEntityRelation extends Dialog {
             playListAdapter = new PlayListAdapter(activity, itemList, new PlayListCallback() {
                 @Override
                 public void onClickItem(Item item, int position) {
+                    if (UizaData.getInstance().isSettingPlayer()) {
+                        return;
+                    }
                     dismiss();
                     if (playListCallback != null) {
                         playListCallback.onClickItem(item, position);
