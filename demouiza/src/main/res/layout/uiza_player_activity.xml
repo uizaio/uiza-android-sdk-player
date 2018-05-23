@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vn.loitp.views.layout.swipeback.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeBackLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:directionMode="top"
-    app:isSwipeFromEdge="false"
-    app:maskAlpha="125"
-    app:swipeBackFactor="0.5">
+    android:animateLayoutChanges="true"
+    android:background="@color/primaryColor">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/root_view"
+    <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo
+        android:id="@id/uiza_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo
+        android:id="@+id/uiza_video_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:background="@color/primaryColor">
+        android:layout_below="@+id/uiza_video" />
 
-        <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo
-            android:id="@id/uiza_video"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo
-            android:id="@+id/uiza_video_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/uiza_video" />
-
-    </RelativeLayout>
-</vn.loitp.views.layout.swipeback.SwipeBackLayout>
+</RelativeLayout>
