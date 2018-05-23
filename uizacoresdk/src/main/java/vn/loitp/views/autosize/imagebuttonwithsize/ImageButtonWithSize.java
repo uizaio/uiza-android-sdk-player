@@ -74,7 +74,7 @@ public class ImageButtonWithSize extends ImageButton {
         } else {
             size = screenWidth / getRatioPort();
         }
-        LLog.d(TAG, "onMeasure: " + size + "x" + size);
+        //LLog.d(TAG, "onMeasure: " + size + "x" + size);
         setMeasuredDimension(size, size);
         isSetSize = true;
     }

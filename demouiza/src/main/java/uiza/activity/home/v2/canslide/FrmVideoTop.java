@@ -337,6 +337,9 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        if (UizaData.getInstance().isSettingPlayer()) {
+            return;
+        }
         if (entityId == null || entityId.isEmpty()) {
             showDialogMsg("Entity ID cannot be null or empty");
             return;
