@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vn.loitp.views.layout.swipeback.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeBackLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:directionMode="right"
-    app:isSwipeFromEdge="false"
-    app:maskAlpha="125"
-    app:swipeBackFactor="0.5">
+    android:background="@color/primaryColor">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/root_view"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/primaryColor">
+        android:layout_height="match_parent">
 
-        <android.support.v4.widget.DrawerLayout
-            android:id="@+id/drawerLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:id="@+id/fragment_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <uiza.activity.home.view.UizaActionBar
-                    android:id="@+id/uiza_action_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize" />
-
-            </RelativeLayout>
-
             <FrameLayout
-                android:layout_width="@dimen/w_250"
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <uiza.activity.home.view.UizaActionBar
+                android:id="@+id/uiza_action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="@dimen/w_250"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@color/black_65">
+
+            <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
+                android:id="@+id/blur_view"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:background="@color/black_65">
+                app:realtimeBlurRadius="@dimen/round_55"
+                app:realtimeOverlayColor="@color/black_5" />-->
 
-                <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
-                    android:id="@+id/blur_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:realtimeBlurRadius="@dimen/round_55"
-                    app:realtimeOverlayColor="@color/black_5" />-->
-
-                <vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView
-                    android:id="@+id/drawerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="none" />
-            </FrameLayout>
-        </android.support.v4.widget.DrawerLayout>
-    </RelativeLayout>
-</vn.loitp.views.layout.swipeback.SwipeBackLayout>
+            <vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView
+                android:id="@+id/drawerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+        </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>
