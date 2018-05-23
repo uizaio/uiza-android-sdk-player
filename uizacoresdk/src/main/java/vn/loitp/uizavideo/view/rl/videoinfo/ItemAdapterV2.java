@@ -22,6 +22,7 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 
@@ -84,6 +85,10 @@ public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHo
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isClicked) {
+                    return;
+                }
+                isClicked = true;
                 if (callback != null) {
                     LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
                         @Override
@@ -94,6 +99,7 @@ public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHo
                         @Override
                         public void onEnd() {
                             callback.onClickItemBottom(item, position);
+                            isClicked = false;
                         }
 
                         @Override
@@ -115,6 +121,8 @@ public class ItemAdapterV2 extends RecyclerView.Adapter<ItemAdapterV2.ItemViewHo
             }
         }
     }
+
+    private boolean isClicked;
 
     @Override
     public int getItemCount() {

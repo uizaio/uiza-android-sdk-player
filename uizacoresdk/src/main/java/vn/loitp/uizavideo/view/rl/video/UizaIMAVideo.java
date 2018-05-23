@@ -431,7 +431,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         this.progressCallback = progressCallback;
     }
 
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        LLog.d(TAG, "fuck initData");
         uizaPlayerManager = new UizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -775,7 +776,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "fuck onStartTrackingTouch");
+        LLog.d(TAG, "onStartTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.WHITE);
         exoIvPreview.setVisibility(VISIBLE);
         if (llMidSub != null) {
@@ -785,7 +786,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "fuck`onStopTrackingTouch");
+        LLog.d(TAG, "onStopTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.TRANSPARENT);
         exoIvPreview.setVisibility(INVISIBLE);
         if (llMidSub != null) {
