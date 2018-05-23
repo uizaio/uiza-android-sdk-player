@@ -51,8 +51,8 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
     private void login() {
         LToast.show(getActivity(), "Click");
         /*LSService service = RestClientV2.createService(LSService.class);
-        String id = "fuck";
-        String pw = "fuck";
+        String id = "a";
+        String pw = "a";
         subscribe(service.login(id, pw), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {

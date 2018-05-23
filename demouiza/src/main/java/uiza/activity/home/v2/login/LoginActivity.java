@@ -55,8 +55,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void login() {
         LToast.show(activity, "Click");
         /*LSService service = RestClientV2.createService(LSService.class);
-        String id = "fuck";
-        String pw = "fuck";
+        String id = "a";
+        String pw = "a";
         subscribe(service.login(id, pw), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
