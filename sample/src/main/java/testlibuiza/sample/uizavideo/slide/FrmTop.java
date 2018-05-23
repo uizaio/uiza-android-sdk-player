@@ -303,7 +303,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         uizaInput.setUrlIMAAd(urlIMAAd);
         uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
-        UizaData.getInstance().setUizaInput(uizaInput, false);
+        UizaData.getInstance().setUizaInput(uizaInput, false  );
 
         uizaIMAVideo.init(this);
     }
