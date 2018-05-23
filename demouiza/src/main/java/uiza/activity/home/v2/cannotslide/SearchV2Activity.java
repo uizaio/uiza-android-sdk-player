@@ -277,6 +277,10 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
     }
 
     private void onClickVideo(Item item, int position) {
+        if (UizaData.getInstance().isSettingPlayer()) {
+            return;
+        }
+
         UizaData.getInstance().clear();
 
         LPref.setClickedPip(activity, false);

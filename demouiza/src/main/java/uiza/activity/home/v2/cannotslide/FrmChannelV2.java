@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -241,6 +241,9 @@ public class FrmChannelV2 extends BaseFragment {
     }
 
     private void onClickVideo(Item item, int position) {
+        if (UizaData.getInstance().isSettingPlayer()) {
+            return;
+        }
         LPref.setClickedPip(getActivity(), false);
         LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
