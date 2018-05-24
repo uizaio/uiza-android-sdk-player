@@ -65,6 +65,8 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
@@ -149,12 +151,32 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
+
         userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
-        manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
+
+        //OPTION 1 OK
+        /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
                 context,
                 userAgent,
-                new DefaultBandwidthMeter());
+                new DefaultBandwidthMeter());*/
+
+        //OPTION 1 PLAY LINK REDIRECT
+        // Default parameters, except allowCrossProtocolRedirects is true
+        manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
+                userAgent,
+                null /* listener */,
+                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                true /* allowCrossProtocolRedirects */
+        );
+        mediaDataSourceFactory = new DefaultDataSourceFactory(
+                context,
+                null /* listener */,
+                manifestDataSourceFactory
+        );
+
+        //SETUP ORTHER
         this.imageView = uizaIMAVideo.getIvThumbnail();
         this.previewTimeBarLayout = uizaIMAVideo.getPreviewTimeBarLayout();
         this.thumbnailsUrl = thumbnailsUrl;
