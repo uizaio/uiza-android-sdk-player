@@ -6,6 +6,7 @@ package vn.loitp.uizavideo.view.rl.video;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -217,10 +218,18 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //khong co thi bao loi
     private void handleErrorNoData() {
         removeVideoCover(true);
-        LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), false, new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), true, new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
-                //LLog.d(TAG, "handleErrorNoData");
+                if (callback != null) {
+                    //UizaData.getInstance().removeLastUizaInput();
+                    callback.isInitResult(false, null, null);
+                    UizaData.getInstance().setSettingPlayer(false);
+                }
+            }
+        }, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
                 if (callback != null) {
                     //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);

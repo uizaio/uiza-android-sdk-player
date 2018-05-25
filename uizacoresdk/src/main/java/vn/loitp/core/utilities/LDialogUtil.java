@@ -38,7 +38,7 @@ public class LDialogUtil {
         public void onClick1();
     }
 
-    public static void showDialog1(Context context, String title, String msg, String button1, boolean isCancelAble, final Callback1 callback1) {
+    public static void showDialog1(Context context, String title, String msg, String button1, boolean isCancelAble, final Callback1 callback1, DialogInterface.OnCancelListener onCancelListener) {
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {
@@ -48,6 +48,7 @@ public class LDialogUtil {
         builder.setPositiveButton(button1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
                 if (callback1 != null) {
                     callback1.onClick1();
                 }
@@ -55,6 +56,7 @@ public class LDialogUtil {
         });
         AlertDialog dialog = builder.create();
         dialog.setCancelable(isCancelAble);
+        dialog.setOnCancelListener(onCancelListener);
         dialog.show();
         int color = ContextCompat.getColor(context, R.color.colorPrimary);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
@@ -62,7 +64,7 @@ public class LDialogUtil {
     }
 
     public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
-        showDialog1(context, title, msg, button1, false, callback1);
+        showDialog1(context, title, msg, button1, false, callback1, null);
     }
 
     public interface Callback2 {

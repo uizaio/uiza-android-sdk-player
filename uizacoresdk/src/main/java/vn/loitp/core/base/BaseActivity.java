@@ -120,7 +120,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        LActivityUtil.tranOut(activity);
+        if (activity != null) {
+            LActivityUtil.tranOut(activity);
+        }
     }
 
     //private TextView tvConnectStt;
@@ -234,6 +236,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             public void onClick1() {
                 onBackPressed();
             }
-        });
+        }, null);
     }
 }

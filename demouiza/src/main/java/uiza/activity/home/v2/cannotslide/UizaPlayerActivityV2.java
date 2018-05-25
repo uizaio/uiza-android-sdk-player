@@ -302,7 +302,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
                 LLog.d(TAG, "isInitResult prevUizaInput null -> exit");
-                activity.onBackPressed();
+                if (activity != null) {
+                    activity.onBackPressed();
+                }
             } else {
                 LLog.d(TAG, "isInitResult prevUizaInput: " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
