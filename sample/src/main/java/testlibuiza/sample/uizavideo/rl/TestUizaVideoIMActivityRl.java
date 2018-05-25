@@ -24,6 +24,7 @@ import java.util.List;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -308,7 +309,21 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     private void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogOne("Entity ID cannot be null or empty");
+            LDialogUtil.showDialog1(activity, "Entity ID cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
         UizaInput uizaInput = new UizaInput();

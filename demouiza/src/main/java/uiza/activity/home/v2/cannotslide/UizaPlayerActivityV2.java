@@ -25,6 +25,7 @@ import uiza.R;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -67,7 +68,21 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
         }
         if (entityId == null || entityId.isEmpty()) {
-            showDialogError("entityId == null || entityId.isEmpty()");
+            LDialogUtil.showDialog1(activity, "Entity cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
 
@@ -356,7 +371,21 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     private void setupVideo(String entityId, String entityTitle, String entityCover, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogOne("Entity ID cannot be null or empty");
+            LDialogUtil.showDialog1(activity, "Entity Id cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
         //LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);

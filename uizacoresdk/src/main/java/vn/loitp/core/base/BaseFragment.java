@@ -62,31 +62,6 @@ public abstract class BaseFragment extends Fragment {
         this.context = context;
     }
 
-    protected void handleException(Throwable throwable) {
-        if (throwable == null) {
-            return;
-        }
-        showDialogError(throwable.getMessage());
-    }
-
-    protected void showDialogError(String errMsg) {
-        LDialogUtil.showDialog1(getActivity(), getString(R.string.warning), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //getActivity().onBackPressed();
-            }
-        });
-    }
-
-    protected void showDialogMsg(String msg) {
-        LDialogUtil.showDialog1(getActivity(), getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //getActivity().onBackPressed();
-            }
-        });
-    }
-
     public interface FragmentCallback {
         public void onViewCreated();
     }

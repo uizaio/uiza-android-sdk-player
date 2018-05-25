@@ -1,19 +1,15 @@
 package vn.loitp.core.utilities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.views.dialog.iosdialog.iOSDialog;
 
 /**
  * Created by www.muathu@gmail.com on 12/29/2017.
@@ -29,16 +25,22 @@ public class LDialogUtil {
         }
         for (int i = 0; i < alertDialogList.size(); i++) {
             if (alertDialogList.get(i) != null) {
-                alertDialogList.get(i).cancel();
+                hide(alertDialogList.get(i));
             }
         }
     }
 
     public interface Callback1 {
         public void onClick1();
+
+        public void onCancel();
     }
 
-    public static void showDialog1(Context context, String title, String msg, String button1, boolean isCancelAble, final Callback1 callback1, DialogInterface.OnCancelListener onCancelListener) {
+    public static void showDialog1(Context context, String msg, Callback1 callback1) {
+        showDialog1(context, context.getString(R.string.warning), msg, context.getString(R.string.confirm), callback1);
+    }
+
+    public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {
@@ -55,19 +57,25 @@ public class LDialogUtil {
             }
         });
         AlertDialog dialog = builder.create();
-        dialog.setCancelable(isCancelAble);
-        dialog.setOnCancelListener(onCancelListener);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (callback1 != null) {
+                    callback1.onCancel();
+                }
+            }
+        });
         dialog.show();
         int color = ContextCompat.getColor(context, R.color.colorPrimary);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         alertDialogList.add(dialog);
     }
 
-    public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
+    /*public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
         showDialog1(context, title, msg, button1, false, callback1, null);
-    }
+    }*/
 
-    public interface Callback2 {
+    /*public interface Callback2 {
         public void onClick1();
 
         public void onClick2();
@@ -211,7 +219,7 @@ public class LDialogUtil {
         progressDialog.show();
         alertDialogList.add(progressDialog);
         return progressDialog;
-    }
+    }*/
 
     public static void show(Dialog dialog) {
         if (dialog != null && !dialog.isShowing()) {
@@ -225,7 +233,7 @@ public class LDialogUtil {
         }
     }
 
-    public static void showIOSDialog1(Activity activity, String title, String subtitle, String label1, boolean isBold, final Callback1 callback1) {
+    /*public static void showIOSDialog1(Activity activity, String title, String subtitle, String label1, boolean isBold, final Callback1 callback1) {
         final iOSDialog iOSDialog = new iOSDialog(activity);
         iOSDialog.setTitle(title);
         iOSDialog.setSubtitle(subtitle);
@@ -269,5 +277,5 @@ public class LDialogUtil {
             }
         });
         iOSDialog.show();
-    }
+    }*/
 }

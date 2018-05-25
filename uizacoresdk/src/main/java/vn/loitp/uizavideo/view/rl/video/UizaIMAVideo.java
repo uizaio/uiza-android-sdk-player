@@ -163,7 +163,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     public void init(Callback callback) {
         UizaData.getInstance().setSettingPlayer(true);
         if (UizaData.getInstance().getUizaInput().getEntityId() == null || UizaData.getInstance().getUizaInput().getEntityId().isEmpty()) {
-            ((BaseActivity) activity).showDialogOne("entityId cannot be null or empty", true);
+            LDialogUtil.showDialog1(activity, "Entity cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
 
@@ -218,7 +232,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //khong co thi bao loi
     private void handleErrorNoData() {
         removeVideoCover(true);
-        LDialogUtil.showDialog1(activity, activity.getString(R.string.warning), activity.getString(R.string.has_no_linkplay), activity.getString(R.string.confirm), true, new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 if (callback != null) {
@@ -227,9 +241,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                     UizaData.getInstance().setSettingPlayer(false);
                 }
             }
-        }, new DialogInterface.OnCancelListener() {
+
             @Override
-            public void onCancel(DialogInterface dialog) {
+            public void onCancel() {
                 if (callback != null) {
                     //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
@@ -263,9 +277,37 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 if (countTryLinkPlayError >= listLinkPlay.size()) {
                     if (LConnectivityUtil.isConnected(activity)) {
-                        activity.showDialogError("Đã thử play tất cả các link nhưng đều không thành công");
+                        LDialogUtil.showDialog1(activity, "Đã thử play tất cả các link nhưng đều không thành công", new LDialogUtil.Callback1() {
+                            @Override
+                            public void onClick1() {
+                                if (activity != null) {
+                                    activity.onBackPressed();
+                                }
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                if (activity != null) {
+                                    activity.onBackPressed();
+                                }
+                            }
+                        });
                     } else {
-                        activity.showDialogError(activity.getString(R.string.err_no_internet));
+                        LDialogUtil.showDialog1(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                            @Override
+                            public void onClick1() {
+                                /*if (activity != null) {
+                                    activity.onBackPressed();
+                                }*/
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                /*if (activity != null) {
+                                    activity.onBackPressed();
+                                }*/
+                            }
+                        });
                     }
                     return;
                 }
@@ -277,7 +319,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
             } else {
-                ((BaseActivity) activity).showDialogOne(activity.getString(R.string.err_setup), true);
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+                });
                 //LLog.d(TAG, "checkToSetUp else");
             }
         }
@@ -555,6 +611,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             uizaPlayerManager.release();
         }
         UizaData.getInstance().setSettingPlayer(false);
+        LDialogUtil.clearAll();
     }
 
     public void onResume() {
@@ -862,7 +919,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaService service = RestClientV2.createService(UizaService.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
-            ((BaseActivity) activity).showDialogError("Error auth == null || auth.getAppId() == null");
+            LDialogUtil.showDialog1(activity, "Error: auth or appId is null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
         String appId = auth.getData().getAppId();
@@ -879,7 +950,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                activity.showDialogError("Entity này không có linkplay");
+                LDialogUtil.showDialog1(activity, "Entity này không có linkplay", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+                });
             }
         });
     }
@@ -904,7 +989,21 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailEntity onFail " + e.toString());
-                ((BaseActivity) activity).showDialogError("Error getDetailEntity\n" + e.getMessage());
+                LDialogUtil.showDialog1(activity, "Error getDetailEntity\n" + e.getMessage(), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+                });
             }
         });
     }

@@ -33,6 +33,7 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
@@ -341,7 +342,21 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
             return;
         }
         if (entityId == null || entityId.isEmpty()) {
-            showDialogMsg("Entity ID cannot be null or empty");
+            LDialogUtil.showDialog1(getActivity(), "Entity Id cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (getActivity() != null) {
+                        getActivity().onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (getActivity() != null) {
+                        getActivity().onBackPressed();
+                    }
+                }
+            });
             return;
         }
         UizaInput uizaInput = new UizaInput();

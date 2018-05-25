@@ -24,6 +24,7 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -244,7 +245,21 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                ((BaseActivity) activity).showDialogError("Lỗi không tải được danh sách entity liên quan");
+                LDialogUtil.showDialog1(activity, "Lỗi không tải được danh sách entity liên quan", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+                });
                 LUIUtil.hideProgressBar(progressBar);
             }
         });

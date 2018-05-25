@@ -19,7 +19,6 @@ import rx.subscriptions.CompositeSubscription;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.views.smoothtransition.SwitchAnimationUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -89,6 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+        LDialogUtil.clearAll();
         super.onDestroy();
     }
 
@@ -214,28 +214,4 @@ public abstract class BaseActivity extends AppCompatActivity {
             showTvNoConnect();
         }
     }*/
-
-    public void showDialogOne(String msg) {
-        showDialogOne(msg, false);
-    }
-
-    public void showDialogOne(String msg, final boolean isExit) {
-        LDialogUtil.showDialog1(activity, getString(R.string.warning), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                if (isExit) {
-                    activity.onBackPressed();
-                }
-            }
-        });
-    }
-
-    public void showDialogError(String msg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.err), msg, getString(R.string.confirm), false, new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-        }, null);
-    }
 }

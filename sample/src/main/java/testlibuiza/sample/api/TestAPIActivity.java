@@ -11,6 +11,7 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
@@ -166,7 +167,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                showDialogError("auth onFail "+e.getMessage());
+                showDialogError("auth onFail " + e.getMessage());
             }
         });
     }
@@ -182,7 +183,25 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
-                showDialogError("checkToken onFail "+e.getMessage());
+                showDialogError("checkToken onFail " + e.getMessage());
+            }
+        });
+    }
+
+    private void showDialogError(String msg) {
+        LDialogUtil.showDialog1(activity, msg, new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                /*if (activity != null) {
+                    activity.onBackPressed();
+                }*/
+            }
+
+            @Override
+            public void onCancel() {
+                /*if (activity != null) {
+                    activity.onBackPressed();
+                }*/
             }
         });
     }
@@ -205,7 +224,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "listAllMetadataV2 onFail " + e.getMessage());
-                showDialogError("listAllMetadataV2 onFail "+e.getMessage());
+                showDialogError("listAllMetadataV2 onFail " + e.getMessage());
             }
         });
     }
@@ -225,7 +244,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("searchEntityV2 onFail "+e.getMessage());
+                showDialogError("searchEntityV2 onFail " + e.getMessage());
             }
         });
     }
@@ -246,7 +265,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("listAllEntityV2 onFail "+e.getMessage());
+                showDialogError("listAllEntityV2 onFail " + e.getMessage());
             }
         });
     }
@@ -263,7 +282,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("getDetailEntityV2 onFail "+e.getMessage());
+                showDialogError("getDetailEntityV2 onFail " + e.getMessage());
             }
         });
     }
@@ -280,7 +299,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("getListAllEntityRalationV2 onFail "+e.getMessage());
+                showDialogError("getListAllEntityRalationV2 onFail " + e.getMessage());
             }
         });
     }
@@ -304,7 +323,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("getLinkPlayV2 onFail "+e.getMessage());
+                showDialogError("getLinkPlayV2 onFail " + e.getMessage());
             }
         });
     }
@@ -329,7 +348,7 @@ public class TestAPIActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Throwable e) {
-                showDialogError("track onFail "+e.getMessage());
+                showDialogError("track onFail " + e.getMessage());
             }
         });
     }

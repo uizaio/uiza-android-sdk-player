@@ -26,6 +26,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -197,7 +198,21 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             public void onSuccess(ListAllMetadata listAllMetadata) {
                 LLog.d(TAG, "getListAllMetadata onSuccess " + LSApplication.getInstance().getGson().toJson(listAllMetadata));
                 if (listAllMetadata == null) {
-                    showDialogError(getString(R.string.err_unknow));
+                    LDialogUtil.showDialog1(getActivity(), getString(R.string.err_unknow), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            if (getActivity() != null) {
+                                getActivity().onBackPressed();
+                            }
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            if (getActivity() != null) {
+                                getActivity().onBackPressed();
+                            }
+                        }
+                    });
                     return;
                 }
                 genListDrawerLayout(listAllMetadata);
@@ -206,7 +221,21 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                handleException(e);
+                LDialogUtil.showDialog1(getActivity(), "getListAllMetadata onFail " + e.getMessage(), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (getActivity() != null) {
+                            getActivity().onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (getActivity() != null) {
+                            getActivity().onBackPressed();
+                        }
+                    }
+                });
                 genListDrawerLayout(null);
             }
         });
