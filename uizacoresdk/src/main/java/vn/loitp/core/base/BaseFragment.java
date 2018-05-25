@@ -36,10 +36,11 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+        LDialogUtil.clearAll();
+        super.onDestroyView();
     }
 
     @SuppressWarnings("unchecked")
