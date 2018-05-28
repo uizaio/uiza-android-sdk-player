@@ -10,9 +10,9 @@
     <string name="ad_tag_url"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=]]></string>
 
     <string name="enable_random_adaptation">Enable random adaptation</string>
-    <string name="video">Video</string>
-    <string name="audio">Audio</string>
-    <string name="text">Subtitle</string>
+    <string name="video">Video Setting</string>
+    <string name="audio">Audio Setting</string>
+    <string name="text">Subtitle Setting</string>
     <string name="selection_disabled">Disabled</string>
     <string name="selection_default">Default</string>
 
@@ -44,4 +44,7 @@
     <string name="auth_or_app_id_is_null_or_empty">Error: auth or appId is null or empty</string>
     <string name="no_link_play">This entity has no linkplay</string>
     <string name="cannot_get_detail_entity">Cannot get detail of this entity</string>
+    <string name="no_caption">No captions are available for this video</string>
+    <string name="related_list">Related List</string>
+    <string name="share_via">Share via</string>
 </resources>

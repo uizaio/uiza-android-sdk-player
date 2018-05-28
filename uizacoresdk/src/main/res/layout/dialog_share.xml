@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Chia sẻ qua: "
+            android:text="@string/share_via"
             android:textColor="@color/Black"
             android:textSize="@dimen/txt_18"
             android:textStyle="bold" />

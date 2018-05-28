@@ -17,9 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -71,6 +69,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.UizaPlayerManager;
+import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
@@ -584,14 +583,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
-        if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
-            //LLog.d(TAG, "exoCc GONE");
+        /*if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
             exoCc.setColorTint(ContextCompat.getColor(activity, R.color.Gray));
             exoCc.setClickable(false);
         } else {
-            //LLog.d(TAG, "exoCc VISIBLE");
             exoCc.setClickable(true);
-        }
+        }*/
         UizaData.getInstance().setSettingPlayer(false);
     }
 
@@ -701,9 +698,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 UizaUtil.getBtVideo(debugRootView).performClick();
             }
         } else if (v == exoCc) {
-            View view = UizaUtil.getBtText(debugRootView);
-            if (view != null) {
-                UizaUtil.getBtText(debugRootView).performClick();
+            if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
+                UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
+                UizaUtil.showUizaDialog(activity, uizaDialogInfo);
+            } else {
+                View view = UizaUtil.getBtText(debugRootView);
+                if (view != null) {
+                    UizaUtil.getBtText(debugRootView).performClick();
+                }
             }
         } else if (v == exoPlaylist) {
             UizaDialogListEntityRelation uizaDialogListEntityRelation = new UizaDialogListEntityRelation(activity, isLandscape, new PlayListCallback() {

@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.RendererCapabilities;
@@ -112,7 +113,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
                 //.setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
-                .setView(buildView(activity));
+                .setView(buildView(activity, title + ""));
         //.setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
         //.setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
 
@@ -123,12 +124,15 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
     private AlertDialog dialog;
 
     @SuppressLint("InflateParams")
-    private View buildView(Activity activity) {
+    private View buildView(Activity activity, String msg) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
 
         btExit = (ImageButton) view.findViewById(R.id.bt_exit);
         btExit.setOnClickListener(this);
+
+        TextView tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        tvMsg.setText(msg);
 
         ScrollView scrollView = (ScrollView) view.findViewById(R.id.scroll_view);
         LUIUtil.setPullLikeIOSVertical(scrollView);

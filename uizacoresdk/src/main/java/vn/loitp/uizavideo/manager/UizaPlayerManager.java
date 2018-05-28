@@ -75,7 +75,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
