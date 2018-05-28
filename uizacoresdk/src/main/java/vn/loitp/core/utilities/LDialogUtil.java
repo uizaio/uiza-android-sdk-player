@@ -50,7 +50,8 @@ public class LDialogUtil {
         builder.setPositiveButton(button1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                //LLog.d(TAG, "setPositiveButton");
+                dialog.dismiss();
                 if (callback1 != null) {
                     callback1.onClick1();
                 }
@@ -60,6 +61,7 @@ public class LDialogUtil {
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                //LLog.d(TAG, "setOnCancelListener");
                 if (callback1 != null) {
                     callback1.onCancel();
                 }

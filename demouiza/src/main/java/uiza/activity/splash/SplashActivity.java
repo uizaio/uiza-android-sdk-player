@@ -185,7 +185,6 @@ public class SplashActivity extends BaseActivity {
 
     private void goToHome() {
         LLog.d(TAG, "goToHome token: " + token);
-
         if (token == null) {
             LDialogUtil.showDialog1(activity, "Token cannot be null or empty", new LDialogUtil.Callback1() {
                 @Override

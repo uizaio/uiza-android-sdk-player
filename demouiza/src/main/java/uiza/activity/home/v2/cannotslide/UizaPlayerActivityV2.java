@@ -22,7 +22,6 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
