@@ -283,7 +283,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
-                LLog.d(TAG, "prevUizaInput == null -> exit");
+                LLog.d(TAG, "isInitSuccess prevUizaInput == null -> exit");
                 ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
                     @Override
@@ -292,9 +292,9 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
                     }
                 });
             } else {
-                LLog.d(TAG, "prevUizaInput " + prevUizaInput.getEntityName());
+                LLog.d(TAG, "isInitSuccess prevUizaInput " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
-                LLog.d(TAG, "isPlayPrev: " + isPlayPrev);
+                LLog.d(TAG, "isInitSuccess isPlayPrev: " + isPlayPrev);
                 if (isPlayPrev) {
                     setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
@@ -344,11 +344,13 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        LLog.d(TAG, "setupVideo");
         if (UizaData.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;
         }
         if (entityId == null || entityId.isEmpty()) {
-            LDialogUtil.showDialog1(getActivity(), "Entity Id cannot be null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(getActivity(), getActivity().getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     if (getActivity() != null) {
@@ -374,6 +376,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         UizaData.getInstance().setUizaInput(uizaInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
         //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
+        LLog.d(TAG, "setupVideo init with entityId " + entityId);
         uizaIMAVideo.init(this);
     }
 }

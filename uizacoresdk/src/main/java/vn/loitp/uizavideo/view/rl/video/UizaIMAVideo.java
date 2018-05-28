@@ -241,13 +241,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //neu co thi se play
     //khong co thi bao loi
     private void handleErrorNoData() {
+        LLog.e(TAG, "handleErrorNoData");
         removeVideoCover(true);
         LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
+                LLog.e(TAG, "handleErrorNoData onClick1");
                 if (callback != null) {
-                    callback.isInitResult(false, null, null);
                     UizaData.getInstance().setSettingPlayer(false);
+                    callback.isInitResult(false, null, null);
 
                     //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
@@ -255,9 +257,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onCancel() {
+                LLog.e(TAG, "handleErrorNoData onCancel");
                 if (callback != null) {
-                    callback.isInitResult(false, null, null);
                     UizaData.getInstance().setSettingPlayer(false);
+                    callback.isInitResult(false, null, null);
 
                     //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
