@@ -66,7 +66,6 @@ public class VerticalSeekBar extends SeekBar {
             case MotionEvent.ACTION_UP:
                 myListener.onStopTrackingTouch(this);
                 break;
-
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
