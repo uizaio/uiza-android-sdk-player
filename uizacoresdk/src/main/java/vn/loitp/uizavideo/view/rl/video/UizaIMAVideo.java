@@ -728,7 +728,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             isExoShareClicked = true;
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
-            if (mappedTrackInfo != null) {
+            if (mappedTrackInfo != null && uizaPlayerManager.getTrackSelectionHelper() != null) {
                 uizaPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         }
