@@ -24,9 +24,11 @@ import java.util.List;
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -353,6 +355,16 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         //LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
         if (isInitSuccess) {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onError(Exception e) {
+        if (e != null) {
+            LLog.e(TAG, "onError " + e.toString());
+        }
+        if (activity != null) {
             onBackPressed();
         }
     }

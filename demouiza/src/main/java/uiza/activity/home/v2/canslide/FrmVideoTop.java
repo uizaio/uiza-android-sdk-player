@@ -335,6 +335,14 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
+    @Override
+    public void onError(Exception e) {
+        if (e != null) {
+            LLog.e(TAG, "onError " + e.toString());
+        }
+        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+    }
+
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (UizaData.getInstance().isSettingPlayer()) {
             return;

@@ -6,7 +6,6 @@ package vn.loitp.uizavideo.view.rl.video;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -160,22 +159,33 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         }
     }
 
+    private boolean isHasError;
+
+    private void handleError(Exception e) {
+        if (isHasError) {
+            LLog.e(TAG, "handleError isHasError=true -> return");
+            return;
+        }
+        LLog.e(TAG, "handleError " + e.toString());
+        isHasError = true;
+        if (callback != null) {
+            callback.onError(e);
+        }
+    }
+
     public void init(Callback callback) {
         UizaData.getInstance().setSettingPlayer(true);
+        isHasError = false;
         if (UizaData.getInstance().getUizaInput().getEntityId() == null || UizaData.getInstance().getUizaInput().getEntityId().isEmpty()) {
-            LDialogUtil.showDialog1(activity, "Entity cannot be null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
+                    handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
                 }
 
                 @Override
                 public void onCancel() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
+                    handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
                 }
             });
             return;
@@ -236,18 +246,20 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onClick1() {
                 if (callback != null) {
-                    //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
                     UizaData.getInstance().setSettingPlayer(false);
+
+                    //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
 
             @Override
             public void onCancel() {
                 if (callback != null) {
-                    //UizaData.getInstance().removeLastUizaInput();
                     callback.isInitResult(false, null, null);
                     UizaData.getInstance().setSettingPlayer(false);
+
+                    //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
         });
@@ -277,35 +289,27 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 if (countTryLinkPlayError >= listLinkPlay.size()) {
                     if (LConnectivityUtil.isConnected(activity)) {
-                        LDialogUtil.showDialog1(activity, "Đã thử play tất cả các link nhưng đều không thành công", new LDialogUtil.Callback1() {
+                        LDialogUtil.showDialog1(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
-                                if (activity != null) {
-                                    activity.onBackPressed();
-                                }
+                                handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
                             }
 
                             @Override
                             public void onCancel() {
-                                if (activity != null) {
-                                    activity.onBackPressed();
-                                }
+                                handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
                             }
                         });
                     } else {
                         LDialogUtil.showDialog1(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
-                                /*if (activity != null) {
-                                    activity.onBackPressed();
-                                }*/
+                                handleError(new Exception(activity.getString(R.string.err_no_internet)));
                             }
 
                             @Override
                             public void onCancel() {
-                                /*if (activity != null) {
-                                    activity.onBackPressed();
-                                }*/
+                                handleError(new Exception(activity.getString(R.string.err_no_internet)));
                             }
                         });
                     }
@@ -322,16 +326,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 LDialogUtil.showDialog1(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.err_setup)));
                     }
 
                     @Override
                     public void onCancel() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.err_setup)));
                     }
                 });
                 //LLog.d(TAG, "checkToSetUp else");
@@ -919,19 +919,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaService service = RestClientV2.createService(UizaService.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
-            LDialogUtil.showDialog1(activity, "Error: auth or appId is null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
+                    handleError(new Exception(activity.getString(R.string.auth_or_app_id_is_null_or_empty)));
                 }
 
                 @Override
                 public void onCancel() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
+                    handleError(new Exception(activity.getString(R.string.auth_or_app_id_is_null_or_empty)));
                 }
             });
             return;
@@ -950,19 +946,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                LDialogUtil.showDialog1(activity, "Entity này không có linkplay", new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
                     }
 
                     @Override
                     public void onCancel() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
                     }
                 });
             }
@@ -989,19 +981,15 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailEntity onFail " + e.toString());
-                LDialogUtil.showDialog1(activity, "Error getDetailEntity\n" + e.getMessage(), new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
                     }
 
                     @Override
                     public void onCancel() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
                     }
                 });
             }
@@ -1023,6 +1011,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         //when pip video is inited success
         public void onClickPipVideoInitSuccess(boolean isInitSuccess);
+
+        //when uiimavideo had an error
+        public void onError(Exception e);
     }
 
     private Callback callback;
