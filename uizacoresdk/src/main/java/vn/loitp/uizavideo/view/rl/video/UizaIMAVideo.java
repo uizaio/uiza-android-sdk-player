@@ -347,18 +347,16 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             countTryLinkPlayError = 0;
 
             ivVideoCover.setVisibility(VISIBLE);
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            //ivVideoCover.setBackgroundColor(Color.RED);
-            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+            ivVideoCover.invalidate();
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
             LImageUtil.load(activity, UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
         }
     }
 
     public void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            //rootView.removeView(ivVideoCover);
+            //LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
-            //ivVideoCover = null;
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }

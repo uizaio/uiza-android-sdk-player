@@ -344,9 +344,9 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        LLog.d(TAG, "setupVideo");
+        //LLog.d(TAG, "setupVideo");
         if (UizaData.getInstance().isSettingPlayer()) {
-            LLog.d(TAG, "setupVideo isSettingPlayer -> return");
+            //LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;
         }
         if (entityId == null || entityId.isEmpty()) {
@@ -376,7 +376,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         UizaData.getInstance().setUizaInput(uizaInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
         //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
-        LLog.d(TAG, "setupVideo init with entityId " + entityId);
+        //LLog.d(TAG, "setupVideo init with entityId " + entityId);
         uizaIMAVideo.init(this);
     }
 }
