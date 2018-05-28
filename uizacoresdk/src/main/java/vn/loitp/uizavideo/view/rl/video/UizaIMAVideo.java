@@ -17,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -584,8 +585,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
         if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
+            LLog.d(TAG, "fuck exoCc GONE");
             exoCc.setVisibility(View.GONE);
         } else {
+            LLog.d(TAG, "fuck exoCc VISIBLE");
             exoCc.setVisibility(View.VISIBLE);
         }
         UizaData.getInstance().setSettingPlayer(false);
