@@ -53,7 +53,6 @@ public class VerticalSeekBar extends SeekBar {
         if (!isEnabled()) {
             return false;
         }
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (myListener != null)

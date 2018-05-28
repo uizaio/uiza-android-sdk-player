@@ -592,13 +592,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaData.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(SeekBar seekbar, int progressSeekbar) {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            seekbar.setProgress(progressSeekbar, true);
-        } else {
-            seekbar.setProgress(progressSeekbar);
-        }*/
-        seekbar.setProgress(progressSeekbar);
+    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
+        verticalSeekBar.setProgress(progressSeekbar);
         LLog.d(TAG, "fuck setProgressSeekbar " + progressSeekbar);
     }
 
@@ -830,7 +825,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             progress = 0;
         }
         if (seekBar == seekbarVolume) {
-            LLog.d(TAG, "fuckf seekbarVolume onProgressChanged " + progress);
             if (progress >= 66) {
                 exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
             } else if (progress >= 33) {
