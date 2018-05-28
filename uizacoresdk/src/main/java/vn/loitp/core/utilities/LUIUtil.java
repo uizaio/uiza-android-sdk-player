@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -601,5 +602,15 @@ public class LUIUtil {
         }
         seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         seekBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    }
+
+    public static void setTint(View view, int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        } else {
+            Drawable wrapDrawable = DrawableCompat.wrap(view.getBackground());
+            DrawableCompat.setTint(wrapDrawable, color);
+            view.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
+        }
     }
 }

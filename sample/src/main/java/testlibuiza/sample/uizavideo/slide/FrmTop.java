@@ -291,6 +291,13 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         getActivity().onBackPressed();
     }
 
+    @Override
+    public void onError(Exception e) {
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
+    }
+
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
             LDialogUtil.showDialog1(getActivity(), "Entity ID cannot be null or empty", new LDialogUtil.Callback1() {

@@ -102,16 +102,16 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ImageView ivThumbnail;
 
     private ImageView ivVideoCover;
-    private ImageButton exoFullscreenIcon;
+    private ImageButtonWithSize exoFullscreenIcon;
     private TextView tvTitle;
-    private ImageButton exoBackScreen;
-    private ImageButton exoVolume;
-    private ImageButton exoSetting;
-    private ImageButton exoCc;
-    private ImageButton exoPlaylist;
-    private ImageButton exoHearing;
-    private ImageButton exoPictureInPicture;
-    private ImageButton exoShare;
+    private ImageButtonWithSize exoBackScreen;
+    private ImageButtonWithSize exoVolume;
+    private ImageButtonWithSize exoSetting;
+    private ImageButtonWithSize exoCc;
+    private ImageButtonWithSize exoPlaylist;
+    private ImageButtonWithSize exoHearing;
+    private ImageButtonWithSize exoPictureInPicture;
+    private ImageButtonWithSize exoShare;
     private VerticalSeekBar seekbarVolume;
     //private ImageView ivVolumeSeekbar;
     private VerticalSeekBar seekbarBirghtness;
@@ -447,20 +447,20 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         previewTimeBar.addOnPreviewChangeListener(this);
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
-        exoFullscreenIcon = (ImageButton) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
+        exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
-        exoBackScreen = (ImageButton) playerView.findViewById(R.id.exo_back_screen);
-        exoVolume = (ImageButton) playerView.findViewById(R.id.exo_volume);
-        exoSetting = (ImageButton) playerView.findViewById(R.id.exo_setting);
-        exoCc = (ImageButton) playerView.findViewById(R.id.exo_cc);
-        exoPlaylist = (ImageButton) playerView.findViewById(R.id.exo_playlist);
-        exoHearing = (ImageButton) playerView.findViewById(R.id.exo_hearing);
+        exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
+        exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
+        exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
+        exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
+        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist);
+        exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         //TODO set gone to visible
         exoHearing.setVisibility(GONE);
 
-        exoPictureInPicture = (ImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
-        exoShare = (ImageButton) playerView.findViewById(R.id.exo_share);
+        exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
+        exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -585,11 +585,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
         if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
-            LLog.d(TAG, "fuck exoCc GONE");
-            exoCc.setVisibility(View.GONE);
+            //LLog.d(TAG, "exoCc GONE");
+            exoCc.setColorTint(ContextCompat.getColor(activity, R.color.Gray));
+            exoCc.setClickable(false);
         } else {
-            LLog.d(TAG, "fuck exoCc VISIBLE");
-            exoCc.setVisibility(View.VISIBLE);
+            //LLog.d(TAG, "exoCc VISIBLE");
+            exoCc.setClickable(true);
         }
         UizaData.getInstance().setSettingPlayer(false);
     }
