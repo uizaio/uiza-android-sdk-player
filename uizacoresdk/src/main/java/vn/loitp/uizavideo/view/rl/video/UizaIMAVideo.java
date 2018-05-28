@@ -177,7 +177,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaData.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaData.getInstance().getUizaInput().getEntityId() == null || UizaData.getInstance().getUizaInput().getEntityId().isEmpty()) {
-            LDialogUtil.showDialog1(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
@@ -242,7 +242,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //khong co thi bao loi
     private void handleErrorNoData() {
         removeVideoCover(true);
-        LDialogUtil.showDialog1(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
+        LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 if (callback != null) {
@@ -289,7 +289,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
                 if (countTryLinkPlayError >= listLinkPlay.size()) {
                     if (LConnectivityUtil.isConnected(activity)) {
-                        LDialogUtil.showDialog1(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
+                        LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
                                 handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
@@ -301,7 +301,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                             }
                         });
                     } else {
-                        LDialogUtil.showDialog1(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                        LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
                                 handleError(new Exception(activity.getString(R.string.err_no_internet)));
@@ -323,7 +323,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 onResume();
             } else {
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
                         handleError(new Exception(activity.getString(R.string.err_setup)));
@@ -919,7 +919,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         UizaService service = RestClientV2.createService(UizaService.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
-            LDialogUtil.showDialog1(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     handleError(new Exception(activity.getString(R.string.auth_or_app_id_is_null_or_empty)));
@@ -946,7 +946,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
                         handleError(new Exception(activity.getString(R.string.no_link_play)));
@@ -981,7 +981,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailEntity onFail " + e.toString());
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
                         handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));

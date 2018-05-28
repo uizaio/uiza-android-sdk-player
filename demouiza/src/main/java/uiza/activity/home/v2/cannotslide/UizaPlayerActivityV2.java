@@ -303,7 +303,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        //LLog.d(TAG, "isPiPInitResult " + isInitSuccess);
+        LLog.d(TAG, "isInitResult " + isInitSuccess);
         if (isInitSuccess) {
             if (LPref.getClickedPip(activity)) {
                 uizaIMAVideo.seekTo(positionFromPipService);
