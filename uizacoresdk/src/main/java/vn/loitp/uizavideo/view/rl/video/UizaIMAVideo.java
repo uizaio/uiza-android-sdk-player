@@ -691,7 +691,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 }
             }
         } else if (v == exoVolume) {
-            uizaPlayerManager.toggleVolumeMute(exoVolume);
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.toggleVolumeMute(exoVolume);
+            }
         } else if (v == exoSetting) {
             View view = UizaUtil.getBtVideo(debugRootView);
             if (view != null) {

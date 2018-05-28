@@ -74,7 +74,6 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
         //playListHolder.tvDuration.setText(item.getDuration());
         UizaUtil.setDuration(playListHolder.tvDuration, item.getDuration());
         //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
-        //playListHolder.tvDuration.setText("fuck");
         playListHolder.tvName.setText(item.getName());
 
         //TODO

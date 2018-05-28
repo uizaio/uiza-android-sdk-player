@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
@@ -649,21 +650,23 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     private float currentVolume;
 
     public void toggleVolumeMute(ImageButton exoVolume) {
+        LLog.d(TAG, "toggleVolumeMute");
         if (player == null || exoVolume == null) {
+            LLog.d(TAG, "toggleVolumeMute player == null || exoVolume == null -> return");
             return;
         }
         if (player.getVolume() == 0f) {
-            //LLog.d(TAG, "toggleVolumeMute off -> on");
+            LLog.d(TAG, "toggleVolumeMute off -> on");
             uizaIMAVideo.setProgressVolumeSeekbar((int) (currentVolume * 100));
             exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
-            //LLog.d(TAG, "toggleVolumeMute on -> off");
+            LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
             uizaIMAVideo.setProgressVolumeSeekbar(0);
             exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
         }
-        //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
-        //LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());
+        LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
+        LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());
     }
 
     public SimpleExoPlayer getPlayer() {
