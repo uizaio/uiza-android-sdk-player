@@ -599,6 +599,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             seekbar.setProgress(progressSeekbar);
         }*/
         seekbar.setProgress(progressSeekbar);
+        LLog.d(TAG, "fuck setProgressSeekbar " + progressSeekbar);
     }
 
     public void setProgressVolumeSeekbar(int progress) {
@@ -818,12 +819,18 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     //on seekbar change
     @Override
-    public void onProgressChanged(final SeekBar seekBar, final int progress, boolean fromUser) {
+    public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
         if (seekBar == null) {
             return;
         }
+        if (progress >= 100) {
+            progress = 100;
+
+        } else if (progress <= 0) {
+            progress = 0;
+        }
         if (seekBar == seekbarVolume) {
-            //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress);
+            LLog.d(TAG, "fuckf seekbarVolume onProgressChanged " + progress);
             if (progress >= 66) {
                 exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
             } else if (progress >= 33) {
@@ -831,7 +838,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             } else {
                 exoIvPreview.setImageResource(R.drawable.ic_volume_mute_black_48dp);
             }
-            //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
+            LLog.d(TAG, "fuck seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             uizaPlayerManager.setVolume(((float) progress / 100));
         } else if (seekBar == seekbarBirghtness) {
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);

@@ -675,9 +675,9 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
     public void setVolume(float volume) {
         if (player != null) {
-            //LLog.d(TAG, "volume " + volume);
+            LLog.d(TAG, "setVolume volume " + volume);
             player.setVolume(volume);
-            //LLog.d(TAG, "-> setVolume done: " + player.getVolume());
+            LLog.d(TAG, "-> setVolume done: " + player.getVolume());
         }
     }
 
