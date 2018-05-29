@@ -460,7 +460,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
-        exoIvPreview.setVisibility(VISIBLE);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
         seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
         LUIUtil.setColorSeekBar(seekbarVolume, Color.TRANSPARENT);
@@ -536,6 +535,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             }
         });
 
+        //========================>>>>>start init seekbar
+        isSetProgressSeekbarFirst = true;
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
@@ -545,8 +546,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //LLog.d(TAG, "firstBrightness " + firstBrightness);
         seekbarBirghtness.setMax(100);
         setProgressSeekbar(seekbarBirghtness, firstBrightness);
+        isSetProgressSeekbarFirst = false;
+        //========================<<<<<end init seekbar
     }
 
+    private boolean isSetProgressSeekbarFirst;
     private int oldPercent = Constants.NOT_FOUND;
 
     private void trackProgress(int s, int percent) {
@@ -817,38 +821,41 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         if (seekBar == null) {
             return;
         }
-        if (progress >= 100) {
-            progress = 100;
 
-        } else if (progress <= 0) {
-            progress = 0;
-        }
         if (seekBar == seekbarVolume) {
-            if (progress >= 66) {
-                exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            } else if (progress >= 33) {
-                exoIvPreview.setImageResource(R.drawable.ic_volume_down_black_48dp);
+            if (isSetProgressSeekbarFirst) {
+                LLog.d(TAG, "isSetProgressSeekbarFirst true -> return");
             } else {
-                exoIvPreview.setImageResource(R.drawable.ic_volume_mute_black_48dp);
+                if (progress >= 66) {
+                    exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
+                } else if (progress >= 33) {
+                    exoIvPreview.setImageResource(R.drawable.ic_volume_down_black_48dp);
+                } else {
+                    exoIvPreview.setImageResource(R.drawable.ic_volume_mute_black_48dp);
+                }
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             uizaPlayerManager.setVolume(((float) progress / 100));
         } else if (seekBar == seekbarBirghtness) {
-            LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
-            if (progress >= 85) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
-            } else if (progress >= 71) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
-            } else if (progress >= 57) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
-            } else if (progress >= 42) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
-            } else if (progress >= 28) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
-            } else if (progress >= 14) {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
+            //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
+            if (isSetProgressSeekbarFirst) {
+                LLog.d(TAG, "isSetProgressSeekbarFirst true -> return");
             } else {
-                exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
+                if (progress >= 85) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
+                } else if (progress >= 71) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
+                } else if (progress >= 57) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
+                } else if (progress >= 42) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
+                } else if (progress >= 28) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
+                } else if (progress >= 14) {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
+                } else {
+                    exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
+                }
             }
             LScreenUtil.setBrightness(activity, progress);
         }
