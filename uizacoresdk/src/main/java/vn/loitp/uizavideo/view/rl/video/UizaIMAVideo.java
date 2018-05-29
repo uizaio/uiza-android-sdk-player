@@ -824,7 +824,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
         if (seekBar == seekbarVolume) {
             if (isSetProgressSeekbarFirst) {
-                LLog.d(TAG, "isSetProgressSeekbarFirst true -> return");
+                exoIvPreview.setVisibility(INVISIBLE);
             } else {
                 if (progress >= 66) {
                     exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -839,7 +839,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         } else if (seekBar == seekbarBirghtness) {
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (isSetProgressSeekbarFirst) {
-                LLog.d(TAG, "isSetProgressSeekbarFirst true -> return");
+                exoIvPreview.setVisibility(INVISIBLE);
             } else {
                 if (progress >= 85) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
