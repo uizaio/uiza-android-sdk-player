@@ -40,7 +40,6 @@ import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -297,7 +296,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
+        //LLog.d(TAG, "onBackPressed");
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
@@ -305,17 +304,17 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
             } else {
-                LLog.d(TAG, "onBackPressed !isLandscapeScreen");
+                //LLog.d(TAG, "onBackPressed !isLandscapeScreen");
                 if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                     if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                        //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                         ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                         return true;
                     } else {
-                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                        //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                     }
                 } else {
-                    LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
+                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
                 }
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));
