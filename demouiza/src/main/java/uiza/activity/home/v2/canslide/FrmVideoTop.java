@@ -88,6 +88,11 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
     @Override
     public void onResume() {
         super.onResume();
+        if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtLeft() || ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtRight()) {
+            //LLog.d(TAG, "onResume is closed => return");
+            return;
+        }
+        //LLog.d(TAG, "uizaIMAVideo onResume");
         uizaIMAVideo.onResume();
     }
 
