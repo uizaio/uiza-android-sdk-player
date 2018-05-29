@@ -112,9 +112,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private ImageButtonWithSize exoPictureInPicture;
     private ImageButtonWithSize exoShare;
     private VerticalSeekBar seekbarVolume;
-    //private ImageView ivVolumeSeekbar;
     private VerticalSeekBar seekbarBirghtness;
-    //private ImageView ivBirghtnessSeekbar;
     private ImageView exoIvPreview;
 
     private LinearLayout debugLayout;
@@ -284,7 +282,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
                 //listLinkPlay.add("http://112.78.4.162/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/playlist.mpd");
 
-                LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+                //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
                     handleErrorNoData();
@@ -462,6 +460,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
+        exoIvPreview.setVisibility(VISIBLE);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
         seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
         LUIUtil.setColorSeekBar(seekbarVolume, Color.TRANSPARENT);
@@ -594,7 +593,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
         verticalSeekBar.setProgress(progressSeekbar);
-        LLog.d(TAG, "fuck setProgressSeekbar " + progressSeekbar);
+        //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
 
     public void setProgressVolumeSeekbar(int progress) {
@@ -832,10 +831,10 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             } else {
                 exoIvPreview.setImageResource(R.drawable.ic_volume_mute_black_48dp);
             }
-            LLog.d(TAG, "fuck seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
+            //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             uizaPlayerManager.setVolume(((float) progress / 100));
         } else if (seekBar == seekbarBirghtness) {
-            //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
+            LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (progress >= 85) {
                 exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
             } else if (progress >= 71) {
@@ -857,7 +856,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "onStartTrackingTouch");
+        //LLog.d(TAG, "onStartTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.WHITE);
         exoIvPreview.setVisibility(VISIBLE);
         if (llMidSub != null) {
@@ -867,7 +866,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        LLog.d(TAG, "onStopTrackingTouch");
+        //LLog.d(TAG, "onStopTrackingTouch");
         LUIUtil.setTintSeekbar(seekBar, Color.TRANSPARENT);
         exoIvPreview.setVisibility(INVISIBLE);
         if (llMidSub != null) {
