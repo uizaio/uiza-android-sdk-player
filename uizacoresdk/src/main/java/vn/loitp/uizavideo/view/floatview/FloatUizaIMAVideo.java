@@ -218,6 +218,9 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     public SimpleExoPlayer getPlayer() {
+        if (floatUizaPlayerManager == null) {
+            return null;
+        }
         return floatUizaPlayerManager.getPlayer();
     }
 

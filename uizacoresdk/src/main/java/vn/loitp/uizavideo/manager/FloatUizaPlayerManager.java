@@ -83,7 +83,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
  */
 /* package */ public final class FloatUizaPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
-    private Gson gson = new Gson();//TODO remove later
     private Context context;
 
     private FloatUizaIMAVideo floatUizaIMAVideo;
@@ -114,10 +113,10 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         this.context = uizaIMAVideo.getContext();
         this.floatUizaIMAVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
-        LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
+        //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
+            //LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -143,7 +142,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
                             float duration = videoProgressUpdate.getDuration();
                             int percent = (int) (mls * 100 / duration);
                             int s = Math.round(mls / 1000);
-                            LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onAdProgress(mls, s, duration, percent);
                         }
                     } else {
@@ -153,7 +152,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
                                 float duration = player.getDuration();
                                 int percent = (int) (mls * 100 / duration);
                                 int s = Math.round(mls / 1000);
-                                LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                             }
                         }
@@ -185,7 +184,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
     public void init(long currentPosition) {
         reset();
         this.contentPosition = currentPosition;
-        LLog.d(TAG, "init contentPosition " + contentPosition);
+        //LLog.d(TAG, "init contentPosition " + contentPosition);
 
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -427,7 +426,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
 
         @Override
         public void onSeekProcessed() {
-            LLog.d(TAG, "onSeekProcessed");
+            //LLog.d(TAG, "onSeekProcessed");
         }
     }
 

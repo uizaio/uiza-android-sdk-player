@@ -384,7 +384,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
             @Override
             public void onRenderedFirstFrame(Surface surface) {
-                LLog.d(TAG, "onRenderedFirstFrame");
+                //LLog.d(TAG, "onRenderedFirstFrame");
             }
 
             @Override
@@ -408,8 +408,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
+        //onRenderedFirstFrame
         LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
-        setListener();
+
+        //setListener();
 
         Intent intent = new Intent(Constants.BROADCAST_ACTION);
         intent.setPackage(getPackageName());
