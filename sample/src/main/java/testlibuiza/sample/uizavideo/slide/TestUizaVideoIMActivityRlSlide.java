@@ -98,7 +98,6 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
         frmTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                String playerSkinId = Constants.PLAYER_ID_SKIN_0;
                 String entityId = null;
                 String entityTitle = null;
                 String videoCoverUrl = null;
@@ -125,7 +124,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
 
                 //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
                 String urlThumnailsPreviewSeekbar = null;
-                frmTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+                frmTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
             }
         });
     }

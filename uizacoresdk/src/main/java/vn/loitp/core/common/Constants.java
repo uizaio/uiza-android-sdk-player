@@ -95,8 +95,8 @@ public class Constants {
 
     public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
 
-    public final static String A_K_DEV = "Y0ZW0XM7HZL2CB8ODNDV";
-    public final static String S_K_DEV = "qtQWc9Ut1SAfWK2viFJHBgViYCZYthSTjEJMlR9S";
+    public final static String A_K_DEV = "2LMJ7HTEGNCNYU3PE20G";
+    public final static String S_K_DEV = "jgQZDMvcKzhOiO2FLsNvbpOT0jzR7Jsco2cQEiMh";
 
     public final static String A_K_UQC = "NPGRU7CIJBYO6XLAHT9P";
     public final static String S_K_UQC = "DzzQukulJV6tmw59i7AwO7deK5qgDysLKZXBSL8X";
@@ -114,4 +114,14 @@ public class Constants {
     public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
     public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
     public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
+
+    public static final String EVENT_TYPE_DISPLAY = "display";
+    public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";
+    public static final String EVENT_TYPE_VIDEO_STARTS = "video_starts";
+    public static final String EVENT_TYPE_VIEW = "view";
+    public static final String EVENT_TYPE_REPLAY = "replay";
+    public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
+
+    public static final int RATIO_LAND = 16;
+    public static final int RATIO_PORT = 12;
 }

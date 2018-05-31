@@ -22,6 +22,7 @@ import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -184,7 +185,21 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
             public void onSuccess(ListAllMetadata listAllMetadata) {
                 LLog.d(TAG, "getListAllMetadata onSuccess " + LSApplication.getInstance().getGson().toJson(listAllMetadata));
                 if (listAllMetadata == null) {
-                    showDialogError(getString(R.string.err_unknow));
+                    LDialogUtil.showDialog1(activity, getString(R.string.err_unknow), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            /*if (activity != null) {
+                                activity.onBackPressed();
+                            }*/
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            /*if (activity != null) {
+                                activity.onBackPressed();
+                            }*/
+                        }
+                    });
                     return;
                 }
                 genListDrawerLayout(listAllMetadata);
@@ -193,7 +208,21 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                showDialogError("Lỗi lấy danh sách metadata");
+                LDialogUtil.showDialog1(activity, "Lỗi lấy danh sách metadata", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+                });
                 genListDrawerLayout(null);
             }
         });

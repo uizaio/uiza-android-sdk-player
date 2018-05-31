@@ -18,16 +18,19 @@ package vn.loitp.uizavideo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -41,13 +44,16 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import java.util.Arrays;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LAnimationUtil;
+import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 
 /**
  * Helper class for displaying track selection dialogs.
  */
-/* package */public final class TrackSelectionHelper implements View.OnClickListener, DialogInterface.OnClickListener {
+/* package */public final class TrackSelectionHelper implements View.OnClickListener {
 
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
@@ -66,6 +72,8 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
     private CheckedTextView defaultView;
     private CheckedTextView enableRandomAdaptationView;
     private CheckedTextView[][] trackViews;
+
+    private ImageButton btExit;
 
     /**
      * @param selector                      The track selector.
@@ -104,32 +112,40 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         //AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.UizaDialogTheme);
         builder
-                //.setTitle(title)
-                .setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
-                .setView(buildView(activity))
-                .setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
-                .setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
+                //.setTitle(Html.fromHtml("<font color='#000000'>" + title + "</font>"))
+                .setView(buildView(activity, title + ""));
+        //.setPositiveButton(Html.fromHtml("<font color='#000000'>" + "OK" + "</font>"), this)
+        //.setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
 
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
         UizaUtil.showUizaDialog(activity, dialog);
     }
 
+    private AlertDialog dialog;
 
     @SuppressLint("InflateParams")
-    private View buildView(Activity activity) {
+    private View buildView(Activity activity, String msg) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
 
+        btExit = (ImageButton) view.findViewById(R.id.bt_exit);
+        btExit.setOnClickListener(this);
+
+        TextView tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        tvMsg.setText(msg);
+
+        ScrollView scrollView = (ScrollView) view.findViewById(R.id.scroll_view);
+        LUIUtil.setPullLikeIOSVertical(scrollView);
+
         ViewGroup root = view.findViewById(R.id.root);
 
-        //TypedArray attributeArray = activity.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        //int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        //attributeArray.recycle();
+        TypedArray attributeArray = activity.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        attributeArray.recycle();
 
         // View for disabling the renderer.
-        //disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
         disableView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
-        //disableView.setBackgroundResource(selectableItemBackgroundResourceId);
+        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -140,7 +156,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
 
         // View for clearing the override to allow the selector to use its default selection logic.
         defaultView = (CheckedTextView) inflater.inflate(R.layout.view_setting_single_choice, root, false);
-        //defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
+        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -159,12 +175,11 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
             haveAdaptiveTracks |= groupIsAdaptive;
             trackViews[groupIndex] = new CheckedTextView[group.length];
             for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
-                if (trackIndex == 0) {
-                    root.addView(inflater.inflate(R.layout.list_divider, root, false));
-                }
-                int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
+                root.addView(inflater.inflate(R.layout.list_divider, root, false));
+                //int trackViewLayoutId = groupIsAdaptive ? R.layout.view_setting_mutiple_choice : R.layout.view_setting_single_choice;
+                int trackViewLayoutId = R.layout.view_setting_single_choice;
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                //trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
                 trackView.setText(DemoUtil.buildShortTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex) == RendererCapabilities.FORMAT_HANDLED) {
@@ -186,14 +201,14 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         if (haveAdaptiveTracks) {
             // View for using random adaptation.
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.view_setting_mutiple_choice, root, false);
-            //enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
+            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setTextColor(ContextCompat.getColor(activity, R.color.Black));
             enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             //enableRandomAdaptationView.setCheckMarkDrawable(R.drawable.default_checkbox);
             enableRandomAdaptationView.setOnClickListener(this);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
-            root.addView(enableRandomAdaptationView);
+            //root.addView(enableRandomAdaptationView);
         }
 
         updateViews();
@@ -220,10 +235,7 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         }
     }
 
-    // DialogInterface.OnClickListener
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
+    private void apply() {
         selector.setRendererDisabled(rendererIndex, isDisabled);
         if (override != null) {
             selector.setSelectionOverride(rendererIndex, trackGroups, override);
@@ -232,11 +244,23 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
         }
     }
 
-    // View.OnClickListener
+    // DialogInterface.OnClickListener
+    /*@Override
+    public void onClick(DialogInterface dialog, int which) {
+        selector.setRendererDisabled(rendererIndex, isDisabled);
+        if (override != null) {
+            selector.setSelectionOverride(rendererIndex, trackGroups, override);
+        } else {
+            selector.clearSelectionOverrides(rendererIndex);
+        }
+    }*/
 
+    // View.OnClickListener
     @Override
     public void onClick(View view) {
-        if (view == disableView) {
+        if (view == btExit) {
+            LAnimationUtil.play(btExit, Techniques.Pulse);
+        } else if (view == disableView) {
             isDisabled = true;
             override = null;
         } else if (view == defaultView) {
@@ -250,7 +274,14 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
             Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
             int groupIndex = tag.first;
             int trackIndex = tag.second;
-            if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
+
+            //C1 chon quality nao thi play video voi quality do
+            override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+
+
+            //dont remove
+            //C2 chon mutiply quality, chu y nho go rao comment root.addView(enableRandomAdaptationView);
+            /*if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
                 override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
             } else {
                 // The group being modified is adaptive and we already have a non-null override.
@@ -271,10 +302,20 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
                     setOverride(groupIndex, getTracksAdding(override, trackIndex),
                             enableRandomAdaptationView.isChecked());
                 }
-            }
+            }*/
         }
         // Update the views with the new state.
         updateViews();
+        apply();
+
+        if (dialog != null) {
+            LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {

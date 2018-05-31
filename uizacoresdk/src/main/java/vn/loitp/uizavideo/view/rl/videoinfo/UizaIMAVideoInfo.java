@@ -24,13 +24,13 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
@@ -130,7 +130,9 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
             public void onClickItemBottom(Item item, int position) {
-                LLog.d(TAG, "onClick " + position);
+                if (UizaData.getInstance().isSettingPlayer()) {
+                    return;
+                }
                 itemList.clear();
                 notifyViews();
                 if (callback != null) {
@@ -179,7 +181,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         if (getDetailEntity == null) {
             return;
         }
-        LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+        //LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
         mItem = getDetailEntity.getData().get(0);
         updateUI();
     }
@@ -221,15 +223,15 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     private void getListAllEntityRelation() {
         UizaService service = RestClientV2.createService(UizaService.class);
-        LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
+        //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
+        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
             public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
-                LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
+                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
                 if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
                     tvMoreLikeThisMsg.setText(R.string.no_data);
                     tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
@@ -243,14 +245,28 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                ((BaseActivity) activity).showDialogError("Lỗi không tải được danh sách entity liên quan");
+                LDialogUtil.showDialog1(activity, "Lỗi không tải được danh sách entity liên quan", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        /*if (activity != null) {
+                            activity.onBackPressed();
+                        }*/
+                    }
+                });
                 LUIUtil.hideProgressBar(progressBar);
             }
         });
     }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {
-        LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
+        //LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
         this.itemList.addAll(itemList);
         notifyViews();
     }
@@ -263,6 +279,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
 
     private void loadMore() {
         //TODO
-        LLog.d(TAG, "loadMore");
+        //LLog.d(TAG, "loadMore");
     }
 }

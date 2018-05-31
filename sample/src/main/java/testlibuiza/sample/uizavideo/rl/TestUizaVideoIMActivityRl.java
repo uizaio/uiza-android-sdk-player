@@ -24,6 +24,7 @@ import java.util.List;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -31,6 +32,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.views.LToast;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
@@ -41,10 +43,9 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-
         positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
 
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
+        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
         String entityId = null;
         String entityTitle = null;
         String videoCoverUrl = null;
@@ -71,7 +72,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
@@ -280,7 +281,6 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        String playerSkinId = Constants.PLAYER_ID_SKIN_0;
         String entityId = item.getId();
         String entityTitle = item.getName();
         String videoCoverUrl = null;
@@ -288,7 +288,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String urlIMAAd = null;
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
+        setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
@@ -306,21 +307,39 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         onBackPressed();
     }
 
-    private void setupVideo(String playerSkinId, String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    @Override
+    public void onError(Exception e) {
+        if (activity != null) {
+            onBackPressed();
+        }
+    }
+
+    private void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
-            showDialogOne("Entity ID cannot be null or empty");
+            LDialogUtil.showDialog1(activity, "Entity ID cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            showDialogOne("Player Skin ID cannot be null or empty");
-            return;
-        }
-        UizaData.getInstance().setPlayerId(playerSkinId);
-        UizaData.getInstance().setEntityId(entityId);
-        UizaData.getInstance().setEntityName(entityTitle);
-        UizaData.getInstance().setEntityCover(entityCover);
-        UizaData.getInstance().setUrlIMAAd(urlIMAAd);
-        UizaData.getInstance().setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaInput uizaInput = new UizaInput();
+        uizaInput.setEntityId(entityId);
+        uizaInput.setEntityName(entityTitle);
+        uizaInput.setEntityCover(entityCover);
+        uizaInput.setUrlIMAAd(urlIMAAd);
+        uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
     }

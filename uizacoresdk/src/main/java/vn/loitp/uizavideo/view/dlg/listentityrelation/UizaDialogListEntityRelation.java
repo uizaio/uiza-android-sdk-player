@@ -38,7 +38,6 @@ public class UizaDialogListEntityRelation extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private boolean isLandscape;
-    //TODO remove gson
     //private Gson gson = new Gson();
 
     private ProgressBar progressBar;
@@ -68,6 +67,13 @@ public class UizaDialogListEntityRelation extends Dialog {
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
         getListAllEntityRelation();
     }
 
@@ -77,13 +83,13 @@ public class UizaDialogListEntityRelation extends Dialog {
         //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getEntityId());
+        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override
             public void onSuccess(final ListAllEntityRelation listAllEntityRelation) {
                 //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
-                LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         setupUI(listAllEntityRelation);
@@ -94,7 +100,7 @@ public class UizaDialogListEntityRelation extends Dialog {
             @Override
             public void onFail(Throwable e) {
                 //LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         LUIUtil.hideProgressBar(progressBar);
@@ -135,6 +141,9 @@ public class UizaDialogListEntityRelation extends Dialog {
             playListAdapter = new PlayListAdapter(activity, itemList, new PlayListCallback() {
                 @Override
                 public void onClickItem(Item item, int position) {
+                    if (UizaData.getInstance().isSettingPlayer()) {
+                        return;
+                    }
                     dismiss();
                     if (playListCallback != null) {
                         playListCallback.onClickItem(item, position);

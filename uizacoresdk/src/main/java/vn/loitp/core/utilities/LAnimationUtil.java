@@ -74,19 +74,19 @@ public class LAnimationUtil {
     }
 
     public static void play(View view, Techniques techniques) {
-        play(view, 500, 1, techniques, 0, null);
+        play(view, 200, 1, techniques, 0, null);
     }
 
     public static void playRepeatCount(View view, Techniques techniques, int count) {
-        play(view, 500, count, techniques, 0, null);
+        play(view, 200, count, techniques, 0, null);
     }
 
     public static void play(View view, Techniques techniques, int delayInMls) {
-        play(view, 500, 1, techniques, delayInMls, null);
+        play(view, 200, 1, techniques, delayInMls, null);
     }
 
     public static void play(View view, Techniques techniques, Callback callback) {
-        play(view, 500, 1, techniques, 0, callback);
+        play(view, 200, 1, techniques, 0, callback);
     }
 
     public static void playDuration(View view, Techniques techniques, int duration) {
@@ -102,7 +102,7 @@ public class LAnimationUtil {
         anim.setInterpolator(new LinearInterpolator());
         anim.setFillAfter(true);
         //anim.setRepeatCount(Animation.INFINITE); //Repeat animation indefinitely
-        anim.setDuration(500); //Put desired duration per anim cycle here, in milliseconds
+        anim.setDuration(200); //Put desired duration per anim cycle here, in milliseconds
         anim.setAnimationListener(animationListener);
         view.startAnimation(anim);
     }

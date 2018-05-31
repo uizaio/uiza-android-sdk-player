@@ -26,6 +26,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -39,7 +40,6 @@ import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -197,7 +197,21 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             public void onSuccess(ListAllMetadata listAllMetadata) {
                 LLog.d(TAG, "getListAllMetadata onSuccess " + LSApplication.getInstance().getGson().toJson(listAllMetadata));
                 if (listAllMetadata == null) {
-                    showDialogError(getString(R.string.err_unknow));
+                    LDialogUtil.showDialog1(getActivity(), getString(R.string.err_unknow), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            if (getActivity() != null) {
+                                getActivity().onBackPressed();
+                            }
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            if (getActivity() != null) {
+                                getActivity().onBackPressed();
+                            }
+                        }
+                    });
                     return;
                 }
                 genListDrawerLayout(listAllMetadata);
@@ -206,7 +220,21 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
-                handleException(e);
+                LDialogUtil.showDialog1(getActivity(), "getListAllMetadata onFail " + e.getMessage(), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (getActivity() != null) {
+                            getActivity().onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (getActivity() != null) {
+                            getActivity().onBackPressed();
+                        }
+                    }
+                });
                 genListDrawerLayout(null);
             }
         });
@@ -268,7 +296,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
+        //LLog.d(TAG, "onBackPressed");
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
@@ -276,17 +304,17 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
             } else {
-                LLog.d(TAG, "onBackPressed !isLandscapeScreen");
+                //LLog.d(TAG, "onBackPressed !isLandscapeScreen");
                 if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                     if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                        //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                         ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                         return true;
                     } else {
-                        LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                        //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                     }
                 } else {
-                    LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
+                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
                 }
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.layout.flowlayout.FlowLayout;
 
@@ -51,6 +53,17 @@ public class UizaDialogShare extends Dialog {
         ll.setChildSpacing(FlowLayout.SPACING_AUTO);
         ll.setChildSpacingForLastRow(FlowLayout.SPACING_ALIGN);
         ll.setRowSpacing(20f);
+
+        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_view);
+        LUIUtil.setPullLikeIOSVertical(scrollView);
+
         genUI();
     }
 
@@ -111,35 +124,4 @@ public class UizaDialogShare extends Dialog {
         }
         dismiss();
     }
-
-    /*@Override
-    public void onClick(View v) {
-        if (v == btFb) {
-            onClickFb();
-        } else if (v == btInstagram) {
-            onClickInstagram();
-        } else if (v == btTwiter) {
-            onClickTwiter();
-        } else if (v == bt_pinterest) {
-            onClickPinterest();
-        }
-        dismiss();
-    }
-
-    private void onClickFb() {
-        //TODO fb not work
-        LSocialUtil.sharingToSocialMedia(activity, "com.facebook.katana", SUBJECT, MESSAGE);
-    }
-
-    private void onClickInstagram() {
-        LSocialUtil.sharingToSocialMedia(activity, "com.instagram.android", SUBJECT, MESSAGE);
-    }
-
-    private void onClickTwiter() {
-        LSocialUtil.sharingToSocialMedia(activity, "com.twitter.android", SUBJECT, MESSAGE);
-    }
-
-    private void onClickPinterest() {
-        LSocialUtil.sharingToSocialMedia(activity, "com.pinterest", SUBJECT, MESSAGE);
-    }*/
 }

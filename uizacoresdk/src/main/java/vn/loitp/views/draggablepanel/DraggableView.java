@@ -433,7 +433,7 @@ public class DraggableView extends RelativeLayout {
                 }
                 break;
             /*case MotionEvent.ACTION_MOVE:
-                LLog.d(TAG, "fuck ACTION_MOVE");
+                LLog.d(TAG, "ACTION_MOVE");
                 break;*/
             default:
                 break;

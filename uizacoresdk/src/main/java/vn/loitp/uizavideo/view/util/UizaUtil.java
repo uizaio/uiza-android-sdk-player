@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.restapi.restclient.RestClient;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.views.LToast;
@@ -52,14 +53,13 @@ public class UizaUtil {
         }
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid) {
+    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover) {
         int widthScreen = 0;
         int heightScreen = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
         if (isFullScreen) {
             widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
             heightScreen = LScreenUtil.getScreenHeight();
-
         } else {
             widthScreen = LScreenUtil.getScreenWidth();
             heightScreen = widthScreen * 9 / 16;
@@ -68,6 +68,12 @@ public class UizaUtil {
         viewGroup.getLayoutParams().width = widthScreen;
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
+
+        if (ivVideoCover != null) {
+            ivVideoCover.getLayoutParams().width = widthScreen;
+            ivVideoCover.getLayoutParams().height = heightScreen;
+            ivVideoCover.requestLayout();
+        }
 
         //edit size of seekbar volume and brightness
         if (llMid != null) {
@@ -262,9 +268,8 @@ public class UizaUtil {
     }
 
     public static void setupRestClientV2(Activity activity) {
-        if (RestClientV2.getRetrofit() == null) {
+        if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
             String currentApi = LPref.getApiEndPoint(activity);
-            LLog.d(TAG, "setupRestClientV2 trackUiza currentApi: " + currentApi);
             if (currentApi == null || currentApi.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
                 return;
@@ -274,10 +279,18 @@ public class UizaUtil {
                 LLog.e(TAG, "setupRestClientV2 trackUiza token==null||token.isEmpty()");
                 return;
             }
+            String currentTrackApi = LPref.getApiTrackEndPoint(activity);
+            if (currentTrackApi == null || currentTrackApi.isEmpty()) {
+                LLog.e(TAG, "setupRestClientV2 currentTrackApi == null || currentTrackApi.isEmpty()");
+                return;
+            }
+
             RestClientV2.init(currentApi);
-            RestClient.addAuthorization(token);
+            RestClientV2.addAuthorization(token);
+            RestClientTracking.init(currentTrackApi);
+
             if (Constants.IS_DEBUG) {
-                LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token);
+                LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
         }
     }

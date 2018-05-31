@@ -25,6 +25,11 @@
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>-->
     </style>
 
+    <style name="Theme.Swipe.Back.NoActionBar" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <!--<style name="AppThemeTransparent" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

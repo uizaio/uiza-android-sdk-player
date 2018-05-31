@@ -14,7 +14,9 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
+import vn.loitp.utils.util.NetworkUtils;
 
 /**
  * Created by khanh on 7/31/16.
@@ -34,19 +36,20 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+        LDialogUtil.clearAll();
+        super.onDestroyView();
     }
 
     @SuppressWarnings("unchecked")
     protected void subscribe(Observable observable, Subscriber subscriber) {
-        //TODO maybe in some cases we don't need to check internet connection
-        /*if (!NetworkUtils.hasConnection(context)) {
-            subscriber.onError(new NoConnectionException());
+        if (!LConnectivityUtil.isConnected(getActivity())) {
+            //showDialogError(getString(R.string.err_no_internet));
+            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
-        }*/
+        }
 
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -58,31 +61,6 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-    }
-
-    protected void handleException(Throwable throwable) {
-        if (throwable == null) {
-            return;
-        }
-        showDialogError(throwable.getMessage());
-    }
-
-    protected void showDialogError(String errMsg) {
-        LDialogUtil.showDialog1(getActivity(), getString(R.string.warning), errMsg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //getActivity().onBackPressed();
-            }
-        });
-    }
-
-    protected void showDialogMsg(String msg) {
-        LDialogUtil.showDialog1(getActivity(), getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                //getActivity().onBackPressed();
-            }
-        });
     }
 
     public interface FragmentCallback {

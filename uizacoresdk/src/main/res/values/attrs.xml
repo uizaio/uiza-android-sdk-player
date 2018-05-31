@@ -504,4 +504,23 @@
         <attr name="flMaxRows" format="integer" />
         <attr name="android:gravity" />
     </declare-styleable>
+    <declare-styleable name="SwipeBackLayout">
+        <attr name="swipeBackFactor" format="float" />
+        <attr name="maskAlpha" format="integer" />
+        <attr name="isSwipeFromEdge" format="boolean" />
+        <attr name="directionMode">
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+            <enum name="top" value="4" />
+            <enum name="bottom" value="8" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="VerticalSeekBar">
+        <attr name="seekBarRotation">
+            <!-- Clock wise - 90 deg; top = min, bottom = max -->
+            <enum name="CW90" value="90" />
+            <!-- Clock wise - 270 deg; bottom = min, top = max -->
+            <enum name="CW270" value="270" />
+        </attr>
+    </declare-styleable>
 </resources>

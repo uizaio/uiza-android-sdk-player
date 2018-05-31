@@ -22,10 +22,13 @@ import uiza.R;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.LoadingView;
 import uiza.app.LSApplication;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LKeyBoardUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaService;
@@ -292,13 +295,30 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     }
 
     private int getListSize() {
-        LLog.d(TAG, "getListSize " + placeHolderView.getAllViewResolvers().size());
+        //LLog.d(TAG, "getListSize " + placeHolderView.getAllViewResolvers().size());
         return placeHolderView.getAllViewResolvers().size();
     }
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
+        //LLog.d(TAG, "onBackPressed");
+        boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
+        if (isLandscapeScreen) {
+            LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
+        } else {
+            //LLog.d(TAG, "onBackPressed !isLandscapeScreen");
+            if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
+                if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                    ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                    return true;
+                } else {
+                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
+                }
+            } else {
+                //LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
+            }
+        }
         return false;
     }
 }

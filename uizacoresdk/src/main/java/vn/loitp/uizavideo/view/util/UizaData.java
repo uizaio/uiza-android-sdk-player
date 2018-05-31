@@ -6,6 +6,7 @@ import android.provider.Settings;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.loitp.core.common.Constants;
@@ -30,74 +31,89 @@ public class UizaData {
     private UizaData() {
     }
 
-    private String playerId = "";//id of player skin
-    private String entityId = "";
-    private String entityName = "";
-    private String entityCover = "";
-    private String urlIMAAd = "";
-    private String urlThumnailsPreviewSeekbar = "";
+    private String currentPlayerId = Constants.PLAYER_ID_SKIN_0;
 
-    public String getPlayerId() {
-        return playerId == null ? Constants.PLAYER_ID_SKIN_0 : playerId;
+    public String getCurrentPlayerId() {
+        return currentPlayerId;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setCurrentPlayerId(String currentPlayerId) {
+        this.currentPlayerId = currentPlayerId;
     }
 
-    public String getEntityId() {
-        return entityId;
+    private List<UizaInput> uizaInputList = new ArrayList<>();
+
+    public List<UizaInput> getUizaInputList() {
+        return uizaInputList;
     }
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+    /*public void setUizaInputList(List<UizaInput> uizaInputList) {
+        this.uizaInputList = uizaInputList;
+    }*/
+
+    public UizaInput getUizaInputPrev() {
+        LLog.d(TAG, "getUizaInputPrev " + uizaInputList.size());
+        if (uizaInputList.isEmpty() || uizaInputList.size() <= 1) {
+            return null;
+        } else {
+            UizaInput uizaInput = uizaInputList.get(uizaInputList.size() - 2);//-1: current, -2 previous item;
+            uizaInputList.remove(uizaInputList.size() - 1);
+            return uizaInput;
+        }
     }
 
-    public String getEntityName() {
-        return entityName;
+    private UizaInput uizaInput;
+
+    public UizaInput getUizaInput() {
+        return uizaInput;
     }
 
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
+    private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+
+    public boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed() {
+        return isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
     }
 
-    public String getEntityCover() {
-        return entityCover;
+    public void setUizaInput(UizaInput uizaInput, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        this.uizaInput = uizaInput;
+        this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+
+        //add new uiza input to last position
+        //remove the first item
+        //uizaInputList is always have 2 item everytime
+
+        int existAt = Constants.NOT_FOUND;
+        for (int i = 0; i < uizaInputList.size(); i++) {
+            if (uizaInput.getEntityId().equals(uizaInputList.get(i).getEntityId())) {
+                existAt = i;
+                break;
+            }
+        }
+        if (existAt != Constants.NOT_FOUND) {
+            uizaInputList.remove(existAt);
+        }
+        uizaInputList.add(uizaInput);
+        if (uizaInputList.size() > 2) {
+            uizaInputList.remove(0);
+        }
+        /*if (Constants.IS_DEBUG) {
+            String x = "";
+            for (UizaInput u : uizaInputList) {
+                x += " > " + u.getEntityName();
+            }
+        }*/
     }
 
-    public void setEntityCover(String entityCover) {
-        this.entityCover = entityCover;
-    }
-
-    public String getUrlIMAAd() {
-        return urlIMAAd;
-    }
-
-    public void setUrlIMAAd(String urlIMAAd) {
-        this.urlIMAAd = urlIMAAd;
-    }
-
-    public String getUrlThumnailsPreviewSeekbar() {
-        return urlThumnailsPreviewSeekbar;
-    }
-
-    public void setUrlThumnailsPreviewSeekbar(String urlThumnailsPreviewSeekbar) {
-        this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
+    public void removeLastUizaInput() {
+        if (uizaInputList != null && !uizaInputList.isEmpty()) {
+            uizaInputList.remove(uizaInputList.size() - 1);
+        }
     }
 
     public void clear() {
-        playerId = "";
-        entityId = "";
-        entityName = "";
-        entityCover = "";
+        uizaInput = null;
+        uizaInputList.clear();
     }
-
-    public static final String EVENT_TYPE_DISPLAY = "display";
-    public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";
-    public static final String EVENT_TYPE_VIDEO_STARTS = "video_starts";
-    public static final String EVENT_TYPE_VIEW = "view";
-    public static final String EVENT_TYPE_REPLAY = "replay";
-    public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
 
     public UizaTracking createTrackingInput(Context context, String eventType) {
         return createTrackingInput(context, "0", eventType);
@@ -125,15 +141,15 @@ public class UizaData {
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
         //player_id
-        uizaTracking.setPlayerId(playerId);
+        uizaTracking.setPlayerId(currentPlayerId);
         //TODO player_name
-        uizaTracking.setPlayerName("UizaAndroidSDKV2");
+        uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version
-        uizaTracking.setPlayerVersion("1.0.2");
+        uizaTracking.setPlayerVersion("1.0.3");
         //entity_id
-        uizaTracking.setEntityId(entityId);
+        uizaTracking.setEntityId(uizaInput == null ? "null" : uizaInput.getEntityId());
         //entity_name
-        uizaTracking.setEntityName(entityName);
+        uizaTracking.setEntityName(uizaInput == null ? "null" : uizaInput.getEntityName());
         //TODO entity_series
         uizaTracking.setEntitySeries("");
         //TODO entity_producer
@@ -175,6 +191,15 @@ public class UizaData {
     public void setResolveInfoList(List<ResolveInfo> resolveInfoList) {
         this.resolveInfoList = resolveInfoList;
     }
-
     //end dialog share
+
+    private boolean isSettingPlayer;
+
+    public boolean isSettingPlayer() {
+        return isSettingPlayer;
+    }
+
+    public void setSettingPlayer(boolean settingPlayer) {
+        isSettingPlayer = settingPlayer;
+    }
 }

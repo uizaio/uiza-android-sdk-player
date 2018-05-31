@@ -1,11 +1,14 @@
 package vn.loitp.views.autosize.imagebuttonwithsize;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ImageButton;
 
+import loitp.core.R;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
 
@@ -74,29 +77,50 @@ public class ImageButtonWithSize extends ImageButton {
         } else {
             size = screenWidth / getRatioPort();
         }
-        LLog.d(TAG, "onMeasure: " + size + "x" + size);
+        //LLog.d(TAG, "onMeasure: " + size + "x" + size);
         setMeasuredDimension(size, size);
         isSetSize = true;
     }
 
-    private int ratioLand = Constants.NOT_FOUND;
-    private int ratioPort = Constants.NOT_FOUND;
+    private int ratioLand = Constants.RATIO_LAND;
+    private int ratioPort = Constants.RATIO_PORT;
 
     public int getRatioLand() {
-        return ratioLand == Constants.NOT_FOUND ? 16 : ratioLand;
+        return ratioLand;
     }
 
     public void setRatioLand(int ratioLand) {
         this.ratioLand = ratioLand;
         requestLayout();
+        invalidate();
     }
 
     public int getRatioPort() {
-        return ratioPort == Constants.NOT_FOUND ? 12 : ratioPort;
+        return ratioPort;
     }
 
     public void setRatioPort(int ratioPort) {
         this.ratioPort = ratioPort;
         requestLayout();
+        invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int maskedAction = event.getActionMasked();
+        if (maskedAction == MotionEvent.ACTION_DOWN) {
+            setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
+        } else if (maskedAction == MotionEvent.ACTION_UP) {
+            clearColorTint();
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public void setColorTint(int color) {
+        getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    }
+
+    public void clearColorTint() {
+        getDrawable().clearColorFilter();
     }
 }

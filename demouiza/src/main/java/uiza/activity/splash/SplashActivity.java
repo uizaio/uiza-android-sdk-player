@@ -14,6 +14,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDateUtils;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
@@ -25,6 +26,7 @@ import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
+import vn.loitp.views.smoothtransition.SwitchAnimationUtil;
 
 public class SplashActivity extends BaseActivity {
     private String currentPlayerId;
@@ -36,7 +38,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
@@ -124,7 +126,21 @@ public class SplashActivity extends BaseActivity {
         }
 
         if (accessKeyId == null || secretKeyId == null || accessKeyId.isEmpty() || secretKeyId.isEmpty()) {
-            showDialogOne(getString(R.string.key_not_found), true);
+            LDialogUtil.showDialog1(activity, getString(R.string.key_not_found), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
 
@@ -135,10 +151,6 @@ public class SplashActivity extends BaseActivity {
         subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
-                if (auth == null) {
-                    showDialogError("onSuccess auth == null");
-                    return;
-                }
                 LLog.d(TAG, "getData onSuccess " + LSApplication.getInstance().getGson().toJson(auth));
                 LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
 
@@ -150,7 +162,21 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
-                showDialogError("Auth Failed " + e.getMessage());
+                LDialogUtil.showDialog1(activity, "Error: Auth failed", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+                });
             }
         });
     }
@@ -159,12 +185,25 @@ public class SplashActivity extends BaseActivity {
 
     private void goToHome() {
         LLog.d(TAG, "goToHome token: " + token);
-
         if (token == null) {
-            showDialogOne("token==null", true);
+            LDialogUtil.showDialog1(activity, "Token cannot be null or empty", new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    if (activity != null) {
+                        activity.onBackPressed();
+                    }
+                }
+            });
             return;
         }
-        UizaData.getInstance().setPlayerId(currentPlayerId);
+        UizaData.getInstance().setCurrentPlayerId(currentPlayerId);
         RestClientV2.addAuthorization(token);
         LPref.setToken(activity, token);
         if (canSlide) {
@@ -205,7 +244,21 @@ public class SplashActivity extends BaseActivity {
                 LLog.d(TAG, "expiredTime " + expiredTime);
                 LLog.d(TAG, "currentTime " + currentTime);
                 if (currentTime > expiredTime) {
-                    showDialogOne("Token đã hết hạn.", true);
+                    LDialogUtil.showDialog1(activity, "Token is expried", new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            if (activity != null) {
+                                activity.onBackPressed();
+                            }
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            if (activity != null) {
+                                activity.onBackPressed();
+                            }
+                        }
+                    });
                 } else {
                     LToast.show(activity, "Token sẽ hết hạn vào " + LDateUtils.convertTimestampToDate(expiredTime), Toast.LENGTH_LONG);
                     goToHome();
@@ -215,7 +268,21 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
-                showDialogError("Cannot check token");
+                LDialogUtil.showDialog1(activity, "Error: Cannot check token", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        if (activity != null) {
+                            activity.onBackPressed();
+                        }
+                    }
+                });
             }
         });
     }

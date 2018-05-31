@@ -171,7 +171,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         //track event view (after video is played 5s)
         if (s == 5) {
             //LLog.d(TAG, "onVideoProgress -> track view");
-            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), UizaData.EVENT_TYPE_VIEW));
+            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW));
         }
 
         if (oldPercent == percent) {
@@ -180,13 +180,13 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
         if (percent == Constants.PLAYTHROUGH_25) {
-            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "25", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_50) {
-            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "50", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_75) {
-            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "75", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_100) {
-            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "100", UizaData.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInput(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
         }
     }
 
@@ -257,15 +257,19 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void setVideoCover() {
-        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-        LImageUtil.load(getContext(), UizaData.getInstance().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getEntityCover(), ivVideoCover, R.drawable.uiza);
-        ivVideoCover.setVisibility(VISIBLE);
+        if (ivVideoCover.getVisibility() != VISIBLE) {
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+            LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
+            ivVideoCover.setVisibility(VISIBLE);
+        }
     }
 
     public void removeVideoCover() {
-        //rootView.removeView(ivVideoCover);
-        ivVideoCover.setVisibility(GONE);
-        //ivVideoCover = null;
+        if (ivVideoCover.getVisibility() != GONE) {
+            //rootView.removeView(ivVideoCover);
+            ivVideoCover.setVisibility(GONE);
+            //ivVideoCover = null;
+        }
     }
 }

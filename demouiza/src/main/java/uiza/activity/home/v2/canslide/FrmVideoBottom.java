@@ -17,7 +17,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 
-public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callback{
+public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callback {
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfo uizaIMAVideoInfo;
 
@@ -29,7 +29,7 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
         return view;
     }
 
-    public void setup(GetDetailEntity getDetailEntity){
+    public void setup(GetDetailEntity getDetailEntity) {
         uizaIMAVideoInfo.setup(getDetailEntity);
     }
 
@@ -43,11 +43,13 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
         //do nothing
     }
 
-    public void init(ItemAdapterV2.Callback callback){
+    public void init(ItemAdapterV2.Callback callback) {
         uizaIMAVideoInfo.init(callback);
     }
 
-    public void clearAllViews(){
-        uizaIMAVideoInfo.clearAllViews();
+    public void clearAllViews() {
+        if (uizaIMAVideoInfo != null) {
+            uizaIMAVideoInfo.clearAllViews();
+        }
     }
 }

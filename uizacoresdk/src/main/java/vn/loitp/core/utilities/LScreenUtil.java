@@ -22,7 +22,6 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
-import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 
 /**
@@ -378,6 +377,11 @@ public class LScreenUtil {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     LActivityUtil.tranIn(context);
+                }
+
+                @Override
+                public void onCancel() {
+                    //do nothing
                 }
             });
             return;

@@ -1,7 +1,6 @@
 package vn.loitp.core.base;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import loitp.core.R;
 import rx.Observable;
@@ -22,8 +17,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.data.EventBusData;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -93,16 +88,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+        LDialogUtil.clearAll();
         super.onDestroy();
     }
 
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
-        //TODO maybe in some cases we don't need to check internet connection
-        /*if (!NetworkUtils.hasConnection(this)) {
-            subscriber.onError(new NoConnectionException());
+        if (!LConnectivityUtil.isConnected(activity)) {
+            //showDialogError(getString(R.string.err_no_internet));
+            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
-        }*/
+        }
 
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,10 +106,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         compositeSubscription.add(subscription);
     }
 
-    public void startActivity(Class<? extends Activity> clazz) {
+    /*public void startActivity(Class<? extends Activity> clazz) {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
-    }
+    }*/
 
     protected abstract boolean setFullScreen();
 
@@ -124,7 +120,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        LActivityUtil.tranOut(activity);
+        if (activity != null) {
+            LActivityUtil.tranOut(activity);
+        }
     }
 
     //private TextView tvConnectStt;
@@ -156,12 +154,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }*/
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         //TAG = "onMessageEvent";
         //LLog.d(TAG, "onMessageEvent " + event.isConnected());
         //onNetworkChange(event);
-        /*if (!event.isConnected()) {//no network
+        *//*if (!event.isConnected()) {//no network
             showTvNoConnect();
         } else {
             if (tvConnectStt != null) {
@@ -190,24 +188,24 @@ public abstract class BaseActivity extends AppCompatActivity {
                 });
                 tvConnectStt = null;
             }
-        }*/
-    }
+        }*//*
+    }*/
 
     /*protected void onNetworkChange(EventBusData.ConnectEvent event){
 
     }*/
 
-    @Override
+    /*@Override
     public void onStart() {
-        EventBus.getDefault().register(this);
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
         super.onStop();
-    }
+        EventBus.getDefault().unregister(this);
+    }*/
 
     /*@Override
     protected void onResume() {
@@ -216,28 +214,4 @@ public abstract class BaseActivity extends AppCompatActivity {
             showTvNoConnect();
         }
     }*/
-
-    public void showDialogOne(String msg) {
-        showDialogOne(msg, false);
-    }
-
-    public void showDialogOne(String msg, final boolean isExit) {
-        LDialogUtil.showDialog1(activity, getString(R.string.warning), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                if (isExit) {
-                    activity.onBackPressed();
-                }
-            }
-        });
-    }
-
-    public void showDialogError(String msg) {
-        LDialogUtil.showDialog1(activity, getString(R.string.err), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-        });
-    }
 }

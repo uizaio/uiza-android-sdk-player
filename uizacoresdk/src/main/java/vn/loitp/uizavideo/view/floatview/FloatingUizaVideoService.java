@@ -67,7 +67,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LLog.d(TAG, "onStartCommand");
+        //LLog.d(TAG, "onStartCommand");
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
@@ -77,8 +77,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             LLog.d(TAG, "linkPlay " + linkPlay);
             LLog.d(TAG, "currentPositionPlayer " + currentPositionPlayer);
             LLog.d(TAG, "entityId " + entityId);
-            LLog.d(TAG, "entityCover " + entityCover);
-            LLog.d(TAG, "entityTitle " + entityTitle);
+            //LLog.d(TAG, "entityCover " + entityCover);
+            //LLog.d(TAG, "entityTitle " + entityTitle);
 
             setupVideo();
         }
@@ -243,13 +243,13 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (mFloatingView != null) {
             mWindowManager.removeView(mFloatingView);
         }
         if (floatUizaIMAVideo != null) {
             floatUizaIMAVideo.onDestroy();
         }
+        super.onDestroy();
     }
 
     @Nullable
@@ -259,90 +259,90 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     }
 
     private void setListener() {
-        LLog.d(TAG, TAG + " addListener");
+        //LLog.d(TAG, TAG + " addListener");
         if (floatUizaIMAVideo == null || floatUizaIMAVideo.getPlayer() == null) {
             return;
         }
         floatUizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                LLog.d(TAG, "onTimelineChanged");
+                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                LLog.d(TAG, "onTracksChanged");
+                //LLog.d(TAG, "onTracksChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                LLog.d(TAG, "onLoadingChanged");
+                //LLog.d(TAG, "onLoadingChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                LLog.d(TAG, "onPlayerStateChanged");
+                //LLog.d(TAG, "onPlayerStateChanged");
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                LLog.d(TAG, "onRepeatModeChanged");
+                //LLog.d(TAG, "onRepeatModeChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                LLog.d(TAG, "onShuffleModeEnabledChanged");
+                //LLog.d(TAG, "onShuffleModeEnabledChanged");
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                LLog.d(TAG, "onPlayerError");
+                LLog.e(TAG, "onPlayerError " + error.getMessage());
             }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                LLog.d(TAG, "onPositionDiscontinuity");
+                //LLog.d(TAG, "onPositionDiscontinuity");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                LLog.d(TAG, "onPlaybackParametersChanged");
+                //LLog.d(TAG, "onPlaybackParametersChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                LLog.d(TAG, "onSeekProcessed");
+                //LLog.d(TAG, "onSeekProcessed");
             }
         });
         floatUizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
-                LLog.d(TAG, "onAudioEnabled");
+                //LLog.d(TAG, "onAudioEnabled");
             }
 
             @Override
             public void onAudioSessionId(int audioSessionId) {
-                LLog.d(TAG, "onAudioSessionId");
+                //LLog.d(TAG, "onAudioSessionId");
             }
 
             @Override
             public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                LLog.d(TAG, "onAudioDecoderInitialized");
+                //LLog.d(TAG, "onAudioDecoderInitialized");
             }
 
             @Override
             public void onAudioInputFormatChanged(Format format) {
-                LLog.d(TAG, "onAudioInputFormatChanged");
+                //LLog.d(TAG, "onAudioInputFormatChanged");
             }
 
             @Override
             public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                LLog.d(TAG, "onAudioSinkUnderrun");
+                //LLog.d(TAG, "onAudioSinkUnderrun");
             }
 
             @Override
             public void onAudioDisabled(DecoderCounters counters) {
-                LLog.d(TAG, "onAudioDisabled");
+                //LLog.d(TAG, "onAudioDisabled");
             }
         });
         floatUizaIMAVideo.setProgressCallback(new ProgressCallback() {
@@ -359,27 +359,27 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         floatUizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
-                LLog.d(TAG, "onVideoEnabled");
+                //LLog.d(TAG, "onVideoEnabled");
             }
 
             @Override
             public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                LLog.d(TAG, "onVideoDecoderInitialized");
+                //LLog.d(TAG, "onVideoDecoderInitialized");
             }
 
             @Override
             public void onVideoInputFormatChanged(Format format) {
-                LLog.d(TAG, "onVideoInputFormatChanged");
+                //LLog.d(TAG, "onVideoInputFormatChanged");
             }
 
             @Override
             public void onDroppedFrames(int count, long elapsedMs) {
-                LLog.d(TAG, "onDroppedFrames");
+                //LLog.d(TAG, "onDroppedFrames");
             }
 
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                LLog.d(TAG, "onAudioDisabled");
+                //LLog.d(TAG, "onVideoSizeChanged");
             }
 
             @Override
@@ -389,19 +389,19 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
             @Override
             public void onVideoDisabled(DecoderCounters counters) {
-                LLog.d(TAG, "onVideoDisabled");
+                //LLog.d(TAG, "onVideoDisabled");
             }
         });
         floatUizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
-                LLog.d(TAG, "onMetadata");
+                //LLog.d(TAG, "onMetadata");
             }
         });
         floatUizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
-                LLog.d(TAG, "onCues");
+               // LLog.d(TAG, "onCues");
             }
         });
     }

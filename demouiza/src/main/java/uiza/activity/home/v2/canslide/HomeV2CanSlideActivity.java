@@ -78,7 +78,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
             LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
             if (entityId == null || entityId.isEmpty()) {
-                LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
+                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
+                LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
                 return;
             }
             play(entityId, entityTitle, videoCoverUrl);
@@ -129,7 +130,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
             clearUIFrmBottom();
-            initFrmTop(entityId, entityTitle, entityCover);
+            initFrmTop(entityId, entityTitle, entityCover, false);
             draggablePanel.maximize();
             return;
         }
@@ -138,7 +139,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onViewCreated() {
                 //LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
-                initFrmTop(entityId, entityTitle, entityCover);
+                initFrmTop(entityId, entityTitle, entityCover, false);
             }
         });
         frmVideoBottom = new FrmVideoBottom();
@@ -151,7 +152,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                         //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
-                        initFrmTop(item.getId(), item.getName(), item.getThumbnail());
+                        initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
                     }
 
                     @Override
@@ -210,17 +211,12 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 //LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
                 LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
-                initFrmTop(item.getId(), item.getName(), item.getThumbnail());
+                initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
             }
         });
     }
 
-    private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl) {
-        String playerSkinId = UizaData.getInstance().getPlayerId();
-        if (playerSkinId == null || playerSkinId.isEmpty()) {
-            playerSkinId = Constants.PLAYER_ID_SKIN_0;
-        }
-
+    private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         //entityTitle = "Dummy title";
         //videoCoverUrl = null;
@@ -232,7 +228,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         String urlThumnailsPreviewSeekbar = null;
 
         frmVideoTop.getUizaIMAVideo().setExoPictureInPictureVisibility(View.VISIBLE);
-        frmVideoTop.setupVideo(playerSkinId, entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+        frmVideoTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
     private void intFrmBottom(GetDetailEntity getDetailEntity) {

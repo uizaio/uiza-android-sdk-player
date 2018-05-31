@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Demo Uiza V2</string>
+    <string name="app_name">Demo Uiza V3</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -89,9 +89,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="video">Video</string>
-    <string name="audio">Audio</string>
-    <string name="text">Text</string>
     <string name="retry">Retry</string>
     <string name="selection_disabled">Disabled</string>
     <string name="selection_default">Default</string>

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 
 /**
@@ -47,9 +49,13 @@ public class TextViewWithSize extends TextView {
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, getTextSizeLand());
+            int textSize = getTextSizeLand();
+            //LLog.d(TAG, "textSize " + textSize);
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         } else {
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, getTextSizePortrait());
+            int textSize = getTextSizePortrait();
+            //LLog.d(TAG, "textSize " + textSize);
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         }
     }
 
