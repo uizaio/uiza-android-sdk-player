@@ -384,7 +384,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
             @Override
             public void onRenderedFirstFrame(Surface surface) {
-                //LLog.d(TAG, "onRenderedFirstFrame");
+                LLog.d(TAG, "onRenderedFirstFrame");
             }
 
             @Override
