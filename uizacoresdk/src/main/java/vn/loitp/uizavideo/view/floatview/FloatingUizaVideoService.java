@@ -31,6 +31,10 @@ import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import loitp.core.R;
@@ -39,6 +43,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.ComunicateMng;
 
 /**
  * Created by LENOVO on 3/27/2018.
@@ -57,7 +62,6 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private WindowManager.LayoutParams params;
 
     private String linkPlay;
-    private long currentPositionPlayer;
     private String entityId;
     private String entityCover;
     private String entityTitle;
@@ -70,12 +74,10 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         //LLog.d(TAG, "onStartCommand");
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
-            currentPositionPlayer = intent.getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0);
             entityId = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityCover = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
             entityTitle = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             LLog.d(TAG, "linkPlay " + linkPlay);
-            LLog.d(TAG, "currentPositionPlayer " + currentPositionPlayer);
             LLog.d(TAG, "entityId " + entityId);
             //LLog.d(TAG, "entityCover " + entityCover);
             //LLog.d(TAG, "entityTitle " + entityTitle);
@@ -96,6 +98,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     public void onCreate() {
         //LLog.d(TAG, "onCreate");
         super.onCreate();
+
+        EventBus.getDefault().register(this);
 
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
@@ -147,7 +151,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 LPref.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
-                intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
+                //intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
@@ -155,7 +159,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
-                stopSelf();
+                //stopSelf();
             }
         });
     }
@@ -175,7 +179,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         new CountDownTimer(500, 5) {
             public void onTick(long t) {
                 float step = (500 - t) / 5;
-                LLog.d(TAG, "slideToLeft onTick step: " + step);
+                //LLog.d(TAG, "slideToLeft onTick step: " + step);
                 //LLog.d(TAG, "slideToLeft onTick: " + a * step / 100 + " - " + b * step / 100);
                 updateUISlide((int) (a * step / 100), (int) (b * step / 100));
             }
@@ -243,6 +247,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         if (mFloatingView != null) {
             mWindowManager.removeView(mFloatingView);
         }
@@ -281,7 +286,9 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                //LLog.d(TAG, "onPlayerStateChanged");
+                /*if (playbackState == Player.STATE_READY) {
+                    LLog.d(TAG, "onPlayerStateChanged STATE_READY");
+                }*/
             }
 
             @Override
@@ -401,7 +408,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         floatUizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
-               // LLog.d(TAG, "onCues");
+                // LLog.d(TAG, "onCues");
             }
         });
     }
@@ -409,19 +416,28 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     @Override
     public void isInitResult(boolean isInitSuccess) {
         //onRenderedFirstFrame
-        LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
+        //LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
 
-        //setListener();
+        setListener();
 
-        Intent intent = new Intent(Constants.BROADCAST_ACTION);
+        /*Intent intent = new Intent(Constants.BROADCAST_ACTION);
         intent.setPackage(getPackageName());
         intent.putExtra(Constants.FLOAT_VIDEO_INIT_RESULT, isInitSuccess);
         sendBroadcast(intent);
-        stopService(intent);
+        stopService(intent);*/
+
+        if (!isSendMsgToActivity) {
+            ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
+            msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
+            ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
+            isSendMsgToActivity = true;
+        }
     }
 
+    private boolean isSendMsgToActivity;
+
     private void setupVideo() {
-        floatUizaIMAVideo.init(linkPlay, currentPositionPlayer, this);
+        floatUizaIMAVideo.init(linkPlay, this);
     }
 
     private void setSizeMoveView() {
@@ -446,5 +462,28 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     private int getHeight() {
         return moveView.getLayoutParams().height;
+    }
+
+    //listen msg from activity
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ComunicateMng.MsgFromActivity msg) {
+        if (msg == null) {
+            return;
+        }
+        if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
+            //LLog.d(TAG, "position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            if (floatUizaIMAVideo != null) {
+                floatUizaIMAVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            }
+        } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
+            LLog.d(TAG, "fuck MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
+            if (floatUizaIMAVideo != null) {
+                LLog.d(TAG, "fuck getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
+                ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
+                msgFromServicePosition.setPosition(floatUizaIMAVideo.getCurrentPosition());
+                ComunicateMng.postFromService(msgFromServicePosition);
+                stopSelf();
+            }
+        }
     }
 }

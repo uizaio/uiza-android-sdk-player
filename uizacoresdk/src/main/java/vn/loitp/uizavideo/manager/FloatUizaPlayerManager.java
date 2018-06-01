@@ -90,7 +90,6 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
-    private long contentPosition;
 
     private SimpleExoPlayer player;
 
@@ -181,10 +180,8 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         return trackSelectionHelper;
     }
 
-    public void init(long currentPosition) {
+    public void init() {
         reset();
-        this.contentPosition = currentPosition;
-        //LLog.d(TAG, "init contentPosition " + contentPosition);
 
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -218,8 +215,15 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
             adsLoader.addCallback(videoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
-        player.seekTo(contentPosition);
+        //player.seekTo(0);
         player.setPlayWhenReady(true);
+    }
+
+    public void seekTo(long position) {
+        if (player == null) {
+            return;
+        }
+        player.seekTo(position);
     }
 
     private MediaSource createMediaSourceVideo() {

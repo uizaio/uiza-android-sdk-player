@@ -712,4 +712,11 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
         //LLog.d(TAG, "onMessageEvent setResumeIfConnectionError player current position mls: " + mls);
         contentPosition = (long) mls;
     }
+
+    public long getCurrentPosition() {
+        if (player == null) {
+            return 0;
+        }
+        return player.getCurrentPosition();
+    }
 }

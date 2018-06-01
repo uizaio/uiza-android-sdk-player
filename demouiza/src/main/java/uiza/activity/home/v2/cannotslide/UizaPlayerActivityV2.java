@@ -31,6 +31,7 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
@@ -41,16 +42,16 @@ import vn.loitp.views.LToast;
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
-    private long positionFromPipService;
+    //private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        uizaIMAVideo.registerReceiverPiPInitSuccess();
+        //uizaIMAVideo.registerReceiverPiPInitSuccess();
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
 
-        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
         //LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
 
         String entityId = null;
@@ -109,9 +110,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         uizaIMAVideo.onDestroy();
-        uizaIMAVideo.unregisterReceiverPiPInitSuccess();
+        //uizaIMAVideo.unregisterReceiverPiPInitSuccess();
+        super.onDestroy();
     }
 
     @Override
@@ -303,11 +304,15 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isInitResult " + isInitSuccess);
+        LLog.d(TAG, "fuck isInitResult " + isInitSuccess);
         if (isInitSuccess) {
             if (LPref.getClickedPip(activity)) {
-                uizaIMAVideo.seekTo(positionFromPipService);
+                //uizaIMAVideo.seekTo(positionFromPipService);
+                ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                msgFromActivityIsInitSuccess.setInitSuccess(true);
+                ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
             }
+
             setListener();
             if (uizaIMAVideoInfo != null) {
                 uizaIMAVideoInfo.setup(getDetailEntity);

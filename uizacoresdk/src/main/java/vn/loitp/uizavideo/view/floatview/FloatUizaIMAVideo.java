@@ -58,21 +58,18 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private String linkPlay;
-    private long currentPosition;
 
     public long getCurrentPosition() {
         return getPlayer().getCurrentPosition();
     }
 
-    public void init(String linkPlay, long currentPosition, Callback callback) {
+    public void init(String linkPlay, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             //LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
-        this.currentPosition = currentPosition;
-        LLog.d(TAG, "init currentPosition: " + currentPosition);
         this.callback = callback;
         if (floatUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -95,7 +92,6 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        //LLog.d(TAG, "checkToSetUp");
         setVideoCover();
         initData(linkPlay, null, null, null);
         onResume();
@@ -199,7 +195,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     public void onDestroy() {
-        LLog.d(TAG, "trackUiza onDestroy");
+        //LLog.d(TAG, "trackUiza onDestroy");
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.release();
         }
@@ -207,7 +203,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     public void onResume() {
         if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.init(currentPosition);
+            floatUizaPlayerManager.init();
         }
     }
 
@@ -260,19 +256,27 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void setVideoCover() {
+        //LLog.d(TAG, "setVideoCover");
         if (ivVideoCover.getVisibility() != VISIBLE) {
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-            LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
             ivVideoCover.setVisibility(VISIBLE);
         }
+        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+        LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
     }
 
     public void removeVideoCover() {
         if (ivVideoCover.getVisibility() != GONE) {
+            LLog.d(TAG, "removeVideoCover");
             //rootView.removeView(ivVideoCover);
             ivVideoCover.setVisibility(GONE);
             //ivVideoCover = null;
+        }
+    }
+
+    public void seekTo(long position) {
+        if (floatUizaPlayerManager != null) {
+            floatUizaPlayerManager.seekTo(position);
         }
     }
 }

@@ -69,6 +69,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.UizaPlayerManager;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
@@ -189,7 +190,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
 
-        stopServicePiPIfRunning();
+        //stopServicePiPIfRunning();
 
         this.callback = callback;
         if (uizaPlayerManager != null) {
@@ -909,7 +910,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         setExoPictureInPictureVisibility(GONE);
         Intent intent = new Intent(activity, FloatingUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
-        intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getUizaInput().getEntityCover());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getUizaInput().getEntityName());
@@ -1103,7 +1103,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         });
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
@@ -1125,7 +1125,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             activity.unregisterReceiver(broadcastReceiver);
             broadcastReceiver = null;
         }
-    }
+    }*/
 
     public void seekTo(long positionMs) {
         if (uizaPlayerManager != null) {
@@ -1170,6 +1170,30 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 /*if (uizaPlayerManager != null) {
                     uizaPlayerManager.pauseVideo();
                 }*/
+            }
+        }
+    }
+
+    //listen msg from service
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ComunicateMng.MsgFromService msg) {
+        //LLog.d(TAG, "get event from service");
+        if (msg == null) {
+            return;
+        }
+        //when pip float view init success
+        if (callback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
+            LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+
+            ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
+            msgFromActivityPosition.setPosition(uizaPlayerManager.getCurrentPosition());
+            ComunicateMng.postFromActivity(msgFromActivityPosition);
+
+            callback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+        } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
+            LLog.d(TAG, "fuck seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }
         }
     }
