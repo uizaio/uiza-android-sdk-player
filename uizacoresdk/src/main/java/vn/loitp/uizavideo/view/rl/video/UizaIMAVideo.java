@@ -4,10 +4,8 @@ package vn.loitp.uizavideo.view.rl.video;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -1179,13 +1177,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     //listen msg from service
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
-        LLog.d(TAG, "fuck get event from service");
+        //LLog.d(TAG, "get event from service");
         if (msg == null) {
             return;
         }
         //when pip float view init success
         if (callback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
-            LLog.d(TAG, "fuck get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
 
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uizaPlayerManager.getCurrentPosition());
@@ -1193,7 +1191,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             callback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
-            LLog.d(TAG, "fuck seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
+            //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             if (uizaPlayerManager != null) {
                 uizaPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }

@@ -167,11 +167,11 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
     private void slideToPosition(int goToPosX, int goToPosY) {
         int currentPosX = params.x;
         int currentPosY = params.y;
-        LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
+        //LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
 
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
-        LLog.d(TAG, "slideToLeft " + a + " : " + b);
+        //LLog.d(TAG, "slideToLeft " + a + " : " + b);
 
         rlControl.setVisibility(View.GONE);
         setSizeMoveView();
@@ -421,7 +421,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         setListener();
 
         if (!isSendMsgToActivity) {
-            LLog.d(TAG, "fuck isPiPInitResult isSendMsgToActivity false");
+            //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
             ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
             msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
             ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -466,14 +466,14 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            LLog.d(TAG, "fuck MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (floatUizaIMAVideo != null) {
                 floatUizaIMAVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            LLog.d(TAG, "fuck MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
+            //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
             if (floatUizaIMAVideo != null) {
-                LLog.d(TAG, "fuck getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
+                //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
                 msgFromServicePosition.setPosition(floatUizaIMAVideo.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);
