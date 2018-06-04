@@ -175,7 +175,6 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             public void initDone() {
                 LLog.d(TAG, "initDone");
                 if (LPref.getClickedPip(activity)) {
-                    //frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
