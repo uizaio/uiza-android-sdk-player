@@ -283,6 +283,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
                 //listLinkPlay.add("http://112.78.4.162/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/playlist.mpd");
 
+                //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
+
                 //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
