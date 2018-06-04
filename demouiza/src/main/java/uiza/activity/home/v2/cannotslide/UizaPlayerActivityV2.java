@@ -304,10 +304,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "fuck isInitResult " + isInitSuccess);
+        //LLog.d(TAG, "isInitResult " + isInitSuccess);
         if (isInitSuccess) {
             if (LPref.getClickedPip(activity)) {
-                //uizaIMAVideo.seekTo(positionFromPipService);
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

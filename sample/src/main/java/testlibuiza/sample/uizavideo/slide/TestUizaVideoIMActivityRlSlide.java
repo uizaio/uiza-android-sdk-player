@@ -103,7 +103,7 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
                 String videoCoverUrl = null;
 
                 if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-                    entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+                    entityId = "ac96863f-11ce-485f-a7ea-284ac589573f";
                 } else {
                     entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
                 }
