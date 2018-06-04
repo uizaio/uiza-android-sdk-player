@@ -276,6 +276,8 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
+            LLog.d(TAG, "fuck isInitSuccess " + isInitSuccess);
+            LLog.d(TAG, "fuck LPref.getClickedPip(activity) " + LPref.getClickedPip(activity));
             if (LPref.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
@@ -351,5 +353,17 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        uizaIMAVideo.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        uizaIMAVideo.onStop();
     }
 }

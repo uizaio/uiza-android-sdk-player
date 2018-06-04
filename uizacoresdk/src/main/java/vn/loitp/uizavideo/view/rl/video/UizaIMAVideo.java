@@ -1178,14 +1178,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     //listen msg from service
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ComunicateMng.MsgFromService msg) {
-        //LLog.d(TAG, "get event from service");
+    public void onMessageEvent(ComunicateMng.MsgFromService msg) {
+        LLog.d(TAG, "fuck get event from service");
         if (msg == null) {
             return;
         }
         //when pip float view init success
         if (callback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
-            LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            LLog.d(TAG, "fuck get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
 
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uizaPlayerManager.getCurrentPosition());

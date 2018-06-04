@@ -29,12 +29,14 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_uiza_video_rl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LPref.setAcitivityCanSlideIsRunning(activity, false);
                 uizaVideoRl();
             }
         });
         findViewById(R.id.bt_uiza_video_rl_slide).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LPref.setAcitivityCanSlideIsRunning(activity, true);
                 uizaVideoRlSlide();
             }
         });

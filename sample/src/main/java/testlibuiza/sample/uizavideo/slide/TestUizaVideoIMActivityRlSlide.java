@@ -12,14 +12,16 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     private DraggablePanel draggablePanel;
-    private long positionFromPipService;
+    //private long positionFromPipService;
 
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
@@ -28,8 +30,8 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        LLog.d(TAG, "positionFromPipService " + positionFromPipService);
+        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        //LLog.d(TAG, "positionFromPipService " + positionFromPipService);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -63,7 +65,20 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             }
         });
         replaceFragment(new FrmHome());
-        if (positionFromPipService != 0) {
+
+        if (LPref.getClickedPip(activity)) {
+            //called from PiP Service
+            String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+            String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
+            String videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
+            LLog.d(TAG, "onCreate pip entityId: " + entityId);
+            LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
+            LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
+            if (entityId == null || entityId.isEmpty()) {
+                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
+                LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
+                return;
+            }
             play();
         }
     }
@@ -159,8 +174,11 @@ public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
             @Override
             public void initDone() {
                 LLog.d(TAG, "initDone");
-                if (positionFromPipService != 0) {
-                    frmTop.getUizaIMAVideo().seekTo(positionFromPipService);
+                if (LPref.getClickedPip(activity)) {
+                    //frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
+                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                    msgFromActivityIsInitSuccess.setInitSuccess(true);
+                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
                 frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override

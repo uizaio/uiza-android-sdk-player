@@ -420,13 +420,8 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
         setListener();
 
-        /*Intent intent = new Intent(Constants.BROADCAST_ACTION);
-        intent.setPackage(getPackageName());
-        intent.putExtra(Constants.FLOAT_VIDEO_INIT_RESULT, isInitSuccess);
-        sendBroadcast(intent);
-        stopService(intent);*/
-
         if (!isSendMsgToActivity) {
+            LLog.d(TAG, "fuck isPiPInitResult isSendMsgToActivity false");
             ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
             msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
             ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -466,12 +461,12 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
 
     //listen msg from activity
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ComunicateMng.MsgFromActivity msg) {
+    public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
         if (msg == null) {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            //LLog.d(TAG, "position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            LLog.d(TAG, "fuck MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (floatUizaIMAVideo != null) {
                 floatUizaIMAVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
