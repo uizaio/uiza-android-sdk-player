@@ -31,6 +31,7 @@ import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
@@ -41,17 +42,12 @@ import vn.loitp.views.LToast;
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
     private UizaIMAVideo uizaIMAVideo;
     private UizaIMAVideoInfo uizaIMAVideoInfo;
-    private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        uizaIMAVideo.registerReceiverPiPInitSuccess();
         uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
-
-        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        //LLog.d(TAG, ">>> positionFromPipService: " + positionFromPipService);
 
         String entityId = null;
         String entityCover = null;
@@ -67,7 +63,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
         }
         if (entityId == null || entityId.isEmpty()) {
-            LDialogUtil.showDialog1(activity, "Entity cannot be null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(activity, getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     if (activity != null) {
@@ -86,8 +82,8 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         }
 
         LLog.d(TAG, ">>> entityId " + entityId);
-        LLog.d(TAG, ">>> entityCover " + entityCover);
-        LLog.d(TAG, ">>> entityTitle " + entityTitle);
+        //LLog.d(TAG, ">>> entityCover " + entityCover);
+        //LLog.d(TAG, ">>> entityTitle " + entityTitle);
 
         setupVideo(entityId, entityTitle, entityCover, false);
     }
@@ -109,9 +105,8 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         uizaIMAVideo.onDestroy();
-        uizaIMAVideo.unregisterReceiverPiPInitSuccess();
+        super.onDestroy();
     }
 
     @Override
@@ -143,10 +138,9 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
-                //LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
-                LToast.show(activity, "Draw over other app permission not available");
+                LToast.show(activity, getString(R.string.cannot_draw));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -303,10 +297,12 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isInitResult " + isInitSuccess);
+        //LLog.d(TAG, "isInitResult " + isInitSuccess);
         if (isInitSuccess) {
             if (LPref.getClickedPip(activity)) {
-                uizaIMAVideo.seekTo(positionFromPipService);
+                ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                msgFromActivityIsInitSuccess.setInitSuccess(true);
+                ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
             }
             setListener();
             if (uizaIMAVideoInfo != null) {
@@ -315,14 +311,14 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
-                LLog.d(TAG, "isInitResult prevUizaInput null -> exit");
+                //LLog.d(TAG, "isInitResult prevUizaInput null -> exit");
                 if (activity != null) {
                     activity.onBackPressed();
                 }
             } else {
-                LLog.d(TAG, "isInitResult prevUizaInput: " + prevUizaInput.getEntityName());
+                //LLog.d(TAG, "isInitResult prevUizaInput: " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
-                LLog.d(TAG, "isInitResult isPlayPrev: " + isPlayPrev);
+                //LLog.d(TAG, "isInitResult isPlayPrev: " + isPlayPrev);
                 if (isPlayPrev) {
                     LPref.setClickedPip(activity, false);
                     setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
@@ -360,7 +356,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onError(Exception e) {
         if (e != null) {
-            LLog.e(TAG, "onError " + e.toString());
+            //LLog.e(TAG, "onError " + e.toString());
         }
         if (activity != null) {
             onBackPressed();
@@ -380,7 +376,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     private void setupVideo(String entityId, String entityTitle, String entityCover, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (entityId == null || entityId.isEmpty()) {
-            LDialogUtil.showDialog1(activity, "Entity Id cannot be null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(activity, getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     if (activity != null) {

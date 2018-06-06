@@ -1,13 +1,7 @@
 package vn.loitp.uizavideo.view.rl.video;
 
-/**
- * Created by www.muathu@gmail.com on 12/24/2017.
- */
-
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -69,6 +63,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.UizaPlayerManager;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
@@ -189,7 +184,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
 
-        stopServicePiPIfRunning();
+        //stopServicePiPIfRunning();
 
         this.callback = callback;
         if (uizaPlayerManager != null) {
@@ -282,6 +277,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
                 //listLinkPlay.add("http://112.78.4.162/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/playlist.mpd");
 
+                //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
+
                 //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
@@ -335,7 +332,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         handleError(new Exception(activity.getString(R.string.err_setup)));
                     }
                 });
-                //LLog.d(TAG, "checkToSetUp else");
             }
         }
     }
@@ -583,12 +579,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
-        /*if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
-            exoCc.setColorTint(ContextCompat.getColor(activity, R.color.Gray));
-            exoCc.setClickable(false);
-        } else {
-            exoCc.setClickable(true);
-        }*/
         UizaData.getInstance().setSettingPlayer(false);
     }
 
@@ -614,7 +604,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void onResume() {
         activityIsPausing = false;
-        //LLog.d(TAG, "onMessageEvent onResume " + isExoShareClicked);
         if (isExoShareClicked) {
             isExoShareClicked = false;
 
@@ -909,7 +898,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         setExoPictureInPictureVisibility(GONE);
         Intent intent = new Intent(activity, FloatingUizaVideoService.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
-        intent.putExtra(Constants.FLOAT_CURRENT_POSITION, getPlayer().getCurrentPosition());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getUizaInput().getEntityCover());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getUizaInput().getEntityName());
@@ -978,14 +966,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //LLog.d(TAG, "getDetailEntity");
         UizaUtil.setupRestClientV2(activity);
         UizaService service = RestClientV2.createService(UizaService.class);
-        JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
+        final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getUizaInput().getEntityId());
-        //jsonBodyGetDetailEntity.setId(Constants.ENTITYID_WITH_SUBTITLE);
 
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntity) {
-                //LLog.d(TAG, "getDetailEntity entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+                LLog.d(TAG, "getDetailEntity entityId " + jsonBodyGetDetailEntity.getId() + " -> " + gson.toJson(getDetailEntity));
                 mGetDetailEntity = getDetailEntity;
                 isGetDetailEntityDone = true;
                 checkToSetUp();
@@ -1096,35 +1083,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             @Override
             public void onFail(Throwable e) {
-                //TODO
+                //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 //((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
         });
-    }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                boolean isInitSuccess = intent.getBooleanExtra(Constants.FLOAT_VIDEO_INIT_RESULT, false);
-                //LLog.d(TAG, "broadcastReceiver onReceive isInitSuccess: " + isInitSuccess);
-                if (callback != null) {
-                    callback.onClickPipVideoInitSuccess(isInitSuccess);
-                }
-            }
-        }
-    };
-
-    public void registerReceiverPiPInitSuccess() {
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
-    }
-
-    public void unregisterReceiverPiPInitSuccess() {
-        if (broadcastReceiver != null) {
-            activity.unregisterReceiver(broadcastReceiver);
-            broadcastReceiver = null;
-        }
     }
 
     public void seekTo(long positionMs) {
@@ -1170,6 +1133,30 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 /*if (uizaPlayerManager != null) {
                     uizaPlayerManager.pauseVideo();
                 }*/
+            }
+        }
+    }
+
+    //listen msg from service
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ComunicateMng.MsgFromService msg) {
+        //LLog.d(TAG, "get event from service");
+        if (msg == null) {
+            return;
+        }
+        //when pip float view init success
+        if (callback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
+            //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+
+            ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
+            msgFromActivityPosition.setPosition(uizaPlayerManager.getCurrentPosition());
+            ComunicateMng.postFromActivity(msgFromActivityPosition);
+
+            callback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+        } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
+            //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
+            if (uizaPlayerManager != null) {
+                uizaPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }
         }
     }

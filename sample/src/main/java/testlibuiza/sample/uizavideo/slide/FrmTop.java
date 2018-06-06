@@ -288,7 +288,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        getActivity().onBackPressed();
+        ((TestUizaVideoIMActivityRlSlide) getActivity()).getDraggablePanel().closeToRight();
     }
 
     @Override
@@ -328,5 +328,17 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        uizaIMAVideo.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        uizaIMAVideo.onStop();
     }
 }

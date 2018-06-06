@@ -151,7 +151,7 @@ public class SplashActivity extends BaseActivity {
         subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
-                LLog.d(TAG, "getData onSuccess " + LSApplication.getInstance().getGson().toJson(auth));
+                LLog.d(TAG, "getData auth onSuccess " + LSApplication.getInstance().getGson().toJson(auth));
                 LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
 
                 token = auth.getData().getToken();

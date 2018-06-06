@@ -75,7 +75,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
@@ -90,7 +89,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
  */
 /* package */ public final class UizaPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
     private final String TAG = getClass().getSimpleName();
-    //private Gson gson = new Gson();//TODO remove later
     private Context context;
 
     private UizaIMAVideo uizaIMAVideo;
@@ -711,5 +709,12 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
     public void setResumeIfConnectionError() {
         //LLog.d(TAG, "onMessageEvent setResumeIfConnectionError player current position mls: " + mls);
         contentPosition = (long) mls;
+    }
+
+    public long getCurrentPosition() {
+        if (player == null) {
+            return 0;
+        }
+        return player.getCurrentPosition();
     }
 }

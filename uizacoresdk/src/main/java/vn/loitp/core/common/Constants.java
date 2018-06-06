@@ -106,7 +106,7 @@ public class Constants {
 
     public static final String BROADCAST_ACTION = "BROADCAST_ACTION_SERVICE_ACITIVY";
 
-    public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
+    //public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
     public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
     public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";

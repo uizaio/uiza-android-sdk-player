@@ -17,6 +17,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaData;
@@ -27,14 +28,14 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class HomeV2CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
-    private long positionFromPipService;
+    //private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LPref.setAcitivityCanSlideIsRunning(activity, true);
-        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
+        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
+        //LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -183,7 +184,10 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (LPref.getClickedPip(activity)) {
-                    frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
+                    //frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
+                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                    msgFromActivityIsInitSuccess.setInitSuccess(true);
+                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
                 frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override

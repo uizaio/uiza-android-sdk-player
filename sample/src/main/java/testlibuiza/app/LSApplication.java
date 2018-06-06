@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LPref;
-import vn.loitp.data.ActivityData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -29,16 +28,18 @@ public class LSApplication extends MultiDexApplication {
         //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         //init uiza
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
+        /*RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_DEMO);
         RestClientTracking.init(Constants.URL_TRACKING_PROD);
-        Auth auth = getDummyAuthDemo();
+        Auth auth = getDummyAuthDemo();*/
 
-        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
-        //RestClientTracking.init(Constants.URL_TRACKING_DEV);
-        //Auth auth = getDummyAuthDev();
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        Auth auth = getDummyAuthDev();
 
         RestClientV2.addAuthorization(auth.getData().getToken());
         LPref.setAuth(getContext(), auth, gson);
+
+        Constants.setDebugMode(true);
     }
 
     public Gson getGson() {
@@ -54,7 +55,7 @@ public class LSApplication extends MultiDexApplication {
     }
 
     private Auth getDummyAuthDev() {
-        String json = "{\"code\":200,\"data\":{\"appId\":\"a204e9cdeca44948a33e0d012ef74e90\",\"expired\":\"09/06/2018 08:08:37\",\"token\":\"12af7152-9f55-4af0-89eb-77b64b00d5b2\"},\"datetime\":\"2018-05-10T08:08:37.295Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
+        String json = "{\"code\":200,\"data\":{\"appId\":\"a204e9cdeca44948a33e0d012ef74e90\",\"expired\":\"04/07/2018 07:21:32\",\"token\":\"0941d9e5-69bb-4eb7-9456-b43f7e4e4efd\"},\"datetime\":\"2018-06-04T07:21:32.790Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
         return gson.fromJson(json, Auth.class);
     }
 

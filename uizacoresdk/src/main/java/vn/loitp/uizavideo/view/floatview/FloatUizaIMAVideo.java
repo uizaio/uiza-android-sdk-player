@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ import vn.loitp.views.LToast;
 
 public class FloatUizaIMAVideo extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
-    private Gson gson = new Gson();//TODO remove
+    //private Gson gson = new Gson();
     private PlayerView playerView;
     private FloatUizaPlayerManager floatUizaPlayerManager;
     private ProgressBar progressBar;
@@ -58,21 +57,18 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private String linkPlay;
-    private long currentPosition;
 
     public long getCurrentPosition() {
         return getPlayer().getCurrentPosition();
     }
 
-    public void init(String linkPlay, long currentPosition, Callback callback) {
+    public void init(String linkPlay, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             //LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
-        this.currentPosition = currentPosition;
-        LLog.d(TAG, "init currentPosition: " + currentPosition);
         this.callback = callback;
         if (floatUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -95,7 +91,6 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        //LLog.d(TAG, "checkToSetUp");
         setVideoCover();
         initData(linkPlay, null, null, null);
         onResume();
@@ -199,7 +194,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     }
 
     public void onDestroy() {
-        LLog.d(TAG, "trackUiza onDestroy");
+        //LLog.d(TAG, "trackUiza onDestroy");
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.release();
         }
@@ -207,7 +202,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     public void onResume() {
         if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.init(currentPosition);
+            floatUizaPlayerManager.init();
         }
     }
 
@@ -231,10 +226,10 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+        //LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getContext());
-            LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
+            //LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");
                 return;
@@ -245,7 +240,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -253,26 +248,32 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
             @Override
             public void onFail(Throwable e) {
-                //TODO
+                //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
     }
 
     private void setVideoCover() {
+        //LLog.d(TAG, "setVideoCover");
         if (ivVideoCover.getVisibility() != VISIBLE) {
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-            //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-            LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
             ivVideoCover.setVisibility(VISIBLE);
         }
+        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
+        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
+        LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
     }
 
     public void removeVideoCover() {
         if (ivVideoCover.getVisibility() != GONE) {
-            //rootView.removeView(ivVideoCover);
+            //LLog.d(TAG, "removeVideoCover");
             ivVideoCover.setVisibility(GONE);
-            //ivVideoCover = null;
+        }
+    }
+
+    public void seekTo(long position) {
+        if (floatUizaPlayerManager != null) {
+            floatUizaPlayerManager.seekTo(position);
         }
     }
 }

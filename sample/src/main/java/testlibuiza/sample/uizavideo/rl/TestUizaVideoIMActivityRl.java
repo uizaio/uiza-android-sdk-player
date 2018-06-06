@@ -26,10 +26,12 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaInput;
@@ -37,13 +39,11 @@ import vn.loitp.views.LToast;
 
 public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
     private UizaIMAVideo uizaIMAVideo;
-    private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
 
         UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
         String entityId = null;
@@ -51,7 +51,7 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String videoCoverUrl = null;
 
         if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-            entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
+            entityId = "ac96863f-11ce-485f-a7ea-284ac589573f";
         } else {
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
         }
@@ -273,10 +273,19 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        if (positionFromPipService != 0) {
-            uizaIMAVideo.seekTo(positionFromPipService);
+        if (isInitSuccess) {
+            LLog.d(TAG, "fuck isInitSuccess " + isInitSuccess);
+            LLog.d(TAG, "fuck LPref.getClickedPip(activity) " + LPref.getClickedPip(activity));
+            if (LPref.getClickedPip(activity)) {
+                ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                msgFromActivityIsInitSuccess.setInitSuccess(true);
+                ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
+            }
+            //if (positionFromPipService != 0) {
+            //    uizaIMAVideo.seekTo(positionFromPipService);
+            //}
+            setListener();
         }
-        setListener();
     }
 
     @Override
@@ -342,5 +351,17 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        uizaIMAVideo.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        uizaIMAVideo.onStop();
     }
 }

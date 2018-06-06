@@ -16,7 +16,6 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LDeviceUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -78,13 +77,13 @@ public class UizaDialogShare extends Dialog {
 
         List<ResolveInfo> resolveInfoList;
         if (UizaData.getInstance().getResolveInfoList() == null) {
-            LLog.d(TAG, "queryIntentActivities");
+            //LLog.d(TAG, "queryIntentActivities");
             Intent template = new Intent(Intent.ACTION_SEND);
             template.setType("text/plain");
             resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
             UizaData.getInstance().setResolveInfoList(resolveInfoList);
         } else {
-            LLog.d(TAG, "!queryIntentActivities");
+            //LLog.d(TAG, "!queryIntentActivities");
             resolveInfoList = UizaData.getInstance().getResolveInfoList();
         }
 
@@ -112,8 +111,8 @@ public class UizaDialogShare extends Dialog {
     private void click(ResolveInfo resolveInfo) {
         String pkgName = resolveInfo.activityInfo.packageName;
         String label = (String) resolveInfo.loadLabel(activity.getPackageManager());
-        LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + label);
-        LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + pkgName);
+        //LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + label);
+        //LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + pkgName);
         if (pkgName.equals("com.google.android.apps.docs") && label.toLowerCase().contains("clipboard")) {
             LDeviceUtil.setClipboard(activity, MESSAGE);
         } else if (pkgName.equals("com.facebook.katana")) {

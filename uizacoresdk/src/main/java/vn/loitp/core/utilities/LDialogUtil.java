@@ -76,7 +76,7 @@ public class LDialogUtil {
     }
 
     public static void showDialog1Immersive(Context context, String msg, final Callback1 callback1) {
-        LLog.d(TAG, "fuck showDialog1");
+        //LLog.d(TAG, "showDialog1");
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.warning));
