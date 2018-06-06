@@ -17,8 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +42,7 @@ import vn.loitp.uizavideo.view.util.UizaData;
 public class UizaIMAVideoInfo extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
-    private Gson gson = new Gson();//TODO remove
+    //private Gson gson = new Gson();
     private ProgressBar progressBar;
     private TextView tvVideoName;
     private TextView tvVideoTime;

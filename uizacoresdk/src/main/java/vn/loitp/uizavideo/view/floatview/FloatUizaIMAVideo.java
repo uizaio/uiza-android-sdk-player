@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ import vn.loitp.views.LToast;
 
 public class FloatUizaIMAVideo extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
-    private Gson gson = new Gson();//TODO remove
+    //private Gson gson = new Gson();
     private PlayerView playerView;
     private FloatUizaPlayerManager floatUizaPlayerManager;
     private ProgressBar progressBar;
@@ -227,10 +226,10 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+        //LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getContext());
-            LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
+            //LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");
                 return;
@@ -241,7 +240,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -249,7 +248,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
             @Override
             public void onFail(Throwable e) {
-                //TODO
+                //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
@@ -267,10 +266,8 @@ public class FloatUizaIMAVideo extends RelativeLayout {
 
     public void removeVideoCover() {
         if (ivVideoCover.getVisibility() != GONE) {
-            LLog.d(TAG, "removeVideoCover");
-            //rootView.removeView(ivVideoCover);
+            //LLog.d(TAG, "removeVideoCover");
             ivVideoCover.setVisibility(GONE);
-            //ivVideoCover = null;
         }
     }
 
