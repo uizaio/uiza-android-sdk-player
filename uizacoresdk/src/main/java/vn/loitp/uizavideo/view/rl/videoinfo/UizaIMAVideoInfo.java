@@ -156,27 +156,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
         recyclerView.setAdapter(mAdapter);
     }
 
-    /*public void getDetailEntity() {
-        UizaService service = RestClientV2.createService(UizaService.class);
-        JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
-        jsonBodyGetDetailEntity.setId(UizaData.getInstance().getEntityId());
-
-        ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
-            @Override
-            public void onSuccess(GetDetailEntity getDetailEntityV2) {
-                LLog.d(TAG, "getDetailEntityV2 entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntityV2));
-                mItem = getDetailEntityV2.getData().get(0);
-                updateUI();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getDetailEntityV2 onFail " + e.toString());
-                ((BaseActivity) activity).handleException(e);
-            }
-        });
-    }*/
-
     public void setup(GetDetailEntity getDetailEntity) {
         if (getDetailEntity == null) {
             return;
@@ -245,7 +224,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LDialogUtil.showDialog1(activity, "Lỗi không tải được danh sách entity liên quan", new LDialogUtil.Callback1() {
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_list_relation), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
                         /*if (activity != null) {
@@ -278,7 +257,6 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void loadMore() {
-        //TODO
-        //LLog.d(TAG, "loadMore");
+        //do nothing
     }
 }

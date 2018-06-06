@@ -1,9 +1,5 @@
 package vn.loitp.uizavideo.view.rl.video;
 
-/**
- * Created by www.muathu@gmail.com on 12/24/2017.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -336,7 +332,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                         handleError(new Exception(activity.getString(R.string.err_setup)));
                     }
                 });
-                //LLog.d(TAG, "checkToSetUp else");
             }
         }
     }
@@ -584,12 +579,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
-        /*if (uizaPlayerManager.getSubtitleList() == null || uizaPlayerManager.getSubtitleList().isEmpty()) {
-            exoCc.setColorTint(ContextCompat.getColor(activity, R.color.Gray));
-            exoCc.setClickable(false);
-        } else {
-            exoCc.setClickable(true);
-        }*/
         UizaData.getInstance().setSettingPlayer(false);
     }
 
@@ -615,7 +604,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void onResume() {
         activityIsPausing = false;
-        //LLog.d(TAG, "onMessageEvent onResume " + isExoShareClicked);
         if (isExoShareClicked) {
             isExoShareClicked = false;
 
@@ -978,14 +966,13 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //LLog.d(TAG, "getDetailEntity");
         UizaUtil.setupRestClientV2(activity);
         UizaService service = RestClientV2.createService(UizaService.class);
-        JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
+        final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getUizaInput().getEntityId());
-        //jsonBodyGetDetailEntity.setId(Constants.ENTITYID_WITH_SUBTITLE);
 
         ((BaseActivity) activity).subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
             @Override
             public void onSuccess(GetDetailEntity getDetailEntity) {
-                //LLog.d(TAG, "getDetailEntity entityId " + UizaData.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
+                LLog.d(TAG, "getDetailEntity entityId " + jsonBodyGetDetailEntity.getId() + " -> " + gson.toJson(getDetailEntity));
                 mGetDetailEntity = getDetailEntity;
                 isGetDetailEntityDone = true;
                 checkToSetUp();
@@ -1102,30 +1089,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             }
         });
     }
-
-    /*private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                boolean isInitSuccess = intent.getBooleanExtra(Constants.FLOAT_VIDEO_INIT_RESULT, false);
-                //LLog.d(TAG, "broadcastReceiver onReceive isInitSuccess: " + isInitSuccess);
-                if (callback != null) {
-                    callback.onClickPipVideoInitSuccess(isInitSuccess);
-                }
-            }
-        }
-    };
-
-    public void registerReceiverPiPInitSuccess() {
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
-    }
-
-    public void unregisterReceiverPiPInitSuccess() {
-        if (broadcastReceiver != null) {
-            activity.unregisterReceiver(broadcastReceiver);
-            broadcastReceiver = null;
-        }
-    }*/
 
     public void seekTo(long positionMs) {
         if (uizaPlayerManager != null) {
