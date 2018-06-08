@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.google.android.exoplayer2.ui.PlayerControlView;
+
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
@@ -24,14 +26,11 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class HomeV2CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
-    //private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LPref.setAcitivityCanSlideIsRunning(activity, true);
-        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        //LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -185,7 +184,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
-                /*frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         if (draggablePanel != null && !isLandscape) {
@@ -202,7 +201,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                             }
                         }
                     }
-                });*/
+                });
                 intFrmBottom(getDetailEntity);
             }
 

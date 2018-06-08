@@ -390,23 +390,23 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void addPlayerView() {
-        UizaPlayerView playerView = null;
+        PlayerView playerView = null;
         //LLog.d(TAG, "addPlayerView getPlayerId " + UizaData.getInstance().getPlayerId());
         switch (UizaData.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
+                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
                 break;
             case Constants.PLAYER_ID_SKIN_2:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
+                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
                 break;
             case Constants.PLAYER_ID_SKIN_3:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
+                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
                 break;
             case Constants.PLAYER_ID_SKIN_0:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
             default:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
         }
         rootView.addView(playerView);
