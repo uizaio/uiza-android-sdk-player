@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 
@@ -78,7 +79,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener, PlayerControlView.VisibilityListener {
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
     //TODO remove
@@ -196,6 +197,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             isGetDetailEntityDone = false;
             countTryLinkPlayError = 0;
         }
+        playerView.setControllerVisibilityListener(this);
         setTitle();
         setVideoCover();
         getLinkPlay();
@@ -994,6 +996,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 });
             }
         });
+    }
+
+    //listener playback controller show or hide
+    @Override
+    public void onVisibilityChange(int visibility) {
+        LLog.d(TAG, "onVisibilityChange visibility: " + visibility);
     }
 
     public interface Callback {

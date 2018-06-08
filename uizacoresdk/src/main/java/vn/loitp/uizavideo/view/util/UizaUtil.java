@@ -54,6 +54,7 @@ public class UizaUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover) {
+        //LLog.d(TAG, "resizeLayout");
         int widthScreen = 0;
         int heightScreen = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
@@ -64,7 +65,7 @@ public class UizaUtil {
             widthScreen = LScreenUtil.getScreenWidth();
             heightScreen = widthScreen * 9 / 16;
         }
-        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
         viewGroup.getLayoutParams().width = widthScreen;
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
@@ -88,7 +89,7 @@ public class UizaUtil {
 
         //edit size of imageview thumnail
         FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.previewFrameLayout);
-        LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
+        //LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 4;
@@ -97,7 +98,7 @@ public class UizaUtil {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 5;
                 flImgThumnailPreviewSeekbar.getLayoutParams().height = widthScreen / 5 * 9 / 16;
             }
-            LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
+            //LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
             flImgThumnailPreviewSeekbar.requestLayout();
         }
     }
@@ -173,9 +174,9 @@ public class UizaUtil {
                 "            ]";
         Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
         }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
+        //LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
         List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
+        //LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
         return subtitleList;
     }
 
