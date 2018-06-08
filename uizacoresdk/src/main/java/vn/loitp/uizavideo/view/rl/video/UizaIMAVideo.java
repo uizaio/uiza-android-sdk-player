@@ -26,7 +26,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 
@@ -79,7 +78,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener, PlayerControlView.VisibilityListener {
+public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
     //TODO remove
@@ -197,7 +196,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             isGetDetailEntityDone = false;
             countTryLinkPlayError = 0;
         }
-        playerView.setControllerVisibilityListener(this);
         setTitle();
         setVideoCover();
         getLinkPlay();
@@ -392,23 +390,23 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void addPlayerView() {
-        PlayerView playerView = null;
+        UizaPlayerView playerView = null;
         //LLog.d(TAG, "addPlayerView getPlayerId " + UizaData.getInstance().getPlayerId());
         switch (UizaData.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
                 break;
             case Constants.PLAYER_ID_SKIN_2:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
                 break;
             case Constants.PLAYER_ID_SKIN_3:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
                 break;
             case Constants.PLAYER_ID_SKIN_0:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
             default:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
         }
         rootView.addView(playerView);
@@ -996,12 +994,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 });
             }
         });
-    }
-
-    //listener playback controller show or hide
-    @Override
-    public void onVisibilityChange(int visibility) {
-        LLog.d(TAG, "onVisibilityChange visibility: " + visibility);
     }
 
     public interface Callback {

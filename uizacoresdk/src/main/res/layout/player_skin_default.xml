@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.exoplayer2.ui.PlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+<vn.loitp.uizavideo.view.rl.video.UizaPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/player_view"
     android:layout_width="match_parent"
@@ -9,5 +9,6 @@
     app:auto_show="false"
     app:controller_layout_id="@layout/uiza_controller_skin_default"
     app:fastforward_increment="10000"
+    app:hide_on_touch="true"
     app:rewind_increment="10000"
     app:use_controller="true" />
