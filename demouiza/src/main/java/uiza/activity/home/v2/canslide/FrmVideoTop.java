@@ -279,7 +279,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        LLog.d(TAG, "isInitSuccess " + isInitSuccess);
+        //LLog.d(TAG, "isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
@@ -288,7 +288,7 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
-                LLog.d(TAG, "isInitSuccess prevUizaInput == null -> exit");
+                //LLog.d(TAG, "isInitSuccess prevUizaInput == null -> exit");
                 ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
                     @Override
@@ -297,9 +297,9 @@ public class FrmVideoTop extends BaseFragment implements UizaIMAVideo.Callback {
                     }
                 });
             } else {
-                LLog.d(TAG, "isInitSuccess prevUizaInput " + prevUizaInput.getEntityName());
+                //LLog.d(TAG, "isInitSuccess prevUizaInput " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
-                LLog.d(TAG, "isInitSuccess isPlayPrev: " + isPlayPrev);
+                //LLog.d(TAG, "isInitSuccess isPlayPrev: " + isPlayPrev);
                 if (isPlayPrev) {
                     setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {

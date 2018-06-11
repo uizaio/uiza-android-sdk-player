@@ -258,7 +258,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     }
 
     private void onClickVideo(Item item, int position) {
-        LLog.d(TAG, "onClickItem at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
+        //LLog.d(TAG, "onClickItem at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 

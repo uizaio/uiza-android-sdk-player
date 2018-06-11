@@ -117,11 +117,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             draggablePanel.setVisibility(View.VISIBLE);
         }
 
-        /*if (LPref.getClickedPip(activity)) {
-            LLog.d(TAG, "initializeDraggablePanel positionFromPipService called from pip service");
-        } else {
-            LLog.d(TAG, "initializeDraggablePanel positionFromPipService !called from pip service");
-        }*/
         if (frmVideoTop != null || frmVideoBottom != null) {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
@@ -241,6 +236,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     public void play(String entityId, String entityTitle, String entityCover) {
         //LLog.d(TAG, "onClickVideo entityId:" + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
+        //UizaUtil.stopServicePiPIfRunning(activity);
         initializeDraggablePanel(entityId, entityTitle, entityCover);
     }
 

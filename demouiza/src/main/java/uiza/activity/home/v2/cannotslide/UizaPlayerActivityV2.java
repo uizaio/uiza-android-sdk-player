@@ -37,6 +37,7 @@ import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaInput;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
@@ -58,6 +59,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
         } else {
+            UizaUtil.stopServicePiPIfRunning(activity);
             entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);

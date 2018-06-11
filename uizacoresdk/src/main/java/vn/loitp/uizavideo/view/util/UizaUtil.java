@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
@@ -32,6 +33,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -293,6 +295,21 @@ public class UizaUtil {
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
+        }
+    }
+
+    //stop service pip
+    public static void stopServicePiPIfRunning(Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        //LLog.d(TAG, "stopServicePiPIfRunning");
+        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
+        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
+        if (isSvPipRunning) {
+            //stop service if running
+            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+            activity.stopService(intent);
         }
     }
 }

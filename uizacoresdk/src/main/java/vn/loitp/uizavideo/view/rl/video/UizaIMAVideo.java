@@ -141,17 +141,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return ivThumbnail;
     }
 
-    private void stopServicePiPIfRunning() {
-        //LLog.d(TAG, "stopServicePiPIfRunning");
-        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
-        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
-        if (isSvPipRunning) {
-            //stop service if running
-            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
-            activity.stopService(intent);
-        }
-    }
-
     private boolean isHasError;
 
     private void handleError(Exception e) {
@@ -184,7 +173,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
 
-        //stopServicePiPIfRunning();
+        //UizaUtil.stopServicePiPIfRunning(activity);
 
         this.callback = callback;
         if (uizaPlayerManager != null) {
