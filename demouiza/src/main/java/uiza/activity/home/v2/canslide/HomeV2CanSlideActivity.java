@@ -211,6 +211,9 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        if (!LPref.getClickedPip(activity)) {
+            UizaUtil.stopServicePiPIfRunning(activity);
+        }
         //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         //entityTitle = "Dummy title";
         //videoCoverUrl = null;
@@ -236,7 +239,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     public void play(String entityId, String entityTitle, String entityCover) {
         //LLog.d(TAG, "onClickVideo entityId:" + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
-        //UizaUtil.stopServicePiPIfRunning(activity);
         initializeDraggablePanel(entityId, entityTitle, entityCover);
     }
 
@@ -281,8 +283,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         LPref.setAcitivityCanSlideIsRunning(activity, false);
+        super.onDestroy();
     }
 
     //get event from FloatClickFullScreenReceiver if isSlideUizaVideoEnabled && isActivityRunning
