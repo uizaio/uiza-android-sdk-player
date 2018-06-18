@@ -18,10 +18,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".sample.uizavideo.deprecatedfrm.TestUizaVideoIMActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".sample.uizavideo.rl.TestUizaVideoIMActivityRl"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
@@ -30,6 +26,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".sample.uizavideo.slide2.TestUizaVideoIMActivityRlSlide2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
 
