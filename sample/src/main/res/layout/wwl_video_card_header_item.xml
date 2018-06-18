@@ -10,6 +10,7 @@
         android:id="@+id/li_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_55"
         android:text="Title"
         android:textColor="@color/White"
         android:textSize="@dimen/txt_30" />
@@ -18,6 +19,7 @@
         android:id="@+id/li_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_55"
         android:text="LOLTube"
         android:textColor="@color/WhiteSmoke"
         android:textSize="14.0sp" />

@@ -10,7 +10,6 @@
         android:id="@+id/li_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/video_info"
         android:textColor="@color/WhiteSmoke"
         android:textSize="@dimen/txt_10" />
 </LinearLayout>

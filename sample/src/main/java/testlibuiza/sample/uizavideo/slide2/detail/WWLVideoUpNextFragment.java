@@ -1,15 +1,16 @@
 package testlibuiza.sample.uizavideo.slide2.detail;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import testlibuiza.R;
 import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
+import vn.loitp.core.utilities.LImageUtil;
 
 /**
  * Created by thangn on 2/26/17.
@@ -26,7 +27,7 @@ import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
 public class WWLVideoUpNextFragment extends BaseFragment {
     private FragmentHost mFragmentHost;
     private RecyclerView mRecyclerView;
-    private GridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private CustomAdapter mAdapter;
     private boolean mIsLandscape;
 
@@ -39,20 +40,18 @@ public class WWLVideoUpNextFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.mRecyclerView = (RecyclerView) frmRootView.findViewById(R.id.recyclerView);
-        this.mLayoutManager = new GridLayoutManager(getActivity(), WWLUiUtil.getGridColumnCount(getResources()));
+        this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.mRecyclerView.setLayoutManager(mLayoutManager);
-        //this.mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), true));
-        //this.mRecyclerView.scrollToPosition(0);
 
         this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItemList);
         mRecyclerView.setAdapter(mAdapter);
 
-        this.mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        /*this.mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 return WWLVideoUpNextFragment.this.getSpanSize(position);
             }
-        });
+        });*/
 
         updateLayoutIfNeed();
     }
@@ -62,7 +61,7 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         return R.layout.wwl_video_up_next_fragment;
     }
 
-    private int getSpanSize(int position) {
+    /*private int getSpanSize(int position) {
         int spanSize = this.mLayoutManager.getSpanCount();
         if (this.mIsLandscape) {
             return spanSize;
@@ -75,13 +74,12 @@ public class WWLVideoUpNextFragment extends BaseFragment {
             return spanSize;
         }
         return 1;
-    }
+    }*/
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        this.mFragmentHost = (FragmentHost) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mFragmentHost = (FragmentHost) context;
     }
 
     @Override
@@ -104,13 +102,13 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         if (this.mIsLandscape) {
             enable = false;
         }
-        if (this.mLayoutManager != null) {
+        /*if (this.mLayoutManager != null) {
             if (this.mIsLandscape) {
                 this.mLayoutManager.setSpanCount(1);
             } else {
                 this.mLayoutManager.setSpanCount(WWLUiUtil.getGridColumnCount(getResources()));
             }
-        }
+        }*/
         if (this.mAdapter != null) {
             this.mAdapter.setHeader(enable);
             this.mAdapter.notifyDataSetChanged();
@@ -128,14 +126,12 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         private static final int TITLE = 1;
         private static final int OTHER = 2;
         public boolean mHasHeader;
-        private String mTitle;
         private List<WWLVideoDataset.DatasetItem> datasetItemList;
         private WWLVideoDataset.DatasetItem datasetItem;
 
         public CustomAdapter(List<WWLVideoDataset.DatasetItem> dataset) {
             this.datasetItemList = dataset;
             this.mHasHeader = true;
-            this.mTitle = "Up next";
         }
 
         @Override
@@ -160,10 +156,11 @@ public class WWLVideoUpNextFragment extends BaseFragment {
                     ((HeaderViewHolder) holder).getSubTitleView().setText(this.datasetItem.subtitle);
                 }
             } else if (holder instanceof TitleViewHolder) {
-                ((TitleViewHolder) holder).getTitleView().setText(this.mTitle);
+                ((TitleViewHolder) holder).getTitleView().setText(getString(R.string.large_text));
             } else if (holder instanceof ViewHolder) {
                 ((ViewHolder) holder).getTitleView().setText(getItem(position).title);
                 ((ViewHolder) holder).getSubTitleView().setText(getItem(position).subtitle);
+                LImageUtil.load(getActivity(), datasetItem.getCover(), ((ViewHolder) holder).ivCover);
             }
         }
 
@@ -233,6 +230,7 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         class ViewHolder extends RecyclerView.ViewHolder {
             private final TextView titleView;
             private final TextView subtitleView;
+            private final ImageView ivCover;
 
             public ViewHolder(View v) {
                 super(v);
@@ -244,6 +242,7 @@ public class WWLVideoUpNextFragment extends BaseFragment {
                 });
                 titleView = (TextView) v.findViewById(R.id.li_title);
                 subtitleView = (TextView) v.findViewById(R.id.li_subtitle);
+                ivCover = (ImageView) v.findViewById(R.id.iv_cover);
             }
 
             public TextView getTitleView() {
@@ -252,6 +251,10 @@ public class WWLVideoUpNextFragment extends BaseFragment {
 
             public TextView getSubTitleView() {
                 return subtitleView;
+            }
+
+            public ImageView getIvCover() {
+                return ivCover;
             }
         }
     }
