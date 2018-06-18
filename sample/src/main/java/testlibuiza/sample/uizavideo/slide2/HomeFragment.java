@@ -16,7 +16,7 @@ import testlibuiza.R;
 import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.views.wwlvideo.utils.WWLMusicUiUtil;
+import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
 
 /**
  * Created by thangn on 2/26/17.
@@ -37,7 +37,7 @@ public class HomeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.mRecyclerView = (RecyclerView) frmRootView.findViewById(R.id.recyclerView);
-        this.mLayoutManager = new GridLayoutManager(getActivity(), WWLMusicUiUtil.getGridColumnCount(getResources()));
+        this.mLayoutManager = new GridLayoutManager(getActivity(), WWLUiUtil.getGridColumnCount(getResources()));
         this.mRecyclerView.setLayoutManager(mLayoutManager);
         //this.mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), true));
         //this.mRecyclerView.scrollToPosition(0);
@@ -67,7 +67,7 @@ public class HomeFragment extends BaseFragment {
 
     private void updateLayoutIfNeed() {
         if (this.mLayoutManager != null) {
-            this.mLayoutManager.setSpanCount(WWLMusicUiUtil.getGridColumnCount(getResources()));
+            this.mLayoutManager.setSpanCount(WWLUiUtil.getGridColumnCount(getResources()));
         }
         if (this.mAdapter != null) {
             this.mAdapter.notifyDataSetChanged();

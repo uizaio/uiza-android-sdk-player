@@ -22,8 +22,8 @@ import android.widget.Scroller;
 import java.util.LinkedList;
 
 import loitp.core.R;
-import vn.loitp.views.wwlvideo.utils.WWLMusicIllegal;
-import vn.loitp.views.wwlvideo.utils.WWLMusicViewHelper;
+import vn.loitp.views.wwlvideo.utils.WWLIllegal;
+import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -110,10 +110,10 @@ public class WWLVideo extends ViewGroup {
         this.mMiniPlayerWidth = (int) typedArray.getDimension(R.styleable.WatchWhileLayout_miniPlayerWidth, 240.0f);
         this.mMiniPlayerPadding = (int) typedArray.getDimension(R.styleable.WatchWhileLayout_miniPlayerPadding, 12.0f);
         typedArray.recycle();
-        WWLMusicIllegal.check(this.mPlayerViewId != 0, "playerViewId must be specified");
-        WWLMusicIllegal.check(this.mMetadataViewId != 0, "metadataViewId must be specified");
+        WWLIllegal.check(this.mPlayerViewId != 0, "playerViewId must be specified");
+        WWLIllegal.check(this.mMetadataViewId != 0, "metadataViewId must be specified");
         if (isTablet()) {
-            WWLMusicIllegal.check(this.mMetadataPanelViewId != 0, "metadataLandscapeTitleViewId must be specified");
+            WWLIllegal.check(this.mMetadataPanelViewId != 0, "metadataLandscapeTitleViewId must be specified");
         }
     }
 
@@ -140,7 +140,7 @@ public class WWLVideo extends ViewGroup {
         int childCount = getChildCount();
         boolean isTL = isTablet();
         int requireViewCount = isTL ? 4 : 3;
-        WWLMusicIllegal.check(childCount >= requireViewCount, "WatchWhileLayout must have at least " + requireViewCount + " children");
+        WWLIllegal.check(childCount >= requireViewCount, "WatchWhileLayout must have at least " + requireViewCount + " children");
         this.mViews = new LinkedList();
         for (int i = 0; i < childCount; i++) {
             View view = getChildAt(i);
@@ -157,12 +157,12 @@ public class WWLVideo extends ViewGroup {
                 this.mViews.add(view);
             }
         }
-        WWLMusicIllegal.check(this.mPlayerView);
-        WWLMusicIllegal.check(this.mMetadataView);
+        WWLIllegal.check(this.mPlayerView);
+        WWLIllegal.check(this.mMetadataView);
         if (isTL) {
-            WWLMusicIllegal.check(this.mMetadataPanelView);
+            WWLIllegal.check(this.mMetadataPanelView);
         }
-        WWLMusicIllegal.check(this.mViews.size() > 0, "contentViews cannot be empty");
+        WWLIllegal.check(this.mViews.size() > 0, "contentViews cannot be empty");
         this.mPlayerView.setOnClickListener(new PlayerViewClickListener(this));
         this.mBgView = new View(getContext());
         this.mBgView.setBackgroundColor(getResources().getColor(android.R.color.black));
@@ -223,7 +223,7 @@ public class WWLVideo extends ViewGroup {
         resetHScroller();
         layout();
         if (this.mListener != null) {
-            this.mListener.WWL_onSliding(this.mCurrentAlpha);
+            this.mListener.onWWLSliding(this.mCurrentAlpha);
         }
         return true;
     }
@@ -242,7 +242,7 @@ public class WWLVideo extends ViewGroup {
             updateRect(this.mFullPlayerRect, paddingLeft, paddingTop, innerWidth, fullPlayerInnerHeight);
         } else if (isTablet()) {
             Context context = getContext();
-            WWLMusicIllegal.check(context);
+            WWLIllegal.check(context);
             int fullPlayerInnerWidth;
             if (context.getResources().getConfiguration().smallestScreenWidthDp >= 720) {
                 fullPlayerInnerWidth = Math.round(0.7f * ((float) innerWidth));
@@ -320,13 +320,13 @@ public class WWLVideo extends ViewGroup {
         if (this.mListener != null) {
             switch (this.mState) {
                 case STATE_HIDED:
-                    this.mListener.WWL_onHided();
+                    this.mListener.onWWLHided();
                     break;
                 case STATE_MAXIMIZED:
-                    this.mListener.WWL_maximized();
+                    this.mListener.onWWLmaximized();
                     break;
                 case STATE_MINIMIZED:
-                    this.mListener.WWL_minimized();
+                    this.mListener.onWWLminimized();
                     break;
             }
         }
@@ -643,10 +643,10 @@ public class WWLVideo extends ViewGroup {
         }
         if (this.mInnerglowDrawable != null) {
             this.mInnerglowDrawable.setBounds(this.mPlayerRect);
-            this.mInnerglowDrawable.setAlpha(WWLMusicViewHelper.alpha255(alpha));
+            this.mInnerglowDrawable.setAlpha(WWLViewHelper.alpha255(alpha));
         }
         this.mShadowDrawable.setBounds(this.mPlayerOuterRect);
-        this.mShadowDrawable.setAlpha(WWLMusicViewHelper.alpha255(alpha));
+        this.mShadowDrawable.setAlpha(WWLViewHelper.alpha255(alpha));
         invalidate(this.mMixRect.left, this.mMixRect.top, this.mMixRect.right, this.mMixRect.bottom);
         int width = getWidth();
         int height = getHeight();
@@ -740,7 +740,7 @@ public class WWLVideo extends ViewGroup {
         this.mOffsetX = offset;
         layout();
         if (this.mListener != null) {
-            this.mListener.WWL_onSliding(this.mCurrentAlpha);
+            this.mListener.onWWLSliding(this.mCurrentAlpha);
         }
         return true;
     }
@@ -964,15 +964,15 @@ public class WWLVideo extends ViewGroup {
     }
 
     public interface Listener {
-        void WWL_onSliding(float offset);
+        void onWWLSliding(float offset);
 
-        void WWL_onClicked();
+        void onWWLClicked();
 
-        void WWL_onHided();
+        void onWWLHided();
 
-        void WWL_minimized();
+        void onWWLminimized();
 
-        void WWL_maximized();
+        void onWWLmaximized();
     }
 
     static final class Orientation {
@@ -1078,7 +1078,7 @@ public class WWLVideo extends ViewGroup {
 
         public Tracker(Context context, int snapVelocity) {
             this.pointerId = -1;
-            WWLMusicIllegal.check(snapVelocity >= 200, "snapVelocity cannot be less than 200");
+            WWLIllegal.check(snapVelocity >= 200, "snapVelocity cannot be less than 200");
             ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
             this.scaledPagingTouchSlop = viewConfiguration.getScaledPagingTouchSlop();
             this.a = viewConfiguration.getScaledMaximumFlingVelocity();
@@ -1185,7 +1185,7 @@ public class WWLVideo extends ViewGroup {
 
         public final void onClick(View view) {
             if (this.mLayout.mListener != null) {
-                this.mLayout.mListener.WWL_onClicked();
+                this.mLayout.mListener.onWWLClicked();
             }
         }
     }

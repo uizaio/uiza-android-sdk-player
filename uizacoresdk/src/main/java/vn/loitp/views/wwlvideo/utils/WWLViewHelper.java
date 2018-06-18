@@ -3,7 +3,7 @@ package vn.loitp.views.wwlvideo.utils;
 /**
  * Created by thangn on 2/26/17.
  */
-public class WWLMusicViewHelper {
+public class WWLViewHelper {
     public static int alpha255(float f) {
         if (f <= 0.0f) {
             return 0;

@@ -12,9 +12,10 @@ import testlibuiza.sample.uizavideo.slide2.detail.WWLVideoUpNextFragment;
 import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.wwlvideo.layout.WWLVideo;
-import vn.loitp.views.wwlvideo.utils.WWLMusicUiUtil;
-import vn.loitp.views.wwlvideo.utils.WWLMusicViewHelper;
+import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
+import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
 public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWLVideo.Listener, FragmentHost {
     private WWLVideo wwlVideo;
@@ -52,7 +53,8 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     }
 
     @Override
-    public void WWL_onSliding(float offset) {
+    public void onWWLSliding(float offset) {
+        LLog.d(TAG, "onWWLSliding " + offset);
         float alpha;
         if (offset > 2.0f) {
             alpha = this.mLastAlpha * (3.0f - offset);
@@ -71,7 +73,8 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     }
 
     @Override
-    public void WWL_onClicked() {
+    public void onWWLClicked() {
+        LLog.d(TAG, "onWWLClicked");
         if (this.wwlVideo.mState == WWLVideo.STATE_MINIMIZED) {
             this.wwlVideo.maximize(false);
         }
@@ -81,23 +84,27 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     }
 
     @Override
-    public void WWL_onHided() {
+    public void onWWLHided() {
+        LLog.d(TAG, "onWWLHided");
         this.wwlVideoPlayerFragment.stopPlay();
     }
 
     @Override
-    public void WWL_minimized() {
+    public void onWWLminimized() {
+        LLog.d(TAG, "onWWLminimized");
         this.mLastAlpha = 0.0f;
         this.wwlVideoPlayerFragment.hideControls();
     }
 
     @Override
-    public void WWL_maximized() {
+    public void onWWLmaximized() {
+        LLog.d(TAG, "onWWLmaximized");
         this.mLastAlpha = 1.0f;
     }
 
     @Override
     public void goToDetail(WWLVideoDataset.DatasetItem item) {
+        LLog.d(TAG, "goToDetail");
         if (this.wwlVideo.mState == WWLVideo.STATE_HIDED) {
             this.wwlVideo.mState = WWLVideo.STATE_MAXIMIZED;
             this.wwlVideo.mIsFullscreen = false;
@@ -119,7 +126,8 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
 
     @Override
     public void onVideoCollapse() {
-        WWLMusicUiUtil.showSystemUI(activity);
+        LLog.d(TAG, "onVideoCollapse");
+        WWLUiUtil.showSystemUI(activity);
         this.wwlVideo.exitFullscreenToMinimize();
         this.wwlVideoPlayerFragment.switchFullscreen(false);
         this.wwlVideo.minimize(false);
@@ -127,11 +135,12 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
 
     @Override
     public void onVideoFullscreen(boolean selected) {
+        LLog.d(TAG, "onVideoFullscreen");
         if (selected) {
-            WWLMusicUiUtil.hideSystemUI(activity);
+            WWLUiUtil.hideSystemUI(activity);
             this.wwlVideo.enterFullscreen();
         } else {
-            WWLMusicUiUtil.showSystemUI(activity);
+            WWLUiUtil.showSystemUI(activity);
             this.wwlVideo.exitFullscreen();
         }
         this.wwlVideoPlayerFragment.switchFullscreen(selected);
@@ -141,7 +150,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
         if (Build.VERSION.SDK_INT >= 21) {
             int color = getResources().getColor(R.color.colorPrimaryDark);
             int color2 = Color.BLACK;
-            int color3 = WWLMusicViewHelper.evaluateColorAlpha(Math.max(0.0f, Math.min(1.0f, alpha)), color, color2);
+            int color3 = WWLViewHelper.evaluateColorAlpha(Math.max(0.0f, Math.min(1.0f, alpha)), color, color2);
             getWindow().setStatusBarColor(color3);
         }
     }
