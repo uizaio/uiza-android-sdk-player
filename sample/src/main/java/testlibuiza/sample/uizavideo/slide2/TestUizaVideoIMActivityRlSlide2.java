@@ -54,6 +54,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     @Override
     public void onWWLSliding(float offset) {
         //LLog.d(TAG, "onWWLSliding " + offset);
+        wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
         float alpha;
         if (offset > 2.0f) {
             alpha = this.mLastAlpha * (3.0f - offset);
@@ -91,6 +92,8 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     @Override
     public void onWWLminimized() {
         LLog.d(TAG, "onWWLminimized");
+        wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
+        wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(false);
         this.mLastAlpha = 0.0f;
         //this.wwlVideoPlayerFragment.hideControls();
     }
@@ -98,6 +101,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     @Override
     public void onWWLmaximized() {
         LLog.d(TAG, "onWWLmaximized");
+        wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(true);
         this.mLastAlpha = 1.0f;
     }
 

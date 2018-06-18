@@ -1149,4 +1149,16 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             }
         }
     }
+
+    public void showController() {
+        playerView.showController();
+    }
+
+    public void hideController() {
+        playerView.hideController();
+    }
+
+    public void hideControllerOnTouch(boolean isHide) {
+        playerView.setControllerHideOnTouch(isHide);
+    }
 }
