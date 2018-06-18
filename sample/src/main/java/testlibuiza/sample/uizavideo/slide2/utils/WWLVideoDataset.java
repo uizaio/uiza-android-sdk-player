@@ -18,8 +18,7 @@ public class WWLVideoDataset {
             datasetItem.setId(i);
             datasetItem.setTitle("This is title " + i);
             datasetItem.setSubtitle("This is subtitle " + i);
-            datasetItem.setUrl("https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears_sd.mpd");
-            datasetItem.setCover(i % 2 == 0 ? Constants.URL_IMG_POSTER_MOMO : Constants.URL_IMG_POSTER_SPIDER_MAN);
+            datasetItem.setCover(Constants.URL_IMG_POSTER_SPIDER_MAN);
             datasetItemList.add(datasetItem);
         }
     }
@@ -28,7 +27,6 @@ public class WWLVideoDataset {
         public int id;
         public String title;
         public String subtitle;
-        public String url;
         public String cover;
 
         public int getId() {
@@ -53,14 +51,6 @@ public class WWLVideoDataset {
 
         public void setSubtitle(String subtitle) {
             this.subtitle = subtitle;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
         }
 
         public String getCover() {
