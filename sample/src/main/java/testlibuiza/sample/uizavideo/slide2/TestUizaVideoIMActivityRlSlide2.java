@@ -76,7 +76,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     public void onWWLClicked() {
         LLog.d(TAG, "onWWLClicked");
         if (this.wwlVideo.mState == WWLVideo.STATE_MINIMIZED) {
-            this.wwlVideo.maximize(false);
+            this.wwlVideo.maximize(true);
         }
         /*if (this.wwlVideo.mState == WWLVideo.STATE_MAXIMIZED) {
             this.wwlVideoPlayerFragment.toggleControls();

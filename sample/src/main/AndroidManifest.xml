@@ -30,8 +30,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".sample.uizavideo.slide2.TestUizaVideoIMActivityRlSlide2"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
         <receiver
             android:name=".sample.uizavideo.FloatClickFullScreenReceiver"
