@@ -1,30 +1,34 @@
 package testlibuiza.sample.uizavideo.slide2;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
+import vn.loitp.core.utilities.LImageUtil;
 
 /**
  * Created by thangn on 2/26/17.
  */
 
 public class HomeFragment extends BaseFragment {
+    private final String TAG = getClass().getSimpleName();
     private RecyclerView mRecyclerView;
-    private GridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private CustomAdapter mAdapter;
     private FragmentHost mFragmentHost;
 
@@ -37,9 +41,9 @@ public class HomeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.mRecyclerView = (RecyclerView) frmRootView.findViewById(R.id.recyclerView);
-        this.mLayoutManager = new GridLayoutManager(getActivity(), WWLUiUtil.getGridColumnCount(getResources()));
+        this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.mRecyclerView.setLayoutManager(mLayoutManager);
-        this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItems);
+        this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItemList);
         mRecyclerView.setAdapter(mAdapter);
 
         updateLayoutIfNeed();
@@ -51,9 +55,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.mFragmentHost = (FragmentHost) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mFragmentHost = (FragmentHost) context;
     }
 
     @Override
@@ -63,9 +67,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void updateLayoutIfNeed() {
-        if (this.mLayoutManager != null) {
-            this.mLayoutManager.setSpanCount(WWLUiUtil.getGridColumnCount(getResources()));
-        }
         if (this.mAdapter != null) {
             this.mAdapter.notifyDataSetChanged();
         }
@@ -78,10 +79,11 @@ public class HomeFragment extends BaseFragment {
     }
 
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-        private WWLVideoDataset.DatasetItem[] mDataSet;
+        private List<WWLVideoDataset.DatasetItem> datasetItemList;
 
-        public CustomAdapter(WWLVideoDataset.DatasetItem[] dataset) {
-            this.mDataSet = dataset;
+        public CustomAdapter(List<WWLVideoDataset.DatasetItem> datasetItemList) {
+            this.datasetItemList = datasetItemList;
+            //LLog.d(TAG, "CustomAdapter datasetItemList " + datasetItemList.size());
         }
 
         @Override
@@ -92,29 +94,32 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.getTitleView().setText(this.mDataSet[position].title);
-            holder.getSubTitleView().setText(this.mDataSet[position].subtitle);
+            holder.getTitleView().setText(this.datasetItemList.get(position).title);
+            holder.getSubTitleView().setText(this.datasetItemList.get(position).subtitle);
+            LImageUtil.load(getActivity(), datasetItemList.get(position).getCover(), holder.getIvCover());
         }
 
         @Override
         public int getItemCount() {
-            return this.mDataSet.length;
+            return this.datasetItemList.size();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
             private final TextView titleView;
             private final TextView subtitleView;
+            private final ImageView ivCover;
 
             public ViewHolder(View v) {
                 super(v);
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        HomeFragment.this.onItemClicked(CustomAdapter.this.mDataSet[getAdapterPosition()]);
+                        HomeFragment.this.onItemClicked(CustomAdapter.this.datasetItemList.get(getAdapterPosition()));
                     }
                 });
                 titleView = (TextView) v.findViewById(R.id.li_title);
                 subtitleView = (TextView) v.findViewById(R.id.li_subtitle);
+                ivCover = (ImageView) v.findViewById(R.id.iv_cover);
             }
 
             public TextView getTitleView() {
@@ -123,6 +128,10 @@ public class HomeFragment extends BaseFragment {
 
             public TextView getSubTitleView() {
                 return subtitleView;
+            }
+
+            public ImageView getIvCover() {
+                return ivCover;
             }
         }
     }

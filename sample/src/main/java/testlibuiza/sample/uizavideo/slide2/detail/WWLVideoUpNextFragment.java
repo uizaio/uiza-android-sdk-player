@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import testlibuiza.R;
 import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
@@ -42,7 +44,7 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         //this.mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), true));
         //this.mRecyclerView.scrollToPosition(0);
 
-        this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItems);
+        this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItemList);
         mRecyclerView.setAdapter(mAdapter);
 
         this.mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -127,11 +129,11 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         private static final int OTHER = 2;
         public boolean mHasHeader;
         private String mTitle;
-        private WWLVideoDataset.DatasetItem[] mDataSet;
-        private WWLVideoDataset.DatasetItem mHeaderItem;
+        private List<WWLVideoDataset.DatasetItem> datasetItemList;
+        private WWLVideoDataset.DatasetItem datasetItem;
 
-        public CustomAdapter(WWLVideoDataset.DatasetItem[] dataset) {
-            this.mDataSet = dataset;
+        public CustomAdapter(List<WWLVideoDataset.DatasetItem> dataset) {
+            this.datasetItemList = dataset;
             this.mHasHeader = true;
             this.mTitle = "Up next";
         }
@@ -153,9 +155,9 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof HeaderViewHolder) {
-                if (this.mHeaderItem != null) {
-                    ((HeaderViewHolder) holder).getTitleView().setText(this.mHeaderItem.title);
-                    ((HeaderViewHolder) holder).getSubTitleView().setText(this.mHeaderItem.subtitle);
+                if (this.datasetItem != null) {
+                    ((HeaderViewHolder) holder).getTitleView().setText(this.datasetItem.title);
+                    ((HeaderViewHolder) holder).getSubTitleView().setText(this.datasetItem.subtitle);
                 }
             } else if (holder instanceof TitleViewHolder) {
                 ((TitleViewHolder) holder).getTitleView().setText(this.mTitle);
@@ -167,7 +169,7 @@ public class WWLVideoUpNextFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            return (mHasHeader ? 1 : 0) + 1 + this.mDataSet.length;
+            return (mHasHeader ? 1 : 0) + 1 + this.datasetItemList.size();
         }
 
         @Override
@@ -189,11 +191,11 @@ public class WWLVideoUpNextFragment extends BaseFragment {
         }
 
         public void updateHeader(WWLVideoDataset.DatasetItem item) {
-            this.mHeaderItem = item;
+            this.datasetItem = item;
         }
 
         private WWLVideoDataset.DatasetItem getItem(int position) {
-            return this.mDataSet[position - 1 - (this.mHasHeader ? 1 : 0)];
+            return this.datasetItemList.get(position - 1 - (this.mHasHeader ? 1 : 0));
         }
 
         class HeaderViewHolder extends RecyclerView.ViewHolder {

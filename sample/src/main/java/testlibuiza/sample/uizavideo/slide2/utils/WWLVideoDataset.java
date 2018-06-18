@@ -1,20 +1,26 @@
 package testlibuiza.sample.uizavideo.slide2.utils;
 
-import testlibuiza.R;
-import vn.loitp.utils.util.AppUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+import vn.loitp.core.common.Constants;
 
 /**
  * Created by thangn on 2/27/17.
  */
 
 public class WWLVideoDataset {
-    public static DatasetItem[] datasetItems;
+    public static List<DatasetItem> datasetItemList = new ArrayList<>();
 
     static {
-        int n = 50;
-        datasetItems = new DatasetItem[n];
-        for (int i = 0; i < n; i++) {
-            datasetItems[i] = new DatasetItem(i + 1);
+        for (int i = 0; i < 50; i++) {
+            DatasetItem datasetItem = new DatasetItem();
+            datasetItem.setId(i);
+            datasetItem.setTitle("This is title " + i);
+            datasetItem.setSubtitle("This is subtitle " + i);
+            datasetItem.setUrl("https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears_sd.mpd");
+            datasetItem.setCover(i % 2 == 0 ? Constants.URL_IMG_POSTER_MOMO : Constants.URL_IMG_POSTER_SPIDER_MAN);
+            datasetItemList.add(datasetItem);
         }
     }
 
@@ -23,14 +29,46 @@ public class WWLVideoDataset {
         public String title;
         public String subtitle;
         public String url;
+        public String cover;
 
-        public DatasetItem(int _id) {
-            String _url = "android.resource://" + AppUtils.getAppPackageName() + "/" + R.raw.vid_bigbuckbunny;
+        public int getId() {
+            return id;
+        }
 
-            this.id = _id;
-            this.title = String.format("This is element #%d", _id);
-            this.subtitle = "Loitp " + id;
-            this.url = _url;
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getSubtitle() {
+            return subtitle;
+        }
+
+        public void setSubtitle(String subtitle) {
+            this.subtitle = subtitle;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
         }
     }
 }

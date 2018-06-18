@@ -58,6 +58,8 @@ public class Constants {
     public final static String TOKEN_WTT = "lsn9LZdm0MBrhGlyrFYqJYSjJfIXX27e-1512986583784";
     public final static String TOKEN_STAG = "zHiQCup9CzTr1eP5ZQsbPK5sYNYa8kRL-1517457089350";
 
+    public final static String URL_IMG_POSTER_SPIDER_MAN = "https://ksassets.timeincuk.net/wp/uploads/sites/54/2018/06/Marvels-Spider-Man_2018_06-11-18_003-1024x576.jpg";
+    public final static String URL_IMG_POSTER_MOMO = "https://kenh14cdn.com/2018/4/27/photo-15-15248224863571678048157.jpg";
     public final static String URL_IMG_POSTER = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
     public final static String URL_IMG_THUMBNAIL = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
 
