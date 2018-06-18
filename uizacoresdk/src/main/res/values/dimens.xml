@@ -77,7 +77,7 @@
     <dimen name="size_icon">40dp</dimen>
 
     <dimen name="watch_while_mini_player_padding">8.0dip</dimen>
-    <dimen name="watch_while_mini_player_width">113.0dip</dimen>
+    <dimen name="watch_while_mini_player_width">200.0dip</dimen>
     <dimen name="watch_while_mini_player_dismiss_drag_distance">90.0dip</dimen>
     <dimen name="watch_while_mini_player_dismiss_animation_distance">1000.0dip</dimen>
     <dimen name="column_min_size">180.0dip</dimen>

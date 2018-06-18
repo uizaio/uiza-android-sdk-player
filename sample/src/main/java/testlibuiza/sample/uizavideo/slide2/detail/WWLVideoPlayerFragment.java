@@ -81,7 +81,7 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
     }
 
     public void stopPlay() {
-        uizaIMAVideo.onStop();
+        uizaIMAVideo.onDestroy();
     }
 
     @Override
