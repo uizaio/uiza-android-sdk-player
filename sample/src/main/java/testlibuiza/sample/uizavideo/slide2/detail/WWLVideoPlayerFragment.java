@@ -1,6 +1,5 @@
 package testlibuiza.sample.uizavideo.slide2.detail;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
@@ -19,12 +18,14 @@ import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
 import testlibuiza.sample.uizavideo.slide2.layout.WWLVideoControlsOverlay;
 import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LLog;
 
 /**
  * Created by thangn on 2/26/17.
  */
 
 public class WWLVideoPlayerFragment extends BaseFragment implements TextureView.SurfaceTextureListener, WWLVideoControlsOverlay.Listener {
+    private final String TAG = getClass().getSimpleName();
     private TextureView mPlayerView;
     private MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
@@ -43,6 +44,7 @@ public class WWLVideoPlayerFragment extends BaseFragment implements TextureView.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LLog.d(TAG, "onViewCreated");
         this.mPlayerView = (TextureView) frmRootView.findViewById(R.id.player_view);
         this.mPlayerView.requestFocus();
         this.mPlayerView.setSurfaceTextureListener(this);
@@ -57,9 +59,9 @@ public class WWLVideoPlayerFragment extends BaseFragment implements TextureView.
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.mFragmentHost = (FragmentHost) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mFragmentHost = (FragmentHost) context;
     }
 
     public void startPlay(WWLVideoDataset.DatasetItem item) {

@@ -54,7 +54,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
 
     @Override
     public void onWWLSliding(float offset) {
-        LLog.d(TAG, "onWWLSliding " + offset);
+        //LLog.d(TAG, "onWWLSliding " + offset);
         float alpha;
         if (offset > 2.0f) {
             alpha = this.mLastAlpha * (3.0f - offset);
@@ -113,7 +113,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
             }
             this.wwlVideo.reset();
         }
-        this.wwlVideo.maximize(false);
+        this.wwlVideo.maximize(true);
 
         this.wwlVideoPlayerFragment.startPlay(item);
         if (this.wwlVideoUpNextFragment != null) {
@@ -121,6 +121,15 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
         }
         if (this.wwlVideoMetaInfoFragment != null) {
             this.wwlVideoMetaInfoFragment.updateItem(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (wwlVideo.mState == WWLVideo.STATE_MAXIMIZED) {
+            wwlVideo.minimize(true);
+        } else {
+            super.onBackPressed();
         }
     }
 
