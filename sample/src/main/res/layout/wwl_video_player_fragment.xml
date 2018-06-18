@@ -4,10 +4,11 @@
     android:layout_height="fill_parent"
     android:background="@color/colorPrimaryDark">
 
-    <TextureView
-        android:id="@+id/player_view"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/w_250"
+        android:scaleType="centerCrop"
+        android:src="@drawable/iv" />
 
     <TextView
         android:layout_width="wrap_content"

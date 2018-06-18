@@ -268,7 +268,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
                 //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
 
-                //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+                LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
                     handleErrorNoData();
@@ -927,7 +927,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getUizaInput().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
-                //LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
+                LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
                 mGetLinkPlay = getLinkPlay;
                 isGetLinkPlayDone = true;
                 checkToSetUp();

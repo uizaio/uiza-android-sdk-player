@@ -78,9 +78,9 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
         if (this.wwlVideo.mState == WWLVideo.STATE_MINIMIZED) {
             this.wwlVideo.maximize(false);
         }
-        if (this.wwlVideo.mState == WWLVideo.STATE_MAXIMIZED) {
+        /*if (this.wwlVideo.mState == WWLVideo.STATE_MAXIMIZED) {
             this.wwlVideoPlayerFragment.toggleControls();
-        }
+        }*/
     }
 
     @Override
@@ -93,7 +93,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
     public void onWWLminimized() {
         LLog.d(TAG, "onWWLminimized");
         this.mLastAlpha = 0.0f;
-        this.wwlVideoPlayerFragment.hideControls();
+        //this.wwlVideoPlayerFragment.hideControls();
     }
 
     @Override
@@ -138,7 +138,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
         LLog.d(TAG, "onVideoCollapse");
         WWLUiUtil.showSystemUI(activity);
         this.wwlVideo.exitFullscreenToMinimize();
-        this.wwlVideoPlayerFragment.switchFullscreen(false);
+        //this.wwlVideoPlayerFragment.switchFullscreen(false);
         this.wwlVideo.minimize(false);
     }
 
@@ -152,7 +152,7 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
             WWLUiUtil.showSystemUI(activity);
             this.wwlVideo.exitFullscreen();
         }
-        this.wwlVideoPlayerFragment.switchFullscreen(selected);
+        //this.wwlVideoPlayerFragment.switchFullscreen(selected);
     }
 
     private void updateStatusBarAlpha(float alpha) {

@@ -63,8 +63,8 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

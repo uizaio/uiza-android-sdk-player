@@ -55,7 +55,7 @@ public class LSApplication extends MultiDexApplication {
     }
 
     private Auth getDummyAuthDev() {
-        String json = "{\"code\":200,\"data\":{\"appId\":\"a204e9cdeca44948a33e0d012ef74e90\",\"expired\":\"04/07/2018 07:21:32\",\"token\":\"0941d9e5-69bb-4eb7-9456-b43f7e4e4efd\"},\"datetime\":\"2018-06-04T07:21:32.790Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
+        String json = "{\"code\":200,\"data\":{\"appId\":\"a204e9cdeca44948a33e0d012ef74e90\",\"expired\":\"18/07/2018 07:33:16\",\"token\":\"d44d6205-0be9-4795-b8b4-14872a31f65d\"},\"datetime\":\"2018-06-18T07:33:16.843Z\",\"message\":\"ok\",\"name\":\"Resource\",\"type\":\"SUCCESS\",\"version\":2}";
         return gson.fromJson(json, Auth.class);
     }
 
