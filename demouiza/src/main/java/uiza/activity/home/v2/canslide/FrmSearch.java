@@ -5,13 +5,12 @@ package uiza.activity.home.v2.canslide;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,10 +55,9 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frm_search, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         ivClearText = (ImageView) view.findViewById(R.id.iv_clear_text);
         etSearch = (EditText) view.findViewById(R.id.et_search);
@@ -142,7 +140,11 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
                 search(etSearch.getText().toString(), false);
             }
         });
-        return view;
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.frm_search;
     }
 
     @Override

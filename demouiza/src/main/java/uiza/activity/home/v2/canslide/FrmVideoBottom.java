@@ -5,10 +5,9 @@ package uiza.activity.home.v2.canslide;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
@@ -21,12 +20,15 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfo uizaIMAVideoInfo;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frm_bottom, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         uizaIMAVideoInfo = (UizaIMAVideoInfo) view.findViewById(R.id.uiza_video_info);
-        return view;
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.frm_bottom;
     }
 
     public void setup(GetDetailEntity getDetailEntity) {

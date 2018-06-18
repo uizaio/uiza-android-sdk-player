@@ -1,11 +1,11 @@
 package uiza.activity.home.v2.canslide;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -67,8 +67,8 @@ public class FrmHomeChannel extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.uiza_frm_home_channel, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         if (Constants.IS_DEBUG) {
@@ -130,7 +130,11 @@ public class FrmHomeChannel extends BaseFragment {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
         getData(false);
-        return view;
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.uiza_frm_home_channel;
     }
 
     /*private List<Item> getSubList(List<Item> itemList, int startIndex, int endIndex) {

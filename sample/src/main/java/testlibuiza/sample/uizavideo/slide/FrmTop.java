@@ -7,11 +7,10 @@ package testlibuiza.sample.uizavideo.slide;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -62,12 +61,15 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         this.frmTopCallback = frmTopCallback;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frm_top, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
-        return view;
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.frm_top;
     }
 
     @Override
