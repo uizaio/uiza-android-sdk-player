@@ -100,14 +100,14 @@ public class WWLVideoPlayerFragment extends BaseFragment implements TextureView.
     }
 
     @Override
-    public void CO_doCollapse() {
+    public void doCOCollapse() {
         if (this.mFragmentHost != null) {
             this.mFragmentHost.onVideoCollapse();
         }
     }
 
     @Override
-    public void CO_doFullscreen(boolean selected) {
+    public void doCOFullscreen(boolean selected) {
         if (this.mFragmentHost != null) {
             this.mFragmentHost.onVideoFullscreen(selected);
         }

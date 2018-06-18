@@ -40,9 +40,9 @@ public class WWLVideoControlsOverlay extends FrameLayout implements View.OnClick
     public void onClick(View v) {
         if (this.listener != null) {
             if (v == collapseBtn) {
-                this.listener.CO_doCollapse();
+                this.listener.doCOCollapse();
             } else if (v == fullscreenBtn) {
-                this.listener.CO_doFullscreen(!this.fullscreenBtn.isSelected());
+                this.listener.doCOFullscreen(!this.fullscreenBtn.isSelected());
             }
         }
     }
@@ -74,8 +74,8 @@ public class WWLVideoControlsOverlay extends FrameLayout implements View.OnClick
     }
 
     public interface Listener {
-        void CO_doCollapse();
+        void doCOCollapse();
 
-        void CO_doFullscreen(boolean selected);
+        void doCOFullscreen(boolean selected);
     }
 }

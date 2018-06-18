@@ -29,7 +29,7 @@
                 android:id="@+id/player_fragment_container"
                 android:layout_width="0.0dip"
                 android:layout_height="0.0dip"
-                android:background="@android:color/black">
+                android:background="@color/colorPrimaryDark">
 
                 <fragment
                     android:id="@+id/player_fragment"

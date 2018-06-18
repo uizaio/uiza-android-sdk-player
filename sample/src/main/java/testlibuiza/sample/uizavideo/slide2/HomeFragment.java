@@ -39,9 +39,6 @@ public class HomeFragment extends BaseFragment {
         this.mRecyclerView = (RecyclerView) frmRootView.findViewById(R.id.recyclerView);
         this.mLayoutManager = new GridLayoutManager(getActivity(), WWLUiUtil.getGridColumnCount(getResources()));
         this.mRecyclerView.setLayoutManager(mLayoutManager);
-        //this.mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.card_spacing), true));
-        //this.mRecyclerView.scrollToPosition(0);
-
         this.mAdapter = new CustomAdapter(WWLVideoDataset.datasetItems);
         mRecyclerView.setAdapter(mAdapter);
 

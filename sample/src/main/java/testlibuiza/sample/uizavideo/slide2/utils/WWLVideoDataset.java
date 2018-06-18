@@ -29,7 +29,7 @@ public class WWLVideoDataset {
 
             this.id = _id;
             this.title = String.format("This is element #%d", _id);
-            this.subtitle = "Loitp";
+            this.subtitle = "Loitp " + id;
             this.url = _url;
         }
     }

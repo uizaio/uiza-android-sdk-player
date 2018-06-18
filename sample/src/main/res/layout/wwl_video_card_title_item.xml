@@ -10,13 +10,7 @@
         android:id="@+id/li_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:importantForAccessibility="no"
-        android:includeFontPadding="false"
-        android:maxLines="2"
-        android:paddingLeft="0.0dip"
-        android:paddingTop="0.0dip"
-        android:text="Up next"
+        android:text="@string/video_info"
         android:textColor="@color/WhiteSmoke"
-        android:textSize="16.0sp" />
+        android:textSize="@dimen/txt_10" />
 </LinearLayout>

@@ -40,7 +40,6 @@
                 android:src="@drawable/player_fullscreen" />
         </LinearLayout>
 
-
         <ImageView
             android:id="@+id/player_collapse_button"
             style="@style/PlayerButton"
