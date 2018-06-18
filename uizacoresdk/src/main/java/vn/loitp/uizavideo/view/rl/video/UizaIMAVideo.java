@@ -398,6 +398,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
         }
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        playerView.setLayoutParams(lp);
         rootView.addView(playerView);
     }
 
