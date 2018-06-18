@@ -8,8 +8,4 @@ import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 
 public interface FragmentHost {
     void goToDetail(WWLVideoDataset.DatasetItem item);
-
-    void onVideoCollapse();
-
-    void onVideoFullscreen(boolean selected);
 }

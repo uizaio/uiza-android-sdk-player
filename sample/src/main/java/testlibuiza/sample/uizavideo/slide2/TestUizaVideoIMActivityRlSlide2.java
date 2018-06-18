@@ -14,7 +14,6 @@ import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.wwlvideo.layout.WWLVideo;
-import vn.loitp.views.wwlvideo.utils.WWLUiUtil;
 import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
 public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWLVideo.Listener, FragmentHost {
@@ -131,28 +130,6 @@ public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWL
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onVideoCollapse() {
-        LLog.d(TAG, "onVideoCollapse");
-        WWLUiUtil.showSystemUI(activity);
-        this.wwlVideo.exitFullscreenToMinimize();
-        //this.wwlVideoPlayerFragment.switchFullscreen(false);
-        this.wwlVideo.minimize(false);
-    }
-
-    @Override
-    public void onVideoFullscreen(boolean selected) {
-        LLog.d(TAG, "onVideoFullscreen");
-        if (selected) {
-            WWLUiUtil.hideSystemUI(activity);
-            this.wwlVideo.enterFullscreen();
-        } else {
-            WWLUiUtil.showSystemUI(activity);
-            this.wwlVideo.exitFullscreen();
-        }
-        //this.wwlVideoPlayerFragment.switchFullscreen(selected);
     }
 
     private void updateStatusBarAlpha(float alpha) {
