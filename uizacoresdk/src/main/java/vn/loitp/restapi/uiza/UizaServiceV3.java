@@ -48,4 +48,8 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#delete-an-metadata
     @DELETE("/api/public/v3/media/metadata")
     Observable<ResultDeleteAnMetadata> deleteAnMetadata(@Query("id") String id);
+
+    //http://dev-docs.uizadev.io/#list-all-entity
+    @GET("/api/public/v3/media/entity")
+    Observable<Object> getListAllEntity();
 }
