@@ -14,6 +14,7 @@ import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
@@ -30,6 +31,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_check_token).setOnClickListener(this);
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +64,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_create_metadata:
                 createMetadata();
+                break;
+            case R.id.bt_get_detail_of_metadata:
+                getDetailOfMetadata();
                 break;
         }
     }
@@ -146,6 +151,24 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "createMetadata onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getDetailOfMetadata() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
+        subscribe(service.getDetailOfMetadata(metadataId), new ApiSubscriber<ResultGetDetailOfMetadata>() {
+            @Override
+            public void onSuccess(ResultGetDetailOfMetadata resultGetDetailOfMetadata) {
+                LLog.d(TAG, "getDetailOfMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetDetailOfMetadata));
+                showTv(resultGetDetailOfMetadata);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getDetailOfMetadata onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

@@ -3,10 +3,12 @@ package vn.loitp.restapi.uiza;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 
@@ -30,4 +32,8 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#create-metadata
     @POST("/api/public/v3/media/metadata")
     Observable<ResultCreateMetadata> createMetadata(@Body CreateMetadata createMetadata);
+
+    //http://dev-docs.uizadev.io/#get-detail-of-metadata
+    @GET("/api/public/v3/media/metadata")
+    Observable<ResultGetDetailOfMetadata> getDetailOfMetadata(@Query("id") String id);
 }
