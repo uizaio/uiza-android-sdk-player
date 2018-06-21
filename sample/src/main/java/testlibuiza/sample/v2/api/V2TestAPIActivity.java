@@ -16,7 +16,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
@@ -148,7 +148,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     private String appId;
 
     private void auth() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         String accessKeyId = Constants.A_K_DEV;
         String secretKeyId = Constants.S_K_DEV;
 
@@ -173,7 +173,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void checkToken() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
@@ -207,7 +207,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listMetadata() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";
@@ -230,7 +230,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void search() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         JsonBodySearch jsonBodySearch = new JsonBodySearch();
         jsonBodySearch.setKeyword("lol");
         jsonBodySearch.setLimit(50);
@@ -250,7 +250,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listEntity() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         //jsonBodyListAllEntity.setMetadataId(metadataId);
         jsonBodyListAllEntity.setLimit(50);
@@ -271,7 +271,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getDetailEntity() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
         subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
@@ -288,7 +288,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getListAllEntityRelation() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
         jsonBodyListAllEntityRelation.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
         subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
@@ -305,7 +305,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getLinkPlay() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         LLog.d(TAG, "appId " + appId);
         subscribe(service.getLinkPlayV2("e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7", appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
@@ -338,7 +338,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     public void init(final UizaTracking uizaTracking) {
         RestClientTracking.init(Constants.URL_TRACKING_DEV);
         s = LSApplication.getInstance().getGson().toJson(uizaTracking);
-        UizaService service = RestClientTracking.createService(UizaService.class);
+        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {

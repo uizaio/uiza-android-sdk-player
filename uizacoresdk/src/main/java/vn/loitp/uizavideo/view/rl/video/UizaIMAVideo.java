@@ -51,7 +51,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -909,7 +909,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getLinkPlay() {
         //LLog.d(TAG, "getLinkPlay");
         UizaUtil.setupRestClientV2(activity);
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
@@ -957,7 +957,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getDetailEntity() {
         //LLog.d(TAG, "getDetailEntity");
         UizaUtil.setupRestClientV2(activity);
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
@@ -1012,7 +1012,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     /*private void getLinkDownload() {
         LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             showDialogError("Error auth == null || auth.getAppId() == null");
@@ -1063,7 +1063,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }*/
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        UizaService service = RestClientTracking.createService(UizaService.class);
+        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {

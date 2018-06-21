@@ -20,7 +20,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -107,7 +107,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void auth() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         String accessKeyId = null;
         String secretKeyId = null;
         switch (currentApiEndPoint) {
@@ -228,7 +228,7 @@ public class SplashActivity extends BaseActivity {
 
     private void checkToken(String token) {
         LLog.d(TAG, "checkToken: " + token);
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth a) {

@@ -1,10 +1,7 @@
 package vn.loitp.restapi.uiza;
 
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -29,7 +26,7 @@ import vn.loitp.restapi.uiza.model.v2.search.Search;
  * @author loitp
  */
 
-public interface UizaService {
+public interface UizaServiceV2 {
     //=====================================================Sample
     /*@GET("v1/app/poster")
     Observable<GetPoster[]> getPoster(@Query("number") int number);

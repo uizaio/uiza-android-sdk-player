@@ -26,7 +26,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.ApiMaster;
 import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -236,7 +236,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
             }
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
-        UizaService service = RestClientTracking.createService(UizaService.class);
+        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
