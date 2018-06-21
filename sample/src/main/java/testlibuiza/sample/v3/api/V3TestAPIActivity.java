@@ -12,6 +12,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
@@ -27,6 +28,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_token).setOnClickListener(this);
         findViewById(R.id.bt_check_token).setOnClickListener(this);
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_create_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +58,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
+                break;
+            case R.id.bt_create_metadata:
+                createMetadata();
                 break;
         }
     }
@@ -117,6 +122,29 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void createMetadata() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateMetadata createMetadata = new CreateMetadata();
+        createMetadata.setName("Loitp " + System.currentTimeMillis());
+        createMetadata.setType(CreateMetadata.TYPE_FOLDER);
+        createMetadata.setDescription("This is a description sentences");
+        createMetadata.setOrderNumber(1);
+        createMetadata.setIcon("/exemple.com/icon.png");
+        subscribe(service.createMetadata(createMetadata), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object resultGetToken) {
+                LLog.d(TAG, "createMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                showTv(resultGetToken);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createMetadata onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

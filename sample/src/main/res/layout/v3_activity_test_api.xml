@@ -56,6 +56,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Get list metadata" />
+
+                    <Button
+                        android:id="@+id/bt_create_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Create metadata" />
                 </LinearLayout>
             </HorizontalScrollView>
 
