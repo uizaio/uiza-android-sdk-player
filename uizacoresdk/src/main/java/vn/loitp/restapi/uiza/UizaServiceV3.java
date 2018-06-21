@@ -63,7 +63,7 @@ public interface UizaServiceV3 {
     @GET("/api/public/v3/media/entity")
     Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Query("id") String id);
 
-    //http://dev-docs.uizadev.io/#retrieve-an-entity
-    @GET("/api/public/v3/media/entity")
-    Observable<Object> searchEntity(@Query("id") String id);
+    //http://dev-docs.uizadev.io/#search-entity
+    @GET("/api/public/v3/media/entity/search")
+    Observable<ResultListEntity> searchEntity(@Query("keyword") String keyword);
 }

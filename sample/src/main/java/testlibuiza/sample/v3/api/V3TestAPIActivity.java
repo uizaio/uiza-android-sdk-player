@@ -299,20 +299,20 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void searchAnEntity() {
-        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
-        subscribe(service.retrieveAnEntity(id), new ApiSubscriber<Object>() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String keyword = "a";
+        subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
-            public void onSuccess(Object result) {
-                LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+            public void onSuccess(ResultListEntity result) {
+                LLog.d(TAG, "searchAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                LLog.e(TAG, "searchAnEntity onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });*/
+        });
     }
 }
