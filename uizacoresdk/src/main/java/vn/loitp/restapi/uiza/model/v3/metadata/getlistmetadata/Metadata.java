@@ -1,5 +1,5 @@
 
-package vn.loitp.restapi.uiza.model.v3.getlistmetadata;
+package vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

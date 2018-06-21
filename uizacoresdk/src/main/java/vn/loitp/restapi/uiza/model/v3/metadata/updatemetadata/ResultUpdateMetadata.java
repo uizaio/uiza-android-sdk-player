@@ -1,10 +1,12 @@
 
-package vn.loitp.restapi.uiza.model.v3.createmetadata;
+package vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResultCreateMetadata {
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+
+public class ResultUpdateMetadata {
 
     @SerializedName("data")
     @Expose

@@ -6,7 +6,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 
 /**
  * Created by LENOVO on 6/21/2018.

@@ -1,10 +1,10 @@
 
-package vn.loitp.restapi.uiza.model.v3.getdetailofmetadata;
+package vn.loitp.restapi.uiza.model.v3.authentication.gettoken;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResultGetDetailOfMetadata {
+public class ResultGetToken {
 
     @SerializedName("data")
     @Expose

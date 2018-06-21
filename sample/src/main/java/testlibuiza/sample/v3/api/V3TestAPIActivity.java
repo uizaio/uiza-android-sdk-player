@@ -12,12 +12,13 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
-import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
-import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
-import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
-import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
-import vn.loitp.restapi.uiza.model.v3.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 
@@ -209,12 +210,12 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void deleteAnMetadata() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String deleteMetadataId = "514f56e9-c250-492a-bf46-e51225bc07b3";
-        subscribe(service.deleteAnMetadata(deleteMetadataId), new ApiSubscriber<Object>() {
+        String deleteMetadataId = "37b865b3-cf75-4faa-8507-180a9436d95d";
+        subscribe(service.deleteAnMetadata(deleteMetadataId), new ApiSubscriber<ResultDeleteAnMetadata>() {
             @Override
-            public void onSuccess(Object resultGetDetailOfMetadata) {
-                LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetDetailOfMetadata));
-                showTv(resultGetDetailOfMetadata);
+            public void onSuccess(ResultDeleteAnMetadata result) {
+                LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
             }
 
             @Override

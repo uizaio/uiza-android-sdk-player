@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 
 /**
  * File created on 11/15/2016.

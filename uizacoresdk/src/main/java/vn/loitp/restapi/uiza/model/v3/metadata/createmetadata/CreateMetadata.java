@@ -1,4 +1,4 @@
-package vn.loitp.restapi.uiza.model.v3.createmetadata;
+package vn.loitp.restapi.uiza.model.v3.metadata.createmetadata;
 
 /**
  * Created by LENOVO on 6/21/2018.

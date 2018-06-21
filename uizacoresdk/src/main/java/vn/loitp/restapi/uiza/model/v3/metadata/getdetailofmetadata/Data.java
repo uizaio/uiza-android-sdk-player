@@ -1,10 +1,10 @@
 
-package vn.loitp.restapi.uiza.model.v3.getlistmetadata;
+package vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Datum {
+public class Data {
 
     @SerializedName("id")
     @Expose

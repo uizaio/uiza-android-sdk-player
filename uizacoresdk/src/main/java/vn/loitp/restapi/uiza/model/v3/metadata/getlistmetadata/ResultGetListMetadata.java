@@ -1,14 +1,21 @@
 
-package vn.loitp.restapi.uiza.model.v3.updatemetadata;
+package vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResultUpdateMetadata {
+import java.util.List;
+
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+
+public class ResultGetListMetadata {
 
     @SerializedName("data")
     @Expose
-    private Data data;
+    private List<Data> data = null;
+    @SerializedName("metadata")
+    @Expose
+    private Metadata metadata;
     @SerializedName("version")
     @Expose
     private Integer version;
@@ -34,12 +41,20 @@ public class ResultUpdateMetadata {
     @Expose
     private String type;
 
-    public Data getData() {
+    public List<Data> getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(List<Data> data) {
         this.data = data;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 
     public Integer getVersion() {

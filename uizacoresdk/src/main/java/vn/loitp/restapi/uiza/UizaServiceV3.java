@@ -8,12 +8,13 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
-import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
-import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
-import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
-import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
-import vn.loitp.restapi.uiza.model.v3.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 
 /**
  * @author loitp
@@ -46,5 +47,5 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#delete-an-metadata
     @DELETE("/api/public/v3/media/metadata")
-    Observable<Object> deleteAnMetadata(@Query("id") String id);
+    Observable<ResultDeleteAnMetadata> deleteAnMetadata(@Query("id") String id);
 }
