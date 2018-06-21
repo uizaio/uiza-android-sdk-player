@@ -12,7 +12,10 @@ import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 
 public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#get-token
-    //@FormUrlEncoded
     @POST("/api/public/v3/admin/user/auth")
     Observable<ResultGetToken> getToken(@Body UizaWorkspaceInfo uizaWorkspaceInfo);
+
+    //http://dev-docs.uizadev.io/#check-token
+    @POST("/api/public/v3/admin/user/auth/check-token")
+    Observable<Object> checkToken();
 }

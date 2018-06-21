@@ -24,6 +24,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
         findViewById(R.id.bt_get_token).setOnClickListener(this);
+        findViewById(R.id.bt_check_token).setOnClickListener(this);
     }
 
     @Override
@@ -46,9 +47,11 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         tv.setText("Loading...");
         switch (v.getId()) {
             case R.id.bt_get_token:
-                authV3();
+                getToken();
                 break;
-
+            case R.id.bt_check_token:
+                checkToken();
+                break;
         }
     }
 
@@ -56,7 +59,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         LUIUtil.printBeautyJson(o, tv);
     }
 
-    private void authV3() {
+    private void getToken() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         UizaWorkspaceInfo uizaWorkspaceInfo = UizaV3Util.getUizaWorkspace(activity);
         if (uizaWorkspaceInfo == null) {
@@ -65,7 +68,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
             @Override
             public void onSuccess(ResultGetToken resultGetToken) {
-                LLog.d(TAG, "authV3 " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                LLog.d(TAG, "getToken " + LSApplication.getInstance().getGson().toJson(resultGetToken));
                 String token = resultGetToken.getData().getToken();
                 LLog.d(TAG, "token: " + token);
                 RestClientV3.addAuthorization(token);
@@ -74,7 +77,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
+                LLog.e(TAG, "getToken onFail " + e.getMessage());
+            }
+        });
+    }
+
+    private void checkToken() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object resultGetToken) {
+                LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                showTv(resultGetToken);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "checkToken onFail " + e.getMessage());
             }
         });
     }
