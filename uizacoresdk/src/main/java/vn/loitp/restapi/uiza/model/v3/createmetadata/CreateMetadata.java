@@ -13,6 +13,9 @@ public class CreateMetadata {
     public final static String TYPE_PLAYLIST = "playlist";
     public final static String TYPE_TAG = "tag";
 
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -28,6 +31,14 @@ public class CreateMetadata {
     @SerializedName("icon")
     @Expose
     private String icon;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

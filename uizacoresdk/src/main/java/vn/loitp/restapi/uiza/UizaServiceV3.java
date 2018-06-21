@@ -3,6 +3,7 @@ package vn.loitp.restapi.uiza;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -36,4 +37,9 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#get-detail-of-metadata
     @GET("/api/public/v3/media/metadata")
     Observable<ResultGetDetailOfMetadata> getDetailOfMetadata(@Query("id") String id);
+
+    //http://dev-docs.uizadev.io/#update-metadata
+    //@FormUrlEncoded
+    @PUT("/api/public/v3/media/metadata")
+    Observable<Object> updateMetadata(@Body CreateMetadata createMetadata);
 }

@@ -32,6 +32,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_update_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -67,6 +68,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_detail_of_metadata:
                 getDetailOfMetadata();
+                break;
+            case R.id.bt_update_metadata:
+                updateMetadata();
                 break;
         }
     }
@@ -169,6 +173,30 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getDetailOfMetadata onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void updateMetadata() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateMetadata createMetadata = new CreateMetadata();
+        createMetadata.setId("ce1a4735-99f4-4968-bf2a-3ba8063441f4");
+        createMetadata.setName("@@@Loitp Suzuki GSX S1000");
+        createMetadata.setType(CreateMetadata.TYPE_PLAYLIST);
+        createMetadata.setDescription("Update description");
+        createMetadata.setOrderNumber(69);
+        createMetadata.setIcon("/exemple.com/icon_002.png");
+        subscribe(service.updateMetadata(createMetadata), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object resultGetDetailOfMetadata) {
+                LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetDetailOfMetadata));
+                showTv(resultGetDetailOfMetadata);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "updateMetadata onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });
