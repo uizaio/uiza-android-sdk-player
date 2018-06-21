@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide;
+package testlibuiza.sample.v2.uizavideo.slide;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -14,7 +14,7 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
-public class FrmLogin extends BaseFragment implements IOnBackPressed {
+public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
 
     @Override
@@ -23,14 +23,20 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
         frmRootView.findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TestUizaVideoIMActivityRlSlide) getActivity()).replaceFragment(new FrmUser());
+                ((V2UizaVideoIMActivitySlide) getActivity()).play();
+            }
+        });
+        frmRootView.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((V2UizaVideoIMActivitySlide) getActivity()).replaceFragment(new FrmLogin());
             }
         });
     }
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_login;
+        return R.layout.frm_home;
     }
 
     @Override

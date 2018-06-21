@@ -1,34 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
+    android:background="@color/LightGrey"
     android:orientation="vertical"
     tools:context="testlibuiza.sample.MainActivity">
 
-    <Button
-        android:id="@+id/bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test API" />
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/bt_uiza_video_rl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uiza Video relativelayout" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt_uiza_video_rl_slide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uiza Video Slide" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
 
-    <Button
-        android:id="@+id/bt_uiza_video_rl_slide_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uiza Video Slide 2" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="API V2"
+                    android:textSize="@dimen/txt_30" />
 
-</LinearLayout>
+                <Button
+                    android:id="@+id/bt_test_api_v2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test API V2" />
+
+                <Button
+                    android:id="@+id/bt_uiza_video_cannot_slide_v2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Uiza Video Cannot Slide" />
+
+                <Button
+                    android:id="@+id/bt_uiza_video_slide_v2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Uiza Video Slide" />
+
+                <Button
+                    android:id="@+id/bt_uiza_video_slide_v2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Uiza Video Slide 2 (Beta)" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="API V3"
+                    android:textSize="@dimen/txt_30" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test API V3" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

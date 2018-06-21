@@ -1,6 +1,6 @@
-package testlibuiza.sample.uizavideo.slide2.interfaces;
+package testlibuiza.sample.v2.uizavideo.slide2.interfaces;
 
-import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
 
 /**
  * Created by thangn on 2/26/17.

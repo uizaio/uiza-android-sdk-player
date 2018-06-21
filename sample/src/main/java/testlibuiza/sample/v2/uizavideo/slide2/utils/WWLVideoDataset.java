@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide2.utils;
+package testlibuiza.sample.v2.uizavideo.slide2.utils;
 
 import java.util.ArrayList;
 import java.util.List;

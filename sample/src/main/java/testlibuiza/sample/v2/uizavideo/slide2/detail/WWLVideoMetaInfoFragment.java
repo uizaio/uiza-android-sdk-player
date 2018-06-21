@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide2.detail;
+package testlibuiza.sample.v2.uizavideo.slide2.detail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 
 /**

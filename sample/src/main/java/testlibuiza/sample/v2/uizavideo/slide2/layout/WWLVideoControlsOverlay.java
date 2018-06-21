@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide2.layout;
+package testlibuiza.sample.v2.uizavideo.slide2.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

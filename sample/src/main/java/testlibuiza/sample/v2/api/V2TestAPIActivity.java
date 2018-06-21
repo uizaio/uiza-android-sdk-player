@@ -1,4 +1,4 @@
-package testlibuiza.sample.api;
+package testlibuiza.sample.v2.api;
 
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +34,7 @@ import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
 
-public class TestAPIActivity extends BaseActivity implements View.OnClickListener {
+public class V2TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
 
     @Override

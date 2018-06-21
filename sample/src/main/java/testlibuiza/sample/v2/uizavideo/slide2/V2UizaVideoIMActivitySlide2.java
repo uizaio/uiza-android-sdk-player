@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide2;
+package testlibuiza.sample.v2.uizavideo.slide2;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import testlibuiza.R;
-import testlibuiza.sample.uizavideo.slide2.detail.WWLVideoMetaInfoFragment;
-import testlibuiza.sample.uizavideo.slide2.detail.WWLVideoPlayerFragment;
-import testlibuiza.sample.uizavideo.slide2.detail.WWLVideoUpNextFragment;
-import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
-import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoMetaInfoFragment;
+import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoPlayerFragment;
+import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoUpNextFragment;
+import testlibuiza.sample.v2.uizavideo.slide2.interfaces.FragmentHost;
+import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.wwlvideo.layout.WWLVideo;
 import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
-public class TestUizaVideoIMActivityRlSlide2 extends BaseActivity implements WWLVideo.Listener, FragmentHost {
+public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVideo.Listener, FragmentHost {
     private WWLVideo wwlVideo;
     private float mLastAlpha;
     private FrameLayout mPlayerFragmentContainer;

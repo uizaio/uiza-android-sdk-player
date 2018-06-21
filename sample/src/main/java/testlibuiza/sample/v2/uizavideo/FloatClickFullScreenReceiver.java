@@ -1,11 +1,11 @@
-package testlibuiza.sample.uizavideo;
+package testlibuiza.sample.v2.uizavideo;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import testlibuiza.sample.uizavideo.rl.TestUizaVideoIMActivityRl;
-import testlibuiza.sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide;
+import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
+import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
@@ -33,7 +33,7 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             if (isSlideUizaVideoEnabled) {
                 boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
-                Intent intent = new Intent(context, TestUizaVideoIMActivityRlSlide.class);
+                Intent intent = new Intent(context, V2UizaVideoIMActivitySlide.class);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
@@ -41,7 +41,7 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else {
-                Intent intent = new Intent(context, TestUizaVideoIMActivityRl.class);
+                Intent intent = new Intent(context, V2UizaVideoIMActivity.class);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);

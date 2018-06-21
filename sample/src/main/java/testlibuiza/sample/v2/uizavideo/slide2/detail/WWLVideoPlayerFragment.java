@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide2.detail;
+package testlibuiza.sample.v2.uizavideo.slide2.detail;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,9 +27,9 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.uizavideo.slide.TestUizaVideoIMActivityRlSlide;
-import testlibuiza.sample.uizavideo.slide2.interfaces.FragmentHost;
-import testlibuiza.sample.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
+import testlibuiza.sample.v2.uizavideo.slide2.interfaces.FragmentHost;
+import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
@@ -292,7 +292,7 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
 
     @Override
     public void onClickBack() {
-        ((TestUizaVideoIMActivityRlSlide) getActivity()).getDraggablePanel().minimize();
+        ((V2UizaVideoIMActivitySlide) getActivity()).getDraggablePanel().minimize();
     }
 
     @Override
@@ -302,7 +302,7 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        ((TestUizaVideoIMActivityRlSlide) getActivity()).getDraggablePanel().closeToRight();
+        ((V2UizaVideoIMActivitySlide) getActivity()).getDraggablePanel().closeToRight();
     }
 
     @Override

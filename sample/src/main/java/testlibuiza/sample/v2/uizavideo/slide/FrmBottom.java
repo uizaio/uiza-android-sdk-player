@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide;
+package testlibuiza.sample.v2.uizavideo.slide;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.

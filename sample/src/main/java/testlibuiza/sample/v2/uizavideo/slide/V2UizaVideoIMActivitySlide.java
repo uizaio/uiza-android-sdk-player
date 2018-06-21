@@ -1,4 +1,4 @@
-package testlibuiza.sample.uizavideo.slide;
+package testlibuiza.sample.v2.uizavideo.slide;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
-public class TestUizaVideoIMActivityRlSlide extends BaseActivity {
+public class V2UizaVideoIMActivitySlide extends BaseActivity {
     private DraggablePanel draggablePanel;
     //private long positionFromPipService;
 

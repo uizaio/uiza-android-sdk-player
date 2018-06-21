@@ -1,8 +1,16 @@
-package testlibuiza.sample.uizavideo.rl;
+package testlibuiza.sample.v2.uizavideo.slide;
 
+/**
+ * Created by www.muathu@gmail.com on 12/24/2017.
+ */
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Surface;
+import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -22,88 +30,62 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.views.LToast;
 
-public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVideo.Callback {
+public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
+    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideo uizaIMAVideo;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
+    public UizaIMAVideo getUizaIMAVideo() {
+        return uizaIMAVideo;
+    }
 
-        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
-        String entityId = null;
-        String entityTitle = null;
-        String videoCoverUrl = null;
+    public interface FrmTopCallback {
+        public void initDone();
+    }
 
-        if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-            entityId = "9213e9b8-a926-4282-b081-12b69555cb10";
-        } else {
-            entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
-        }
+    private FrmTopCallback frmTopCallback;
 
-        if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE) == null) {
-            entityTitle = "Dummy title";
-        } else {
-            entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
-        }
-
-        if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER) == null) {
-            videoCoverUrl = "//motosaigon.vn/wp-content/uploads/2016/07/yamaha-r3-do-banh-to-190-motosaigon-5.jpg";
-        } else {
-            videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-        }
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-
-        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
-        setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
+    public void setFrmTopCallback(FrmTopCallback frmTopCallback) {
+        this.frmTopCallback = frmTopCallback;
     }
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl;
+        return R.layout.frm_top;
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         uizaIMAVideo.onDestroy();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         uizaIMAVideo.onResume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         uizaIMAVideo.onPause();
     }
@@ -112,11 +94,11 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
-                LToast.show(activity, "Draw over other app permission not available");
+                LToast.show(getActivity(), "Draw over other app permission not available");
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -274,17 +256,12 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            LLog.d(TAG, "fuck isInitSuccess " + isInitSuccess);
-            LLog.d(TAG, "fuck LPref.getClickedPip(activity) " + LPref.getClickedPip(activity));
-            if (LPref.getClickedPip(activity)) {
-                ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-                msgFromActivityIsInitSuccess.setInitSuccess(true);
-                ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-            }
-            //if (positionFromPipService != 0) {
-            //    uizaIMAVideo.seekTo(positionFromPipService);
-            //}
             setListener();
+            if (frmTopCallback != null) {
+                frmTopCallback.initDone();
+            } else {
+                LLog.e(TAG, "isPiPInitResult else");
+            }
         }
     }
 
@@ -295,15 +272,15 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
         String videoCoverUrl = null;
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
-        String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        //String urlThumnailsPreviewSeekbar = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
         UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
         setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
     @Override
     public void onClickBack() {
-        onBackPressed();
+        ((V2UizaVideoIMActivitySlide) getActivity()).getDraggablePanel().minimize();
     }
 
     @Override
@@ -313,41 +290,43 @@ public class TestUizaVideoIMActivityRl extends BaseActivity implements UizaIMAVi
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        onBackPressed();
+        ((V2UizaVideoIMActivitySlide) getActivity()).getDraggablePanel().closeToRight();
     }
 
     @Override
     public void onError(Exception e) {
-        if (activity != null) {
-            onBackPressed();
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
         }
     }
 
-    private void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
+    public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar) {
         if (entityId == null || entityId.isEmpty()) {
-            LDialogUtil.showDialog1(activity, "Entity ID cannot be null or empty", new LDialogUtil.Callback1() {
+            LDialogUtil.showDialog1(getActivity(), "Entity ID cannot be null or empty", new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
-                    if (activity != null) {
-                        activity.onBackPressed();
+                    if (getActivity() != null) {
+                        getActivity().onBackPressed();
                     }
                 }
 
                 @Override
                 public void onCancel() {
-                    if (activity != null) {
-                        activity.onBackPressed();
+                    if (getActivity() != null) {
+                        getActivity().onBackPressed();
                     }
                 }
             });
             return;
         }
         UizaInput uizaInput = new UizaInput();
+
         uizaInput.setEntityId(entityId);
         uizaInput.setEntityName(entityTitle);
         uizaInput.setEntityCover(entityCover);
         uizaInput.setUrlIMAAd(urlIMAAd);
         uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
         UizaData.getInstance().setUizaInput(uizaInput, false);
 
         uizaIMAVideo.init(this);
