@@ -38,6 +38,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_update_metadata).setOnClickListener(this);
         findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
+        findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -82,6 +83,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_list_all_entity:
                 listAllEntity();
+                break;
+            case R.id.bt_list_all_entity_metadata:
+                listAllEntityMetadata();
                 break;
         }
     }
@@ -246,5 +250,24 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 showTv(e.getMessage());
             }
         });
+    }
+
+    private void listAllEntityMetadata() {
+        //TODO
+        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
+        subscribe(service.getListAllEntity(metadataId), new ApiSubscriber<ResultListEntity>() {
+            @Override
+            public void onSuccess(ResultListEntity result) {
+                LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });*/
     }
 }

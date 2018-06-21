@@ -53,4 +53,8 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")
     Observable<ResultListEntity> getListAllEntity();
+
+    //http://dev-docs.uizadev.io/#list-all-entity
+    @GET("/api/public/v3/media/entity")
+    Observable<ResultListEntity> getListAllEntity(@Query("metadataid") String metadataid);
 }
