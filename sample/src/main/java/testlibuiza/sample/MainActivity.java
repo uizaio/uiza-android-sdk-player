@@ -10,6 +10,7 @@ import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v2.uizavideo.slide2.V2UizaVideoIMActivitySlide2;
+import testlibuiza.sample.v3.api.V3TestAPIActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -58,6 +59,14 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 LPref.setAcitivityCanSlideIsRunning(activity, true);
                 callUizaVideoSlideV2_2();
+            }
+        });
+        findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, V3TestAPIActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
             }
         });
     }

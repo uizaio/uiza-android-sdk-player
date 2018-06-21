@@ -7,9 +7,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".sample.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--for v2-->
         <activity
             android:name=".sample.v2.uizavideo.rl.V2UizaVideoIMActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -40,6 +43,13 @@
                 <action android:name="FLOAT_CLICKED_FULLSCREEN" />
             </intent-filter>
         </receiver>
+        <!--end for v2-->
+
+        <!--for v3-->
+        <activity
+            android:name=".sample.v3.api.V3TestAPIActivity"
+            android:screenOrientation="portrait" />
+        <!--end for v3-->
     </application>
 
 </manifest>
