@@ -1,6 +1,7 @@
 package vn.loitp.restapi.uiza;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -40,7 +41,10 @@ public interface UizaServiceV3 {
     Observable<ResultGetDetailOfMetadata> getDetailOfMetadata(@Query("id") String id);
 
     //http://dev-docs.uizadev.io/#update-metadata
-    //@FormUrlEncoded
     @PUT("/api/public/v3/media/metadata")
     Observable<ResultUpdateMetadata> updateMetadata(@Body CreateMetadata createMetadata);
+
+    //http://dev-docs.uizadev.io/#delete-an-metadata
+    @DELETE("/api/public/v3/media/metadata")
+    Observable<Object> deleteAnMetadata(@Query("id") String id);
 }

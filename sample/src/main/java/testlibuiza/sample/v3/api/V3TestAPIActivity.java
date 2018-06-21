@@ -208,8 +208,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void deleteAnMetadata() {
-        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.updateMetadata(createMetadata), new ApiSubscriber<Object>() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String deleteMetadataId = "514f56e9-c250-492a-bf46-e51225bc07b3";
+        subscribe(service.deleteAnMetadata(deleteMetadataId), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object resultGetDetailOfMetadata) {
                 LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetDetailOfMetadata));
@@ -221,6 +222,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 LLog.e(TAG, "updateMetadata onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });*/
+        });
     }
 }
