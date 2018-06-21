@@ -110,6 +110,11 @@
                         android:layout_height="wrap_content"
                         android:text="List all entity of metadataid" />
 
+                    <Button
+                        android:id="@+id/bt_retrieve_an_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Retrieve an entity" />
                 </LinearLayout>
             </HorizontalScrollView>
 

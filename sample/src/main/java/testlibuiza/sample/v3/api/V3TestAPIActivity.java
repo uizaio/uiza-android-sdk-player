@@ -39,6 +39,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
     }
 
     @Override
@@ -86,6 +87,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_list_all_entity_metadata:
                 listAllEntityMetadata();
+                break;
+            case R.id.bt_retrieve_an_entity:
+                retrieveAnEntity();
                 break;
         }
     }
@@ -269,5 +273,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 showTv(e.getMessage());
             }
         });*/
+    }
+
+    private void retrieveAnEntity() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
+        subscribe(service.retrieveAnEntity(id), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
     }
 }
