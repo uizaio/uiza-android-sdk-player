@@ -20,6 +20,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDeta
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 
@@ -40,6 +41,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
+        findViewById(R.id.bt_search_entity).setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +92,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_retrieve_an_entity:
                 retrieveAnEntity();
+                break;
+            case R.id.bt_search_entity:
+                searchAnEntity();
                 break;
         }
     }
@@ -278,6 +283,24 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void retrieveAnEntity() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
+        subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
+            @Override
+            public void onSuccess(ResultRetrieveAnEntity result) {
+                LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void searchAnEntity() {
+        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
         subscribe(service.retrieveAnEntity(id), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
@@ -290,6 +313,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });
+        });*/
     }
 }

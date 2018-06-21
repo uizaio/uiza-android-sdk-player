@@ -115,6 +115,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Retrieve an entity" />
+
+                    <Button
+                        android:id="@+id/bt_search_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Search entity" />
                 </LinearLayout>
             </HorizontalScrollView>
 

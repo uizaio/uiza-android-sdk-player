@@ -16,6 +16,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDeta
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 
 /**
  * @author loitp
@@ -60,5 +61,9 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#retrieve-an-entity
     @GET("/api/public/v3/media/entity")
-    Observable<Object> retrieveAnEntity(@Query("id") String id);
+    Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Query("id") String id);
+
+    //http://dev-docs.uizadev.io/#retrieve-an-entity
+    @GET("/api/public/v3/media/entity")
+    Observable<Object> searchEntity(@Query("id") String id);
 }
