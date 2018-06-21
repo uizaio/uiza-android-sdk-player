@@ -5,12 +5,11 @@ package uiza.activity.home.v2.canslide;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
@@ -45,15 +44,13 @@ import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
-    private View view;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawerLayout;
     private List<Datum> datumList = new ArrayList<>();
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frm_home, container, false);//LLog.d(TAG, "onCreate");
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         super.onCreate(savedInstanceState);
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) view.findViewById(R.id.drawerView);
@@ -62,7 +59,11 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
         setupDrawer();
         setupActionBar();
-        return view;
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.frm_home;
     }
 
     private void setupDrawer() {
@@ -121,7 +122,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void setupActionBar() {
-        UizaActionBar uizaActionBar = (UizaActionBar) view.findViewById(R.id.uiza_action_bar);
+        UizaActionBar uizaActionBar = (UizaActionBar) frmRootView.findViewById(R.id.uiza_action_bar);
         uizaActionBar.hideTvTitle();
         uizaActionBar.setOnClickBack(new UizaActionBar.Callback() {
             @Override
@@ -182,7 +183,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
 
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";

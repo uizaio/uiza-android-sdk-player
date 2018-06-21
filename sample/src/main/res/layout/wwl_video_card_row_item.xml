@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/w_250"
+    android:background="@color/colorPrimaryDark">
+
+    <RelativeLayout
+        android:id="@+id/thumbnail_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/li_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:27"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/details_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_65"
+        android:gravity="top"
+        android:padding="@dimen/padding_5">
+
+        <TextView
+            android:id="@+id/li_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:id="@+id/li_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/li_title"
+            android:text="Loitp"
+            android:textColor="@color/White" />
+
+        <ImageView
+            android:id="@+id/li_overflow"
+            android:layout_width="@dimen/w_30"
+            android:layout_height="@dimen/w_30"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_settings_black_48dp" />
+    </RelativeLayout>
+</RelativeLayout>

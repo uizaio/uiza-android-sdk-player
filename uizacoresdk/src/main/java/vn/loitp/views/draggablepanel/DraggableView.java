@@ -31,7 +31,6 @@ import android.widget.RelativeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
 import loitp.core.R;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.draggablepanel.transformer.Transformer;
 import vn.loitp.views.draggablepanel.transformer.TransformerFactory;
 
@@ -149,8 +148,9 @@ public class DraggableView extends RelativeLayout {
     private boolean isEnableSlide = true;
 
     public void setEnableSlide(boolean isEnableSlide) {
-        LLog.d(TAG, "setEnableSlide " + isEnableSlide);
+        //LLog.d(TAG, "setEnableSlide " + isEnableSlide);
         this.isEnableSlide = isEnableSlide;
+        //setEnabled(isEnableSlide);
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
@@ -371,8 +371,8 @@ public class DraggableView extends RelativeLayout {
             default:
                 break;
         }
-        /*boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
-        return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;*/
+        //boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
+        //return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;
 
         if (isEnableSlide) {
             boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());

@@ -1,13 +1,10 @@
 package uiza.activity.home.v2.cannotslide;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
@@ -170,7 +167,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
     private void getListAllMetadata() {
         LLog.d(TAG, "getListAllMetadata");
         genHomeMenu();
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";

@@ -8,6 +8,7 @@
     android:keepScreenOn="true"
     app:auto_show="false"
     app:controller_layout_id="@layout/uiza_controller_skin_3"
-    app:fastforward_increment="3000"
-    app:rewind_increment="3000"
+    app:fastforward_increment="10000"
+    app:hide_on_touch="true"
+    app:rewind_increment="10000"
     app:use_controller="true" />

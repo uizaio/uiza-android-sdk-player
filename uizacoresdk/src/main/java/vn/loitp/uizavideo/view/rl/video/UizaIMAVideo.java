@@ -51,7 +51,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -141,17 +141,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         return ivThumbnail;
     }
 
-    private void stopServicePiPIfRunning() {
-        //LLog.d(TAG, "stopServicePiPIfRunning");
-        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
-        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
-        if (isSvPipRunning) {
-            //stop service if running
-            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
-            activity.stopService(intent);
-        }
-    }
-
     private boolean isHasError;
 
     private void handleError(Exception e) {
@@ -184,7 +173,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             return;
         }
 
-        //stopServicePiPIfRunning();
+        //UizaUtil.stopServicePiPIfRunning(activity);
 
         this.callback = callback;
         if (uizaPlayerManager != null) {
@@ -279,7 +268,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
                 //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
 
-                //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+                LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                     LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
                     handleErrorNoData();
@@ -409,6 +398,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
         }
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        playerView.setLayoutParams(lp);
         rootView.addView(playerView);
     }
 
@@ -917,7 +909,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getLinkPlay() {
         //LLog.d(TAG, "getLinkPlay");
         UizaUtil.setupRestClientV2(activity);
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
@@ -938,7 +930,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getUizaInput().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
-                //LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
+                LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
                 mGetLinkPlay = getLinkPlay;
                 isGetLinkPlayDone = true;
                 checkToSetUp();
@@ -965,7 +957,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void getDetailEntity() {
         //LLog.d(TAG, "getDetailEntity");
         UizaUtil.setupRestClientV2(activity);
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
@@ -1020,7 +1012,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     /*private void getLinkDownload() {
         LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             showDialogError("Error auth == null || auth.getAppId() == null");
@@ -1071,7 +1063,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }*/
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        UizaService service = RestClientTracking.createService(UizaService.class);
+        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -1159,5 +1151,17 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 uizaPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }
         }
+    }
+
+    public void showController() {
+        playerView.showController();
+    }
+
+    public void hideController() {
+        playerView.hideController();
+    }
+
+    public void hideControllerOnTouch(boolean isHide) {
+        playerView.setControllerHideOnTouch(isHide);
     }
 }

@@ -2,11 +2,11 @@ package uiza.activity.home.v2.cannotslide;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,7 +27,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
@@ -75,8 +75,8 @@ public class FrmChannelV2 extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.uiza_frm_channel, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         if (Constants.IS_DEBUG) {
@@ -138,7 +138,11 @@ public class FrmChannelV2 extends BaseFragment {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
         getData(false);
-        return view;
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.uiza_frm_channel;
     }
 
     /*private List<Item> getSubList(List<Item> itemList, int startIndex, int endIndex) {
@@ -282,7 +286,7 @@ public class FrmChannelV2 extends BaseFragment {
         if (tvMsg.getVisibility() != View.GONE) {
             tvMsg.setVisibility(View.GONE);
         }
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
 
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         if (HomeDataV2.getInstance().getDatum().getId().equals(String.valueOf(Constants.NOT_FOUND))) {

@@ -20,22 +20,17 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class HomeV2CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
-    //private long positionFromPipService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LPref.setAcitivityCanSlideIsRunning(activity, true);
-        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        //LLog.d(TAG, "onCreate positionFromPipService " + positionFromPipService);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -122,11 +117,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             draggablePanel.setVisibility(View.VISIBLE);
         }
 
-        /*if (LPref.getClickedPip(activity)) {
-            LLog.d(TAG, "initializeDraggablePanel positionFromPipService called from pip service");
-        } else {
-            LLog.d(TAG, "initializeDraggablePanel positionFromPipService !called from pip service");
-        }*/
         if (frmVideoTop != null || frmVideoBottom != null) {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
@@ -221,6 +211,9 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        if (!LPref.getClickedPip(activity)) {
+            UizaUtil.stopServicePiPIfRunning(activity);
+        }
         //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         //entityTitle = "Dummy title";
         //videoCoverUrl = null;
@@ -290,8 +283,8 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         LPref.setAcitivityCanSlideIsRunning(activity, false);
+        super.onDestroy();
     }
 
     //get event from FloatClickFullScreenReceiver if isSlideUizaVideoEnabled && isActivityRunning

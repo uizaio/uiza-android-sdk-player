@@ -27,7 +27,7 @@ import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
@@ -199,7 +199,7 @@ public class UizaIMAVideoInfo extends RelativeLayout {
     }
 
     private void getListAllEntityRelation() {
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();

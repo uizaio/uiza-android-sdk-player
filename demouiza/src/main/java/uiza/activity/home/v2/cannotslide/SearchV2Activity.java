@@ -15,17 +15,15 @@ import java.util.List;
 import uiza.R;
 import uiza.activity.home.view.EntityItemV2;
 import uiza.activity.home.view.LoadingView;
-import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LKeyBoardUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaService;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
@@ -200,7 +198,7 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         //LToast.show(activity, "getData limit " + limit);
         LToast.show(activity, getString(R.string.load_page) + page);
 
-        UizaService service = RestClientV2.createService(UizaService.class);
+        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
 
         JsonBodySearch jsonBodySearch = new JsonBodySearch();
         jsonBodySearch.setKeyword(keyword);

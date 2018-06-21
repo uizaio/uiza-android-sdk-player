@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
@@ -32,6 +33,7 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -54,6 +56,7 @@ public class UizaUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover) {
+        //LLog.d(TAG, "resizeLayout");
         int widthScreen = 0;
         int heightScreen = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
@@ -64,7 +67,7 @@ public class UizaUtil {
             widthScreen = LScreenUtil.getScreenWidth();
             heightScreen = widthScreen * 9 / 16;
         }
-        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
         viewGroup.getLayoutParams().width = widthScreen;
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
@@ -88,7 +91,7 @@ public class UizaUtil {
 
         //edit size of imageview thumnail
         FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.previewFrameLayout);
-        LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
+        //LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 4;
@@ -97,7 +100,7 @@ public class UizaUtil {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 5;
                 flImgThumnailPreviewSeekbar.getLayoutParams().height = widthScreen / 5 * 9 / 16;
             }
-            LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
+            //LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
             flImgThumnailPreviewSeekbar.requestLayout();
         }
     }
@@ -173,9 +176,9 @@ public class UizaUtil {
                 "            ]";
         Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
         }.getType());
-        LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
+        //LLog.d(TAG, "createDummySubtitle subtitles " + gson.toJson(subtitles));
         List subtitleList = Arrays.asList(subtitles);
-        LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
+        //LLog.d(TAG, "createDummySubtitle subtitleList " + gson.toJson(subtitleList));
         return subtitleList;
     }
 
@@ -292,6 +295,21 @@ public class UizaUtil {
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
+        }
+    }
+
+    //stop service pip
+    public static void stopServicePiPIfRunning(Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        //LLog.d(TAG, "stopServicePiPIfRunning");
+        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
+        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
+        if (isSvPipRunning) {
+            //stop service if running
+            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+            activity.stopService(intent);
         }
     }
 }
