@@ -6,6 +6,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 
 /**
  * Created by LENOVO on 6/21/2018.
@@ -25,5 +26,24 @@ public class UizaV3Util {
             return null;
         }
         return LPref.getUizaWorkspaceInfo(context);
+    }
+
+    public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
+        LPref.setResultGetToken(context, resultGetToken);
+    }
+
+    public static ResultGetToken getResultGetToken(Context context) {
+        return LPref.getResultGetToken(context);
+    }
+
+    public static String getToken(Context context) {
+        if (context == null) {
+            return null;
+        }
+        ResultGetToken resultGetToken = getResultGetToken(context);
+        if (resultGetToken == null) {
+            return null;
+        }
+        return resultGetToken.getData().getToken();
     }
 }

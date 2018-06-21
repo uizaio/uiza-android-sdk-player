@@ -9,6 +9,9 @@ public class Data {
     @SerializedName("token")
     @Expose
     private String token;
+    @SerializedName("expired")
+    @Expose
+    private long expired;
     @SerializedName("appId")
     @Expose
     private String appId;
@@ -29,4 +32,11 @@ public class Data {
         this.appId = appId;
     }
 
+    public long getExpired() {
+        return expired;
+    }
+
+    public void setExpired(long expired) {
+        this.expired = expired;
+    }
 }

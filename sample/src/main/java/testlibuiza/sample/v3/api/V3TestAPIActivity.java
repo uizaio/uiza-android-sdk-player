@@ -25,6 +25,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         tv = (TextView) findViewById(R.id.tv);
         findViewById(R.id.bt_get_token).setOnClickListener(this);
         findViewById(R.id.bt_check_token).setOnClickListener(this);
+        findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -52,6 +53,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_check_token:
                 checkToken();
                 break;
+            case R.id.bt_get_list_metadata:
+                getListMetadata();
+                break;
         }
     }
 
@@ -78,13 +82,31 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getToken onFail " + e.getMessage());
+                showTv(e.getMessage());
             }
         });
     }
 
     private void checkToken() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
+        subscribe(service.checkToken(), new ApiSubscriber<ResultGetToken>() {
+            @Override
+            public void onSuccess(ResultGetToken resultGetToken) {
+                LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                showTv(resultGetToken);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getListMetadata() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.getListMetadata(), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object resultGetToken) {
                 LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
@@ -94,6 +116,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                showTv(e.getMessage());
             }
         });
     }

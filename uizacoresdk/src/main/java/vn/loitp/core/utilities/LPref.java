@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 
 /**
  * File created on 11/15/2016.
@@ -31,6 +32,7 @@ public class LPref {
 
     //for api v3
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
+    private final static String V3UIZATOKEN = "V3UIZATOKEN";
     //end for api v3
 
     //object
@@ -42,6 +44,17 @@ public class LPref {
     public static void setUizaWorkspaceInfo(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(V3UIZAWORKSPACEINFO, new Gson().toJson(uizaWorkspaceInfo));
+        editor.apply();
+    }
+
+    public static ResultGetToken getResultGetToken(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return new Gson().fromJson(pref.getString(V3UIZATOKEN, ""), ResultGetToken.class);
+    }
+
+    public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(V3UIZATOKEN, new Gson().toJson(resultGetToken));
         editor.apply();
     }
 

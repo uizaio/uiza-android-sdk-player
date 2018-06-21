@@ -1,6 +1,7 @@
 package vn.loitp.restapi.uiza;
 
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -17,5 +18,9 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#check-token
     @POST("/api/public/v3/admin/user/auth/check-token")
-    Observable<Object> checkToken();
+    Observable<ResultGetToken> checkToken();
+
+    //http://dev-docs.uizadev.io/#get-list-metadata
+    @GET("/api/public/v3/media/metadata")
+    Observable<Object> getListMetadata();
 }
