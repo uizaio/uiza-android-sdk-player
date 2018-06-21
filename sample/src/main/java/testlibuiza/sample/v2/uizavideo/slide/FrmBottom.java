@@ -11,6 +11,6 @@ public class FrmBottom extends BaseFragment {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_bottom;
+        return R.layout.v2_frm_bottom;
     }
 }

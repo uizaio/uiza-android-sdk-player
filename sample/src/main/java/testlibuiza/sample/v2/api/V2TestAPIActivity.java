@@ -74,7 +74,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_test_api;
+        return R.layout.v2_activity_test_api;
     }
 
     @Override

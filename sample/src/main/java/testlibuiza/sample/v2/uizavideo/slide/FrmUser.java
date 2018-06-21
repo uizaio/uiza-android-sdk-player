@@ -14,7 +14,7 @@ public class FrmUser extends BaseFragment implements IOnBackPressed {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_user;
+        return R.layout.v2_frm_user;
     }
 
     @Override

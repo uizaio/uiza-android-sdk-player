@@ -69,7 +69,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_top;
+        return R.layout.v2_frm_top;
     }
 
     @Override

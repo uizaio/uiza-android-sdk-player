@@ -87,7 +87,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl;
+        return R.layout.v2_test_uiza_ima_video_activity_rl;
     }
 
     @Override

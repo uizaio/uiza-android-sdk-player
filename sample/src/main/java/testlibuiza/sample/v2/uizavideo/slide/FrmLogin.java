@@ -30,7 +30,7 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_login;
+        return R.layout.v2_frm_login;
     }
 
     @Override

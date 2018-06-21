@@ -48,7 +48,7 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl_slide_2;
+        return R.layout.v2_test_uiza_ima_video_activity_rl_slide_2;
     }
 
     @Override

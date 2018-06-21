@@ -36,7 +36,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.frm_home;
+        return R.layout.v2_frm_home;
     }
 
     @Override

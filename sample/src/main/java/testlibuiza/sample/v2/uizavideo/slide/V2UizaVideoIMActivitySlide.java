@@ -103,7 +103,7 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.test_uiza_ima_video_activity_rl_slide;
+        return R.layout.v2_test_uiza_ima_video_activity_rl_slide;
     }
 
     private FrmTop frmTop;
