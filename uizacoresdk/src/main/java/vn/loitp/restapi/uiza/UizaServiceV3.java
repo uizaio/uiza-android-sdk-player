@@ -12,6 +12,7 @@ import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.updatemetadata.ResultUpdateMetadata;
 
 /**
  * @author loitp
@@ -41,5 +42,5 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#update-metadata
     //@FormUrlEncoded
     @PUT("/api/public/v3/media/metadata")
-    Observable<Object> updateMetadata(@Body CreateMetadata createMetadata);
+    Observable<ResultUpdateMetadata> updateMetadata(@Body CreateMetadata createMetadata);
 }

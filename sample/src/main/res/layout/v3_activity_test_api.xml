@@ -74,8 +74,13 @@
                         android:id="@+id/bt_update_metadata"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update metadata
-" />
+                        android:text="Update metadata" />
+
+                    <Button
+                        android:id="@+id/bt_delete_an_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete an metadata" />
                 </LinearLayout>
             </HorizontalScrollView>
 

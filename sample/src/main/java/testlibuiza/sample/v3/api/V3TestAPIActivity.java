@@ -17,6 +17,7 @@ import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 
@@ -33,6 +34,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
         findViewById(R.id.bt_update_metadata).setOnClickListener(this);
+        findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +73,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_update_metadata:
                 updateMetadata();
+                break;
+            case R.id.bt_delete_an_metadata:
+                deleteAnMetadata();
                 break;
         }
     }
@@ -187,6 +192,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         createMetadata.setDescription("Update description");
         createMetadata.setOrderNumber(69);
         createMetadata.setIcon("/exemple.com/icon_002.png");
+        subscribe(service.updateMetadata(createMetadata), new ApiSubscriber<ResultUpdateMetadata>() {
+            @Override
+            public void onSuccess(ResultUpdateMetadata result) {
+                LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "updateMetadata onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void deleteAnMetadata() {
+        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.updateMetadata(createMetadata), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object resultGetDetailOfMetadata) {
@@ -199,6 +221,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 LLog.e(TAG, "updateMetadata onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });
+        });*/
     }
 }
