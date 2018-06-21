@@ -5,6 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 
 /**
@@ -22,5 +23,5 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")
-    Observable<Object> getListMetadata();
+    Observable<ResultGetListMetadata> getListMetadata();
 }

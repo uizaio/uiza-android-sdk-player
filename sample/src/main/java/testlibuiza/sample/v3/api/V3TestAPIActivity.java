@@ -12,6 +12,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -106,11 +107,11 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void getListMetadata() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListMetadata(), new ApiSubscriber<Object>() {
+        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
-            public void onSuccess(Object resultGetToken) {
-                LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                showTv(resultGetToken);
+            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
+                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                showTv(resultGetListMetadata);
             }
 
             @Override
