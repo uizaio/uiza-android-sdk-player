@@ -13,6 +13,7 @@ import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.createmetadata.CreateMetadata;
+import vn.loitp.restapi.uiza.model.v3.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
@@ -135,11 +136,11 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         createMetadata.setDescription("This is a description sentences");
         createMetadata.setOrderNumber(1);
         createMetadata.setIcon("/exemple.com/icon.png");
-        subscribe(service.createMetadata(createMetadata), new ApiSubscriber<Object>() {
+        subscribe(service.createMetadata(createMetadata), new ApiSubscriber<ResultCreateMetadata>() {
             @Override
-            public void onSuccess(Object resultGetToken) {
-                LLog.d(TAG, "createMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                showTv(resultGetToken);
+            public void onSuccess(ResultCreateMetadata resultCreateMetadata) {
+                LLog.d(TAG, "createMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultCreateMetadata));
+                showTv(resultCreateMetadata);
             }
 
             @Override
