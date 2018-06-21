@@ -15,6 +15,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 
 /**
  * @author loitp
@@ -51,5 +52,5 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")
-    Observable<Object> getListAllEntity();
+    Observable<ResultListEntity> getListAllEntity();
 }

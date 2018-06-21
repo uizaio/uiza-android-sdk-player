@@ -19,6 +19,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 
@@ -232,9 +233,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void listAllEntity() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListAllEntity(), new ApiSubscriber<Object>() {
+        subscribe(service.getListAllEntity(), new ApiSubscriber<ResultListEntity>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
