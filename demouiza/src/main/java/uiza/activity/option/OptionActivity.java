@@ -1,4 +1,4 @@
-package uiza.activity.splash;
+package uiza.activity.option;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import uiza.R;
+import uiza.activity.splash.SplashActivity;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;

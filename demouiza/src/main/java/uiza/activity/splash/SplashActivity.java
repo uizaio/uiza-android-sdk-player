@@ -9,6 +9,7 @@ import android.widget.Toast;
 import uiza.R;
 import uiza.activity.home.v2.cannotslide.HomeV2CannotSlideActivity;
 import uiza.activity.home.v2.canslide.HomeV2CanSlideActivity;
+import uiza.activity.option.OptionActivity;
 import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
