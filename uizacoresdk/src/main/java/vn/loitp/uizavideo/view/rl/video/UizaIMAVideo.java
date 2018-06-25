@@ -382,6 +382,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void addPlayerView() {
         PlayerView playerView = null;
+        //UizaPlayerView playerView = null;
+
         //LLog.d(TAG, "addPlayerView getPlayerId " + UizaData.getInstance().getPlayerId());
         switch (UizaData.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
