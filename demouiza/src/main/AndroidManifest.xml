@@ -16,7 +16,7 @@
             android:value="2.1" />
 
         <activity
-            android:name=".activity.splash.OptionActivity"
+            android:name=".activity.option.OptionActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -56,8 +56,14 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
         return uizaIMAVideo;
     }
 
-    @Nullable
+    /*@Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Constants.setDebugMode(false);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }*/
 
+    @Nullable
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);

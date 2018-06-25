@@ -41,6 +41,92 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Metadata" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/bt_get_list_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get list metadata" />
+
+                    <Button
+                        android:id="@+id/bt_create_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Create metadata" />
+
+                    <Button
+                        android:id="@+id/bt_get_detail_of_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get detail of metadata metadata" />
+
+                    <Button
+                        android:id="@+id/bt_update_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update metadata" />
+
+                    <Button
+                        android:id="@+id/bt_delete_an_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete an metadata" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Video on Demand" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/bt_list_all_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List all entity" />
+
+                    <Button
+                        android:id="@+id/bt_list_all_entity_metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List all entity of metadataid" />
+
+                    <Button
+                        android:id="@+id/bt_retrieve_an_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Retrieve an entity" />
+
+                    <Button
+                        android:id="@+id/bt_search_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Search entity" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="RESULT"
                 android:textSize="@dimen/txt_30" />
 

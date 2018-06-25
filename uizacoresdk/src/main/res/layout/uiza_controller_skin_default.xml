@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_player_controller"
     android:elevation="4dp"
     android:layoutDirection="ltr">
 
@@ -11,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@drawable/bkg_shadow_black_white_dark"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/padding_5">
@@ -193,7 +193,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bkg_shadow_white_black_dark"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_5">

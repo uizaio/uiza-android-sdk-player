@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_margin="@dimen/round_5"
-        android:background="@drawable/bt_search"
+        android:background="@drawable/bt_duration"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="@dimen/padding_5">
@@ -68,7 +67,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/LightGrey" />
+            android:textColorHint="@color/Gray" />
 
         <ImageView
             android:id="@+id/iv_clear_text"

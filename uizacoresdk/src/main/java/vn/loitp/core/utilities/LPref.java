@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
+import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 
 /**
  * File created on 11/15/2016.
@@ -20,25 +22,41 @@ public class LPref {
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
     private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
-    public final static String INDEX = "INDEX";
-    public final static String AUTH = "AUTH";
+    private final static String INDEX = "INDEX";
+    private final static String AUTH = "AUTH";
     public final static String API_END_POINT = "API_END_POINT";
-    public final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
-    public final static String TOKEN = "TOKEN";
-    public final static String CLICKED_PIP = "CLICKED_PIP";
-    public final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
+    private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
+    private final static String TOKEN = "TOKEN";
+    private final static String CLICKED_PIP = "CLICKED_PIP";
+    private final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
+
+    //for api v3
+    private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
+    private final static String V3UIZATOKEN = "V3UIZATOKEN";
+    //end for api v3
 
     //object
-    /*public User getUser() {
-        SharedPreferences pref = context.getSharedPreferences(Const.PREFERENCES_FILE_NAME, 0);
-        return gson.fromJson(pref.getString(KEY_USER, ""), User.class);
+    public static UizaWorkspaceInfo getUizaWorkspaceInfo(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return new Gson().fromJson(pref.getString(V3UIZAWORKSPACEINFO, ""), UizaWorkspaceInfo.class);
     }
 
-    public void setUser(User user) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(Const.PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(KEY_USER, gson.toJson(user));
+    public static void setUizaWorkspaceInfo(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(V3UIZAWORKSPACEINFO, new Gson().toJson(uizaWorkspaceInfo));
         editor.apply();
-    }*/
+    }
+
+    public static ResultGetToken getResultGetToken(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return new Gson().fromJson(pref.getString(V3UIZATOKEN, ""), ResultGetToken.class);
+    }
+
+    public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(V3UIZATOKEN, new Gson().toJson(resultGetToken));
+        editor.apply();
+    }
 
     /////////////////////////////////STRING
     public static String getApiEndPoint(Context context) {
@@ -154,4 +172,6 @@ public class LPref {
         editor.putString(AUTH, gson.toJson(auth));
         editor.apply();
     }
+
+
 }

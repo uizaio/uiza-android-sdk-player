@@ -17,9 +17,14 @@ import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.restclient.RestClientV2;
+import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV2;
+import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
+import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 
@@ -31,6 +36,11 @@ public class MainActivity extends BaseActivity {
 
         //auth v2
         authV2();
+
+        //auth v3
+        UizaWorkspaceInfo uizaWorkspaceInfo = new UizaWorkspaceInfo("loitp@uiza.io", "04021993", "android-api.uiza.co", "android.uiza.co");
+        UizaV3Util.initUizaWorkspace(activity, uizaWorkspaceInfo);
+        authV3();
 
         findViewById(R.id.bt_test_api_v2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,4 +140,28 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
+
+    //for uiza api v3
+    private void authV3() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UizaWorkspaceInfo uizaWorkspaceInfo = UizaV3Util.getUizaWorkspace(activity);
+        if (uizaWorkspaceInfo == null) {
+            return;
+        }
+        subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
+            @Override
+            public void onSuccess(ResultGetToken resultGetToken) {
+                LLog.d(TAG, "authV3 " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                String token = resultGetToken.getData().getToken();
+                LLog.d(TAG, "token: " + token);
+                RestClientV3.addAuthorization(token);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "auth onFail " + e.getMessage());
+            }
+        });
+    }
+    //end for uiza api v3
 }

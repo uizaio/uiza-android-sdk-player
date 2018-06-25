@@ -55,7 +55,7 @@
                     android:id="@+id/bt_uiza_video_slide_v2_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:text="Uiza Video Slide 2 (Beta)" />
             </LinearLayout>
 

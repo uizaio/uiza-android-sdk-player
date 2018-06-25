@@ -21,8 +21,6 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class V2UizaVideoIMActivitySlide extends BaseActivity {
     private DraggablePanel draggablePanel;
-    //private long positionFromPipService;
-
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
     }
@@ -30,9 +28,6 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //positionFromPipService = getIntent().getLongExtra(Constants.FLOAT_CURRENT_POSITION, 0l);
-        //LLog.d(TAG, "positionFromPipService " + positionFromPipService);
-
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -75,7 +70,6 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
             LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
             LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
             if (entityId == null || entityId.isEmpty()) {
-                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
                 LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
                 return;
             }
