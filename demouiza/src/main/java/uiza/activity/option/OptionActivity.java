@@ -3,9 +3,17 @@ package uiza.activity.option;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import uiza.R;
 import uiza.activity.splash.SplashActivity;
@@ -15,7 +23,11 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.views.smoothtransition.SwitchAnimationUtil;
+import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.Mode;
+import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";
@@ -23,12 +35,8 @@ public class OptionActivity extends BaseActivity {
     public static final String KEY_API_END_POINT = "KEY_API_END_POINT";
     public static final String KEY_API_TRACKING_END_POINT = "KEY_API_TRACKING_END_POINT";
 
-    private RadioGroup radioGroupSkin;
-    private RadioButton radioSkin1;
-    private RadioButton radioSkin2;
-    private RadioButton radioSkin3;
-    private RadioButton radioSkin0;
-    private String currentPlayerId;
+    private List<SkinObject> skinObjectList = new ArrayList<>();
+    private ParallaxViewPager viewPager;
 
     private RadioGroup radioGroupSlide;
     private RadioButton radioCanSlide;
@@ -47,9 +55,38 @@ public class OptionActivity extends BaseActivity {
     private RadioButton radioDebugModeEnable;
     private RadioButton radioDebugModeDisable;
 
+    private void genListSkin() {
+        SkinObject s1 = new SkinObject();
+        s1.setSkinName("Uiza Skin 1");
+        s1.setResId(R.drawable.skin_1);
+        s1.setSkinId(Constants.PLAYER_ID_SKIN_1);
+        skinObjectList.add(s1);
+
+        SkinObject s2 = new SkinObject();
+        s2.setSkinName("Uiza Skin 2");
+        s2.setResId(R.drawable.skin_2);
+        s2.setSkinId(Constants.PLAYER_ID_SKIN_2);
+        skinObjectList.add(s2);
+
+        SkinObject s3 = new SkinObject();
+        s3.setSkinName("Uiza Skin 3");
+        s3.setResId(R.drawable.skin_3);
+        s3.setSkinId(Constants.PLAYER_ID_SKIN_3);
+        skinObjectList.add(s3);
+
+        SkinObject sDf = new SkinObject();
+        sDf.setSkinName("Uiza Skin Default");
+        sDf.setResId(R.drawable.skin_df);
+        sDf.setSkinId(Constants.PLAYER_ID_SKIN_0);
+        skinObjectList.add(sDf);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        genListSkin();
+
         new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,11 +107,12 @@ public class OptionActivity extends BaseActivity {
 
     private void findViews() {
         //setting theme
-        radioGroupSkin = (RadioGroup) findViewById(R.id.radio_group_skin);
-        radioSkin1 = (RadioButton) findViewById(R.id.radio_skin_1);
-        radioSkin2 = (RadioButton) findViewById(R.id.radio_skin_2);
-        radioSkin3 = (RadioButton) findViewById(R.id.radio_skin_3);
-        radioSkin0 = (RadioButton) findViewById(R.id.radio_skin_0);
+        viewPager = (ParallaxViewPager) findViewById(R.id.view_pager);
+        viewPager.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
+        viewPager.invalidate();
+        viewPager.setMode(Mode.LEFT_OVERLAY);
+        LUIUtil.setPullLikeIOSHorizontal(viewPager);
+
         //setting slide
         radioGroupSlide = (RadioGroup) findViewById(R.id.radio_group_slide);
         radioCanSlide = (RadioButton) findViewById(R.id.radio_can_slide);
@@ -106,13 +144,13 @@ public class OptionActivity extends BaseActivity {
                 break;
         }
 
-        LLog.d(TAG, "currentPlayerId " + currentPlayerId);
+        LLog.d(TAG, "currentPlayerId " + skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
         LLog.d(TAG, "canSlide " + canSlide);
         LLog.d(TAG, "currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
         Intent intent = new Intent(activity, SplashActivity.class);
-        intent.putExtra(KEY_SKIN, currentPlayerId);
+        intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
         intent.putExtra(KEY_CAN_SLIDE, canSlide);
         intent.putExtra(KEY_API_END_POINT, currentApiEndPoint);
         intent.putExtra(KEY_API_TRACKING_END_POINT, currentApiTrackingEndPoint);
@@ -136,30 +174,7 @@ public class OptionActivity extends BaseActivity {
     }
 
     private void setupSkin() {
-        //default skin1
-        radioSkin1.setChecked(true);
-        currentPlayerId = Constants.PLAYER_ID_SKIN_1;
-
-        radioGroupSkin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                int selectedId = radioGroupSkin.getCheckedRadioButtonId();
-                switch (selectedId) {
-                    case R.id.radio_skin_1:
-                        currentPlayerId = Constants.PLAYER_ID_SKIN_1;
-                        break;
-                    case R.id.radio_skin_2:
-                        currentPlayerId = Constants.PLAYER_ID_SKIN_2;
-                        break;
-                    case R.id.radio_skin_3:
-                        currentPlayerId = Constants.PLAYER_ID_SKIN_3;
-                        break;
-                    case R.id.radio_skin_0:
-                        currentPlayerId = Constants.PLAYER_ID_SKIN_0;
-                        break;
-                }
-            }
-        });
+        viewPager.setAdapter(new SlidePagerAdapter());
     }
 
     private void setupSlide() {
@@ -227,5 +242,43 @@ public class OptionActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private class SlidePagerAdapter extends PagerAdapter {
+
+        @Override
+        public Object instantiateItem(ViewGroup collection, int position) {
+            SkinObject skinObject = skinObjectList.get(position);
+            LayoutInflater inflater = LayoutInflater.from(activity);
+            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.item_photo_slide_iv, collection, false);
+
+            ImageView imageView = (ImageView) layout.findViewById(R.id.imageView);
+            imageView.setImageResource(skinObject.getResId());
+
+            /*imageView.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
+            imageView.invalidate();*/
+
+            TextView tv = (TextView) layout.findViewById(R.id.tv);
+            tv.setText(skinObject.getSkinName());
+            LUIUtil.setTextShadow(tv);
+
+            collection.addView(layout);
+            return layout;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup collection, int position, Object view) {
+            collection.removeView((View) view);
+        }
+
+        @Override
+        public int getCount() {
+            return skinObjectList.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
     }
 }
