@@ -53,7 +53,7 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
 
     @Override
     public void onWWLSliding(float offset) {
-        //LLog.d(TAG, "onWWLSliding " + offset);
+        LLog.d(TAG, "onWWLSliding " + offset);
         wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
         float alpha;
         if (offset > 2.0f) {
