@@ -13,6 +13,7 @@ import uiza.R;
 import uiza.activity.data.HomeDataV2;
 import uiza.activity.home.v2.login.LoginActivity;
 import uiza.activity.home.view.UizaActionBar;
+import uiza.activity.home.view.UizaDrawerBottom;
 import uiza.activity.home.view.UizaDrawerHeader;
 import uiza.activity.home.view.UizaDrawerMenuItemV2;
 import uiza.app.LSApplication;
@@ -66,7 +67,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
     }
 
     private void setupDrawer() {
-        LLog.d(TAG, "setupDrawer");
+        //LLog.d(TAG, "setupDrawer");
         UizaDrawerHeader uizaDrawerHeader = new UizaDrawerHeader();
         uizaDrawerHeader.setCallback(new UizaDrawerHeader.Callback() {
             @Override
@@ -241,6 +242,8 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
                 }
             }));
         }
+
+        mDrawerView.addView(new UizaDrawerBottom());
 
         //init data first
         HomeDataV2.getInstance().setDatum(datumList.get(0));
