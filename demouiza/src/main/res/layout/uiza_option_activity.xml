@@ -198,7 +198,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/bt_login"
         android:text="START"
-        android:textColor="@drawable/text_black_white"
+        android:textColor="@color/White"
         android:textSize="@dimen/txt_30"
         android:textStyle="bold" />
 </RelativeLayout>

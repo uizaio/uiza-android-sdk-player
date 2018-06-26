@@ -3,9 +3,9 @@
 
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/primaryColor" />
+            <solid android:color="@color/Blue" />
 
-            <stroke android:width="@dimen/w_1" android:color="@color/primaryColor" />
+            <stroke android:width="@dimen/w_1" android:color="@color/Blue" />
 
             <corners android:radius="@dimen/round_5" />
 

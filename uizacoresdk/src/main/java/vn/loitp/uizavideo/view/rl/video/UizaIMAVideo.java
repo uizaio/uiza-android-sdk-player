@@ -381,25 +381,25 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void addPlayerView() {
-        PlayerView playerView = null;
-        //UizaPlayerView playerView = null;
+        //PlayerView playerView = null;
+        UizaPlayerView playerView = null;
 
         //LLog.d(TAG, "addPlayerView getPlayerId " + UizaData.getInstance().getPlayerId());
         switch (UizaData.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
                 break;
             case Constants.PLAYER_ID_SKIN_2:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
                 break;
             case Constants.PLAYER_ID_SKIN_3:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
                 break;
             case Constants.PLAYER_ID_SKIN_0:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
             default:
-                playerView = (PlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
         }
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
