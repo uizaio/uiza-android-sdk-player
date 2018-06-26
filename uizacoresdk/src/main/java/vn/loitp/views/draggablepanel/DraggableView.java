@@ -421,9 +421,11 @@ public class DraggableView extends RelativeLayout {
     private void analyzeTouchToMaximizeIfNeeded(MotionEvent ev, boolean isDragViewHit) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_DOWN");
                 lastTouchActionDownXPosition = ev.getX();
                 break;
             case MotionEvent.ACTION_UP:
+                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_UP");
                 float clickOffset = ev.getX() - lastTouchActionDownXPosition;
                 if (shouldMaximizeOnClick(ev, clickOffset, isDragViewHit)) {
                     if (isMinimized() && isClickToMaximizeEnabled()) {
@@ -433,9 +435,9 @@ public class DraggableView extends RelativeLayout {
                     }
                 }
                 break;
-            /*case MotionEvent.ACTION_MOVE:
-                LLog.d(TAG, "ACTION_MOVE");
-                break;*/
+            case MotionEvent.ACTION_MOVE:
+                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_MOVE");
+                break;
             default:
                 break;
         }

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.google.android.exoplayer2.ui.PlayerControlView;
-
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
@@ -42,7 +40,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                //frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
 
             @Override
@@ -60,7 +58,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-                //frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
         UizaUtil.setupRestClientV2(activity);
@@ -178,7 +175,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
-                frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                /*frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         //LLog.d(TAG, "onVisibilityChange " + visibility);
@@ -196,7 +193,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                             }
                         }
                     }
-                });
+                });*/
                 intFrmBottom(getDetailEntity);
             }
 
