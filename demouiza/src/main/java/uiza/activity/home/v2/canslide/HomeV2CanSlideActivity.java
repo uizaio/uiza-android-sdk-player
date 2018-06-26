@@ -42,7 +42,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
+                //frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
 
             @Override
@@ -60,7 +60,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
+                //frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
             }
         });
         UizaUtil.setupRestClientV2(activity);
@@ -174,7 +174,6 @@ public class HomeV2CanSlideActivity extends BaseActivity {
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (LPref.getClickedPip(activity)) {
-                    //frmVideoTop.getUizaIMAVideo().seekTo(positionFromPipService);
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -182,13 +181,14 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
+                        //LLog.d(TAG, "onVisibilityChange " + visibility);
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
                                 if (visibility == View.VISIBLE) {
-                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                                     draggablePanel.setEnableSlide(false);
                                 } else {
-                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                                     draggablePanel.setEnableSlide(true);
                                 }
                             } else {
@@ -286,16 +286,4 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         LPref.setAcitivityCanSlideIsRunning(activity, false);
         super.onDestroy();
     }
-
-    //get event from FloatClickFullScreenReceiver if isSlideUizaVideoEnabled && isActivityRunning
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventBusManager.MessageEvent event) {
-        if (event != null) {
-            LLog.d(TAG, "onMessageEvent");
-            LPref.setClickedPip(activity, true);
-            positionFromPipService = event.getPositionOfPlayer();
-            LLog.d(TAG, "onMessageEvent positionFromPipService " + positionFromPipService);
-            initializeDraggablePanel(event.getEntityId(), event.getEntityTitle(), event.getEntityCover());
-        }
-    }*/
 }

@@ -151,6 +151,7 @@ public class DraggableView extends RelativeLayout {
         //LLog.d(TAG, "setEnableSlide " + isEnableSlide);
         this.isEnableSlide = isEnableSlide;
         //setEnabled(isEnableSlide);
+        //setTouchEnabled(isEnableSlide);
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
