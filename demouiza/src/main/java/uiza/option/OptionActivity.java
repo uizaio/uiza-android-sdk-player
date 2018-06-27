@@ -44,6 +44,7 @@ public class OptionActivity extends BaseActivity {
     private boolean canSlide;
 
     private RadioGroup radioEnvironment;
+    private RadioButton radioEnvironmentAPIV3;
     private RadioButton radioEnvironmentDev;
     private RadioButton radioEnvironmentStag;
     private RadioButton radioEnvironmentProd;
@@ -112,13 +113,13 @@ public class OptionActivity extends BaseActivity {
         viewPager.invalidate();
         viewPager.setMode(Mode.LEFT_OVERLAY);
         LUIUtil.setPullLikeIOSHorizontal(viewPager);
-
         //setting slide
         radioGroupSlide = (RadioGroup) findViewById(R.id.radio_group_slide);
         radioCanSlide = (RadioButton) findViewById(R.id.radio_can_slide);
         radioCannotSlide = (RadioButton) findViewById(R.id.radio_cannot_slide);
         //setting environment
         radioEnvironment = (RadioGroup) findViewById(R.id.radio_environment);
+        radioEnvironmentAPIV3 = (RadioButton) findViewById(R.id.radio_environment_api_v3);
         radioEnvironmentDev = (RadioButton) findViewById(R.id.radio_environment_dev);
         radioEnvironmentStag = (RadioButton) findViewById(R.id.radio_environment_stag);
         radioEnvironmentProd = (RadioButton) findViewById(R.id.radio_environment_prod);
@@ -178,9 +179,9 @@ public class OptionActivity extends BaseActivity {
     }
 
     private void setupSlide() {
-        //default cannot slide
-        radioCannotSlide.setChecked(true);
-        canSlide = false;
+        //default can slide
+        radioCanSlide.setChecked(true);
+        canSlide = true;
 
         radioGroupSlide.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -211,12 +212,19 @@ public class OptionActivity extends BaseActivity {
                 switch (selectedId) {
                     case R.id.radio_environment_dev:
                         currentEnvironment = Constants.ENVIRONMENT_DEV;
+                        radioCannotSlide.setVisibility(View.VISIBLE);
                         break;
                     case R.id.radio_environment_stag:
                         currentEnvironment = Constants.ENVIRONMENT_STAG;
+                        radioCannotSlide.setVisibility(View.VISIBLE);
                         break;
                     case R.id.radio_environment_prod:
                         currentEnvironment = Constants.ENVIRONMENT_PROD;
+                        radioCannotSlide.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.radio_environment_api_v3:
+                        radioCannotSlide.setVisibility(View.GONE);
+                        radioCanSlide.setChecked(true);
                         break;
                 }
                 LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
