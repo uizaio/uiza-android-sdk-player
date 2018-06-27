@@ -16,7 +16,7 @@
             android:value="2.1" />
 
         <activity
-            android:name=".activity.option.OptionActivity"
+            android:name=".option.OptionActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,33 +25,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.splash.MainActivity"
+            android:name=".v2.splash.SplashActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.splash.SplashActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.home.v2.cannotslide.HomeV2CannotSlideActivity"
+            android:name=".v2.home.cannotslide.HomeV2CannotSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.v2.cannotslide.SearchV2Activity"
+            android:name=".v2.home.cannotslide.SearchV2Activity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.v2.login.LoginActivity"
+            android:name=".v2.home.cannotslide.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.v2.cannotslide.UizaPlayerActivityV2"
+            android:name=".v2.home.cannotslide.UizaPlayerActivityV2"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.v2.canslide.HomeV2CanSlideActivity"
+            android:name=".v2.home.canslide.HomeV2CanSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".v3.HomeV3CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".activity.home.v2.FloatClickFullScreenReceiver"
+            android:name=".v2.home.FloatClickFullScreenReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
