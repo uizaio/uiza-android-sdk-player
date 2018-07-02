@@ -59,5 +59,8 @@
                 <action android:name="FLOAT_CLICKED_FULLSCREEN" />
             </intent-filter>
         </receiver>
+        <activity
+            android:name=".v3.SplashActivityV3"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

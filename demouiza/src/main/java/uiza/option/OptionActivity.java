@@ -18,7 +18,7 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v2.splash.SplashActivity;
-import uiza.v3.HomeV3CanSlideActivity;
+import uiza.v3.SplashActivityV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -152,7 +152,7 @@ public class OptionActivity extends BaseActivity {
         LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
         if (radioEnvironmentAPIV3.isChecked()) {
-            Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
+            Intent intent = new Intent(activity, SplashActivityV3.class);
             intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
             startActivity(intent);
             LActivityUtil.tranIn(activity);
