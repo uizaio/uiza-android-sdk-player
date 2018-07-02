@@ -16,9 +16,7 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v2.home.canslide.FrmLogin;
 import uiza.v2.home.canslide.FrmSearch;
-import uiza.v2.home.canslide.HomeV2CanSlideActivity;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
@@ -80,7 +78,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mDrawerLayout.closeDrawers();
                 }
-                ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmLogin(), true);
+                ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmLoginV3(), true);
             }
         });
         mDrawerView.addView(uizaDrawerHeader);
@@ -126,7 +124,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onClickRight() {
-                ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmSearch(), true);
+                ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmSearch(), true);
             }
         });
         uizaActionBar.showMenuIcon();
@@ -255,7 +253,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     private void onClickVideo(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         LPref.setClickedPip(getActivity(), false);
-        ((HomeV2CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
+        ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
     }
 
     private long backPressed;
@@ -271,10 +269,10 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
             } else {
                 //LLog.d(TAG, "onBackPressed !isLandscapeScreen");
-                if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
-                    if (((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
+                    if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
                         //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
-                        ((HomeV2CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                        ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                         return true;
                     } else {
                         //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
