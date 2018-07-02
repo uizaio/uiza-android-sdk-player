@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
-import uiza.v2.data.HomeDataV2;
+import uiza.v3.data.HomeDataV3;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
@@ -50,7 +50,7 @@ public class UizaDrawerMenuItemV3 {
     @Resolve
     private void onResolved() {
         tvName.setText(dataList.get(mPos).getName());
-        if (mPos == HomeDataV2.getInstance().getCurrentPosition()) {
+        if (mPos == HomeDataV3.getInstance().getCurrentPosition()) {
             ivPress.setVisibility(android.view.View.VISIBLE);
             mainView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.drawer_hightlight));
         } else {
