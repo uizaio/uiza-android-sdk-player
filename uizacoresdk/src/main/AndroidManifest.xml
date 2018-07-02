@@ -23,8 +23,13 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3"
             android:enabled="true"
             android:exported="false" />
     </application>

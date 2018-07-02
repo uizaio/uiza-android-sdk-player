@@ -1,4 +1,4 @@
-package uiza.v3;
+package uiza.v3.canslide;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.

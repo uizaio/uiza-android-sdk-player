@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.rl.video;
+package vn.loitp.uizavideov3.view.rl.video;
 
 import android.content.Context;
 import android.content.Intent;
@@ -63,13 +63,13 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
-import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.uizavideov3.dlg.listentityrelation.PlayListCallbackV3;
-import vn.loitp.uizavideov3.dlg.listentityrelation.UizaDialogListEntityRelationV3;
-import vn.loitp.uizavideov3.manager.UizaPlayerManagerV3;
+import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
+import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
+import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
+import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -373,7 +373,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
-        inflate(getContext(), R.layout.uiza_ima_video_core_rl_v3, this);
+        inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
         findViews();
@@ -894,7 +894,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         setExoPictureInPictureVisibility(GONE);
-        Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+        Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getUizaInput().getEntityCover());

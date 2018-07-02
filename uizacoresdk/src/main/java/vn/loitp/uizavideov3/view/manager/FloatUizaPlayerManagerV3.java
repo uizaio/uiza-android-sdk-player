@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.loitp.uizavideo.manager;
+package vn.loitp.uizavideov3.view.manager;
 
 import android.content.Context;
 import android.net.Uri;
@@ -73,16 +73,16 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
-import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
+import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-/* package */ public final class FloatUizaPlayerManager implements AdsMediaSource.MediaSourceFactory {
+/* package */ public final class FloatUizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
     private Context context;
 
-    private FloatUizaIMAVideo floatUizaIMAVideo;
+    private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
@@ -105,9 +105,9 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         this.progressCallback = progressCallback;
     }
 
-    public FloatUizaPlayerManager(final FloatUizaIMAVideo uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public FloatUizaPlayerManagerV3(final FloatUizaIMAVideoV3 uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = uizaIMAVideo.getContext();
-        this.floatUizaIMAVideo = uizaIMAVideo;
+        this.floatUizaIMAVideoV3 = uizaIMAVideo;
         this.linkPlay = linkPlay;
         //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
@@ -186,7 +186,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        floatUizaIMAVideo.getPlayerView().setPlayer(player);
+        floatUizaIMAVideoV3.getPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -269,7 +269,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
                 mediaSource,
                 this,
                 adsLoader,
-                floatUizaIMAVideo.getPlayerView().getOverlayFrameLayout(),
+                floatUizaIMAVideoV3.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -357,11 +357,11 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
     }
 
     private void hideProgress() {
-        LUIUtil.hideProgressBar(floatUizaIMAVideo.getProgressBar());
+        LUIUtil.hideProgressBar(floatUizaIMAVideoV3.getProgressBar());
     }
 
     private void showProgress() {
-        LUIUtil.showProgressBar(floatUizaIMAVideo.getProgressBar());
+        LUIUtil.showProgressBar(floatUizaIMAVideoV3.getProgressBar());
     }
 
     public class PlayerEventListener implements Player.EventListener {
@@ -494,7 +494,7 @@ import vn.loitp.uizavideo.view.floatview.FloatUizaIMAVideo;
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
-            floatUizaIMAVideo.onStateReadyFirst();
+            floatUizaIMAVideoV3.onStateReadyFirst();
         }
 
         @Override

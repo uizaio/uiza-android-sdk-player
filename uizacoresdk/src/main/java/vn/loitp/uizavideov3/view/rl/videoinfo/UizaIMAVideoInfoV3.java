@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.rl.videoinfo;
+package vn.loitp.uizavideov3.view.rl.videoinfo;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -98,7 +98,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
     }
 
     private void onCreate() {
-        inflate(getContext(), R.layout.uiza_ima_video_core_info_rl_v3, this);
+        inflate(getContext(), R.layout.v3_uiza_ima_video_core_info_rl, this);
         activity = ((BaseActivity) getContext());
         findViews();
     }

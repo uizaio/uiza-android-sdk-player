@@ -5,7 +5,7 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <vn.loitp.uizavideov3.rl.videoinfo.UizaIMAVideoInfoV3
+    <vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3
         android:id="@+id/uiza_video_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

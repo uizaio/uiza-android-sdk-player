@@ -1,4 +1,4 @@
-package uiza.v3;
+package uiza.v3.canslide;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -41,7 +41,7 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaInput;
-import vn.loitp.uizavideov3.rl.video.UizaIMAVideoV3;
+import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callback {

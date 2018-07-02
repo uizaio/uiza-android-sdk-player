@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.dlg.listentityrelation;
+package vn.loitp.uizavideov3.view.dlg.listentityrelation;
 
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 

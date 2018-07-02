@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
+
+    <RelativeLayout
+        android:id="@+id/move_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3
+            android:id="@+id/uiza_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/rl_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_player_controller"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/bt_exit"
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
+                android:layout_alignParentRight="true"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close_black_48dp"
+                android:tint="@color/White" />
+
+            <ImageButton
+                android:id="@+id/bt_full_screen"
+                android:layout_width="@dimen/w_50"
+                android:layout_height="@dimen/w_50"
+                android:layout_centerInParent="true"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fullscreen_black_48dp"
+                android:tint="@color/White" />
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

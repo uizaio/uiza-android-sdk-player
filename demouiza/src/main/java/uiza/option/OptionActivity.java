@@ -18,7 +18,7 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v2.splash.SplashActivity;
-import uiza.v3.SplashActivityV3;
+import uiza.v3.canslide.SplashActivityV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;

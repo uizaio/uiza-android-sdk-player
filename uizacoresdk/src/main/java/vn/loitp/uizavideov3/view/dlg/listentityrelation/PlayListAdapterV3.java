@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.dlg.listentityrelation;
+package vn.loitp.uizavideov3.view.dlg.listentityrelation;
 
 /**
  * Created by www.muathu@gmail.com on 11/7/2017.

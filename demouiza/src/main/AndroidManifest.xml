@@ -47,7 +47,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".v3.HomeV3CanSlideActivity"
+            android:name=".v3.canslide.HomeV3CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
 
@@ -59,8 +59,17 @@
                 <action android:name="FLOAT_CLICKED_FULLSCREEN" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".v3.FloatClickFullScreenReceiverV3"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="FLOAT_CLICKED_FULLSCREEN_V3" />
+            </intent-filter>
+        </receiver>
+
         <activity
-            android:name=".v3.SplashActivityV3"
+            android:name=".v3.canslide.SplashActivityV3"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

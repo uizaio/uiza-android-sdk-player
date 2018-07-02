@@ -1,4 +1,4 @@
-package uiza.v3;
+package uiza.v3.canslide;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

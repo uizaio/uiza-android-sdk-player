@@ -261,7 +261,7 @@ public class UizaUtil {
     public static boolean checkServiceRunning(Context context, String serviceName) {
         ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoService.class.getName());
+            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoServiceV3.class.getName());
             //LLog.d(TAG, "checkServiceRunning: " + service.service.getClassName());
             if (serviceName.equals(service.service.getClassName())) {
                 return true;

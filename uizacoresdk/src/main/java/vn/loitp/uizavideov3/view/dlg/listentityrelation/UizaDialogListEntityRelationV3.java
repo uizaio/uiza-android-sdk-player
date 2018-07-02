@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.dlg.listentityrelation;
+package vn.loitp.uizavideov3.view.dlg.listentityrelation;
 
 import android.app.Activity;
 import android.app.AlertDialog;

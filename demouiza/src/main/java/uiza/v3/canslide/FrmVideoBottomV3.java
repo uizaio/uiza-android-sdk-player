@@ -1,4 +1,4 @@
-package uiza.v3;
+package uiza.v3.canslide;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -14,7 +14,7 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideov3.rl.videoinfo.UizaIMAVideoInfoV3;
+import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
 
 public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Callback {
     private final String TAG = getClass().getSimpleName();
