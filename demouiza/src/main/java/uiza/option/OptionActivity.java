@@ -18,6 +18,7 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v2.splash.SplashActivity;
+import uiza.v3.HomeV3CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -150,13 +151,20 @@ public class OptionActivity extends BaseActivity {
         LLog.d(TAG, "currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
-        Intent intent = new Intent(activity, SplashActivity.class);
-        intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
-        intent.putExtra(KEY_CAN_SLIDE, canSlide);
-        intent.putExtra(KEY_API_END_POINT, currentApiEndPoint);
-        intent.putExtra(KEY_API_TRACKING_END_POINT, currentApiTrackingEndPoint);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
+        if (radioEnvironmentAPIV3.isChecked()) {
+            Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
+            intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
+            startActivity(intent);
+            LActivityUtil.tranIn(activity);
+        } else {
+            Intent intent = new Intent(activity, SplashActivity.class);
+            intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
+            intent.putExtra(KEY_CAN_SLIDE, canSlide);
+            intent.putExtra(KEY_API_END_POINT, currentApiEndPoint);
+            intent.putExtra(KEY_API_TRACKING_END_POINT, currentApiTrackingEndPoint);
+            startActivity(intent);
+            LActivityUtil.tranIn(activity);
+        }
     }
 
     @Override

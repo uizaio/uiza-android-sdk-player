@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import uiza.R;
-import uiza.v2.home.canslide.FrmHome;
 import uiza.v2.home.canslide.FrmVideoBottom;
 import uiza.v2.home.canslide.FrmVideoTop;
 import vn.loitp.core.base.BaseActivity;
@@ -64,7 +63,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             }
         });
         UizaUtil.setupRestClientV2(activity);
-        replaceFragment(new FrmHome());
+        replaceFragment(new FrmHomeV3());
         if (LPref.getClickedPip(activity)) {
             //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
@@ -83,7 +82,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     }
 
     public void replaceFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmHome) {
+        if (baseFragment instanceof FrmHomeV3) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
@@ -106,7 +105,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.uiza_ima_video_activity_rl_slide;
+        return R.layout.v3_uiza_ima_video_activity_rl_slide;
     }
 
     private FrmVideoTop frmVideoTop;
