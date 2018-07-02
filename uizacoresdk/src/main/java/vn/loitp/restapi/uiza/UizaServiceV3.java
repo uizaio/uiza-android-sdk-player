@@ -29,6 +29,7 @@ public interface UizaServiceV3 {
     Observable<ResultGetToken> getToken(@Body UizaWorkspaceInfo uizaWorkspaceInfo);
 
     //http://dev-docs.uizadev.io/#check-token
+    //@Headers("Content-Type: application/json")
     @POST("/api/public/v3/admin/user/auth/check-token")
     Observable<ResultGetToken> checkToken();
 
