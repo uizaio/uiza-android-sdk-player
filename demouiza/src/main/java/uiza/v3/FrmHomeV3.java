@@ -16,7 +16,6 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v2.home.canslide.FrmSearch;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
@@ -124,7 +123,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onClickRight() {
-                ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmSearch(), true);
+                ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmSearchV3(), true);
             }
         });
         uizaActionBar.showMenuIcon();
