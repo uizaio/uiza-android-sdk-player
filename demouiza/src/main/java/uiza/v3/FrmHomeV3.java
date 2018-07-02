@@ -36,7 +36,6 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -220,8 +219,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
                     frmHomeChannel.setCallback(new EntityItemV3.Callback() {
                         @Override
-                        public void onClick(Item item, int position) {
-                            onClickVideo(item, position);
+                        public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                            onClickVideo(data, position);
                         }
 
                         @Override
@@ -241,8 +240,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
         frmHomeChannel.setCallback(new EntityItemV3.Callback() {
             @Override
-            public void onClick(Item item, int position) {
-                onClickVideo(item, position);
+            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                onClickVideo(data, position);
             }
 
             @Override
@@ -253,10 +252,10 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
     }
 
-    private void onClickVideo(Item item, int position) {
+    private void onClickVideo(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         LPref.setClickedPip(getActivity(), false);
-        ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
+        ((HomeV2CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
     }
 
     private long backPressed;

@@ -62,7 +62,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
             }
         });
-        UizaUtil.setupRestClientV2(activity);
         replaceFragment(new FrmHomeV3());
         if (LPref.getClickedPip(activity)) {
             //called from PiP Service

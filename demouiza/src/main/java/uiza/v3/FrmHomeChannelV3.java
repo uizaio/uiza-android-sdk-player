@@ -9,13 +9,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v2.home.view.BlankView;
-import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.data.HomeDataV3;
 import uiza.v3.view.EntityItemV3;
@@ -24,11 +21,10 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
@@ -127,7 +123,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         return R.layout.v3_uiza_frm_channel;
     }
 
-    private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
+    private void setupData(List<Data> dataList, boolean isCallFromLoadMore) {
         int sizeW = LDisplayUtils.getScreenW(getActivity()) / 2;
         int sizeH = sizeW * 9 / 16;
 
@@ -136,19 +132,19 @@ public class FrmHomeChannelV3 extends BaseFragment {
         } else {
             addBlankView();
         }
-        for (Item item : itemList) {
-            placeHolderView.addView(new EntityItemV2(getActivity(), item, sizeW, sizeH, new EntityItemV2.Callback() {
+        for (Data data : dataList) {
+            placeHolderView.addView(new EntityItemV3(getActivity(), data, sizeW, sizeH, new EntityItemV3.Callback() {
                 @Override
-                public void onClick(Item item, int position) {
+                public void onClick(Data data, int position) {
                     //onClickVideo(item, position);
                     if (callback != null) {
-                        callback.onClick(item, position);
+                        callback.onClick(data, position);
                     }
                 }
 
                 @Override
                 public void onPosition(int position) {
-                    LLog.d(TAG, "_____onPosition " + position + " ~ " + getListSize());
+                    LLog.d(TAG, "_____onPosition " + position + " / " + getListSize());
                     if (position == getListSize() - 1) {
                         LLog.d(TAG, "_____onLast");
                         loadMore();
@@ -205,7 +201,84 @@ public class FrmHomeChannelV3 extends BaseFragment {
         if (tvMsg.getVisibility() != View.GONE) {
             tvMsg.setVisibility(View.GONE);
         }
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+
+        String metadataId = "";
+        if (HomeDataV3.getInstance().getData().getId().equals(String.valueOf(Constants.NOT_FOUND))) {
+            //do nothing
+        } else {
+            LLog.d(TAG, "!HOME category");
+            metadataId = HomeDataV3.getInstance().getData().getId();
+        }
+        LLog.d(TAG, "getData metadataId: " + metadataId);
+
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+            @Override
+            public void onSuccess(ResultListEntity result) {
+                //LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                    if (tvMsg.getVisibility() != View.VISIBLE) {
+                        tvMsg.setVisibility(View.VISIBLE);
+                        tvMsg.setText(getString(R.string.empty_list));
+                        placeHolderView.setVisibility(View.GONE);
+                    }
+                    if (!isCallFromLoadMore) {
+                        LUIUtil.hideProgressBar(progressBar);
+                    } else {
+                        isLoadMoreCalling = false;
+                    }
+                    return;
+                }
+                if (totalPage == Integer.MAX_VALUE) {
+                    int totalItem = (int) result.getMetadata().getTotal();
+                    float ratio = (float) (totalItem / limit);
+                    LLog.d(TAG, "ratio: " + ratio);
+                    if (ratio == 0) {
+                        totalPage = (int) ratio;
+                    } else if (ratio > 0) {
+                        totalPage = (int) ratio + 1;
+                    } else {
+                        totalPage = (int) ratio;
+                    }
+                    LLog.d(TAG, ">>>totalPage: " + totalPage);
+                }
+
+                List<Data> dataList = result.getData();
+                if (dataList == null || dataList.isEmpty()) {
+                    if (tvMsg.getVisibility() != View.VISIBLE) {
+                        tvMsg.setVisibility(View.VISIBLE);
+                        tvMsg.setText(getString(R.string.empty_list));
+                        placeHolderView.setVisibility(View.GONE);
+                    }
+                    if (!isCallFromLoadMore) {
+                        LUIUtil.hideProgressBar(progressBar);
+                    } else {
+                        isLoadMoreCalling = false;
+                    }
+                }
+                setupData(dataList, isCallFromLoadMore);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                if (tvMsg.getVisibility() != View.VISIBLE) {
+                    tvMsg.setVisibility(View.VISIBLE);
+                    if (e != null && e.getMessage() != null) {
+                        tvMsg.setText("onFail " + e.getMessage());
+                    }
+                    placeHolderView.setVisibility(View.GONE);
+                }
+                if (!isCallFromLoadMore) {
+                    LUIUtil.hideProgressBar(progressBar);
+                } else {
+                    isLoadMoreCalling = false;
+                }
+            }
+        });
+
+
+        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         if (HomeDataV3.getInstance().getData().getId().equals(String.valueOf(Constants.NOT_FOUND))) {
             LLog.d(TAG, "HOME category");
@@ -278,7 +351,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     isLoadMoreCalling = false;
                 }
             }
-        });
+        });*/
     }
 
     private void swipeToRefresh() {
@@ -303,6 +376,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
             LLog.d(TAG, "loadMore return");
             return;
         }
+        LLog.d(TAG, "call loadMore");
         isLoadMoreCalling = true;
         placeHolderView.post(new Runnable() {
             @Override

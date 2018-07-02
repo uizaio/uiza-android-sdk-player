@@ -14,7 +14,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
@@ -39,7 +39,7 @@ public class EntityItemV3 {
     @View(R.id.tv_name)
     private TextView tvName;
 
-    private Item item;
+    private Data data;
     private Context mContext;
     private Callback mCallback;
 
@@ -49,9 +49,9 @@ public class EntityItemV3 {
     private int mSizeW;
     private int mSizeH;
 
-    public EntityItemV3(Context context, Item item, int sizeW, int sizeH, Callback callback) {
+    public EntityItemV3(Context context, Data data, int sizeW, int sizeH, Callback callback) {
         this.mContext = context;
-        this.item = item;
+        this.data = data;
         this.mSizeW = sizeW;
         this.mSizeH = sizeH;
         this.mCallback = callback;
@@ -65,13 +65,13 @@ public class EntityItemV3 {
 
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
 
-        if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
+        if (data.getThumbnail() == null || data.getThumbnail().isEmpty()) {
             LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, imageView, progressBar);
         } else {
-            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), imageView, progressBar);
+            LImageUtil.load((Activity) mContext, data.getThumbnail(), imageView, progressBar);
         }
 
-        tvName.setText(item.getName());
+        tvName.setText(data.getName());
         LUIUtil.setTextShadow(tvName);
 
         if (mCallback != null) {
@@ -95,7 +95,7 @@ public class EntityItemV3 {
             @Override
             public void onEnd() {
                 if (mCallback != null) {
-                    mCallback.onClick(item, mPosition);
+                    mCallback.onClick(data, mPosition);
                 }
             }
 
@@ -112,7 +112,7 @@ public class EntityItemV3 {
     }
 
     public interface Callback {
-        public void onClick(Item item, int position);
+        public void onClick(Data data, int position);
 
         public void onPosition(int position);
     }

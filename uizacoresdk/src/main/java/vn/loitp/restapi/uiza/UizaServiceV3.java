@@ -57,7 +57,11 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")
-    Observable<ResultListEntity> getListAllEntity(@Query("metadataid") String metadataid);
+    Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid,
+                                                  @Query("limit") int limit,
+                                                  @Query("page") int page,
+                                                  @Query("orderBy") String orderBy,
+                                                  @Query("orderType") String orderType);
 
     //http://dev-docs.uizadev.io/#retrieve-an-entity
     @GET("/api/public/v3/media/entity")
