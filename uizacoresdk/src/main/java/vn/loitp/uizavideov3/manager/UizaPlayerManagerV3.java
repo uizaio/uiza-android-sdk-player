@@ -82,7 +82,7 @@ import vn.loitp.uizavideo.glide.GlideApp;
 import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
-import vn.loitp.uizavideov3.rl.UizaIMAVideoV3;
+import vn.loitp.uizavideov3.rl.video.UizaIMAVideoV3;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.

@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.rl;
+package vn.loitp.uizavideov3.rl.video;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,17 +49,14 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -71,7 +68,6 @@ import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.manager.UizaPlayerManagerV3;
-import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
@@ -118,9 +114,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int firstBrightness = Constants.NOT_FOUND;
 
     private GetLinkPlay mGetLinkPlay;
-    private GetDetailEntity mGetDetailEntity;
+    private ResultRetrieveAnEntity mResultRetrieveAnEntity;
     private boolean isGetLinkPlayDone;
-    private boolean isGetDetailEntityDone;
+    private boolean isGetResultRetrieveAnEntityDone;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -181,9 +177,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManager.release();
             mGetLinkPlay = null;
-            mGetDetailEntity = null;
+            mResultRetrieveAnEntity = null;
             isGetLinkPlayDone = false;
-            isGetDetailEntityDone = false;
+            isGetResultRetrieveAnEntityDone = false;
             countTryLinkPlayError = 0;
         }
         setTitle();
@@ -252,8 +248,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
-        if (isGetLinkPlayDone && isGetDetailEntityDone) {
-            if (mGetLinkPlay != null && mGetDetailEntity != null) {
+        if (isGetLinkPlayDone && isGetResultRetrieveAnEntityDone) {
+            if (mGetLinkPlay != null && mResultRetrieveAnEntity != null) {
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Mpd> mpdList = mGetLinkPlay.getMpd();
@@ -267,8 +263,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
                 //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
                 //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
-                //listLinkPlay.add("http://112.78.4.162/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/playlist.mpd");
-
+                //TODO remove dummy link
+                listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
                 //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
 
                 LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
@@ -306,8 +302,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String linkPlay = listLinkPlay.get(countTryLinkPlayError);
-                //LLog.d(TAG, "mGetDetailEntity toJson: " + gson.toJson(mGetDetailEntity));
-                List<Subtitle> subtitleList = mGetDetailEntity.getData().get(0).getSubtitle();
+
+                List<Subtitle> subtitleList = null;
+                //TODO
+                //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
                 initData(linkPlay, UizaData.getInstance().getUizaInput().getUrlIMAAd(), UizaData.getInstance().getUizaInput().getUrlThumnailsPreviewSeekbar(), subtitleList);
@@ -569,7 +567,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
-            callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
+            callback.isInitResult(true, mGetLinkPlay, mResultRetrieveAnEntity);
         }
         //ko track neu play tu clicked pip
         if (!LPref.getClickedPip(activity)) {
@@ -913,8 +911,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void getLinkPlay() {
         //LLog.d(TAG, "getLinkPlay");
-        //UizaUtil.setupRestClientV2(activity);
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        //TODO
+        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
@@ -956,13 +954,49 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 });
             }
-        });
+        });*/
+
+        //TODO remove hardcode
+        mGetLinkPlay = new GetLinkPlay();
+        List<Mpd> mpdList = new ArrayList<>();
+        mGetLinkPlay.setMpd(mpdList);
+        isGetLinkPlayDone = true;
+        checkToSetUp();
     }
 
     private void getDetailEntity() {
         //LLog.d(TAG, "getDetailEntity");
-        //UizaUtil.setupRestClientV2(activity);
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = UizaData.getInstance().getUizaInput().getEntityId();
+        activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
+            @Override
+            public void onSuccess(ResultRetrieveAnEntity result) {
+                LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
+                mResultRetrieveAnEntity = result;
+                isGetResultRetrieveAnEntityDone = true;
+                checkToSetUp();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
+                    }
+                });
+            }
+        });
+
+
+        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaData.getInstance().getUizaInput().getEntityId());
 
@@ -990,12 +1024,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 });
             }
-        });
+        });*/
     }
 
     public interface Callback {
         //when video init done with result
-        public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity);
+        public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
 
         //user click an item in entity relation
         public void onClickListEntityRelation(Item item, int position);
@@ -1016,7 +1050,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
+        //TODO
+        /*UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -1032,7 +1067,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 //((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
-        });
+        });*/
     }
 
     public void seekTo(long positionMs) {
