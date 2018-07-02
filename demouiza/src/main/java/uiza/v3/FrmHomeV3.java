@@ -16,7 +16,6 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v2.data.HomeDataV2;
 import uiza.v2.home.canslide.FrmHomeChannel;
 import uiza.v2.home.canslide.FrmLogin;
 import uiza.v2.home.canslide.FrmSearch;
@@ -25,7 +24,8 @@ import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
-import uiza.v2.home.view.UizaDrawerMenuItemV2;
+import uiza.v3.data.HomeDataV3;
+import uiza.v3.view.UizaDrawerMenuItemV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
@@ -35,13 +35,11 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.LToast;
@@ -51,12 +49,11 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawerLayout;
-    private List<Datum> datumList = new ArrayList<>();
+    private List<Data> dataList = new ArrayList<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        super.onCreate(savedInstanceState);
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) view.findViewById(R.id.drawerView);
 
@@ -87,16 +84,6 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 }
                 ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmLogin(), true);
             }
-
-            /*@Override
-            public void onClickSetting() {
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawers();
-                }
-                Intent intent = new Intent(activity, SettingActivity.class);
-                startActivity(intent);
-                LUIUtil.transActivityFadeIn(activity);
-            }*/
         });
         mDrawerView.addView(uizaDrawerHeader);
 
@@ -141,9 +128,6 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onClickRight() {
-                /*Intent intent = new Intent(getActivity(), SearchV2Activity.class);
-                startActivity(intent);
-                LActivityUtil.tranIn(getActivity());*/
                 ((HomeV2CanSlideActivity) getActivity()).addFragment(new FrmSearch(), true);
             }
         });
@@ -161,11 +145,11 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
     private void genHomeMenu() {
         //add home menu
-        Datum item = new Datum();
-        item.setName("Home V3");
-        item.setId(String.valueOf(Constants.NOT_FOUND));
-        item.setType("folder");
-        datumList.add(0, item);
+        Data data = new Data();
+        data.setName("Home V3");
+        data.setId(String.valueOf(Constants.NOT_FOUND));
+        data.setType("folder");
+        dataList.add(0, data);
         //emd add home menu
     }
 
@@ -173,36 +157,12 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         //LLog.d(TAG, "getListAllMetadata");
         genHomeMenu();
 
-        if (RestClientV2.getRetrofit() == null) {
-            LLog.d(TAG, "RestClientV2.getRetrofit() == null");
-            String apiEndPoint = LPref.getApiEndPoint(getActivity());
-            String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getActivity());
-            String token = LPref.getToken(getActivity());
-
-            LLog.d(TAG, "getRetrofit apiEndPoint " + apiEndPoint);
-            LLog.d(TAG, "getRetrofit currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
-            LLog.d(TAG, "getRetrofit token " + token);
-
-            RestClientV2.init(apiEndPoint);
-            RestClientV2.addAuthorization(token);
-            RestClientTracking.init(currentApiTrackingEndPoint);
-        }
-
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        int limit = 999;
-        String orderBy = "name";
-        String orderType = "ASC";
-
-        JsonBodyMetadataList jsonBodyMetadataList = new JsonBodyMetadataList();
-        jsonBodyMetadataList.setLimit(limit);
-        jsonBodyMetadataList.setOrderBy(orderBy);
-        jsonBodyMetadataList.setOrderType(orderType);
-
-        subscribe(service.listAllMetadataV2(jsonBodyMetadataList), new ApiSubscriber<ListAllMetadata>() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
-            public void onSuccess(ListAllMetadata listAllMetadata) {
-                LLog.d(TAG, "getListAllMetadata onSuccess " + LSApplication.getInstance().getGson().toJson(listAllMetadata));
-                if (listAllMetadata == null) {
+            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
+                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                if (resultGetListMetadata == null) {
                     LDialogUtil.showDialog1(getActivity(), getString(R.string.err_unknow), new LDialogUtil.Callback1() {
                         @Override
                         public void onClick1() {
@@ -220,12 +180,12 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     });
                     return;
                 }
-                genListDrawerLayout(listAllMetadata);
+                genListDrawerLayout(resultGetListMetadata);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
+                LLog.e(TAG, "checkToken onFail " + e.getMessage());
                 LDialogUtil.showDialog1(getActivity(), "getListAllMetadata onFail " + e.getMessage(), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -246,17 +206,17 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         });
     }
 
-    private void genListDrawerLayout(ListAllMetadata listAllMetadata) {
-        if (listAllMetadata != null) {
-            datumList.addAll(listAllMetadata.getData());
+    private void genListDrawerLayout(ResultGetListMetadata resultGetListMetadata) {
+        if (resultGetListMetadata != null) {
+            dataList.addAll(resultGetListMetadata.getData());
         }
 
-        for (int i = 0; i < this.datumList.size(); i++) {
-            mDrawerView.addView(new UizaDrawerMenuItemV2(getActivity(), datumList, i, new UizaDrawerMenuItemV2.Callback() {
+        for (int i = 0; i < this.dataList.size(); i++) {
+            mDrawerView.addView(new UizaDrawerMenuItemV3(getActivity(), dataList, i, new UizaDrawerMenuItemV3.Callback() {
                 @Override
                 public void onMenuItemClick(int pos) {
-                    HomeDataV2.getInstance().setCurrentPosition(pos);
-                    HomeDataV2.getInstance().setDatum(datumList.get(pos));
+                    HomeDataV3.getInstance().setCurrentPosition(pos);
+                    HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
                     FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
                     frmHomeChannel.setCallback(new EntityItemV2.Callback() {
@@ -278,7 +238,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         mDrawerView.addView(new UizaDrawerBottom());
 
         //init data first
-        HomeDataV2.getInstance().setDatum(datumList.get(0));
+        HomeDataV3.getInstance().setData(dataList.get(0));
         FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
         frmHomeChannel.setCallback(new EntityItemV2.Callback() {
             @Override
