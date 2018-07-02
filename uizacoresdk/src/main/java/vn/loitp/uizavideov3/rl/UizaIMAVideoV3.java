@@ -1015,58 +1015,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private Callback callback;
 
-    /*private void getLinkDownload() {
-        LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
-        if (auth == null || auth.getData().getAppId() == null) {
-            showDialogError("Error auth == null || auth.getAppId() == null");
-            return;
-        }
-        LLog.d(TAG, ">>>getLinkDownload appId: " + auth.getData().getAppId());
-
-        JsonBodyGetLinkDownload jsonBodyGetLinkDownload = new JsonBodyGetLinkDownload();
-        List<String> listEntityIds = new ArrayList<>();
-        listEntityIds.add(inputModel.getEntityID());
-        jsonBodyGetLinkDownload.setListEntityIds(listEntityIds);
-
-        //API v2
-        subscribe(service.getLinkDownloadV2(jsonBodyGetLinkDownload), new ApiSubscriber<GetLinkDownload>() {
-            @Override
-            public void onSuccess(GetLinkDownload getLinkDownload) {
-                LLog.d(TAG, "getLinkDownloadV2 onSuccess " + gson.toJson(getLinkDownload));
-                //UizaData.getInstance().setLinkPlay("http://demos.webmproject.org/dash/201410/vp9_glass/manifest_vp9_opus.mpd");
-                //UizaData.getInstance().setLinkPlay("http://dev-preview.uiza.io/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJVSVpBIiwiYXVkIjoidWl6YS5pbyIsImlhdCI6MTUxNjMzMjU0NSwiZXhwIjoxNTE2NDE4OTQ1LCJlbnRpdHlfaWQiOiIzYWUwOWJhNC1jMmJmLTQ3MjQtYWRmNC03OThmMGFkZDY1MjAiLCJlbnRpdHlfbmFtZSI6InRydW5nbnQwMV8xMiIsImVudGl0eV9zdHJlYW1fdHlwZSI6InZvZCIsImFwcF9pZCI6ImEyMDRlOWNkZWNhNDQ5NDhhMzNlMGQwMTJlZjc0ZTkwIiwic3ViIjoiYTIwNGU5Y2RlY2E0NDk0OGEzM2UwZDAxMmVmNzRlOTAifQ.ktZsaoGA3Dp4J1cGR00bt4UIiMtcsjxgzJWSTnxnxKk/a204e9cdeca44948a33e0d012ef74e90-data/transcode-output/unzKBIUm/package/playlist.mpd");
-
-                List<String> listLinkPlay = new ArrayList<>();
-                List<Mpd> mpdList = getLinkDownload.getData().get(0).getMpd();
-                for (Mpd mpd : mpdList) {
-                    if (mpd.getUrl() != null) {
-                        listLinkPlay.add(mpd.getUrl());
-                    }
-                }
-                LLog.d(TAG, "getLinkDownloadV2 toJson: " + gson.toJson(listLinkPlay));
-
-                if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    LLog.d(TAG, "listLinkPlay == null || listLinkPlay.isEmpty()");
-                    showDialogOne(getString(R.string.has_no_linkplay), true);
-                    return;
-                }
-
-                UizaData.getInstance().setLinkPlay(listLinkPlay);
-                isGetLinkPlayDone = true;
-                init();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "onFail getLinkDownloadV2: " + e.toString());
-                handleException(e);
-            }
-        });
-        //End API v2
-    }*/
-
     private void trackUiza(final UizaTracking uizaTracking) {
         UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
