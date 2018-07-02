@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaData;
@@ -48,7 +50,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
     private TextView tvDebug;
     private TextView tvMoreLikeThisMsg;
     private NestedScrollView nestedScrollView;
-    private Item mItem;
+    private Data data;
 
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -149,20 +151,20 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
     }
 
     public void setup(ResultRetrieveAnEntity resultRetrieveAnEntity) {
+        LLog.d(TAG, "setup");
         if (resultRetrieveAnEntity == null) {
+            LLog.d(TAG, "setup resultRetrieveAnEntity == null");
             return;
         }
-        LLog.d(TAG, "getDetailEntityV2 entityId");
-        //TODO
-        /*mItem = resultRetrieveAnEntity.getData();
-        updateUI();*/
+        data = resultRetrieveAnEntity.getData();
+        updateUI();
     }
 
     public void updateUI() {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            tvVideoName.setText(mItem.getName());
+            tvVideoName.setText(data.getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
         }
@@ -172,7 +174,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         tvVideoRate.setText("Dummy 18+");
 
         try {
-            tvVideoDescription.setText(mItem.getDescription().isEmpty() ? mItem.getShortDescription().isEmpty() ? emptyS : mItem.getShortDescription() : mItem.getDescription());
+            tvVideoDescription.setText(data.getDescription().isEmpty() ? data.getShortDescription().isEmpty() ? emptyS : data.getShortDescription() : data.getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
         }
@@ -180,14 +182,11 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         //TODO
         tvVideoStarring.setText("Dummy starring");
 
-        if (mItem.getExtendData() == null || mItem.getExtendData().getDirector() == null) {
-            tvVideoDirector.setText(nullS);
-        } else {
-            tvVideoDirector.setText(mItem.getExtendData().getDirector());
-        }
+        //TODO
+        tvVideoDirector.setText("Dummy director");
 
         //TODO
-        tvVideoGenres.setText(emptyS);
+        tvVideoGenres.setText("Dummy genres");
 
         //get more like this video
         getListAllEntityRelation();
@@ -221,21 +220,26 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
                 LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_list_relation), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
-                        *//*if (activity != null) {
+                        if (activity != null) {
                             activity.onBackPressed();
-                        }*//*
+                        }
                     }
 
                     @Override
                     public void onCancel() {
-                        *//*if (activity != null) {
+                        if (activity != null) {
                             activity.onBackPressed();
-                        }*//*
+                        }
                     }
                 });
                 LUIUtil.hideProgressBar(progressBar);
             }
         });*/
+
+        //TODO remove hardcode
+        tvMoreLikeThisMsg.setText(R.string.no_data);
+        tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
+        LUIUtil.hideProgressBar(progressBar);
     }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {
