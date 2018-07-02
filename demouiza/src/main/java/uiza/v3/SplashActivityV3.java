@@ -15,6 +15,7 @@ import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -37,6 +38,9 @@ public class SplashActivityV3 extends BaseActivity {
 
         currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
         LPref.setSlideUizaVideoEnabled(activity, true);
+
+        //TODO init tracking dev (with correct domain)
+        RestClientTracking.init(Constants.URL_TRACKING_DEV);
 
         UizaWorkspaceInfo uizaWorkspaceInfo = new UizaWorkspaceInfo("loitp@uiza.io", "04021993", "android-api.uiza.co", "android.uiza.co");
         UizaV3Util.initUizaWorkspace(activity, uizaWorkspaceInfo);
@@ -109,6 +113,7 @@ public class SplashActivityV3 extends BaseActivity {
             @Override
             public void onSuccess(ResultGetToken resultGetToken) {
                 LLog.d(TAG, "authV3 " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                UizaV3Util.setResultGetToken(activity, resultGetToken);
                 token = resultGetToken.getData().getToken();
                 LLog.d(TAG, "token: " + token);
                 RestClientV3.addAuthorization(token);

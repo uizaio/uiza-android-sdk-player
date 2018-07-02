@@ -49,7 +49,9 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
+import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
@@ -68,6 +70,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.manager.UizaPlayerManagerV3;
+import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
@@ -196,10 +199,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void doAfter(int mls) {
                     //track event eventype display
-                    trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_DISPLAY));
+                    trackUiza(UizaData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY));
 
                     //track event plays_requested
-                    trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED));
+                    trackUiza(UizaData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED));
                 }
             });
         }
@@ -545,7 +548,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //track event view (after video is played 5s)
         if (s == 5) {
             //LLog.d(TAG, "onVideoProgress -> track view");
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIEW));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW));
         }
 
         if (oldPercent == percent) {
@@ -554,13 +557,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
         if (percent == Constants.PLAYTHROUGH_25) {
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_50) {
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_75) {
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_100) {
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
         }
     }
 
@@ -572,7 +575,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //ko track neu play tu clicked pip
         if (!LPref.getClickedPip(activity)) {
             //track event video_starts
-            trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
+            trackUiza(UizaData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
         UizaData.getInstance().setSettingPlayer(false);
     }
@@ -1050,12 +1053,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        //TODO
-        /*UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
-        ((BaseActivity) getContext()).subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
+        activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -1065,9 +1067,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void onFail(Throwable e) {
                 //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-                //((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }
-        });*/
+        });
     }
 
     public void seekTo(long positionMs) {
