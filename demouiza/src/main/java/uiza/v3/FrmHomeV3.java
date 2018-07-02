@@ -16,15 +16,14 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v2.home.canslide.FrmHomeChannel;
 import uiza.v2.home.canslide.FrmLogin;
 import uiza.v2.home.canslide.FrmSearch;
 import uiza.v2.home.canslide.HomeV2CanSlideActivity;
-import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
 import uiza.v3.data.HomeDataV3;
+import uiza.v3.view.EntityItemV3;
 import uiza.v3.view.UizaDrawerMenuItemV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
@@ -218,8 +217,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     HomeDataV3.getInstance().setCurrentPosition(pos);
                     HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
-                    FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
-                    frmHomeChannel.setCallback(new EntityItemV2.Callback() {
+                    FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
+                    frmHomeChannel.setCallback(new EntityItemV3.Callback() {
                         @Override
                         public void onClick(Item item, int position) {
                             onClickVideo(item, position);
@@ -239,8 +238,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
         //init data first
         HomeDataV3.getInstance().setData(dataList.get(0));
-        FrmHomeChannel frmHomeChannel = new FrmHomeChannel();
-        frmHomeChannel.setCallback(new EntityItemV2.Callback() {
+        FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
+        frmHomeChannel.setCallback(new EntityItemV3.Callback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
