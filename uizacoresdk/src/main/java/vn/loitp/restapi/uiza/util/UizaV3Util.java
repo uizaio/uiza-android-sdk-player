@@ -46,4 +46,15 @@ public class UizaV3Util {
         }
         return resultGetToken.getData().getToken();
     }
+
+    public static String getAppId(Context context) {
+        if (context == null) {
+            return null;
+        }
+        ResultGetToken resultGetToken = getResultGetToken(context);
+        if (resultGetToken == null) {
+            return null;
+        }
+        return resultGetToken.getData().getAppId();
+    }
 }

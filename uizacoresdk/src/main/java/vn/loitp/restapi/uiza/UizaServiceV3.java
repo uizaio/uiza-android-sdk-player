@@ -9,6 +9,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -70,4 +71,7 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#search-entity
     @GET("/api/public/v3/media/entity/search")
     Observable<ResultListEntity> searchEntity(@Query("keyword") String keyword);
+
+    @POST("/api/public/v3/media/entity/playback/token")
+    Observable<Object> getTokenStreaming(@Body SendGetTokenStreaming sendGetTokenStreaming);
 }

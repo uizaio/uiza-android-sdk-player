@@ -2,7 +2,11 @@ package testlibuiza.sample.v3.api;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -13,6 +17,7 @@ import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -42,6 +47,28 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
+        findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
+
+        LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
+        viewList = rootView.getTouchables();
+        setEnableAllButton(false);
+    }
+
+    private List<View> viewList = new ArrayList<>();
+
+    private void setEnableAllButton(boolean isEnable) {
+        LLog.d(TAG, "size: " + viewList.size());
+        if (isEnable) {
+            for (View view : viewList) {
+                view.setEnabled(true);
+            }
+        } else {
+            for (View view : viewList) {
+                if (view.getId() != R.id.bt_get_token) {
+                    view.setEnabled(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -96,6 +123,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_search_entity:
                 searchAnEntity();
                 break;
+            case R.id.bt_get_token_streaming:
+                getTokenStreaming();
+                break;
         }
     }
 
@@ -113,10 +143,12 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onSuccess(ResultGetToken resultGetToken) {
                 LLog.d(TAG, "getToken " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                UizaV3Util.setResultGetToken(activity, resultGetToken);
                 String token = resultGetToken.getData().getToken();
                 LLog.d(TAG, "token: " + token);
                 RestClientV3.addAuthorization(token);
                 showTv(resultGetToken);
+                setEnableAllButton(true);
             }
 
             @Override
@@ -311,6 +343,27 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "searchAnEntity onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getTokenStreaming() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setEntityId("1ca56834-4c6f-4008-9c1f-2ca2a67c6814");
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });
