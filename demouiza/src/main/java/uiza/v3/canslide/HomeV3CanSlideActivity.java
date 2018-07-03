@@ -210,7 +210,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (!LPref.getClickedPip(activity)) {
-            UizaUtil.stopServicePiPIfRunning(activity);
+            UizaUtil.stopServicePiPIfRunningV3(activity);
         }
         //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
         //entityTitle = "Dummy title";

@@ -34,6 +34,7 @@ import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
+import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -309,6 +310,21 @@ public class UizaUtil {
         if (isSvPipRunning) {
             //stop service if running
             Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+            activity.stopService(intent);
+        }
+    }
+
+    //stop service pip api v3
+    public static void stopServicePiPIfRunningV3(Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        //LLog.d(TAG, "stopServicePiPIfRunningV3");
+        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoServiceV3.class.getName());
+        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
+        if (isSvPipRunning) {
+            //stop service if running
+            Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
             activity.stopService(intent);
         }
     }
