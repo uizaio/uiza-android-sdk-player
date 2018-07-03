@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:text="DEV (API V2)"
+                    android:text="API V2 (DEV) - Dericated"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
                     android:textStyle="bold" />
@@ -91,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:text="STAG (API V2)"
+                    android:text="API V2 (STAG) - Dericated"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
                     android:textStyle="bold" />
@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:text="DEMO (API V2)"
+                    android:text="API V2 DEMO () - Dericated"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
                     android:textStyle="bold" />

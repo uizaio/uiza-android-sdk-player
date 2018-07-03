@@ -3,16 +3,11 @@ package uiza.app;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.gson.Gson;
 import com.squareup.leakcanary.LeakCanary;
 
-import uiza.BuildConfig;
 import vn.loitp.core.common.Constants;
+import vn.loitp.data.ActivityData;
 import vn.loitp.utils.util.Utils;
 
 public class LSApplication extends MultiDexApplication {
@@ -29,7 +24,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Utils.init(this);
-        //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
+        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         //TODO remove LeakCanary
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -50,18 +45,5 @@ public class LSApplication extends MultiDexApplication {
 
     public static Context getContext() {
         return instance.getApplicationContext();
-    }
-
-    public DataSource.Factory buildDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-        return new DefaultDataSourceFactory(this, bandwidthMeter,
-                buildHttpDataSourceFactory(bandwidthMeter));
-    }
-
-    public HttpDataSource.Factory buildHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-        return new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter);
-    }
-
-    public boolean useExtensionRenderers() {
-        return BuildConfig.FLAVOR.equals("withExtensions");
     }
 }

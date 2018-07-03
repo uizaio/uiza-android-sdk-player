@@ -46,10 +46,10 @@ import vn.loitp.views.LToast;
 
 public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callback {
     private final String TAG = getClass().getSimpleName();
-    private UizaIMAVideoV3 uizaIMAVideo;
+    private UizaIMAVideoV3 uizaIMAVideoV3;
 
-    public UizaIMAVideoV3 getUizaIMAVideo() {
-        return uizaIMAVideo;
+    public UizaIMAVideoV3 getUizaIMAVideoV3() {
+        return uizaIMAVideoV3;
     }
 
     public interface FrmTopCallback {
@@ -66,7 +66,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        uizaIMAVideo = (UizaIMAVideoV3) view.findViewById(R.id.uiza_video);
+        uizaIMAVideoV3 = (UizaIMAVideoV3) view.findViewById(R.id.uiza_video);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -78,7 +78,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uizaIMAVideo.onDestroy();
+        uizaIMAVideoV3.onDestroy();
     }
 
     @Override
@@ -88,26 +88,26 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
             //LLog.d(TAG, "onResume is closed => return");
             return;
         }
-        //LLog.d(TAG, "uizaIMAVideo onResume");
-        uizaIMAVideo.onResume();
+        //LLog.d(TAG, "uizaIMAVideoV3 onResume");
+        uizaIMAVideoV3.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uizaIMAVideo.onPause();
+        uizaIMAVideoV3.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideo.onStart();
+        uizaIMAVideoV3.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideo.onStop();
+        uizaIMAVideoV3.onStop();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
             //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
                 //LLog.d(TAG, "onActivityResult RESULT_OK");
-                uizaIMAVideo.initializePiP();
+                uizaIMAVideoV3.initializePiP();
             } else {
                 LToast.show(getActivity(), "Draw over other app permission not available");
             }
@@ -127,10 +127,10 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
     private void setListener() {
         //LLog.d(TAG, TAG + " addListener");
-        if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
+        if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
             return;
         }
-        uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
+        uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -181,7 +181,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
                 //LLog.d(TAG, "onTimelineChanged");
             }
         });
-        uizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -212,7 +212,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uizaIMAVideo.setProgressCallback(new ProgressCallback() {
+        uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -223,7 +223,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -259,13 +259,13 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        uizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        uizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
+        uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
@@ -378,6 +378,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
         //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
         //LLog.d(TAG, "setupVideo init with entityId " + entityId);
-        uizaIMAVideo.init(this);
+        uizaIMAVideoV3.init(this);
     }
 }

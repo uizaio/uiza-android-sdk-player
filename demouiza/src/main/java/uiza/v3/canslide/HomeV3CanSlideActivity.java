@@ -42,19 +42,19 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmVideoTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmVideoTop.getUizaIMAVideoV3().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmVideoTop.getUizaIMAVideo().onDestroy();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmVideoTop.getUizaIMAVideo().onDestroy();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
@@ -176,7 +176,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
-                frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         //LLog.d(TAG, "onVisibilityChange " + visibility);
@@ -222,7 +222,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmVideoTop.getUizaIMAVideo().setExoPictureInPictureVisibility(View.VISIBLE);
+        frmVideoTop.getUizaIMAVideoV3().setExoPictureInPictureVisibility(View.VISIBLE);
         frmVideoTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
