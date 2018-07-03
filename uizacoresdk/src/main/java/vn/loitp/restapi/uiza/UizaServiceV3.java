@@ -31,7 +31,7 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#check-token
     //@Headers("Content-Type: application/json")
     @POST("/api/public/v3/admin/user/auth/check-token")
-    Observable<ResultGetToken> checkToken();
+    Observable<Object> checkToken();
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")

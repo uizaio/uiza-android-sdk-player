@@ -161,9 +161,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void checkToken() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.checkToken(), new ApiSubscriber<ResultGetToken>() {
+        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
+            public void onSuccess(Object resultGetToken) {
                 LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
                 showTv(resultGetToken);
             }
