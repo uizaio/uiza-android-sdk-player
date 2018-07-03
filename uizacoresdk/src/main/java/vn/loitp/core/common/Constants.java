@@ -67,6 +67,10 @@ public class Constants {
     public final static String PREFIXS = "https://";
     public final static String PREFIXS_SHORT = "https:";
 
+    public final static String URL_GET_LINK_PLAY_DEV = "https://dev-ucc.uizadev.io/";
+    public final static String URL_GET_LINK_PLAY_STAG = "https://stag-ucc.uiza.io/";
+    public final static String URL_GET_LINK_PLAY_PROD = "https://ucc.uiza.io/";
+
     public final static String URL_TRACKING_DEV = "https://dev-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";

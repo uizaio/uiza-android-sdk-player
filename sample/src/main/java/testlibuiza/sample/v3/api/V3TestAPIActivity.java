@@ -11,9 +11,11 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -29,6 +31,7 @@ import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntit
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.views.LToast;
 
 public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
@@ -49,6 +52,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
+        findViewById(R.id.bt_get_link_play).setOnClickListener(this);
 
         LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
         viewList = rootView.getTouchables();
@@ -126,6 +130,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_token_streaming:
                 getTokenStreaming();
+                break;
+            case R.id.bt_get_link_play:
+                getLinkPlay();
                 break;
         }
     }
@@ -367,6 +374,34 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+                tokenStreaming = result.getData().getToken();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private String tokenStreaming;//value received from api getTokenStreaming
+
+    private void getLinkPlay() {
+        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
+            LToast.show(activity, "Token streaming not found, pls call getTokenStreaming before.");
+            return;
+        }
+        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG, tokenStreaming);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        String appId = UizaV3Util.getAppId(activity);
+        String entityId = "1ca56834-4c6f-4008-9c1f-2ca2a67c6814";
+        String typeContent = SendGetTokenStreaming.STREAM;
+        subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
                 LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }

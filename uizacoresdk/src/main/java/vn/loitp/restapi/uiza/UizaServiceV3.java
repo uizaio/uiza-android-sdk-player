@@ -76,4 +76,9 @@ public interface UizaServiceV3 {
 
     @POST("/api/public/v3/media/entity/playback/token")
     Observable<ResultGetTokenStreaming> getTokenStreaming(@Body SendGetTokenStreaming sendGetTokenStreaming);
+
+    @GET("/api/private/v1/cdn/linkplay")
+    Observable<Object> getLinkPlay(@Query("app_id") String appId,
+                                   @Query("entity_id") String entityId,
+                                   @Query("type_content") String typeContent);
 }
