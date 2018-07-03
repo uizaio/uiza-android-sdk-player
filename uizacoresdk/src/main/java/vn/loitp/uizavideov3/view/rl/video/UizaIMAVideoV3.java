@@ -344,14 +344,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
-            LImageUtil.load(activity, UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
+            LLog.d(TAG, "--------setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
+            LImageUtil.load(activity, UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
         }
     }
 
     public void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            //LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
+            LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (!isFromHandleError) {
                 onStateReadyFirst();
@@ -1005,56 +1005,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 });
             }
         });
-        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
-        if (auth == null || auth.getData().getAppId() == null) {
-            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    handleError(new Exception(activity.getString(R.string.auth_or_app_id_is_null_or_empty)));
-                }
-
-                @Override
-                public void onCancel() {
-                    handleError(new Exception(activity.getString(R.string.auth_or_app_id_is_null_or_empty)));
-                }
-            });
-            return;
-        }
-        String appId = auth.getData().getAppId();
-        //LLog.d(TAG, "getLinkPlay entityId: " + UizaData.getInstance().getEntityId() + ", appId: " + appId);
-        activity.subscribe(service.getLinkPlayV2(UizaData.getInstance().getUizaInput().getEntityId(), appId), new ApiSubscriber<GetLinkPlay>() {
-            @Override
-            public void onSuccess(GetLinkPlay getLinkPlay) {
-                LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
-                mGetLinkPlay = getLinkPlay;
-                isResultGetLinkPlayDone = true;
-                checkToSetUp();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "onFail getLinkPlay: " + e.toString());
-                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(activity.getString(R.string.no_link_play)));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(activity.getString(R.string.no_link_play)));
-                    }
-                });
-            }
-        });*/
-
-        //TODO remove hardcode
-        /*mGetLinkPlay = new GetLinkPlay();
-        List<Mpd> mpdList = new ArrayList<>();
-        mGetLinkPlay.setMpd(mpdList);
-        isResultGetLinkPlayDone = true;
-        checkToSetUp();*/
     }
 
     private void getDetailEntity() {

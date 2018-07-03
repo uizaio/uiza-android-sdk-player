@@ -261,7 +261,8 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         }
         //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
         //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-        LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
+        LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL :
+                UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
     }
 
     public void removeVideoCover() {
