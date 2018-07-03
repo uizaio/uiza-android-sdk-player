@@ -17,6 +17,7 @@ import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
@@ -363,9 +364,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
         sendGetTokenStreaming.setEntityId("1ca56834-4c6f-4008-9c1f-2ca2a67c6814");
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<Object>() {
+        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultGetTokenStreaming result) {
                 LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
