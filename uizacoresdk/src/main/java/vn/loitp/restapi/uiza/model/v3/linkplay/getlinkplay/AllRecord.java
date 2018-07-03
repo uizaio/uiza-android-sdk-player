@@ -20,7 +20,7 @@ public class AllRecord {
     private String regionType;
     @SerializedName("uploaded_size")
     @Expose
-    private Integer uploadedSize;
+    private String uploadedSize;
     @SerializedName("status")
     @Expose
     private String status;
@@ -87,11 +87,11 @@ public class AllRecord {
         this.regionType = regionType;
     }
 
-    public Integer getUploadedSize() {
+    public String getUploadedSize() {
         return uploadedSize;
     }
 
-    public void setUploadedSize(Integer uploadedSize) {
+    public void setUploadedSize(String uploadedSize) {
         this.uploadedSize = uploadedSize;
     }
 

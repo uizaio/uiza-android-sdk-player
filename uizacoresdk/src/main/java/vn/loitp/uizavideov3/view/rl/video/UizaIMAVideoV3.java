@@ -975,6 +975,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         String appId = UizaV3Util.getAppId(activity);
         String entityId = UizaData.getInstance().getUizaInput().getEntityId();
         String typeContent = SendGetTokenStreaming.STREAM;
+        LLog.d(TAG, "===================================");
+        LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
+        LLog.d(TAG, "========appId: " + appId);
+        LLog.d(TAG, "========entityId: " + entityId);
+        LLog.d(TAG, "===================================");
         activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
             public void onSuccess(ResultGetLinkPlay result) {
