@@ -344,14 +344,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            LLog.d(TAG, "--------setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
+            //LLog.d(TAG, "--------setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
             LImageUtil.load(activity, UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
         }
     }
 
     public void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
+            //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (!isFromHandleError) {
                 onStateReadyFirst();
@@ -455,6 +455,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
         exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
+
+        //TODO exoHearing works fine, but QC dont want show it, fuck QC team
+        exoHearing.setVisibility(GONE);
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
