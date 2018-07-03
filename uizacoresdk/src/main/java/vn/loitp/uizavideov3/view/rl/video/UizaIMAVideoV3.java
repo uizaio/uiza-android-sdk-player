@@ -51,14 +51,18 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.data.EventBusData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -116,10 +120,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private int firstBrightness = Constants.NOT_FOUND;
 
-    private GetLinkPlay mGetLinkPlay;
+    private ResultGetLinkPlay mResultGetLinkPlay;
     private ResultRetrieveAnEntity mResultRetrieveAnEntity;
-    private boolean isGetLinkPlayDone;
-    private boolean isGetResultRetrieveAnEntityDone;
+    private boolean isResultGetLinkPlayDone;
+    private boolean isResultRetrieveAnEntityDone;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -179,15 +183,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManager.release();
-            mGetLinkPlay = null;
+            mResultGetLinkPlay = null;
             mResultRetrieveAnEntity = null;
-            isGetLinkPlayDone = false;
-            isGetResultRetrieveAnEntityDone = false;
+            isResultGetLinkPlayDone = false;
+            isResultRetrieveAnEntityDone = false;
             countTryLinkPlayError = 0;
         }
         setTitle();
         setVideoCover();
-        getLinkPlay();
+        getTokenStreaming();
         getDetailEntity();
 
         LUIUtil.showProgressBar(progressBar);
@@ -251,24 +255,29 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
-        if (isGetLinkPlayDone && isGetResultRetrieveAnEntityDone) {
-            if (mGetLinkPlay != null && mResultRetrieveAnEntity != null) {
+        if (isResultGetLinkPlayDone && isResultRetrieveAnEntityDone) {
+            if (mResultGetLinkPlay != null && mResultRetrieveAnEntity != null) {
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
-                List<Mpd> mpdList = mGetLinkPlay.getMpd();
 
-                for (Mpd mpd : mpdList) {
-                    if (mpd.getUrl() != null) {
-                        listLinkPlay.add(mpd.getUrl());
+                List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
+
+                for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("mpd")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }
+
+                for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("m3u8")) {
+                        listLinkPlay.add(url.getUrl());
                     }
                 }
 
                 //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
                 //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
                 //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
-                //TODO remove dummy link
-                listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
-                //listLinkPlay.add("https://cdn-vn-cache-3.uiza.io:443/a204e9cdeca44948a33e0d012ef74e90/DjcqBOOI/package/video/avc1/854x480/playlist.m3u8");
+                //listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
 
                 LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
@@ -570,7 +579,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
-            callback.isInitResult(true, mGetLinkPlay, mResultRetrieveAnEntity);
+            callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
         }
         //ko track neu play tu clicked pip
         if (!LPref.getClickedPip(activity)) {
@@ -912,9 +921,85 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return uizaPlayerManager.getPlayer();
     }
 
-    private void getLinkPlay() {
-        //LLog.d(TAG, "getLinkPlay");
-        //TODO
+    private void getTokenStreaming() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setEntityId(UizaData.getInstance().getUizaInput().getEntityId());
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + gson.toJson(result));
+                if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
+                    LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                        }
+                    });
+                    return;
+                }
+                String tokenStreaming = result.getData().getToken();
+                LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
+                getLinkPlay(tokenStreaming);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
+                    }
+                });
+            }
+        });
+    }
+
+    private void getLinkPlay(String tokenStreaming) {
+        LLog.d(TAG, "getLinkPlay");
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        String appId = UizaV3Util.getAppId(activity);
+        String entityId = UizaData.getInstance().getUizaInput().getEntityId();
+        String typeContent = SendGetTokenStreaming.STREAM;
+        activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+            @Override
+            public void onSuccess(ResultGetLinkPlay result) {
+                LLog.d(TAG, "getLinkPlay onSuccess: " + gson.toJson(result));
+                mResultGetLinkPlay = result;
+                isResultGetLinkPlayDone = true;
+                checkToSetUp();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_link_play), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleError(new Exception(activity.getString(R.string.no_link_play)));
+                    }
+                });
+            }
+        });
         /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         Auth auth = LPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
@@ -938,7 +1023,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void onSuccess(GetLinkPlay getLinkPlay) {
                 LLog.d(TAG, "getLinkPlay onSuccess " + gson.toJson(getLinkPlay));
                 mGetLinkPlay = getLinkPlay;
-                isGetLinkPlayDone = true;
+                isResultGetLinkPlayDone = true;
                 checkToSetUp();
             }
 
@@ -960,11 +1045,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });*/
 
         //TODO remove hardcode
-        mGetLinkPlay = new GetLinkPlay();
+        /*mGetLinkPlay = new GetLinkPlay();
         List<Mpd> mpdList = new ArrayList<>();
         mGetLinkPlay.setMpd(mpdList);
-        isGetLinkPlayDone = true;
-        checkToSetUp();
+        isResultGetLinkPlayDone = true;
+        checkToSetUp();*/
     }
 
     private void getDetailEntity() {
@@ -977,7 +1062,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void onSuccess(ResultRetrieveAnEntity result) {
                 LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
                 mResultRetrieveAnEntity = result;
-                isGetResultRetrieveAnEntityDone = true;
+                isResultRetrieveAnEntityDone = true;
                 checkToSetUp();
             }
 
@@ -1032,7 +1117,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public interface Callback {
         //when video init done with result
-        public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
 
         //user click an item in entity relation
         public void onClickListEntityRelation(Item item, int position);

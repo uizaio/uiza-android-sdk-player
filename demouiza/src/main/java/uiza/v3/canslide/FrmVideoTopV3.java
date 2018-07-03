@@ -34,8 +34,8 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
@@ -53,7 +53,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     public interface FrmTopCallback {
-        public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
 
         public void onClickListEntityRelation(Item item, int position);
     }
@@ -274,12 +274,12 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
         //LLog.d(TAG, "isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
-                frmTopCallback.initDone(isInitSuccess, getLinkPlay, resultRetrieveAnEntity);
+                frmTopCallback.initDone(isInitSuccess, resultGetLinkPlay, resultRetrieveAnEntity);
             }
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();

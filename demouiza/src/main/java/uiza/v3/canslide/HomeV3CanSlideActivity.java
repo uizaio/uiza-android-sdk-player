@@ -14,8 +14,8 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
@@ -169,7 +169,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
-            public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
                 //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
@@ -183,10 +183,10 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
                                 if (visibility == View.VISIBLE) {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                                     draggablePanel.setEnableSlide(false);
                                 } else {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                                     draggablePanel.setEnableSlide(true);
                                 }
                             } else {

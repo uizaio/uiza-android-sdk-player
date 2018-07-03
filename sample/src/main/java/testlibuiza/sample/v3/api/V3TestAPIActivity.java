@@ -403,13 +403,13 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
             public void onSuccess(ResultGetLinkPlay result) {
-                LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                LLog.d(TAG, "getLinkPlay onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
+                LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

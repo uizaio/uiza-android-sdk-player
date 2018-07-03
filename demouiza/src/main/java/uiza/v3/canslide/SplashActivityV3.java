@@ -17,6 +17,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -41,12 +42,15 @@ public class SplashActivityV3 extends BaseActivity {
         //TODO init tracking dev (with correct domain)
         RestClientTracking.init(Constants.URL_TRACKING_DEV);
 
+        //TODO init domain get link play (customer will always production domain)
+        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+
         UizaWorkspaceInfo uizaWorkspaceInfo = new UizaWorkspaceInfo("loitp@uiza.io", "04021993", "android-api.uiza.co", "android.uiza.co");
         UizaV3Util.initUizaWorkspace(activity, uizaWorkspaceInfo);
         authV3();
 
         LPref.setApiTrackEndPoint(activity, Constants.URL_TRACKING_STAG);
-        //TODO iplm api check token
+        //TODO iplm api check token later
     }
 
     @Override
