@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_5"
-        app:cardBackgroundColor="@color/fbutton_color_wet_asphalt"
+        app:cardBackgroundColor="@color/main_card"
         app:cardCornerRadius="@dimen/w_5"
         app:cardElevation="@dimen/w_3">
 

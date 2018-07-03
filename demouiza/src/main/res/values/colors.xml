@@ -39,5 +39,6 @@
     <color name="remember_me">#3e4b5b</color>
     <color name="bt_login">#047bf8</color>
     <color name="fbutton_color_wet_asphalt">#34495e</color>
+    <color name="main_card">#5534495e</color>
     <color name="drawer_hightlight">#182243</color>
 </resources>

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/primaryColor">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/uiza_logo_512" />
+
+    <vn.loitp.views.realtimeblurview.RealtimeBlurView
+        android:id="@+id/blur_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="@dimen/round_55"
+        app:realtimeOverlayColor="@color/black_65" />
 
     <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo
         android:id="@id/uiza_video"
