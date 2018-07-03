@@ -276,9 +276,15 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
+
     private void listAllEntity() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListAllEntity(), new ApiSubscriber<ResultListEntity>() {
+        String metadataId = "";
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -294,10 +300,13 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listAllEntityMetadata() {
-        //TODO
-        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
-        subscribe(service.getListAllEntity(metadataId), new ApiSubscriber<ResultListEntity>() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String metadataId = "74cac724-968c-4e6d-a6e1-6c2365e41d9d";
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -309,7 +318,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });*/
+        });
     }
 
     private void retrieveAnEntity() {
