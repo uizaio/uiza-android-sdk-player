@@ -19,6 +19,7 @@ import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
@@ -399,9 +400,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         String appId = UizaV3Util.getAppId(activity);
         String entityId = "1ca56834-4c6f-4008-9c1f-2ca2a67c6814";
         String typeContent = SendGetTokenStreaming.STREAM;
-        subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<Object>() {
+        subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultGetLinkPlay result) {
                 LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }

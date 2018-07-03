@@ -9,6 +9,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
@@ -78,7 +79,7 @@ public interface UizaServiceV3 {
     Observable<ResultGetTokenStreaming> getTokenStreaming(@Body SendGetTokenStreaming sendGetTokenStreaming);
 
     @GET("/api/private/v1/cdn/linkplay")
-    Observable<Object> getLinkPlay(@Query("app_id") String appId,
-                                   @Query("entity_id") String entityId,
-                                   @Query("type_content") String typeContent);
+    Observable<ResultGetLinkPlay> getLinkPlay(@Query("app_id") String appId,
+                                              @Query("entity_id") String entityId,
+                                              @Query("type_content") String typeContent);
 }
