@@ -519,6 +519,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        LLog.d(TAG, "initData");
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -559,6 +560,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
+        exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
