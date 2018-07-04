@@ -7,12 +7,15 @@ package uiza.v3.canslide;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
@@ -43,6 +46,49 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
         LUIUtil.setTextViewUnderLine(tvDontHaveAcc);
 
         view.findViewById(R.id.iv_close_activity).setOnClickListener(this);
+
+        etId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkToEnableButtonLogin();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
+        etPw.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkToEnableButtonLogin();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
+    }
+
+    private void checkToEnableButtonLogin() {
+        if (!etId.getText().toString().isEmpty() && !etPw.getText().toString().isEmpty()) {
+            tvLogin.setBackgroundResource(R.drawable.bt_login_enable);
+            tvLogin.setClickable(true);
+        } else {
+            tvLogin.setBackgroundResource(R.drawable.bt_login_disabled);
+            tvLogin.setClickable(false);
+        }
     }
 
     @Override
@@ -51,17 +97,21 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
     }
 
     private void login() {
-        LToast.show(getActivity(), "Click");
+        //TODO login later
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_forgot_pw:
-                LToast.show(getActivity(), "Click tv_forgot_pw");
+                if (Constants.IS_DEBUG) {
+                    LToast.show(getActivity(), "Click " + tvForgotPw.getText().toString());
+                }
                 break;
             case R.id.tv_dont_have_acc:
-                LToast.show(getActivity(), "Click tv_dont_have_acc");
+                if (Constants.IS_DEBUG) {
+                    LToast.show(getActivity(), "Click " + tvDontHaveAcc.getText().toString());
+                }
                 break;
             case R.id.tv_login:
                 login();

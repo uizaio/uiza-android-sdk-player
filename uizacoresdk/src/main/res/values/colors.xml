@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#607D8B</color>
-    <color name="colorPrimaryTrans">#55607D8B</color>
+    <color name="colorPrimary">#263238</color>
+    <color name="colorPrimaryTrans">#55263238</color>
     <color name="colorPrimaryDark">#263238</color>
-    <color name="colorAccent">#455A64</color>
+    <color name="colorAccent">#263238</color>
 
     <color name="vip1">#d3131f</color>
     <color name="vip2">#19875c</color>
@@ -41,17 +41,24 @@
     <color name="pdlg_color_blue">#1976D2</color>
     <color name="pdlg_color_black">#212121</color>
 
-    <color name="black_85">#D9000000</color>
-
-    <color name="grey">#818181</color>
     <color name="grey_description">#eeeeee</color>
-    <color name="white">#ffffff</color>
-    <color name="black_2">#05000000</color>
 
     <color name="df_buffered_color">#55ffffff</color>
     <color name="df_played_color">#097cff</color>
     <color name="df_scrubber_color">#ffffff</color>
     <color name="df_unplayed_color">#33ffffff</color>
+
+    <color name="info_video_gray">#999999</color>
+    <color name="info_video_description">#888888</color>
+    <color name="black_85">#D9000000</color>
+
+    <color name="grey">#818181</color>
+    <color name="black_2">#05000000</color>
+
+    <color name="primaryColor">#0a0f20</color>
+    <color name="White_55">#55FFFFFF</color>
+    <color name="White_85">#99FFFFFF</color>
+    <color name="White_99">#BBFFFFFF</color>
     <color name="WhiteTrans">#55FFFFFF</color>
     <color name="WhiteTrans99">#99FFFFFF</color>
     <color name="DeepPink">#FF1493</color>
@@ -65,7 +72,10 @@
     <color name="alarm_details">#888888</color>
 
     <color name="default_background_label">#ff303030</color>
-    <color name="info_video_gray">#999999</color>
-    <color name="info_video_description">#888888</color>
+    <color name="hint_color">#999999</color>
+    <color name="remember_me">#3e4b5b</color>
+    <color name="bt_login">#047bf8</color>
     <color name="fbutton_color_wet_asphalt">#34495e</color>
+    <color name="main_card">#5534495e</color>
+    <color name="drawer_hightlight">#182243</color>
 </resources>

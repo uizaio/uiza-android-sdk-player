@@ -201,7 +201,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bt_login"
+        android:background="@drawable/bt_login_enable"
         android:text="START"
         android:textColor="@color/White"
         android:textSize="@dimen/txt_30"

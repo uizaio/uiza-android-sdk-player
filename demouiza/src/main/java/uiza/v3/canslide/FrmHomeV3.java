@@ -77,7 +77,13 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mDrawerLayout.closeDrawers();
                 }
-                ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmLoginV3(), true);
+                //delay to get more beautiful animation
+                LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        ((HomeV3CanSlideActivity) getActivity()).addFragment(new FrmLoginV3(), true);
+                    }
+                });
             }
         });
         mDrawerView.addView(uizaDrawerHeader);

@@ -16,7 +16,7 @@
             android:layout_height="@dimen/w_5"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_5"
-            android:background="@drawable/bt_login" />
+            android:background="@drawable/bt_login_enable" />
 
         <TextView
             android:id="@+id/tv_channel_name"

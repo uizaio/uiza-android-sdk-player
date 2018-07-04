@@ -63,7 +63,7 @@
                     android:layout_height="@dimen/w_7"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_55"
-                    android:background="@drawable/bt_login" />
+                    android:background="@drawable/bt_login_enable" />
             </RelativeLayout>
 
             <TextView
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_20"
-                android:background="@drawable/bt_login"
+                android:background="@drawable/bt_login_enable"
                 android:gravity="center"
                 android:paddingBottom="@dimen/padding_5"
                 android:paddingLeft="@dimen/padding_30"
