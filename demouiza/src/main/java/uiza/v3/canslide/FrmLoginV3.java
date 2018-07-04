@@ -19,6 +19,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.utils.util.KeyboardUtils;
 import vn.loitp.views.LToast;
 
 public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IOnBackPressed {
@@ -126,5 +127,12 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed");
         return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        LLog.d(TAG, "onDestroyView");
+        KeyboardUtils.hideSoftInput(getActivity());
+        super.onDestroyView();
     }
 }

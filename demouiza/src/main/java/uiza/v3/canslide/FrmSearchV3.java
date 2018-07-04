@@ -25,7 +25,6 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LKeyBoardUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -35,6 +34,7 @@ import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.utils.util.KeyboardUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -295,7 +295,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
                 }
             }));
         }
-        LKeyBoardUtil.hide(getActivity());
     }
 
     private void onClickVideo(Data data, int position) {
@@ -361,5 +360,12 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
             }
         }
         return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        LLog.d(TAG, "onDestroyView");
+        KeyboardUtils.hideSoftInput(getActivity());
+        super.onDestroyView();
     }
 }
