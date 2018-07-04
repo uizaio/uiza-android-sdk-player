@@ -58,6 +58,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private RelativeLayout moveView;
     private ImageButton btExit;
     private ImageButton btFullScreen;
+    private ImageButton btPlayPause;
     private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private WindowManager.LayoutParams params;
 
@@ -92,6 +93,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
         btFullScreen = (ImageButton) mFloatingView.findViewById(R.id.bt_full_screen);
+        btPlayPause = (ImageButton) mFloatingView.findViewById(R.id.bt_play_pause);
     }
 
     @Override
@@ -151,7 +153,6 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 LPref.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
-                //intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
@@ -159,7 +160,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
-                //stopSelf();
+            }
+        });
+        btPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
