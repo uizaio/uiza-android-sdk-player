@@ -212,9 +212,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
-        //entityId = "88cdcd63-da16-4571-a8c4-ed7421865988";
-        //entityTitle = "Dummy title";
-        //videoCoverUrl = null;
 
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
@@ -227,7 +224,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     }
 
     private void intFrmBottom(ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        //LLog.d(TAG, "intFrmBottom");
         frmVideoBottom.setup(resultRetrieveAnEntity);
     }
 
