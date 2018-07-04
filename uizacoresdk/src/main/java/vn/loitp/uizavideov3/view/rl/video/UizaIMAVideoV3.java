@@ -99,6 +99,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
 
+    private LinearLayout llMsg;
     private TextView tvMsg;
 
     private ImageView ivVideoCover;
@@ -441,8 +442,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void findViews() {
+        llMsg = (LinearLayout) findViewById(R.id.ll_msg);
+        llMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
-        tvMsg.setOnClickListener(this);
         LUIUtil.setTextShadow(tvMsg);
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
@@ -691,9 +693,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     @Override
     public void onClick(View v) {
-        if (v == tvMsg) {
+        if (v == llMsg) {
             //do nothing
-            LLog.d(TAG, "onClick tvMsg");
+            LLog.d(TAG, "onClick llMsg");
         } else if (v == exoFullscreenIcon) {
             LActivityUtil.toggleScreenOritation(activity);
         } else if (v == exoBackScreen) {
@@ -1119,17 +1121,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uizaPlayerManagerV3 != null) {
                     LDialogUtil.clearAll();
-                    hideTvMsg();
+                    hideLLMsg();
                     if (uizaPlayerManagerV3.getExoPlaybackException() == null) {
-                        LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uizaPlayerManagerV3.setResumeIfConnectionError();
-                        LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
+                        //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             uizaPlayerManagerV3.init();
                             if (isCalledFromConnectionEventBus) {
@@ -1137,8 +1139,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                 isCalledFromConnectionEventBus = false;
                             }
                         } else {
-                            //auto call onResume() again
-                            LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
+                            //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
                 }
@@ -1190,19 +1191,19 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void showTvMsg(String msg) {
         //LLog.d(TAG, "showTvMsg " + msg);
         tvMsg.setText(msg);
-        showTvMsg();
+        showLLMsg();
     }
 
-    private void showTvMsg() {
-        if (tvMsg.getVisibility() != VISIBLE) {
-            tvMsg.setVisibility(VISIBLE);
+    private void showLLMsg() {
+        if (llMsg.getVisibility() != VISIBLE) {
+            llMsg.setVisibility(VISIBLE);
         }
         hideController();
     }
 
-    private void hideTvMsg() {
-        if (tvMsg.getVisibility() != GONE) {
-            tvMsg.setVisibility(GONE);
+    private void hideLLMsg() {
+        if (llMsg.getVisibility() != GONE) {
+            llMsg.setVisibility(GONE);
         }
     }
 }

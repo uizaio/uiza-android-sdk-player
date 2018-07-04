@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/Black">
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:id="@id/root_view"
@@ -49,14 +49,30 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <TextView
-        android:id="@id/tv_msg"
+    <LinearLayout
+        android:id="@+id/ll_msg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background_player_controller"
         android:gravity="center"
-        android:padding="@dimen/padding_5"
-        android:textColor="@color/White"
-        android:textSize="@dimen/txt_18"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/w_40"
+            android:layout_height="@dimen/w_40"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/no_connection" />
+
+        <TextView
+            android:id="@id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18"
+            android:textStyle="bold" />
+    </LinearLayout>
 </RelativeLayout>
 

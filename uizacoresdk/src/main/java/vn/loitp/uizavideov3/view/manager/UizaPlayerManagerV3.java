@@ -464,11 +464,11 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         }
     }
 
-    private void hideProgress() {
+    public void hideProgress() {
         LUIUtil.hideProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 
-    private void showProgress() {
+    public void showProgress() {
         LUIUtil.showProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 
