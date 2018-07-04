@@ -99,7 +99,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
 
-    private LinearLayout llMsg;
+    private RelativeLayout rlMsg;
     private TextView tvMsg;
 
     private ImageView ivVideoCover;
@@ -442,8 +442,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void findViews() {
-        llMsg = (LinearLayout) findViewById(R.id.ll_msg);
-        llMsg.setOnClickListener(this);
+        rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
+        rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
@@ -693,7 +693,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     @Override
     public void onClick(View v) {
-        if (v == llMsg) {
+        if (v == rlMsg) {
             //do nothing
             LLog.d(TAG, "onClick llMsg");
         } else if (v == exoFullscreenIcon) {
@@ -1195,15 +1195,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void showLLMsg() {
-        if (llMsg.getVisibility() != VISIBLE) {
-            llMsg.setVisibility(VISIBLE);
+        if (rlMsg.getVisibility() != VISIBLE) {
+            rlMsg.setVisibility(VISIBLE);
         }
         hideController();
     }
 
     private void hideLLMsg() {
-        if (llMsg.getVisibility() != GONE) {
-            llMsg.setVisibility(GONE);
+        if (rlMsg.getVisibility() != GONE) {
+            rlMsg.setVisibility(GONE);
         }
     }
 }
