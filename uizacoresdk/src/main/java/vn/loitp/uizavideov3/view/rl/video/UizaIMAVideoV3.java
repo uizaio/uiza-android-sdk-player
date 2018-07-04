@@ -273,7 +273,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                         listLinkPlay.add(url.getUrl());
                     }
                 }
-
                 for (Url url : urlList) {
                     if (url.getSupport().toLowerCase().equals("m3u8")) {
                         listLinkPlay.add(url.getUrl());
@@ -598,7 +597,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
         }
@@ -629,7 +628,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         activityIsPausing = true;
-        LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
+        //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
     public void onResume() {
@@ -697,7 +696,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onClick(View v) {
         if (v == rlMsg) {
             //do nothing
-            LLog.d(TAG, "onClick llMsg");
+            //LLog.d(TAG, "onClick llMsg");
         } else if (v == exoFullscreenIcon) {
             LActivityUtil.toggleScreenOritation(activity);
         } else if (v == exoBackScreen) {
