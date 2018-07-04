@@ -110,6 +110,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ImageButtonWithSize exoHearing;
     private ImageButtonWithSize exoPictureInPicture;
     private ImageButtonWithSize exoShare;
+    private ImageButtonWithSize exoCast;
     private VerticalSeekBar seekbarVolume;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
@@ -461,6 +462,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
+        exoCast = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cast);
+
+        //TODO iplm cast
+        exoCast.setVisibility(GONE);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
