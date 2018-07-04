@@ -305,7 +305,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                         });
                     } else {
                         LLog.d(TAG, "checkToSetUp else err_no_internet");
-                        LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                        /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                             @Override
                             public void onClick1() {
                                 handleError(new Exception(activity.getString(R.string.err_no_internet)));
@@ -315,7 +315,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             public void onCancel() {
                                 handleError(new Exception(activity.getString(R.string.err_no_internet)));
                             }
-                        });
+                        });*/
+                        showTvMsg(activity.getString(R.string.err_no_internet));
                     }
                     return;
                 }
