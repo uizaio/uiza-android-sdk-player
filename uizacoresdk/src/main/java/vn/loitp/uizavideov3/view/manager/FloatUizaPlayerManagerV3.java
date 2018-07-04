@@ -275,6 +275,21 @@ import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
         return mediaSourceWithAds;
     }
 
+    //return true if toggleResume
+    //return false if togglePause
+    public boolean togglePauseResume() {
+        if (player == null) {
+            return false;
+        }
+        if (player.getPlayWhenReady()) {
+            pauseVideo();
+            return false;
+        } else {
+            resumeVideo();
+            return true;
+        }
+    }
+
     public void resumeVideo() {
         player.setPlayWhenReady(true);
     }

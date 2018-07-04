@@ -165,7 +165,15 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (floatUizaIMAVideoV3 == null) {
+                    return;
+                }
+                boolean isToggleResume = floatUizaIMAVideoV3.togglePauseResume();
+                if (isToggleResume) {
+                    btPlayPause.setImageResource(R.drawable.ic_pause_black_48dp);
+                } else {
+                    btPlayPause.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+                }
             }
         });
     }

@@ -41,7 +41,6 @@ import vn.loitp.views.LToast;
 
 public class FloatUizaIMAVideoV3 extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
-    //private Gson gson = new Gson();
     private PlayerView playerView;
     private FloatUizaPlayerManagerV3 floatUizaPlayerManager;
     private ProgressBar progressBar;
@@ -118,7 +117,6 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     private void onCreate() {
-        //LLog.d(TAG, "onCreate");
         inflate(getContext(), R.layout.uiza_float_ima_video_core_rl, this);
         findViews();
     }
@@ -276,5 +274,14 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.seekTo(position);
         }
+    }
+
+    //return true if toggleResume
+    //return false if togglePause
+    public boolean togglePauseResume() {
+        if (floatUizaPlayerManager == null) {
+            return false;
+        }
+        return floatUizaPlayerManager.togglePauseResume();
     }
 }

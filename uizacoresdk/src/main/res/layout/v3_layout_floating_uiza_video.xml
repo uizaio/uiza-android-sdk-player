@@ -47,7 +47,7 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_play_arrow_black_48dp"
+                android:src="@drawable/ic_pause_black_48dp"
                 android:tint="@color/White" />
 
             <ImageButton
