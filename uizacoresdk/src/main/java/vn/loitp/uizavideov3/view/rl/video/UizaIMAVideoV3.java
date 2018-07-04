@@ -1143,7 +1143,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 }
             } else {
-                //do nothing
+                showTvMsg(activity.getString(R.string.err_no_internet));
+                //if current screen is portrait -> do nothing
+                //else current screen is landscape -> change screen to portrait
+                LActivityUtil.changeScreenPortrait(activity);
             }
         }
     }
@@ -1184,20 +1187,20 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         playerView.setControllerHideOnTouch(isHide);
     }
 
-    public void showTvMsg(String msg) {
+    private void showTvMsg(String msg) {
         //LLog.d(TAG, "showTvMsg " + msg);
         tvMsg.setText(msg);
         showTvMsg();
     }
 
-    public void showTvMsg() {
+    private void showTvMsg() {
         if (tvMsg.getVisibility() != VISIBLE) {
             tvMsg.setVisibility(VISIBLE);
         }
         hideController();
     }
 
-    public void hideTvMsg() {
+    private void hideTvMsg() {
         if (tvMsg.getVisibility() != GONE) {
             tvMsg.setVisibility(GONE);
         }

@@ -545,8 +545,6 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
             }
             if (LConnectivityUtil.isConnected(context)) {
                 uizaIMAVideoV3.tryNextLinkPlay();
-            } else {
-                uizaIMAVideoV3.showTvMsg(context.getString(R.string.err_no_internet));
             }
         }
 

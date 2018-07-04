@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 
 import loitp.core.R;
@@ -152,11 +150,17 @@ public class LActivityUtil {
     }
 
     public static void changeScreenPortrait(Activity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        int s = getScreenOrientation(activity);
+        if (s == Configuration.ORIENTATION_LANDSCAPE) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     public static void changeScreenLandscape(Activity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        int s = getScreenOrientation(activity);
+        if (s == Configuration.ORIENTATION_PORTRAIT) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     public static int getScreenOrientation(Activity activity) {
