@@ -75,6 +75,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.core.utilities.LConnectivityUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.uizavideo.TrackSelectionHelper;
@@ -91,7 +93,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     private final String TAG = getClass().getSimpleName();
     private Context context;
 
-    private UizaIMAVideoV3 uizaIMAVideo;
+    private UizaIMAVideoV3 uizaIMAVideoV3;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
@@ -137,10 +139,10 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         this.progressCallback = progressCallback;
     }
 
-    public UizaPlayerManagerV3(final UizaIMAVideoV3 uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public UizaPlayerManagerV3(final UizaIMAVideoV3 uizaIMAVideoV3, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.mls = 0;
-        this.context = uizaIMAVideo.getContext();
-        this.uizaIMAVideo = uizaIMAVideo;
+        this.context = uizaIMAVideoV3.getContext();
+        this.uizaIMAVideoV3 = uizaIMAVideoV3;
         this.linkPlay = linkPlay;
         //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
@@ -175,8 +177,8 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         );
 
         //SETUP ORTHER
-        this.imageView = uizaIMAVideo.getIvThumbnail();
-        this.previewTimeBarLayout = uizaIMAVideo.getPreviewTimeBarLayout();
+        this.imageView = uizaIMAVideoV3.getIvThumbnail();
+        this.previewTimeBarLayout = uizaIMAVideoV3.getPreviewTimeBarLayout();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         setRunnable();
@@ -189,7 +191,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
             @Override
             public void run() {
                 //LLog.d(TAG, "runnable run");
-                if (uizaIMAVideo.getPlayerView() != null) {
+                if (uizaIMAVideoV3.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
@@ -224,7 +226,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         handler.postDelayed(runnable, 0);
 
         //playerView.setControllerAutoShow(false);
-        uizaIMAVideo.getPlayerView().setControllerShowTimeoutMs(0);
+        uizaIMAVideoV3.getPlayerView().setControllerShowTimeoutMs(0);
     }
 
     private float mls;
@@ -253,7 +255,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        uizaIMAVideo.getPlayerView().setPlayer(player);
+        uizaIMAVideoV3.getPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -286,8 +288,8 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
             debugCallback.onUpdateButtonVisibilities();
         }
 
-        if (uizaIMAVideo.getDebugTextView() != null) {
-            debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideo.getDebugTextView());
+        if (uizaIMAVideoV3.getDebugTextView() != null) {
+            debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideoV3.getDebugTextView());
             debugTextViewHelper.start();
         }
     }
@@ -361,7 +363,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
                 mediaSource,
                 this,
                 adsLoader,
-                uizaIMAVideo.getPlayerView().getOverlayFrameLayout(),
+                uizaIMAVideoV3.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -427,7 +429,6 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     }
 
     // Internal methods.
-
     private MediaSource buildMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
@@ -464,11 +465,11 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     }
 
     private void hideProgress() {
-        LUIUtil.hideProgressBar(uizaIMAVideo.getProgressBar());
+        LUIUtil.hideProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 
     private void showProgress() {
-        LUIUtil.showProgressBar(uizaIMAVideo.getProgressBar());
+        LUIUtil.showProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 
     private ExoPlaybackException exoPlaybackException;
@@ -531,12 +532,21 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
+            if (error == null) {
+                return;
+            }
+            LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
             exoPlaybackException = error;
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
-            if (uizaIMAVideo != null) {
-                uizaIMAVideo.tryNextLinkPlay();
+            if (uizaIMAVideoV3 == null) {
+                return;
+            }
+            if (LConnectivityUtil.isConnected(context)) {
+                uizaIMAVideoV3.tryNextLinkPlay();
+            } else {
+                uizaIMAVideoV3.showTvMsg(context.getString(R.string.err_no_internet));
             }
         }
 
@@ -620,7 +630,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
-            uizaIMAVideo.removeVideoCover(false);
+            uizaIMAVideoV3.removeVideoCover(false);
         }
 
         @Override
@@ -655,12 +665,12 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         }
         if (player.getVolume() == 0f) {
             //LLog.d(TAG, "toggleVolumeMute off -> on");
-            uizaIMAVideo.setProgressVolumeSeekbar((int) (currentVolume * 100));
+            uizaIMAVideoV3.setProgressVolumeSeekbar((int) (currentVolume * 100));
             exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
             //LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
-            uizaIMAVideo.setProgressVolumeSeekbar(0);
+            uizaIMAVideoV3.setProgressVolumeSeekbar(0);
             exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
         }
         //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);

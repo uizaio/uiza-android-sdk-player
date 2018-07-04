@@ -48,5 +48,15 @@
             android:orientation="horizontal"
             android:visibility="gone" />
     </LinearLayout>
+
+    <TextView
+        android:id="@id/tv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/padding_5"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_18"
+        android:visibility="gone" />
 </RelativeLayout>
 
