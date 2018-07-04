@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#263238</color>
-    <color name="colorPrimaryTrans">#55263238</color>
-    <color name="colorPrimaryDark">#263238</color>
-    <color name="colorAccent">#263238</color>
+    <color name="colorPrimary">#0b0e0f</color>
+    <color name="colorPrimaryTrans">#550b0e0f</color>
+    <color name="colorPrimaryDark">#0b0e0f</color>
+    <color name="colorAccent">#0b0e0f</color>
 
     <color name="vip1">#d3131f</color>
     <color name="vip2">#19875c</color>
@@ -11,10 +11,9 @@
     <color name="vip4">#fec835</color>
     <color name="vip5">#fd8833</color>
 
+    <color name="black_5">#10000000</color>
     <color name="black_35">#44000000</color>
     <color name="black_65">#A6000000</color>
-
-    <color name="black_5">#10000000</color>
 
     <color name="transparent">#00000000</color>
     <color name="White">#FFFFFF</color>
