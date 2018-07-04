@@ -624,6 +624,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         UizaData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
+        activityIsPausing = true;
+        LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
     public void onResume() {
@@ -1129,12 +1131,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                         uizaPlayerManagerV3.setResumeIfConnectionError();
                         LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
-                            if (uizaPlayerManagerV3 != null) {
-                                uizaPlayerManagerV3.init();
-                                if (isCalledFromConnectionEventBus) {
-                                    uizaPlayerManagerV3.setRunnable();
-                                    isCalledFromConnectionEventBus = false;
-                                }
+                            uizaPlayerManagerV3.init();
+                            if (isCalledFromConnectionEventBus) {
+                                uizaPlayerManagerV3.setRunnable();
+                                isCalledFromConnectionEventBus = false;
                             }
                         } else {
                             //auto call onResume() again
