@@ -16,7 +16,7 @@ import uiza.app.LSApplication;
 import uiza.v2.home.view.BlankView;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.data.HomeDataV3;
-import uiza.v3.view.EntityItemV3;
+import uiza.v3.view.EntityItemLiveV3;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDisplayUtils;
@@ -134,10 +134,9 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
             addBlankView();
         }
         for (Data data : dataList) {
-            /*placeHolderView.addView(new EntityItemV3(getActivity(), data, sizeW, sizeH, new EntityItemV3.Callback() {
+            placeHolderView.addView(new EntityItemLiveV3(getActivity(), data, sizeW, sizeH, new EntityItemLiveV3.Callback() {
                 @Override
                 public void onClick(Data data, int position) {
-                    //onClickVideo(item, position);
                     if (callback != null) {
                         callback.onClick(data, position);
                     }
@@ -154,7 +153,7 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
                         callback.onPosition(position);
                     }
                 }
-            }));*/
+            }));
         }
         if (!isCallFromLoadMore) {
             LUIUtil.hideProgressBar(progressBar);
@@ -173,9 +172,9 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
         }
     }
 
-    private EntityItemV3.Callback callback;
+    private EntityItemLiveV3.Callback callback;
 
-    public void setCallback(EntityItemV3.Callback callback) {
+    public void setCallback(EntityItemLiveV3.Callback callback) {
         this.callback = callback;
     }
 

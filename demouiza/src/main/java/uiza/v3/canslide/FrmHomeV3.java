@@ -20,6 +20,7 @@ import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
 import uiza.v3.data.HomeDataV3;
+import uiza.v3.view.EntityItemLiveV3;
 import uiza.v3.view.EntityItemV3;
 import uiza.v3.view.UizaDrawerMenuItemV3;
 import vn.loitp.core.base.BaseActivity;
@@ -225,11 +226,16 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
 
+                    LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
+
+
+                    BaseFragment baseFragment = null;
                     if (dataList.get(pos).getName().equals(Constants.MENU_LIVESTREAM)) {
-                        FrmHomeLivestreamV3 frmHomeLivestreamV3 = new FrmHomeLivestreamV3();
-                        frmHomeLivestreamV3.setCallback(new EntityItemV3.Callback() {
+                        LLog.d(TAG, "MENU_LIVESTREAM");
+                        baseFragment = new FrmHomeLivestreamV3();
+                        ((FrmHomeLivestreamV3) baseFragment).setCallback(new EntityItemLiveV3.Callback() {
                             @Override
-                            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                            public void onClick(vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data data, int position) {
                                 onClickVideo(data, position);
                             }
 
@@ -239,8 +245,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                             }
                         });
                     } else {
-                        FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
-                        frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
+                        baseFragment = new FrmHomeChannelV3();
+                        ((FrmHomeChannelV3) baseFragment).setCallback(new EntityItemV3.Callback() {
                             @Override
                             public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
                                 onClickVideo(data, position);
@@ -251,8 +257,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                                 //do nothing
                             }
                         });
-                        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
                     }
+                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, baseFragment, false);
                 }
             }));
         }
@@ -262,9 +268,9 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         //init data first
         HomeDataV3.getInstance().setData(dataList.get(0));
         FrmHomeLivestreamV3 frmHomeLivestreamV3 = new FrmHomeLivestreamV3();
-        frmHomeLivestreamV3.setCallback(new EntityItemV3.Callback() {
+        frmHomeLivestreamV3.setCallback(new EntityItemLiveV3.Callback() {
             @Override
-            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+            public void onClick(vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data data, int position) {
                 onClickVideo(data, position);
             }
 
@@ -277,6 +283,12 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+        //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
+        LPref.setClickedPip(getActivity(), false);
+        ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
+    }
+
+    private void onClickVideo(vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data data, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         LPref.setClickedPip(getActivity(), false);
         ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
