@@ -97,4 +97,7 @@ public interface UizaServiceV3 {
 
     @GET("/api/private/v3/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
+
+    @GET("/api/private/v3/live/entity/tracking/")
+    Observable<Object> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
 }

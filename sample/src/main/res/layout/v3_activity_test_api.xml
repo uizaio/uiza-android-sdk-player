@@ -191,6 +191,12 @@
                         android:layout_height="wrap_content"
                         android:text="Get view a live feed" />
 
+                    <Button
+                        android:id="@+id/bt_get_time_start_live"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get time start live" />
+
                 </LinearLayout>
             </HorizontalScrollView>
 
