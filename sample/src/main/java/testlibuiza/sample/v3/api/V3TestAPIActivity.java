@@ -21,6 +21,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
@@ -57,6 +58,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
         findViewById(R.id.bt_get_token_streaming_live).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
+        findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
 
         LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
         viewList = rootView.getTouchables();
@@ -146,6 +148,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_link_play_live:
                 getLinkPlayLive();
+                break;
+            case R.id.bt_get_view_a_live_feed:
+                getViewALiveFeed();
                 break;
         }
     }
@@ -491,6 +496,24 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getViewALiveFeed() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
+        subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+            @Override
+            public void onSuccess(ResultGetViewALiveFeed result) {
+                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveALiveEvent onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

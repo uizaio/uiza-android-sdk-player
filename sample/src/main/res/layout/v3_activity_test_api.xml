@@ -185,6 +185,12 @@
                         android:layout_height="wrap_content"
                         android:text="Get link play live" />
 
+                    <Button
+                        android:id="@+id/bt_get_view_a_live_feed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get view a live feed" />
+
                 </LinearLayout>
             </HorizontalScrollView>
 
