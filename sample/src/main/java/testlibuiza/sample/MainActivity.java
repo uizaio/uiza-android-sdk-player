@@ -18,6 +18,7 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity {
         authV2();
 
         //auth v3
+        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
         UizaWorkspaceInfo uizaWorkspaceInfo = new UizaWorkspaceInfo("loitp@uiza.io", "04021993", "android-api.uiza.co", "android.uiza.co");
         UizaV3Util.initUizaWorkspace(activity, uizaWorkspaceInfo);
         authV3();

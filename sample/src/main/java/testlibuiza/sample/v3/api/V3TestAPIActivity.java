@@ -481,9 +481,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
         String appId = UizaV3Util.getAppId(activity);
         String streamName = "ffdfdfdfd";
-        subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<Object>() {
+        subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultGetLinkPlay result) {
                 LLog.d(TAG, "getLinkPlay onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
