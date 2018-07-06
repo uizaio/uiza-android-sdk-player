@@ -84,6 +84,10 @@ public interface UizaServiceV3 {
                                               @Query("entity_id") String entityId,
                                               @Query("type_content") String typeContent);
 
+    @GET("/api/private/v1/cdn/live/linkplay")
+    Observable<Object> getLinkPlayLive(@Query("app_id") String appId,
+                                       @Query("stream_name") String streamName);
+
     @GET("/api/public/v3/live/entity")
     Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Query("limit") int limit,
                                                             @Query("page") int page,

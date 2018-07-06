@@ -11,7 +11,6 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
@@ -57,6 +56,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
         findViewById(R.id.bt_get_token_streaming_live).setOnClickListener(this);
+        findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
 
         LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
         viewList = rootView.getTouchables();
@@ -143,6 +143,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_token_streaming_live:
                 getTokenStreamingLive();
+                break;
+            case R.id.bt_get_link_play_live:
+                getLinkPlayLive();
                 break;
         }
     }
@@ -404,7 +407,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             LToast.show(activity, "Token streaming not found, pls call getTokenStreaming before.");
             return;
         }
-        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG, tokenStreaming);
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
         String appId = UizaV3Util.getAppId(activity);
         String entityId = "1ca56834-4c6f-4008-9c1f-2ca2a67c6814";
@@ -464,6 +467,30 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getTokenStreamingLive onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getLinkPlayLive() {
+        if (tokenStreamingLive == null || tokenStreamingLive.isEmpty()) {
+            LToast.show(activity, "Token streaming not found, pls call getTokenStreamingLive before.");
+            return;
+        }
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreamingLive);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        String appId = UizaV3Util.getAppId(activity);
+        String streamName = "ffdfdfdfd";
+        subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "getLinkPlay onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });
