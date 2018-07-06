@@ -226,10 +226,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     mDrawerLayout.closeDrawers();
 
                     if (dataList.get(pos).getName().equals(Constants.MENU_LIVESTREAM)) {
-                        LToast.show(getActivity(), "TOuch");
-                    } else {
-                        FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
-                        frmHomeChannel.setCallback(new EntityItemV3.Callback() {
+                        FrmHomeLivestreamV3 frmHomeLivestreamV3 = new FrmHomeLivestreamV3();
+                        frmHomeLivestreamV3.setCallback(new EntityItemV3.Callback() {
                             @Override
                             public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
                                 onClickVideo(data, position);
@@ -240,7 +238,20 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                                 //do nothing
                             }
                         });
-                        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
+                    } else {
+                        FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
+                        frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
+                            @Override
+                            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                                onClickVideo(data, position);
+                            }
+
+                            @Override
+                            public void onPosition(int position) {
+                                //do nothing
+                            }
+                        });
+                        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
                     }
                 }
             }));
@@ -250,8 +261,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
         //init data first
         HomeDataV3.getInstance().setData(dataList.get(0));
-        FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
-        frmHomeChannel.setCallback(new EntityItemV3.Callback() {
+        FrmHomeLivestreamV3 frmHomeLivestreamV3 = new FrmHomeLivestreamV3();
+        frmHomeLivestreamV3.setCallback(new EntityItemV3.Callback() {
             @Override
             public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
                 onClickVideo(data, position);
@@ -262,7 +273,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 //do nothing
             }
         });
-        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
+        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeLivestreamV3, false);
     }
 
     private void onClickVideo(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
