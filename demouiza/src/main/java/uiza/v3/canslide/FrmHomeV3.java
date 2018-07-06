@@ -145,12 +145,17 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void genHomeMenu() {
+        //add live menu
+        Data dataLivestream = new Data();
+        dataLivestream.setName(Constants.MENU_LIVESTREAM);
+        dataList.add(0, dataLivestream);
+        //emd add live menu
+
         //add home menu
-        Data data = new Data();
-        data.setName("Home V3");
-        data.setId(String.valueOf(Constants.NOT_FOUND));
-        data.setType("folder");
-        dataList.add(0, data);
+        Data dataMenu = new Data();
+        dataMenu.setName(Constants.MENU_HOME_V3);
+        dataMenu.setType("folder");
+        dataList.add(1, dataMenu);
         //emd add home menu
     }
 
@@ -219,19 +224,24 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     HomeDataV3.getInstance().setCurrentPosition(pos);
                     HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
-                    FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
-                    frmHomeChannel.setCallback(new EntityItemV3.Callback() {
-                        @Override
-                        public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
-                            onClickVideo(data, position);
-                        }
 
-                        @Override
-                        public void onPosition(int position) {
-                            //do nothing
-                        }
-                    });
-                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
+                    if (dataList.get(pos).getName().equals(Constants.MENU_LIVESTREAM)) {
+                        LToast.show(getActivity(), "TOuch");
+                    } else {
+                        FrmHomeChannelV3 frmHomeChannel = new FrmHomeChannelV3();
+                        frmHomeChannel.setCallback(new EntityItemV3.Callback() {
+                            @Override
+                            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                                onClickVideo(data, position);
+                            }
+
+                            @Override
+                            public void onPosition(int position) {
+                                //do nothing
+                            }
+                        });
+                        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannel, false);
+                    }
                 }
             }));
         }

@@ -203,7 +203,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         }
 
         String metadataId = "";
-        if (HomeDataV3.getInstance().getData().getId().equals(String.valueOf(Constants.NOT_FOUND))) {
+        if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
             //do nothing
         } else {
             LLog.d(TAG, "!HOME category");
@@ -276,82 +276,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 }
             }
         });
-
-
-        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
-        if (HomeDataV3.getInstance().getData().getId().equals(String.valueOf(Constants.NOT_FOUND))) {
-            LLog.d(TAG, "HOME category");
-        } else {
-            LLog.d(TAG, "!HOME category");
-            List<String> metadataId = new ArrayList<>();
-            metadataId.add(HomeDataV3.getInstance().getData().getId());
-            jsonBodyListAllEntity.setMetadataId(metadataId);
-        }
-        jsonBodyListAllEntity.setLimit(limit);
-        jsonBodyListAllEntity.setPage(page);
-        jsonBodyListAllEntity.setOrderBy(orderBy);
-        jsonBodyListAllEntity.setOrderType(orderType);
-        LLog.d(TAG, "jsonBodyListAllEntity " + LSApplication.getInstance().getGson().toJson(jsonBodyListAllEntity));
-        LLog.d(TAG, "<<<<<<<<<<<<<<<<<<<<<<<<");
-
-        subscribe(service.listAllEntityV2(jsonBodyListAllEntity), new ApiSubscriber<ListAllEntity>() {
-            @Override
-            public void onSuccess(ListAllEntity listAllEntity) {
-                LLog.d(TAG, "listAllEntityV2 onSuccess " + LSApplication.getInstance().getGson().toJson(listAllEntity));
-                LLog.d(TAG, "getLimit " + listAllEntity.getMetadata().getLimit());
-                LLog.d(TAG, "getPage " + listAllEntity.getMetadata().getPage());
-                LLog.d(TAG, "getTotal " + listAllEntity.getMetadata().getTotal());
-                LLog.d(TAG, "getItems().size " + listAllEntity.getData().size());
-
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) listAllEntity.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    LLog.d(TAG, "ratio: " + ratio);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                    LLog.d(TAG, ">>>totalPage: " + totalPage);
-                }
-
-                List<Item> itemList = listAllEntity.getData();
-                if (itemList == null || itemList.isEmpty()) {
-                    if (tvMsg.getVisibility() != View.VISIBLE) {
-                        tvMsg.setVisibility(View.VISIBLE);
-                        tvMsg.setText(getString(R.string.empty_list));
-                        placeHolderView.setVisibility(View.GONE);
-                    }
-                    if (!isCallFromLoadMore) {
-                        LUIUtil.hideProgressBar(progressBar);
-                    } else {
-                        isLoadMoreCalling = false;
-                    }
-                }
-                setupData(itemList, isCallFromLoadMore);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "listAllEntityV2 onFail " + e.toString());
-                //handleException(e);
-                if (tvMsg.getVisibility() != View.VISIBLE) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    if (e != null && e.getMessage() != null) {
-                        tvMsg.setText("onFail " + e.getMessage());
-                    }
-                    placeHolderView.setVisibility(View.GONE);
-                }
-                if (!isCallFromLoadMore) {
-                    LUIUtil.hideProgressBar(progressBar);
-                } else {
-                    isLoadMoreCalling = false;
-                }
-            }
-        });*/
     }
 
     private void swipeToRefresh() {
@@ -382,7 +306,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
             @Override
             public void run() {
                 placeHolderView.addView(new LoadingView());
-                //placeHolderView.smoothScrollToPosition(getListSize() - 1);
                 page++;
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override
