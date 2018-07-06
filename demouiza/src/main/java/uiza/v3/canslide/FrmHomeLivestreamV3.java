@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import uiza.v2.home.view.BlankView;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.data.HomeDataV3;
@@ -23,8 +24,8 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
@@ -133,7 +134,7 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
             addBlankView();
         }
         for (Data data : dataList) {
-            placeHolderView.addView(new EntityItemV3(getActivity(), data, sizeW, sizeH, new EntityItemV3.Callback() {
+            /*placeHolderView.addView(new EntityItemV3(getActivity(), data, sizeW, sizeH, new EntityItemV3.Callback() {
                 @Override
                 public void onClick(Data data, int position) {
                     //onClickVideo(item, position);
@@ -153,7 +154,7 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
                         callback.onPosition(position);
                     }
                 }
-            }));
+            }));*/
         }
         if (!isCallFromLoadMore) {
             LUIUtil.hideProgressBar(progressBar);
@@ -202,16 +203,74 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
             tvMsg.setVisibility(View.GONE);
         }
 
-        String metadataId = "";
-        if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
-            //do nothing
-        } else {
-            LLog.d(TAG, "!HOME category");
-            metadataId = HomeDataV3.getInstance().getData().getId();
-        }
-        LLog.d(TAG, "getData metadataId: " + metadataId);
-
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+            @Override
+            public void onSuccess(ResultRetrieveALiveEvent result) {
+                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                    if (tvMsg.getVisibility() != View.VISIBLE) {
+                        tvMsg.setVisibility(View.VISIBLE);
+                        tvMsg.setText(getString(R.string.empty_list));
+                        placeHolderView.setVisibility(View.GONE);
+                    }
+                    if (!isCallFromLoadMore) {
+                        LUIUtil.hideProgressBar(progressBar);
+                    } else {
+                        isLoadMoreCalling = false;
+                    }
+                    return;
+                }
+                if (totalPage == Integer.MAX_VALUE) {
+                    int totalItem = (int) result.getMetadata().getTotal();
+                    LLog.d(TAG, "totalItem " + totalItem);
+                    float ratio = (float) (totalItem / limit);
+                    LLog.d(TAG, "ratio: " + ratio);
+                    if (ratio == 0) {
+                        totalPage = (int) ratio;
+                    } else if (ratio > 0) {
+                        totalPage = (int) ratio + 1;
+                    } else {
+                        totalPage = (int) ratio;
+                    }
+                    LLog.d(TAG, ">>>totalPage: " + totalPage);
+                }
+
+                List<Data> dataList = result.getData();
+                if (dataList == null || dataList.isEmpty()) {
+                    if (tvMsg.getVisibility() != View.VISIBLE) {
+                        tvMsg.setVisibility(View.VISIBLE);
+                        tvMsg.setText(getString(R.string.empty_list));
+                        placeHolderView.setVisibility(View.GONE);
+                    }
+                    if (!isCallFromLoadMore) {
+                        LUIUtil.hideProgressBar(progressBar);
+                    } else {
+                        isLoadMoreCalling = false;
+                    }
+                }
+                setupData(dataList, isCallFromLoadMore);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveALiveEvent onFail " + e.getMessage());
+                if (tvMsg.getVisibility() != View.VISIBLE) {
+                    tvMsg.setVisibility(View.VISIBLE);
+                    if (e != null && e.getMessage() != null) {
+                        tvMsg.setText("onFail " + e.getMessage());
+                    }
+                    placeHolderView.setVisibility(View.GONE);
+                }
+                if (!isCallFromLoadMore) {
+                    LUIUtil.hideProgressBar(progressBar);
+                } else {
+                    isLoadMoreCalling = false;
+                }
+            }
+        });
+
+        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
@@ -275,7 +334,7 @@ public class FrmHomeLivestreamV3 extends BaseFragment {
                     isLoadMoreCalling = false;
                 }
             }
-        });
+        });*/
     }
 
     private void swipeToRefresh() {
