@@ -82,4 +82,10 @@ public interface UizaServiceV3 {
     Observable<ResultGetLinkPlay> getLinkPlay(@Query("app_id") String appId,
                                               @Query("entity_id") String entityId,
                                               @Query("type_content") String typeContent);
+
+    @GET("/api/public/v3/live/entity")
+    Observable<Object> retrieveALiveEvent(@Query("limit") int limit,
+                                          @Query("page") int page,
+                                          @Query("orderBy") String orderBy,
+                                          @Query("orderType") String orderType);
 }

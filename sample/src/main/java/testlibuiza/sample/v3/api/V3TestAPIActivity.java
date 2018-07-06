@@ -54,6 +54,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
+        findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
 
         LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
         viewList = rootView.getTouchables();
@@ -134,6 +135,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_link_play:
                 getLinkPlay();
+                break;
+            case R.id.bt_retrieve_a_live_event:
+                retrieveALiveEvent();
                 break;
         }
     }
@@ -410,6 +414,27 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void retrieveALiveEvent() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object resultGetToken) {
+                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                showTv(resultGetToken);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveALiveEvent onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });
