@@ -22,6 +22,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -425,11 +426,11 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<Object>() {
+        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
-            public void onSuccess(Object resultGetToken) {
-                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                showTv(resultGetToken);
+            public void onSuccess(ResultRetrieveALiveEvent result) {
+                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
             }
 
             @Override

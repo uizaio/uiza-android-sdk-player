@@ -12,6 +12,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -84,8 +85,8 @@ public interface UizaServiceV3 {
                                               @Query("type_content") String typeContent);
 
     @GET("/api/public/v3/live/entity")
-    Observable<Object> retrieveALiveEvent(@Query("limit") int limit,
-                                          @Query("page") int page,
-                                          @Query("orderBy") String orderBy,
-                                          @Query("orderType") String orderType);
+    Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Query("limit") int limit,
+                                                            @Query("page") int page,
+                                                            @Query("orderBy") String orderBy,
+                                                            @Query("orderType") String orderType);
 }
