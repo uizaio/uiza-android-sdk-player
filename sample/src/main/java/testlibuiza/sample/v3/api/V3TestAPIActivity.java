@@ -56,6 +56,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
+        findViewById(R.id.bt_get_token_streaming_live).setOnClickListener(this);
 
         LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
         viewList = rootView.getTouchables();
@@ -139,6 +140,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_retrieve_a_live_event:
                 retrieveALiveEvent();
+                break;
+            case R.id.bt_get_token_streaming_live:
+                getTokenStreamingLive();
                 break;
         }
     }
@@ -436,6 +440,30 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "retrieveALiveEvent onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private String tokenStreamingLive;//value received from api getTokenStreamingLive
+
+    private void getTokenStreamingLive() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setEntityId("8e133d0d-5f67-45e8-8812-44b2ddfd9fe2");
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
+        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                LLog.d(TAG, "getTokenStreamingLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+                tokenStreamingLive = result.getData().getToken();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreamingLive onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

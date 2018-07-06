@@ -173,6 +173,12 @@
                         android:layout_height="wrap_content"
                         android:text="Retrieve a live event" />
 
+                    <Button
+                        android:id="@+id/bt_get_token_streaming_live"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Get token streaming live" />
+
                 </LinearLayout>
             </HorizontalScrollView>
 
