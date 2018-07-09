@@ -125,6 +125,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private VerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
 
+    private TextView tvLive;
+
     private LinearLayout debugLayout;
     private LinearLayout debugRootView;
     private TextView debugTextView;
@@ -228,6 +230,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isLivestream) {
             //if entity is livestreaming, dont try to next link play
             LLog.d(TAG, "tryNextLinkPlay isLivestream true -> return");
+            //TODO
             /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
@@ -508,6 +511,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             debugLayout.setVisibility(View.GONE);
         }
+
+        tvLive = (TextView) playerView.findViewById(R.id.tv_live);
 
         //onclick
         exoFullscreenIcon.setOnClickListener(this);
@@ -834,6 +839,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoFfwd, false, 0);
             changeVisibilitiesOfButton(exoPlay, false, 0);
             changeVisibilitiesOfButton(exoPause, false, 0);
+
+            tvLive.setVisibility(VISIBLE);
         } else {
             exoCast.setVisibility(GONE);
             rlTimeBar.setVisibility(VISIBLE);
@@ -850,6 +857,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
             changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
             changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
+
+            tvLive.setVisibility(GONE);
         }
     }
 

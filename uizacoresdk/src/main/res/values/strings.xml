@@ -49,4 +49,5 @@
     <string name="related_list">Related List</string>
     <string name="share_via">Share via</string>
     <string name="cannot_get_list_relation">Lỗi không tải được danh sách entity liên quan</string>
+    <string name="live">LIVE</string>
 </resources>
