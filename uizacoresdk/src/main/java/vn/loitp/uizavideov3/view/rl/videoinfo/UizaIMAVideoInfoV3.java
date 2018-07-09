@@ -175,7 +175,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         //TODO
         tvVideoTime.setText("Dummy Time");
         //TODO
-        tvVideoRate.setText("Dummy 18+");
+        tvVideoRate.setText("Dummy 12+");
 
         try {
             tvVideoDescription.setText(data.getDescription().isEmpty() ? data.getShortDescription().isEmpty() ? emptyS : data.getShortDescription() : data.getDescription());
