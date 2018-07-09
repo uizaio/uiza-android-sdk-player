@@ -42,6 +42,16 @@ public class UizaData {
         this.currentPlayerId = currentPlayerId;
     }
 
+    private boolean isEntityLivestream;
+
+    public boolean isEntityLivestream() {
+        return isEntityLivestream;
+    }
+
+    public void setEntityLivestream(boolean entityLivestream) {
+        isEntityLivestream = entityLivestream;
+    }
+
     private List<UizaInput> uizaInputList = new ArrayList<>();
 
     public List<UizaInput> getUizaInputList() {
@@ -53,7 +63,7 @@ public class UizaData {
     }*/
 
     public UizaInput getUizaInputPrev() {
-        LLog.d(TAG, "getUizaInputPrev " + uizaInputList.size());
+        //LLog.d(TAG, "getUizaInputPrev " + uizaInputList.size());
         if (uizaInputList.isEmpty() || uizaInputList.size() <= 1) {
             return null;
         } else {

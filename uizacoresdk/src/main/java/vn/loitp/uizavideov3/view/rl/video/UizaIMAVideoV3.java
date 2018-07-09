@@ -995,46 +995,87 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void getLinkPlay(String tokenStreaming) {
-        //LLog.d(TAG, "getLinkPlay");
+        boolean isLivestream = UizaData.getInstance().isEntityLivestream();
+        LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        String appId = UizaV3Util.getAppId(activity);
-        String entityId = UizaData.getInstance().getUizaInput().getEntityId();
-        String typeContent = SendGetTokenStreaming.STREAM;
-        //LLog.d(TAG, "===================================");
-        //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
-        //LLog.d(TAG, "========appId: " + appId);
-        //LLog.d(TAG, "========entityId: " + entityId);
-        //LLog.d(TAG, "===================================");
-        activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
-            @Override
-            public void onSuccess(ResultGetLinkPlay result) {
-                //LLog.d(TAG, "getLinkPlay onSuccess: " + gson.toJson(result));
-                mResultGetLinkPlay = result;
-                isResultGetLinkPlayDone = true;
-                checkToSetUp();
-            }
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
-                if (e == null) {
-                    return;
+        if (isLivestream) {
+            String appId = UizaV3Util.getAppId(activity);
+            String name = UizaData.getInstance().getUizaInput().getEntityName();
+            LLog.d(TAG, "===================================");
+            LLog.d(TAG, "========name: " + name);
+            LLog.d(TAG, "========appId: " + appId);
+            //LLog.d(TAG, "========entityId: " + entityId);
+            LLog.d(TAG, "===================================");
+            activity.subscribe(service.getLinkPlayLive(appId, name), new ApiSubscriber<ResultGetLinkPlay>() {
+                @Override
+                public void onSuccess(ResultGetLinkPlay result) {
+                    LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
+                    mResultGetLinkPlay = result;
+                    isResultGetLinkPlayDone = true;
+                    checkToSetUp();
                 }
-                final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
-                LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(msg));
-                    }
 
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(msg));
+                @Override
+                public void onFail(Throwable e) {
+                    LLog.e(TAG, "getLinkPlayLive onFail " + e.getMessage());
+                    if (e == null) {
+                        return;
                     }
-                });
-            }
-        });
+                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
+                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(msg));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(msg));
+                        }
+                    });
+                }
+            });
+        } else {
+            String appId = UizaV3Util.getAppId(activity);
+            String entityId = UizaData.getInstance().getUizaInput().getEntityId();
+            String typeContent = SendGetTokenStreaming.STREAM;
+            //LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
+            //LLog.d(TAG, "========appId: " + appId);
+            //LLog.d(TAG, "========entityId: " + entityId);
+            //LLog.d(TAG, "===================================");
+            activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+                @Override
+                public void onSuccess(ResultGetLinkPlay result) {
+                    //LLog.d(TAG, "getLinkPlay onSuccess: " + gson.toJson(result));
+                    mResultGetLinkPlay = result;
+                    isResultGetLinkPlayDone = true;
+                    checkToSetUp();
+                }
+
+                @Override
+                public void onFail(Throwable e) {
+                    LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
+                    if (e == null) {
+                        return;
+                    }
+                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
+                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(msg));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(msg));
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void getDetailEntity() {
