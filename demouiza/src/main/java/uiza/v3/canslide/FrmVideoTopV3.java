@@ -345,7 +345,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     public void setupVideo(String entityId, String entityTitle, String entityCover, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        LLog.d(TAG, "setupVideo");
+        //LLog.d(TAG, "setupVideo");
         if (UizaData.getInstance().isSettingPlayer()) {
             //LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;

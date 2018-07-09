@@ -105,15 +105,17 @@ public class ImageButtonWithSize extends ImageButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int maskedAction = event.getActionMasked();
-        if (maskedAction == MotionEvent.ACTION_DOWN) {
-            //setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
-            this.setBackgroundResource(R.drawable.circle_effect);
-        } else if (maskedAction == MotionEvent.ACTION_UP) {
-            //clearColorTint();
-            this.setBackgroundResource(0);
+        if (isClickable()) {
+            int maskedAction = event.getActionMasked();
+            if (maskedAction == MotionEvent.ACTION_DOWN) {
+                //setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
+                this.setBackgroundResource(R.drawable.circle_effect);
+            } else if (maskedAction == MotionEvent.ACTION_UP) {
+                //clearColorTint();
+                this.setBackgroundResource(0);
+            }
+            //LAnimationUtil.play(this, Techniques.Pulse);
         }
-        //LAnimationUtil.play(this, Techniques.Pulse);
         return super.onTouchEvent(event);
     }
 

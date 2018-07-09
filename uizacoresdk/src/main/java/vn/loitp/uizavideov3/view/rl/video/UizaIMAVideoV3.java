@@ -74,6 +74,7 @@ import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
+import vn.loitp.utils.util.PhoneUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -100,12 +101,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
 
+    private RelativeLayout rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
 
     private ImageView ivVideoCover;
     private ImageButtonWithSize exoFullscreenIcon;
     private TextView tvTitle;
+    private ImageButtonWithSize exoPause;
+    private ImageButtonWithSize exoPlay;
+    private ImageButtonWithSize exoRew;
+    private ImageButtonWithSize exoFfwd;
     private ImageButtonWithSize exoBackScreen;
     private ImageButtonWithSize exoVolume;
     private ImageButtonWithSize exoSetting;
@@ -192,6 +198,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             isResultRetrieveAnEntityDone = false;
             countTryLinkPlayError = 0;
         }
+        updateUI();
         setTitle();
         setVideoCover();
         getTokenStreaming();
@@ -423,10 +430,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         switch (UizaData.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_2:
             case Constants.PLAYER_ID_SKIN_3:
-                ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
                 exoPlay.setRatioLand(7);
                 exoPlay.setRatioPort(5);
-                ImageButtonWithSize exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
                 exoPause.setRatioLand(7);
                 exoPause.setRatioPort(5);
                 break;
@@ -445,6 +450,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
 
+        rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
         previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
@@ -453,6 +459,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
+        exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
+        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+        exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
+        exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
         exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
         exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
@@ -789,6 +799,57 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void setTitle() {
         tvTitle.setText(UizaData.getInstance().getUizaInput().getEntityName());
         LUIUtil.setTextShadow(tvTitle);
+    }
+
+    private void updateUI() {
+        boolean isDevicePhone = PhoneUtils.isPhone();
+        if (isDevicePhone) {
+            exoPictureInPicture.setVisibility(GONE);
+        } else {
+            exoPictureInPicture.setVisibility(VISIBLE);
+        }
+        if (isLivestream) {
+            exoCast.setVisibility(GONE);
+            rlTimeBar.setVisibility(GONE);
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(GONE);
+
+            //TODO why set gone not work?
+            //exoRew.setVisibility(GONE);
+            //exoFfwd.setVisibility(GONE);
+            //exoPlay.setVisibility(GONE);
+            //exoPause.setVisibility(GONE);
+
+            changeVisibilitiesOfButton(exoRew, false, 0);
+            changeVisibilitiesOfButton(exoFfwd, false, 0);
+            changeVisibilitiesOfButton(exoPlay, false, 0);
+            changeVisibilitiesOfButton(exoPause, false, 0);
+        } else {
+            exoCast.setVisibility(GONE);
+            rlTimeBar.setVisibility(VISIBLE);
+            exoPlay.setVisibility(VISIBLE);
+            exoPause.setVisibility(VISIBLE);
+
+            //TODO why set visible not work?
+            //exoRew.setVisibility(VISIBLE);
+            //exoFfwd.setVisibility(VISIBLE);
+            //exoPlay.setVisibility(VISIBLE);
+            //exoPause.setVisibility(VISIBLE);
+
+            changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
+            changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
+            changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
+            changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
+        }
+    }
+
+    //trick to gone view
+    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize, boolean isVisible, int res) {
+        if (imageButtonWithSize == null) {
+            return;
+        }
+        imageButtonWithSize.setClickable(isVisible);
+        imageButtonWithSize.setImageResource(res);
     }
 
     public void updateButtonVisibilities() {
