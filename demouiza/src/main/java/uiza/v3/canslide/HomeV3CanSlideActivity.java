@@ -236,7 +236,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmVideoTop.getUizaIMAVideoV3().setExoPictureInPictureVisibility(View.VISIBLE);
         frmVideoTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 

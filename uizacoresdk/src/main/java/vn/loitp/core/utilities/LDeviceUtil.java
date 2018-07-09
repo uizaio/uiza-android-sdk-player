@@ -78,4 +78,10 @@ public class LDeviceUtil {
         Random r = new Random();
         return r.nextInt(max);
     }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 }

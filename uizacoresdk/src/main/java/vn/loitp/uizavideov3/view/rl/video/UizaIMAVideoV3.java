@@ -41,6 +41,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
+import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
@@ -74,7 +75,6 @@ import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
-import vn.loitp.utils.util.PhoneUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -228,7 +228,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isLivestream) {
             //if entity is livestreaming, dont try to next link play
             LLog.d(TAG, "tryNextLinkPlay isLivestream true -> return");
-            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
+            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
                     handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
@@ -238,7 +238,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 public void onCancel() {
                     handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
                 }
-            });
+            });*/
             return;
         }
         countTryLinkPlayError++;
@@ -811,11 +811,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUI() {
-        boolean isDevicePhone = PhoneUtils.isPhone();
-        if (isDevicePhone) {
-            exoPictureInPicture.setVisibility(GONE);
-        } else {
+        boolean isTablet = LDeviceUtil.isTablet(activity);
+        LLog.d(TAG, "updateUI isTablet " + isTablet);
+        if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
+        } else {
+            exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
@@ -980,10 +981,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "clickPiP else");
             initializePiP();
         }
-    }
-
-    public void setExoPictureInPictureVisibility(int visibility) {
-        exoPictureInPicture.setVisibility(visibility);
     }
 
     public void initializePiP() {
