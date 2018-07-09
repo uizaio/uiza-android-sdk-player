@@ -11,6 +11,8 @@ import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LConnectivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -111,6 +113,21 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoBottomV3 frmVideoBottom;
 
     private void initializeDraggablePanel(final String entityId, final String entityTitle, final String entityCover) {
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    //do nothing
+                }
+
+                @Override
+                public void onCancel() {
+                    //do nothing
+                }
+            });
+            return;
+        }
+
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
