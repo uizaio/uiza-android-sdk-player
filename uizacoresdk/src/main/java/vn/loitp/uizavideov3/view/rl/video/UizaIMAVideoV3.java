@@ -806,7 +806,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void setTitle() {
-        tvTitle.setText(UizaData.getInstance().getUizaInput().getEntityName());
+        LLog.d(TAG, "setTitle " + UizaData.getInstance().getUizaInput().getEntityName());
+        tvTitle.setText("dd" + UizaData.getInstance().getUizaInput().getEntityName());
         LUIUtil.setTextShadow(tvTitle);
     }
 
@@ -1144,7 +1145,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
-                //LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
+                LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
                 mResultRetrieveAnEntity = result;
                 isResultRetrieveAnEntityDone = true;
                 checkToSetUp();
