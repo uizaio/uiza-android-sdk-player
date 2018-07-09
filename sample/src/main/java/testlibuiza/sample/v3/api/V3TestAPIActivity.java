@@ -2,7 +2,11 @@ package testlibuiza.sample.v3.api;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -10,9 +14,15 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -23,6 +33,7 @@ import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntit
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.views.LToast;
 
 public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
@@ -42,6 +53,34 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
+        findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
+        findViewById(R.id.bt_get_link_play).setOnClickListener(this);
+        findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
+        findViewById(R.id.bt_get_token_streaming_live).setOnClickListener(this);
+        findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
+        findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
+        findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
+
+        LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
+        viewList = rootView.getTouchables();
+        setEnableAllButton(false);
+    }
+
+    private List<View> viewList = new ArrayList<>();
+
+    private void setEnableAllButton(boolean isEnable) {
+        LLog.d(TAG, "size: " + viewList.size());
+        if (isEnable) {
+            for (View view : viewList) {
+                view.setEnabled(true);
+            }
+        } else {
+            for (View view : viewList) {
+                if (view.getId() != R.id.bt_get_token) {
+                    view.setEnabled(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -96,6 +135,27 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_search_entity:
                 searchAnEntity();
                 break;
+            case R.id.bt_get_token_streaming:
+                getTokenStreaming();
+                break;
+            case R.id.bt_get_link_play:
+                getLinkPlay();
+                break;
+            case R.id.bt_retrieve_a_live_event:
+                retrieveALiveEvent();
+                break;
+            case R.id.bt_get_token_streaming_live:
+                getTokenStreamingLive();
+                break;
+            case R.id.bt_get_link_play_live:
+                getLinkPlayLive();
+                break;
+            case R.id.bt_get_view_a_live_feed:
+                getViewALiveFeed();
+                break;
+            case R.id.bt_get_time_start_live:
+                getTimeStartLive();
+                break;
         }
     }
 
@@ -113,10 +173,12 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onSuccess(ResultGetToken resultGetToken) {
                 LLog.d(TAG, "getToken " + LSApplication.getInstance().getGson().toJson(resultGetToken));
+                UizaV3Util.setResultGetToken(activity, resultGetToken);
                 String token = resultGetToken.getData().getToken();
                 LLog.d(TAG, "token: " + token);
                 RestClientV3.addAuthorization(token);
                 showTv(resultGetToken);
+                setEnableAllButton(true);
             }
 
             @Override
@@ -129,9 +191,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void checkToken() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.checkToken(), new ApiSubscriber<ResultGetToken>() {
+        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
+            public void onSuccess(Object resultGetToken) {
                 LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
                 showTv(resultGetToken);
             }
@@ -244,9 +306,15 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
+
     private void listAllEntity() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListAllEntity(), new ApiSubscriber<ResultListEntity>() {
+        String metadataId = "";
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -262,10 +330,13 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listAllEntityMetadata() {
-        //TODO
-        /*UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
-        subscribe(service.getListAllEntity(metadataId), new ApiSubscriber<ResultListEntity>() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String metadataId = "74cac724-968c-4e6d-a6e1-6c2365e41d9d";
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -277,7 +348,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
-        });*/
+        });
     }
 
     private void retrieveAnEntity() {
@@ -311,6 +382,161 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "searchAnEntity onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getTokenStreaming() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setEntityId("1ca56834-4c6f-4008-9c1f-2ca2a67c6814");
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+                tokenStreaming = result.getData().getToken();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private String tokenStreaming;//value received from api getTokenStreaming
+
+    private void getLinkPlay() {
+        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
+            LToast.show(activity, "Token streaming not found, pls call getTokenStreaming before.");
+            return;
+        }
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        String appId = UizaV3Util.getAppId(activity);
+        String entityId = "1ca56834-4c6f-4008-9c1f-2ca2a67c6814";
+        String typeContent = SendGetTokenStreaming.STREAM;
+        subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+            @Override
+            public void onSuccess(ResultGetLinkPlay result) {
+                LLog.d(TAG, "getLinkPlay onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void retrieveALiveEvent() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        int limit = 50;
+        int page = 0;
+        String orderBy = "createdAt";
+        String orderType = "DESC";
+        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+            @Override
+            public void onSuccess(ResultRetrieveALiveEvent result) {
+                LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveALiveEvent onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private String tokenStreamingLive;//value received from api getTokenStreamingLive
+
+    private void getTokenStreamingLive() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setEntityId("8e133d0d-5f67-45e8-8812-44b2ddfd9fe2");
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
+        subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                LLog.d(TAG, "getTokenStreamingLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+                tokenStreamingLive = result.getData().getToken();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTokenStreamingLive onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getLinkPlayLive() {
+        if (tokenStreamingLive == null || tokenStreamingLive.isEmpty()) {
+            LToast.show(activity, "Token streaming not found, pls call getTokenStreamingLive before.");
+            return;
+        }
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreamingLive);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        String appId = UizaV3Util.getAppId(activity);
+        String streamName = "ffdfdfdfd";
+        subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<ResultGetLinkPlay>() {
+            @Override
+            public void onSuccess(ResultGetLinkPlay result) {
+                LLog.d(TAG, "getLinkPlayLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getLinkPlayLive onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getViewALiveFeed() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
+        subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+            @Override
+            public void onSuccess(ResultGetViewALiveFeed result) {
+                LLog.d(TAG, "getViewALiveFeed onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getTimeStartLive() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
+        String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
+        subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "getTimeStartLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

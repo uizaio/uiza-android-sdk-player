@@ -2,6 +2,7 @@ package testlibuiza.sample.v2.api;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,6 +61,27 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_track_6_dev).setOnClickListener(this);
         findViewById(R.id.bt_track_7_dev).setOnClickListener(this);
         findViewById(R.id.bt_track_8_dev).setOnClickListener(this);
+
+        LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
+        viewList = rootView.getTouchables();
+        setEnableAllButton(false);
+    }
+
+    private List<View> viewList = new ArrayList<>();
+
+    private void setEnableAllButton(boolean isEnable) {
+        LLog.d(TAG, "size: " + viewList.size());
+        if (isEnable) {
+            for (View view : viewList) {
+                view.setEnabled(true);
+            }
+        } else {
+            for (View view : viewList) {
+                if (view.getId() != R.id.bt_get_token) {
+                    view.setEnabled(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -162,6 +184,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
                 showTv(auth);
                 RestClientV2.addAuthorization(auth.getData().getToken());
                 appId = auth.getData().getAppId();
+                setEnableAllButton(true);
             }
 
             @Override

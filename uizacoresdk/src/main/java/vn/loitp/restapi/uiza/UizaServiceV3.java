@@ -9,6 +9,11 @@ import retrofit2.http.Query;
 import rx.Observable;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -28,8 +33,9 @@ public interface UizaServiceV3 {
     Observable<ResultGetToken> getToken(@Body UizaWorkspaceInfo uizaWorkspaceInfo);
 
     //http://dev-docs.uizadev.io/#check-token
+    //@Headers("Content-Type: application/json")
     @POST("/api/public/v3/admin/user/auth/check-token")
-    Observable<ResultGetToken> checkToken();
+    Observable<Object> checkToken();
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")
@@ -57,7 +63,11 @@ public interface UizaServiceV3 {
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")
-    Observable<ResultListEntity> getListAllEntity(@Query("metadataid") String metadataid);
+    Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid,
+                                                  @Query("limit") int limit,
+                                                  @Query("page") int page,
+                                                  @Query("orderBy") String orderBy,
+                                                  @Query("orderType") String orderType);
 
     //http://dev-docs.uizadev.io/#retrieve-an-entity
     @GET("/api/public/v3/media/entity")
@@ -66,4 +76,28 @@ public interface UizaServiceV3 {
     //http://dev-docs.uizadev.io/#search-entity
     @GET("/api/public/v3/media/entity/search")
     Observable<ResultListEntity> searchEntity(@Query("keyword") String keyword);
+
+    @POST("/api/public/v3/media/entity/playback/token")
+    Observable<ResultGetTokenStreaming> getTokenStreaming(@Body SendGetTokenStreaming sendGetTokenStreaming);
+
+    @GET("/api/private/v1/cdn/linkplay")
+    Observable<ResultGetLinkPlay> getLinkPlay(@Query("app_id") String appId,
+                                              @Query("entity_id") String entityId,
+                                              @Query("type_content") String typeContent);
+
+    @GET("/api/private/v1/cdn/live/linkplay")
+    Observable<ResultGetLinkPlay> getLinkPlayLive(@Query("app_id") String appId,
+                                                  @Query("stream_name") String streamName);
+
+    @GET("/api/public/v3/live/entity")
+    Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Query("limit") int limit,
+                                                            @Query("page") int page,
+                                                            @Query("orderBy") String orderBy,
+                                                            @Query("orderType") String orderType);
+
+    @GET("/api/private/v3/live/entity/tracking/current-view")
+    Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
+
+    @GET("/api/private/v3/live/entity/tracking/")
+    Observable<Object> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
 }

@@ -15,6 +15,8 @@ public class Constants {
     public static String ASSET_FILE_GIFT = "img/ic_gift.png";
 
     public static final int NOT_FOUND = -6969;
+    public static final String MENU_HOME_V3 = "Home V3";
+    public static final String MENU_LIVESTREAM = "Livestream";
 
     //public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     //public final static String URL_IMG_LONG = "https://c2.staticflickr.com/6/5476/29412311793_8067369e64_b.jpg";
@@ -67,6 +69,10 @@ public class Constants {
     public final static String PREFIXS = "https://";
     public final static String PREFIXS_SHORT = "https:";
 
+    public final static String URL_GET_LINK_PLAY_DEV = "https://dev-ucc.uizadev.io/";
+    public final static String URL_GET_LINK_PLAY_STAG = "https://stag-ucc.uiza.io/";
+    public final static String URL_GET_LINK_PLAY_PROD = "https://ucc.uiza.io/";
+
     public final static String URL_TRACKING_DEV = "https://dev-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
@@ -115,6 +121,7 @@ public class Constants {
     public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
     public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
     public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
+    public final static String FLOAT_CLICKED_FULLSCREEN_V3 = "FLOAT_CLICKED_FULLSCREEN_V3";
     public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
     public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
 

@@ -30,7 +30,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="API V2"
+                    android:text="API V2 (Deprecated)"
                     android:textSize="@dimen/txt_30" />
 
                 <Button
@@ -56,7 +56,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="Uiza Video Slide 2 (Beta)" />
+                    android:text="Uiza Video Slide 2 (Beta)"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout

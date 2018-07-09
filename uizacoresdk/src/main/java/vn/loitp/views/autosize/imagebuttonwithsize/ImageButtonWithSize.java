@@ -1,8 +1,6 @@
 package vn.loitp.views.autosize.imagebuttonwithsize;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
@@ -107,20 +105,35 @@ public class ImageButtonWithSize extends ImageButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int maskedAction = event.getActionMasked();
-        if (maskedAction == MotionEvent.ACTION_DOWN) {
-            setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
-        } else if (maskedAction == MotionEvent.ACTION_UP) {
-            clearColorTint();
+        if (isClickable()) {
+            int maskedAction = event.getActionMasked();
+            if (maskedAction == MotionEvent.ACTION_DOWN) {
+                //setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
+                this.setBackgroundResource(R.drawable.circle_effect);
+            } else if (maskedAction == MotionEvent.ACTION_UP) {
+                //clearColorTint();
+                this.setBackgroundResource(0);
+            }
+            //LAnimationUtil.play(this, Techniques.Pulse);
         }
         return super.onTouchEvent(event);
     }
 
-    public void setColorTint(int color) {
+    /*public void setColorTint(int color) {
         getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
 
     public void clearColorTint() {
         getDrawable().clearColorFilter();
-    }
+    }*/
+
+    /*@Override
+    protected void onFocusChanged(boolean gainFocus, int direction, @Nullable Rect previouslyFocusedRect) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+        if (gainFocus) {
+            this.setBackgroundResource(R.drawable.bt_rate);
+        } else {
+            this.setBackgroundResource(0);
+        }
+    }*/
 }

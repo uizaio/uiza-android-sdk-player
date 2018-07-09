@@ -7,7 +7,7 @@ package vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultRetrieveAnEntity {
 

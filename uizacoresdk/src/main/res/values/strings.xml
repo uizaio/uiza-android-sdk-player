@@ -38,10 +38,11 @@
     <string name="genres">Genres:</string>
     <string name="key_not_found">You must enter your accessKeyId and secretKeyId first</string>
     <string name="cannot_play_will_try">Cannot play, Uiza will try to play the next link...</string>
-    <string name="err_no_internet">No internet connection, please check your internet connection and restart.</string>
+    <string name="err_no_internet">No internet connection.</string>
     <string name="try_all_link_play_but_no_luck">Đã thử play tất cả các link nhưng đều không thành công</string>
     <string name="entity_cannot_be_null_or_empty">Entity cannot be null or empty</string>
     <string name="auth_or_app_id_is_null_or_empty">Error: auth or appId is null or empty</string>
+    <string name="no_token_streaming">Error: Token streaming cannot be found</string>
     <string name="no_link_play">This entity has no linkplay</string>
     <string name="cannot_get_detail_entity">Cannot get detail of this entity</string>
     <string name="no_caption">No captions are available for this video</string>

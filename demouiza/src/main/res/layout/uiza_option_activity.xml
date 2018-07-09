@@ -4,6 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/primaryColor">
 
     <ImageView
@@ -55,6 +56,66 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Select API Environment"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_15"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radio_environment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radio_environment_api_v3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/White"
+                    android:text="API V3 (android.uizadev.io)"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/radio_environment_dev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/White"
+                    android:text="API V2 (DEV) - Dericated"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/radio_environment_stag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/White"
+                    android:text="API V2 (STAG) - Dericated"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/radio_environment_prod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/White"
+                    android:text="API V2 DEMO () - Dericated"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_margin="@dimen/margin_30"
+                android:background="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Video can slide or not?"
                 android:textColor="@color/White"
                 android:textSize="@dimen/txt_15"
@@ -70,7 +131,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:checked="true"
                     android:text="Cannot slide"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
@@ -97,59 +157,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select API Environment"
-                android:textColor="@color/White"
-                android:textSize="@dimen/txt_15"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/radio_environment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/radio_environment_dev"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/White"
-                    android:checked="true"
-                    android:text="DEV (API V2)"
-                    android:textColor="@color/White"
-                    android:textSize="@dimen/txt_15"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/radio_environment_stag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/White"
-                    android:checked="true"
-                    android:text="STAG (API V2)"
-                    android:textColor="@color/White"
-                    android:textSize="@dimen/txt_15"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/radio_environment_prod"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/White"
-                    android:checked="true"
-                    android:text="DEMO (API V2)"
-                    android:textColor="@color/White"
-                    android:textSize="@dimen/txt_15"
-                    android:textStyle="bold" />
-            </RadioGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_1"
-                android:layout_margin="@dimen/margin_30"
-                android:background="@color/White" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Select Debug Mode"
                 android:textColor="@color/White"
                 android:textSize="@dimen/txt_15"
@@ -165,7 +172,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:checked="true"
                     android:text="Enable"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
@@ -176,7 +182,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:checked="true"
                     android:text="Disable"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
@@ -196,9 +201,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bt_login"
+        android:background="@drawable/bt_login_enable"
         android:text="START"
-        android:textColor="@drawable/text_black_white"
+        android:textColor="@color/White"
         android:textSize="@dimen/txt_30"
         android:textStyle="bold" />
 </RelativeLayout>

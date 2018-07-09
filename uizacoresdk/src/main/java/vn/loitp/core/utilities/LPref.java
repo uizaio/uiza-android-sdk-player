@@ -173,5 +173,17 @@ public class LPref {
         editor.apply();
     }
 
+    /*public static ResultGetToken getResultGetToken(Context context, Gson gson) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        String json = pref.getString(RESULT_GET_TOKEN, null);
+        return gson.fromJson(json, ResultGetToken.class);
+    }
+
+    public static void setResultGetToken(Context context, ResultGetToken resultGetToken, Gson gson) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(RESULT_GET_TOKEN, gson.toJson(resultGetToken));
+        editor.apply();
+    }*/
+
 
 }
