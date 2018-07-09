@@ -85,6 +85,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
+    private boolean isLivestream;
     //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
@@ -180,9 +181,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             return;
         }
-
-        //UizaUtil.stopServicePiPIfRunning(activity);
-
+        isLivestream = UizaData.getInstance().isEntityLivestream();
         this.callback = callback;
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -219,6 +218,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int countTryLinkPlayError = 0;
 
     public void tryNextLinkPlay() {
+        if (isLivestream) {
+            //if entity is livestreaming, dont try to next link play
+            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> return");
+            return;
+        }
         countTryLinkPlayError++;
         if (Constants.IS_DEBUG) {
             LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
@@ -305,17 +309,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                         });
                     } else {
                         LLog.d(TAG, "checkToSetUp else err_no_internet");
-                        /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
-                            @Override
-                            public void onClick1() {
-                                handleError(new Exception(activity.getString(R.string.err_no_internet)));
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                handleError(new Exception(activity.getString(R.string.err_no_internet)));
-                            }
-                        });*/
                         showTvMsg(activity.getString(R.string.err_no_internet));
                     }
                     return;
@@ -518,7 +511,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        LLog.d(TAG, "initData");
+        LLog.d(TAG, "initData linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -995,7 +988,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void getLinkPlay(String tokenStreaming) {
-        boolean isLivestream = UizaData.getInstance().isEntityLivestream();
         LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
