@@ -971,7 +971,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                //LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
+                LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
                 getLinkPlay(tokenStreaming);
             }
 
