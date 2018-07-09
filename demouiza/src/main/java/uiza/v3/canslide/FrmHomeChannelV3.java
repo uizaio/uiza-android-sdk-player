@@ -52,9 +52,12 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
 
+    private boolean isLivestream;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isLivestream = HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_LIVESTREAM);
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         if (Constants.IS_DEBUG) {
@@ -202,80 +205,86 @@ public class FrmHomeChannelV3 extends BaseFragment {
             tvMsg.setVisibility(View.GONE);
         }
 
-        String metadataId = "";
-        if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
-            //do nothing
+        //check if is livestream true -> get data by using api retrieveALiveEvent
+        //else call getListAllEntity
+        if (isLivestream) {
+
         } else {
-            LLog.d(TAG, "!HOME category");
-            metadataId = HomeDataV3.getInstance().getData().getId();
+            String metadataId = "";
+            if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
+                //do nothing
+            } else {
+                LLog.d(TAG, "!HOME category");
+                metadataId = HomeDataV3.getInstance().getData().getId();
+            }
+            LLog.d(TAG, "getData metadataId: " + metadataId);
+
+            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+                @Override
+                public void onSuccess(ResultListEntity result) {
+                    //LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                    if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                        if (tvMsg.getVisibility() != View.VISIBLE) {
+                            tvMsg.setVisibility(View.VISIBLE);
+                            tvMsg.setText(getString(R.string.empty_list));
+                            placeHolderView.setVisibility(View.GONE);
+                        }
+                        if (!isCallFromLoadMore) {
+                            LUIUtil.hideProgressBar(progressBar);
+                        } else {
+                            isLoadMoreCalling = false;
+                        }
+                        return;
+                    }
+                    if (totalPage == Integer.MAX_VALUE) {
+                        int totalItem = (int) result.getMetadata().getTotal();
+                        float ratio = (float) (totalItem / limit);
+                        LLog.d(TAG, "ratio: " + ratio);
+                        if (ratio == 0) {
+                            totalPage = (int) ratio;
+                        } else if (ratio > 0) {
+                            totalPage = (int) ratio + 1;
+                        } else {
+                            totalPage = (int) ratio;
+                        }
+                        LLog.d(TAG, ">>>totalPage: " + totalPage);
+                    }
+
+                    List<Data> dataList = result.getData();
+                    if (dataList == null || dataList.isEmpty()) {
+                        if (tvMsg.getVisibility() != View.VISIBLE) {
+                            tvMsg.setVisibility(View.VISIBLE);
+                            tvMsg.setText(getString(R.string.empty_list));
+                            placeHolderView.setVisibility(View.GONE);
+                        }
+                        if (!isCallFromLoadMore) {
+                            LUIUtil.hideProgressBar(progressBar);
+                        } else {
+                            isLoadMoreCalling = false;
+                        }
+                    }
+                    setupData(dataList, isCallFromLoadMore);
+                }
+
+                @Override
+                public void onFail(Throwable e) {
+                    LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                    if (tvMsg.getVisibility() != View.VISIBLE) {
+                        tvMsg.setVisibility(View.VISIBLE);
+                        if (e != null && e.getMessage() != null) {
+                            tvMsg.setText("onFail " + e.getMessage());
+                        }
+                        placeHolderView.setVisibility(View.GONE);
+                    }
+                    if (!isCallFromLoadMore) {
+                        LUIUtil.hideProgressBar(progressBar);
+                    } else {
+                        isLoadMoreCalling = false;
+                    }
+                }
+            });
         }
-        LLog.d(TAG, "getData metadataId: " + metadataId);
-
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                //LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    if (tvMsg.getVisibility() != View.VISIBLE) {
-                        tvMsg.setVisibility(View.VISIBLE);
-                        tvMsg.setText(getString(R.string.empty_list));
-                        placeHolderView.setVisibility(View.GONE);
-                    }
-                    if (!isCallFromLoadMore) {
-                        LUIUtil.hideProgressBar(progressBar);
-                    } else {
-                        isLoadMoreCalling = false;
-                    }
-                    return;
-                }
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    LLog.d(TAG, "ratio: " + ratio);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                    LLog.d(TAG, ">>>totalPage: " + totalPage);
-                }
-
-                List<Data> dataList = result.getData();
-                if (dataList == null || dataList.isEmpty()) {
-                    if (tvMsg.getVisibility() != View.VISIBLE) {
-                        tvMsg.setVisibility(View.VISIBLE);
-                        tvMsg.setText(getString(R.string.empty_list));
-                        placeHolderView.setVisibility(View.GONE);
-                    }
-                    if (!isCallFromLoadMore) {
-                        LUIUtil.hideProgressBar(progressBar);
-                    } else {
-                        isLoadMoreCalling = false;
-                    }
-                }
-                setupData(dataList, isCallFromLoadMore);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
-                if (tvMsg.getVisibility() != View.VISIBLE) {
-                    tvMsg.setVisibility(View.VISIBLE);
-                    if (e != null && e.getMessage() != null) {
-                        tvMsg.setText("onFail " + e.getMessage());
-                    }
-                    placeHolderView.setVisibility(View.GONE);
-                }
-                if (!isCallFromLoadMore) {
-                    LUIUtil.hideProgressBar(progressBar);
-                } else {
-                    isLoadMoreCalling = false;
-                }
-            }
-        });
     }
 
     private void swipeToRefresh() {
