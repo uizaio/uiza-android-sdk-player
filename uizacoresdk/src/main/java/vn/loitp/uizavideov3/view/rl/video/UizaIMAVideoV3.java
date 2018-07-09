@@ -125,7 +125,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private VerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
 
-    private TextView tvLive;
+    private RelativeLayout rlLiveInfo;
+    private TextView tvLiveView;
+    private TextView tvLiveTime;
 
     private LinearLayout debugLayout;
     private LinearLayout debugRootView;
@@ -512,7 +514,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             debugLayout.setVisibility(View.GONE);
         }
 
-        tvLive = (TextView) playerView.findViewById(R.id.tv_live);
+        rlLiveInfo = (RelativeLayout) playerView.findViewById(R.id.rl_live_info);
+        tvLiveView = (TextView) playerView.findViewById(R.id.tv_live_view);
+        tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
 
         //onclick
         exoFullscreenIcon.setOnClickListener(this);
@@ -840,7 +844,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoPlay, false, 0);
             changeVisibilitiesOfButton(exoPause, false, 0);
 
-            tvLive.setVisibility(VISIBLE);
+            rlLiveInfo.setVisibility(VISIBLE);
+            getInfoLivestream();
         } else {
             exoCast.setVisibility(GONE);
             rlTimeBar.setVisibility(VISIBLE);
@@ -858,7 +863,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
             changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
 
-            tvLive.setVisibility(GONE);
+            rlLiveInfo.setVisibility(GONE);
         }
     }
 
@@ -1314,5 +1319,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (rlMsg.getVisibility() != GONE) {
             rlMsg.setVisibility(GONE);
         }
+    }
+
+    private void getInfoLivestream() {
+        tvLiveView.setText("69");
+        tvLiveTime.setText("06:09");
     }
 }
