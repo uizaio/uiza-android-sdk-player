@@ -470,7 +470,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
-        //TODO exoHearing works fine, but QC dont want show it, fuck QC team
+        //TODO exoHearing works fine, but QC dont want to show it, fuck QC team
         exoHearing.setVisibility(GONE);
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
@@ -772,14 +772,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
-                setExoPictureInPictureVisibility(GONE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
 
                 setMarginPreviewTimeBarLayout(true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
-                setExoPictureInPictureVisibility(VISIBLE);
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
 
                 setMarginPreviewTimeBarLayout(false);
@@ -981,7 +979,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (activity == null) {
             return;
         }
-        setExoPictureInPictureVisibility(GONE);
         Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManagerV3.getLinkPlay());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
