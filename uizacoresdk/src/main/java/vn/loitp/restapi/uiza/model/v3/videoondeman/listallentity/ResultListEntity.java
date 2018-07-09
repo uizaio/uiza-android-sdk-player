@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+
 public class ResultListEntity {
 
     @SerializedName("data")

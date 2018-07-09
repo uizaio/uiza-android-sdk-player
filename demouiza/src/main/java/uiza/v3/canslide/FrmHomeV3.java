@@ -226,41 +226,10 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     mDrawerLayout.closeDrawers();
 
                     LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
-
-
-                    /*BaseFragment baseFragment = null;
-                    if (dataList.get(pos).getName().equals(Constants.MENU_LIVESTREAM)) {
-                        LLog.d(TAG, "MENU_LIVESTREAM");
-                        baseFragment = new FrmHomeLivestreamV3();
-                        ((FrmHomeLivestreamV3) baseFragment).setCallback(new EntityItemLiveV3.Callback() {
-                            @Override
-                            public void onClick(vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data data, int position) {
-                                onClickVideo(data, position);
-                            }
-
-                            @Override
-                            public void onPosition(int position) {
-                                //do nothing
-                            }
-                        });
-                    } else {
-                        baseFragment = new FrmHomeChannelV3();
-                        ((FrmHomeChannelV3) baseFragment).setCallback(new EntityItemV3.Callback() {
-                            @Override
-                            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
-                                onClickVideo(data, position);
-                            }
-
-                            @Override
-                            public void onPosition(int position) {
-                                //do nothing
-                            }
-                        });
-                    }*/
                     FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
                     frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
                         @Override
-                        public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+                        public void onClick(Data data, int position) {
                             onClickVideo(data, position);
                         }
 
@@ -281,7 +250,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
         frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
             @Override
-            public void onClick(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
+            public void onClick(Data data, int position) {
                 onClickVideo(data, position);
             }
 
@@ -293,13 +262,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
     }
 
-    private void onClickVideo(vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.Data data, int position) {
-        //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        LPref.setClickedPip(getActivity(), false);
-        ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
-    }
-
-    private void onClickVideo(vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Data data, int position) {
+    private void onClickVideo(Data data, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         LPref.setClickedPip(getActivity(), false);
         ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
