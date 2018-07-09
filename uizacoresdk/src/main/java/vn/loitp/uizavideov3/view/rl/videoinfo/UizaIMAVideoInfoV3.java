@@ -164,7 +164,11 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            tvVideoName.setText(data.getName());
+            if (data.getName() == null || data.getName().isEmpty()) {
+                tvVideoName.setText(UizaData.getInstance().getUizaInput().getEntityName());
+            } else {
+                tvVideoName.setText(data.getName());
+            }
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
         }
