@@ -41,6 +41,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
+import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
@@ -62,6 +63,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
@@ -139,6 +141,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ResultRetrieveAnEntity mResultRetrieveAnEntity;
     private boolean isResultGetLinkPlayDone;
     private boolean isResultRetrieveAnEntityDone;
+
+    private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
+    private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -378,8 +383,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             ivVideoCover.setVisibility(GONE);
             tvLiveTime.setText("-");
             tvLiveView.setText("-");
-            updateLiveInfoCurrentView(100);
-            updateLiveInfoTimeStartLive(100);
+            updateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+            updateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -1331,12 +1336,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void updateLiveInfoCurrentView(int durationDelay) {
+    private void updateLiveInfoCurrentView(final int durationDelay) {
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
-                if (uizaPlayerManagerV3 != null && playerView != null && playerView.isControllerVisible()) {
+                if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
                     String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
@@ -1347,47 +1352,50 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             if (result != null && result.getData() != null) {
                                 tvLiveView.setText(result.getData().getWatchnow() + "");
                             }
-                            updateLiveInfoCurrentView(15000);
+                            updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
 
                         @Override
                         public void onFail(Throwable e) {
                             //LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
-                            updateLiveInfoCurrentView(15000);
+                            updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
                     });
                 } else {
                     //LLog.d(TAG, "updateLiveInfoCurrentView !isShowing");
-                    updateLiveInfoCurrentView(15000);
+                    updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                 }
             }
         });
     }
 
-    private void updateLiveInfoTimeStartLive(int durationDelay) {
+    private void updateLiveInfoTimeStartLive(final int durationDelay) {
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
 
             @Override
             public void doAfter(int mls) {
-                if (uizaPlayerManagerV3 != null && playerView != null && playerView.isControllerVisible()) {
+                if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
                     String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
                     String feedId = UizaDataV3.getInstance().getUizaInputV3().getData().getLastFeedId();
-                    activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<Object>() {
+                    activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                         @Override
-                        public void onSuccess(Object result) {
+                        public void onSuccess(ResultTimeStartLive result) {
                             LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
-                            updateLiveInfoTimeStartLive(15000);
+                            if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
+                                tvLiveTime.setText(LDateUtils.getDateWithoutTime(result.getData().getStartTime()));
+                            }
+                            updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
 
                         @Override
                         public void onFail(Throwable e) {
                             LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
-                            updateLiveInfoTimeStartLive(15000);
+                            updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
                     });
                 } else {
-                    updateLiveInfoTimeStartLive(15000);
+                    updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                 }
             }
         });

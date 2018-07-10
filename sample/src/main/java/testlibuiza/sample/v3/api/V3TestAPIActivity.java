@@ -21,6 +21,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
@@ -525,11 +526,12 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void getTimeStartLive() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
-        subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<Object>() {
+        subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultTimeStartLive result) {
                 LLog.d(TAG, "getTimeStartLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }
