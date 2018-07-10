@@ -17,19 +17,23 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -38,7 +42,8 @@ import vn.loitp.uizavideo.view.util.UizaData;
 public class UizaIMAVideoInfoV3 extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
-    //private Gson gson = new Gson();
+    //TODO remove
+    private Gson gson = new Gson();
     private ProgressBar progressBar;
     private TextView tvVideoName;
     private TextView tvVideoTime;
@@ -124,7 +129,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
             @Override
             public void onClickItemBottom(Item item, int position) {
-                if (UizaData.getInstance().isSettingPlayer()) {
+                if (UizaDataV3.getInstance().isSettingPlayer()) {
                     return;
                 }
                 itemList.clear();
@@ -157,6 +162,11 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
             return;
         }
         data = resultRetrieveAnEntity.getData();
+        if (data == null || data.getId() == null || data.getId() == null) {
+            LLog.d(TAG, "setup data is null");
+            data = LPref.getData(activity, gson);
+        }
+        LLog.d(TAG, "setup " + gson.toJson(data));
         updateUI();
     }
 
@@ -164,18 +174,17 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            if (data.getName() == null || data.getName().isEmpty()) {
-                tvVideoName.setText(UizaData.getInstance().getUizaInput().getEntityName());
-            } else {
-                tvVideoName.setText(data.getName());
-            }
+            tvVideoName.setText(data.getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
         }
+        if (data.getCreatedAt() != null && !data.getCreatedAt().isEmpty()) {
+            tvVideoTime.setText(LDateUtils.getDateWithoutTime(data.getCreatedAt()));
+        } else {
+            tvVideoTime.setText(nullS);
+        }
         //TODO
-        tvVideoTime.setText("Dummy Time");
-        //TODO
-        tvVideoRate.setText("Dummy 12+");
+        tvVideoRate.setText("12+");
 
         try {
             tvVideoDescription.setText(data.getDescription().isEmpty() ? data.getShortDescription().isEmpty() ? emptyS : data.getShortDescription() : data.getDescription());

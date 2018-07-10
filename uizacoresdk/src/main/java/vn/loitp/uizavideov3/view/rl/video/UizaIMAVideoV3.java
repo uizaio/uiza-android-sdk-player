@@ -820,11 +820,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void updateUI() {
         boolean isTablet = LDeviceUtil.isTablet(activity);
         LLog.d(TAG, "updateUI isTablet " + isTablet);
-        //TODO
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            exoPictureInPicture.setVisibility(VISIBLE);
+            exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
