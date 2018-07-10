@@ -41,7 +41,7 @@ public class SplashActivityV3 extends BaseActivity {
         LPref.setSlideUizaVideoEnabled(activity, true);
 
         //TODO init tracking dev (with correct domain)
-        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        RestClientTracking.init(Constants.URL_TRACKING_STAG);
 
         //TODO init domain get link play (customer will always production domain)
         RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);

@@ -376,7 +376,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
-            getInfoLivestream(100);
+            tvLiveTime.setText("-");
+            tvLiveView.setText("-");
+            updateLiveInfoCurrentView(100);
+            updateLiveInfoTimeStartLive(100);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -1328,41 +1331,65 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void getInfoLivestream(int durationDelay) {
+    private void updateLiveInfoCurrentView(int durationDelay) {
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                updateLiveInfoCurrentView();
-                tvLiveTime.setText("06:09");
+                //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
+                if (uizaPlayerManagerV3 != null && playerView != null && playerView.isControllerVisible()) {
+                    //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
+                    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+                    String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+                    activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+                        @Override
+                        public void onSuccess(ResultGetViewALiveFeed result) {
+                            //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                            if (result != null && result.getData() != null) {
+                                tvLiveView.setText(result.getData().getWatchnow() + "");
+                            }
+                            updateLiveInfoCurrentView(15000);
+                        }
+
+                        @Override
+                        public void onFail(Throwable e) {
+                            //LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
+                            updateLiveInfoCurrentView(15000);
+                        }
+                    });
+                } else {
+                    //LLog.d(TAG, "updateLiveInfoCurrentView !isShowing");
+                    updateLiveInfoCurrentView(15000);
+                }
             }
         });
     }
 
-    private void updateLiveInfoCurrentView() {
-        //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
-        if (uizaPlayerManagerV3 != null && playerView.isControllerVisible()) {
-            LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-            String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-            activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
-                @Override
-                public void onSuccess(ResultGetViewALiveFeed result) {
-                    LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
-                    if (result != null && result.getData() != null) {
-                        tvLiveView.setText(result.getData().getWatchnow() + "");
-                    }
-                    getInfoLivestream(15000);
-                }
+    private void updateLiveInfoTimeStartLive(int durationDelay) {
+        LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
 
-                @Override
-                public void onFail(Throwable e) {
-                    LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
-                    getInfoLivestream(15000);
+            @Override
+            public void doAfter(int mls) {
+                if (uizaPlayerManagerV3 != null && playerView != null && playerView.isControllerVisible()) {
+                    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+                    String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+                    String feedId = UizaDataV3.getInstance().getUizaInputV3().getData().getLastFeedId();
+                    activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<Object>() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
+                            updateLiveInfoTimeStartLive(15000);
+                        }
+
+                        @Override
+                        public void onFail(Throwable e) {
+                            LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
+                            updateLiveInfoTimeStartLive(15000);
+                        }
+                    });
+                } else {
+                    updateLiveInfoTimeStartLive(15000);
                 }
-            });
-        } else {
-            LLog.d(TAG, "updateLiveInfoCurrentView !isShowing");
-            getInfoLivestream(15000);
-        }
+            }
+        });
     }
 }
