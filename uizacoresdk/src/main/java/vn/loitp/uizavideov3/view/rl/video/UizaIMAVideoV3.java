@@ -191,7 +191,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             return;
         }
-        isLivestream = UizaData.getInstance().isEntityLivestream();
+        //TODO
+        isLivestream = false;
         this.callback = callback;
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -822,10 +823,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void updateUI() {
         boolean isTablet = LDeviceUtil.isTablet(activity);
         LLog.d(TAG, "updateUI isTablet " + isTablet);
+        //TODO
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            exoPictureInPicture.setVisibility(GONE);
+            exoPictureInPicture.setVisibility(VISIBLE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
@@ -1003,9 +1005,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManagerV3.getLinkPlay());
-        intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
+        /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, UizaData.getInstance().getUizaInput().getEntityId());
         intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, UizaData.getInstance().getUizaInput().getEntityCover());
-        intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getUizaInput().getEntityName());
+        intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, UizaData.getInstance().getUizaInput().getEntityName());*/
         activity.startService(intent);
         if (callback != null) {
             callback.onClickPip(intent);

@@ -299,7 +299,7 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
 
     private void onClickVideo(Data data, int position) {
         //LLog.d(TAG, "onClickItem at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
-        ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
+        ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 
     private void swipeToRefresh() {
