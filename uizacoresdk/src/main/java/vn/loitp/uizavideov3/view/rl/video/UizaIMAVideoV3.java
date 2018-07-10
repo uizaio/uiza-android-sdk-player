@@ -1381,9 +1381,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                         @Override
                         public void onSuccess(ResultTimeStartLive result) {
-                            LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
+                            //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
-                                tvLiveTime.setText(LDateUtils.getDateWithoutTime(result.getData().getStartTime()));
+                                //LLog.d(TAG, "startTime " + result.getData().getStartTime());
+                                long startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
+                                //LLog.d(TAG, "startTime " + startTime);
+                                long now = System.currentTimeMillis();
+                                //LLog.d(TAG, "now: " + now);
+                                long duration = now - startTime;
+                                //LLog.d(TAG, "duration " + duration);
+                                String s = LDateUtils.convertMlscondsToHMmSs(duration);
+                                //LLog.d(TAG, "s " + s);
+                                tvLiveTime.setText(s);
                             }
                             updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
