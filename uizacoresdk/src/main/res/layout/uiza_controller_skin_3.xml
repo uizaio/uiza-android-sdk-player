@@ -130,6 +130,64 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_live_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_live"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding_5"
+            android:paddingRight="@dimen/padding_5"
+            android:text="@string/live"
+            android:textColor="@color/Red"
+            android:textSize="@dimen/txt_10" />
+
+        <ImageView
+            android:layout_width="@dimen/w_15"
+            android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_live_time"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/baseline_access_time_black_48dp"
+            android:tint="@color/White" />
+
+        <TextView
+            android:id="@+id/tv_live_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_toLeftOf="@+id/iv_live_view"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_10" />
+
+        <ImageView
+            android:id="@+id/iv_live_view"
+            android:layout_width="@dimen/w_15"
+            android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_live_view"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/baseline_visibility_black_48dp"
+            android:tint="@color/White" />
+
+        <TextView
+            android:id="@+id/tv_live_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_10" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@id/ll_mid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

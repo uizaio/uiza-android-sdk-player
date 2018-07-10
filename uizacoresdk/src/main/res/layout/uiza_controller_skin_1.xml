@@ -110,9 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_top"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/padding_50"
-        android:paddingRight="@dimen/padding_50">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,8 +122,7 @@
             android:paddingRight="@dimen/padding_5"
             android:text="@string/live"
             android:textColor="@color/Red"
-            android:textSize="@dimen/txt_12"
-            android:textStyle="bold" />
+            android:textSize="@dimen/txt_10" />
 
         <ImageView
             android:layout_width="@dimen/w_15"
@@ -141,11 +138,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_5"
             android:layout_toLeftOf="@+id/iv_live_view"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_12"
-            android:textStyle="bold" />
+            android:textSize="@dimen/txt_10" />
 
         <ImageView
             android:id="@+id/iv_live_view"
@@ -164,8 +160,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_12"
-            android:textStyle="bold" />
+            android:textSize="@dimen/txt_10" />
     </RelativeLayout>
 
     <LinearLayout

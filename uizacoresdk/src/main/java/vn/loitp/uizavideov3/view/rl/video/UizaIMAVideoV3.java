@@ -411,7 +411,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
         updateUIEachSkin();
-        setMarginPreviewTimeBarLayout(false);
+        setMarginPreviewTimeBarLayout();
+        setMarginRlLiveInfo();
     }
 
     private void addPlayerView() {
@@ -490,9 +491,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
         exoCast = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cast);
-
-        //TODO iplm cast
-        exoCast.setVisibility(GONE);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -791,24 +789,30 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
-
-                setMarginPreviewTimeBarLayout(true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
-
-                setMarginPreviewTimeBarLayout(false);
             }
         }
+        setMarginPreviewTimeBarLayout();
+        setMarginRlLiveInfo();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
     }
 
-    private void setMarginPreviewTimeBarLayout(boolean isLandscape) {
+    private void setMarginPreviewTimeBarLayout() {
         if (isLandscape) {
             LUIUtil.setMarginDimen(previewTimeBarLayout, 24, 0, 24, 0);
         } else {
             LUIUtil.setMarginDimen(previewTimeBarLayout, 15, 0, 15, 0);
+        }
+    }
+
+    private void setMarginRlLiveInfo() {
+        if (isLandscape) {
+            LUIUtil.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
+        } else {
+            LUIUtil.setMarginDimen(rlLiveInfo, 5, 0, 5, 0);
         }
     }
 
