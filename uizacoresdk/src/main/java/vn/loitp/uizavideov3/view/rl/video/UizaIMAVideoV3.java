@@ -91,7 +91,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
-    private PlayerView playerView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
     //play controller
@@ -377,6 +376,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
+            getInfoLivestream(100);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -416,9 +416,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginRlLiveInfo();
     }
 
+    private UizaPlayerView playerView;
+
     private void addPlayerView() {
         //PlayerView playerView = null;
-        UizaPlayerView playerView = null;
+        playerView = null;
         switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
@@ -848,7 +850,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoPause, false, 0);
 
             rlLiveInfo.setVisibility(VISIBLE);
-            getInfoLivestream(100);
         } else {
             exoCast.setVisibility(GONE);
             rlTimeBar.setVisibility(VISIBLE);
@@ -1328,7 +1329,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void getInfoLivestream(int durationDelay) {
-        LLog.d(TAG, "getInfoLivestream " + System.currentTimeMillis());
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
@@ -1339,23 +1339,30 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateLiveInfoCurrentView() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-        activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
-            @Override
-            public void onSuccess(ResultGetViewALiveFeed result) {
-                LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
-                if (result != null && result.getData() != null) {
-                    tvLiveView.setText(result.getData().getWatchnow() + "");
+        //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
+        if (uizaPlayerManagerV3 != null && playerView.isControllerVisible()) {
+            LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
+            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+            activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+                @Override
+                public void onSuccess(ResultGetViewALiveFeed result) {
+                    LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                    if (result != null && result.getData() != null) {
+                        tvLiveView.setText(result.getData().getWatchnow() + "");
+                    }
+                    getInfoLivestream(15000);
                 }
-                getInfoLivestream(15000);
-            }
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
-                getInfoLivestream(15000);
-            }
-        });
+                @Override
+                public void onFail(Throwable e) {
+                    LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
+                    getInfoLivestream(15000);
+                }
+            });
+        } else {
+            LLog.d(TAG, "updateLiveInfoCurrentView !isShowing");
+            getInfoLivestream(15000);
+        }
     }
 }
