@@ -912,10 +912,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //on seekbar change
     @Override
     public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
-        if (seekBar == null) {
+        LLog.d(TAG, "onProgressChanged progress: " + progress);
+        if (seekBar == null || !isLandscape) {
             return;
         }
-
         if (seekBar == seekbarVolume) {
             if (isSetProgressSeekbarFirst) {
                 exoIvPreview.setVisibility(INVISIBLE);
@@ -958,6 +958,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         //LLog.d(TAG, "onStartTrackingTouch");
+        if (!isLandscape) {
+            return;
+        }
         LUIUtil.setTintSeekbar(seekBar, Color.WHITE);
         exoIvPreview.setVisibility(VISIBLE);
         if (llMidSub != null) {
@@ -968,6 +971,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         //LLog.d(TAG, "onStopTrackingTouch");
+        if (!isLandscape) {
+            return;
+        }
         LUIUtil.setTintSeekbar(seekBar, Color.TRANSPARENT);
         exoIvPreview.setVisibility(INVISIBLE);
         if (llMidSub != null) {
