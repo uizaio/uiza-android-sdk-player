@@ -191,8 +191,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             return;
         }
-        //TODO
-        isLivestream = false;
+        isLivestream = UizaDataV3.getInstance().getUizaInputV3().isLivestream();
+        LLog.d(TAG, "isLivestream " + isLivestream);
         this.callback = callback;
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
