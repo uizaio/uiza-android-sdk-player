@@ -333,7 +333,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getUizaInput().getEntityCover());
+            //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getUizaInputV3().getEntityCover());
             LImageUtil.load(activity, UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL : Constants.PREFIXS + UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
         }
     }

@@ -24,6 +24,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId;
@@ -91,6 +92,7 @@ public class SplashActivityV3 extends BaseActivity {
             return;
         }
         UizaData.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
         LPref.setToken(activity, token);
         intent = new Intent(activity, HomeV3CanSlideActivity.class);
         if (intent != null) {

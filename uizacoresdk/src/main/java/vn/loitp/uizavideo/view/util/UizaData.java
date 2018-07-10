@@ -15,7 +15,6 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 
 /**
  * Created by LENOVO on 4/28/2018.
@@ -40,16 +39,6 @@ public class UizaData {
 
     public void setCurrentPlayerId(String currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
-    }
-
-    private boolean isEntityLivestream;
-
-    public boolean isEntityLivestream() {
-        return isEntityLivestream;
-    }
-
-    public void setEntityLivestream(boolean entityLivestream) {
-        isEntityLivestream = entityLivestream;
     }
 
     private List<UizaInput> uizaInputList = new ArrayList<>();
@@ -115,11 +104,11 @@ public class UizaData {
         }*/
     }
 
-    public void removeLastUizaInput() {
+    /*public void removeLastUizaInput() {
         if (uizaInputList != null && !uizaInputList.isEmpty()) {
             uizaInputList.remove(uizaInputList.size() - 1);
         }
-    }
+    }*/
 
     public void clear() {
         uizaInput = null;
@@ -192,12 +181,12 @@ public class UizaData {
         return uizaTracking;
     }
 
-    public UizaTracking createTrackingInputV3(Context context, String eventType) {
+    /*public UizaTracking createTrackingInputV3(Context context, String eventType) {
         return createTrackingInputV3(context, "0", eventType);
-    }
+    }*/
 
     //playerId id of skin
-    public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
+    /*public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
         ResultGetToken resultGetToken = LPref.getResultGetToken(context);
@@ -254,7 +243,7 @@ public class UizaData {
             LLog.d(TAG, "createTrackingInput " + gson.toJson(uizaTracking));
         }
         return uizaTracking;
-    }
+    }*/
 
     //dialog share
     private List<ResolveInfo> resolveInfoList;

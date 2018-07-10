@@ -31,8 +31,8 @@ import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideov3.view.manager.FloatUizaPlayerManagerV3;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 /**
@@ -81,10 +81,10 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
             @Override
             public void doAfter(int mls) {
                 //track event eventype display
-                trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), UizaData.EVENT_TYPE_DISPLAY));
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_DISPLAY));
 
                 //track event plays_requested
-                trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), UizaData.EVENT_TYPE_PLAYS_REQUESTED));
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED));
             }
         });*/
     }
@@ -164,7 +164,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         //track event view (after video is played 5s)
         if (s == 5) {
             //LLog.d(TAG, "onVideoProgress -> track view");
-            trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW));
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW));
         }
 
         if (oldPercent == percent) {
@@ -173,13 +173,13 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
         if (percent == Constants.PLAYTHROUGH_25) {
-            trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_50) {
-            trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_75) {
-            trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
         } else if (percent == Constants.PLAYTHROUGH_100) {
-            trackUiza(UizaData.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
         }
     }
 
@@ -257,10 +257,8 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         if (ivVideoCover.getVisibility() != VISIBLE) {
             ivVideoCover.setVisibility(VISIBLE);
         }
-        //LLog.d(TAG, "setVideoCover: " + UizaData.getInstance().getEntityCover());
-        //ivVideoCover.setBackgroundColor(LStoreUtil.getRandomColor());
-        LImageUtil.load(getContext(), UizaData.getInstance().getUizaInput().getEntityCover() == null ? Constants.URL_IMG_THUMBNAIL :
-                UizaData.getInstance().getUizaInput().getEntityCover(), ivVideoCover, R.drawable.uiza);
+        LImageUtil.load(getContext(), UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL :
+                UizaDataV3.getInstance().getUizaInputV3().getData().getName(), ivVideoCover, R.drawable.uiza);
     }
 
     public void removeVideoCover() {

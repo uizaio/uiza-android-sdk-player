@@ -28,7 +28,6 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRet
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -61,7 +60,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         isLivestream = HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_LIVESTREAM);
-        UizaData.getInstance().setEntityLivestream(isLivestream);
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         if (Constants.IS_DEBUG) {
