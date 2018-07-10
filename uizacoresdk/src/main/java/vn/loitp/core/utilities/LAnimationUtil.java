@@ -1,6 +1,8 @@
 package vn.loitp.core.utilities;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +14,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import loitp.core.R;
+import vn.loitp.core.common.Constants;
 
 /**
  * Created by www.muathu@gmail.com on 6/9/2017.
@@ -115,5 +118,22 @@ public class LAnimationUtil {
     public static void slideInUp(Context context, View view) {
         Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_up);
         view.startAnimation(slideDown);
+    }
+
+    //This will make your View pulsate up to 1.2 its size and back, repeatedly.
+    public static void pulse(View view) {
+        if (view == null) {
+            return;
+        }
+        view.clearAnimation();
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                view,
+                PropertyValuesHolder.ofFloat("scaleX", 1.5f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.5f));
+        scaleDown.setDuration(Constants.ANIMATION_DURATION);
+        //scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+        scaleDown.setRepeatCount(2);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+        scaleDown.start();
     }
 }

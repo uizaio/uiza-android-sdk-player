@@ -134,4 +134,5 @@ public class Constants {
 
     public static final int RATIO_LAND = 16;
     public static final int RATIO_PORT = 12;
+    public static final int ANIMATION_DURATION = 200;
 }

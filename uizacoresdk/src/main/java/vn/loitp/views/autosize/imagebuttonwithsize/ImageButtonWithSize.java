@@ -2,10 +2,8 @@ package vn.loitp.views.autosize.imagebuttonwithsize;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.widget.ImageButton;
 
-import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
@@ -103,7 +101,7 @@ public class ImageButtonWithSize extends ImageButton {
         invalidate();
     }
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isClickable()) {
             int maskedAction = event.getActionMasked();
@@ -114,10 +112,10 @@ public class ImageButtonWithSize extends ImageButton {
                 //clearColorTint();
                 this.setBackgroundResource(0);
             }
-            //LAnimationUtil.play(this, Techniques.Pulse);
+            //LDeviceUtil.vibrate(getContext(), 100);
         }
         return super.onTouchEvent(event);
-    }
+    }*/
 
     /*public void setColorTint(int color) {
         getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
