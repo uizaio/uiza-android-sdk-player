@@ -1,9 +1,7 @@
 package vn.loitp.uizavideo.view.util;
 
-import vn.loitp.core.common.Constants;
-
 /**
- * Created by LENOVO on 5/18/2018.
+ * Created by loitp on 5/18/2018.
  */
 
 public class UizaInput {
