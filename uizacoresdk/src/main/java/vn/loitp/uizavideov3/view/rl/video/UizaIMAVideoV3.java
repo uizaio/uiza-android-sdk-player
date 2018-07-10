@@ -62,6 +62,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -847,7 +848,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoPause, false, 0);
 
             rlLiveInfo.setVisibility(VISIBLE);
-            getInfoLivestream();
+            getInfoLivestream(100);
         } else {
             exoCast.setVisibility(GONE);
             rlTimeBar.setVisibility(VISIBLE);
@@ -1326,8 +1327,35 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void getInfoLivestream() {
-        tvLiveView.setText("69");
-        tvLiveTime.setText("06:09");
+    private void getInfoLivestream(int durationDelay) {
+        LLog.d(TAG, "getInfoLivestream " + System.currentTimeMillis());
+        LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                updateLiveInfoCurrentView();
+                tvLiveTime.setText("06:09");
+            }
+        });
+    }
+
+    private void updateLiveInfoCurrentView() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+        activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+            @Override
+            public void onSuccess(ResultGetViewALiveFeed result) {
+                LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                if (result != null && result.getData() != null) {
+                    tvLiveView.setText(result.getData().getWatchnow() + "");
+                }
+                getInfoLivestream(15000);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
+                getInfoLivestream(15000);
+            }
+        });
     }
 }
