@@ -179,6 +179,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void init(Callback callback) {
+        LLog.d(TAG, "init");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaDataV3.getInstance().getUizaInputV3().getData().getId() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getId().isEmpty()) {
@@ -293,6 +294,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
+        LLog.d(TAG, "checkToSetUp");
         if (isResultGetLinkPlayDone && isResultRetrieveAnEntityDone) {
             if (mResultGetLinkPlay != null && mResultRetrieveAnEntity != null) {
                 //LLog.d(TAG, "checkToSetUp if");
@@ -454,6 +456,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUIEachSkin() {
+        LLog.d(TAG, "updateUIEachSkin");
         switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_2:
             case Constants.PLAYER_ID_SKIN_3:
@@ -626,7 +629,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
         }
@@ -647,6 +650,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setProgressSeekbar(seekbarVolume, progress);
     }
 
+    public int getCurrentProgressSeekbarVolume() {
+        if (seekbarVolume == null) {
+            return 0;
+        }
+        return seekbarVolume.getProgress();
+    }
+
     public void onDestroy() {
         if (firstBrightness != Constants.NOT_FOUND) {
             LScreenUtil.setBrightness(getContext(), firstBrightness);
@@ -661,6 +671,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onResume() {
+        LLog.d(TAG, "onResume");
         activityIsPausing = false;
         if (isExoShareClicked) {
             isExoShareClicked = false;
@@ -670,6 +681,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else {
             if (uizaPlayerManagerV3 != null) {
+                LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
                 uizaPlayerManagerV3.init();
                 if (isCalledFromConnectionEventBus) {
                     uizaPlayerManagerV3.setRunnable();
@@ -680,6 +692,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private boolean activityIsPausing = false;
+
+    private boolean isActivityIsPausing() {
+        return activityIsPausing;
+    }
 
     public void onPause() {
         //LLog.d(TAG, "onPause " + isExoShareClicked);
@@ -927,7 +943,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //on seekbar change
     @Override
     public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
-        //LLog.d(TAG, "onProgressChanged progress: " + progress);
+        LLog.d(TAG, "onProgressChanged progress: " + progress);
         if (seekBar == null || !isLandscape) {
             if (isExoVolumeClicked) {
                 //LLog.d(TAG, "onProgressChanged !isExoVolumeClicked ctn");
