@@ -328,7 +328,7 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_volume_off_black_48dp"
+                android:src="@drawable/ic_volume_up_black_48dp"
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize

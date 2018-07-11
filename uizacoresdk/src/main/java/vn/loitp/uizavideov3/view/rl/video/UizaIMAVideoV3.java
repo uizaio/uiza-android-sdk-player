@@ -588,7 +588,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
-        exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+        exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
@@ -927,12 +927,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //on seekbar change
     @Override
     public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
-        LLog.d(TAG, "onProgressChanged progress: " + progress);
+        //LLog.d(TAG, "onProgressChanged progress: " + progress);
         if (seekBar == null || !isLandscape) {
             if (isExoVolumeClicked) {
-                LLog.d(TAG, "onProgressChanged !isExoVolumeClicked ctn");
+                //LLog.d(TAG, "onProgressChanged !isExoVolumeClicked ctn");
             } else {
-                LLog.d(TAG, "onProgressChanged !isExoVolumeClicked return");
+                //LLog.d(TAG, "onProgressChanged !isExoVolumeClicked return");
                 return;
             }
         }
@@ -950,9 +950,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             if (progress == 0) {
-                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            } else {
                 exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            } else {
+                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
             }
             uizaPlayerManagerV3.setVolume(((float) progress / 100));
             if (isExoVolumeClicked) {
