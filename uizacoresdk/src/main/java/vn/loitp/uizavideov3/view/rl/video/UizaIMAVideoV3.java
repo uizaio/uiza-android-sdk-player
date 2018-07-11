@@ -66,7 +66,6 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStr
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
-import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -1052,7 +1051,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void getTokenStreaming() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaV3Util.getAppId(activity));
+        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getUizaInputV3().getData().getId());
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
@@ -1098,17 +1097,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void getLinkPlay(String tokenStreaming) {
-        LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
+        //LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
 
         if (isLivestream) {
-            String appId = UizaV3Util.getAppId(activity);
+            String appId = UizaDataV3.getInstance().getAppId();
             String channelName = UizaDataV3.getInstance().getUizaInputV3().getData().getChannelName();
-            LLog.d(TAG, "===================================");
-            LLog.d(TAG, "========name: " + channelName);
-            LLog.d(TAG, "========appId: " + appId);
-            //LLog.d(TAG, "========entityId: " + entityId);
+            //LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "========name: " + channelName);
+            //LLog.d(TAG, "========appId: " + appId);
             LLog.d(TAG, "===================================");
             activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
@@ -1140,7 +1138,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
         } else {
-            String appId = UizaV3Util.getAppId(activity);
+            String appId = UizaDataV3.getInstance().getAppId();
             String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
             String typeContent = SendGetTokenStreaming.STREAM;
             //LLog.d(TAG, "===================================");

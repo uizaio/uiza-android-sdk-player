@@ -13,11 +13,14 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
+import vn.loitp.restapi.restclient.RestClientTracking;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
+import vn.loitp.utils.util.Utils;
 
 /**
- * Created by LENOVO on 4/28/2018.
+ * Created by loitp on 4/28/2018.
  */
 
 public class UizaDataV3 {
@@ -39,6 +42,46 @@ public class UizaDataV3 {
 
     public void setCurrentPlayerId(String currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
+        LPref.setSlideUizaVideoEnabled(Utils.getContext(), true);
+    }
+
+    private String mDomainAPI;
+    private String mDomainAPITracking;
+    private String mToken;
+    private String mAppId;
+
+    public void initSDK(String domainAPI, String token, String appId) {
+        mDomainAPI = domainAPI;
+        mToken = token;
+        mAppId = appId;
+
+        RestClientV3.init(Constants.PREFIXS + domainAPI, token);
+        LPref.setToken(Utils.getContext(), token);
+
+        //TODO init domain get link play (customer will always production domain)
+        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+    }
+
+    public String getDomainAPI() {
+        return mDomainAPI;
+    }
+
+    public String getmDomainAPITracking() {
+        return mDomainAPITracking;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public String getAppId() {
+        return mAppId;
+    }
+
+    public void initTracking(String domainAPITracking) {
+        mDomainAPITracking = domainAPITracking;
+        RestClientTracking.init(domainAPITracking);
+        LPref.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
     }
 
     private List<UizaInputV3> uizaInputV3List = new ArrayList<>();
@@ -123,8 +166,7 @@ public class UizaDataV3 {
     public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
-        ResultGetToken resultGetToken = LPref.getResultGetToken(context);
-        uizaTracking.setAppId(resultGetToken.getData().getAppId());
+        uizaTracking.setAppId(UizaDataV3.getInstance().getAppId());
         //page_type
         uizaTracking.setPageType("app");
         //TODO viewer_user_id
