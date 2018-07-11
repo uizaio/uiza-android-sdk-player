@@ -1352,10 +1352,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateLiveInfoCurrentView(final int durationDelay) {
+        if (!isLivestream) {
+            return;
+        }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
+                if (!isLivestream) {
+                    return;
+                }
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
@@ -1363,7 +1369,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
-                            //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                            LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 tvLiveView.setText(result.getData().getWatchnow() + "");
                             }
@@ -1385,10 +1391,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateLiveInfoTimeStartLive(final int durationDelay) {
+        if (!isLivestream) {
+            return;
+        }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
 
             @Override
             public void doAfter(int mls) {
+                if (!isLivestream) {
+                    return;
+                }
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
                     String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
