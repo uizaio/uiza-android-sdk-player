@@ -381,10 +381,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
-            tvLiveTime.setText("-");
-            tvLiveView.setText("-");
-            updateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
-            updateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+            if (isLivestream) {
+                tvLiveTime.setText("-");
+                tvLiveView.setText("-");
+                updateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+                updateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+            }
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -508,8 +510,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
         LUIUtil.setColorSeekBar(seekbarVolume, Color.TRANSPARENT);
         LUIUtil.setColorSeekBar(seekbarBirghtness, Color.TRANSPARENT);
-        //ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
-        //ivBirghtnessSeekbar = (ImageView) playerView.findViewById(R.id.exo_birghtness_seekbar);
 
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
@@ -589,7 +589,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
-        exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+        exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
@@ -721,6 +721,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private boolean isExoShareClicked;
+    private boolean isExoVolumeClicked;
 
     @Override
     public void onClick(View v) {
@@ -739,6 +740,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else if (v == exoVolume) {
             if (uizaPlayerManagerV3 != null) {
+                isExoVolumeClicked = true;
                 uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
             }
         } else if (v == exoSetting) {
@@ -834,7 +836,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void updateUI() {
         boolean isTablet = LDeviceUtil.isTablet(activity);
-        LLog.d(TAG, "updateUI isTablet " + isTablet);
+        //LLog.d(TAG, "updateUI isTablet " + isTablet);
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
@@ -928,10 +930,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
         LLog.d(TAG, "onProgressChanged progress: " + progress);
         if (seekBar == null || !isLandscape) {
-            return;
+            if (isExoVolumeClicked) {
+                LLog.d(TAG, "onProgressChanged !isExoVolumeClicked ctn");
+            } else {
+                LLog.d(TAG, "onProgressChanged !isExoVolumeClicked return");
+                return;
+            }
         }
         if (seekBar == seekbarVolume) {
-            if (isSetProgressSeekbarFirst) {
+            if (isSetProgressSeekbarFirst || isExoVolumeClicked) {
                 exoIvPreview.setVisibility(INVISIBLE);
             } else {
                 if (progress >= 66) {
@@ -943,7 +950,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
+            if (progress == 0) {
+                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            } else {
+                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            }
             uizaPlayerManagerV3.setVolume(((float) progress / 100));
+            if (isExoVolumeClicked) {
+                isExoVolumeClicked = false;
+            }
         } else if (seekBar == seekbarBirghtness) {
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (isSetProgressSeekbarFirst) {
@@ -1357,7 +1372,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                         @Override
                         public void onFail(Throwable e) {
-                            //LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
+                            LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
                             updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
                     });
