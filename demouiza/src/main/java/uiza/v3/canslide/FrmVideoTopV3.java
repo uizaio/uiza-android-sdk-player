@@ -380,6 +380,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
         //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
         //LLog.d(TAG, "setupVideo init with entityId " + entityId);
-        uizaIMAVideoV3.init(this);
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.init(FrmVideoTopV3.this);
+            }
+        });
     }
 }

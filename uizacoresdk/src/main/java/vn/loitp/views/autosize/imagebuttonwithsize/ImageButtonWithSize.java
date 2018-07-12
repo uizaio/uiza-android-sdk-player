@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
-import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
@@ -40,12 +40,23 @@ public class ImageButtonWithSize extends ImageButton {
     private int screenWPortrait;
     private int screenWLandscape;
 
+    private boolean isTablet;
+
     private void initSizeScreenW() {
+        isTablet = LDeviceUtil.isTablet(getContext());
+        if (isTablet) {
+            ratioLand = 24;
+            ratioPort = 20;
+        } else {
+            ratioLand = 18;
+            ratioPort = 14;
+        }
+
         screenWPortrait = LScreenUtil.getScreenWidth();
         screenWLandscape = LScreenUtil.getScreenHeightIncludeNavigationBar(this.getContext());
 
-        LLog.d(TAG, ">>>screenWPortrait " + screenWPortrait);
-        LLog.d(TAG, ">>>screenWLandscape " + screenWLandscape);
+        //LLog.d(TAG, ">>>screenWPortrait " + screenWPortrait);
+        //LLog.d(TAG, ">>>screenWLandscape " + screenWLandscape);
 
         //set padding 5dp
         int px = ConvertUtils.dp2px(5);
@@ -95,8 +106,8 @@ public class ImageButtonWithSize extends ImageButton {
         isSetSize = true;
     }*/
 
-    private int ratioLand = Constants.RATIO_LAND;
-    private int ratioPort = Constants.RATIO_PORT;
+    private int ratioLand;
+    private int ratioPort;
 
     public int getRatioLand() {
         return ratioLand;

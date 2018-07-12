@@ -131,8 +131,5 @@ public class Constants {
     public static final String EVENT_TYPE_VIEW = "view";
     public static final String EVENT_TYPE_REPLAY = "replay";
     public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
-
-    public static final int RATIO_LAND = 18;
-    public static final int RATIO_PORT = 14;
     public static final int ANIMATION_DURATION = 200;
 }

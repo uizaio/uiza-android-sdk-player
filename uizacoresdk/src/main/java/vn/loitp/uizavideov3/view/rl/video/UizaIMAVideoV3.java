@@ -456,7 +456,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUIEachSkin() {
-        LLog.d(TAG, "updateUIEachSkin");
+        //LLog.d(TAG, "updateUIEachSkin");
         switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_2:
             case Constants.PLAYER_ID_SKIN_3:
