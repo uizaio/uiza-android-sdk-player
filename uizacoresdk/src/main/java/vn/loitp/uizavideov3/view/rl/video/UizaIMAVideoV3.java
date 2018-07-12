@@ -89,6 +89,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
     private boolean isLivestream;
+    private boolean isTablet;
     //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
@@ -419,6 +420,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity = ((BaseActivity) getContext());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
+        isTablet = LDeviceUtil.isTablet(activity);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
@@ -817,10 +819,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
+                if (isTablet) {
+                    exoPictureInPicture.setVisibility(GONE);
+                }
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
+                if (isTablet) {
+                    exoPictureInPicture.setVisibility(VISIBLE);
+                }
             }
         }
         setMarginPreviewTimeBarLayout();
@@ -849,7 +857,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUI() {
-        boolean isTablet = LDeviceUtil.isTablet(activity);
         //LLog.d(TAG, "updateUI isTablet " + isTablet);
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
