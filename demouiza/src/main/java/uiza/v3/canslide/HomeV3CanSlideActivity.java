@@ -237,9 +237,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
-        String entityId = data.getId();
-        String entityTitle = data.getName();
-        String videoCoverUrl = data.getThumbnail();
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);

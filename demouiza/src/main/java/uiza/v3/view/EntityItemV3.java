@@ -103,12 +103,18 @@ public class EntityItemV3 {
 
             @Override
             public void onEnd() {
-                if (tvInfoLive.getVisibility() != android.view.View.VISIBLE) {
-                    LToast.show(mContext, "This content is not streaming now.");
-                    return;
-                }
-                if (mCallback != null) {
-                    mCallback.onClick(data, mPosition);
+                if (data.getLastProcess() == null) {
+                    if (mCallback != null) {
+                        mCallback.onClick(data, mPosition);
+                    }
+                } else {
+                    if (data.getLastProcess().equals(Data.LAST_PROCRESS_START)) {
+                        if (mCallback != null) {
+                            mCallback.onClick(data, mPosition);
+                        }
+                    } else {
+                        LToast.show(mContext, "This content is not streaming now");
+                    }
                 }
             }
 
