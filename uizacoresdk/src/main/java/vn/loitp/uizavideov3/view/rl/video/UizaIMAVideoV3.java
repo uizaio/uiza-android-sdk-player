@@ -846,7 +846,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void setTitle() {
         tvTitle.setText(UizaDataV3.getInstance().getUizaInputV3().getData().getName());
-        LUIUtil.setTextShadow(tvTitle);
     }
 
     private void updateUI() {

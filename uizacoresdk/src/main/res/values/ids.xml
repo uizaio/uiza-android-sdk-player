@@ -32,4 +32,11 @@
     <item name="debug_text_view" type="id" />
     <item name="controls_root" type="id" />
     <item name="fl_bar" type="id" />
+    <item name="tv_live" type="id" />
+    <item name="iv_live_time" type="id" />
+    <item name="tv_live_time" type="id" />
+    <item name="iv_live_view" type="id" />
+    <item name="tv_live_view" type="id" />
+    <item name="rl_time_bar" type="id" />
+    <item name="rl_live_info" type="id" />
 </resources>
