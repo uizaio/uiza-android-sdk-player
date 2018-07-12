@@ -112,8 +112,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
             @Override
             public void onDownOrRightRefresh(float offset) {
-                LLog.d(TAG, "onDownOrRightRefresh");
-                //loadMore();
+                //LLog.d(TAG, "onDownOrRightRefresh");
             }
         });
 
