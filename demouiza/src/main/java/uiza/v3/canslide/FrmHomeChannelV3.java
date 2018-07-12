@@ -368,12 +368,11 @@ public class FrmHomeChannelV3 extends BaseFragment {
         //isLastPage = false;
         totalPage = Integer.MAX_VALUE;
 
-        LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
+        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
                 //getData(false);
-                //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
                 //isRefreshing = false;
 
                 if (getParentFragment() != null) {
