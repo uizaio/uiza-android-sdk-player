@@ -230,19 +230,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     mDrawerLayout.closeDrawers();
 
                     LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
-                    FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
-                    frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
-                        @Override
-                        public void onClick(Data data, int position) {
-                            onClickVideo(data, position);
-                        }
-
-                        @Override
-                        public void onPosition(int position) {
-                            //do nothing
-                        }
-                    });
-                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
+                    attachFrm();
                 }
             }));
         }
@@ -263,9 +251,26 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 //do nothing
             }
         });
-        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
+        LScreenUtil.replaceFragment(this, R.id.fragment_container, frmHomeChannelV3, false);
 
         LUIUtil.hideProgressBar(progressBar);
+    }
+
+    public void attachFrm() {
+        LLog.d(TAG, "refreshCurrentFrm");
+        FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
+        frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
+            @Override
+            public void onClick(Data data, int position) {
+                onClickVideo(data, position);
+            }
+
+            @Override
+            public void onPosition(int position) {
+                //do nothing
+            }
+        });
+        LScreenUtil.replaceFragment(FrmHomeV3.this, R.id.fragment_container, frmHomeChannelV3, false);
     }
 
     private void onClickVideo(Data data, int position) {

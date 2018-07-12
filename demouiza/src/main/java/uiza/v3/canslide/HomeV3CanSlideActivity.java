@@ -68,18 +68,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         });
         replaceFragment(new FrmHomeV3());
         if (LPref.getClickedPip(activity)) {
-            //called from PiP Service
-            /*String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
-            String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
-            String videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-            LLog.d(TAG, "onCreate pip entityId: " + entityId);
-            LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
-            LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
-            if (entityId == null || entityId.isEmpty()) {
-                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
-                LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
-                return;
-            }*/
             play(null);
         }
     }

@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.base.BaseFragment;
 
 /**
  * File created on 8/31/2017.
@@ -325,6 +326,15 @@ public class LScreenUtil {
         } else {
             ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+    }
+
+    public static void replaceFragment(BaseFragment baseFragment, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
+        FragmentTransaction transaction = baseFragment.getChildFragmentManager().beginTransaction();
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        if (isAddToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     public static void replaceFragment(Activity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {

@@ -119,7 +119,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         progressBar = (ProgressBar) view.findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
-        getData(false, false);
+        getData(false);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
     private boolean isLastPage;
 
-    private void getData(final boolean isCallFromLoadMore, final boolean isCallFromSwipeToRefresh) {
+    private void getData(final boolean isCallFromLoadMore) {
         LLog.d(TAG, ">>>getData " + page + "/" + totalPage);
         if (page >= totalPage) {
             LLog.d(TAG, "page >= totalPage -> return");
@@ -216,9 +216,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 @Override
                 public void onSuccess(ResultRetrieveALiveEvent result) {
                     LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
-                    if (isCallFromSwipeToRefresh) {
-                        placeHolderView.removeAllViews();
-                    }
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (tvMsg.getVisibility() != View.VISIBLE) {
                             tvMsg.setVisibility(View.VISIBLE);
@@ -261,9 +258,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         }
                     }
                     setupData(dataList, isCallFromLoadMore);
-                    if (isCallFromSwipeToRefresh) {
-                        isRefreshing = false;
-                    }
                 }
 
                 @Override
@@ -281,10 +275,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     } else {
                         isLoadMoreCalling = false;
                     }
-                    if (isCallFromSwipeToRefresh) {
-                        placeHolderView.removeAllViews();
-                        isRefreshing = false;
-                    }
                 }
             });
         } else {
@@ -301,9 +291,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
             subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
-                    if (isCallFromSwipeToRefresh) {
-                        placeHolderView.removeAllViews();
-                    }
                     //LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (tvMsg.getVisibility() != View.VISIBLE) {
@@ -346,9 +333,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         }
                     }
                     setupData(dataList, isCallFromLoadMore);
-                    if (isCallFromSwipeToRefresh) {
-                        isRefreshing = false;
-                    }
                 }
 
                 @Override
@@ -366,10 +350,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     } else {
                         isLoadMoreCalling = false;
                     }
-                    if (isCallFromSwipeToRefresh) {
-                        placeHolderView.removeAllViews();
-                        isRefreshing = false;
-                    }
                 }
             });
         }
@@ -382,17 +362,23 @@ public class FrmHomeChannelV3 extends BaseFragment {
         }
         isRefreshing = true;
 
+        placeHolderView.addView(POSITION_OF_LOADING_REFRESH, new LoadingView());
         //reset value
         page = 0;
+        //isLastPage = false;
         totalPage = Integer.MAX_VALUE;
-        placeHolderView.addView(POSITION_OF_LOADING_REFRESH, new LoadingView());
 
-        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
+        LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                getData(false, true);
+                //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
+                //getData(false);
                 //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
                 //isRefreshing = false;
+
+                if (getParentFragment() != null) {
+                    ((FrmHomeV3) getParentFragment()).attachFrm();
+                }
             }
         });
     }
@@ -412,7 +398,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
-                        getData(true, false);
+                        getData(true);
                     }
                 });
             }
