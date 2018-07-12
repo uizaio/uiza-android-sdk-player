@@ -101,7 +101,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
             @Override
             public void onUpOrLeftRefresh(float offset) {
-                LLog.d(TAG, "onUpOrLeftRefresh");
+                //LLog.d(TAG, "onUpOrLeftRefresh");
                 swipeToRefresh();
             }
 
@@ -120,7 +120,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         progressBar = (ProgressBar) view.findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
-        getData(false);
+        getData(false, false);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
                 @Override
                 public void onPosition(int position) {
-                    LLog.d(TAG, "_____onPosition " + position + " / " + getListSize());
+                    //LLog.d(TAG, "_____onPosition " + position + " / " + getListSize());
                     if (position == getListSize() - 1) {
                         LLog.d(TAG, "_____onLast");
                         loadMore();
@@ -185,14 +185,16 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
     private boolean isLastPage;
 
-    private void getData(final boolean isCallFromLoadMore) {
+    private void getData(final boolean isCallFromLoadMore, final boolean isCallFromSwipeToRefresh) {
         LLog.d(TAG, ">>>getData " + page + "/" + totalPage);
         if (page >= totalPage) {
             LLog.d(TAG, "page >= totalPage -> return");
             if (Constants.IS_DEBUG) {
                 LToast.show(getActivity(), getString(R.string.this_is_last_page));
             }
-            placeHolderView.removeView(getListSize() - 1);//remove loading view
+            if (getListSize() >= 0) {
+                placeHolderView.removeView(getListSize() - 1);//remove loading view
+            }
             if (isCallFromLoadMore) {
                 isLoadMoreCalling = false;
             }
@@ -215,6 +217,9 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 @Override
                 public void onSuccess(ResultRetrieveALiveEvent result) {
                     LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                    if (isCallFromSwipeToRefresh) {
+                        placeHolderView.removeAllViews();
+                    }
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (tvMsg.getVisibility() != View.VISIBLE) {
                             tvMsg.setVisibility(View.VISIBLE);
@@ -230,9 +235,9 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     }
                     if (totalPage == Integer.MAX_VALUE) {
                         int totalItem = (int) result.getMetadata().getTotal();
-                        LLog.d(TAG, "totalItem " + totalItem);
+                        //LLog.d(TAG, "totalItem " + totalItem);
                         float ratio = (float) (totalItem / limit);
-                        LLog.d(TAG, "ratio: " + ratio);
+                        //LLog.d(TAG, "ratio: " + ratio);
                         if (ratio == 0) {
                             totalPage = (int) ratio;
                         } else if (ratio > 0) {
@@ -240,7 +245,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         } else {
                             totalPage = (int) ratio;
                         }
-                        LLog.d(TAG, ">>>totalPage: " + totalPage);
+                        //LLog.d(TAG, ">>>totalPage: " + totalPage);
                     }
 
                     List<Data> dataList = result.getData();
@@ -257,6 +262,9 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         }
                     }
                     setupData(dataList, isCallFromLoadMore);
+                    if (isCallFromSwipeToRefresh) {
+                        isRefreshing = false;
+                    }
                 }
 
                 @Override
@@ -274,6 +282,10 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     } else {
                         isLoadMoreCalling = false;
                     }
+                    if (isCallFromSwipeToRefresh) {
+                        placeHolderView.removeAllViews();
+                        isRefreshing = false;
+                    }
                 }
             });
         } else {
@@ -281,15 +293,18 @@ public class FrmHomeChannelV3 extends BaseFragment {
             if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
                 //do nothing
             } else {
-                LLog.d(TAG, "!HOME category");
+                //LLog.d(TAG, "!HOME category");
                 metadataId = HomeDataV3.getInstance().getData().getId();
             }
-            LLog.d(TAG, "getData metadataId: " + metadataId);
+            //LLog.d(TAG, "getData metadataId: " + metadataId);
 
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
             subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
+                    if (isCallFromSwipeToRefresh) {
+                        placeHolderView.removeAllViews();
+                    }
                     //LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (tvMsg.getVisibility() != View.VISIBLE) {
@@ -307,7 +322,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     if (totalPage == Integer.MAX_VALUE) {
                         int totalItem = (int) result.getMetadata().getTotal();
                         float ratio = (float) (totalItem / limit);
-                        LLog.d(TAG, "ratio: " + ratio);
+                        //LLog.d(TAG, "ratio: " + ratio);
                         if (ratio == 0) {
                             totalPage = (int) ratio;
                         } else if (ratio > 0) {
@@ -315,7 +330,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         } else {
                             totalPage = (int) ratio;
                         }
-                        LLog.d(TAG, ">>>totalPage: " + totalPage);
+                        //LLog.d(TAG, ">>>totalPage: " + totalPage);
                     }
 
                     List<Data> dataList = result.getData();
@@ -332,6 +347,9 @@ public class FrmHomeChannelV3 extends BaseFragment {
                         }
                     }
                     setupData(dataList, isCallFromLoadMore);
+                    if (isCallFromSwipeToRefresh) {
+                        isRefreshing = false;
+                    }
                 }
 
                 @Override
@@ -349,24 +367,33 @@ public class FrmHomeChannelV3 extends BaseFragment {
                     } else {
                         isLoadMoreCalling = false;
                     }
+                    if (isCallFromSwipeToRefresh) {
+                        placeHolderView.removeAllViews();
+                        isRefreshing = false;
+                    }
                 }
             });
         }
     }
 
     private void swipeToRefresh() {
+        LLog.d(TAG, "swipeToRefresh");
         if (isRefreshing) {
             return;
         }
         isRefreshing = true;
+
+        //reset value
+        page = 0;
+        totalPage = Integer.MAX_VALUE;
         placeHolderView.addView(POSITION_OF_LOADING_REFRESH, new LoadingView());
 
-        //TODO refresh
-        LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
+        LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
-                isRefreshing = false;
+                getData(false, true);
+                //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
+                //isRefreshing = false;
             }
         });
     }
@@ -386,7 +413,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
-                        getData(true);
+                        getData(true, false);
                     }
                 });
             }
