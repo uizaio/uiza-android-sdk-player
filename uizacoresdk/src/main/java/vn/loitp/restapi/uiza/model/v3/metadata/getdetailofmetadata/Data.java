@@ -8,6 +8,10 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPullI
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ExtendMetadata;
 
 public class Data {
+
+    public static final String LAST_PROCRESS_START = "start";
+    public static final String LAST_PROCRESS_STOP = "stop";
+
     @SerializedName("entityId")
     @Expose
     private String entityId;

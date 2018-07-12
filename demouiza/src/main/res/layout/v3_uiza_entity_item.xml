@@ -40,6 +40,20 @@
                 android:singleLine="true"
                 android:textColor="@color/White"
                 android:textSize="@dimen/txt_10" />
+
+            <TextView
+                android:id="@+id/tv_info_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_3"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@drawable/background_live"
+                android:gravity="center"
+                android:paddingLeft="@dimen/padding_5"
+                android:paddingRight="@dimen/padding_5"
+                android:text="@string/live"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_10" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

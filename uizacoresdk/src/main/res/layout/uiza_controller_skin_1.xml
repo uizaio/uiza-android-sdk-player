@@ -121,7 +121,7 @@
             android:paddingLeft="@dimen/padding_5"
             android:paddingRight="@dimen/padding_5"
             android:text="@string/live"
-            android:textColor="@color/Red"
+            android:textColor="@color/White"
             android:textSize="@dimen/txt_10" />
 
         <ImageView

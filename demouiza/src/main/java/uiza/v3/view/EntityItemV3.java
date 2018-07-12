@@ -38,6 +38,8 @@ public class EntityItemV3 {
     private ProgressBar progressBar;
     @View(R.id.tv_name)
     private TextView tvName;
+    @View(R.id.tv_info_live)
+    private TextView tvInfoLive;
 
     private Data data;
     private Context mContext;
@@ -73,6 +75,12 @@ public class EntityItemV3 {
 
         tvName.setText(data.getName());
         LUIUtil.setTextShadow(tvName);
+
+        if (data.getLastProcess().equals(Data.LAST_PROCRESS_START)) {
+            tvInfoLive.setVisibility(android.view.View.VISIBLE);
+        } else {
+            tvInfoLive.setVisibility(android.view.View.INVISIBLE);
+        }
 
         if (mCallback != null) {
             mCallback.onPosition(mPosition);
