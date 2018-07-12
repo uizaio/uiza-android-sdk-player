@@ -76,11 +76,11 @@ public class EntityItemV3 {
 
         tvName.setText(data.getName());
         LUIUtil.setTextShadow(tvName);
-
-        if (data.getLastProcess().equals(Data.LAST_PROCRESS_START)) {
-            tvInfoLive.setVisibility(android.view.View.VISIBLE);
-        } else {
+        
+        if (data == null || data.getLastProcess() == null || data.getLastProcess().equals(Data.LAST_PROCRESS_STOP)) {
             tvInfoLive.setVisibility(android.view.View.INVISIBLE);
+        } else {
+            tvInfoLive.setVisibility(android.view.View.VISIBLE);
         }
 
         if (mCallback != null) {

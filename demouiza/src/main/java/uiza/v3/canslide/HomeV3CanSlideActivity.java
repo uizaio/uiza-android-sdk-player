@@ -9,6 +9,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import uiza.R;
 import uiza.app.LSApplication;
+import uiza.v3.data.HomeDataV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
@@ -308,6 +309,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         LPref.setAcitivityCanSlideIsRunning(activity, false);
+        HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
 }
