@@ -257,7 +257,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     public void attachFrm() {
-        LLog.d(TAG, "refreshCurrentFrm");
+        //LLog.d(TAG, "refreshCurrentFrm");
         FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
         frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
             @Override
