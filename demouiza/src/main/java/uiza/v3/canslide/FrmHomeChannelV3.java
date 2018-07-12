@@ -364,14 +364,14 @@ public class FrmHomeChannelV3 extends BaseFragment {
 
         placeHolderView.addView(POSITION_OF_LOADING_REFRESH, new LoadingView());
         //reset value
-        page = 0;
+        //page = 0;
         //isLastPage = false;
-        totalPage = Integer.MAX_VALUE;
+        //totalPage = Integer.MAX_VALUE;
 
         LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                //placeHolderView.removeView(POSITION_OF_LOADING_REFRESH);
+                placeHolderView.removeAllViews();
                 //getData(false);
                 //isRefreshing = false;
 
