@@ -15,6 +15,7 @@ import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
@@ -102,6 +103,10 @@ public class EntityItemV3 {
 
             @Override
             public void onEnd() {
+                if (tvInfoLive.getVisibility() != android.view.View.VISIBLE) {
+                    LToast.show(mContext, "This content is not streaming now.");
+                    return;
+                }
                 if (mCallback != null) {
                     mCallback.onClick(data, mPosition);
                 }
