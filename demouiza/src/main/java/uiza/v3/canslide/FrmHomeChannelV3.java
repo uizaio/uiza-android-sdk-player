@@ -356,7 +356,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
     }
 
     private void swipeToRefresh() {
-        LLog.d(TAG, "swipeToRefresh");
+        //LLog.d(TAG, "swipeToRefresh");
         if (isRefreshing) {
             return;
         }

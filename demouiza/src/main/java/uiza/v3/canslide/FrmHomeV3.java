@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
@@ -149,18 +148,18 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void genHomeMenu() {
-        //add live menu
-        Data dataLivestream = new Data();
-        dataLivestream.setName(Constants.MENU_LIVESTREAM);
-        dataList.add(0, dataLivestream);
-        //emd add live menu
-
         //add home menu
         Data dataMenu = new Data();
         dataMenu.setName(Constants.MENU_HOME_V3);
         dataMenu.setType("folder");
-        dataList.add(1, dataMenu);
-        //emd add home menu
+        dataList.add(dataMenu);
+        //end add home menu
+
+        //add live menu
+        Data dataLivestream = new Data();
+        dataLivestream.setName(Constants.MENU_LIVESTREAM);
+        dataList.add(dataLivestream);
+        //end add live menu
     }
 
     private void getListAllMetadata() {
@@ -171,7 +170,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                //LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
                 if (resultGetListMetadata == null) {
                     LDialogUtil.showDialog1(getActivity(), getString(R.string.err_unknow), new LDialogUtil.Callback1() {
                         @Override
@@ -195,7 +194,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
                 LDialogUtil.showDialog1(getActivity(), "getListAllMetadata onFail " + e.getMessage(), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -229,7 +228,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
 
-                    LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
+                    //LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
                     attachFrm();
                 }
             }));
