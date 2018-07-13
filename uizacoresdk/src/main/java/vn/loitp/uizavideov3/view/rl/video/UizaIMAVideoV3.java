@@ -872,14 +872,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //TODO why set gone not work?
             //exoRew.setVisibility(GONE);
             //exoFfwd.setVisibility(GONE);
-            //exoPlay.setVisibility(GONE);
-            //exoPause.setVisibility(GONE);
 
-            //changeVisibilitiesOfButton(exoRew, false, 0);
-            //changeVisibilitiesOfButton(exoFfwd, false, 0);
-
-            //changeVisibilitiesOfButton(exoPlay, false, 0);
-            //changeVisibilitiesOfButton(exoPause, false, 0);
+            changeVisibilitiesOfButton(exoRew, false, 0);
+            changeVisibilitiesOfButton(exoFfwd, false, 0);
 
             rlLiveInfo.setVisibility(VISIBLE);
         } else {
@@ -891,14 +886,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //TODO why set visible not work?
             //exoRew.setVisibility(VISIBLE);
             //exoFfwd.setVisibility(VISIBLE);
-            //exoPlay.setVisibility(VISIBLE);
-            //exoPause.setVisibility(VISIBLE);
 
-            //changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
-            //changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
-
-            //changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
-            //changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
+            changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
+            changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
 
             rlLiveInfo.setVisibility(GONE);
         }
