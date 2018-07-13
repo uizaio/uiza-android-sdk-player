@@ -123,6 +123,11 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_READY && playWhenReady) {
+                LLog.d(TAG, "onPlayerStateChanged STATE_READY");
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.hideLLMsg();
+                    uizaIMAVideoV3.resetCountTryLinkPlayError();
+                }
                 if (previewTimeBarLayout != null) {
                     previewTimeBarLayout.hidePreview();
                 }

@@ -207,7 +207,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             mResultRetrieveAnEntity = null;
             isResultGetLinkPlayDone = false;
             isResultRetrieveAnEntityDone = false;
-            countTryLinkPlayError = 0;
+            resetCountTryLinkPlayError();
         }
         updateUI();
         setTitle();
@@ -243,9 +243,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
 
             //if entity is livestreaming, dont try to next link play
-            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay");
+            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
             if (uizaPlayerManagerV3 != null) {
-                uizaPlayerManagerV3.init();
+                uizaPlayerManagerV3.initWithoutReset();
                 uizaPlayerManagerV3.setRunnable();
             }
             countTryLinkPlayError++;
@@ -367,9 +367,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    public void resetCountTryLinkPlayError() {
+        countTryLinkPlayError = 0;
+    }
+
     private void setVideoCover() {
         if (ivVideoCover.getVisibility() != VISIBLE) {
-            countTryLinkPlayError = 0;
+            resetCountTryLinkPlayError();
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
@@ -612,6 +616,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW));
         }
 
+        //dont track play_throught if entity is live
+        if (isLivestream) {
+            LLog.d(TAG, "trackProgress percent: " + percent + "% -> dont track play_throught if entity is live");
+            return;
+        }
         if (oldPercent == percent) {
             return;
         }
@@ -1279,7 +1288,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (event.isConnected()) {
                 if (uizaPlayerManagerV3 != null) {
                     LDialogUtil.clearAll();
-                    hideLLMsg();
+                    //hideLLMsg();
                     if (uizaPlayerManagerV3.getExoPlaybackException() == null) {
                         //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
                     } else {
@@ -1355,7 +1364,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         hideController();
     }
 
-    private void hideLLMsg() {
+    public void hideLLMsg() {
         if (rlMsg.getVisibility() != GONE) {
             rlMsg.setVisibility(GONE);
         }
