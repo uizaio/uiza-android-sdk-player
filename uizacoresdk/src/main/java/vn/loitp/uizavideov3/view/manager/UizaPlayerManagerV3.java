@@ -246,9 +246,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         return trackSelectionHelper;
     }
 
-    public void init() {
-        reset();
-
+    private void initSource() {
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -296,6 +294,15 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
             debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideoV3.getDebugTextView());
             debugTextViewHelper.start();
         }
+    }
+
+    public void init() {
+        reset();
+        initSource();
+    }
+
+    public void initWithoutReset() {
+        initSource();
     }
 
     private MediaSource createMediaSourceVideo() {

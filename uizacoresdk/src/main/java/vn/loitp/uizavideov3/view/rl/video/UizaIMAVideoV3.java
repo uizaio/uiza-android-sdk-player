@@ -237,20 +237,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void tryNextLinkPlay() {
         if (isLivestream) {
-            //if entity is livestreaming, dont try to next link play
-            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> return");
-            //TODO
-            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                }
+            //try to play 3 times
+            if (countTryLinkPlayError >= 3) {
+                showTvMsg(activity.getString(R.string.err_live_is_stopped));
+            }
 
-                @Override
-                public void onCancel() {
-                    handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                }
-            });*/
+            //if entity is livestreaming, dont try to next link play
+            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay");
+            if (uizaPlayerManagerV3 != null) {
+                uizaPlayerManagerV3.init();
+                uizaPlayerManagerV3.setRunnable();
+            }
+            countTryLinkPlayError++;
             return;
         }
         countTryLinkPlayError++;
