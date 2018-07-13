@@ -865,9 +865,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
+            exoPlaylist.setVisibility(GONE);
+            exoCc.setVisibility(GONE);
             rlTimeBar.setVisibility(GONE);
-            exoPlay.setVisibility(GONE);
-            exoPause.setVisibility(GONE);
 
             //TODO why set gone not work?
             //exoRew.setVisibility(GONE);
@@ -875,17 +875,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //exoPlay.setVisibility(GONE);
             //exoPause.setVisibility(GONE);
 
-            changeVisibilitiesOfButton(exoRew, false, 0);
-            changeVisibilitiesOfButton(exoFfwd, false, 0);
-            changeVisibilitiesOfButton(exoPlay, false, 0);
-            changeVisibilitiesOfButton(exoPause, false, 0);
+            //changeVisibilitiesOfButton(exoRew, false, 0);
+            //changeVisibilitiesOfButton(exoFfwd, false, 0);
+
+            //changeVisibilitiesOfButton(exoPlay, false, 0);
+            //changeVisibilitiesOfButton(exoPause, false, 0);
 
             rlLiveInfo.setVisibility(VISIBLE);
         } else {
             exoCast.setVisibility(GONE);
+            exoPlaylist.setVisibility(VISIBLE);
+            exoCc.setVisibility(VISIBLE);
             rlTimeBar.setVisibility(VISIBLE);
-            exoPlay.setVisibility(VISIBLE);
-            exoPause.setVisibility(VISIBLE);
 
             //TODO why set visible not work?
             //exoRew.setVisibility(VISIBLE);
@@ -893,10 +894,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //exoPlay.setVisibility(VISIBLE);
             //exoPause.setVisibility(VISIBLE);
 
-            changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
-            changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
-            changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
-            changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
+            //changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
+            //changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
+
+            //changeVisibilitiesOfButton(exoPlay, true, R.drawable.ic_play_arrow_black_48dp);
+            //changeVisibilitiesOfButton(exoPause, true, R.drawable.ic_pause_black_48dp);
 
             rlLiveInfo.setVisibility(GONE);
         }
