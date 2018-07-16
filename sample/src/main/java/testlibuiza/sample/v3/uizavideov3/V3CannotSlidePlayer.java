@@ -26,6 +26,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -315,17 +316,18 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-
+        if (isInitSuccess) {
+            setListener();
+        }
     }
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-
+        //do sth
     }
 
     @Override
     public void onClickBack() {
-
     }
 
     @Override
@@ -341,5 +343,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     @Override
     public void onError(Exception e) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (LScreenUtil.isFullScreen(activity)) {
+            uizaIMAVideoV3.toggleScreenOritation();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

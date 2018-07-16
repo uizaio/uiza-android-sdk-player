@@ -755,13 +755,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoShareClicked;
     private boolean isExoVolumeClicked;
 
+    public void toggleScreenOritation() {
+        LActivityUtil.toggleScreenOritation(activity);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == rlMsg) {
             //do nothing
             //LLog.d(TAG, "onClick llMsg");
         } else if (v == exoFullscreenIcon) {
-            LActivityUtil.toggleScreenOritation(activity);
+            toggleScreenOritation();
         } else if (v == exoBackScreen) {
             if (isLandscape) {
                 exoFullscreenIcon.performClick();
