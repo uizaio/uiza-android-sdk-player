@@ -25,7 +25,9 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -73,6 +75,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         String urlThumnailsPreviewSeekbar = null;
 
         Data data = getDummyData();
+        LPref.setData(activity, data, LSApplication.getInstance().getGson());
         setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
     }
 
@@ -298,6 +301,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
             //LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;
         }
+
         UizaInputV3 uizaInputV3 = new UizaInputV3();
         uizaInputV3.setData(data);
         uizaInputV3.setUrlIMAAd(urlIMAAd);

@@ -79,6 +79,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         //LLog.d(TAG, "onStartCommand");
         data = LPref.getData(this, gson);
         if (data == null) {
+            LLog.d(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);
         }
         if (intent != null && intent.getExtras() != null) {
