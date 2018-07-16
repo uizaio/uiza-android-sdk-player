@@ -328,6 +328,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onClickBack() {
+        onBackPressed();
     }
 
     @Override
