@@ -27,6 +27,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -68,22 +69,35 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
 
+        if (LPref.getClickedPip(activity)) {
+            play(null);
+        } else {
+            play(getDummyData());
+        }
+        String entityId = getIntent().getStringExtra("entityId");
+    }
+
+    private void play(Data data) {
+        if (data == null) {
+            data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            if (data == null) {
+                LLog.e(TAG, "play error data null");
+                return;
+            }
+        }
         //remove pip if called from pip
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
-
-        String entityId = getIntent().getStringExtra("entityId");
-
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        Data data = getDummyData();
         LPref.setData(activity, data, LSApplication.getInstance().getGson());
         setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
     }
+
 
     private Data getDummyData() {
         Gson gson = new Gson();

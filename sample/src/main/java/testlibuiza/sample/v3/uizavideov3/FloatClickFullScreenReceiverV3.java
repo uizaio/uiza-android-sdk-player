@@ -42,8 +42,8 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
 
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             if (isSlideUizaVideoEnabled) {
-                boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
-                LLog.d(TAG, "isActivityRunning " + isActivityRunning);
+                //boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
+                //LLog.d(TAG, "isActivityRunning " + isActivityRunning);
                 Intent intent = new Intent(context, V3CannotSlidePlayer.class);
                 /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
