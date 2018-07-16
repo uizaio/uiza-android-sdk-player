@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@color/colorPrimary">
+    android:background="@color/Black">
 
     <RelativeLayout
         android:id="@id/root_view"

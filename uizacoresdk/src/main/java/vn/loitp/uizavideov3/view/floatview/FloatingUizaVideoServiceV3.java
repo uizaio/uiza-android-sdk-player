@@ -48,7 +48,7 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 
 /**
- * Created by LENOVO on 3/27/2018.
+ * Created by loitp on 3/27/2018.
  */
 
 public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAVideoV3.Callback {
