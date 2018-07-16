@@ -880,8 +880,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            //TODO revert to gone
-            exoPictureInPicture.setVisibility(VISIBLE);
+            exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);

@@ -56,7 +56,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -79,6 +79,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     private void play(Data data) {
         if (data == null) {
+            LLog.d(TAG, "play data=null -> get from lpref");
             data = LPref.getData(activity, LSApplication.getInstance().getGson());
             if (data == null) {
                 LLog.e(TAG, "play error data null");
