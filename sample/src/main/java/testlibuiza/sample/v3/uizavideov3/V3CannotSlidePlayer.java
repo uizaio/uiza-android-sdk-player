@@ -343,7 +343,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onError(Exception e) {
-
+        //do sth
     }
 
     @Override
