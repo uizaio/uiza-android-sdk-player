@@ -35,6 +35,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaInputV3;
@@ -66,6 +67,11 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+
+        //remove pip if called from pip
+        if (!LPref.getClickedPip(activity)) {
+            UizaUtil.stopServicePiPIfRunningV3(activity);
+        }
 
         String entityId = getIntent().getStringExtra("entityId");
 
