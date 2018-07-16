@@ -22,8 +22,7 @@
         android:id="@id/pb"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="@dimen/w_20"
-        android:layout_height="@dimen/w_20"
-        android:layout_centerInParent="true" />
+        android:layout_height="@dimen/w_20" />
 
     <LinearLayout
         android:id="@id/debug_layout"
