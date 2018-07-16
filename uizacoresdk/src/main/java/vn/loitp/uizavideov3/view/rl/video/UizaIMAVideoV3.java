@@ -484,6 +484,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
 
+        //LLog.d("fuck", "fuck " + playerView.getMeasuredWidth() / 2);
+        //set progressBar center in parent
+        //LUIUtil.setMarginPx(progressBar, playerView.getMeasuredWidth() / 2, playerView.getMeasuredHeight() / 2, 0, 0);
+
         rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);

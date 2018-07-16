@@ -67,6 +67,7 @@ public class UizaSDKPlayerV3Activity extends BaseActivity {
                 UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
 
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra("entityId", etInputEntityId.getText().toString());
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
                 finish();
