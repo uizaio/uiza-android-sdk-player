@@ -65,16 +65,9 @@ public class UizaSDKPlayerV3Activity extends BaseActivity {
                 UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
 
                 /*final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
-                if (intent != null) {
-                    LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            startActivity(intent);
+                 startActivity(intent);
                             LActivityUtil.tranIn(activity);
-                            finish();
-                        }
-                    });
-                }*/
+                            finish();*/
             }
         });
     }
