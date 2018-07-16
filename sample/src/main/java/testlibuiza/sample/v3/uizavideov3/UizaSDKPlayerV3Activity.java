@@ -1,5 +1,6 @@
 package testlibuiza.sample.v3.uizavideov3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
@@ -64,10 +66,10 @@ public class UizaSDKPlayerV3Activity extends BaseActivity {
                 UizaDataV3.getInstance().initTracking(domainTracking);
                 UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
 
-                /*final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
-                 startActivity(intent);
-                            LActivityUtil.tranIn(activity);
-                            finish();*/
+                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+                finish();
             }
         });
     }
