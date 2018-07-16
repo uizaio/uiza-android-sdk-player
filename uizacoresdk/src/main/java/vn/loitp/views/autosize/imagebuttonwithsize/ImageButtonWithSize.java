@@ -1,12 +1,12 @@
 package vn.loitp.views.autosize.imagebuttonwithsize;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.widget.ImageButton;
 
-import loitp.core.R;
-import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDeviceUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
 
@@ -40,15 +40,41 @@ public class ImageButtonWithSize extends ImageButton {
     private int screenWPortrait;
     private int screenWLandscape;
 
+    private boolean isTablet;
+
     private void initSizeScreenW() {
+        isTablet = LDeviceUtil.isTablet(getContext());
+        if (isTablet) {
+            ratioLand = 24;
+            ratioPort = 20;
+        } else {
+            ratioLand = 18;
+            ratioPort = 14;
+        }
+
         screenWPortrait = LScreenUtil.getScreenWidth();
         screenWLandscape = LScreenUtil.getScreenHeightIncludeNavigationBar(this.getContext());
 
+        //LLog.d(TAG, ">>>screenWPortrait " + screenWPortrait);
+        //LLog.d(TAG, ">>>screenWLandscape " + screenWLandscape);
+
+        //set padding 5dp
         int px = ConvertUtils.dp2px(5);
         setPadding(px, px, px, px);
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (LScreenUtil.isFullScreen(getContext())) {
+                    updateSizeLandscape();
+                } else {
+                    updateSizePortrait();
+                }
+            }
+        });
     }
 
-    private boolean isFullScreen;
+    /*private boolean isFullScreen;
     private boolean isSetSize;
     private int screenWidth;
     private int size;
@@ -78,10 +104,10 @@ public class ImageButtonWithSize extends ImageButton {
         //LLog.d(TAG, "onMeasure: " + size + "x" + size);
         setMeasuredDimension(size, size);
         isSetSize = true;
-    }
+    }*/
 
-    private int ratioLand = Constants.RATIO_LAND;
-    private int ratioPort = Constants.RATIO_PORT;
+    private int ratioLand;
+    private int ratioPort;
 
     public int getRatioLand() {
         return ratioLand;
@@ -89,8 +115,11 @@ public class ImageButtonWithSize extends ImageButton {
 
     public void setRatioLand(int ratioLand) {
         this.ratioLand = ratioLand;
-        requestLayout();
-        invalidate();
+        if (LScreenUtil.isFullScreen(getContext())) {
+            updateSizeLandscape();
+        } else {
+            updateSizePortrait();
+        }
     }
 
     public int getRatioPort() {
@@ -99,11 +128,41 @@ public class ImageButtonWithSize extends ImageButton {
 
     public void setRatioPort(int ratioPort) {
         this.ratioPort = ratioPort;
-        requestLayout();
-        invalidate();
+        if (LScreenUtil.isFullScreen(getContext())) {
+            updateSizeLandscape();
+        } else {
+            updateSizePortrait();
+        }
+    }
+
+    private void updateSizePortrait() {
+        int sizePortrait = screenWPortrait / ratioPort;
+        LLog.d(TAG, "updateSizePortrait sizePortrait " + sizePortrait);
+
+        this.getLayoutParams().width = sizePortrait;
+        this.getLayoutParams().height = sizePortrait;
+        this.requestLayout();
+    }
+
+    private void updateSizeLandscape() {
+        int sizeLandscape = screenWLandscape / ratioLand;
+        LLog.d(TAG, "updateSizeLandscape sizeLandscape " + sizeLandscape);
+
+        this.getLayoutParams().width = sizeLandscape;
+        this.getLayoutParams().height = sizeLandscape;
+        this.requestLayout();
     }
 
     @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            updateSizeLandscape();
+        } else {
+            updateSizePortrait();
+        }
+    }
+
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isClickable()) {
             int maskedAction = event.getActionMasked();
@@ -114,10 +173,10 @@ public class ImageButtonWithSize extends ImageButton {
                 //clearColorTint();
                 this.setBackgroundResource(0);
             }
-            //LAnimationUtil.play(this, Techniques.Pulse);
+            //LDeviceUtil.vibrate(getContext(), 100);
         }
         return super.onTouchEvent(event);
-    }
+    }*/
 
     /*public void setColorTint(int color) {
         getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);

@@ -42,7 +42,8 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        //RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_STAG);
         findViewById(R.id.bt_get_token).setOnClickListener(this);
         findViewById(R.id.bt_check_token).setOnClickListener(this);
         findViewById(R.id.bt_list_metadata).setOnClickListener(this);
@@ -171,8 +172,10 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void auth() {
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        String accessKeyId = Constants.A_K_DEV;
-        String secretKeyId = Constants.S_K_DEV;
+        /*String accessKeyId = Constants.A_K_DEV;
+        String secretKeyId = Constants.S_K_DEV;*/
+        String accessKeyId = Constants.A_K_UQC;
+        String secretKeyId = Constants.S_K_UQC;
 
         JsonBodyAuth jsonBodyAuth = new JsonBodyAuth();
         jsonBodyAuth.setAccessKeyId(accessKeyId);

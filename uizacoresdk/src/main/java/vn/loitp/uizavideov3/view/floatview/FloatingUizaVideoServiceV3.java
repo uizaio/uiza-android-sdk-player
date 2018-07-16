@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,6 +43,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 
@@ -62,10 +64,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private WindowManager.LayoutParams params;
 
+    private Data data;
     private String linkPlay;
-    private String entityId;
-    private String entityCover;
-    private String entityTitle;
+    //private String entityId;
+    //private String entityCover;
+    //private String entityTitle;
+    private Gson gson = new Gson();
 
     public FloatingUizaVideoServiceV3() {
     }
@@ -73,13 +77,17 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
+        data = LPref.getData(this, gson);
+        if (data == null) {
+            return super.onStartCommand(intent, flags, startId);
+        }
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
-            entityId = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
+            /*entityId = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityCover = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-            entityTitle = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
+            entityTitle = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);*/
             LLog.d(TAG, "linkPlay " + linkPlay);
-            LLog.d(TAG, "entityId " + entityId);
+            //LLog.d(TAG, "entityId " + entityId);
             //LLog.d(TAG, "entityCover " + entityCover);
             //LLog.d(TAG, "entityTitle " + entityTitle);
 
@@ -154,9 +162,9 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+                /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);*/
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);

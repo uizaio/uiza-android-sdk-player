@@ -123,6 +123,11 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_READY && playWhenReady) {
+                LLog.d(TAG, "onPlayerStateChanged STATE_READY");
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.hideLLMsg();
+                    uizaIMAVideoV3.resetCountTryLinkPlayError();
+                }
                 if (previewTimeBarLayout != null) {
                     previewTimeBarLayout.hidePreview();
                 }
@@ -246,9 +251,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         return trackSelectionHelper;
     }
 
-    public void init() {
-        reset();
-
+    private void initSource() {
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -284,6 +287,10 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         player.setPlayWhenReady(true);
         seekTo(contentPosition);
 
+        LLog.d(TAG, "last progress volume " + uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
+        //uizaIMAVideoV3.setProgressVolumeSeekbar(uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
+        setVolume(uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
+
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
@@ -292,6 +299,15 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
             debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideoV3.getDebugTextView());
             debugTextViewHelper.start();
         }
+    }
+
+    public void init() {
+        reset();
+        initSource();
+    }
+
+    public void initWithoutReset() {
+        initSource();
     }
 
     private MediaSource createMediaSourceVideo() {
@@ -656,7 +672,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     private float currentVolume;
 
     public void toggleVolumeMute(ImageButton exoVolume) {
-        //LLog.d(TAG, "toggleVolumeMute");
+        LLog.d(TAG, "toggleVolumeMute");
         if (player == null || exoVolume == null) {
             //LLog.d(TAG, "toggleVolumeMute player == null || exoVolume == null -> return");
             return;
@@ -664,12 +680,12 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         if (player.getVolume() == 0f) {
             //LLog.d(TAG, "toggleVolumeMute off -> on");
             uizaIMAVideoV3.setProgressVolumeSeekbar((int) (currentVolume * 100));
-            exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
             //LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
             uizaIMAVideoV3.setProgressVolumeSeekbar(0);
-            exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            //exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
         }
         //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
         //LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());

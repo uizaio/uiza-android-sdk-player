@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -74,7 +75,11 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
     @Override
     public void onVisibilityChange(int visibility) {
         //do nothing
-        //controllerVisible = visibility == View.VISIBLE;
+        controllerVisible = visibility == View.VISIBLE;
         //LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    }
+
+    public boolean isControllerVisible() {
+        return controllerVisible;
     }
 }

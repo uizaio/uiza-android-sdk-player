@@ -12,6 +12,7 @@ import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
@@ -99,5 +100,5 @@ public interface UizaServiceV3 {
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
 
     @GET("/api/private/v3/live/entity/tracking/")
-    Observable<Object> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
+    Observable<ResultTimeStartLive> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
 }

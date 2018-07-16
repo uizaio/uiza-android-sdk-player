@@ -51,7 +51,8 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
         String videoCoverUrl = null;
 
         if (getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID) == null) {
-            entityId = "9213e9b8-a926-4282-b081-12b69555cb10";
+            //entityId = "9213e9b8-a926-4282-b081-12b69555cb10"; //for dev environment
+            entityId = "76c21bd3-8626-4a74-9f26-b29b58c7f6b8"; //for uqc environment
         } else {
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
         }

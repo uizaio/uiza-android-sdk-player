@@ -7,15 +7,16 @@ package uiza.v3.canslide;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
@@ -44,6 +45,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawerLayout;
+    private ProgressBar progressBar;
     private List<Data> dataList = new ArrayList<>();
 
     @Override
@@ -51,7 +53,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         super.onViewCreated(view, savedInstanceState);
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) view.findViewById(R.id.drawerView);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
         LUIUtil.setPullLikeIOSVertical(mDrawerView);
 
         setupDrawer();
@@ -145,18 +148,18 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void genHomeMenu() {
-        //add live menu
-        Data dataLivestream = new Data();
-        dataLivestream.setName(Constants.MENU_LIVESTREAM);
-        dataList.add(0, dataLivestream);
-        //emd add live menu
-
         //add home menu
         Data dataMenu = new Data();
         dataMenu.setName(Constants.MENU_HOME_V3);
         dataMenu.setType("folder");
-        dataList.add(1, dataMenu);
-        //emd add home menu
+        dataList.add(dataMenu);
+        //end add home menu
+
+        //add live menu
+        Data dataLivestream = new Data();
+        dataLivestream.setName(Constants.MENU_LIVESTREAM);
+        dataList.add(dataLivestream);
+        //end add live menu
     }
 
     private void getListAllMetadata() {
@@ -167,7 +170,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
         subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                //LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
                 if (resultGetListMetadata == null) {
                     LDialogUtil.showDialog1(getActivity(), getString(R.string.err_unknow), new LDialogUtil.Callback1() {
                         @Override
@@ -191,7 +194,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
                 LDialogUtil.showDialog1(getActivity(), "getListAllMetadata onFail " + e.getMessage(), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -225,20 +228,8 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                     HomeDataV3.getInstance().setData(dataList.get(pos));
                     mDrawerLayout.closeDrawers();
 
-                    LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
-                    FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
-                    frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
-                        @Override
-                        public void onClick(Data data, int position) {
-                            onClickVideo(data, position);
-                        }
-
-                        @Override
-                        public void onPosition(int position) {
-                            //do nothing
-                        }
-                    });
-                    LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
+                    //LLog.d(TAG, "dataList.get(pos).getName() " + dataList.get(pos).getName());
+                    attachFrm();
                 }
             }));
         }
@@ -259,13 +250,32 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
                 //do nothing
             }
         });
-        LScreenUtil.replaceFragment(getActivity(), R.id.fragment_container, frmHomeChannelV3, false);
+        LScreenUtil.replaceFragment(this, R.id.fragment_container, frmHomeChannelV3, false);
+
+        LUIUtil.hideProgressBar(progressBar);
+    }
+
+    public void attachFrm() {
+        //LLog.d(TAG, "refreshCurrentFrm");
+        FrmHomeChannelV3 frmHomeChannelV3 = new FrmHomeChannelV3();
+        frmHomeChannelV3.setCallback(new EntityItemV3.Callback() {
+            @Override
+            public void onClick(Data data, int position) {
+                onClickVideo(data, position);
+            }
+
+            @Override
+            public void onPosition(int position) {
+                //do nothing
+            }
+        });
+        LScreenUtil.replaceFragment(FrmHomeV3.this, R.id.fragment_container, frmHomeChannelV3, false);
     }
 
     private void onClickVideo(Data data, int position) {
         //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         LPref.setClickedPip(getActivity(), false);
-        ((HomeV3CanSlideActivity) getActivity()).play(data.getId(), data.getName(), data.getThumbnail());
+        ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 
     private long backPressed;

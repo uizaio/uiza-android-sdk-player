@@ -3,54 +3,153 @@ package uiza.v3.canslide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
-import vn.loitp.restapi.uiza.util.UizaV3Util;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId;
-    private String token = null;
+    private final String DF_DOMAIN_API = "android-api.uiza.co";
+    private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
+    private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
+    private EditText etApiDomain;
+    private EditText etKey;
+    private EditText etAppId;
+    private Button btStart;
+    private ProgressBar progressBar;
+    private LinearLayout llInputInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
+        llInputInfo = (LinearLayout) findViewById(R.id.ll_input_info);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
+        progressBar.setVisibility(View.GONE);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
+        //init skin
         currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
-        LPref.setSlideUizaVideoEnabled(activity, true);
 
-        //TODO init tracking dev (with correct domain)
-        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        etApiDomain = (EditText) findViewById(R.id.et_api_domain);
+        etKey = (EditText) findViewById(R.id.et_key);
+        etAppId = (EditText) findViewById(R.id.et_app_id);
+        etApiDomain.setText(DF_DOMAIN_API);
+        etKey.setText(DF_TOKEN);
+        etAppId.setText(DF_APP_ID);
+        LUIUtil.setLastCursorEditText(etApiDomain);
 
-        //TODO init domain get link play (customer will always production domain)
-        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+        etApiDomain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
 
-        UizaWorkspaceInfo uizaWorkspaceInfo = new UizaWorkspaceInfo("loitp@uiza.io", "04021993", "android-api.uiza.co", "android.uiza.co");
-        UizaV3Util.initUizaWorkspace(activity, uizaWorkspaceInfo);
-        authV3();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkToSetVisibilityBtStart();
+            }
 
-        LPref.setApiTrackEndPoint(activity, Constants.URL_TRACKING_STAG);
-        //TODO iplm api check token later
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
+        etKey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkToSetVisibilityBtStart();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
+        etAppId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkToSetVisibilityBtStart();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
+
+        btStart = (Button) findViewById(R.id.bt_start);
+        btStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btStart.setVisibility(View.GONE);
+                llInputInfo.setVisibility(View.GONE);
+
+                String domainApi = etApiDomain.getText().toString().trim();
+                String token = etKey.getText().toString().trim();
+                String appId = etAppId.getText().toString().trim();
+
+                LLog.d(TAG, "onClick domainApi " + domainApi);
+                LLog.d(TAG, "onClick token " + token);
+                LLog.d(TAG, "onClick appId " + appId);
+
+                UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+                //TODO init tracking domain (with correct domain)
+                UizaDataV3.getInstance().initTracking(Constants.URL_TRACKING_STAG);
+                UizaDataV3.getInstance().initSDK(domainApi, token, appId);
+
+                final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
+                if (intent != null) {
+                    LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
+                        @Override
+                        public void doAfter(int mls) {
+                            LPref.setClickedPip(activity, false);
+                            startActivity(intent);
+                            LActivityUtil.tranIn(activity);
+                            finish();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void checkToSetVisibilityBtStart() {
+        String domainApi = etApiDomain.getText().toString();
+        String token = etKey.getText().toString();
+        String appId = etAppId.getText().toString();
+        if (domainApi == null || domainApi.isEmpty() || token == null || token.isEmpty() || appId == null || appId.isEmpty()) {
+            btStart.setClickable(false);
+            btStart.setBackgroundResource(R.drawable.bt_login_disabled);
+        } else {
+            btStart.setClickable(true);
+            btStart.setBackgroundResource(R.drawable.bt_login_enable);
+        }
     }
 
     @Override
@@ -66,67 +165,5 @@ public class SplashActivityV3 extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.v3_uiza_splash_activity;
-    }
-
-    private Intent intent = null;
-
-    private void goToHome() {
-        LLog.d(TAG, "goToHome token: " + token);
-        if (token == null) {
-            LDialogUtil.showDialog1(activity, "Token cannot be null or empty", new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
-                }
-
-                @Override
-                public void onCancel() {
-                    if (activity != null) {
-                        activity.onBackPressed();
-                    }
-                }
-            });
-            return;
-        }
-        UizaData.getInstance().setCurrentPlayerId(currentPlayerId);
-        LPref.setToken(activity, token);
-        intent = new Intent(activity, HomeV3CanSlideActivity.class);
-        if (intent != null) {
-            LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    LPref.setClickedPip(activity, false);
-                    startActivity(intent);
-                    LActivityUtil.tranIn(activity);
-                    finish();
-                }
-            });
-        }
-    }
-
-    private void authV3() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        UizaWorkspaceInfo uizaWorkspaceInfo = UizaV3Util.getUizaWorkspace(activity);
-        if (uizaWorkspaceInfo == null) {
-            return;
-        }
-        subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
-            @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
-                LLog.d(TAG, "authV3 " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                UizaV3Util.setResultGetToken(activity, resultGetToken);
-                token = resultGetToken.getData().getToken();
-                LLog.d(TAG, "token: " + token);
-                RestClientV3.addAuthorization(token);
-                goToHome();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
-            }
-        });
     }
 }

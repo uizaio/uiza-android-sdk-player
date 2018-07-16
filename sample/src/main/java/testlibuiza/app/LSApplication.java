@@ -30,8 +30,8 @@ public class LSApplication extends MultiDexApplication {
         RestClientTracking.init(Constants.URL_TRACKING_PROD);
         Auth auth = getDummyAuthDemo();*/
 
-        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
-        RestClientTracking.init(Constants.URL_TRACKING_DEV);
+        RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_STAG);
+        RestClientTracking.init(Constants.URL_TRACKING_STAG);
         //Auth auth = getDummyAuthDev();
 
         //RestClientV2.addAuthorization(auth.getData().getToken());

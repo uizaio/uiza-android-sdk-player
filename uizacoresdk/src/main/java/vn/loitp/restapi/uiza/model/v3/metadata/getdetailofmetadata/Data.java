@@ -4,13 +4,54 @@ package vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPullInfo;
-import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPushInfo;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ExtendMetadata;
 
 public class Data {
+
+    public static final String LAST_PROCRESS_START = "start";
+    public static final String LAST_PROCRESS_STOP = "stop";
+
+    @SerializedName("entityId")
+    @Expose
+    private String entityId;
+
+    @SerializedName("entityName")
+    @Expose
+    private String entityName;
+
+    @SerializedName("feedId")
+    @Expose
+    private String feedId;
+
+    @SerializedName("startTime")
+    @Expose
+    private String startTime;
+
+    @SerializedName("endTime")
+    @Expose
+    private Object endTime;
+
+    @SerializedName("length")
+    @Expose
+    private Object length;
+
+    @SerializedName("process")
+    @Expose
+    private String process;
+
+    @SerializedName("deletedEntity")
+    @Expose
+    private Object deletedEntity;
+
+    @SerializedName("pullInfo")
+    @Expose
+    private String pullInfo;
+
+    @SerializedName("pushInfo")
+    @Expose
+    private String pushInfo;
+
     @SerializedName("mode")
     @Expose
     private String mode;
@@ -47,9 +88,9 @@ public class Data {
     @Expose
     private LastPullInfo lastPullInfo;
 
-    @SerializedName("lastPushInfo")
+    /*@SerializedName("lastPushInfo")
     @Expose
-    private List<LastPushInfo> lastPushInfo = null;
+    private List<LastPushInfo> lastPushInfo = null;*/
 
     @SerializedName("lastProcess")
     @Expose
@@ -126,14 +167,6 @@ public class Data {
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -287,14 +320,6 @@ public class Data {
         this.encode = encode;
     }
 
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
-
     public Object getLastPresetId() {
         return lastPresetId;
     }
@@ -319,14 +344,6 @@ public class Data {
         this.linkPublishSocial = linkPublishSocial;
     }
 
-    public String getLinkStream() {
-        return linkStream;
-    }
-
-    public void setLinkStream(String linkStream) {
-        this.linkStream = linkStream;
-    }
-
     public LastPullInfo getLastPullInfo() {
         return lastPullInfo;
     }
@@ -335,13 +352,13 @@ public class Data {
         this.lastPullInfo = lastPullInfo;
     }
 
-    public List<LastPushInfo> getLastPushInfo() {
+    /*public List<LastPushInfo> getLastPushInfo() {
         return lastPushInfo;
     }
 
     public void setLastPushInfo(List<LastPushInfo> lastPushInfo) {
         this.lastPushInfo = lastPushInfo;
-    }
+    }*/
 
     public String getLastProcess() {
         return lastProcess;
@@ -357,5 +374,109 @@ public class Data {
 
     public void setEventType(String eventType) {
         this.eventType = eventType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getLinkStream() {
+        return linkStream;
+    }
+
+    public void setLinkStream(String linkStream) {
+        this.linkStream = linkStream;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public Object getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Object endTime) {
+        this.endTime = endTime;
+    }
+
+    public Object getLength() {
+        return length;
+    }
+
+    public void setLength(Object length) {
+        this.length = length;
+    }
+
+    public String getProcess() {
+        return process;
+    }
+
+    public void setProcess(String process) {
+        this.process = process;
+    }
+
+    public Object getDeletedEntity() {
+        return deletedEntity;
+    }
+
+    public void setDeletedEntity(Object deletedEntity) {
+        this.deletedEntity = deletedEntity;
+    }
+
+    public String getPullInfo() {
+        return pullInfo;
+    }
+
+    public void setPullInfo(String pullInfo) {
+        this.pullInfo = pullInfo;
+    }
+
+    public String getPushInfo() {
+        return pushInfo;
+    }
+
+    public void setPushInfo(String pushInfo) {
+        this.pushInfo = pushInfo;
     }
 }

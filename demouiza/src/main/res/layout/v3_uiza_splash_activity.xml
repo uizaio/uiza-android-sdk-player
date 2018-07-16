@@ -4,6 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/primaryColor">
 
     <ImageView
@@ -45,6 +46,91 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/margin_55" />
+
+            <LinearLayout
+                android:id="@+id/ll_input_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bt_start"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Enter your Api Domain"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_18"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_api_domain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:hint="Enter your Api Domain"
+                    android:padding="@dimen/padding_5"
+                    android:singleLine="true"
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/Gray"
+                    android:textSize="@dimen/txt_12" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:text="Enter your key (gen from dashboard)"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_18"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:hint="Enter your key"
+                    android:padding="@dimen/padding_5"
+                    android:singleLine="true"
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/Gray"
+                    android:textSize="@dimen/txt_12" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:text="Enter your appId"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_18"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_app_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:hint="Enter your app Id"
+                    android:padding="@dimen/padding_5"
+                    android:singleLine="true"
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/Gray"
+                    android:textSize="@dimen/txt_12" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bt_login_enable"
+                android:text="GO!"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_30"
+                android:textStyle="bold" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

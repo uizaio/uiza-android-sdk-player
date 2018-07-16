@@ -35,4 +35,9 @@ public class HomeDataV3 {
     public void setData(Data data) {
         this.mCurrentData = data;
     }
+
+    public void clearAll() {
+        mCurrentData = null;
+        currentPosition = 0;
+    }
 }

@@ -45,5 +45,12 @@
                 android:scrollbars="none" />
         </FrameLayout>
     </android.support.v4.widget.DrawerLayout>
+
+    <ProgressBar
+        android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/w_20"
+        android:layout_height="@dimen/w_20"
+        android:layout_centerInParent="true" />
 </RelativeLayout>
 

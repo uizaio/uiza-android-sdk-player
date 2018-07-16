@@ -70,7 +70,7 @@
             android:minWidth="@dimen/w_10">
 
             <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar
-                android:id="@+id/seekbar_volume"
+                android:id="@id/seekbar_volume"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:splitTrack="false"
@@ -97,12 +97,74 @@
             android:minWidth="10dp">
 
             <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar
-                android:id="@+id/seekbar_birghtness"
+                android:id="@id/seekbar_birghtness"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:splitTrack="false"
                 app:seekBarRotation="CW270" />
         </vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBarWrapper>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@id/rl_live_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_top"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
+            android:id="@id/tv_live"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/background_live"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding_5"
+            android:paddingRight="@dimen/padding_5"
+            android:text="@string/live"
+            android:textColor="@color/White" />
+
+        <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            android:id="@id/iv_live_time"
+            android:layout_width="@dimen/w_15"
+            android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_live_time"
+            android:background="@color/transparent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/baseline_access_time_black_48dp"
+            android:tint="@color/White" />
+
+        <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
+            android:id="@id/tv_live_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_toLeftOf="@id/iv_live_view"
+            android:textColor="@color/White" />
+
+        <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            android:id="@id/iv_live_view"
+            android:layout_width="@dimen/w_15"
+            android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_live_view"
+            android:background="@color/transparent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/baseline_visibility_black_48dp"
+            android:tint="@color/White" />
+
+        <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
+            android:id="@id/tv_live_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/White" />
     </RelativeLayout>
 
     <LinearLayout
@@ -113,7 +175,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/rl_time_bar"
+            android:id="@id/rl_time_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -172,7 +234,7 @@
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/fl_bar"
+                android:layout_alignBottom="@id/fl_bar"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textColor="@color/White"
@@ -182,7 +244,7 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/fl_bar"
+                android:layout_alignBottom="@id/fl_bar"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"

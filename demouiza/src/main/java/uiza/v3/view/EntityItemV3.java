@@ -15,6 +15,7 @@ import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
@@ -38,6 +39,8 @@ public class EntityItemV3 {
     private ProgressBar progressBar;
     @View(R.id.tv_name)
     private TextView tvName;
+    @View(R.id.tv_info_live)
+    private TextView tvInfoLive;
 
     private Data data;
     private Context mContext;
@@ -74,6 +77,12 @@ public class EntityItemV3 {
         tvName.setText(data.getName());
         LUIUtil.setTextShadow(tvName);
 
+        if (data == null || data.getLastProcess() == null || data.getLastProcess().equals(Data.LAST_PROCRESS_STOP)) {
+            tvInfoLive.setVisibility(android.view.View.INVISIBLE);
+        } else {
+            tvInfoLive.setVisibility(android.view.View.VISIBLE);
+        }
+
         if (mCallback != null) {
             mCallback.onPosition(mPosition);
         }
@@ -94,8 +103,18 @@ public class EntityItemV3 {
 
             @Override
             public void onEnd() {
-                if (mCallback != null) {
-                    mCallback.onClick(data, mPosition);
+                if (data.getLastProcess() == null) {
+                    if (mCallback != null) {
+                        mCallback.onClick(data, mPosition);
+                    }
+                } else {
+                    if (data.getLastProcess().equals(Data.LAST_PROCRESS_START)) {
+                        if (mCallback != null) {
+                            mCallback.onClick(data, mPosition);
+                        }
+                    } else {
+                        LToast.show(mContext, "This content is not streaming now");
+                    }
                 }
             }
 

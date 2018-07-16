@@ -8,9 +8,10 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import uiza.R;
+import uiza.app.LSApplication;
+import uiza.v3.data.HomeDataV3;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
@@ -18,6 +19,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
@@ -66,19 +68,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         });
         replaceFragment(new FrmHomeV3());
         if (LPref.getClickedPip(activity)) {
-            //called from PiP Service
-            String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
-            String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
-            String videoCoverUrl = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-            LLog.d(TAG, "onCreate pip entityId: " + entityId);
-            LLog.d(TAG, "onCreate pip entityTitle: " + entityTitle);
-            LLog.d(TAG, "onCreate pip videoCoverUrl: " + videoCoverUrl);
-            if (entityId == null || entityId.isEmpty()) {
-                //LToast.show(activity, "Error\nCannot play this video from PiP because entityId is null or empty!");
-                LLog.e(TAG, "onCreate pip entityId == null || entityId.isEmpty()");
-                return;
-            }
-            play(entityId, entityTitle, videoCoverUrl);
+            play(null);
         }
     }
 
@@ -112,7 +102,13 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoTopV3 frmVideoTop;
     private FrmVideoBottomV3 frmVideoBottom;
 
-    private void initializeDraggablePanel(final String entityId, final String entityTitle, final String entityCover) {
+    private void initializeDraggablePanel(final Data data) {
+        LLog.d(TAG, "initializeDraggablePanel " + LSApplication.getInstance().getGson().toJson(data));
+        if (data == null) {
+            return;
+        } else {
+            LPref.setData(activity, data, LSApplication.getInstance().getGson());
+        }
         if (!LConnectivityUtil.isConnected(activity)) {
             LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                 @Override
@@ -136,7 +132,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             //LLog.d(TAG, "initializeDraggablePanel exist");
             //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
             clearUIFrmBottom();
-            initFrmTop(entityId, entityTitle, entityCover, false);
+            initFrmTop(data, false);
             draggablePanel.maximize();
             return;
         }
@@ -145,7 +141,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void onViewCreated() {
                 //LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
-                initFrmTop(entityId, entityTitle, entityCover, false);
+                initFrmTop(data, false);
             }
         });
         frmVideoBottom = new FrmVideoBottomV3();
@@ -158,7 +154,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                         //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
-                        initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
+                        initFrmTop(data, true);
                     }
 
                     @Override
@@ -220,23 +216,21 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 //LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
                 LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
-                initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
+                initFrmTop(data, true);
             }
         });
     }
 
-    private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    private void initFrmTop(Data data, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
-
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
-
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmVideoTop.setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        frmVideoTop.setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
     private void intFrmBottom(ResultRetrieveAnEntity resultRetrieveAnEntity) {
@@ -247,9 +241,15 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoBottom.clearAllViews();
     }
 
-    public void play(String entityId, String entityTitle, String entityCover) {
-        //LLog.d(TAG, "onClickVideo entityId:" + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
-        initializeDraggablePanel(entityId, entityTitle, entityCover);
+    public void play(Data data) {
+        if (data == null) {
+            data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            if (data == null) {
+                LLog.e(TAG, "play error data null");
+                return;
+            }
+        }
+        initializeDraggablePanel(data);
     }
 
     private boolean isLandscape;
@@ -294,6 +294,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         LPref.setAcitivityCanSlideIsRunning(activity, false);
+        HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
 }
