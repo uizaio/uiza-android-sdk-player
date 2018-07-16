@@ -6,15 +6,22 @@
     android:background="@color/WhiteSmoke"
     android:padding="@dimen/padding_5">
 
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter entity id" />
+
     <EditText
         android:id="@+id/et_input_entity_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
+        android:layout_below="@+id/tv"
         android:hint="Enter entity id"
+        android:singleLine="true"
         android:textColor="@color/Black"
         android:textColorHint="@color/Gray"
-        android:textSize="@dimen/txt_18" />
+        android:textSize="@dimen/txt_14" />
 
     <Button
         android:id="@+id/bt_start"
