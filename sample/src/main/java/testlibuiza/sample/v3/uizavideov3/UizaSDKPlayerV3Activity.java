@@ -25,6 +25,6 @@ public class UizaSDKPlayerV3Activity extends BaseActivity {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v3_player_activity;
+        return R.layout.v3_player_input_entity_id_activity;
     }
 }
