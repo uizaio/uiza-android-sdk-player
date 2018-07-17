@@ -43,7 +43,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        progressDialog = new ProgressDialog(activity);
+        progressDialog = new LDialogUtil().getSpinnerProgressDialog(activity, "Please wait", "Loading...");
         progressDialog.setCancelable(false);
         //progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 
@@ -140,9 +140,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+        LDialogUtil.clearAll();
         super.onDestroy();
     }
 }
