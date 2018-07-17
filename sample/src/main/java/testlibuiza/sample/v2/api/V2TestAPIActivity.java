@@ -71,7 +71,6 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     private List<View> viewList = new ArrayList<>();
 
     private void setEnableAllButton(boolean isEnable) {
-        LLog.d(TAG, "size: " + viewList.size());
         if (isEnable) {
             for (View view : viewList) {
                 view.setEnabled(true);
@@ -332,7 +331,6 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void getLinkPlay() {
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        LLog.d(TAG, "appId " + appId);
         subscribe(service.getLinkPlayV2("e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7", appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {

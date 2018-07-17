@@ -28,7 +28,6 @@ import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.views.LToast;
 
 public class MainActivity extends BaseActivity {
 
@@ -108,7 +107,6 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(Auth auth) {
                 LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
                 RestClientV2.addAuthorization(auth.getData().getToken());
-                LToast.show(activity, "auth() onSuccess");
             }
 
             @Override
@@ -164,9 +162,7 @@ public class MainActivity extends BaseActivity {
         subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
             @Override
             public void onSuccess(ResultGetToken resultGetToken) {
-                LLog.d(TAG, "authV3 " + LSApplication.getInstance().getGson().toJson(resultGetToken));
                 String token = resultGetToken.getData().getToken();
-                LLog.d(TAG, "token: " + token);
                 RestClientV3.addAuthorization(token);
             }
 

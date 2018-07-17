@@ -70,7 +70,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private List<View> viewList = new ArrayList<>();
 
     private void setEnableAllButton(boolean isEnable) {
-        LLog.d(TAG, "size: " + viewList.size());
         if (isEnable) {
             for (View view : viewList) {
                 view.setEnabled(true);

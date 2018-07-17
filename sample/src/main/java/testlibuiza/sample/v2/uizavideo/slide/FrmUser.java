@@ -6,7 +6,6 @@ package testlibuiza.sample.v2.uizavideo.slide;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmUser extends BaseFragment implements IOnBackPressed {
@@ -19,7 +18,6 @@ public class FrmUser extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
         return false;
     }
 }

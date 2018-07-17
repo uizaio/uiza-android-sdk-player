@@ -21,6 +21,7 @@ import vn.loitp.views.draggablepanel.DraggablePanel;
 
 public class V2UizaVideoIMActivitySlide extends BaseActivity {
     private DraggablePanel draggablePanel;
+
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
     }
