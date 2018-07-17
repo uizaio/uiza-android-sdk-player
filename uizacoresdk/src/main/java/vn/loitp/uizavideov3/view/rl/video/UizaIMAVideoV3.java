@@ -472,6 +472,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    private void updatePositionOfProgressBar() {
+        //set progressBar center in parent
+        rootView.post(new Runnable() {
+            @Override
+            public void run() {
+                LUIUtil.setMarginPx(progressBar, playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2, playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2, 0, 0);
+            }
+        });
+    }
+
     private void findViews() {
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
@@ -484,13 +494,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
 
-        //set progressBar center in parent
-        rootView.post(new Runnable() {
-            @Override
-            public void run() {
-                LUIUtil.setMarginPx(progressBar, playerView.getMeasuredWidth() / 2, playerView.getMeasuredHeight() / 2, 0, 0);
-            }
-        });
+        updatePositionOfProgressBar();
 
         rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
@@ -853,6 +857,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        updatePositionOfProgressBar();
     }
 
     private void setMarginPreviewTimeBarLayout() {
@@ -880,7 +885,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            exoPictureInPicture.setVisibility(GONE);
+            //TODO revert to gone
+            exoPictureInPicture.setVisibility(VISIBLE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
