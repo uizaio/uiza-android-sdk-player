@@ -75,7 +75,6 @@ public class V3SetEntityIdActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 LDialogUtil.show(progressDialog);
-                //getDataFromEntityIdVOD(etInputEntityId.getText().toString());
                 UizaV3Util.getDetailEntity((BaseActivity) activity, etInputEntityId.getText().toString(), new UizaV3Util.Callback() {
                     @Override
                     public void onSuccess(Data data) {
