@@ -20,6 +20,7 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -37,7 +38,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-    private final String entityIdDefault = "61d4b1e2-95d9-418d-9e52-e1d798e869b4";
+    private final String entityIdDefaultVOD = "61d4b1e2-95d9-418d-9e52-e1d798e869b4";
+    private final String entityIdDefaultLIVE = "9f206879-f594-4775-aded-a173c1bca163";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart = (Button) findViewById(R.id.bt_start);
 
         //set default value entity id
-        etInputEntityId.setText(entityIdDefault);
+        etInputEntityId.setText(entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInputEntityId);
 
         etInputEntityId.addTextChangedListener(new TextWatcher() {
@@ -77,7 +79,28 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataFromEntityId(etInputEntityId.getText().toString());
+                getDataFromEntityIdVOD(etInputEntityId.getText().toString());
+            }
+        });
+
+        findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText(entityIdDefaultVOD);
+                LUIUtil.setLastCursorEditText(etInputEntityId);
+            }
+        });
+        findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText(entityIdDefaultLIVE);
+                LUIUtil.setLastCursorEditText(etInputEntityId);
+            }
+        });
+        findViewById(R.id.bt_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText("");
             }
         });
     }
@@ -93,21 +116,20 @@ public class V3SetEntityIdActivity extends BaseActivity {
         final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
-        finish();
     }
 
-    private void getDataFromEntityId(String entityId) {
+    private void getDataFromEntityIdVOD(final String entityId) {
         LDialogUtil.show(progressDialog);
         //TRY TO GET DATA VOD
         //IF NOT SUCCESS, TRY TO GET DATA LIVE
-        LLog.d(TAG, "getDataFromEntityId entityId " + entityId);
+        LLog.d(TAG, "getDataFromEntityIdVOD entityId " + entityId);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
-                LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
-                if (result == null || result.getData() == null) {
-
+                LLog.d(TAG, "getDataFromEntityIdVOD onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
+                    getDataFromEntityIdLIVE(entityId);
                 } else {
                     Data d = result.getData();
                     goToPlay(d);
@@ -116,9 +138,33 @@ public class V3SetEntityIdActivity extends BaseActivity {
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                LLog.e(TAG, "getDataFromEntityIdVOD onFail " + e.getMessage());
                 LDialogUtil.hide(progressDialog);
-                LToast.show(activity, "retrieveAnEntity onFail " + e.getMessage());
+                LToast.show(activity, "getDataFromEntityIdVOD onFail " + e.getMessage());
+            }
+        });
+    }
+
+    private void getDataFromEntityIdLIVE(String entityId) {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
+            @Override
+            public void onSuccess(ResultRetrieveALive result) {
+                LLog.d(TAG, "getDataFromEntityIdLIVE onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
+                    LDialogUtil.hide(progressDialog);
+                    LToast.show(activity, "getDataFromEntityIdLIVE result null");
+                } else {
+                    Data d = result.getData();
+                    goToPlay(d);
+                }
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getDataFromEntityIdLIVE onFail " + e.getMessage());
+                LDialogUtil.hide(progressDialog);
+                LToast.show(activity, "getDataFromEntityIdLIVE onFail " + e.getMessage());
             }
         });
     }

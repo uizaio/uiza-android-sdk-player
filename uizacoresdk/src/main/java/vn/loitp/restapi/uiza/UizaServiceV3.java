@@ -14,6 +14,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenS
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
@@ -95,6 +96,9 @@ public interface UizaServiceV3 {
                                                             @Query("page") int page,
                                                             @Query("orderBy") String orderBy,
                                                             @Query("orderType") String orderType);
+
+    @GET("/api/public/v3/live/entity")
+    Observable<ResultRetrieveALive> retrieveALiveEvent(@Query("id") String entityId);
 
     @GET("/api/private/v3/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
