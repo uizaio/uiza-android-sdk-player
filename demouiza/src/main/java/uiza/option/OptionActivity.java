@@ -88,7 +88,6 @@ public class OptionActivity extends BaseActivity {
 
         genListSkin();
 
-        //new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,9 +268,6 @@ public class OptionActivity extends BaseActivity {
 
             ImageView imageView = (ImageView) layout.findViewById(R.id.imageView);
             imageView.setImageResource(skinObject.getResId());
-
-            /*imageView.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
-            imageView.invalidate();*/
 
             TextView tv = (TextView) layout.findViewById(R.id.tv);
             tv.setText(skinObject.getSkinName());

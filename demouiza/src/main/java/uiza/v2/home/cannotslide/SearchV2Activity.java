@@ -41,7 +41,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
     private ImageView ivClearText;
     private EditText etSearch;
     private TextView tv;
-    //private AVLoadingIndicatorView avi;
     private PlaceHolderView placeHolderView;
     private final int NUMBER_OF_COLUMN_1 = 1;
     private final int NUMBER_OF_COLUMN_2 = 2;
@@ -60,8 +59,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         etSearch = (EditText) findViewById(R.id.et_search);
         etSearch.requestFocus();
         tv = (TextView) findViewById(R.id.tv);
-        //avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
-        //avi.hide();//dont smoothToHide();
 
         placeHolderView = (PlaceHolderView) findViewById(R.id.place_holder_view);
 
@@ -86,23 +83,19 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         LUIUtil.setPullLikeIOSVertical(placeHolderView, new LUIUtil.Callback() {
             @Override
             public void onUpOrLeft(float offset) {
-                //do nothing
             }
 
             @Override
             public void onUpOrLeftRefresh(float offset) {
-                //LLog.d(TAG, "onUpOrLeftRefresh");
                 swipeToRefresh();
             }
 
             @Override
             public void onDownOrRight(float offset) {
-                //do nothing
             }
 
             @Override
             public void onDownOrRightRefresh(float offset) {
-                //LLog.d(TAG, "onDownOrRightRefresh");
             }
         });
 
@@ -112,7 +105,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -121,16 +113,13 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
                     ivClearText.setVisibility(View.GONE);
                     placeHolderView.removeAllViews();
                     tv.setVisibility(View.GONE);
-                    //resetAllView();
                 } else {
                     ivClearText.setVisibility(View.VISIBLE);
-                    //search(s.toString());
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
 
@@ -171,19 +160,14 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
 
     private void search(String keyword, boolean isCallFromLoadMore) {
         tv.setVisibility(View.GONE);
-        //avi.smoothToShow();
         if (isCallFromLoadMore) {
-            //do nothing
         } else {
             placeHolderView.removeAllViews();
             page = 0;
             totalPage = Integer.MAX_VALUE;
         }
 
-        //LLog.d(TAG, ">>>getPage/totalPage: " + page + "/" + totalPage);
-
         if (page >= totalPage) {
-            //LLog.d(TAG, "page >= totalPage -> return");
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "This is last page");
             }
@@ -194,8 +178,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
             return;
         }
 
-        //LToast.show(activity, "getData keyword " + keyword);
-        //LToast.show(activity, "getData limit " + limit);
         LToast.show(activity, getString(R.string.load_page) + page);
 
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
@@ -208,12 +190,9 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         subscribe(service.searchEntityV2(jsonBodySearch), new ApiSubscriber<Search>() {
             @Override
             public void onSuccess(Search search) {
-                //LLog.d(TAG, "search onSuccess " + LSApplication.getInstance().getGson().toJson(search));
-
                 if (totalPage == Integer.MAX_VALUE) {
                     int totalItem = (int) search.getMetadata().getTotal();
                     float ratio = (float) (totalItem / limit);
-                    //LLog.d(TAG, "ratio: " + ratio);
                     if (ratio == 0) {
                         totalPage = (int) ratio;
                     } else if (ratio > 0) {
@@ -221,14 +200,12 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
                     } else {
                         totalPage = (int) ratio;
                     }
-                    //LLog.d(TAG, ">>>totalPage: " + totalPage);
                 }
 
                 if (search == null || search.getItemList().isEmpty()) {
                     tv.setText(getString(R.string.empty_list));
                     tv.setVisibility(View.VISIBLE);
                 } else {
-                    //LLog.d(TAG, "size: " + search.getItemList().size());
                     setupUIList(search.getItemList());
                 }
             }
@@ -238,17 +215,10 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
                 if (e == null || e.toString() == null) {
                     return;
                 }
-                //LLog.e(TAG, "search onFail " + e.toString());
                 tv.setText("Error search " + e.toString());
                 tv.setVisibility(View.VISIBLE);
-                //avi.smoothToHide();
             }
         });
-    }
-
-    private void resetAllView() {
-        tv.setText("");
-        tv.setVisibility(View.GONE);
     }
 
     private void setupUIList(List<Item> itemList) {
@@ -263,9 +233,7 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
 
                 @Override
                 public void onPosition(int position) {
-                    //LLog.d(TAG, "_____onPosition " + position + " ~ " + getListSize());
                     if (position == getListSize() - 1) {
-                        //LLog.d(TAG, "_____onLast");
                         loadMore();
                     }
                 }
@@ -282,7 +250,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
         UizaData.getInstance().clear();
 
         LPref.setClickedPip(activity, false);
-        //LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
@@ -324,7 +291,6 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
     }
 
     private int getListSize() {
-        //LLog.d(TAG, "getListSize " + placeHolderView.getAllViewResolvers().size());
         return placeHolderView.getAllViewResolvers().size();
     }
 }

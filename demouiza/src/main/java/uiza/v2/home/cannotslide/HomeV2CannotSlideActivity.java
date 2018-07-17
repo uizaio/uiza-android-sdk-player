@@ -39,7 +39,6 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //LLog.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView) findViewById(R.id.drawerView);
@@ -66,7 +65,6 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
     }
 
     private void setupDrawer() {
-        //LLog.d(TAG, "setupDrawer");
         UizaDrawerHeader uizaDrawerHeader = new UizaDrawerHeader();
         uizaDrawerHeader.setCallback(new UizaDrawerHeader.Callback() {
             @Override
@@ -100,7 +98,6 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                //do nothing
             }
 
             @Override
@@ -115,7 +112,6 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                //do nothing
             }
         });
 
@@ -185,16 +181,10 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
                     LDialogUtil.showDialog1(activity, getString(R.string.err_unknow), new LDialogUtil.Callback1() {
                         @Override
                         public void onClick1() {
-                            /*if (activity != null) {
-                                activity.onBackPressed();
-                            }*/
                         }
 
                         @Override
                         public void onCancel() {
-                            /*if (activity != null) {
-                                activity.onBackPressed();
-                            }*/
                         }
                     });
                     return;
@@ -208,16 +198,10 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
                 LDialogUtil.showDialog1(activity, "Lỗi lấy danh sách metadata", new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
-                        /*if (activity != null) {
-                            activity.onBackPressed();
-                        }*/
                     }
 
                     @Override
                     public void onCancel() {
-                        /*if (activity != null) {
-                            activity.onBackPressed();
-                        }*/
                     }
                 });
                 genListDrawerLayout(null);
