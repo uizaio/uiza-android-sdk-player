@@ -35,6 +35,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
+import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
@@ -103,7 +104,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         String urlThumnailsPreviewSeekbar = null;
         setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
     }
-
 
     private Data getDummyData() {
         Gson gson = new Gson();
@@ -346,8 +346,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+        LLog.d(TAG, "isInitResult isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
+            if (LPref.getClickedPip(activity)) {
+                ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                msgFromActivityIsInitSuccess.setInitSuccess(true);
+                ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
+            }
         }
     }
 
