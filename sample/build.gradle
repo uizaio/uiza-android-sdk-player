@@ -1,27 +1,34 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'loi'
+            keyPassword '04021993'
+            storeFile file('C:/Users/LENOVO/Desktop/demouiza/key.jks')
+            storePassword '04021993'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "27.0.3"
-
-
     defaultConfig {
         applicationId "com.uiza.module.sample"
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptSupportModeEnabled true
+        signingConfig signingConfigs.config
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
