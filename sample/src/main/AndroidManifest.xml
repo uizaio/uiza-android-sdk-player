@@ -50,8 +50,20 @@
             android:name=".sample.v3.api.V3TestAPIActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".sample.v3.uizavideov3.UizaSDKPlayerV3Activity"
+            android:name=".sample.v3.uizavideov3.V3SetEntityIdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name=".sample.v3.uizavideov3.V3CannotSlidePlayer"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+
+        <receiver
+            android:name=".sample.v3.uizavideov3.FloatClickFullScreenReceiverV3"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="FLOAT_CLICKED_FULLSCREEN_V3" />
+            </intent-filter>
+        </receiver>
         <!--end for v3-->
     </application>
 

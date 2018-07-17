@@ -11,7 +11,7 @@ import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v2.uizavideo.slide2.V2UizaVideoIMActivitySlide2;
 import testlibuiza.sample.v3.api.V3TestAPIActivity;
-import testlibuiza.sample.v3.uizavideov3.UizaSDKPlayerV3Activity;
+import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_sdk_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, UizaSDKPlayerV3Activity.class);
+                Intent intent = new Intent(activity, V3SetEntityIdActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

@@ -472,7 +472,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    private void updatePositionOfProgressBar() {
+        //LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
+        playerView.post(new Runnable() {
+            @Override
+            public void run() {
+                int marginL = playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
+                int marginT = playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
+                LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
+                LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
+            }
+        });
+    }
+
     private void findViews() {
+        LLog.d(TAG, "findViews");
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -483,6 +497,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         playerView = findViewById(R.id.player_view);
+
+        updatePositionOfProgressBar();
 
         rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
@@ -680,7 +696,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onResume() {
-        LLog.d(TAG, "onResume");
+        //LLog.d(TAG, "onResume");
         activityIsPausing = false;
         if (isExoShareClicked) {
             isExoShareClicked = false;
@@ -690,7 +706,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else {
             if (uizaPlayerManagerV3 != null) {
-                LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
+                //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
                 uizaPlayerManagerV3.init();
                 if (isCalledFromConnectionEventBus) {
                     uizaPlayerManagerV3.setRunnable();
@@ -747,13 +763,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoShareClicked;
     private boolean isExoVolumeClicked;
 
+    public void toggleScreenOritation() {
+        LActivityUtil.toggleScreenOritation(activity);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == rlMsg) {
             //do nothing
             //LLog.d(TAG, "onClick llMsg");
         } else if (v == exoFullscreenIcon) {
-            LActivityUtil.toggleScreenOritation(activity);
+            toggleScreenOritation();
         } else if (v == exoBackScreen) {
             if (isLandscape) {
                 exoFullscreenIcon.performClick();
@@ -841,6 +861,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        updatePositionOfProgressBar();
     }
 
     private void setMarginPreviewTimeBarLayout() {

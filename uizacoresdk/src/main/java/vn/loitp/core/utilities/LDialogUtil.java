@@ -2,6 +2,7 @@ package vn.loitp.core.utilities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
@@ -246,10 +247,14 @@ public class LDialogUtil {
         AlertDialog dialog = builder.create();
         dialog.show();
         alertDialogList.add(dialog);
+    }*/
+
+    public static ProgressDialog getSpinnerProgressDialog(Context context, String title, String msg) {
+        return getProgressDialog(context, 100, title, msg, false, ProgressDialog.STYLE_SPINNER, null, null);
     }
 
     //style ex ProgressDialog.STYLE_HORIZONTAL
-    public static ProgressDialog showProgressDialog(Context context, int max, String title, String msg, boolean isCancelAble, int style, String buttonTitle, final Callback1 callback1) {
+    public static ProgressDialog getProgressDialog(Context context, int max, String title, String msg, boolean isCancelAble, int style, String buttonTitle, final Callback1 callback1) {
         clearAll();
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMax(max);
@@ -267,10 +272,9 @@ public class LDialogUtil {
                 }
             });
         }
-        progressDialog.show();
         alertDialogList.add(progressDialog);
         return progressDialog;
-    }*/
+    }
 
     public static void show(Dialog dialog) {
         if (dialog != null && !dialog.isShowing()) {

@@ -37,7 +37,7 @@ public class LSApplication extends MultiDexApplication {
         //RestClientV2.addAuthorization(auth.getData().getToken());
         //LPref.setAuth(getContext(), auth, gson);
 
-        Constants.setDebugMode(true);
+        Constants.setDebugMode(false);
     }
 
     public Gson getGson() {
