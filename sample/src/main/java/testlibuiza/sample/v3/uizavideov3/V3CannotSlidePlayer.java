@@ -93,11 +93,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
                 return;
             }
         }
-        //remove pip if called from pip
-        /*if (LPref.getClickedPip(activity)) {
-            UizaUtil.stopServicePiPIfRunningV3(activity);
-        }*/
-
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
