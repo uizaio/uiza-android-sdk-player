@@ -50,7 +50,7 @@
             android:name=".sample.v3.api.V3TestAPIActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".sample.v3.uizavideov3.UizaSDKPlayerV3Activity"
+            android:name=".sample.v3.uizavideov3.V3SetEntityIdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.uizavideov3.V3CannotSlidePlayer"

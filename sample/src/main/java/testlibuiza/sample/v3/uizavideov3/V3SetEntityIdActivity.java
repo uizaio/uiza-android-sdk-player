@@ -15,7 +15,7 @@ import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
-public class UizaSDKPlayerV3Activity extends BaseActivity {
+public class V3SetEntityIdActivity extends BaseActivity {
 
     private EditText etInputEntityId;
     private Button btStart;
