@@ -50,6 +50,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
         etInputEntityId.setText(entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInputEntityId);
 
+        initWorkspace();
+
         etInputEntityId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -112,13 +114,15 @@ public class V3SetEntityIdActivity extends BaseActivity {
         });
     }
 
-    private void goToPlay(Data data) {
-        LDialogUtil.hide(progressDialog);
-        LPref.setData(activity, data, LSApplication.getInstance().getGson());
-
+    private void initWorkspace() {
         UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
         UizaDataV3.getInstance().initTracking(domainTracking);
         UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+    }
+
+    private void goToPlay(Data data) {
+        LDialogUtil.hide(progressDialog);
+        LPref.setData(activity, data, LSApplication.getInstance().getGson());
 
         final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
         startActivity(intent);
