@@ -73,6 +73,12 @@ public class UizaUtil {
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
 
+        //set size of parent view group of viewGroup
+        RelativeLayout parentViewGroup = (RelativeLayout) viewGroup.getParent();
+        parentViewGroup.getLayoutParams().width = widthScreen;
+        parentViewGroup.getLayoutParams().height = heightScreen;
+        parentViewGroup.requestLayout();
+
         if (ivVideoCover != null) {
             ivVideoCover.getLayoutParams().width = widthScreen;
             ivVideoCover.getLayoutParams().height = heightScreen;
