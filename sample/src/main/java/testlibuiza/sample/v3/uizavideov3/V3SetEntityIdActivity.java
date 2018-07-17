@@ -1,5 +1,6 @@
 package testlibuiza.sample.v3.uizavideov3;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
@@ -25,7 +27,7 @@ import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 public class V3SetEntityIdActivity extends BaseActivity {
-
+    private ProgressDialog progressDialog;
     private EditText etInputEntityId;
     private Button btStart;
 
@@ -40,6 +42,10 @@ public class V3SetEntityIdActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setCancelable(false);
+        //progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 
         //find views
         etInputEntityId = (EditText) findViewById(R.id.et_input_entity_id);
@@ -76,8 +82,24 @@ public class V3SetEntityIdActivity extends BaseActivity {
         });
     }
 
+    private void goToPlay(Data data) {
+        LDialogUtil.hide(progressDialog);
+        LPref.setData(activity, data, LSApplication.getInstance().getGson());
+
+        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaDataV3.getInstance().initTracking(domainTracking);
+        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+
+        final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+        startActivity(intent);
+        LActivityUtil.tranIn(activity);
+        finish();
+    }
+
     private void getDataFromEntityId(String entityId) {
+        LDialogUtil.show(progressDialog);
         //TRY TO GET DATA VOD
+        //IF NOT SUCCESS, TRY TO GET DATA LIVE
         LLog.d(TAG, "getDataFromEntityId entityId " + entityId);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
@@ -88,22 +110,14 @@ public class V3SetEntityIdActivity extends BaseActivity {
 
                 } else {
                     Data d = result.getData();
-                    LPref.setData(activity, d, LSApplication.getInstance().getGson());
-
-                    UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                    UizaDataV3.getInstance().initTracking(domainTracking);
-                    UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-
-                    final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
-                    startActivity(intent);
-                    LActivityUtil.tranIn(activity);
-                    finish();
+                    goToPlay(d);
                 }
             }
 
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                LDialogUtil.hide(progressDialog);
                 LToast.show(activity, "retrieveAnEntity onFail " + e.getMessage());
             }
         });
@@ -122,5 +136,13 @@ public class V3SetEntityIdActivity extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.v3_player_input_entity_id_activity;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
     }
 }
