@@ -32,14 +32,13 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private EditText etInputEntityId;
     private Button btStart;
 
-    //change your infor
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
     private final String domainTracking = Constants.URL_TRACKING_STAG;
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final String entityIdDefaultVOD = "61d4b1e2-95d9-418d-9e52-e1d798e869b4";
-    private final String entityIdDefaultLIVE = "9f206879-f594-4775-aded-a173c1bca163";
+    private final String entityIdDefaultLIVE = "5854a643-dc72-4371-b762-a2ce5983f40a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
