@@ -37,30 +37,19 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);*/
 
-        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
-        LLog.d(TAG, "isSlideUizaVideoEnabled " + isSlideUizaVideoEnabled);
+        //boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
+        //LLog.d(TAG, "isSlideUizaVideoEnabled " + isSlideUizaVideoEnabled);
 
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
-            if (isSlideUizaVideoEnabled) {
-                //boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
-                //LLog.d(TAG, "isActivityRunning " + isActivityRunning);
-                Intent intent = new Intent(context, V3CannotSlidePlayer.class);
-                /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);*/
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-            /*else {
-                Intent intent = new Intent(context, UizaPlayerActivityV2.class);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }*/
+            //boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
+            //LLog.d(TAG, "isActivityRunning " + isActivityRunning);
+            Intent intent = new Intent(context, V3CannotSlidePlayer.class);
+            /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);
+            intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);*/
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 }

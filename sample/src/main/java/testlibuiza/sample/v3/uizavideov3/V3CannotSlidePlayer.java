@@ -36,7 +36,6 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaInputV3;
@@ -73,10 +72,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         LLog.d(TAG, "onCreate isClickedPip " + isClickedPip);
         if (isClickedPip) {
             LLog.d(TAG, "called from clicking fullscreen of pip floating view");
+            play(null);
         } else {
             LLog.d(TAG, "called from V3SetEntityIdActivity.class");
+            //TODO
             String entityId = getIntent().getStringExtra("entityId");
-            //play(getDummyData());
+            Data data = getDummyData();
+            LPref.setData(activity, data, LSApplication.getInstance().getGson());
+            play(data);
         }
     }
 
@@ -90,15 +93,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
             }
         }
         //remove pip if called from pip
-        if (!LPref.getClickedPip(activity)) {
+        /*if (LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
-        }
+        }*/
+
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-
-        LPref.setData(activity, data, LSApplication.getInstance().getGson());
         setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
     }
 
@@ -158,7 +160,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
-                //LLog.d(TAG, "onActivityResult RESULT_OK");
+                LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideoV3.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
@@ -366,6 +368,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess");
         if (isInitSuccess) {
             onBackPressed();
         }
