@@ -16,7 +16,6 @@ import uiza.option.OptionActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
@@ -36,7 +35,6 @@ public class SplashActivityV3 extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         llInputInfo = (LinearLayout) findViewById(R.id.ll_input_info);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         progressBar.setVisibility(View.GONE);
@@ -56,7 +54,6 @@ public class SplashActivityV3 extends BaseActivity {
         etApiDomain.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -66,13 +63,11 @@ public class SplashActivityV3 extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
         etKey.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -82,13 +77,11 @@ public class SplashActivityV3 extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
         etAppId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -98,7 +91,6 @@ public class SplashActivityV3 extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
 
@@ -113,10 +105,6 @@ public class SplashActivityV3 extends BaseActivity {
                 String domainApi = etApiDomain.getText().toString().trim();
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
-
-                LLog.d(TAG, "onClick domainApi " + domainApi);
-                LLog.d(TAG, "onClick token " + token);
-                LLog.d(TAG, "onClick appId " + appId);
 
                 UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 //TODO init tracking domain (with correct domain)

@@ -38,7 +38,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new SwitchAnimationUtil().startAnimation(getWindow().getDecorView(), SwitchAnimationUtil.AnimationType.HORIZION_RIGHT);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
@@ -62,10 +61,8 @@ public class SplashActivity extends BaseActivity {
         Auth auth = LPref.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
-            //LLog.d(TAG, "auth == null -> get token");
             auth();
         } else {
-            //LLog.d(TAG, "auth != null -> check token");
             token = auth.getData().getToken();
             RestClientV2.addAuthorization(token);
             checkToken(token);
@@ -132,11 +129,9 @@ public class SplashActivity extends BaseActivity {
         subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
-                LLog.d(TAG, "getData auth onSuccess " + LSApplication.getInstance().getGson().toJson(auth));
                 LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
 
                 token = auth.getData().getToken();
-                LLog.d(TAG, ">>>>token " + token);
                 goToHome();
             }
 
@@ -165,7 +160,6 @@ public class SplashActivity extends BaseActivity {
     private Intent intent = null;
 
     private void goToHome() {
-        LLog.d(TAG, "goToHome token: " + token);
         if (token == null) {
             LDialogUtil.showDialog1(activity, "Token cannot be null or empty", new LDialogUtil.Callback1() {
                 @Override
@@ -188,10 +182,8 @@ public class SplashActivity extends BaseActivity {
         RestClientV2.addAuthorization(token);
         LPref.setToken(activity, token);
         if (canSlide) {
-            LLog.d(TAG, "goToHome HomeV2CanSlideActivity");
             intent = new Intent(activity, HomeV2CanSlideActivity.class);
         } else {
-            LLog.d(TAG, "goToHome HomeV2CannotSlideActivity");
             intent = new Intent(activity, HomeV2CannotSlideActivity.class);
         }
         if (intent != null) {
@@ -208,7 +200,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void checkToken(String token) {
-        LLog.d(TAG, "checkToken: " + token);
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override

@@ -18,7 +18,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.view.EntityItemV3;
 import vn.loitp.core.base.BaseActivity;
@@ -85,23 +84,19 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
         LUIUtil.setPullLikeIOSVertical(placeHolderView, new LUIUtil.Callback() {
             @Override
             public void onUpOrLeft(float offset) {
-                //do nothing
             }
 
             @Override
             public void onUpOrLeftRefresh(float offset) {
-                LLog.d(TAG, "onUpOrLeftRefresh");
                 swipeToRefresh();
             }
 
             @Override
             public void onDownOrRight(float offset) {
-                //do nothing
             }
 
             @Override
             public void onDownOrRightRefresh(float offset) {
-                LLog.d(TAG, "onDownOrRightRefresh");
             }
         });
 
@@ -111,7 +106,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -120,16 +114,13 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
                     ivClearText.setVisibility(View.GONE);
                     placeHolderView.removeAllViews();
                     tv.setVisibility(View.GONE);
-                    //resetAllView();
                 } else {
                     ivClearText.setVisibility(View.VISIBLE);
-                    //search(s.toString());
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
 
@@ -160,19 +151,14 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
 
     private void search(String keyword, boolean isCallFromLoadMore) {
         tv.setVisibility(View.GONE);
-        //avi.smoothToShow();
         if (isCallFromLoadMore) {
-            //do nothing
         } else {
             placeHolderView.removeAllViews();
             page = 0;
             totalPage = Integer.MAX_VALUE;
         }
 
-        LLog.d(TAG, ">>>getPage/totalPage: " + page + "/" + totalPage);
-
         if (page >= totalPage) {
-            LLog.d(TAG, "page >= totalPage -> return");
             LToast.show(getActivity(), "This is last page");
             if (isCallFromLoadMore) {
                 placeHolderView.removeView(getListSize() - 1);//remove loading view
@@ -187,7 +173,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
         subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
-                LLog.d(TAG, "searchAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 if (result == null || result.getData().isEmpty()) {
                     tv.setText(getString(R.string.empty_list));
                     tv.setVisibility(View.VISIBLE);
@@ -196,7 +181,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
                 if (totalPage == Integer.MAX_VALUE) {
                     int totalItem = (int) result.getMetadata().getTotal();
                     float ratio = (float) (totalItem / limit);
-                    LLog.d(TAG, "ratio: " + ratio);
                     if (ratio == 0) {
                         totalPage = (int) ratio;
                     } else if (ratio > 0) {
@@ -204,9 +188,7 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
                     } else {
                         totalPage = (int) ratio;
                     }
-                    LLog.d(TAG, ">>>totalPage: " + totalPage);
                 }
-                LLog.d(TAG, "size: " + result.getData().size());
                 setupUIList(result.getData());
             }
 
@@ -221,58 +203,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
                 tv.setVisibility(View.VISIBLE);
             }
         });
-
-        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-
-        JsonBodySearch jsonBodySearch = new JsonBodySearch();
-        jsonBodySearch.setKeyword(keyword);
-        jsonBodySearch.setLimit(limit);
-        jsonBodySearch.setPage(page);
-
-        subscribe(service.searchEntityV2(jsonBodySearch), new ApiSubscriber<Search>() {
-            @Override
-            public void onSuccess(Search search) {
-                LLog.d(TAG, "search onSuccess " + LSApplication.getInstance().getGson().toJson(search));
-
-                if (totalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) search.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / limit);
-                    LLog.d(TAG, "ratio: " + ratio);
-                    if (ratio == 0) {
-                        totalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        totalPage = (int) ratio + 1;
-                    } else {
-                        totalPage = (int) ratio;
-                    }
-                    LLog.d(TAG, ">>>totalPage: " + totalPage);
-                }
-
-                if (search == null || search.getItemList().isEmpty()) {
-                    tv.setText(getString(R.string.empty_list));
-                    tv.setVisibility(View.VISIBLE);
-                } else {
-                    LLog.d(TAG, "size: " + search.getItemList().size());
-                    setupUIList(search.getItemList());
-                }
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                if (e == null || e.toString() == null) {
-                    return;
-                }
-                LLog.e(TAG, "search onFail " + e.toString());
-                tv.setText("Error search " + e.toString());
-                tv.setVisibility(View.VISIBLE);
-                //avi.smoothToHide();
-            }
-        });*/
-    }
-
-    private void resetAllView() {
-        tv.setText("");
-        tv.setVisibility(View.GONE);
     }
 
     private void setupUIList(List<Data> dataList) {
@@ -287,9 +217,7 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
 
                 @Override
                 public void onPosition(int position) {
-                    LLog.d(TAG, "_____onPosition " + position + " ~ " + getListSize());
                     if (position == getListSize() - 1) {
-                        LLog.d(TAG, "_____onLast");
                         loadMore();
                     }
                 }
@@ -298,7 +226,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
     }
 
     private void onClickVideo(Data data, int position) {
-        //LLog.d(TAG, "onClickItem at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 
@@ -335,28 +262,22 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
     }
 
     private int getListSize() {
-        //LLog.d(TAG, "getListSize " + placeHolderView.getAllViewResolvers().size());
         return placeHolderView.getAllViewResolvers().size();
     }
 
     @Override
     public boolean onBackPressed() {
-        //LLog.d(TAG, "onBackPressed");
         boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
         if (isLandscapeScreen) {
             LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
         } else {
-            //LLog.d(TAG, "onBackPressed !isLandscapeScreen");
             if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                 if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                     ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                     return true;
                 } else {
-                    //LLog.d(TAG, "onBackPressed !isLandscapeScreen VISIBLE if");
                 }
             } else {
-                //LLog.d(TAG, "onBackPressed !isLandscapeScreen !VISIBLE");
             }
         }
         return false;
@@ -364,7 +285,6 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
 
     @Override
     public void onDestroyView() {
-        LLog.d(TAG, "onDestroyView");
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();
     }

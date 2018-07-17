@@ -42,7 +42,6 @@ public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Call
 
     @Override
     public void onLoadMore() {
-        //do nothing
     }
 
     public void init(ItemAdapterV2.Callback callback) {
