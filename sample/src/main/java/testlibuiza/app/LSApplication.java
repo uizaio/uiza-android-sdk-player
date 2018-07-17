@@ -27,7 +27,7 @@ public class LSApplication extends MultiDexApplication {
 
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_STAG);
         RestClientTracking.init(Constants.URL_TRACKING_STAG);
-        Constants.setDebugMode(false);
+        Constants.setDebugMode(true);
     }
 
     public Gson getGson() {
