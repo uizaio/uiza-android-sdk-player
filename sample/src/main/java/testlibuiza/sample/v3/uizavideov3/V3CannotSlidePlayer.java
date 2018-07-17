@@ -68,30 +68,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-
-        boolean isClickedPip = LPref.getClickedPip(activity);
-        LLog.d(TAG, "onCreate isClickedPip " + isClickedPip);
-        if (isClickedPip) {
-            LLog.d(TAG, "called from clicking fullscreen of pip floating view");
-            play(null);
-        } else {
-            LLog.d(TAG, "called from V3SetEntityIdActivity.class");
-            //TODO
-            String entityId = getIntent().getStringExtra("entityId");
-            Data data = getDummyData();
-            LPref.setData(activity, data, LSApplication.getInstance().getGson());
-            play(data);
-        }
+        play();
     }
 
-    private void play(Data data) {
+    private void play() {
+        Data data = LPref.getData(activity, LSApplication.getInstance().getGson());
         if (data == null) {
-            LLog.d(TAG, "play data=null -> get from lpref");
-            data = LPref.getData(activity, LSApplication.getInstance().getGson());
-            if (data == null) {
-                LLog.e(TAG, "play error data null");
-                return;
-            }
+            LLog.e(TAG, "play error data null");
+            return;
         }
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;

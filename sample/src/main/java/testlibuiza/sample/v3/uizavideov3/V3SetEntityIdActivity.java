@@ -9,11 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.views.LToast;
 
 public class V3SetEntityIdActivity extends BaseActivity {
 
@@ -62,15 +71,40 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                UizaDataV3.getInstance().initTracking(domainTracking);
-                UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+                getDataFromEntityId(etInputEntityId.getText().toString());
+            }
+        });
+    }
 
-                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
-                intent.putExtra("entityId", etInputEntityId.getText().toString());
-                startActivity(intent);
-                LActivityUtil.tranIn(activity);
-                finish();
+    private void getDataFromEntityId(String entityId) {
+        //TRY TO GET DATA VOD
+        LLog.d(TAG, "getDataFromEntityId entityId " + entityId);
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
+            @Override
+            public void onSuccess(ResultRetrieveAnEntity result) {
+                LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getData() == null) {
+
+                } else {
+                    Data d = result.getData();
+                    LPref.setData(activity, d, LSApplication.getInstance().getGson());
+
+                    UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+                    UizaDataV3.getInstance().initTracking(domainTracking);
+                    UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+
+                    final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                    startActivity(intent);
+                    LActivityUtil.tranIn(activity);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
+                LToast.show(activity, "retrieveAnEntity onFail " + e.getMessage());
             }
         });
     }
