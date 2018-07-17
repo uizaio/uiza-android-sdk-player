@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
+    /*signingConfigs {
         config {
             keyAlias 'loi'
             keyPassword '04021993'
             storeFile file('C:/Users/LENOVO/Desktop/uiza/demouizakey.jks')
             storePassword '04021993'
         }
-    }
+    }*/
     compileSdkVersion 26
     buildToolsVersion "27.0.3"
     defaultConfig {
@@ -22,11 +22,11 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        release {
+        /*release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-        }
+        }*/
     }
     dexOptions {
         jumboMode true
