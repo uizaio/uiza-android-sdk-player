@@ -89,7 +89,6 @@ public class EntityItemLiveV3 {
         LAnimationUtil.play(imageView, Techniques.Pulse, new LAnimationUtil.Callback() {
             @Override
             public void onCancel() {
-                //do nothing
             }
 
             @Override
@@ -101,12 +100,10 @@ public class EntityItemLiveV3 {
 
             @Override
             public void onRepeat() {
-                //do nothing
             }
 
             @Override
             public void onStart() {
-                //do nothing
             }
         });
     }

@@ -114,7 +114,6 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
-                LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
@@ -125,7 +124,6 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
     }
 
     private void setListener() {
-        LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
             return;
         }
@@ -275,16 +273,11 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            LLog.d(TAG, "fuck isInitSuccess " + isInitSuccess);
-            LLog.d(TAG, "fuck LPref.getClickedPip(activity) " + LPref.getClickedPip(activity));
             if (LPref.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
             }
-            //if (positionFromPipService != 0) {
-            //    uizaIMAVideo.seekTo(positionFromPipService);
-            //}
             setListener();
         }
     }

@@ -95,7 +95,6 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
-                LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideo.initializePiP();
             } else {
                 LToast.show(getActivity(), "Draw over other app permission not available");
@@ -106,7 +105,6 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
     }
 
     private void setListener() {
-        LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
             return;
         }

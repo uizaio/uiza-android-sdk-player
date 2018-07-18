@@ -64,17 +64,6 @@ public class FrmChannelV2 extends BaseFragment {
     private final String orderType = "DESC";
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tv = (TextView) view.findViewById(R.id.tv);
@@ -113,24 +102,19 @@ public class FrmChannelV2 extends BaseFragment {
         LUIUtil.setPullLikeIOSVertical(placeHolderView, new LUIUtil.Callback() {
             @Override
             public void onUpOrLeft(float offset) {
-                //do nothing
             }
 
             @Override
             public void onUpOrLeftRefresh(float offset) {
-                LLog.d(TAG, "onUpOrLeftRefresh");
                 swipeToRefresh();
             }
 
             @Override
             public void onDownOrRight(float offset) {
-                //do nothing
             }
 
             @Override
             public void onDownOrRightRefresh(float offset) {
-                LLog.d(TAG, "onDownOrRightRefresh");
-                //loadMore();
             }
         });
 
@@ -144,18 +128,6 @@ public class FrmChannelV2 extends BaseFragment {
     protected int setLayoutResourceId() {
         return R.layout.uiza_frm_channel;
     }
-
-    /*private List<Item> getSubList(List<Item> itemList, int startIndex, int endIndex) {
-        if (startIndex < 0 || endIndex > itemList.size()) {
-            return null;
-        }
-        List<Item> items = new ArrayList<>();
-        for (int i = startIndex; i < endIndex; i++) {
-            items.add(itemList.get(i));
-        }
-        LLog.d(TAG, "getList " + startIndex + " - " + endIndex + " -> " + items.size());
-        return items;
-    }*/
 
     private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
         /*//poster
@@ -219,9 +191,7 @@ public class FrmChannelV2 extends BaseFragment {
 
                 @Override
                 public void onPosition(int position) {
-                    LLog.d(TAG, "_____onPosition " + position + " ~ " + getListSize());
                     if (position == getListSize() - 1) {
-                        LLog.d(TAG, "_____onLast");
                         loadMore();
                     }
                 }
@@ -249,7 +219,6 @@ public class FrmChannelV2 extends BaseFragment {
             return;
         }
         LPref.setClickedPip(getActivity(), false);
-        LLog.d(TAG, "onClickVideo at " + position + ": " + LSApplication.getInstance().getGson().toJson(item));
         Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
@@ -266,9 +235,7 @@ public class FrmChannelV2 extends BaseFragment {
     private boolean isLastPage;
 
     private void getData(final boolean isCallFromLoadMore) {
-        LLog.d(TAG, ">>>getData " + page + "/" + totalPage);
         if (page >= totalPage) {
-            LLog.d(TAG, "page >= totalPage -> return");
             if (Constants.IS_DEBUG) {
                 LToast.show(getActivity(), getString(R.string.this_is_last_page));
             }
@@ -345,7 +312,6 @@ public class FrmChannelV2 extends BaseFragment {
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "listAllEntityV2 onFail " + e.toString());
-                //handleException(e);
                 if (tvMsg.getVisibility() != View.VISIBLE) {
                     tvMsg.setVisibility(View.VISIBLE);
                     if (e != null && e.getMessage() != null) {
@@ -380,7 +346,6 @@ public class FrmChannelV2 extends BaseFragment {
 
     private void loadMore() {
         if (isLoadMoreCalling) {
-            LLog.d(TAG, "loadMore return");
             return;
         }
         isLoadMoreCalling = true;
@@ -388,7 +353,6 @@ public class FrmChannelV2 extends BaseFragment {
             @Override
             public void run() {
                 placeHolderView.addView(new LoadingView());
-                //placeHolderView.smoothScrollToPosition(getListSize() - 1);
                 page++;
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override

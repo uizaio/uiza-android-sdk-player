@@ -56,17 +56,6 @@ public class FrmHomeChannel extends BaseFragment {
     private final String orderType = "DESC";
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tv = (TextView) view.findViewById(R.id.tv);
@@ -91,7 +80,6 @@ public class FrmHomeChannel extends BaseFragment {
                 if (position == POSITION_OF_LOADING_REFRESH) {
                     return isRefreshing ? NUMBER_OF_COLUMN_2 : NUMBER_OF_COLUMN_1;
                 } else if (position == getListSize() - 1) {
-                    //LLog.d(TAG, "isLastPage " + isLastPage);
                     if (isLastPage) {
                         return NUMBER_OF_COLUMN_1;
                     } else {
@@ -105,7 +93,6 @@ public class FrmHomeChannel extends BaseFragment {
         LUIUtil.setPullLikeIOSVertical(placeHolderView, new LUIUtil.Callback() {
             @Override
             public void onUpOrLeft(float offset) {
-                //do nothing
             }
 
             @Override
@@ -116,13 +103,10 @@ public class FrmHomeChannel extends BaseFragment {
 
             @Override
             public void onDownOrRight(float offset) {
-                //do nothing
             }
 
             @Override
             public void onDownOrRightRefresh(float offset) {
-                LLog.d(TAG, "onDownOrRightRefresh");
-                //loadMore();
             }
         });
 
@@ -136,18 +120,6 @@ public class FrmHomeChannel extends BaseFragment {
     protected int setLayoutResourceId() {
         return R.layout.uiza_frm_home_channel;
     }
-
-    /*private List<Item> getSubList(List<Item> itemList, int startIndex, int endIndex) {
-        if (startIndex < 0 || endIndex > itemList.size()) {
-            return null;
-        }
-        List<Item> items = new ArrayList<>();
-        for (int i = startIndex; i < endIndex; i++) {
-            items.add(itemList.get(i));
-        }
-        LLog.d(TAG, "getList " + startIndex + " - " + endIndex + " -> " + items.size());
-        return items;
-    }*/
 
     private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
         /*//poster
@@ -206,7 +178,6 @@ public class FrmHomeChannel extends BaseFragment {
             placeHolderView.addView(new EntityItemV2(getActivity(), item, sizeW, sizeH, new EntityItemV2.Callback() {
                 @Override
                 public void onClick(Item item, int position) {
-                    //onClickVideo(item, position);
                     if (callback != null) {
                         callback.onClick(item, position);
                     }
@@ -214,9 +185,7 @@ public class FrmHomeChannel extends BaseFragment {
 
                 @Override
                 public void onPosition(int position) {
-                    LLog.d(TAG, "_____onPosition " + position + " ~ " + getListSize());
                     if (position == getListSize() - 1) {
-                        LLog.d(TAG, "_____onLast");
                         loadMore();
                     }
                     if (callback != null) {
@@ -251,9 +220,7 @@ public class FrmHomeChannel extends BaseFragment {
     private boolean isLastPage;
 
     private void getData(final boolean isCallFromLoadMore) {
-        LLog.d(TAG, ">>>getData " + page + "/" + totalPage);
         if (page >= totalPage) {
-            LLog.d(TAG, "page >= totalPage -> return");
             if (Constants.IS_DEBUG) {
                 LToast.show(getActivity(), getString(R.string.this_is_last_page));
             }
@@ -291,16 +258,9 @@ public class FrmHomeChannel extends BaseFragment {
         subscribe(service.listAllEntityV2(jsonBodyListAllEntity), new ApiSubscriber<ListAllEntity>() {
             @Override
             public void onSuccess(ListAllEntity listAllEntity) {
-                LLog.d(TAG, "listAllEntityV2 onSuccess " + LSApplication.getInstance().getGson().toJson(listAllEntity));
-                LLog.d(TAG, "getLimit " + listAllEntity.getMetadata().getLimit());
-                LLog.d(TAG, "getPage " + listAllEntity.getMetadata().getPage());
-                LLog.d(TAG, "getTotal " + listAllEntity.getMetadata().getTotal());
-                LLog.d(TAG, "getItems().size " + listAllEntity.getData().size());
-
                 if (totalPage == Integer.MAX_VALUE) {
                     int totalItem = (int) listAllEntity.getMetadata().getTotal();
                     float ratio = (float) (totalItem / limit);
-                    LLog.d(TAG, "ratio: " + ratio);
                     if (ratio == 0) {
                         totalPage = (int) ratio;
                     } else if (ratio > 0) {
@@ -308,7 +268,6 @@ public class FrmHomeChannel extends BaseFragment {
                     } else {
                         totalPage = (int) ratio;
                     }
-                    LLog.d(TAG, ">>>totalPage: " + totalPage);
                 }
 
                 List<Item> itemList = listAllEntity.getData();
@@ -329,8 +288,6 @@ public class FrmHomeChannel extends BaseFragment {
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "listAllEntityV2 onFail " + e.toString());
-                //handleException(e);
                 if (tvMsg.getVisibility() != View.VISIBLE) {
                     tvMsg.setVisibility(View.VISIBLE);
                     if (e != null && e.getMessage() != null) {
@@ -366,7 +323,6 @@ public class FrmHomeChannel extends BaseFragment {
 
     private void loadMore() {
         if (isLoadMoreCalling) {
-            LLog.d(TAG, "loadMore return");
             return;
         }
         isLoadMoreCalling = true;
@@ -374,7 +330,6 @@ public class FrmHomeChannel extends BaseFragment {
             @Override
             public void run() {
                 placeHolderView.addView(new LoadingView());
-                //placeHolderView.smoothScrollToPosition(getListSize() - 1);
                 page++;
                 LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
                     @Override

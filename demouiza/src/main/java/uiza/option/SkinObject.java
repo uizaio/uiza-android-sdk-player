@@ -1,7 +1,7 @@
 package uiza.option;
 
 /**
- * Created by LENOVO on 6/25/2018.
+ * Created by loitp on 6/25/2018.
  */
 
 public class SkinObject {

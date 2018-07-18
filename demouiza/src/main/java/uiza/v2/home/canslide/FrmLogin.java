@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.LToast;
@@ -52,20 +51,6 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     private void login() {
         LToast.show(getActivity(), "Click");
-        /*LSService service = RestClientV2.createService(LSService.class);
-        String id = "a";
-        String pw = "a";
-        subscribe(service.login(id, pw), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(result));
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                handleException(e);
-            }
-        });*/
     }
 
     @Override
@@ -88,7 +73,6 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
         return false;
     }
 }

@@ -40,30 +40,25 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
             public void onMaximized() {
-                //LLog.d(TAG, "onMaximized");
             }
 
             @Override
             public void onMinimized() {
-                //LLog.d(TAG, "onMinimized");
                 frmVideoTop.getUizaIMAVideoV3().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
-                //LLog.d(TAG, "onClosedToLeft");
                 frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                //LLog.d(TAG, "onClosedToRight");
                 frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
-                //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
             }
         });
         replaceFragment(new FrmHomeV3());
@@ -103,7 +98,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoBottomV3 frmVideoBottom;
 
     private void initializeDraggablePanel(final Data data) {
-        LLog.d(TAG, "initializeDraggablePanel " + LSApplication.getInstance().getGson().toJson(data));
         if (data == null) {
             return;
         } else {
@@ -113,12 +107,10 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
-                    //do nothing
                 }
 
                 @Override
                 public void onCancel() {
-                    //do nothing
                 }
             });
             return;
@@ -129,8 +121,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         }
 
         if (frmVideoTop != null || frmVideoBottom != null) {
-            //LLog.d(TAG, "initializeDraggablePanel exist");
-            //LLog.d(TAG, "onClickItem FrmChannel " + entityTitle);
             clearUIFrmBottom();
             initFrmTop(data, false);
             draggablePanel.maximize();
@@ -140,7 +130,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                //LLog.d(TAG, "setFragmentCallback onViewCreated -> initFrmTop");
                 initFrmTop(data, false);
             }
         });
@@ -151,7 +140,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
-                        //LLog.d(TAG, "onClickItem frmVideoBottom " + item.getName());
                         LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(data, true);
@@ -159,7 +147,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
                     @Override
                     public void onLoadMore() {
-                        //do nothing
                     }
                 });
             }
@@ -183,7 +170,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-                //LLog.d(TAG, "setFrmTopCallback initDone");
                 if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
@@ -192,14 +178,11 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
-                        //LLog.d(TAG, "onVisibilityChange " + visibility);
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
                                 if (visibility == View.VISIBLE) {
-                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                                     draggablePanel.setEnableSlide(false);
                                 } else {
-                                    //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                                     draggablePanel.setEnableSlide(true);
                                 }
                             } else {
@@ -213,7 +196,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                //LLog.d(TAG, "onClickItemListEntityRelation " + item.getName());
                 LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data, true);
@@ -280,7 +262,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        //LLog.d(TAG, "onBackPressed");
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             super.onBackPressed();

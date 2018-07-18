@@ -120,12 +120,10 @@ public class EntityItemV3 {
 
             @Override
             public void onRepeat() {
-                //do nothing
             }
 
             @Override
             public void onStart() {
-                //do nothing
             }
         });
     }

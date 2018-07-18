@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -82,26 +81,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
         setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
-    }
-
-    private Data getDummyData() {
-        Gson gson = new Gson();
-        String json = "{\n" +
-                "            \"id\": \"b7297b29-c6c4-4bd6-a74f-b60d0118d275\",\n" +
-                "            \"name\": \"[FMV Vietsub] Là Tự Em Đa Tình 多情种 // Vũ Văn Nguyệt x Sở Kiều // Sở Kiều truyện 楚乔传 【星玥】\",\n" +
-                "            \"description\": null,\n" +
-                "            \"shortDescription\": null,\n" +
-                "            \"view\": 0,\n" +
-                "            \"poster\": \"http://android-static.uizacdn.net/16f8e65d8e2643ffa3ff5ee9f4f9ba03-static/2018/07/16/blob-1531724245175\",\n" +
-                "            \"thumbnail\": \"http://android-static.uizacdn.net/16f8e65d8e2643ffa3ff5ee9f4f9ba03-static/2018/07/16/blob-1531724245175\",\n" +
-                "            \"type\": \"vod\",\n" +
-                "            \"duration\": \"300.466213\",\n" +
-                "            \"embedMetadata\": null,\n" +
-                "            \"extendMetadata\": null,\n" +
-                "            \"createdAt\": \"2018-07-16T05:03:46.000Z\",\n" +
-                "            \"updatedAt\": \"2018-07-16T06:57:26.000Z\"\n" +
-                "        }";
-        return gson.fromJson(json, Data.class);
     }
 
     @Override
@@ -298,12 +277,10 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     }
 
     private void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        //LLog.d(TAG, "setupVideo");
         if (data == null) {
             return;
         }
         if (UizaDataV3.getInstance().isSettingPlayer()) {
-            //LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;
         }
 
@@ -313,8 +290,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
         UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
-        //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
-        //LLog.d(TAG, "setupVideo init with entityId " + entityId);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
@@ -325,7 +300,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        LLog.d(TAG, "isInitResult isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
             if (LPref.getClickedPip(activity)) {
@@ -338,7 +312,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        //do sth
     }
 
     @Override
@@ -353,7 +326,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess");
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -361,7 +333,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onError(Exception e) {
-        //do sth
     }
 
     @Override

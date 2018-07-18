@@ -86,10 +86,8 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     public void onResume() {
         super.onResume();
         if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtLeft() || ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtRight()) {
-            //LLog.d(TAG, "onResume is closed => return");
             return;
         }
-        //LLog.d(TAG, "uizaIMAVideoV3 onResume");
         uizaIMAVideoV3.onResume();
     }
 
@@ -114,9 +112,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
-                //LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideoV3.initializePiP();
             } else {
                 LToast.show(getActivity(), "Draw over other app permission not available");
@@ -127,7 +123,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     private void setListener() {
-        //LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
             return;
         }
@@ -276,7 +271,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
     @Override
     public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        //LLog.d(TAG, "isInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
@@ -285,7 +279,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
         } else {
             UizaInputV3 prevUizaInput = UizaDataV3.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
-                //LLog.d(TAG, "isInitSuccess prevUizaInput == null -> exit");
                 ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
                     @Override
@@ -294,9 +287,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
                     }
                 });
             } else {
-                //LLog.d(TAG, "isInitSuccess prevUizaInput " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaDataV3.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
-                //LLog.d(TAG, "isInitSuccess isPlayPrev: " + isPlayPrev);
                 if (isPlayPrev) {
                     setupVideo(UizaDataV3.getInstance().getUizaInputV3().getData(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
@@ -314,7 +305,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        //LLog.d(TAG, "onClickListEntityRelation " + item.getName());
         if (frmTopCallback != null) {
             frmTopCallback.onClickListEntityRelation(item, position);
         }
@@ -327,13 +317,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
 
     @Override
     public void onClickPip(Intent intent) {
-        //LLog.d(TAG, "onClickPip");
         ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        //LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
         ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
@@ -346,12 +334,10 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     public void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        //LLog.d(TAG, "setupVideo");
         if (data == null) {
             return;
         }
         if (UizaDataV3.getInstance().isSettingPlayer()) {
-            //LLog.d(TAG, "setupVideo isSettingPlayer -> return");
             return;
         }
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
@@ -378,8 +364,6 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
         uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
         UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
-        //LLog.d(TAG, "setupVideo entityId " + entityId + ", entityTitle: " + entityTitle + ", entityCover: " + entityCover);
-        //LLog.d(TAG, "setupVideo init with entityId " + entityId);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {

@@ -83,10 +83,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             return;
         }
 
-        LLog.d(TAG, ">>> entityId " + entityId);
-        //LLog.d(TAG, ">>> entityCover " + entityCover);
-        //LLog.d(TAG, ">>> entityTitle " + entityTitle);
-
         setupVideo(entityId, entityTitle, entityCover, false);
     }
 
@@ -138,7 +134,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
                 uizaIMAVideo.initializePiP();
             } else {
@@ -150,7 +145,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setListener() {
-        //LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
             return;
         }
@@ -299,7 +293,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        //LLog.d(TAG, "isInitResult " + isInitSuccess);
         if (isInitSuccess) {
             if (LPref.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
@@ -313,14 +306,11 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         } else {
             UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
             if (prevUizaInput == null) {
-                //LLog.d(TAG, "isInitResult prevUizaInput null -> exit");
                 if (activity != null) {
                     activity.onBackPressed();
                 }
             } else {
-                //LLog.d(TAG, "isInitResult prevUizaInput: " + prevUizaInput.getEntityName());
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
-                //LLog.d(TAG, "isInitResult isPlayPrev: " + isPlayPrev);
                 if (isPlayPrev) {
                     LPref.setClickedPip(activity, false);
                     setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
@@ -349,7 +339,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        //LLog.d(TAG, "onClickPipVideoInitSuccess isInitSuccess: " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -358,7 +347,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void onError(Exception e) {
         if (e != null) {
-            //LLog.e(TAG, "onError " + e.toString());
         }
         if (activity != null) {
             onBackPressed();
@@ -373,7 +361,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onLoadMore() {
-        //do nothing
     }
 
     private void setupVideo(String entityId, String entityTitle, String entityCover, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
@@ -395,8 +382,6 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             });
             return;
         }
-        //LLog.d(TAG, "setupVideo entityId: " + entityId + ", entityTitle: " + entityTitle);
-
         UizaInput uizaInput = new UizaInput();
 
         uizaInput.setEntityId(entityId);

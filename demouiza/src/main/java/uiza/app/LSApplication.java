@@ -26,7 +26,6 @@ public class LSApplication extends MultiDexApplication {
         Utils.init(this);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
-        //TODO remove LeakCanary
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.utils.util.KeyboardUtils;
@@ -51,7 +50,6 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
         etId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -61,13 +59,11 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
         etPw.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
             }
 
             @Override
@@ -77,7 +73,6 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
 
             @Override
             public void afterTextChanged(Editable s) {
-                //do nothing
             }
         });
     }
@@ -125,13 +120,11 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed");
         return false;
     }
 
     @Override
     public void onDestroyView() {
-        LLog.d(TAG, "onDestroyView");
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();
     }
