@@ -198,6 +198,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         isLivestream = UizaDataV3.getInstance().getUizaInputV3().isLivestream();
+        isTrackedEventView = false;
+        LLog.d(TAG, "trackUiza reset -> isTrackedEventView = false");
         //LLog.d(TAG, "isLivestream " + isLivestream);
         this.callback = callback;
         if (uizaPlayerManagerV3 != null) {
@@ -625,11 +627,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isSetProgressSeekbarFirst;
     private int oldPercent = Constants.NOT_FOUND;
 
+    private boolean isTrackedEventView;
+
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
-        if (s == 5) {
+        if (s == 5 && !isTrackedEventView) {
             //LLog.d(TAG, "onVideoProgress -> track view");
             trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW));
+            isTrackedEventView = true;
+        } else {
+            //LLog.d(TAG, "trackUiza -> da track event view");
         }
 
         //dont track play_throught if entity is live
@@ -1281,7 +1288,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, ">>>trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
