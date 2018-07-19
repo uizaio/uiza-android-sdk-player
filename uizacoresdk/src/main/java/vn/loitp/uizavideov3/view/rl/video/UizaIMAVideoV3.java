@@ -180,7 +180,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void init(Callback callback) {
-        LLog.d(TAG, "init");
+        //LLog.d(TAG, "init");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaDataV3.getInstance().getUizaInputV3().getData().getId() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getId().isEmpty()) {
@@ -198,7 +198,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         isLivestream = UizaDataV3.getInstance().getUizaInputV3().isLivestream();
-        LLog.d(TAG, "isLivestream " + isLivestream);
+        //LLog.d(TAG, "isLivestream " + isLivestream);
         this.callback = callback;
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -243,7 +243,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
 
             //if entity is livestreaming, dont try to next link play
-            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
+            //LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.initWithoutReset();
                 uizaPlayerManagerV3.setRunnable();
@@ -255,7 +255,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (Constants.IS_DEBUG) {
             LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
         }
-        LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
+        //LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
         uizaPlayerManagerV3.release();
         checkToSetUp();
     }
@@ -265,7 +265,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //neu co thi se play
     //khong co thi bao loi
     private void handleErrorNoData() {
-        LLog.e(TAG, "handleErrorNoData");
+        //LLog.e(TAG, "handleErrorNoData");
         removeVideoCover(true);
         LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
             @Override
@@ -293,7 +293,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
-        LLog.d(TAG, "checkToSetUp");
+        //LLog.d(TAG, "checkToSetUp");
         if (isResultGetLinkPlayDone && isResultRetrieveAnEntityDone) {
             if (mResultGetLinkPlay != null && mResultRetrieveAnEntity != null) {
                 //LLog.d(TAG, "checkToSetUp if");
@@ -337,7 +337,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             }
                         });
                     } else {
-                        LLog.d(TAG, "checkToSetUp else err_no_internet");
+                        //LLog.d(TAG, "checkToSetUp else err_no_internet");
                         showTvMsg(activity.getString(R.string.err_no_internet));
                     }
                     return;
@@ -479,14 +479,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void run() {
                 int marginL = playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
                 int marginT = playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
+                //LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
                 LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
             }
         });
     }
 
     private void findViews() {
-        LLog.d(TAG, "findViews");
+        //LLog.d(TAG, "findViews");
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -570,7 +570,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        LLog.d(TAG, "initData linkPlay " + linkPlay);
+        //LLog.d(TAG, "initData linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -634,7 +634,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //dont track play_throught if entity is live
         if (isLivestream) {
-            LLog.d(TAG, "trackProgress percent: " + percent + "% -> dont track play_throught if entity is live");
+            //LLog.d(TAG, "trackProgress percent: " + percent + "% -> dont track play_throught if entity is live");
             return;
         }
         if (oldPercent == percent) {
@@ -654,7 +654,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
         }
@@ -969,7 +969,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //on seekbar change
     @Override
     public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser) {
-        LLog.d(TAG, "onProgressChanged progress: " + progress);
+        //LLog.d(TAG, "onProgressChanged progress: " + progress);
         if (seekBar == null || !isLandscape) {
             if (isExoVolumeClicked) {
                 //LLog.d(TAG, "onProgressChanged !isExoVolumeClicked ctn");
@@ -1115,7 +1115,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
+                //LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
                 getLinkPlay(tokenStreaming);
             }
 
@@ -1409,7 +1409,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
-                            LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                            //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 tvLiveView.setText(result.getData().getWatchnow() + "");
                             }

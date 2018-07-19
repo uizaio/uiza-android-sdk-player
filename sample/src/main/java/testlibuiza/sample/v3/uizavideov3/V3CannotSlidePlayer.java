@@ -116,9 +116,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
-                LLog.d(TAG, "onActivityResult RESULT_OK");
                 uizaIMAVideoV3.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
@@ -129,7 +127,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     }
 
     private void setListener() {
-        //LLog.d(TAG, TAG + " addListener");
         if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
             return;
         }
