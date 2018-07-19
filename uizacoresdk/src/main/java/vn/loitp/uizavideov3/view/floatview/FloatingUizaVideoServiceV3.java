@@ -74,6 +74,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private String linkPlay;
     private Gson gson = new Gson();
 
+    private boolean isLivestream;
+
     public FloatingUizaVideoServiceV3() {
     }
 
@@ -87,6 +89,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         }
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
+            isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -482,9 +485,9 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
             LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
             return;
         }
-        LLog.d(TAG, "setupVideo linkPlay " + linkPlay);
+        LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            floatUizaIMAVideoV3.init(linkPlay, this);
+            floatUizaIMAVideoV3.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);

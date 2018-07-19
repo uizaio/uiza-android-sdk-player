@@ -56,18 +56,23 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     private String linkPlay;
+    private boolean isLivestream;
 
     public long getCurrentPosition() {
         return getPlayer().getCurrentPosition();
     }
 
-    public void init(String linkPlay, Callback callback) {
+    public void init(String linkPlay, boolean isLivestream, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             //LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
+        this.isLivestream = isLivestream;
+
+        LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
+
         this.callback = callback;
         if (floatUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -161,10 +166,17 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     private int oldPercent = Constants.NOT_FOUND;
 
     private void trackProgress(int s, int percent) {
-        //track event view (after video is played 5s)
+        //track event view (after video is played 5s), only track if isLivestream false
         if (s == 5) {
             //LLog.d(TAG, "onVideoProgress -> track view");
             trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW));
+        }
+
+        //if current link play is livestream link play
+        //we dont track progress play throught 25, 50, 75, 100
+        if (isLivestream) {
+            LLog.d(TAG, "isLivestream true -> we dont track progress play throught 25, 50, 75, 100");
+            return;
         }
 
         if (oldPercent == percent) {
@@ -224,7 +236,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     private Callback callback;
 
     private void trackUiza(final UizaTracking uizaTracking) {
-        LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+        LLog.d(TAG, "<-------------trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getContext());
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
@@ -237,7 +249,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, ">>>trackUiza  onSuccess getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+                LLog.d(TAG, "------------->trackUiza  onSuccess getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Pip Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }

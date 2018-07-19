@@ -1078,6 +1078,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManagerV3.getLinkPlay());
+        intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
         if (callback != null) {
             callback.onClickPip(intent);

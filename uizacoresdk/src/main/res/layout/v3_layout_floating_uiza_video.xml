@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/background_err"
             android:gravity="center"
-            android:text="@string/err_no_internet"
+            android:text="@string/err_no_internet_tap_to_retry"
             android:textSize="@dimen/txt_14"
             android:textStyle="bold"
             android:visibility="gone" />
