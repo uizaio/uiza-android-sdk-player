@@ -115,8 +115,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
 
     private void initWorkspace() {
         UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-        UizaDataV3.getInstance().initTracking(domainTracking);
-        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        //TODO hard code environment STAG
+        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_STAG);
     }
 
     private void goToPlay(Data data) {

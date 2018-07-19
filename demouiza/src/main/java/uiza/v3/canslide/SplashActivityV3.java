@@ -107,9 +107,7 @@ public class SplashActivityV3 extends BaseActivity {
                 String appId = etAppId.getText().toString().trim();
 
                 UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                //TODO init tracking domain (with correct domain)
-                UizaDataV3.getInstance().initTracking(Constants.URL_TRACKING_STAG);
-                UizaDataV3.getInstance().initSDK(domainApi, token, appId);
+                UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
 
                 final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 if (intent != null) {

@@ -1,6 +1,10 @@
 
 # Welcome to UizaSDK
 
+Simple Streaming at scale.
+
+Uiza is the complete toolkit for building a powerful video streaming application with unlimited scalability. We design Uiza so simple that you only need a few lines of codes to start streaming, but sophisticated enough for you to build complex products on top of it.
+
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**  
 
@@ -17,7 +21,7 @@
     }
     ...
     dependencies {  
-      compile 'com.github.uizaio:uiza-android-sdk-player:1.0.0'  
+      compile 'com.github.uizaio:uiza-android-sdk-player:1.3.8'  
     }
 
 # Init:

@@ -50,7 +50,7 @@ public class UizaDataV3 {
     private String mToken;
     private String mAppId;
 
-    public void initSDK(String domainAPI, String token, String appId) {
+    public void initSDK(String domainAPI, String token, String appId, int environment) {
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
@@ -58,8 +58,18 @@ public class UizaDataV3 {
         RestClientV3.init(Constants.PREFIXS + domainAPI, token);
         LPref.setToken(Utils.getContext(), token);
 
-        //TODO init domain get link play (customer will always production domain)
-        RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+        if (environment == Constants.ENVIRONMENT_DEV) {
+            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
+            initTracking(Constants.URL_TRACKING_DEV);
+        } else if (environment == Constants.ENVIRONMENT_STAG) {
+            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+            initTracking(Constants.URL_TRACKING_STAG);
+        } else if (environment == Constants.ENVIRONMENT_PROD) {
+            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
+            initTracking(Constants.URL_TRACKING_PROD);
+        } else {
+            throw new IllegalArgumentException("Please init correct environment.");
+        }
     }
 
     public String getDomainAPI() {
@@ -78,7 +88,7 @@ public class UizaDataV3 {
         return mAppId;
     }
 
-    public void initTracking(String domainAPITracking) {
+    private void initTracking(String domainAPITracking) {
         mDomainAPITracking = domainAPITracking;
         RestClientTracking.init(domainAPITracking);
         LPref.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
