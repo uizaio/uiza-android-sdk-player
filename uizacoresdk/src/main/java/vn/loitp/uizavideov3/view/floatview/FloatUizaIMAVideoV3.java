@@ -33,6 +33,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideov3.view.manager.FloatUizaPlayerManagerV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;
 
 /**
@@ -80,18 +81,29 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         }
         checkToSetUp();
 
-        //duong nhu ko bao h track EVENT_TYPE_DISPLAY, EVENT_TYPE_PLAYS_REQUESTED, EVENT_TYPE_VIDEO_STARTS
-        //cannot delete delay below, only works after 500mls
-        /*LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                //track event eventype display
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_DISPLAY));
+        //track event eventype display
+        if (UizaTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
+                }
+            });
+        }
 
-                //track event plays_requested
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED));
-            }
-        });*/
+        //track event plays_requested
+        if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
+                }
+            });
+        }
     }
 
     private void checkToSetUp() {
@@ -164,14 +176,21 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     private int oldPercent = Constants.NOT_FOUND;
-    private boolean isTrackedEventView;
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s), only track if isLivestream false
-        if (s == 5 && !isTrackedEventView) {
+        if (s == 5) {
             //LLog.d(TAG, "onVideoProgress -> track view");
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW));
-            isTrackedEventView = true;
+            if (UizaTrackingUtil.isTrackedEventTypeView(getContext())) {
+                //da track roi ko can track nua
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
+                    }
+                });
+            }
         }
 
         //if current link play is livestream link play
@@ -187,13 +206,49 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
         if (percent == Constants.PLAYTHROUGH_25) {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(getContext())) {
+                //da track roi ko can track nua
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(getContext(), true);
+                    }
+                });
+            }
         } else if (percent == Constants.PLAYTHROUGH_50) {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(getContext())) {
+                //da track roi ko can track nua
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(getContext(), true);
+                    }
+                });
+            }
         } else if (percent == Constants.PLAYTHROUGH_75) {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(getContext())) {
+                //da track roi ko can track nua
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(getContext(), true);
+                    }
+                });
+            }
         } else if (percent == Constants.PLAYTHROUGH_100) {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT));
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(getContext())) {
+                //da track roi ko can track nua
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(getContext(), true);
+                    }
+                });
+            }
         }
     }
 
@@ -237,7 +292,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
 
     private Callback callback;
 
-    private void trackUiza(final UizaTracking uizaTracking) {
+    private void trackUiza(final UizaTracking uizaTracking, final UizaTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------->trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getContext());
@@ -254,6 +309,9 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
                 LLog.d(TAG, "<-------------trackUiza pip onSuccess getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Pip Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
+                }
+                if (uizaTrackingCallback != null) {
+                    uizaTrackingCallback.onTrackingSuccess();
                 }
             }
 
