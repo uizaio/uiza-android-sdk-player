@@ -643,8 +643,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
-        if (s == 5) {
-            //LLog.d(TAG, "onVideoProgress -> track view");
+        LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
+        if (s == (isLivestream ? 3 : 5)) {
+            //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
             if (UizaTrackingUtil.isTrackedEventTypeView(activity)) {
                 //da track roi ko can track nua
             } else {
@@ -956,8 +957,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            //TODO revert to GONE
-            exoPictureInPicture.setVisibility(VISIBLE);
+            exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);

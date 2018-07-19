@@ -179,7 +179,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s), only track if isLivestream false
-        if (s == 5) {
+        if (s == (isLivestream ? 3 : 5)) {
             //LLog.d(TAG, "onVideoProgress -> track view");
             if (UizaTrackingUtil.isTrackedEventTypeView(getContext())) {
                 //da track roi ko can track nua
