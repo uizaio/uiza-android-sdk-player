@@ -49,35 +49,24 @@ or
     
 **Step 2: Call api by using this function** 
 
-    private void getListAllMetadata() {  
-        UizaService service = RestClientV2.createService(UizaService.class);  
-        int limit = 50;  
-        String orderBy = "name";  
-        String orderType = "ASC";  
+    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);  
+    subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {  
+        @Override  
+      public void onSuccess(ResultGetListMetadata resultGetListMetadata) {  
+            LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));  
+        }  
       
-        JsonBodyMetadataList jsonBodyMetadataList = new JsonBodyMetadataList();  
-        jsonBodyMetadataList.setLimit(limit);  
-        jsonBodyMetadataList.setOrderBy(orderBy);  
-        jsonBodyMetadataList.setOrderType(orderType);  
-      
-        subscribe(service.listAllMetadataV2(jsonBodyMetadataList), new ApiSubscriber<ListAllMetadata>() {  
-            @Override  
-            public void onSuccess(ListAllMetadata listAllMetadata) {  
-                //do sth  
-            }  
-      
-            @Override  
-            public void onFail(Throwable e) {    
-                handleException(e);  
-            }  
-        });  
-    }
+        @Override  
+      public void onFail(Throwable e) {  
+            LLog.e(TAG, "checkToken onFail " + e.getMessage());  
+        }  
+    });
 
 **API doc**
-https://dev-web.uiza.io/api-reference/#create-output-storage
+https://docs.uiza.io/#introduction
 
 This class help you know how to use all Uiza API, please refer to
-https://github.com/uizaio/uiza-android-sdk-player/blob/master/dummy/src/main/java/testlibuiza/uiza/com/dummy/TestAPIActivity.java
+https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/api/V3TestAPIActivity.java
 
 # How to play the video?:
 **XML**
