@@ -1477,4 +1477,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         });
     }
+
+    /*Kiểm tra xem nếu activity được tạo thành công nếu user click vào pip thì sẽ bắn 1 eventbus báo rằng đã init success
+    * receiver FloatingUizaVideoServiceV3 để truyền current position */
+    public void setEventBusMsgFromActivityIsInitSuccess() {
+        if (LPref.getClickedPip(activity)) {
+            ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+            msgFromActivityIsInitSuccess.setInitSuccess(true);
+            ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
+        }
+    }
 }
