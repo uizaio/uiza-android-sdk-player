@@ -278,6 +278,9 @@ All listener
       }  
         });  
     }
+This class help you know how to use all Uiza API, please refer to
+https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/uizavideov3/V3CannotSlidePlayer.java
+
 
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
