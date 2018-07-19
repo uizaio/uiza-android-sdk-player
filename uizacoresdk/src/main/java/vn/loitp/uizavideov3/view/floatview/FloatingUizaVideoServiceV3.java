@@ -66,9 +66,6 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
     private Data data;
     private String linkPlay;
-    //private String entityId;
-    //private String entityCover;
-    //private String entityTitle;
     private Gson gson = new Gson();
 
     public FloatingUizaVideoServiceV3() {
@@ -84,14 +81,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         }
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
-            /*entityId = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
-            entityCover = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
-            entityTitle = intent.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);*/
             LLog.d(TAG, "linkPlay " + linkPlay);
-            //LLog.d(TAG, "entityId " + entityId);
-            //LLog.d(TAG, "entityCover " + entityCover);
-            //LLog.d(TAG, "entityTitle " + entityTitle);
-
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -161,11 +151,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
             public void onClick(View v) {
                 LPref.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
-                LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
-                /*intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_COVER, entityCover);
-                intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);*/
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
@@ -378,12 +364,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         floatUizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
         floatUizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
@@ -438,11 +424,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        //onRenderedFirstFrame
-        //LLog.d(TAG, "isPiPInitResult isInitSuccess: " + isInitSuccess);
-
         setListener();
-
         if (!isSendMsgToActivity) {
             //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
             ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
