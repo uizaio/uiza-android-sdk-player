@@ -1,4 +1,5 @@
 
+
 # Welcome to UizaSDK
 
 Simple Streaming at scale.
@@ -24,13 +25,15 @@ Uiza is the complete toolkit for building a powerful video streaming application
       compile 'com.github.uizaio:uiza-android-sdk-player:1.3.8'  
     }
 
-# Init:
-**Put these code below into onCreate() of Apllication class:**  
+# Init SDK
 
-    RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2);
-    RestClientV2.addAuthorization(auth.getData().getToken());
-    LPref.setAuth(getContext(), auth, gson); 
-    //Contact UIZA to get Auth.
+    
+    String domainApi = "xxx";  
+    String token = "yyy";  
+    String appId = "zzz";  
+   
+    UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);  
+    UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
 
 # How to call API?:
 **Step1: You must extend your activity/fragment like this**  
