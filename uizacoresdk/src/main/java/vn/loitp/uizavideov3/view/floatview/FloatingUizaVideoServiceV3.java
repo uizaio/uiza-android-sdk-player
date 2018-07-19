@@ -460,7 +460,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && floatUizaIMAVideoV3 != null) {
-            LLog.d(TAG, "isInitResult lastCurrentPosition: " + lastCurrentPosition);
+            //LLog.d(TAG, "isInitResult lastCurrentPosition: " + lastCurrentPosition);
             setListener();
             if (lastCurrentPosition > 0) {
                 floatUizaIMAVideoV3.getPlayer().seekTo(lastCurrentPosition);
