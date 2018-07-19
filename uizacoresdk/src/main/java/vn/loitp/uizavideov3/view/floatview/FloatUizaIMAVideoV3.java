@@ -164,12 +164,14 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     private int oldPercent = Constants.NOT_FOUND;
+    private boolean isTrackedEventView;
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s), only track if isLivestream false
-        if (s == 5) {
+        if (s == 5 && !isTrackedEventView) {
             //LLog.d(TAG, "onVideoProgress -> track view");
             trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW));
+            isTrackedEventView = true;
         }
 
         //if current link play is livestream link play
