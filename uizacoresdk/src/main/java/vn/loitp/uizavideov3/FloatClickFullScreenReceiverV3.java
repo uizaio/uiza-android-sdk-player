@@ -29,7 +29,7 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         if (data == null || classNameOfPlayer == null) {
             return;
         }
-        //LLog.d(TAG, "onReceive " + LPref.getClassNameOfPlayer(context));
+        LLog.d(TAG, "onReceive " + LPref.getClassNameOfPlayer(context));
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             try {
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
