@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
-import com.squareup.leakcanary.LeakCanary;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.data.ActivityData;
@@ -26,12 +25,12 @@ public class LSApplication extends MultiDexApplication {
         Utils.init(this);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
+        /*if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
-        LeakCanary.install(this);
+        LeakCanary.install(this);*/
     }
 
     public Gson getGson() {

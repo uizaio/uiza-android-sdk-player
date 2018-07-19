@@ -50,6 +50,7 @@
     <color name="info_video_gray">#999999</color>
     <color name="info_video_description">#888888</color>
     <color name="black_85">#D9000000</color>
+    <color name="black_95">#EE000000</color>
 
     <color name="grey">#818181</color>
     <color name="black_2">#05000000</color>

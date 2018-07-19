@@ -40,6 +40,7 @@ dependencies {
     implementation project(':uizacoresdk')
     //implementation 'com.github.uizaio:uiza-android-sdk-player:1.3.8'
     //implementation 'com.github.uizaio:uiza-android-sdk-player:dev-SNAPSHOT'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

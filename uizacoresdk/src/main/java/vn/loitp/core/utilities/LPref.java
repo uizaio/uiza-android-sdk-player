@@ -30,6 +30,7 @@ public class LPref {
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
     private final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
+    private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
 
     //for api v3
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
@@ -91,6 +92,17 @@ public class LPref {
     public static void setToken(Context context, String value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(TOKEN, value);
+        editor.apply();
+    }
+
+    public static String getClassNameOfPlayer(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(CLASS_NAME_OF_PLAYER, null);
+    }
+
+    public static void setClassNameOfPlayer(Context context, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(CLASS_NAME_OF_PLAYER, value);
         editor.apply();
     }
     /////////////////////////////////BOOLEAN

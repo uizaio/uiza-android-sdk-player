@@ -117,6 +117,7 @@ public class Constants {
 
     //public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
+    public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
     public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
     public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
@@ -131,5 +132,6 @@ public class Constants {
     public static final String EVENT_TYPE_VIEW = "view";
     public static final String EVENT_TYPE_REPLAY = "replay";
     public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
+
     public static final int ANIMATION_DURATION = 200;
 }
