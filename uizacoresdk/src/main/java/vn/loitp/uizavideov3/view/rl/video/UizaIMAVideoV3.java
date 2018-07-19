@@ -420,6 +420,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
+        //LLog.d(TAG, "onCreate " + activity.getClass().getSimpleName());
+        LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
@@ -889,7 +891,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            exoPictureInPicture.setVisibility(GONE);
+            //TODO revert to GONE
+            exoPictureInPicture.setVisibility(VISIBLE);
         }
         if (isLivestream) {
             exoCast.setVisibility(GONE);
