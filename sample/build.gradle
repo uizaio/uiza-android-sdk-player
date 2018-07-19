@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
+        /*config {
             keyAlias 'loi'
             keyPassword '04021993'
             storeFile file('C:/Users/LENOVO/Desktop/demouiza/key.jks')
             storePassword '04021993'
-        }
+        }*/
     }
     compileSdkVersion 26
     buildToolsVersion "27.0.3"
@@ -20,7 +20,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptSupportModeEnabled true
-        signingConfig signingConfigs.config
+        //signingConfig signingConfigs.config
     }
     buildTypes {
         release {
