@@ -420,7 +420,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
-        //LLog.d(TAG, "onCreate " + activity.getClass().getSimpleName());
         LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
@@ -436,7 +435,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private UizaPlayerView playerView;
 
     private void addPlayerView() {
-        //PlayerView playerView = null;
         playerView = null;
         switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
             case Constants.PLAYER_ID_SKIN_1:
