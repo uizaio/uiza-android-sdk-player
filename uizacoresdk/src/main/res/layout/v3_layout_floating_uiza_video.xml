@@ -64,5 +64,16 @@
                 android:src="@drawable/ic_close_black_48dp"
                 android:tint="@color/White" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_err"
+            android:gravity="center"
+            android:text="@string/err_no_internet"
+            android:textSize="@dimen/txt_14"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </RelativeLayout>
 </FrameLayout>

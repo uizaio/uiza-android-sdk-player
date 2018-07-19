@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -40,9 +42,12 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LAnimationUtil;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -61,6 +66,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private ImageButton btExit;
     private ImageButton btFullScreen;
     private ImageButton btPlayPause;
+    private TextView tvMsg;
     private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private WindowManager.LayoutParams params;
 
@@ -81,7 +87,6 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         }
         if (intent != null && intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
-            LLog.d(TAG, "linkPlay " + linkPlay);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -93,6 +98,31 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
         btFullScreen = (ImageButton) mFloatingView.findViewById(R.id.bt_full_screen);
         btPlayPause = (ImageButton) mFloatingView.findViewById(R.id.bt_play_pause);
+        tvMsg = (TextView) mFloatingView.findViewById(R.id.tv_msg);
+        LUIUtil.setTextShadow(tvMsg);
+        tvMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
+                    @Override
+                    public void onCancel() {
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        setupVideo();
+                    }
+
+                    @Override
+                    public void onRepeat() {
+                    }
+
+                    @Override
+                    public void onStart() {
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -272,6 +302,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         return null;
     }
 
+    private long lastCurrentPosition;
+
     private void setListener() {
         //LLog.d(TAG, TAG + " addListener");
         if (floatUizaIMAVideoV3 == null || floatUizaIMAVideoV3.getPlayer() == null) {
@@ -313,6 +345,9 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 LLog.e(TAG, "onPlayerError " + error.getMessage());
+                lastCurrentPosition = floatUizaIMAVideoV3.getPlayer().getCurrentPosition();
+                LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
+                setupVideo();
             }
 
             @Override
@@ -424,20 +459,36 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        setListener();
-        if (!isSendMsgToActivity) {
-            //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
-            ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
-            msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
-            ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
-            isSendMsgToActivity = true;
+        if (isInitSuccess && floatUizaIMAVideoV3 != null) {
+            LLog.d(TAG, "isInitResult lastCurrentPosition: " + lastCurrentPosition);
+            setListener();
+            if (lastCurrentPosition > 0) {
+                floatUizaIMAVideoV3.getPlayer().seekTo(lastCurrentPosition);
+            }
+            if (!isSendMsgToActivity) {
+                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
+                ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
+                msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
+                ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
+                isSendMsgToActivity = true;
+            }
         }
     }
 
     private boolean isSendMsgToActivity;
 
     private void setupVideo() {
-        floatUizaIMAVideoV3.init(linkPlay, this);
+        if (linkPlay == null || linkPlay.isEmpty()) {
+            LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
+            return;
+        }
+        LLog.d(TAG, "setupVideo linkPlay " + linkPlay);
+        if (LConnectivityUtil.isConnected(this)) {
+            floatUizaIMAVideoV3.init(linkPlay, this);
+            tvMsg.setVisibility(View.GONE);
+        } else {
+            tvMsg.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setSizeMoveView() {
