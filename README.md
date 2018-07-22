@@ -87,12 +87,12 @@ https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/
 Create java file MainActivity:
 
     public class MainActivity extends BaseActivity implements UizaIMAVideoV3.Callback{
-    public void isInitResult();
-    public void onClickListEntityRelation();
-    public void onClickBack();
-    public void onClickPip();
-    public void onClickPipVideoInitSuccess();
-    public void onError();
+       public void isInitResult();
+       public void onClickListEntityRelation();
+       public void onClickBack();
+       public void onClickPip();
+       public void onClickPipVideoInitSuccess();
+       public void onError();
     }
 
 In onCreate()
