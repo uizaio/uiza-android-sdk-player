@@ -28,12 +28,18 @@ Uiza is the complete toolkit for building a powerful video streaming application
 # Init SDK
 
     
-    String domainApi = "xxx";  
-    String token = "yyy";  
-    String appId = "zzz";  
-   
-    UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);  
-    UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
+    public class App extends MultiDexApplication {  
+        @Override  
+        public void onCreate() {  
+            super.onCreate();  
+            Utils.init(this);  
+            String domainApi = "xxx";  
+            String token = "yyy";  
+            String appId = "zzz";  
+            UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);  
+            UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);  
+        }  
+    }
 
 # How to call API?:
 **Step1: You must extend your activity/fragment like this**  
@@ -78,12 +84,26 @@ https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/
 
 **JAVA**
 
-	UizaIMAVideoV3 uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+Create java file MainActivity:
+
+    public class MainActivity extends BaseActivity implements UizaIMAVideoV3.Callback{
+       public void isInitResult();
+       public void onClickListEntityRelation();
+       public void onClickBack();
+       public void onClickPip();
+       public void onClickPipVideoInitSuccess();
+       public void onError();
+    }
+
+In onCreate()
+	
+
+    UizaIMAVideoV3 uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
     Data data = {call API to get Data}
     UizaInputV3 uizaInputV3 = new UizaInputV3();  
     uizaInputV3.setData(data);  
     UizaDataV3.getInstance().setUizaInput(uizaInputV3, false);
-	uizaIMAVideoV3.init(this);
+    uizaIMAVideoV3.init(this);
 
 Dont forget to add in activity life cycle event:
 
@@ -127,6 +147,15 @@ Dont forget to add in activity life cycle event:
             }  
         } else {  
             super.onActivityResult(requestCode, resultCode, data);  
+        }  
+    }
+
+Then put
+
+    @Override  
+    public void isInitResult(boolean b, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {  
+        if (b) {  
+            uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();  
         }  
     }
 
