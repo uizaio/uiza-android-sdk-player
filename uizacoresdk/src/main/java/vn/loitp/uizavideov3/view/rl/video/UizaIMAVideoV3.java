@@ -566,7 +566,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert is VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -658,7 +659,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
-        LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
+        //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
         if (s == (isLivestream ? 3 : 5)) {
             //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
             if (UizaTrackingUtil.isTrackedEventTypeView(activity)) {
@@ -1361,7 +1362,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -1575,9 +1576,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*START CHROMECAST*/
     private void setUpMediaRouteButton() {
         MediaRouteButton mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
-        mediaRouteButton.setVisibility(GONE);
+        //mediaRouteButton.setVisibility(VISIBLE);
+        if (casty == null) {
+            LLog.d(TAG, "casty null");
+        }
         casty.setUpMediaRouteButton(mediaRouteButton);
-
         casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {

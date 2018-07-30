@@ -30,10 +30,6 @@ Uiza is the complete toolkit for building a powerful video streaming application
 1. appId : get in email at registration
 2. token : generate via https://docs.uiza.io/#get-api-key
 3. domainApi : get in email at registration
-4. environment : select one
-Production  (Constants.ENVIRONMENT_PROD)
-Staging (Constants.ENVIRONMENT_STAG)
-Developement (Constants.ENVIRONMENT_DEV)
 -
 
 
@@ -42,10 +38,10 @@ Developement (Constants.ENVIRONMENT_DEV)
             public void onCreate() {
                 super.onCreate();
                 Utils.init(this);
-                String domainApi = "xxx";
+                String api = "xxx";
                 String token = "yyy";
                 String appId = "zzz";
-                UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
+                UizaDataV3.getInstance().initSDK(api, token, appId);
             }
         }
 

@@ -23,6 +23,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>-->
+
+        <!--chromecas color-->
+        <item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
     </style>
 
     <style name="Theme.Swipe.Back.NoActionBar" parent="AppTheme">
@@ -92,7 +95,7 @@
 
     <!--START CHROMECAST-->
     <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
         <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
         <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>
         <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
@@ -122,5 +125,13 @@
     </style>
 
     <style name="CustomCastExpandedController" parent="CastExpandedController" />
+
+    <style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
+        <item name="mediaRouteButtonStyle">@style/CustomMediaRouteButtonStyle</item>
+    </style>
+
+    <style name="CustomMediaRouteButtonStyle" parent="Widget.MediaRouter.Light.MediaRouteButton">
+        <item name="mediaRouteButtonTint">@color/White</item>
+    </style>
     <!--STOP CHROMECAST-->
 </resources>
