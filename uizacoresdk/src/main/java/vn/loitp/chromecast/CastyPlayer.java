@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 
+import vn.loitp.core.utilities.LLog;
+
 public class CastyPlayer {
+    private final String TAG = getClass().getSimpleName();
     private RemoteMediaClient remoteMediaClient;
     private OnMediaLoadedListener onMediaLoadedListener;
 
@@ -19,9 +22,61 @@ public class CastyPlayer {
         this.onMediaLoadedListener = onMediaLoadedListener;
     }
 
+    public RemoteMediaClient getRemoteMediaClient() {
+        return remoteMediaClient;
+    }
+
     void setRemoteMediaClient(RemoteMediaClient remoteMediaClient) {
         this.remoteMediaClient = remoteMediaClient;
     }
+
+    /*public void addProgressListener() {
+        if (remoteMediaClient == null) {
+            return;
+        }
+        remoteMediaClient.addProgressListener(new RemoteMediaClient.ProgressListener() {
+            @Override
+            public void onProgressUpdated(long l, long l1) {
+                LLog.d(TAG, "onProgressUpdated " + l + " - " + l1);
+            }
+        }, 1000);
+        remoteMediaClient.addListener(new RemoteMediaClient.Listener() {
+            @Override
+            public void onStatusUpdated() {
+                LLog.d(TAG, "onStatusUpdated");
+                //remoteMediaClient.removeListener(this);
+            }
+
+            @Override
+            public void onMetadataUpdated() {
+                LLog.d(TAG, "onMetadataUpdated");
+            }
+
+            @Override
+            public void onQueueStatusUpdated() {
+                LLog.d(TAG, "onQueueStatusUpdated");
+            }
+
+            @Override
+            public void onPreloadStatusUpdated() {
+                LLog.d(TAG, "onPreloadStatusUpdated");
+            }
+
+            @Override
+            public void onSendingRemoteMediaRequest() {
+                LLog.d(TAG, "onSendingRemoteMediaRequest");
+            }
+
+            @Override
+            public void onAdBreakStatusUpdated() {
+                LLog.d(TAG, "onAdBreakStatusUpdated");
+            }
+        });
+    }*/
+
+    /*public long getCurrentPositionPlayer() {
+        return remoteMediaClient.getMediaStatus().getStreamPosition();
+    }*/
 
     /**
      * Plays the current media file if it is paused

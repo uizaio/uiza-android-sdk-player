@@ -34,7 +34,7 @@ import vn.loitp.core.utilities.LLog;
  * Core class of Casty. It manages buttons/widgets and gives access to the media player.
  */
 public class Casty implements CastyPlayer.OnMediaLoadedListener {
-    private final static String TAG = "Casty";
+    private final static String TAG = Casty.class.getSimpleName();
     static String receiverId = CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID;
     static CastOptions customCastOptions;
 
@@ -219,50 +219,53 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         return new SessionManagerListener<CastSession>() {
             @Override
             public void onSessionStarted(CastSession castSession, String s) {
+                LLog.d(TAG, "onSessionStarted " + s);
                 activity.invalidateOptionsMenu();
                 onConnected(castSession);
             }
 
             @Override
             public void onSessionEnded(CastSession castSession, int i) {
+                LLog.d(TAG, "onSessionEnded");
                 activity.invalidateOptionsMenu();
                 onDisconnected();
             }
 
             @Override
             public void onSessionResumed(CastSession castSession, boolean b) {
+                LLog.d(TAG, "onSessionResumed");
                 activity.invalidateOptionsMenu();
                 onConnected(castSession);
             }
 
             @Override
             public void onSessionStarting(CastSession castSession) {
-                //no-op
+                LLog.d(TAG, "onSessionStarting");
             }
 
             @Override
             public void onSessionStartFailed(CastSession castSession, int i) {
-                //no-op
+                LLog.d(TAG, "onSessionStartFailed");
             }
 
             @Override
             public void onSessionEnding(CastSession castSession) {
-                //no-op
+                LLog.d(TAG, "onSessionEnding");
             }
 
             @Override
             public void onSessionResuming(CastSession castSession, String s) {
-                //no-op
+                LLog.d(TAG, "onSessionResuming");
             }
 
             @Override
             public void onSessionResumeFailed(CastSession castSession, int i) {
-                //no-op
+                LLog.d(TAG, "onSessionResumeFailed");
             }
 
             @Override
             public void onSessionSuspended(CastSession castSession, int i) {
-                //no-op
+                LLog.d(TAG, "onSessionSuspended");
             }
         };
     }

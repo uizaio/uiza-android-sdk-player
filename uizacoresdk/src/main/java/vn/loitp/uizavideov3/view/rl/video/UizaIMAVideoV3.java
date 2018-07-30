@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
 import com.google.gson.Gson;
 
@@ -1606,6 +1607,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 updateUIChromecast();
             }
         });
+        /*casty.setOnCastSessionUpdatedListener(new Casty.OnCastSessionUpdatedListener() {
+            @Override
+            public void onCastSessionUpdated(CastSession castSession) {
+                if (castSession != null) {
+                    LLog.d(TAG, "onCastSessionUpdated " + castSession.getSessionRemainingTimeMs());
+                    RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
+                }
+            }
+        });*/
     }
 
     private boolean isCastingChromecast;
@@ -1656,6 +1666,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //play chromecast without screen control
         casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
+        casty.getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
+            @Override
+            public void onProgressUpdated(long currentPosition, long duration) {
+                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+            }
+        }, 1000);
+
     }
     /*STOP CHROMECAST*/
 
