@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 
+import com.google.android.gms.cast.MediaTrack;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -251,5 +252,31 @@ public class UizaDataV3 {
 
     public void setSettingPlayer(boolean settingPlayer) {
         isSettingPlayer = settingPlayer;
+    }
+
+    public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
+        int trackType = MediaTrack.TYPE_UNKNOWN;
+        if ("text".equals(type)) {
+            trackType = MediaTrack.TYPE_TEXT;
+        } else if ("video".equals(type)) {
+            trackType = MediaTrack.TYPE_VIDEO;
+        } else if ("audio".equals(type)) {
+            trackType = MediaTrack.TYPE_AUDIO;
+        }
+
+        int trackSubType = MediaTrack.SUBTYPE_NONE;
+        if (subType != null) {
+            if ("captions".equals(type)) {
+                trackSubType = MediaTrack.SUBTYPE_CAPTIONS;
+            } else if ("subtitle".equals(type)) {
+                trackSubType = MediaTrack.SUBTYPE_SUBTITLES;
+            }
+        }
+
+        return new MediaTrack.Builder(id, trackType)
+                .setName(name)
+                .setSubtype(trackSubType)
+                .setContentId(contentId)
+                .setLanguage(language).build();
     }
 }
