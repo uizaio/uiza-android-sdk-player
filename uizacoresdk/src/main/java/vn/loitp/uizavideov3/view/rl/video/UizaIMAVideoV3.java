@@ -93,7 +93,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
  */
 
 public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
@@ -153,6 +153,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     //chromecast https://github.com/DroidsOnRoids/Casty
     private Casty casty;
+    private MediaRouteButton mediaRouteButton;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -446,19 +447,23 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity = ((BaseActivity) getContext());
         LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
-        rootView = (RelativeLayout) findViewById(R.id.root_view);
-        isTablet = LDeviceUtil.isTablet(activity);
 
-        //TODO bug if use withMiniController
+        //TODO bug if use mini controller
         //casty = Casty.create(activity).withMiniController();
         casty = Casty.create(activity);
 
+        rootView = (RelativeLayout) findViewById(R.id.root_view);
+        isTablet = LDeviceUtil.isTablet(activity);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
+
+        //setup chromecast
+        mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        setUpMediaRouteButton();
     }
 
     private UizaPlayerView playerView;
@@ -590,9 +595,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
-
-        //setup chromecast
-        setUpMediaRouteButton();
     }
 
     private ProgressCallback progressCallback;
@@ -1575,7 +1577,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     /*START CHROMECAST*/
     private void setUpMediaRouteButton() {
-        MediaRouteButton mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
         casty.setUpMediaRouteButton(mediaRouteButton);
         casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
@@ -1592,54 +1593,51 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void playChromecast() {
+        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null) {
+            return;
+        }
+        long currentPosition = uizaPlayerManagerV3.getCurrentPosition();
+        LLog.d(TAG, "playChromecast exo stop currentPosition: " + currentPosition);
+
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, "KEY_SUBTITLE fuckfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, "KEY_TITLE  bitch");
-        movieMetadata.addImage(new WebImage(Uri.parse("https://c1.staticflickr.com/5/4606/25048456167_51f645289b_m.jpg")));
-        //movieMetadata.addImage(new WebImage(Uri.parse("https://c1.staticflickr.com/5/4606/25048456167_51f645289b_m.jpg")));
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mResultRetrieveAnEntity.getData().getDescription());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, mResultRetrieveAnEntity.getData().getEntityName());
+        movieMetadata.addImage(new WebImage(Uri.parse(mResultRetrieveAnEntity.getData().getThumbnail())));
 
-        //subtitle
+        //TODO add subtile vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
-
-        //en
-        MediaTrack mediaTrack = UizaDataV3.getInstance().buildTrack(
+        /*MediaTrack mediaTrack = UizaDataV3.getInstance().buildTrack(
                 1,
                 "text",
                 "captions",
-                "GoogleIO-2014-CastingToTheFuture2-en.vtt",
+                "http://112.78.4.162/sub.vtt",
                 "English Subtitle",
                 "en-US");
         mediaTrackList.add(mediaTrack);
-
-        //fuck
         mediaTrack = UizaDataV3.getInstance().buildTrack(
                 2,
                 "text",
                 "captions",
                 "http://112.78.4.162/sub.vtt",
-                "Fuck Subtitle",
+                "XYZ Subtitle",
                 "en-US");
-        mediaTrackList.add(mediaTrack);
-
-        /*JSONObject jsonObj = null;
-        try {
-            jsonObj = new JSONObject();
-            jsonObj.put("description", "description fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-        } catch (JSONException e) {
-            Log.e(TAG, "Failed to add description to the json object", e);
-        }*/
+        mediaTrackList.add(mediaTrack);*/
 
         MediaInfo mediaInfo = new MediaInfo.Builder(
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+                uizaPlayerManagerV3.getLinkPlay())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
                 .setMediaTracks(mediaTrackList)
-                //.setStreamDuration(video.getDuration() * 1000)
-                //.setCustomData(jsonObj)
+                .setStreamDuration(uizaPlayerManagerV3.getPlayer().getDuration())
                 .build();
-        casty.getPlayer().loadMediaAndPlay(mediaInfo);
+
+        //play chromecast with full screen control
+        //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
+
+        //play chromecast without screen control
+        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
     }
     /*STOP CHROMECAST*/
 }
