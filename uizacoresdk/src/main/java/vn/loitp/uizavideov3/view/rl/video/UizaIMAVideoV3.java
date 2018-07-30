@@ -154,6 +154,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //chromecast https://github.com/DroidsOnRoids/Casty
     private Casty casty;
     private MediaRouteButton mediaRouteButton;
+    private RelativeLayout rlChromeCast;
+    private ImageButtonWithSize ibsCast;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -595,6 +597,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
+
+        rlChromeCast = (RelativeLayout) playerView.findViewById(R.id.rl_chrome_cast);
+        rlChromeCast.setOnClickListener(this);
+
+        ibsCast = (ImageButtonWithSize) playerView.findViewById(R.id.ibs_cast);
+        ibsCast.setRatioPort(5);
+        ibsCast.setRatioLand(5);
     }
 
     private ProgressCallback progressCallback;
@@ -920,6 +929,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (mappedTrackInfo != null && uizaPlayerManagerV3.getTrackSelectionHelper() != null) {
                 uizaPlayerManagerV3.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
+        } else if (v == rlChromeCast) {
+            LLog.d(TAG, "click rl_chrome_cast");
         }
     }
 
@@ -1600,7 +1611,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isCastingChromecast;
 
     private void playChromecast() {
-        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null) {
+        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
         long currentPosition = uizaPlayerManagerV3.getCurrentPosition();
@@ -1649,10 +1660,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*STOP CHROMECAST*/
 
     private void updateUIChromecast() {
+        if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
+            return;
+        }
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
+            rlChromeCast.setVisibility(VISIBLE);
         } else {
             uizaPlayerManagerV3.resumeVideo();
+            rlChromeCast.setVisibility(GONE);
         }
     }
 }

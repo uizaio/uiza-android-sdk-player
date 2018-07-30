@@ -3,9 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:background="@drawable/background_player_controller"
     android:elevation="4dp"
     android:layoutDirection="ltr">
+
+    <RelativeLayout
+        android:id="@+id/rl_chrome_cast"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Black"
+        android:visibility="gone">
+
+        <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            android:id="@+id/ibs_cast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cast"
+            android:tint="@color/White" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@id/ll_top"
