@@ -778,6 +778,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         activityIsPausing = true;
+        isCastingChromecast = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
@@ -1582,15 +1583,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onConnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
+                isCastingChromecast = true;
+                updateUIChromecast();
                 playChromecast();
             }
 
             @Override
             public void onDisconnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
+                isCastingChromecast = false;
+                updateUIChromecast();
             }
         });
     }
+
+    private boolean isCastingChromecast;
 
     private void playChromecast() {
         if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null) {
@@ -1640,4 +1647,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
     }
     /*STOP CHROMECAST*/
+
+    private void updateUIChromecast() {
+        if (isCastingChromecast) {
+            uizaPlayerManagerV3.pauseVideo();
+        } else {
+            uizaPlayerManagerV3.resumeVideo();
+        }
+    }
 }
