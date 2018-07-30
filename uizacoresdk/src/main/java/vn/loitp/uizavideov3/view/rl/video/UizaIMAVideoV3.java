@@ -789,6 +789,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LDialogUtil.clearAll();
         activityIsPausing = true;
         isCastingChromecast = false;
+        isCastPlayerPlayingFirst = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
@@ -1596,6 +1597,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void onConnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
                 isCastingChromecast = true;
+                isCastPlayerPlayingFirst = false;
                 updateUIChromecast();
                 playChromecast();
             }
@@ -1604,6 +1606,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             public void onDisconnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
                 isCastingChromecast = false;
+                isCastPlayerPlayingFirst = false;
                 updateUIChromecast();
             }
         });
@@ -1624,8 +1627,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
-        long currentPosition = uizaPlayerManagerV3.getCurrentPosition();
-        LLog.d(TAG, "playChromecast exo stop currentPosition: " + currentPosition);
+        final long lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+        LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
@@ -1665,15 +1668,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
 
         //play chromecast without screen control
-        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
+        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
+
         casty.getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
                 LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+                if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
+                    LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
+                    isCastPlayerPlayingFirst = true;
+                }
             }
         }, 1000);
 
     }
+
+    private boolean isCastPlayerPlayingFirst;
     /*STOP CHROMECAST*/
 
     private void updateUIChromecast() {

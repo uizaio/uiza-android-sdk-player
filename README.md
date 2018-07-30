@@ -29,7 +29,7 @@ Uiza is the complete toolkit for building a powerful video streaming application
 
 1. appId : get in email at registration
 2. token : generate via https://docs.uiza.io/#get-api-key
-3. domainApi : get in email at registration
+3. api : get in email at registration
 -
 
 
