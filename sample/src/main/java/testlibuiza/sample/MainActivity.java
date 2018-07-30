@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
         String domainApi = "android-api.uiza.co";
         String token = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
         String appId = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-        UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);
+        //UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);
         UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
 
         authV3();

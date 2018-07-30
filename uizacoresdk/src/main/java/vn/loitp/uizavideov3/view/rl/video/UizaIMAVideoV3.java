@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
 import com.google.gson.Gson;
 
@@ -93,7 +94,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
  */
 
 public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
@@ -153,6 +154,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     //chromecast https://github.com/DroidsOnRoids/Casty
     private Casty casty;
+    private MediaRouteButton mediaRouteButton;
+    private RelativeLayout rlChromeCast;
+    private ImageButtonWithSize ibsCast;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -446,19 +450,23 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity = ((BaseActivity) getContext());
         LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
-        rootView = (RelativeLayout) findViewById(R.id.root_view);
-        isTablet = LDeviceUtil.isTablet(activity);
 
-        //TODO bug if use withMiniController
+        //TODO bug if use mini controller
         //casty = Casty.create(activity).withMiniController();
         casty = Casty.create(activity);
 
+        rootView = (RelativeLayout) findViewById(R.id.root_view);
+        isTablet = LDeviceUtil.isTablet(activity);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
+
+        //setup chromecast
+        mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        setUpMediaRouteButton();
     }
 
     private UizaPlayerView playerView;
@@ -566,7 +574,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert is VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -590,8 +599,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
 
-        //setup chromecast
-        setUpMediaRouteButton();
+        rlChromeCast = (RelativeLayout) playerView.findViewById(R.id.rl_chrome_cast);
+        rlChromeCast.setOnClickListener(this);
+
+        ibsCast = (ImageButtonWithSize) playerView.findViewById(R.id.ibs_cast);
+        ibsCast.setRatioPort(5);
+        ibsCast.setRatioLand(5);
     }
 
     private ProgressCallback progressCallback;
@@ -658,7 +671,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
-        LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
+        //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
         if (s == (isLivestream ? 3 : 5)) {
             //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
             if (UizaTrackingUtil.isTrackedEventTypeView(activity)) {
@@ -775,6 +788,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         activityIsPausing = true;
+        isCastingChromecast = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
@@ -916,6 +930,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (mappedTrackInfo != null && uizaPlayerManagerV3.getTrackSelectionHelper() != null) {
                 uizaPlayerManagerV3.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
+        } else if (v == rlChromeCast) {
+            LLog.d(TAG, "click rl_chrome_cast");
         }
     }
 
@@ -1361,7 +1377,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                //LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -1574,73 +1590,102 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     /*START CHROMECAST*/
     private void setUpMediaRouteButton() {
-        MediaRouteButton mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
-        mediaRouteButton.setVisibility(GONE);
         casty.setUpMediaRouteButton(mediaRouteButton);
-
         casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
+                isCastingChromecast = true;
+                updateUIChromecast();
                 playChromecast();
             }
 
             @Override
             public void onDisconnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
+                isCastingChromecast = false;
+                updateUIChromecast();
             }
         });
+        /*casty.setOnCastSessionUpdatedListener(new Casty.OnCastSessionUpdatedListener() {
+            @Override
+            public void onCastSessionUpdated(CastSession castSession) {
+                if (castSession != null) {
+                    LLog.d(TAG, "onCastSessionUpdated " + castSession.getSessionRemainingTimeMs());
+                    RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
+                }
+            }
+        });*/
     }
 
+    private boolean isCastingChromecast;
+
     private void playChromecast() {
+        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
+            return;
+        }
+        long currentPosition = uizaPlayerManagerV3.getCurrentPosition();
+        LLog.d(TAG, "playChromecast exo stop currentPosition: " + currentPosition);
+
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, "KEY_SUBTITLE fuckfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, "KEY_TITLE  bitch");
-        movieMetadata.addImage(new WebImage(Uri.parse("https://c1.staticflickr.com/5/4606/25048456167_51f645289b_m.jpg")));
-        //movieMetadata.addImage(new WebImage(Uri.parse("https://c1.staticflickr.com/5/4606/25048456167_51f645289b_m.jpg")));
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mResultRetrieveAnEntity.getData().getDescription());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, mResultRetrieveAnEntity.getData().getEntityName());
+        movieMetadata.addImage(new WebImage(Uri.parse(mResultRetrieveAnEntity.getData().getThumbnail())));
 
-        //subtitle
+        //TODO add subtile vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
-
-        //en
-        MediaTrack mediaTrack = UizaDataV3.getInstance().buildTrack(
+        /*MediaTrack mediaTrack = UizaDataV3.getInstance().buildTrack(
                 1,
                 "text",
                 "captions",
-                "GoogleIO-2014-CastingToTheFuture2-en.vtt",
+                "http://112.78.4.162/sub.vtt",
                 "English Subtitle",
                 "en-US");
         mediaTrackList.add(mediaTrack);
-
-        //fuck
         mediaTrack = UizaDataV3.getInstance().buildTrack(
                 2,
                 "text",
                 "captions",
                 "http://112.78.4.162/sub.vtt",
-                "Fuck Subtitle",
+                "XYZ Subtitle",
                 "en-US");
-        mediaTrackList.add(mediaTrack);
-
-        /*JSONObject jsonObj = null;
-        try {
-            jsonObj = new JSONObject();
-            jsonObj.put("description", "description fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-        } catch (JSONException e) {
-            Log.e(TAG, "Failed to add description to the json object", e);
-        }*/
+        mediaTrackList.add(mediaTrack);*/
 
         MediaInfo mediaInfo = new MediaInfo.Builder(
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+                uizaPlayerManagerV3.getLinkPlay())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
                 .setMediaTracks(mediaTrackList)
-                //.setStreamDuration(video.getDuration() * 1000)
-                //.setCustomData(jsonObj)
+                .setStreamDuration(uizaPlayerManagerV3.getPlayer().getDuration())
                 .build();
-        casty.getPlayer().loadMediaAndPlay(mediaInfo);
+
+        //play chromecast with full screen control
+        //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
+
+        //play chromecast without screen control
+        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
+        casty.getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
+            @Override
+            public void onProgressUpdated(long currentPosition, long duration) {
+                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+            }
+        }, 1000);
+
     }
     /*STOP CHROMECAST*/
+
+    private void updateUIChromecast() {
+        if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
+            return;
+        }
+        if (isCastingChromecast) {
+            uizaPlayerManagerV3.pauseVideo();
+            rlChromeCast.setVisibility(VISIBLE);
+        } else {
+            uizaPlayerManagerV3.resumeVideo();
+            rlChromeCast.setVisibility(GONE);
+        }
+    }
 }
