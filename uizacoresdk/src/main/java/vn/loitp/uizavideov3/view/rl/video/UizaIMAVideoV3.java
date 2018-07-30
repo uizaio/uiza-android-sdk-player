@@ -1624,6 +1624,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
+        LUIUtil.showProgressBar(progressBar);
         final long lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
         LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
@@ -1672,6 +1673,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
+                    LUIUtil.hideProgressBar(progressBar);
                     isCastPlayerPlayingFirst = true;
                 }
             }
