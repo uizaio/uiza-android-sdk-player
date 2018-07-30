@@ -25,6 +25,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
@@ -64,6 +65,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         play();

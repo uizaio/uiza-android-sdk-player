@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v3.data.HomeDataV3;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
@@ -25,6 +26,7 @@ import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -33,6 +35,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         LPref.setAcitivityCanSlideIsRunning(activity, true);
 

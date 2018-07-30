@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
@@ -153,7 +154,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
     //chromecast https://github.com/DroidsOnRoids/Casty
-    private Casty casty;
     private MediaRouteButton mediaRouteButton;
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
@@ -450,10 +450,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity = ((BaseActivity) getContext());
         LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
-
-        //TODO bug if use mini controller
-        //casty = Casty.create(activity).withMiniController();
-        casty = Casty.create(activity);
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
@@ -1590,9 +1586,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     /*START CHROMECAST*/
+    @UiThread
     private void setUpMediaRouteButton() {
-        casty.setUpMediaRouteButton(mediaRouteButton);
-        casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
+        UizaDataV3.getInstance().getCasty().setUpMediaRouteButton(mediaRouteButton);
+        UizaDataV3.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
@@ -1668,9 +1665,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
 
         //play chromecast without screen control
-        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
-
-        casty.getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
+        UizaDataV3.getInstance().getCasty().getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
+        UizaDataV3.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
                 LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);

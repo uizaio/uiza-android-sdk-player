@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.loitp.chromecast.Casty;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
@@ -50,6 +52,24 @@ public class UizaDataV3 {
     private String mDomainAPITracking;
     private String mToken;
     private String mAppId;
+
+    private Casty casty;
+
+    public void setCasty(Casty casty) {
+        this.casty = casty;
+    }
+
+    public Casty getCasty() {
+        /*if (casty == null) {
+            //TODO bug if use mini controller
+            //casty = Casty.create(baseActivity).withMiniController();
+            casty = Casty.create(baseActivity);
+        }*/
+        if (casty == null) {
+            LLog.e(TAG, "getCasty null");
+        }
+        return casty;
+    }
 
     public void initSDK(String domainAPI, String token, String appId) {
         initSDK(domainAPI, token, appId, Constants.ENVIRONMENT_PROD);
