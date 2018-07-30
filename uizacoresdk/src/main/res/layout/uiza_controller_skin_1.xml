@@ -46,10 +46,10 @@
             android:src="@drawable/ic_airplay"
             android:tint="@color/White" />-->
 
-        <!--<android.support.v7.app.MediaRouteButton
+        <android.support.v7.app.MediaRouteButton
             android:id="@+id/media_route_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />-->
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
             android:id="@id/exo_picture_in_picture"
@@ -402,11 +402,4 @@
 
         </LinearLayout>
     </LinearLayout>
-
-    <android.support.v7.app.MediaRouteButton
-        android:id="@+id/media_route_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
 </RelativeLayout>

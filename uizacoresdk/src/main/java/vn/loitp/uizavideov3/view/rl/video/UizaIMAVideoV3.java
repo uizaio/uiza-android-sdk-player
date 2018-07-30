@@ -1576,10 +1576,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*START CHROMECAST*/
     private void setUpMediaRouteButton() {
         MediaRouteButton mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
-        //mediaRouteButton.setVisibility(VISIBLE);
-        if (casty == null) {
-            LLog.d(TAG, "casty null");
-        }
         casty.setUpMediaRouteButton(mediaRouteButton);
         casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
