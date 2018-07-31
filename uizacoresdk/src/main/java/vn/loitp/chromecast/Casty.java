@@ -361,6 +361,38 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         }
     }
 
+    //get volume ở cast player
+    public double getVolume() {
+        CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+        return newCastSession.getVolume();
+    }
+
+    //set volume ở cast player
+    public void setVolume(double volume) {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "setVolume " + volume);
+                newCastSession.setVolume(volume);
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException setVolume " + e.toString());
+        }
+    }
+
+    //bật volume ở cast player if mute
+    public void turnOnVolume() {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "turnOnVolume isMute -> setMute false");
+                newCastSession.setMute(false);
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException turnOnVolume " + e.toString());
+        }
+    }
+
     //toggle mute volume in cast player
     //return true if toggle on
     //return false if toggle off or error

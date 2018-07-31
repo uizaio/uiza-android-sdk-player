@@ -672,7 +672,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     private float currentVolume;
 
     public void toggleVolumeMute(ImageButton exoVolume) {
-        LLog.d(TAG, "toggleVolumeMute");
+        //LLog.d(TAG, "toggleVolumeMute");
         if (player == null || exoVolume == null) {
             //LLog.d(TAG, "toggleVolumeMute player == null || exoVolume == null -> return");
             return;
