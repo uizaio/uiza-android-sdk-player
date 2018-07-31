@@ -1710,12 +1710,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
             rlChromeCast.setVisibility(VISIBLE);
-            //mediaRouteButton.bringToFront();
-            //exoSetting.setVisibility(GONE);
-            //exoCc.setVisibility(GONE);
-            //llMid.setVisibility(GONE);
-
-            //exoVolume.setVisibility(GONE);
+            exoSetting.setVisibility(GONE);
+            exoCc.setVisibility(GONE);
+            llMid.setVisibility(GONE);
+            exoVolume.setVisibility(GONE);
 
             //casting player luôn play first với volume not mute
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -1727,12 +1725,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
-            //exoSetting.setVisibility(VISIBLE);
-            //exoCc.setVisibility(VISIBLE);
-            //llMid.setVisibility(VISIBLE);
+            exoSetting.setVisibility(VISIBLE);
+            exoCc.setVisibility(VISIBLE);
+            llMid.setVisibility(VISIBLE);
 
             //TODO iplm volume mute on/off o cast player
-            //exoVolume.setVisibility(VISIBLE);
+            exoVolume.setVisibility(VISIBLE);
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
             //uizaPlayerManagerV3.setVolume(0.99f);
