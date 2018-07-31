@@ -1701,20 +1701,29 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
+
+            exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
             uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
+
+            exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         }
     }
 
     /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
-    * Ngược lại, sẽ handle volume on/off ở exo player*/
-    private void handleClickBtVolume(){
+     * Ngược lại, sẽ handle volume on/off ở exo player*/
+    private void handleClickBtVolume() {
         if (isCastingChromecast) {
-            UizaDataV3.getInstance().getCasty().toggleMuteVolume();
+            boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
+            if (isMute) {
+                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            } else {
+                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            }
         } else {
             if (uizaPlayerManagerV3 != null) {
                 isExoVolumeClicked = true;
