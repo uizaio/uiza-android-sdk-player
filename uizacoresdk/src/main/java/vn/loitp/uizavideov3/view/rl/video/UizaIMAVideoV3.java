@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -605,12 +606,43 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
 
-        rlChromeCast = (RelativeLayout) playerView.findViewById(R.id.rl_chrome_cast);
-        rlChromeCast.setOnClickListener(this);
+        addChromecastLayer();
+    }
 
-        ibsCast = (ImageButtonWithSize) playerView.findViewById(R.id.ibs_cast);
+    //tự tạo layout chromecast và background đen
+    private void addChromecastLayer() {
+        rlChromeCast = new RelativeLayout(activity);
+        RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rlChromeCast.setLayoutParams(rlChromeCastParams);
+        rlChromeCast.setVisibility(GONE);
+        //rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.black_65));
+        rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
+
+        ibsCast = new ImageButtonWithSize(activity);
+        ibsCast.setBackgroundColor(Color.TRANSPARENT);
+        ibsCast.setImageResource(R.drawable.cast);
+        RelativeLayout.LayoutParams ibsCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ibsCastParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        ibsCast.setLayoutParams(ibsCastParams);
         ibsCast.setRatioPort(5);
         ibsCast.setRatioLand(5);
+        ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ibsCast.setColorFilter(Color.WHITE);
+        rlChromeCast.addView(ibsCast);
+
+        if (llTop != null) {
+            if (llTop.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
+            }
+        } else if (llMid != null) {
+            if (llMid.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) llMid.getParent()).addView(rlChromeCast, 0);
+            }
+        } else if (rlLiveInfo != null) {
+            if (rlLiveInfo.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) rlLiveInfo.getParent()).addView(rlChromeCast, 0);
+            }
+        }
     }
 
     private ProgressCallback progressCallback;
