@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.base.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
@@ -48,6 +49,7 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDeviceUtil;
@@ -791,6 +793,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onResume() {
         if (isCastingChromecast) {
             LLog.d(TAG, "onResume isCastingChromecast true => return");
+            //TODO show dialog play local or cast
             return;
         }
 
@@ -1699,9 +1702,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
             rlChromeCast.setVisibility(VISIBLE);
+            //LAnimationUtil.playRepeatCount(ibsCast, Techniques.Pulse, -1);
+            exoSetting.setVisibility(GONE);
+            exoCc.setVisibility(GONE);
         } else {
             uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
+            exoSetting.setVisibility(VISIBLE);
+            exoCc.setVisibility(VISIBLE);
         }
     }
 }
