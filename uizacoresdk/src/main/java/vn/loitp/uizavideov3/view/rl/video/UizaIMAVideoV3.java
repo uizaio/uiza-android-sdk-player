@@ -313,7 +313,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (callback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
                     callback.isInitResult(false, null, null);
-
                     //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
@@ -790,6 +789,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onResume() {
+        if (isCastingChromecast) {
+            LLog.d(TAG, "onResume isCastingChromecast true => return");
+            return;
+        }
+
         //LLog.d(TAG, "onResume");
         activityIsPausing = false;
         if (isExoShareClicked) {
@@ -928,10 +932,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         } else if (v == rlChromeCast) {
-            LLog.d(TAG, "click rl_chrome_cast");
+            LLog.d(TAG, "do nothing click rl_chrome_cast");
         }
     }
 
+    //current screen is landscape or portrait
     private boolean isLandscape;
 
     @Override
@@ -1684,6 +1689,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isCastPlayerPlayingFirst;
     /*STOP CHROMECAST*/
 
+    /*khi click vào biểu tượng casting
+     * thì sẽ pause local player và bắt đầu loading lên cast player
+     * khi disconnet thì local player sẽ resume*/
     private void updateUIChromecast() {
         if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
             return;
