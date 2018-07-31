@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.base.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
@@ -49,7 +48,6 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDeviceUtil;
