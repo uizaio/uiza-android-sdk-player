@@ -1689,11 +1689,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
                     LUIUtil.hideProgressBar(progressBar);
+                    UizaDataV3.getInstance().getCasty().setVolume(0.99f);
                     isCastPlayerPlayingFirst = true;
                 }
 
                 if (currentPosition > 0) {
-                    //uizaPlayerManagerV3.seekTo(currentPosition);
+                    uizaPlayerManagerV3.seekTo(currentPosition);
                     //previewTimeBar.setPosition(currentPosition);
                 }
             }
@@ -1712,7 +1713,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         if (isCastingChromecast) {
-            uizaPlayerManagerV3.release();
+            uizaPlayerManagerV3.pauseVideo();
+            uizaPlayerManagerV3.setVolume(0f);
             rlChromeCast.setVisibility(VISIBLE);
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
@@ -1727,7 +1729,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
-            uizaPlayerManagerV3.init();
+            uizaPlayerManagerV3.resumeVideo();
+            uizaPlayerManagerV3.setVolume(0.99f);
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
