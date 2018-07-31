@@ -1685,12 +1685,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
-                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
-                previewTimeBar.setPosition(currentPosition);
+                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
                     LUIUtil.hideProgressBar(progressBar);
                     isCastPlayerPlayingFirst = true;
+                }
+
+                if (currentPosition > 0) {
+                    //uizaPlayerManagerV3.seekTo(currentPosition);
+                    //previewTimeBar.setPosition(currentPosition);
                 }
             }
         }, 1000);
@@ -1708,7 +1712,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         if (isCastingChromecast) {
-            uizaPlayerManagerV3.pauseVideo();
+            uizaPlayerManagerV3.release();
             rlChromeCast.setVisibility(VISIBLE);
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
@@ -1723,7 +1727,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
-            uizaPlayerManagerV3.resumeVideo();
+            uizaPlayerManagerV3.init();
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
