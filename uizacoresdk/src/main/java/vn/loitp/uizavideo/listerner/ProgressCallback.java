@@ -1,7 +1,7 @@
 package vn.loitp.uizavideo.listerner;
 
 /**
- * Created by LENOVO on 4/12/2018.
+ * Created by loitp on 4/12/2018.
  */
 
 public interface ProgressCallback {

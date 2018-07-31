@@ -748,7 +748,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (callback != null) {
             callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
         }
-
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
@@ -1687,6 +1686,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
                 LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+                previewTimeBar.setPosition(currentPosition);
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
                     LUIUtil.hideProgressBar(progressBar);
