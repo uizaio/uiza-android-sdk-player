@@ -1709,9 +1709,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
 
+            exoVolume.setVisibility(GONE);
+
             //casting player luôn play first với volume not mute
-            exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            //UizaDataV3.getInstance().getCasty().setVolume(100);
+            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            //UizaDataV3.getInstance().getCasty().setVolume(0.99);
+
+            //double volumeOfExoPlayer = uizaPlayerManagerV3.getVolume();
+            //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
+            //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
             uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
@@ -1719,9 +1725,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
 
+            //TODO iplm volume mute on/off o cast player
+            exoVolume.setVisibility(VISIBLE);
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
-            exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            uizaPlayerManagerV3.setVolume(100);
+            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            //uizaPlayerManagerV3.setVolume(0.99f);
+
+            /*double volumeOfCastPlayer = UizaDataV3.getInstance().getCasty().getVolume();
+            LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
+            uizaPlayerManagerV3.setVolume((float) volumeOfCastPlayer);*/
         }
     }
 
@@ -1729,6 +1741,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      * Ngược lại, sẽ handle volume on/off ở exo player*/
     private void handleClickBtVolume() {
         if (isCastingChromecast) {
+            LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
             boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
             if (isMute) {
                 exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
@@ -1736,6 +1749,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
             }
         } else {
+            LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
             if (uizaPlayerManagerV3 != null) {
                 isExoVolumeClicked = true;
                 uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
