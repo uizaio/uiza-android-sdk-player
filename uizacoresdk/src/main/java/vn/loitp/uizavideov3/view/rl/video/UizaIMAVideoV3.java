@@ -939,6 +939,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         } else if (v == rlChromeCast) {
+            //dangerous to remove
             LLog.d(TAG, "do nothing click rl_chrome_cast");
         } else if (v == exoFfwd) {
             if (isCastingChromecast) {
