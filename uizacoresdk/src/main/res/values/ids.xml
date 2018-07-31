@@ -39,4 +39,6 @@
     <item name="tv_live_view" type="id" />
     <item name="rl_time_bar" type="id" />
     <item name="rl_live_info" type="id" />
+    <item name="rl_chrome_cast" type="id" />
+    <item name="ibs_cast" type="id" />
 </resources>

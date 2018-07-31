@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.rubensousa.previewseekbar.PreviewSeekBar;
 import com.github.rubensousa.previewseekbar.base.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
@@ -105,6 +104,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
+
+    private LinearLayout llTop;
     //play controller
     private RelativeLayout llMid;
     private View llMidSub;
@@ -461,7 +462,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginRlLiveInfo();
 
         //setup chromecast
-        mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        //mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        mediaRouteButton = new MediaRouteButton(activity);
+        llTop.addView(mediaRouteButton);
         setUpMediaRouteButton();
     }
 
@@ -525,6 +528,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
+        llTop = (LinearLayout) findViewById(R.id.ll_top);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         llMidSub = (View) findViewById(R.id.ll_mid_sub);
         progressBar = (ProgressBar) findViewById(R.id.pb);

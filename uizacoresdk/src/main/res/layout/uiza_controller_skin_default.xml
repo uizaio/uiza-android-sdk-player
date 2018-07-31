@@ -36,21 +36,6 @@
             android:textColor="@color/White"
             android:textStyle="bold" />
 
-        <!--<vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-            android:id="@id/exo_cast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_airplay"
-            android:tint="@color/White" />-->
-
-        <android.support.v7.app.MediaRouteButton
-            android:id="@+id/media_route_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
             android:id="@id/exo_picture_in_picture"
             android:layout_width="wrap_content"
