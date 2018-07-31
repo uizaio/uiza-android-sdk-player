@@ -481,6 +481,9 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     }
 
     public void hideProgress() {
+        if (uizaIMAVideoV3.isCastingChromecast()) {
+            return;
+        }
         LUIUtil.hideProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 

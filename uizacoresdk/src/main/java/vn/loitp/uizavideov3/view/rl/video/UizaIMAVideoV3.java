@@ -1627,6 +1627,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private boolean isCastingChromecast;
 
+    public boolean isCastingChromecast() {
+        return isCastingChromecast;
+    }
+
     private void playChromecast() {
         if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
@@ -1688,7 +1692,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
-                    LUIUtil.hideProgressBar(progressBar);
+                    uizaPlayerManagerV3.hideProgress();
                     UizaDataV3.getInstance().getCasty().setVolume(0.99f);
                     isCastPlayerPlayingFirst = true;
                 }
@@ -1703,6 +1707,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private boolean isCastPlayerPlayingFirst;
+
     /*STOP CHROMECAST*/
 
     /*khi click vào biểu tượng casting
