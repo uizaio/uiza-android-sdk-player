@@ -547,8 +547,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
-        exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
-        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+        exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause_uiza);
+        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);
+        exoPlay.setVisibility(GONE);
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
@@ -956,6 +957,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             }
+        } else if (v == exoPause) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().pause();
+            } else {
+                uizaPlayerManagerV3.pauseVideo();
+            }
+            exoPause.setVisibility(GONE);
+            exoPlay.setVisibility(VISIBLE);
+        } else if (v == exoPlay) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().play();
+            } else {
+                uizaPlayerManagerV3.resumeVideo();
+            }
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
         }
     }
 
@@ -1393,6 +1410,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //when uiimavideo had an error
         public void onError(Exception e);
+
     }
 
     private Callback callback;
@@ -1620,7 +1638,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
-                LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
+                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
                 isCastingChromecast = true;
                 isCastPlayerPlayingFirst = false;
                 playChromecast();
@@ -1629,7 +1647,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             @Override
             public void onDisconnected() {
-                LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
+                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
                 isCastingChromecast = false;
                 isCastPlayerPlayingFirst = false;
                 updateUIChromecast();
@@ -1766,8 +1784,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
 
-            exoPlay.setVisibility(VISIBLE);
-            exoPause.setVisibility(GONE);
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
 
             //TODO iplm volume mute on/off o cast player
             exoVolume.setVisibility(VISIBLE);

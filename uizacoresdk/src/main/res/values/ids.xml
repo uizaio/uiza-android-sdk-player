@@ -17,6 +17,8 @@
     <item name="previewFrameLayout" type="id" />
     <item name="image_view_thumnail" type="id" />
     <item name="exo_volume" type="id" />
+    <item name="exo_play_uiza" type="id" />
+    <item name="exo_pause_uiza" type="id" />
     <item name="exo_cc" type="id" />
     <item name="exo_playlist" type="id" />
     <item name="exo_hearing" type="id" />
