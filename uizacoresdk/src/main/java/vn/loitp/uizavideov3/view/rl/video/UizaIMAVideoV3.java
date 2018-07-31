@@ -1598,8 +1598,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
                 isCastingChromecast = true;
                 isCastPlayerPlayingFirst = false;
-                updateUIChromecast();
                 playChromecast();
+                updateUIChromecast();
             }
 
             @Override
@@ -1673,14 +1673,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 .build();
 
         //play chromecast with full screen control
-        //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
+        //UizaDataV3.getInstance().getCasty().getPlayer().loadMediaAndPlay(mediaInfo, true, lastCurrentPosition);
 
         //play chromecast without screen control
         UizaDataV3.getInstance().getCasty().getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
+
         UizaDataV3.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
-                //LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+                uizaPlayerManagerV3.seekTo(currentPosition);
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
                     LUIUtil.hideProgressBar(progressBar);
@@ -1702,14 +1704,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         if (isCastingChromecast) {
-            uizaPlayerManagerV3.pauseVideo();
+            //uizaPlayerManagerV3.pauseVideo();
             rlChromeCast.setVisibility(VISIBLE);
-            //LAnimationUtil.playRepeatCount(ibsCast, Techniques.Pulse, -1);
-            exoSetting.setVisibility(GONE);
-            exoCc.setVisibility(GONE);
-            llMid.setVisibility(GONE);
+            //mediaRouteButton.bringToFront();
+            //exoSetting.setVisibility(GONE);
+            //exoCc.setVisibility(GONE);
+            //llMid.setVisibility(GONE);
 
-            exoVolume.setVisibility(GONE);
+            //exoVolume.setVisibility(GONE);
 
             //casting player luôn play first với volume not mute
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -1719,14 +1721,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
-            uizaPlayerManagerV3.resumeVideo();
+            //uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
-            exoSetting.setVisibility(VISIBLE);
-            exoCc.setVisibility(VISIBLE);
-            llMid.setVisibility(VISIBLE);
+            //exoSetting.setVisibility(VISIBLE);
+            //exoCc.setVisibility(VISIBLE);
+            //llMid.setVisibility(VISIBLE);
 
             //TODO iplm volume mute on/off o cast player
-            exoVolume.setVisibility(VISIBLE);
+            //exoVolume.setVisibility(VISIBLE);
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
             //uizaPlayerManagerV3.setVolume(0.99f);

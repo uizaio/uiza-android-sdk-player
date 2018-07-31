@@ -12,7 +12,7 @@
         android:id="@+id/rl_chrome_cast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Black"
+        android:background="@color/black_35"
         android:visibility="gone">
 
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
@@ -239,7 +239,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/previewFrameLayout"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:max="800"
                         android:progressTint="@color/colorPrimary"
                         android:thumbTint="@color/colorPrimary" />
 
