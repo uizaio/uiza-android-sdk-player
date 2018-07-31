@@ -635,7 +635,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
@@ -860,7 +860,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "onPreview progress " + progress);
+        LLog.d(TAG, "onPreview progress " + progress);
+        if(isCastingChromecast()){
+            UizaDataV3.getInstance().getCasty().getPlayer().seek(progress);
+        }
     }
 
     private boolean isExoShareClicked;
