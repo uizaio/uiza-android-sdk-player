@@ -1705,11 +1705,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LAnimationUtil.playRepeatCount(ibsCast, Techniques.Pulse, -1);
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
+            llMid.setVisibility(GONE);
         } else {
             uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
+            llMid.setVisibility(VISIBLE);
         }
     }
 }
