@@ -96,6 +96,7 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
+    private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
@@ -596,6 +597,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoShare.setOnClickListener(this);
         exoFfwd.setOnClickListener(this);
         exoRew.setOnClickListener(this);
+        exoPlay.setOnClickListener(this);
+        exoPause.setOnClickListener(this);
 
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
@@ -637,7 +640,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
@@ -943,15 +946,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "do nothing click rl_chrome_cast");
         } else if (v == exoFfwd) {
             if (isCastingChromecast) {
-                UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(10000);
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToForward(10000);
+                uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             }
         } else if (v == exoRew) {
             if (isCastingChromecast) {
-                UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(10000);
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToBackward(10000);
+                uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             }
         }
     }
@@ -1742,6 +1745,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
+
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
+
             exoVolume.setVisibility(GONE);
 
             //casting player luôn play first với volume not mute
@@ -1758,6 +1765,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
+
+            exoPlay.setVisibility(VISIBLE);
+            exoPause.setVisibility(GONE);
 
             //TODO iplm volume mute on/off o cast player
             exoVolume.setVisibility(VISIBLE);
