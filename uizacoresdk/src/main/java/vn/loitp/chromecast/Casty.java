@@ -27,6 +27,8 @@ import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.io.IOException;
+
 import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 
@@ -356,6 +358,21 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             } else if (newCastSession != castSession) {
                 onConnected(newCastSession);
             }
+        }
+    }
+
+    public void toggleMuteVolume() {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "toggleMuteVolume isMute -> setMute false");
+                newCastSession.setMute(false);
+            } else {
+                LLog.d(TAG, "toggleMuteVolume !isMute -> setMute true");
+                newCastSession.setMute(true);
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException setMute " + e.toString());
         }
     }
 

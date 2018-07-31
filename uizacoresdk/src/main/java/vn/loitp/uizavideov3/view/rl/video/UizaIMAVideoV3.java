@@ -882,10 +882,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             }
         } else if (v == exoVolume) {
-            if (uizaPlayerManagerV3 != null) {
-                isExoVolumeClicked = true;
-                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
-            }
+            handleClickBtVolume();
         } else if (v == exoSetting) {
             View view = UizaUtil.getBtVideo(debugRootView);
             if (view != null) {
@@ -1710,6 +1707,19 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
+        }
+    }
+
+    /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
+    * Ngược lại, sẽ handle volume on/off ở exo player*/
+    private void handleClickBtVolume(){
+        if (isCastingChromecast) {
+            UizaDataV3.getInstance().getCasty().toggleMuteVolume();
+        } else {
+            if (uizaPlayerManagerV3 != null) {
+                isExoVolumeClicked = true;
+                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
+            }
         }
     }
 }
