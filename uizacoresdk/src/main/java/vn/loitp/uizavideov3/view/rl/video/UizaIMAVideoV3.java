@@ -1704,7 +1704,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         if (isCastingChromecast) {
-            //uizaPlayerManagerV3.pauseVideo();
+            uizaPlayerManagerV3.pauseVideo();
             rlChromeCast.setVisibility(VISIBLE);
             //mediaRouteButton.bringToFront();
             //exoSetting.setVisibility(GONE);
@@ -1721,7 +1721,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
-            //uizaPlayerManagerV3.resumeVideo();
+            uizaPlayerManagerV3.resumeVideo();
             rlChromeCast.setVisibility(GONE);
             //exoSetting.setVisibility(VISIBLE);
             //exoCc.setVisibility(VISIBLE);
