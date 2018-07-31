@@ -721,6 +721,23 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         }
     }
 
+    //forward  10000mls
+    public void seekToForward(long forward) {
+        if (player.getCurrentPosition() + forward > player.getDuration()) {
+            player.seekTo(player.getDuration());
+        } else {
+            player.seekTo(player.getCurrentPosition() + forward);
+        }
+    }//next 10000mls
+
+    public void seekToBackward(long backward) {
+        if (player.getCurrentPosition() - backward > 0) {
+            player.seekTo(player.getCurrentPosition() - backward);
+        } else {
+            player.seekTo(0);
+        }
+    }
+
     public interface DebugCallback {
         public void onUpdateButtonVisibilities();
     }

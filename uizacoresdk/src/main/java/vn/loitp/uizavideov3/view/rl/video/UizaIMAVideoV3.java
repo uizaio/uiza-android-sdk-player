@@ -594,6 +594,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoHearing.setOnClickListener(this);
         exoPictureInPicture.setOnClickListener(this);
         exoShare.setOnClickListener(this);
+        exoFfwd.setOnClickListener(this);
+        exoRew.setOnClickListener(this);
 
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
@@ -861,7 +863,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         LLog.d(TAG, "onPreview progress " + progress);
-        if(isCastingChromecast()){
+        if (isCastingChromecast) {
             UizaDataV3.getInstance().getCasty().getPlayer().seek(progress);
         }
     }
@@ -938,6 +940,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else if (v == rlChromeCast) {
             LLog.d(TAG, "do nothing click rl_chrome_cast");
+        } else if (v == exoFfwd) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(10000);
+            } else {
+                uizaPlayerManagerV3.seekToForward(10000);
+            }
+        } else if (v == exoRew) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(10000);
+            } else {
+                uizaPlayerManagerV3.seekToBackward(10000);
+            }
         }
     }
 

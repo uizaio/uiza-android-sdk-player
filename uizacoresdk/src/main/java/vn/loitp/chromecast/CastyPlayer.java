@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 
-import vn.loitp.core.utilities.LLog;
-
 public class CastyPlayer {
     private final String TAG = getClass().getSimpleName();
     private RemoteMediaClient remoteMediaClient;
@@ -99,6 +97,29 @@ public class CastyPlayer {
      */
     public void seek(long time) {
         if (remoteMediaClient != null) remoteMediaClient.seek(time);
+    }
+
+    //forward  10000mls
+    public void seekToForward(long forward) {
+        if (remoteMediaClient == null) {
+            return;
+        }
+        if (remoteMediaClient.getMediaStatus().getStreamPosition() + forward > remoteMediaClient.getMediaStatus().getMediaInfo().getStreamDuration()) {
+            seek(remoteMediaClient.getMediaStatus().getMediaInfo().getStreamDuration());
+        } else {
+            seek(remoteMediaClient.getMediaStatus().getStreamPosition() + forward);
+        }
+    }//next 10000mls
+
+    public void seekToBackward(long backward) {
+        if (remoteMediaClient == null) {
+            return;
+        }
+        if (remoteMediaClient.getMediaStatus().getStreamPosition() - backward > 0) {
+            seek(remoteMediaClient.getMediaStatus().getStreamPosition() - backward);
+        } else {
+            seek(0);
+        }
     }
 
     /**
