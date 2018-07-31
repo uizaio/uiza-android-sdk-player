@@ -629,6 +629,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ibsCast.setColorFilter(Color.WHITE);
         rlChromeCast.addView(ibsCast);
+        rlChromeCast.setOnClickListener(this);
 
         if (llTop != null) {
             if (llTop.getParent() instanceof ViewGroup) {

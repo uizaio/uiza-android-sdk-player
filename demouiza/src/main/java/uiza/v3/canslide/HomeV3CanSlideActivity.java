@@ -47,7 +47,9 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onMinimized() {
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().hideController();
+                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    frmVideoTop.getUizaIMAVideoV3().hideController();
+                }
             }
 
             @Override
