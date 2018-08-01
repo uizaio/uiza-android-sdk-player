@@ -23,6 +23,7 @@ import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.IntroductoryOverlay;
+import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -432,5 +433,12 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
 
     public interface OnCastSessionUpdatedListener {
         void onCastSessionUpdated(CastSession castSession);
+    }
+
+    public void disconnectChromecast(){
+        castSession.getRemoteMediaClient().stop(); // stop remote media
+        CastContext castContext = CastContext.getSharedInstance(activity);
+        SessionManager mSessionManager = castContext.getSessionManager();
+        mSessionManager.endCurrentSession(true);
     }
 }

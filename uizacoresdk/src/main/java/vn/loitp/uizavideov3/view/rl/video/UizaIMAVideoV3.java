@@ -794,7 +794,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         if (isCastingChromecast) {
             LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
-            playChromecast();
+            handleConnectedChromecast();
+            showController();
         }
 
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
