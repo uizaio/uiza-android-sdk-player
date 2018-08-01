@@ -199,6 +199,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void init(Callback callback) {
+        LLog.d(TAG, "======================NEW SESSION======================");
+
         //LLog.d(TAG, "init");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
@@ -789,6 +791,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (callback != null) {
             callback.isInitResult(true, mResultGetLinkPlay, mData);
         }
+
+        if (isCastingChromecast) {
+            LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
+            playChromecast();
+        }
+
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
@@ -1328,7 +1336,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "===================================");
             //LLog.d(TAG, "========name: " + channelName);
             //LLog.d(TAG, "========appId: " + appId);
-            LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "===================================");
             activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
