@@ -99,6 +99,13 @@ Create java file MainActivity:
        public void onClickPipVideoInitSuccess();
        public void onError();
     }
+Manifest
+
+    <activity
+      android:name=".MainActivity "
+      android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+
+
 
 In onCreate()
 

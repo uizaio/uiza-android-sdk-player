@@ -10,12 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
@@ -120,8 +118,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
 
     private void goToPlay(Data data) {
         LDialogUtil.hide(progressDialog);
-        LPref.setData(activity, data, LSApplication.getInstance().getGson());
 
+        UizaV3Util.setData(activity, data);
         final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);

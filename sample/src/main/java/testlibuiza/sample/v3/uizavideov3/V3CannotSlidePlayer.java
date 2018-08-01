@@ -24,16 +24,14 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
@@ -72,8 +70,9 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
     }
 
     private void play() {
-        Data data = LPref.getData(activity, LSApplication.getInstance().getGson());
+        Data data = UizaV3Util.getData(activity);
         if (data == null) {
+            LToast.show(activity, "Error: data is null");
             LLog.e(TAG, "play error data null");
             return;
         }
