@@ -32,7 +32,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final String entityIdDefaultVOD = "61d4b1e2-95d9-418d-9e52-e1d798e869b4";
-    private final String entityIdDefaultLIVE = "5854a643-dc72-4371-b762-a2ce5983f40a";
+    private final String entityIdDefaultLIVE = "765c8b46-28c6-49aa-ac60-3c3e665b4f25";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
