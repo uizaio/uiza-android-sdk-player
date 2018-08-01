@@ -1,7 +1,7 @@
 package vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity;
 
 /**
- * Created by LENOVO on 6/21/2018.
+ * Created by loitp on 6/21/2018.
  */
 
 import com.google.gson.annotations.Expose;

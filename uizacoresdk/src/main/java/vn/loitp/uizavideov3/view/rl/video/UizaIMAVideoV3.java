@@ -74,7 +74,9 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenS
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -150,9 +152,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int firstBrightness = Constants.NOT_FOUND;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
-    private ResultRetrieveAnEntity mResultRetrieveAnEntity;
+    private Data mData;//infortion of video (VOD or LIVE)
     private boolean isResultGetLinkPlayDone;
-    private boolean isResultRetrieveAnEntityDone;
+    private boolean isResultGetDataDone;
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
@@ -227,9 +229,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
             mResultGetLinkPlay = null;
-            mResultRetrieveAnEntity = null;
+            mData = null;
             isResultGetLinkPlayDone = false;
-            isResultRetrieveAnEntityDone = false;
+            isResultGetDataDone = false;
             resetCountTryLinkPlayError();
         }
         updateUI();
@@ -325,8 +327,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void checkToSetUp() {
         //LLog.d(TAG, "checkToSetUp");
-        if (isResultGetLinkPlayDone && isResultRetrieveAnEntityDone) {
-            if (mResultGetLinkPlay != null && mResultRetrieveAnEntity != null) {
+        if (isResultGetLinkPlayDone && isResultGetDataDone) {
+            if (mResultGetLinkPlay != null && mData != null) {
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
 
@@ -785,7 +787,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
-            callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
+            callback.isInitResult(true, mResultGetLinkPlay, mData);
         }
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
@@ -851,7 +853,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void initUizaPlayerManagerV3(){
+    private void initUizaPlayerManagerV3() {
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
             uizaPlayerManagerV3.init();
@@ -1401,7 +1403,33 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "getDetailEntity");
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-        activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        UizaV3Util.getDetailEntity((BaseActivity) activity, id, new UizaV3Util.Callback() {
+            @Override
+            public void onSuccess(Data data) {
+                LLog.d(TAG, "getDetailEntity onSuccess: " + gson.toJson(data));
+                mData = data;
+                isResultGetDataDone = true;
+                checkToSetUp();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "getDetailEntity " + e.toString());
+                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
+                    }
+                });
+            }
+        });
+
+        /*activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
@@ -1425,12 +1453,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 });
             }
-        });
+        });*/
     }
 
     public interface Callback {
         //when video init done with result
-        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
         //user click an item in entity relation
         public void onClickListEntityRelation(Item item, int position);
@@ -1715,7 +1743,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void playChromecast() {
-        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
+        if (mData == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
         LUIUtil.showProgressBar(progressBar);
@@ -1724,9 +1752,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mResultRetrieveAnEntity.getData().getDescription());
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, mResultRetrieveAnEntity.getData().getEntityName());
-        movieMetadata.addImage(new WebImage(Uri.parse(mResultRetrieveAnEntity.getData().getThumbnail())));
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mData.getDescription());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, mData.getEntityName());
+        movieMetadata.addImage(new WebImage(Uri.parse(mData.getThumbnail())));
 
         //TODO add subtile vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
