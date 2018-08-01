@@ -12,6 +12,7 @@ import android.view.View;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
@@ -31,8 +32,8 @@ public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Call
         return R.layout.v3_frm_bottom;
     }
 
-    public void setup(ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        uizaIMAVideoInfo.setup(resultRetrieveAnEntity);
+    public void setup(Data data) {
+        uizaIMAVideoInfo.setup(data);
     }
 
     @Override

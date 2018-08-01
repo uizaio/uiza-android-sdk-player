@@ -54,7 +54,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     public interface FrmTopCallback {
-        public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
         public void onClickListEntityRelation(Item item, int position);
     }
@@ -270,11 +270,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
-                frmTopCallback.initDone(isInitSuccess, resultGetLinkPlay, resultRetrieveAnEntity);
+                frmTopCallback.initDone(isInitSuccess, resultGetLinkPlay, data);
             }
         } else {
             UizaInputV3 prevUizaInput = UizaDataV3.getInstance().getUizaInputPrev();

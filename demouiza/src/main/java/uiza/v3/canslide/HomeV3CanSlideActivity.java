@@ -174,7 +174,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
-            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
@@ -196,7 +196,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                         }
                     }
                 });
-                intFrmBottom(resultRetrieveAnEntity);
+                intFrmBottom(data);
             }
 
             @Override
@@ -220,8 +220,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
-    private void intFrmBottom(ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        frmVideoBottom.setup(resultRetrieveAnEntity);
+    private void intFrmBottom(Data data) {
+        frmVideoBottom.setup(data);
     }
 
     private void clearUIFrmBottom() {
