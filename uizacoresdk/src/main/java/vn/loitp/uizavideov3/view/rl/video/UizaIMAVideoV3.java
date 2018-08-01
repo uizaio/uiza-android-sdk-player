@@ -1410,7 +1410,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void getDetailEntity() {
         //LLog.d(TAG, "getDetailEntity");
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        //UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
         UizaV3Util.getDetailEntity((BaseActivity) activity, id, new UizaV3Util.Callback() {
             @Override
@@ -1437,32 +1437,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 });
             }
         });
-
-        /*activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
-            @Override
-            public void onSuccess(ResultRetrieveAnEntity result) {
-                LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
-                mResultRetrieveAnEntity = result;
-                isResultRetrieveAnEntityDone = true;
-                checkToSetUp();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
-                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-                });
-            }
-        });*/
     }
 
     public interface Callback {
