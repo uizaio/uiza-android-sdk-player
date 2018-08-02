@@ -21,7 +21,6 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
@@ -127,7 +126,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
         if (frmVideoTop != null || frmVideoBottom != null) {
             clearUIFrmBottom();
-            initFrmTop(data, false);
+            initFrmTop(data.getId(), false);
             draggablePanel.maximize();
             return;
         }
@@ -135,7 +134,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                initFrmTop(data, false);
+                initFrmTop(data.getId(), false);
             }
         });
         frmVideoBottom = new FrmVideoBottomV3();
@@ -147,7 +146,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                     public void onClickItemBottom(Item item, int position) {
                         LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
-                        initFrmTop(data, true);
+                        initFrmTop(data.getId(), true);
                     }
 
                     @Override
@@ -203,12 +202,12 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             public void onClickListEntityRelation(Item item, int position) {
                 LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
-                initFrmTop(data, true);
+                initFrmTop(data.getId(), true);
             }
         });
     }
 
-    private void initFrmTop(Data data, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
@@ -217,7 +216,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmVideoTop.setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        frmVideoTop.setupVideo(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
     private void intFrmBottom(Data data) {

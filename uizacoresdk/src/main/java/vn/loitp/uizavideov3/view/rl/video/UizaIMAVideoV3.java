@@ -202,7 +202,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.callback = callback;
     }
 
-    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         LLog.d(TAG, "======================NEW SESSION======================");
         LLog.d(TAG, "entityId " + entityId);
         UizaDataV3.getInstance().setSettingPlayer(true);
@@ -238,8 +238,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });
     }
 
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
+        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false);
+    }
+
     public void init(@NonNull String entityId) {
-        init(entityId, null, null);
+        init(entityId, null, null, false);
     }
 
     private void checkData() {
@@ -697,7 +701,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.progressCallback = progressCallback;
     }
 
-    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    private void initDataSource(String linkPlay, String urlIMAAd, String
+            urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
@@ -852,7 +857,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
+    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar,
+                                   final int progressSeekbar) {
         verticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
@@ -1151,7 +1157,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     //trick to gone view
-    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize, boolean isVisible, int res) {
+    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize,
+                                            boolean isVisible, int res) {
         if (imageButtonWithSize == null) {
             return;
         }
@@ -1479,6 +1486,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onSuccess(Object tracking) {
                 //LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, "Track success! " + uizaTracking.getEntityName() + " : " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
