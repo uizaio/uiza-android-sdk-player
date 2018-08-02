@@ -839,6 +839,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         if (isCastingChromecast) {
             LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
+            lastCurrentPosition = 0;
             handleConnectedChromecast();
             showController();
         }
@@ -891,7 +892,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onResume() {
         if (isCastingChromecast) {
             LLog.d(TAG, "onResume isCastingChromecast true => return");
-            //handleConnectedChromecast();
             return;
         }
 
@@ -1704,6 +1704,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onConnected() {
                 //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
+                lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
                 handleConnectedChromecast();
             }
 
@@ -1743,12 +1744,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return isCastingChromecast;
     }
 
+    //last current position lúc từ exoplayer switch sang cast player
+    private long lastCurrentPosition;
+
     private void playChromecast() {
         if (mData == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
         LUIUtil.showProgressBar(progressBar);
-        final long lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
         LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
