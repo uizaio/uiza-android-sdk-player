@@ -280,7 +280,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
             mResultGetLinkPlay = null;
-            mData = null;
+            //mData = null;
             isResultGetLinkPlayDone = false;
             resetCountTryLinkPlayError();
         }
@@ -374,10 +374,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
-        //LLog.d(TAG, "checkToSetUp");
+        LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
         if (isResultGetLinkPlayDone) {
             if (mResultGetLinkPlay != null && mData != null) {
-                //LLog.d(TAG, "checkToSetUp if");
+                LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
@@ -432,6 +432,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 initUizaPlayerManagerV3();
             } else {
+                LLog.d(TAG, "checkToSetUp else");
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -701,8 +702,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.progressCallback = progressCallback;
     }
 
-    private void initDataSource(String linkPlay, String urlIMAAd, String
-            urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
