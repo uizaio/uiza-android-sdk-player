@@ -76,7 +76,11 @@ public class V3SetEntityIdActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Data data) {
                         LDialogUtil.hide(progressDialog);
-                        goToPlay(data);
+
+                        UizaV3Util.setData(activity, data);
+                        final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                        startActivity(intent);
+                        LActivityUtil.tranIn(activity);
                     }
 
                     @Override
@@ -114,15 +118,6 @@ public class V3SetEntityIdActivity extends BaseActivity {
         UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
         //TODO hard code environment STAG
         UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_STAG);
-    }
-
-    private void goToPlay(Data data) {
-        LDialogUtil.hide(progressDialog);
-
-        UizaV3Util.setData(activity, data);
-        final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 
     @Override
