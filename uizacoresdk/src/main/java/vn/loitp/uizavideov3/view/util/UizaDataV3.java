@@ -153,6 +153,10 @@ public class UizaDataV3 {
         return isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
     }
 
+    public void setUizaInput(UizaInputV3 uizaInputV3) {
+        setUizaInput(uizaInputV3, false);
+    }
+
     public void setUizaInput(UizaInputV3 uizaInputV3, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         this.uizaInputV3 = uizaInputV3;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;

@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.uizavideov3;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,13 +14,9 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
-import vn.loitp.views.LToast;
 
 public class V3SetEntityIdActivity extends BaseActivity {
-    private ProgressDialog progressDialog;
     private EditText etInputEntityId;
     private Button btStart;
 
@@ -35,10 +30,6 @@ public class V3SetEntityIdActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //init progress dialog form util class
-        progressDialog = new LDialogUtil().getSpinnerProgressDialog(activity, "Please wait", "Loading...");
-
         //find views
         etInputEntityId = (EditText) findViewById(R.id.et_input_entity_id);
         btStart = (Button) findViewById(R.id.bt_start);
@@ -71,24 +62,12 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LDialogUtil.show(progressDialog);
-                UizaV3Util.getDetailEntity((BaseActivity) activity, etInputEntityId.getText().toString(), new UizaV3Util.Callback() {
-                    @Override
-                    public void onSuccess(Data data) {
-                        LDialogUtil.hide(progressDialog);
+                String entityId = etInputEntityId.getText().toString();
 
-                        UizaV3Util.setData(activity, data);
-                        final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
-                        startActivity(intent);
-                        LActivityUtil.tranIn(activity);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LDialogUtil.hide(progressDialog);
-                        LToast.show(activity, "getDataFromEntityIdVOD onFail " + e.getMessage());
-                    }
-                });
+                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
             }
         });
 

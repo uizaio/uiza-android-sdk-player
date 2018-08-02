@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
@@ -75,7 +76,6 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStr
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
@@ -88,6 +88,7 @@ import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRela
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.view.util.UizaInputV3;
 import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
@@ -202,10 +203,45 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.callback = callback;
     }
 
-    public void init() {
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
         LLog.d(TAG, "======================NEW SESSION======================");
+        LLog.d(TAG, "entityId " + entityId);
+        UizaDataV3.getInstance().setSettingPlayer(true);
+        isHasError = false;
+        UizaV3Util.getDetailEntity((BaseActivity) activity, entityId, new UizaV3Util.Callback() {
+            @Override
+            public void onSuccess(Data data) {
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(data));
 
-        //LLog.d(TAG, "init");
+                UizaV3Util.setData(activity, data);
+
+                UizaInputV3 uizaInputV3 = new UizaInputV3();
+                uizaInputV3.setData(data);
+
+                //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
+                uizaInputV3.setUrlIMAAd(urlIMAAd);
+
+                //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
+                uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+                UizaDataV3.getInstance().setUizaInput(uizaInputV3);
+
+                checkData();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "init onError " + e.toString());
+                LToast.show(activity, "init onError: " + e.getMessage());
+            }
+        });
+    }
+
+    public void init(@NonNull String entityId) {
+        init(entityId, null, null);
+    }
+
+    private void checkData() {
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaDataV3.getInstance().getUizaInputV3().getData().getId() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getId().isEmpty()) {
@@ -230,7 +266,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
         }
         //LLog.d(TAG, "isLivestream " + isLivestream);
-        
+
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
