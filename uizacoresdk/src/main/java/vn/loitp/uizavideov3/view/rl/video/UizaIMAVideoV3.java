@@ -104,7 +104,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;

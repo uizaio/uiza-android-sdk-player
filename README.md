@@ -17,12 +17,10 @@ Uiza is the complete toolkit for building a powerful video streaming application
 **Step 2. Add the dependency**
 
     defaultConfig {
-      ...
       multiDexEnabled  true
     }
-    ...
     dependencies {
-      compile 'com.github.uizaio:uiza-android-sdk-player:1.3.8'
+      compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
 # Init SDK
@@ -50,7 +48,6 @@ Uiza is the complete toolkit for building a powerful video streaming application
 **Step1: You must extend your activity/fragment like this**
 
     public class YourActivity extends BaseActivity{
-    ...
     }
 
 or
@@ -72,6 +69,7 @@ or
             LLog.e(TAG, "checkToken onFail " + e.getMessage());
         }
     });
+  Other API can be used with the same function above.
 
 **API doc**
 [APIDOC](https://docs.uiza.io/#introduction)
@@ -110,12 +108,17 @@ Manifest
 In onCreate()
 
 
-    UizaIMAVideoV3 uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-    Data data = {call API to get Data}
-    UizaInputV3 uizaInputV3 = new UizaInputV3();
-    uizaInputV3.setData(data);
-    UizaDataV3.getInstance().setUizaInput(uizaInputV3, false);
-    uizaIMAVideoV3.init(this);
+
+        UizaIMAVideoV3 uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+        uizaIMAVideoV3.post(new Runnable() {
+        @Override
+      public void run() {
+            uizaIMAVideoV3.init("Input your entityId here");
+            uizaIMAVideoV3.setCallback(MainActivity .this);
+        }
+    });
+
+
 
 Dont forget to add in activity life cycle event:
 
@@ -171,7 +174,7 @@ Then put
         }
     }
 
-All listener
+All listener  (If you want to listen all events)
 
     private void setListener() {
         if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
