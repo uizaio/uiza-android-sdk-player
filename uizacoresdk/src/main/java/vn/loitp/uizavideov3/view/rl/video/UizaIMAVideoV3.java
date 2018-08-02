@@ -155,7 +155,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ResultGetLinkPlay mResultGetLinkPlay;
     private Data mData;//infortion of video (VOD or LIVE)
     private boolean isResultGetLinkPlayDone;
-    private boolean isResultGetDataDone;
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
@@ -210,13 +209,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isHasError = false;
         UizaV3Util.getDetailEntity((BaseActivity) activity, entityId, new UizaV3Util.Callback() {
             @Override
-            public void onSuccess(Data data) {
-                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(data));
+            public void onSuccess(Data d) {
+                mData = d;
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
 
-                UizaV3Util.setData(activity, data);
+                //save current data
+                LPref.setData(activity, mData, gson);
 
                 UizaInputV3 uizaInputV3 = new UizaInputV3();
-                uizaInputV3.setData(data);
+                uizaInputV3.setData(mData);
 
                 //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
                 uizaInputV3.setUrlIMAAd(urlIMAAd);
@@ -242,9 +243,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkData() {
+        LLog.d(TAG, "checkData");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
-        if (UizaDataV3.getInstance().getUizaInputV3().getData().getId() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getId().isEmpty()) {
+        if (UizaDataV3.getInstance().getEntityId() == null || UizaDataV3.getInstance().getEntityId().isEmpty()) {
+            LLog.d(TAG, "checkData getEntityId null or empty -> return");
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
@@ -258,14 +261,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             return;
         }
-        isLivestream = UizaDataV3.getInstance().getUizaInputV3().isLivestream();
+
+        isLivestream = UizaDataV3.getInstance().isLivestream();
+        LLog.d(TAG, "isLivestream " + isLivestream);
+
         if (LPref.getClickedPip(activity)) {
             LLog.d(TAG, "-> trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
             LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
         }
-        //LLog.d(TAG, "isLivestream " + isLivestream);
 
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -273,15 +278,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             mResultGetLinkPlay = null;
             mData = null;
             isResultGetLinkPlayDone = false;
-            isResultGetDataDone = false;
             resetCountTryLinkPlayError();
         }
         updateUI();
         setTitle();
         setVideoCover();
         getTokenStreaming();
-        getDetailEntity();
-
         LUIUtil.showProgressBar(progressBar);
 
         //track event eventype display
@@ -369,11 +371,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void checkToSetUp() {
         //LLog.d(TAG, "checkToSetUp");
-        if (isResultGetLinkPlayDone && isResultGetDataDone) {
+        if (isResultGetLinkPlayDone) {
             if (mResultGetLinkPlay != null && mData != null) {
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
-
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
                 for (Url url : urlList) {
@@ -424,7 +425,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-                initData(linkPlay, UizaDataV3.getInstance().getUizaInputV3().getUrlIMAAd(), UizaDataV3.getInstance().getUizaInputV3().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 initUizaPlayerManagerV3();
             } else {
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
@@ -452,7 +453,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            LImageUtil.load(activity, UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail(), ivVideoCover, R.drawable.uiza);
+            LImageUtil.load(activity, UizaDataV3.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getThumbnail(), ivVideoCover, R.drawable.uiza);
         }
     }
 
@@ -696,8 +697,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.progressCallback = progressCallback;
     }
 
-    private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        LLog.d(TAG, "-------------------->initData linkPlay " + linkPlay);
+    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -1110,7 +1111,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void setTitle() {
-        tvTitle.setText(UizaDataV3.getInstance().getUizaInputV3().getData().getName());
+        tvTitle.setText(UizaDataV3.getInstance().getEntityName());
     }
 
     private void updateUI() {
@@ -1322,12 +1323,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
-        sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getUizaInputV3().getData().getId());
+        sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getEntityId());
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
-                LLog.d(TAG, "getTokenStreaming onSuccess: " + gson.toJson(result));
+                //LLog.d(TAG, "getTokenStreaming onSuccess: " + gson.toJson(result));
                 if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
                     LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
                         @Override
@@ -1343,7 +1344,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                //LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + tokenStreaming);
                 getLinkPlay(tokenStreaming);
             }
 
@@ -1370,10 +1371,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-
         if (isLivestream) {
             String appId = UizaDataV3.getInstance().getAppId();
-            String channelName = UizaDataV3.getInstance().getUizaInputV3().getData().getChannelName();
+            String channelName = UizaDataV3.getInstance().getChannelName();
             //LLog.d(TAG, "===================================");
             //LLog.d(TAG, "========name: " + channelName);
             //LLog.d(TAG, "========appId: " + appId);
@@ -1389,10 +1389,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 @Override
                 public void onFail(Throwable e) {
-                    LLog.e(TAG, "getLinkPlayLive onFail " + e.getMessage());
                     if (e == null) {
+                        LLog.d(TAG, "getLinkPlay LIVE onFail");
                         return;
                     }
+                    LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
                     LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                         @Override
@@ -1409,7 +1410,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
         } else {
             String appId = UizaDataV3.getInstance().getAppId();
-            String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+            String entityId = UizaDataV3.getInstance().getEntityId();
             String typeContent = SendGetTokenStreaming.STREAM;
             //LLog.d(TAG, "===================================");
             //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
@@ -1427,10 +1428,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 @Override
                 public void onFail(Throwable e) {
-                    LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
                     if (e == null) {
+                        LLog.d(TAG, "getLinkPlay VOD onFail");
                         return;
                     }
+                    LLog.e(TAG, "getLinkPlay VOD onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
                     LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                         @Override
@@ -1446,37 +1448,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
         }
-    }
-
-    private void getDetailEntity() {
-        //LLog.d(TAG, "getDetailEntity");
-        //UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-        UizaV3Util.getDetailEntity((BaseActivity) activity, id, new UizaV3Util.Callback() {
-            @Override
-            public void onSuccess(Data data) {
-                LLog.d(TAG, "getDetailEntity onSuccess: " + gson.toJson(data));
-                mData = data;
-                isResultGetDataDone = true;
-                checkToSetUp();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LLog.e(TAG, "getDetailEntity " + e.toString());
-                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-                });
-            }
-        });
     }
 
     public interface Callback {
@@ -1636,7 +1607,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-                    String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+                    String id = UizaDataV3.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
@@ -1674,8 +1645,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-                    String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-                    String feedId = UizaDataV3.getInstance().getUizaInputV3().getData().getLastFeedId();
+                    String entityId = UizaDataV3.getInstance().getEntityId();
+                    String feedId = UizaDataV3.getInstance().getLastFeedId();
                     activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                         @Override
                         public void onSuccess(ResultTimeStartLive result) {

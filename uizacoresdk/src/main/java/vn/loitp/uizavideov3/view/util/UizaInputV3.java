@@ -13,13 +13,6 @@ public class UizaInputV3 {
     private String urlThumnailsPreviewSeekbar = "";
     private Data data;
 
-    public boolean isLivestream() {
-        if (data == null || data.getLastFeedId() == null || data.getLastFeedId().isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
     public String getUrlIMAAd() {
         return urlIMAAd;
     }
@@ -45,5 +38,12 @@ public class UizaInputV3 {
 
     public void setData(Data data) {
         this.data = data;
+    }
+
+    public boolean isLivestream() {
+        if (data == null || data.getLastFeedId() == null || data.getLastFeedId().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

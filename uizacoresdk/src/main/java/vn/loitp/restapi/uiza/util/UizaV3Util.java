@@ -127,9 +127,9 @@ public class UizaV3Util {
         });
     }
 
-    public static void setData(Activity activity, Data data) {
+    /*public static void setData(Activity activity, Data data) {
         LPref.setData(activity, data, new Gson());
-    }
+    }*/
 
     public static Data getData(Activity activity) {
         return LPref.getData(activity, new Gson());
