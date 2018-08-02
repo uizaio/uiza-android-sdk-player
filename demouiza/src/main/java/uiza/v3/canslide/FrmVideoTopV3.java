@@ -367,7 +367,8 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(FrmVideoTopV3.this);
+                uizaIMAVideoV3.init();
+                uizaIMAVideoV3.setCallback(FrmVideoTopV3.this);
             }
         });
     }

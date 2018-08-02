@@ -291,7 +291,8 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(V3CannotSlidePlayer.this);
+                uizaIMAVideoV3.init();
+                uizaIMAVideoV3.setCallback(V3CannotSlidePlayer.this);
             }
         });
     }

@@ -198,7 +198,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void init(Callback callback) {
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public void init() {
         LLog.d(TAG, "======================NEW SESSION======================");
 
         //LLog.d(TAG, "init");
@@ -226,7 +230,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
         }
         //LLog.d(TAG, "isLivestream " + isLivestream);
-        this.callback = callback;
+        
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
