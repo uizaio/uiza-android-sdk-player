@@ -12,7 +12,8 @@ Uiza is the complete toolkit for building a powerful video streaming application
     allprojects {
           repositories {
              maven { url 'https://jitpack.io' }
-          }   }
+          }
+    }
 **Step 2. Add the dependency**
 
     defaultConfig {
@@ -110,11 +111,11 @@ In onCreate()
 
         UizaIMAVideoV3 uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.post(new Runnable() {
-        @Override
-      public void run() {
-            uizaIMAVideoV3.init("Input your entityId here");
-            uizaIMAVideoV3.setCallback(MainActivity .this);
-        }
+		    @Override
+		    public void run() {
+	            uizaIMAVideoV3.init("Input your entityId here");
+	            uizaIMAVideoV3.setCallback(MainActivity .this);
+	        }
     });
 
 
