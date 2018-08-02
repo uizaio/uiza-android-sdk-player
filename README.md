@@ -11,7 +11,6 @@ Uiza is the complete toolkit for building a powerful video streaming application
 
     allprojects {
           repositories {
-             ...
              maven { url 'https://jitpack.io' }
           }   }
 **Step 2. Add the dependency**
