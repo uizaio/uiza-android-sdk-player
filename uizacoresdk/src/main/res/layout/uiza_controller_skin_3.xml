@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@drawable/background_player_controller"
     android:elevation="4dp"
     android:layoutDirection="ltr">
@@ -97,21 +98,6 @@
             android:src="@drawable/ic_share_black_48dp"
             android:tint="@color/White"
             android:visibility="visible" />
-
-        <!--<vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-            android:id="@id/exo_cast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_airplay"
-            android:tint="@color/White" />-->
-
-        <android.support.v7.app.MediaRouteButton
-            android:id="@+id/media_route_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
             android:id="@id/exo_picture_in_picture"
@@ -221,7 +207,7 @@
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_play"
+                android:id="@id/exo_play_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
@@ -231,7 +217,7 @@
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_pause"
+                android:id="@id/exo_pause_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"

@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
@@ -50,6 +51,25 @@ public class UizaDataV3 {
     private String mDomainAPITracking;
     private String mToken;
     private String mAppId;
+
+    private Casty casty;
+
+    public void setCasty(Casty casty) {
+        this.casty = casty;
+    }
+
+    public Casty getCasty() {
+        /*if (casty == null) {
+            //TODO bug if use mini controller
+            //casty = Casty.create(baseActivity).withMiniController();
+            casty = Casty.create(baseActivity);
+        }*/
+        if (casty == null) {
+            LLog.e(TAG, "getCasty null");
+            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UizaDataV3.getInstance().setCasty(Casty.create(this));' to your onStart() or onCreat()");
+        }
+        return casty;
+    }
 
     public void initSDK(String domainAPI, String token, String appId) {
         initSDK(domainAPI, token, appId, Constants.ENVIRONMENT_PROD);
@@ -132,6 +152,10 @@ public class UizaDataV3 {
         return isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
     }
 
+    public void setUizaInput(UizaInputV3 uizaInputV3) {
+        setUizaInput(uizaInputV3, false);
+    }
+
     public void setUizaInput(UizaInputV3 uizaInputV3, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         this.uizaInputV3 = uizaInputV3;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
@@ -147,6 +171,7 @@ public class UizaDataV3 {
                 break;
             }
         }
+        LLog.d(TAG, "setUizaInput existAt " + existAt);
         if (existAt != Constants.NOT_FOUND) {
             uizaInputV3List.remove(existAt);
         }
@@ -154,13 +179,71 @@ public class UizaDataV3 {
         if (uizaInputV3List.size() > 2) {
             uizaInputV3List.remove(0);
         }
-        /*if (Constants.IS_DEBUG) {
+        if (Constants.IS_DEBUG) {
             String x = "";
-            for (UizaInput u : uizaInputV3List) {
-                x += " > " + u.getEntityName();
+            for (UizaInputV3 u : uizaInputV3List) {
+                x += " > " + u.getData().getEntityName();
             }
-        }*/
+            LLog.d(TAG, "setUizaInput " + x);
+        }
     }
+
+    public boolean isLivestream() {
+        if (uizaInputV3 == null) {
+            return false;
+        }
+        return uizaInputV3.isLivestream();
+    }
+
+    public String getEntityId() {
+        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+            return null;
+        }
+        return uizaInputV3.getData().getId();
+    }
+
+    public String getEntityName() {
+        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+            return null;
+        }
+        return uizaInputV3.getData().getEntityName();
+    }
+
+    public String getThumbnail() {
+        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+            return null;
+        }
+        return uizaInputV3.getData().getThumbnail();
+    }
+
+    public String getChannelName() {
+        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+            return null;
+        }
+        return uizaInputV3.getData().getChannelName();
+    }
+
+    public String getUrlIMAAd() {
+        if (uizaInputV3 == null) {
+            return null;
+        }
+        return uizaInputV3.getUrlIMAAd();
+    }
+
+    public String getUrlThumnailsPreviewSeekbar() {
+        if (uizaInputV3 == null) {
+            return null;
+        }
+        return uizaInputV3.getUrlThumnailsPreviewSeekbar();
+    }
+
+    public String getLastFeedId(){
+        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+            return null;
+        }
+        return uizaInputV3.getData().getLastFeedId();
+    }
+
 
     /*public void removeLastUizaInput() {
         if (uizaInputV3List != null && !uizaInputV3List.isEmpty()) {

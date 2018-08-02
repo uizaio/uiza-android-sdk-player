@@ -7,11 +7,14 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,7 +75,8 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenS
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -84,6 +88,7 @@ import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRela
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.view.util.UizaInputV3;
 import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
@@ -95,14 +100,16 @@ import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
+    private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
+
+    private LinearLayout llTop;
     //play controller
     private RelativeLayout llMid;
     private View llMidSub;
@@ -145,15 +152,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int firstBrightness = Constants.NOT_FOUND;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
-    private ResultRetrieveAnEntity mResultRetrieveAnEntity;
+    private Data mData;//infortion of video (VOD or LIVE)
     private boolean isResultGetLinkPlayDone;
-    private boolean isResultRetrieveAnEntityDone;
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
     //chromecast https://github.com/DroidsOnRoids/Casty
-    private Casty casty;
     private MediaRouteButton mediaRouteButton;
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
@@ -192,11 +197,60 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void init(Callback callback) {
-        //LLog.d(TAG, "init");
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        LLog.d(TAG, "======================NEW SESSION======================");
+        LLog.d(TAG, "entityId " + entityId);
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
-        if (UizaDataV3.getInstance().getUizaInputV3().getData().getId() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getId().isEmpty()) {
+        UizaV3Util.getDetailEntity((BaseActivity) activity, entityId, new UizaV3Util.Callback() {
+            @Override
+            public void onSuccess(Data d) {
+                mData = d;
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
+
+                //save current data
+                LPref.setData(activity, mData, gson);
+
+                UizaInputV3 uizaInputV3 = new UizaInputV3();
+                uizaInputV3.setData(mData);
+
+                //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
+                uizaInputV3.setUrlIMAAd(urlIMAAd);
+
+                //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
+                uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+
+                UizaDataV3.getInstance().setUizaInput(uizaInputV3);
+
+                checkData();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "init onError " + e.toString());
+                LToast.show(activity, "init onError: " + e.getMessage());
+            }
+        });
+    }
+
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
+        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false);
+    }
+
+    public void init(@NonNull String entityId) {
+        init(entityId, null, null, false);
+    }
+
+    private void checkData() {
+        LLog.d(TAG, "checkData");
+        UizaDataV3.getInstance().setSettingPlayer(true);
+        isHasError = false;
+        if (UizaDataV3.getInstance().getEntityId() == null || UizaDataV3.getInstance().getEntityId().isEmpty()) {
+            LLog.d(TAG, "checkData getEntityId null or empty -> return");
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
@@ -210,30 +264,28 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             return;
         }
-        isLivestream = UizaDataV3.getInstance().getUizaInputV3().isLivestream();
+
+        isLivestream = UizaDataV3.getInstance().isLivestream();
+        LLog.d(TAG, "isLivestream " + isLivestream);
+
         if (LPref.getClickedPip(activity)) {
             LLog.d(TAG, "-> trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
             LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
         }
-        //LLog.d(TAG, "isLivestream " + isLivestream);
-        this.callback = callback;
+
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
             mResultGetLinkPlay = null;
-            mResultRetrieveAnEntity = null;
             isResultGetLinkPlayDone = false;
-            isResultRetrieveAnEntityDone = false;
             resetCountTryLinkPlayError();
         }
         updateUI();
         setTitle();
         setVideoCover();
         getTokenStreaming();
-        getDetailEntity();
-
         LUIUtil.showProgressBar(progressBar);
 
         //track event eventype display
@@ -313,7 +365,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (callback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
                     callback.isInitResult(false, null, null);
-
                     //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
@@ -321,12 +372,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUp() {
-        //LLog.d(TAG, "checkToSetUp");
-        if (isResultGetLinkPlayDone && isResultRetrieveAnEntityDone) {
-            if (mResultGetLinkPlay != null && mResultRetrieveAnEntity != null) {
-                //LLog.d(TAG, "checkToSetUp if");
+        LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
+        if (isResultGetLinkPlayDone) {
+            if (mResultGetLinkPlay != null && mData != null) {
+                LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
-
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
                 for (Url url : urlList) {
@@ -377,9 +427,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-                initData(linkPlay, UizaDataV3.getInstance().getUizaInputV3().getUrlIMAAd(), UizaDataV3.getInstance().getUizaInputV3().getUrlThumnailsPreviewSeekbar(), subtitleList);
-                onResume();
+                initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                initUizaPlayerManagerV3();
             } else {
+                LLog.d(TAG, "checkToSetUp else");
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -405,7 +456,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            LImageUtil.load(activity, UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail(), ivVideoCover, R.drawable.uiza);
+            LImageUtil.load(activity, UizaDataV3.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getThumbnail(), ivVideoCover, R.drawable.uiza);
         }
     }
 
@@ -451,10 +502,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
 
-        //TODO bug if use mini controller
-        //casty = Casty.create(activity).withMiniController();
-        casty = Casty.create(activity);
-
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
         addPlayerView();
@@ -465,7 +512,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginRlLiveInfo();
 
         //setup chromecast
-        mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        //mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
+        mediaRouteButton = new MediaRouteButton(activity);
+        llTop.addView(mediaRouteButton);
         setUpMediaRouteButton();
     }
 
@@ -529,6 +578,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         tvMsg = (TextView) findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
+        llTop = (LinearLayout) findViewById(R.id.ll_top);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         llMidSub = (View) findViewById(R.id.ll_mid_sub);
         progressBar = (ProgressBar) findViewById(R.id.pb);
@@ -546,8 +596,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
-        exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
-        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+        exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause_uiza);
+        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);
+        exoPlay.setVisibility(GONE);
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
@@ -594,17 +645,53 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoHearing.setOnClickListener(this);
         exoPictureInPicture.setOnClickListener(this);
         exoShare.setOnClickListener(this);
+        exoFfwd.setOnClickListener(this);
+        exoRew.setOnClickListener(this);
+        exoPlay.setOnClickListener(this);
+        exoPause.setOnClickListener(this);
 
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
 
-        rlChromeCast = (RelativeLayout) playerView.findViewById(R.id.rl_chrome_cast);
-        rlChromeCast.setOnClickListener(this);
+        addChromecastLayer();
+    }
 
-        ibsCast = (ImageButtonWithSize) playerView.findViewById(R.id.ibs_cast);
+    //tự tạo layout chromecast và background đen
+    private void addChromecastLayer() {
+        rlChromeCast = new RelativeLayout(activity);
+        RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rlChromeCast.setLayoutParams(rlChromeCastParams);
+        rlChromeCast.setVisibility(GONE);
+        //rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.black_65));
+        rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
+
+        ibsCast = new ImageButtonWithSize(activity);
+        ibsCast.setBackgroundColor(Color.TRANSPARENT);
+        ibsCast.setImageResource(R.drawable.cast);
+        RelativeLayout.LayoutParams ibsCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ibsCastParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        ibsCast.setLayoutParams(ibsCastParams);
         ibsCast.setRatioPort(5);
         ibsCast.setRatioLand(5);
+        ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ibsCast.setColorFilter(Color.WHITE);
+        rlChromeCast.addView(ibsCast);
+        rlChromeCast.setOnClickListener(this);
+
+        if (llTop != null) {
+            if (llTop.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
+            }
+        } else if (llMid != null) {
+            if (llMid.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) llMid.getParent()).addView(rlChromeCast, 0);
+            }
+        } else if (rlLiveInfo != null) {
+            if (rlLiveInfo.getParent() instanceof ViewGroup) {
+                ((RelativeLayout) rlLiveInfo.getParent()).addView(rlChromeCast, 0);
+            }
+        }
     }
 
     private ProgressCallback progressCallback;
@@ -613,8 +700,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.progressCallback = progressCallback;
     }
 
-    private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        //LLog.d(TAG, "initData linkPlay " + linkPlay);
+    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             previewTimeBarLayout.setEnabled(false);
@@ -746,7 +833,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (callback != null) {
-            callback.isInitResult(true, mResultGetLinkPlay, mResultRetrieveAnEntity);
+            callback.isInitResult(true, mResultGetLinkPlay, mData);
+        }
+
+        if (isCastingChromecast) {
+            LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
+            lastCurrentPosition = 0;
+            handleConnectedChromecast();
+            showController();
         }
 
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
@@ -762,7 +856,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
+    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar,
+                                   final int progressSeekbar) {
         verticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
@@ -789,10 +884,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LDialogUtil.clearAll();
         activityIsPausing = true;
         isCastingChromecast = false;
+        isCastPlayerPlayingFirst = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
     public void onResume() {
+        if (isCastingChromecast) {
+            LLog.d(TAG, "onResume isCastingChromecast true => return");
+            return;
+        }
+
         //LLog.d(TAG, "onResume");
         activityIsPausing = false;
         if (isExoShareClicked) {
@@ -802,13 +903,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.resumeVideo();
             }
         } else {
-            if (uizaPlayerManagerV3 != null) {
-                //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
-                uizaPlayerManagerV3.init();
-                if (isCalledFromConnectionEventBus) {
-                    uizaPlayerManagerV3.setRunnable();
-                    isCalledFromConnectionEventBus = false;
-                }
+            initUizaPlayerManagerV3();
+        }
+    }
+
+    private void initUizaPlayerManagerV3() {
+        if (uizaPlayerManagerV3 != null) {
+            //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
+            uizaPlayerManagerV3.init();
+            if (isCalledFromConnectionEventBus) {
+                uizaPlayerManagerV3.setRunnable();
+                isCalledFromConnectionEventBus = false;
             }
         }
     }
@@ -855,6 +960,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         //LLog.d(TAG, "onPreview progress " + progress);
+        if (isCastingChromecast) {
+            UizaDataV3.getInstance().getCasty().getPlayer().seek(progress);
+        }
     }
 
     private boolean isExoShareClicked;
@@ -880,10 +988,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             }
         } else if (v == exoVolume) {
-            if (uizaPlayerManagerV3 != null) {
-                isExoVolumeClicked = true;
-                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
-            }
+            handleClickBtVolume();
         } else if (v == exoSetting) {
             View view = UizaUtil.getBtVideo(debugRootView);
             if (view != null) {
@@ -931,10 +1036,40 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         } else if (v == rlChromeCast) {
-            LLog.d(TAG, "click rl_chrome_cast");
+            //dangerous to remove
+            LLog.d(TAG, "do nothing click rl_chrome_cast");
+        } else if (v == exoFfwd) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+            } else {
+                uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+            }
+        } else if (v == exoRew) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+            } else {
+                uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+            }
+        } else if (v == exoPause) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().pause();
+            } else {
+                uizaPlayerManagerV3.pauseVideo();
+            }
+            exoPause.setVisibility(GONE);
+            exoPlay.setVisibility(VISIBLE);
+        } else if (v == exoPlay) {
+            if (isCastingChromecast) {
+                UizaDataV3.getInstance().getCasty().getPlayer().play();
+            } else {
+                uizaPlayerManagerV3.resumeVideo();
+            }
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
         }
     }
 
+    //current screen is landscape or portrait
     private boolean isLandscape;
 
     @Override
@@ -980,7 +1115,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void setTitle() {
-        tvTitle.setText(UizaDataV3.getInstance().getUizaInputV3().getData().getName());
+        tvTitle.setText(UizaDataV3.getInstance().getEntityName());
     }
 
     private void updateUI() {
@@ -1020,7 +1155,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     //trick to gone view
-    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize, boolean isVisible, int res) {
+    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize,
+                                            boolean isVisible, int res) {
         if (imageButtonWithSize == null) {
             return;
         }
@@ -1192,7 +1328,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
-        sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getUizaInputV3().getData().getId());
+        sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getEntityId());
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
@@ -1213,7 +1349,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                //LLog.d(TAG, "tokenStreaming: " + tokenStreaming);
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + tokenStreaming);
                 getLinkPlay(tokenStreaming);
             }
 
@@ -1240,14 +1376,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-
         if (isLivestream) {
             String appId = UizaDataV3.getInstance().getAppId();
-            String channelName = UizaDataV3.getInstance().getUizaInputV3().getData().getChannelName();
+            String channelName = UizaDataV3.getInstance().getChannelName();
             //LLog.d(TAG, "===================================");
             //LLog.d(TAG, "========name: " + channelName);
             //LLog.d(TAG, "========appId: " + appId);
-            LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "===================================");
             activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
@@ -1259,10 +1394,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 @Override
                 public void onFail(Throwable e) {
-                    LLog.e(TAG, "getLinkPlayLive onFail " + e.getMessage());
                     if (e == null) {
+                        LLog.d(TAG, "getLinkPlay LIVE onFail");
                         return;
                     }
+                    LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
                     LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                         @Override
@@ -1279,7 +1415,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
         } else {
             String appId = UizaDataV3.getInstance().getAppId();
-            String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+            String entityId = UizaDataV3.getInstance().getEntityId();
             String typeContent = SendGetTokenStreaming.STREAM;
             //LLog.d(TAG, "===================================");
             //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
@@ -1289,7 +1425,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
-                    //LLog.d(TAG, "getLinkPlay onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
                     mResultGetLinkPlay = result;
                     isResultGetLinkPlayDone = true;
                     checkToSetUp();
@@ -1297,10 +1433,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 @Override
                 public void onFail(Throwable e) {
-                    LLog.e(TAG, "getLinkPlay onFail " + e.getMessage());
                     if (e == null) {
+                        LLog.d(TAG, "getLinkPlay VOD onFail");
                         return;
                     }
+                    LLog.e(TAG, "getLinkPlay VOD onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
                     LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                         @Override
@@ -1318,41 +1455,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void getDetailEntity() {
-        //LLog.d(TAG, "getDetailEntity");
-
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-        activity.subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
-            @Override
-            public void onSuccess(ResultRetrieveAnEntity result) {
-                //LLog.d(TAG, "retrieveAnEntity onSuccess: " + gson.toJson(result));
-                mResultRetrieveAnEntity = result;
-                isResultRetrieveAnEntityDone = true;
-                checkToSetUp();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "retrieveAnEntity onFail " + e.getMessage());
-                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.cannot_get_detail_entity), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(activity.getString(R.string.cannot_get_detail_entity)));
-                    }
-                });
-            }
-        });
-    }
-
     public interface Callback {
         //when video init done with result
-        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
         //user click an item in entity relation
         public void onClickListEntityRelation(Item item, int position);
@@ -1368,6 +1473,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //when uiimavideo had an error
         public void onError(Exception e);
+
     }
 
     private Callback callback;
@@ -1378,6 +1484,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onSuccess(Object tracking) {
                 //LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, "Track success! " + uizaTracking.getEntityName() + " : " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -1506,7 +1613,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-                    String id = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
+                    String id = UizaDataV3.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
@@ -1544,8 +1651,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-                    String entityId = UizaDataV3.getInstance().getUizaInputV3().getData().getId();
-                    String feedId = UizaDataV3.getInstance().getUizaInputV3().getData().getLastFeedId();
+                    String entityId = UizaDataV3.getInstance().getEntityId();
+                    String feedId = UizaDataV3.getInstance().getLastFeedId();
                     activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                         @Override
                         public void onSuccess(ResultTimeStartLive result) {
@@ -1589,22 +1696,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     /*START CHROMECAST*/
+    @UiThread
     private void setUpMediaRouteButton() {
-        casty.setUpMediaRouteButton(mediaRouteButton);
-        casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
+        UizaDataV3.getInstance().getCasty().setUpMediaRouteButton(mediaRouteButton);
+        UizaDataV3.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
-                LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
-                isCastingChromecast = true;
-                updateUIChromecast();
-                playChromecast();
+                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
+                lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+                handleConnectedChromecast();
             }
 
             @Override
             public void onDisconnected() {
-                LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
-                isCastingChromecast = false;
-                updateUIChromecast();
+                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
+                handleDisconnectedChromecast();
             }
         });
         /*casty.setOnCastSessionUpdatedListener(new Casty.OnCastSessionUpdatedListener() {
@@ -1618,20 +1724,40 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });*/
     }
 
+    private void handleConnectedChromecast() {
+        isCastingChromecast = true;
+        isCastPlayerPlayingFirst = false;
+        playChromecast();
+        updateUIChromecast();
+    }
+
+    private void handleDisconnectedChromecast() {
+        isCastingChromecast = false;
+        isCastPlayerPlayingFirst = false;
+        updateUIChromecast();
+    }
+
     private boolean isCastingChromecast;
 
+    public boolean isCastingChromecast() {
+        return isCastingChromecast;
+    }
+
+    //last current position lúc từ exoplayer switch sang cast player
+    private long lastCurrentPosition;
+
     private void playChromecast() {
-        if (mResultRetrieveAnEntity == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
+        if (mData == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
-        long currentPosition = uizaPlayerManagerV3.getCurrentPosition();
-        LLog.d(TAG, "playChromecast exo stop currentPosition: " + currentPosition);
+        LUIUtil.showProgressBar(progressBar);
+        LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mResultRetrieveAnEntity.getData().getDescription());
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, mResultRetrieveAnEntity.getData().getEntityName());
-        movieMetadata.addImage(new WebImage(Uri.parse(mResultRetrieveAnEntity.getData().getThumbnail())));
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mData.getDescription());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, mData.getEntityName());
+        movieMetadata.addImage(new WebImage(Uri.parse(mData.getThumbnail())));
 
         //TODO add subtile vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
@@ -1652,40 +1778,119 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 "en-US");
         mediaTrackList.add(mediaTrack);*/
 
+        long duration = uizaPlayerManagerV3.getPlayer().getDuration();
+        //LLog.d(TAG, "duration " + duration);
+        if (duration < 0) {
+            LLog.e(TAG, "invalid duration -> cannot play chromecast");
+            return;
+        }
+
         MediaInfo mediaInfo = new MediaInfo.Builder(
                 uizaPlayerManagerV3.getLinkPlay())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
                 .setMediaTracks(mediaTrackList)
-                .setStreamDuration(uizaPlayerManagerV3.getPlayer().getDuration())
+                .setStreamDuration(duration)
                 .build();
 
         //play chromecast with full screen control
-        //casty.getPlayer().loadMediaAndPlay(mediaInfo, true, currentPosition);
+        //UizaDataV3.getInstance().getCasty().getPlayer().loadMediaAndPlay(mediaInfo, true, lastCurrentPosition);
 
         //play chromecast without screen control
-        casty.getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, currentPosition);
-        casty.getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
+        UizaDataV3.getInstance().getCasty().getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
+
+        UizaDataV3.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
             @Override
             public void onProgressUpdated(long currentPosition, long duration) {
-                LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration);
+                //LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
+                if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
+                    //LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
+                    uizaPlayerManagerV3.hideProgress();
+                    //UizaDataV3.getInstance().getCasty().setVolume(0.99f);
+                    isCastPlayerPlayingFirst = true;
+                }
+
+                if (currentPosition > 0) {
+                    uizaPlayerManagerV3.seekTo(currentPosition);
+                    //previewTimeBar.setPosition(currentPosition);
+                }
             }
         }, 1000);
 
     }
+
+    private boolean isCastPlayerPlayingFirst;
+
     /*STOP CHROMECAST*/
 
+    /*khi click vào biểu tượng casting
+     * thì sẽ pause local player và bắt đầu loading lên cast player
+     * khi disconnet thì local player sẽ resume*/
     private void updateUIChromecast() {
         if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
             return;
         }
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
+            uizaPlayerManagerV3.setVolume(0f);
             rlChromeCast.setVisibility(VISIBLE);
+            exoSetting.setVisibility(GONE);
+            exoCc.setVisibility(GONE);
+            llMid.setVisibility(GONE);
+
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
+
+            exoVolume.setVisibility(GONE);
+
+            //casting player luôn play first với volume not mute
+            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            //UizaDataV3.getInstance().getCasty().setVolume(0.99);
+
+            //double volumeOfExoPlayer = uizaPlayerManagerV3.getVolume();
+            //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
+            //UizaDataV3.getInstance().getCasty().setVolume(volumeOfExoPlayer);
         } else {
             uizaPlayerManagerV3.resumeVideo();
+            uizaPlayerManagerV3.setVolume(0.99f);
             rlChromeCast.setVisibility(GONE);
+            exoSetting.setVisibility(VISIBLE);
+            exoCc.setVisibility(VISIBLE);
+            llMid.setVisibility(VISIBLE);
+
+            exoPlay.setVisibility(GONE);
+            exoPause.setVisibility(VISIBLE);
+
+            //TODO iplm volume mute on/off o cast player
+            exoVolume.setVisibility(VISIBLE);
+            //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
+            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            //uizaPlayerManagerV3.setVolume(0.99f);
+
+            /*double volumeOfCastPlayer = UizaDataV3.getInstance().getCasty().getVolume();
+            LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
+            uizaPlayerManagerV3.setVolume((float) volumeOfCastPlayer);*/
+        }
+    }
+
+    /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
+     * Ngược lại, sẽ handle volume on/off ở exo player*/
+    private void handleClickBtVolume() {
+        if (isCastingChromecast) {
+            LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
+            boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
+            if (isMute) {
+                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            } else {
+                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+            }
+        } else {
+            LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
+            if (uizaPlayerManagerV3 != null) {
+                isExoVolumeClicked = true;
+                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
+            }
         }
     }
 }

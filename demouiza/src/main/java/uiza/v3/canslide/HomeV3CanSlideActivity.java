@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v3.data.HomeDataV3;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
@@ -20,11 +21,11 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -33,6 +34,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         LPref.setAcitivityCanSlideIsRunning(activity, true);
 
@@ -44,7 +46,9 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onMinimized() {
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().hideController();
+                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    frmVideoTop.getUizaIMAVideoV3().hideController();
+                }
             }
 
             @Override
@@ -122,7 +126,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
         if (frmVideoTop != null || frmVideoBottom != null) {
             clearUIFrmBottom();
-            initFrmTop(data, false);
+            initFrmTop(data.getId(), false);
             draggablePanel.maximize();
             return;
         }
@@ -130,7 +134,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                initFrmTop(data, false);
+                initFrmTop(data.getId(), false);
             }
         });
         frmVideoBottom = new FrmVideoBottomV3();
@@ -142,7 +146,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                     public void onClickItemBottom(Item item, int position) {
                         LPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
-                        initFrmTop(data, true);
+                        initFrmTop(data.getId(), true);
                     }
 
                     @Override
@@ -169,7 +173,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
-            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
@@ -191,19 +195,19 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                         }
                     }
                 });
-                intFrmBottom(resultRetrieveAnEntity);
+                intFrmBottom(data);
             }
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
                 LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
-                initFrmTop(data, true);
+                initFrmTop(data.getId(), true);
             }
         });
     }
 
-    private void initFrmTop(Data data, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (!LPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
@@ -212,11 +216,11 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
 
-        frmVideoTop.setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        frmVideoTop.setupVideo(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
-    private void intFrmBottom(ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        frmVideoBottom.setup(resultRetrieveAnEntity);
+    private void intFrmBottom(Data data) {
+        frmVideoBottom.setup(data);
     }
 
     private void clearUIFrmBottom() {

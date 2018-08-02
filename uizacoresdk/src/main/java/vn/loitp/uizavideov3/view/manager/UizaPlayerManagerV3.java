@@ -481,6 +481,9 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     }
 
     public void hideProgress() {
+        if (uizaIMAVideoV3.isCastingChromecast()) {
+            return;
+        }
         LUIUtil.hideProgressBar(uizaIMAVideoV3.getProgressBar());
     }
 
@@ -672,7 +675,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
     private float currentVolume;
 
     public void toggleVolumeMute(ImageButton exoVolume) {
-        LLog.d(TAG, "toggleVolumeMute");
+        //LLog.d(TAG, "toggleVolumeMute");
         if (player == null || exoVolume == null) {
             //LLog.d(TAG, "toggleVolumeMute player == null || exoVolume == null -> return");
             return;
@@ -715,6 +718,23 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
         if (player != null) {
             player.seekTo(positionMs);
             //LLog.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>seekTo positionMs done");
+        }
+    }
+
+    //forward  10000mls
+    public void seekToForward(long forward) {
+        if (player.getCurrentPosition() + forward > player.getDuration()) {
+            player.seekTo(player.getDuration());
+        } else {
+            player.seekTo(player.getCurrentPosition() + forward);
+        }
+    }//next 10000mls
+
+    public void seekToBackward(long backward) {
+        if (player.getCurrentPosition() - backward > 0) {
+            player.seekTo(player.getCurrentPosition() - backward);
+        } else {
+            player.seekTo(0);
         }
     }
 

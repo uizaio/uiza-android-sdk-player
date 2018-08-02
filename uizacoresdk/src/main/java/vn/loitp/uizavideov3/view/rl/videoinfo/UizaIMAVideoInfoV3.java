@@ -1,9 +1,5 @@
 package vn.loitp.uizavideov3.view.rl.videoinfo;
 
-/**
- * Created by www.muathu@gmail.com on 12/24/2017.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -31,7 +27,6 @@ import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
@@ -155,18 +150,18 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void setup(ResultRetrieveAnEntity resultRetrieveAnEntity) {
+    public void setup(Data data) {
         LLog.d(TAG, "setup");
-        if (resultRetrieveAnEntity == null) {
+        if (data == null) {
             LLog.d(TAG, "setup resultRetrieveAnEntity == null");
             return;
         }
-        data = resultRetrieveAnEntity.getData();
-        if (data == null || data.getId() == null || data.getId() == null) {
+        this.data = data;
+        if (this.data == null || this.data.getId() == null || this.data.getId() == null) {
             LLog.d(TAG, "setup data is null");
-            data = LPref.getData(activity, gson);
+            this.data = LPref.getData(activity, gson);
         }
-        LLog.d(TAG, "setup " + gson.toJson(data));
+        LLog.d(TAG, "setup " + gson.toJson(this.data));
         updateUI();
     }
 

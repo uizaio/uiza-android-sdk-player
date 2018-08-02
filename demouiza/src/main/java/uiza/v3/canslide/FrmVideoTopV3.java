@@ -31,13 +31,11 @@ import java.util.List;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
@@ -54,7 +52,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     public interface FrmTopCallback {
-        public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity);
+        public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
         public void onClickListEntityRelation(Item item, int position);
     }
@@ -270,11 +268,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
             if (frmTopCallback != null) {
-                frmTopCallback.initDone(isInitSuccess, resultGetLinkPlay, resultRetrieveAnEntity);
+                frmTopCallback.initDone(isInitSuccess, resultGetLinkPlay, data);
             }
         } else {
             UizaInputV3 prevUizaInput = UizaDataV3.getInstance().getUizaInputPrev();
@@ -289,7 +287,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
             } else {
                 boolean isPlayPrev = UizaDataV3.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
                 if (isPlayPrev) {
-                    setupVideo(UizaDataV3.getInstance().getUizaInputV3().getData(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                    setupVideo(UizaDataV3.getInstance().getEntityId(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
                     ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                     LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
@@ -333,7 +331,16 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
         ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
-    public void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    public void setupVideo(final String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                uizaIMAVideoV3.setCallback(FrmVideoTopV3.this);
+            }
+        });
+    }
+    /*public void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (data == null) {
             return;
         }
@@ -367,8 +374,9 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(FrmVideoTopV3.this);
+                uizaIMAVideoV3.init();
+                uizaIMAVideoV3.setCallback(FrmVideoTopV3.this);
             }
         });
-    }
+    }*/
 }

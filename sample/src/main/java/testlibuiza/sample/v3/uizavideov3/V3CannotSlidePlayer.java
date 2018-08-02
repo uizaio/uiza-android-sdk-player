@@ -24,20 +24,18 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
-import vn.loitp.uizavideov3.view.util.UizaInputV3;
 import vn.loitp.views.LToast;
 
 /**
@@ -64,22 +62,27 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-        play();
+
+        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+        LLog.d(TAG, "entityId " + entityId);
+
+        play(entityId);
     }
 
-    private void play() {
-        Data data = LPref.getData(activity, LSApplication.getInstance().getGson());
-        if (data == null) {
-            LLog.e(TAG, "play error data null");
+    private void play(final String entityId) {
+        if (UizaDataV3.getInstance().isSettingPlayer()) {
             return;
         }
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-        setupVideo(data, urlIMAAd, urlThumnailsPreviewSeekbar, false);
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.init(entityId);
+                uizaIMAVideoV3.setCallback(V3CannotSlidePlayer.this);
+            }
+        });
     }
 
     @Override
@@ -272,30 +275,8 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         });
     }
 
-    private void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (data == null) {
-            return;
-        }
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
-            return;
-        }
-
-        UizaInputV3 uizaInputV3 = new UizaInputV3();
-        uizaInputV3.setData(data);
-        uizaInputV3.setUrlIMAAd(urlIMAAd);
-        uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-        UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-
-        uizaIMAVideoV3.post(new Runnable() {
-            @Override
-            public void run() {
-                uizaIMAVideoV3.init(V3CannotSlidePlayer.this);
-            }
-        });
-    }
-
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
+    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();

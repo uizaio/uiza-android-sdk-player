@@ -23,9 +23,12 @@ import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.IntroductoryOverlay;
+import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import java.io.IOException;
 
 import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
@@ -359,6 +362,59 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
         }
     }
 
+    //get volume ở cast player
+    public double getVolume() {
+        CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+        return newCastSession.getVolume();
+    }
+
+    //set volume ở cast player
+    public void setVolume(double volume) {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "setVolume " + volume);
+                newCastSession.setVolume(volume);
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException setVolume " + e.toString());
+        }
+    }
+
+    //bật volume ở cast player if mute
+    public void turnOnVolume() {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "turnOnVolume isMute -> setMute false");
+                newCastSession.setMute(false);
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException turnOnVolume " + e.toString());
+        }
+    }
+
+    //toggle mute volume in cast player
+    //return true if toggle on
+    //return false if toggle off or error
+    public boolean toggleMuteVolume() {
+        try {
+            CastSession newCastSession = CastContext.getSharedInstance(activity).getSessionManager().getCurrentCastSession();
+            if (newCastSession.isMute()) {
+                LLog.d(TAG, "toggleMuteVolume isMute -> setMute false");
+                newCastSession.setMute(false);
+                return false;
+            } else {
+                LLog.d(TAG, "toggleMuteVolume !isMute -> setMute true");
+                newCastSession.setMute(true);
+                return true;
+            }
+        } catch (IOException e) {
+            LLog.e(TAG, "IOException setMute " + e.toString());
+            return false;
+        }
+    }
+
     @Override
     public void onMediaLoaded() {
         startExpandedControlsActivity();
@@ -377,5 +433,12 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
 
     public interface OnCastSessionUpdatedListener {
         void onCastSessionUpdated(CastSession castSession);
+    }
+
+    public void disconnectChromecast(){
+        castSession.getRemoteMediaClient().stop(); // stop remote media
+        CastContext castContext = CastContext.getSharedInstance(activity);
+        SessionManager mSessionManager = castContext.getSessionManager();
+        mSessionManager.endCurrentSession(true);
     }
 }

@@ -1,6 +1,9 @@
 package vn.loitp.restapi.uiza.util;
 
+import android.app.Activity;
 import android.content.Context;
+
+import com.google.gson.Gson;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
@@ -122,5 +125,13 @@ public class UizaV3Util {
                 }
             }
         });
+    }
+
+    /*public static void setData(Activity activity, Data data) {
+        LPref.setData(activity, data, new Gson());
+    }*/
+
+    public static Data getData(Activity activity) {
+        return LPref.getData(activity, new Gson());
     }
 }

@@ -137,7 +137,7 @@ public class ImageButtonWithSize extends ImageButton {
 
     private void updateSizePortrait() {
         int sizePortrait = screenWPortrait / ratioPort;
-        LLog.d(TAG, "updateSizePortrait sizePortrait " + sizePortrait);
+        //LLog.d(TAG, "updateSizePortrait sizePortrait " + sizePortrait);
 
         this.getLayoutParams().width = sizePortrait;
         this.getLayoutParams().height = sizePortrait;
@@ -146,7 +146,7 @@ public class ImageButtonWithSize extends ImageButton {
 
     private void updateSizeLandscape() {
         int sizeLandscape = screenWLandscape / ratioLand;
-        LLog.d(TAG, "updateSizeLandscape sizeLandscape " + sizeLandscape);
+        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + sizeLandscape);
 
         this.getLayoutParams().width = sizeLandscape;
         this.getLayoutParams().height = sizeLandscape;

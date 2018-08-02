@@ -8,24 +8,6 @@
     android:elevation="4dp"
     android:layoutDirection="ltr">
 
-    <RelativeLayout
-        android:id="@+id/rl_chrome_cast"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/Black"
-        android:visibility="gone">
-
-        <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-            android:id="@+id/ibs_cast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/cast"
-            android:tint="@color/White" />
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@id/ll_top"
         android:layout_width="match_parent"
@@ -54,21 +36,6 @@
             android:singleLine="true"
             android:textColor="@color/White"
             android:textStyle="bold" />
-
-        <!--<vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-            android:id="@id/exo_cast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_airplay"
-            android:tint="@color/White" />-->
-
-        <android.support.v7.app.MediaRouteButton
-            android:id="@+id/media_route_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
             android:id="@id/exo_picture_in_picture"
@@ -239,12 +206,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/previewFrameLayout"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:max="800"
                         android:progressTint="@color/colorPrimary"
                         android:thumbTint="@color/colorPrimary" />
-
                 </com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout>
-
                 <!--<com.google.android.exoplayer2.ui.DefaultTimeBar
                     android:id="@id/exo_progress"
                     android:layout_width="match_parent"
@@ -295,7 +259,7 @@
                 android:tint="@color/White" />-->
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_play"
+                android:id="@id/exo_play_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
@@ -305,7 +269,7 @@
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_pause"
+                android:id="@id/exo_pause_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
