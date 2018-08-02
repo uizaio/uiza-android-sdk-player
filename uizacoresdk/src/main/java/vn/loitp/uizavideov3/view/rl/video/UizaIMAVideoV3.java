@@ -280,7 +280,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
             mResultGetLinkPlay = null;
-            //mData = null;
             isResultGetLinkPlayDone = false;
             resetCountTryLinkPlayError();
         }
