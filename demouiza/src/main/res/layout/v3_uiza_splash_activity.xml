@@ -119,6 +119,49 @@
                     android:textColor="@color/Black"
                     android:textColorHint="@color/Gray"
                     android:textSize="@dimen/txt_12" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:text="Choose your environment"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_18"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/rd_group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rd_env_dev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="false"
+                        android:text="DEV"
+                        android:textColor="@color/White" />
+
+                    <RadioButton
+                        android:id="@+id/rd_env_stag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="true"
+                        android:text="STAG"
+                        android:textColor="@color/White" />
+
+                    <RadioButton
+                        android:id="@+id/rd_env_prod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/White"
+                        android:checked="false"
+                        android:text="PROD"
+                        android:textColor="@color/White" />
+                </RadioGroup>
             </LinearLayout>
 
             <Button

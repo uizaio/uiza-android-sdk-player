@@ -10,27 +10,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 
 import uiza.R;
 import uiza.option.OptionActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId;
+
+    //workspace loitp
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
+
+    //workspace Yan
+    /*private final String DF_DOMAIN_API = "wworkspace-api.uiza.co";
+    private final String DF_TOKEN = "uap-30062fa1ee7f4ce4822c55f00c6dc130-fa14be2b";
+    private final String DF_APP_ID = "30062fa1ee7f4ce4822c55f00c6dc130";*/
+
     private EditText etApiDomain;
     private EditText etKey;
     private EditText etAppId;
     private Button btStart;
     private ProgressBar progressBar;
     private LinearLayout llInputInfo;
+
+    private int environment = Constants.ENVIRONMENT_STAG;//default
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +62,21 @@ public class SplashActivityV3 extends BaseActivity {
         etKey.setText(DF_TOKEN);
         etAppId.setText(DF_APP_ID);
         LUIUtil.setLastCursorEditText(etApiDomain);
+
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rd_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rd_env_dev) {
+                    environment = Constants.ENVIRONMENT_DEV;
+                } else if (checkedId == R.id.rd_env_stag) {
+                    environment = Constants.ENVIRONMENT_STAG;
+                } else if (checkedId == R.id.rd_env_prod) {
+                    environment = Constants.ENVIRONMENT_PROD;
+                }
+                LLog.d(TAG, "onCheckedChanged " + environment);
+            }
+        });
 
         etApiDomain.addTextChangedListener(new TextWatcher() {
             @Override
@@ -107,7 +134,7 @@ public class SplashActivityV3 extends BaseActivity {
                 String appId = etAppId.getText().toString().trim();
 
                 UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
+                UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
 
                 final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 if (intent != null) {

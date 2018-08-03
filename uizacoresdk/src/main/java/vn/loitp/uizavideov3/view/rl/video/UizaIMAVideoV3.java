@@ -163,6 +163,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
 
+    /**
+     * return player view
+     */
     public PlayerView getPlayerView() {
         return playerView;
     }
@@ -171,6 +174,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return debugTextView;
     }
 
+    /**
+     * return progress bar view
+     */
     public ProgressBar getProgressBar() {
         return progressBar;
     }
@@ -179,6 +185,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return previewTimeBarLayout;
     }
 
+    /**
+     * return thumnail imageview
+     */
     public ImageView getIvThumbnail() {
         return ivThumbnail;
     }
@@ -197,10 +206,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    /**
+     * set callback for uiza video
+     */
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
 
+    /**
+     * init player with entity id, ad, seekbar thumnail
+     */
     public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         LLog.d(TAG, "======================NEW SESSION======================");
         LLog.d(TAG, "entityId " + entityId);
@@ -224,7 +239,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
                 uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
-                UizaDataV3.getInstance().setUizaInput(uizaInputV3);
+                UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
                 checkData();
             }
@@ -237,10 +252,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });
     }
 
+    /**
+     * init player with entity id, ad, seekbar thumnail
+     */
     public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
         init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false);
     }
 
+    /**
+     * init player with entity id
+     */
     public void init(@NonNull String entityId) {
         init(entityId, null, null, false);
     }
@@ -1891,6 +1912,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 isExoVolumeClicked = true;
                 uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
             }
+        }
+    }
+
+    /**
+     * Hide the button back screen
+     */
+    public void hideBackScreen() {
+        if (exoBackScreen != null) {
+            exoBackScreen.setVisibility(GONE);
         }
     }
 }
