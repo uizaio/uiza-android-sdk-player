@@ -89,6 +89,8 @@ import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
+import vn.loitp.uizavideov3.view.dlg.playlistfolder.CallbackPlaylistFolder;
+import vn.loitp.uizavideov3.view.dlg.playlistfolder.UizaDialogPlaylistFolder;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaInputV3;
@@ -1086,8 +1088,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
         } else if (v == exoPlaylistFolder) {
-            //TODO
-            LToast.show(activity, "iplm this");
+            UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, new CallbackPlaylistFolder() {
+                @Override
+                public void onClickItem(Item item, int position) {
+                    LLog.d(TAG, "onClickItem " + gson.toJson(item));
+                }
+
+                @Override
+                public void onDismiss() {
+                }
+            });
+            UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
         } else if (v == exoHearing) {
             View view = UizaUtil.getBtAudio(debugRootView);
             if (view != null) {

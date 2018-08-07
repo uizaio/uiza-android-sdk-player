@@ -53,4 +53,5 @@
     <string name="cannot_get_list_relation">Lỗi không tải được danh sách entity liên quan</string>
     <string name="live">• LIVE</string>
     <string name="casty_introduction_text">Use this button to connect with Chromecast</string>
+    <string name="playlist">Playlist</string>
 </resources>
