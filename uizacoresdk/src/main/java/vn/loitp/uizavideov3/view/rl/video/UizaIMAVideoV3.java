@@ -1989,6 +1989,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void playPlaylistPosition(int position) {
         if (position < 0 || position > dataList.size() - 1) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
+            //TODO position is last of playlist
             return;
         }
         currentPositionOfDataList = position;
