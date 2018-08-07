@@ -15,8 +15,8 @@
         app:cardElevation="@dimen/w_3">
 
         <RelativeLayout
-            android:layout_width="200dp"
-            android:layout_height="113dp">
+            android:layout_width="@dimen/w_200"
+            android:layout_height="@dimen/w_113">
 
             <ImageView
                 android:id="@+id/iv_cover"
@@ -24,6 +24,11 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_player_controller" />
 
             <TextView
                 android:id="@+id/tv_duration"

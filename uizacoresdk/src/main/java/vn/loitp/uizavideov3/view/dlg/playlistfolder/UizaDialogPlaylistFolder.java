@@ -92,5 +92,6 @@ public class UizaDialogPlaylistFolder extends Dialog {
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
         LUIUtil.setPullLikeIOSHorizontal(recyclerView);
+        recyclerView.smoothScrollToPosition(currentPositionOfDataList);
     }
 }
