@@ -76,6 +76,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStr
 import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeStartLive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
@@ -277,6 +278,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      */
     public void initPlaylistFolder(String metadataId) {
         LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
+        getListAllEntity(metadataId);
     }
 
     private void checkData() {
@@ -320,7 +322,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setTitle();
         setVideoCover();
         getTokenStreaming();
-        LUIUtil.showProgressBar(progressBar);
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.showProgress();
+        }
 
         //track event eventype display
         if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
@@ -1764,7 +1768,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (mData == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
-        LUIUtil.showProgressBar(progressBar);
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.showProgress();
+        }
         LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
@@ -1916,4 +1922,80 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoBackScreen.setVisibility(GONE);
         }
     }
+
+    //START FOR PLAYLIST/FOLDER
+    private final int pfLimit = 50;
+    private int pfPage = 0;
+    private int pfTotalPage = Integer.MAX_VALUE;
+    private final String pfOrderBy = "createdAt";
+    private final String pfOrderType = "DESC";
+
+    private List<Data> dataList;
+
+    private void getListAllEntity(String metadataId) {
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.showProgress();
+        }
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
+            @Override
+            public void onSuccess(ResultListEntity result) {
+                //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
+                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                    return;
+                }
+                if (pfTotalPage == Integer.MAX_VALUE) {
+                    int totalItem = (int) result.getMetadata().getTotal();
+                    float ratio = (float) (totalItem / pfLimit);
+                    if (ratio == 0) {
+                        pfTotalPage = (int) ratio;
+                    } else if (ratio > 0) {
+                        pfTotalPage = (int) ratio + 1;
+                    } else {
+                        pfTotalPage = (int) ratio;
+                    }
+                }
+                LLog.d(TAG, "<<<getListAllEntity: " + pfPage + "/" + pfTotalPage);
+
+                dataList = result.getData();
+                if (dataList == null || dataList.isEmpty()) {
+                    LLog.e(TAG, "getListAllEntity success but noda");
+                    if (uizaCallback != null) {
+                        uizaCallback.onError(new Exception("getListAllEntity success but noda"));
+                    }
+                    return;
+                }
+                LLog.d(TAG, "list size: " + dataList.size());
+                playPlaylistPosition(0);
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.hideProgress();
+                }
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                if (uizaCallback != null) {
+                    uizaCallback.onError(new Exception("getListAllEntity failed: " + e.toString()));
+                }
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.hideProgress();
+                }
+            }
+        });
+    }
+
+    private void playPlaylistPosition(int position) {
+        if (position < 0 || position > dataList.size() - 1) {
+            LLog.e(TAG, "playPlaylistPosition error: incorrect position");
+            return;
+        }
+        Data data = dataList.get(position);
+        if (data == null || data.getId() == null || data.getId().isEmpty()) {
+            LLog.e(TAG, "playPlaylistPosition error: data null or cannot get id");
+            return;
+        }
+        init(dataList.get(position).getId());
+    }
+    //END FOR PLAYLIST/FOLDER
 }
