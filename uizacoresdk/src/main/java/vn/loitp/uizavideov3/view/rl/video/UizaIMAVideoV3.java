@@ -266,6 +266,20 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         init(entityId, null, null, false);
     }
 
+    /**
+     * TODO init player with any link play
+     */
+    /*public void initLinkPlay(String anyLinkPlay){
+
+    }*/
+
+    /**
+     * init player with metadatId (playlist/folder)
+     */
+    public void initPlaylistFolder(String metadataId){
+
+    }
+
     private void checkData() {
         LLog.d(TAG, "checkData");
         UizaDataV3.getInstance().setSettingPlayer(true);

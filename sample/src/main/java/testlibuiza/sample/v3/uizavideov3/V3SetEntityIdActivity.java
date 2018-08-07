@@ -24,8 +24,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-    private final String entityIdDefaultVOD = "61d4b1e2-95d9-418d-9e52-e1d798e869b4";
-    private final String entityIdDefaultLIVE = "765c8b46-28c6-49aa-ac60-3c3e665b4f25";
+    private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
+    private final String entityIdDefaultLIVE = "da3e6528-6a4a-4103-a24d-7518fb81e975";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
