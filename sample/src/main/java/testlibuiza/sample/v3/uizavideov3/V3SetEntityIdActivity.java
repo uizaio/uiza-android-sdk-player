@@ -17,80 +17,35 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class V3SetEntityIdActivity extends BaseActivity {
-    private EditText etInputEntityId;
-    private Button btStart;
-
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
     private final String entityIdDefaultLIVE = "da3e6528-6a4a-4103-a24d-7518fb81e975";
+    private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+    //for entity id
+    private EditText etInputEntityId;
+    private Button btStart;
+
+    //for metadata id
+    private EditText etInputMetadataId;
+    private Button btStartPf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //find views
+        initWorkspace();
+        findViews();
+        initUIEntity();
+        initUIPlaylistFolder();
+    }
+
+    private void findViews() {
         etInputEntityId = (EditText) findViewById(R.id.et_input_entity_id);
         btStart = (Button) findViewById(R.id.bt_start);
-
-        //set default value entity id
-        etInputEntityId.setText(entityIdDefaultVOD);
-        LUIUtil.setLastCursorEditText(etInputEntityId);
-
-        initWorkspace();
-
-        etInputEntityId.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s == null || s.toString().isEmpty()) {
-                    btStart.setEnabled(false);
-                } else {
-                    btStart.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        btStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entityId = etInputEntityId.getText().toString();
-
-                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
-                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
-                startActivity(intent);
-                LActivityUtil.tranIn(activity);
-            }
-        });
-
-        findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etInputEntityId.setText(entityIdDefaultVOD);
-                LUIUtil.setLastCursorEditText(etInputEntityId);
-            }
-        });
-        findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etInputEntityId.setText(entityIdDefaultLIVE);
-                LUIUtil.setLastCursorEditText(etInputEntityId);
-            }
-        });
-        findViewById(R.id.bt_clear).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etInputEntityId.setText("");
-            }
-        });
+        etInputMetadataId = (EditText) findViewById(R.id.et_input_metadata_id);
+        btStartPf = (Button) findViewById(R.id.bt_start_pf);
     }
 
     private void initWorkspace() {
@@ -118,5 +73,107 @@ public class V3SetEntityIdActivity extends BaseActivity {
     protected void onDestroy() {
         LDialogUtil.clearAll();
         super.onDestroy();
+    }
+
+    private void initUIEntity() {
+        //set default value entity id
+        etInputEntityId.setText(entityIdDefaultVOD);
+        LUIUtil.setLastCursorEditText(etInputEntityId);
+        etInputEntityId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s == null || s.toString().isEmpty()) {
+                    btStart.setEnabled(false);
+                } else {
+                    btStart.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        btStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String entityId = etInputEntityId.getText().toString();
+
+                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText(entityIdDefaultVOD);
+                LUIUtil.setLastCursorEditText(etInputEntityId);
+            }
+        });
+        findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText(entityIdDefaultLIVE);
+                LUIUtil.setLastCursorEditText(etInputEntityId);
+            }
+        });
+        findViewById(R.id.bt_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputEntityId.setText("");
+            }
+        });
+    }
+
+    private void initUIPlaylistFolder() {
+        //set default value entity id
+        etInputMetadataId.setText(metadataDefault0);
+        LUIUtil.setLastCursorEditText(etInputEntityId);
+        etInputMetadataId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s == null || s.toString().isEmpty()) {
+                    btStartPf.setEnabled(false);
+                } else {
+                    btStartPf.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        btStartPf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String metadataId = etInputMetadataId.getText().toString();
+                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_play_list_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputMetadataId.setText(metadataDefault0);
+                LUIUtil.setLastCursorEditText(etInputMetadataId);
+            }
+        });
+        findViewById(R.id.bt_clear_pf).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etInputMetadataId.setText("");
+            }
+        });
     }
 }

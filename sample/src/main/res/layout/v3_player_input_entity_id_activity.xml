@@ -23,7 +23,8 @@
                 android:id="@+id/tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter entity id" />
+                android:text="ENTITY"
+                android:textSize="@dimen/txt_30" />
 
             <EditText
                 android:id="@+id/et_input_entity_id"
@@ -77,6 +78,49 @@
             android:background="@color/White"
             android:padding="@dimen/padding_5">
 
+            <TextView
+                android:id="@+id/tv_pf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PLAYLIST/FOLDER"
+                android:textSize="@dimen/txt_30" />
+
+            <EditText
+                android:id="@+id/et_input_metadata_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_pf"
+                android:hint="Enter Metadata Id"
+                android:singleLine="true"
+                android:textColor="@color/Black"
+                android:textColorHint="@color/Gray"
+                android:textSize="@dimen/txt_14" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_input_metadata_id"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_play_list_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Playlist 0" />
+
+                <Button
+                    android:id="@+id/bt_clear_pf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CLEAR" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_start_pf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="START PLAYLIST/FOLDER" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

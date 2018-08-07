@@ -66,12 +66,16 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
 
-        //uizaIMAVideoV3.hideBackScreen();
-
+        //check if play entity
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         LLog.d(TAG, "entityId " + entityId);
-
-        play(entityId);
+        if (entityId != null) {
+            play(entityId);
+        } else {
+            //check if play playlist/folder
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+            LLog.d(TAG, "metadataId " + metadataId);
+        }
     }
 
     private void play(final String entityId) {
