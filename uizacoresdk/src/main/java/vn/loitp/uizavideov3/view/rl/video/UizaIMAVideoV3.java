@@ -1047,68 +1047,23 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else if (v == exoFullscreenIcon) {
             toggleScreenOritation();
         } else if (v == exoBackScreen) {
-            if (isLandscape) {
-                exoFullscreenIcon.performClick();
-            } else {
-                if (uizaCallback != null) {
-                    uizaCallback.onClickBack();
-                }
-            }
+            handleClickBackScreen();
         } else if (v == exoVolume) {
             handleClickBtVolume();
         } else if (v == exoSetting) {
-            View view = UizaUtil.getBtVideo(debugRootView);
-            if (view != null) {
-                UizaUtil.getBtVideo(debugRootView).performClick();
-            }
+            handleClickSetting();
         } else if (v == exoCc) {
-            if (uizaPlayerManagerV3.getSubtitleList() == null || uizaPlayerManagerV3.getSubtitleList().isEmpty()) {
-                UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
-                UizaUtil.showUizaDialog(activity, uizaDialogInfo);
-            } else {
-                View view = UizaUtil.getBtText(debugRootView);
-                if (view != null) {
-                    UizaUtil.getBtText(debugRootView).performClick();
-                }
-            }
+            handleClickCC();
         } else if (v == exoPlaylistRelation) {
-            UizaDialogListEntityRelationV3 uizaDialogListEntityRelation = new UizaDialogListEntityRelationV3(activity, isLandscape, new PlayListCallbackV3() {
-                @Override
-                public void onClickItem(Item item, int position) {
-                    //LLog.d(TAG, "onClickItem " + gson.toJson(item));
-                    if (uizaCallback != null) {
-                        uizaCallback.onClickListEntityRelation(item, position);
-                    }
-                }
-
-                @Override
-                public void onDismiss() {
-                    //do nothing
-                }
-            });
-            UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
+            handleClickPlaylistRelation();
         } else if (v == exoPlaylistFolder) {
-            UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
-                @Override
-                public void onClickItem(Data data, int position) {
-                    LLog.d(TAG, "onClickItem " + gson.toJson(data));
-                }
-
-                @Override
-                public void onDismiss() {
-                }
-            });
-            UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
+            handleClickPlaylistFolder();
         } else if (v == exoHearing) {
-            View view = UizaUtil.getBtAudio(debugRootView);
-            if (view != null) {
-                UizaUtil.getBtAudio(debugRootView).performClick();
-            }
+            handleClickHearing();
         } else if (v == exoPictureInPicture) {
-            clickPiP();
+            handleClickPictureInPicture();
         } else if (v == exoShare) {
-            LSocialUtil.share(activity, isLandscape);
-            isExoShareClicked = true;
+            handleClickShare();
         } else if (v.getParent() == debugRootView) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uizaPlayerManagerV3.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null && uizaPlayerManagerV3.getTrackSelectionHelper() != null) {
@@ -1365,19 +1320,19 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
     //end on seekbar change
 
-    private void clickPiP() {
-        //LLog.d(TAG, "clickPiP");
+    private void handleClickPictureInPicture() {
+        //LLog.d(TAG, "handleClickPictureInPicture");
         if (activity == null) {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
             //If the draw over permission is not available open the settings screen
             //to grant the permission.
-            //LLog.d(TAG, "clickPiP if");
+            //LLog.d(TAG, "handleClickPictureInPicture if");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
             activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
-            //LLog.d(TAG, "clickPiP else");
+            //LLog.d(TAG, "handleClickPictureInPicture else");
             initializePiP();
         }
     }
@@ -1938,26 +1893,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
-     * Ngược lại, sẽ handle volume on/off ở exo player*/
-    private void handleClickBtVolume() {
-        if (isCastingChromecast) {
-            //LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
-            boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
-            if (isMute) {
-                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
-            } else {
-                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
-            }
-        } else {
-            //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
-            if (uizaPlayerManagerV3 != null) {
-                isExoVolumeClicked = true;
-                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
-            }
-        }
-    }
-
     /**
      * Hide the button back screen
      */
@@ -2065,5 +2000,99 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void autoSwitchPreviousLinkVideo() {
         playPlaylistPosition(--currentPositionOfDataList);
     }
+
+    private void handleClickPlaylistFolder() {
+        UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
+            @Override
+            public void onClickItem(Data data, int position) {
+                //LLog.d(TAG, "UizaDialogPlaylistFolder onClickItem " + gson.toJson(data));
+                playPlaylistPosition(position);
+            }
+
+            @Override
+            public void onDismiss() {
+            }
+        });
+        UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
+    }
+
     //END FOR PLAYLIST/FOLDER
+    /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
+     * Ngược lại, sẽ handle volume on/off ở exo player*/
+    private void handleClickBtVolume() {
+        if (isCastingChromecast) {
+            //LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
+            boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
+            if (isMute) {
+                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+            } else {
+                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+            }
+        } else {
+            //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
+            if (uizaPlayerManagerV3 != null) {
+                isExoVolumeClicked = true;
+                uizaPlayerManagerV3.toggleVolumeMute(exoVolume);
+            }
+        }
+    }
+
+    private void handleClickBackScreen() {
+        if (isLandscape) {
+            exoFullscreenIcon.performClick();
+        } else {
+            if (uizaCallback != null) {
+                uizaCallback.onClickBack();
+            }
+        }
+    }
+
+    private void handleClickPlaylistRelation() {
+        UizaDialogListEntityRelationV3 uizaDialogListEntityRelation = new UizaDialogListEntityRelationV3(activity, isLandscape, new PlayListCallbackV3() {
+            @Override
+            public void onClickItem(Item item, int position) {
+                //LLog.d(TAG, "onClickItem " + gson.toJson(item));
+                if (uizaCallback != null) {
+                    uizaCallback.onClickListEntityRelation(item, position);
+                }
+            }
+
+            @Override
+            public void onDismiss() {
+                //do nothing
+            }
+        });
+        UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
+    }
+
+    private void handleClickSetting() {
+        View view = UizaUtil.getBtVideo(debugRootView);
+        if (view != null) {
+            UizaUtil.getBtVideo(debugRootView).performClick();
+        }
+    }
+
+    private void handleClickCC() {
+        if (uizaPlayerManagerV3.getSubtitleList() == null || uizaPlayerManagerV3.getSubtitleList().isEmpty()) {
+            UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
+            UizaUtil.showUizaDialog(activity, uizaDialogInfo);
+        } else {
+            View view = UizaUtil.getBtText(debugRootView);
+            if (view != null) {
+                UizaUtil.getBtText(debugRootView).performClick();
+            }
+        }
+    }
+
+    private void handleClickHearing(){
+        View view = UizaUtil.getBtAudio(debugRootView);
+        if (view != null) {
+            UizaUtil.getBtAudio(debugRootView).performClick();
+        }
+    }
+
+    private void handleClickShare(){
+        LSocialUtil.share(activity, isLandscape);
+        isExoShareClicked = true;
+    }
 }
