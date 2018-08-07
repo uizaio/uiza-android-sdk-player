@@ -134,6 +134,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ImageButtonWithSize exoSetting;
     private ImageButtonWithSize exoCc;
     private ImageButtonWithSize exoPlaylistRelation;//danh sach video co lien quan
+    private ImageButtonWithSize exoPlaylistFolder;//danh sach playlist folder
     private ImageButtonWithSize exoHearing;
     private ImageButtonWithSize exoPictureInPicture;
     private ImageButtonWithSize exoShare;
@@ -643,6 +644,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
         exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
         exoPlaylistRelation = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
+        exoPlaylistFolder = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_folder);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         //TODO exoHearing works fine, but QC dont want to show it, fuck QC team
@@ -679,6 +681,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoSetting.setOnClickListener(this);
         exoCc.setOnClickListener(this);
         exoPlaylistRelation.setOnClickListener(this);
+        exoPlaylistFolder.setOnClickListener(this);
         exoHearing.setOnClickListener(this);
         exoPictureInPicture.setOnClickListener(this);
         exoShare.setOnClickListener(this);
@@ -779,7 +782,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //set volume max in first play
         seekbarVolume.setMax(100);
         setProgressSeekbar(seekbarVolume, 99);
-        exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+        exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
@@ -1057,6 +1060,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
             UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
+        } else if (v == exoPlaylistFolder) {
+            //TODO
+            LToast.show(activity, "iplm this");
         } else if (v == exoHearing) {
             View view = UizaUtil.getBtAudio(debugRootView);
             if (view != null) {
@@ -1254,18 +1260,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 exoIvPreview.setVisibility(INVISIBLE);
             } else {
                 if (progress >= 66) {
-                    exoIvPreview.setImageResource(R.drawable.ic_volume_up_black_48dp);
+                    exoIvPreview.setImageResource(R.drawable.baseline_volume_up_white_48);
                 } else if (progress >= 33) {
-                    exoIvPreview.setImageResource(R.drawable.ic_volume_down_black_48dp);
+                    exoIvPreview.setImageResource(R.drawable.baseline_volume_down_white_48);
                 } else {
-                    exoIvPreview.setImageResource(R.drawable.ic_volume_mute_black_48dp);
+                    exoIvPreview.setImageResource(R.drawable.baseline_volume_mute_white_48);
                 }
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             if (progress == 0) {
-                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+                exoVolume.setImageResource(R.drawable.baseline_volume_off_white_48);
             } else {
-                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
             }
             uizaPlayerManagerV3.setVolume(((float) progress / 100));
             if (isExoVolumeClicked) {
@@ -1903,7 +1909,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isMute) {
                 exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
             } else {
-                exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
+                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
             }
         } else {
             //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");

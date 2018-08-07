@@ -671,12 +671,10 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         if (player.getVolume() == 0f) {
             //LLog.d(TAG, "toggleVolumeMute off -> on");
             uizaIMAVideoV3.setProgressVolumeSeekbar((int) (currentVolume * 100));
-            //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
         } else {
             //LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
             uizaIMAVideoV3.setProgressVolumeSeekbar(0);
-            //exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
         }
         //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
         //LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());

@@ -42,7 +42,7 @@ import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIB
 import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
- * Created by LENOVO on 4/11/2018.
+ * Created by loitp on 4/11/2018.
  */
 
 public class UizaUtil {
@@ -50,9 +50,9 @@ public class UizaUtil {
 
     public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
         if (isFullScreen) {
-            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_exit_black_48dp);
+            imageButton.setImageResource(loitp.core.R.drawable.baseline_fullscreen_exit_white_48);
         } else {
-            imageButton.setImageResource(loitp.core.R.drawable.ic_fullscreen_black_48dp);
+            imageButton.setImageResource(R.drawable.baseline_fullscreen_white_48);
         }
     }
 

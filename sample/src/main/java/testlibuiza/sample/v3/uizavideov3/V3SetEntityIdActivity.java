@@ -17,7 +17,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class V3SetEntityIdActivity extends BaseActivity {
-    private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private final String currentPlayerId = Constants.PLAYER_ID_SKIN_0;
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
