@@ -1088,10 +1088,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });
             UizaUtil.showUizaDialog(activity, uizaDialogListEntityRelation);
         } else if (v == exoPlaylistFolder) {
-            UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, new CallbackPlaylistFolder() {
+            UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
                 @Override
-                public void onClickItem(Item item, int position) {
-                    LLog.d(TAG, "onClickItem " + gson.toJson(item));
+                public void onClickItem(Data data, int position) {
+                    LLog.d(TAG, "onClickItem " + gson.toJson(data));
                 }
 
                 @Override

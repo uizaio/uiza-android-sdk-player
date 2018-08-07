@@ -4,6 +4,7 @@ package vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPullInfo;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ExtendMetadata;
 
@@ -265,6 +266,9 @@ public class Data {
     }
 
     public String getThumbnail() {
+        if (thumbnail == null) {
+            return Constants.URL_IMG_THUMBNAIL;
+        }
         return thumbnail;
     }
 

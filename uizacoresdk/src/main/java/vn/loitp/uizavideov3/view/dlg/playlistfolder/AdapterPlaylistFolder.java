@@ -22,12 +22,13 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
-    private List<Item> itemList;
+    private List<Data> dataList;
+    private int currentPositionOfDataList;
     private Context context;
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
@@ -54,10 +55,11 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         }
     }
 
-    public AdapterPlaylistFolder(Context context, List<Item> itemList, CallbackPlaylistFolder callbackPlaylistFolder) {
-        this.itemList = itemList;
-        this.callbackPlaylistFolder = callbackPlaylistFolder;
+    public AdapterPlaylistFolder(Context context, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         this.context = context;
+        this.dataList = dataList;
+        this.currentPositionOfDataList = currentPositionOfDataList;
+        this.callbackPlaylistFolder = callbackPlaylistFolder;
     }
 
     @Override
@@ -68,29 +70,29 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public void onBindViewHolder(PlayListHolder playListHolder, final int position) {
-        final Item item = itemList.get(position);
+        final Data data = dataList.get(position);
         //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
 
         //playListHolder.tvDuration.setText(item.getDuration());
-        UizaUtil.setDuration(playListHolder.tvDuration, item.getDuration());
+        UizaUtil.setDuration(playListHolder.tvDuration, data.getDuration());
         //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
-        playListHolder.tvName.setText(item.getName());
+        playListHolder.tvName.setText(data.getName());
 
-        //TODO
+        //TODO correct this
         playListHolder.tvYear.setText("2018");
-        UizaUtil.setDuration(playListHolder.tvDuration2, item.getDuration());
+        UizaUtil.setDuration(playListHolder.tvDuration2, data.getDuration());
 
-        //TODO
-        playListHolder.tvRate.setText("18+");
-        if (item.getShortDescription() == null || item.getShortDescription().isEmpty()) {
-            if (item.getDescription() == null || item.getDescription().isEmpty()) {
+        //TODO correct this
+        playListHolder.tvRate.setText("12+");
+        if (data.getShortDescription() == null || data.getShortDescription().isEmpty()) {
+            if (data.getDescription() == null || data.getDescription().isEmpty()) {
                 playListHolder.tvDescription.setVisibility(View.GONE);
             } else {
-                playListHolder.tvDescription.setText(item.getDescription());
+                playListHolder.tvDescription.setText(data.getDescription());
                 playListHolder.tvDescription.setVisibility(View.VISIBLE);
             }
         } else {
-            playListHolder.tvDescription.setText(item.getShortDescription());
+            playListHolder.tvDescription.setText(data.getShortDescription());
         }
 
         //RelativeLayout.LayoutParams rootLayoutParams = new RelativeLayout.LayoutParams((int) (sizeWRoot / 3.5), sizeHRoot);
@@ -99,14 +101,14 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (sizeWRoot / 3.5 / 2));
         //playListHolder.ivCover.setLayoutParams(layoutParams);
 
-        String thumbnail;
-        if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
+        /*String thumbnail;
+        if (data.getThumbnail() == null || data.getThumbnail().isEmpty()) {
             thumbnail = Constants.URL_IMG_THUMBNAIL;
         } else {
-            thumbnail = Constants.PREFIXS_SHORT + item.getThumbnail();
-        }
+            thumbnail = Constants.PREFIXS_SHORT + data.getThumbnail();
+        }*/
         //LLog.d(TAG, "getThumbnail " + thumbnail);
-        LImageUtil.load((Activity) context, thumbnail, playListHolder.ivCover);
+        LImageUtil.load((Activity) context, data.getThumbnail(), playListHolder.ivCover);
 
         playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +123,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
                     @Override
                     public void onEnd() {
                         if (callbackPlaylistFolder != null) {
-                            callbackPlaylistFolder.onClickItem(item, position);
+                            callbackPlaylistFolder.onClickItem(data, position);
                         }
                     }
 
@@ -141,6 +143,6 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public int getItemCount() {
-        return itemList == null ? 0 : itemList.size();
+        return dataList == null ? 0 : dataList.size();
     }
 }
