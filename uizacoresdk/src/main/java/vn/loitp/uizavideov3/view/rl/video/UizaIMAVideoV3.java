@@ -1562,7 +1562,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uizaPlayerManagerV3 != null) {
                     LDialogUtil.clearAll();
