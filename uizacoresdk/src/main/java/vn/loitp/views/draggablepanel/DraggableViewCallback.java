@@ -21,7 +21,7 @@ import android.view.View;
 import vn.loitp.core.utilities.LLog;
 
 /**
- * ViewDragHelper.Callback implementation used to work with DraggableView to perform the scale
+ * ViewDragHelper.UizaCallback implementation used to work with DraggableView to perform the scale
  * effect and other animation when the view is released.
  *
  * @author Pedro Vicente Gómez Sánchez.

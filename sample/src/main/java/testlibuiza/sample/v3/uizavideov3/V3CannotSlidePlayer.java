@@ -34,6 +34,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.LToast;
@@ -42,7 +43,7 @@ import vn.loitp.views.LToast;
  * Created by loitp on 7/16/2018.
  */
 
-public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.Callback {
+public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
     @Override
@@ -75,6 +76,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
             //check if play playlist/folder
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
             LLog.d(TAG, "metadataId " + metadataId);
+            playPlaylist(metadataId);
         }
     }
 
@@ -86,7 +88,20 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
             @Override
             public void run() {
                 uizaIMAVideoV3.init(entityId);
-                uizaIMAVideoV3.setCallback(V3CannotSlidePlayer.this);
+                uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
+            }
+        });
+    }
+
+    private void playPlaylist(final String metadataId) {
+        if (UizaDataV3.getInstance().isSettingPlayer()) {
+            return;
+        }
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.initPlaylistFolder(metadataId);
+                uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
             }
         });
     }

@@ -38,12 +38,13 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaInputV3;
 import vn.loitp.views.LToast;
 
-public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callback {
+public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
@@ -336,7 +337,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
             @Override
             public void run() {
                 uizaIMAVideoV3.init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-                uizaIMAVideoV3.setCallback(FrmVideoTopV3.this);
+                uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
             }
         });
     }
@@ -375,7 +376,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaIMAVideoV3.Callba
             @Override
             public void run() {
                 uizaIMAVideoV3.init();
-                uizaIMAVideoV3.setCallback(FrmVideoTopV3.this);
+                uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
             }
         });
     }*/

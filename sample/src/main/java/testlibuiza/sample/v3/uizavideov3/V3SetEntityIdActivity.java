@@ -22,7 +22,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    private final String entityIdDefaultLIVE = "da3e6528-6a4a-4103-a24d-7518fb81e975";
+    private final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
     private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
     //for entity id
     private EditText etInputEntityId;

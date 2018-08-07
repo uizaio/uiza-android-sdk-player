@@ -31,7 +31,6 @@ import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideov3.view.manager.FloatUizaPlayerManagerV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;

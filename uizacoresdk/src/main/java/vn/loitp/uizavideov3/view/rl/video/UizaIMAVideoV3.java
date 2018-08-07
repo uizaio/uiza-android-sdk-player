@@ -86,7 +86,6 @@ import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
-import vn.loitp.uizavideov3.view.manager.UizaPlayerManagerV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaInputV3;
 import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
@@ -201,16 +200,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         LLog.e(TAG, "handleError " + e.toString());
         isHasError = true;
-        if (callback != null) {
-            callback.onError(e);
+        if (uizaCallback != null) {
+            uizaCallback.onError(e);
         }
     }
 
     /**
-     * set callback for uiza video
+     * set uizaCallback for uiza video
      */
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    public void setUizaCallback(UizaCallback uizaCallback) {
+        this.uizaCallback = uizaCallback;
     }
 
     /**
@@ -276,8 +275,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with metadatId (playlist/folder)
      */
-    public void initPlaylistFolder(String metadataId){
-
+    public void initPlaylistFolder(String metadataId) {
+        LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
     }
 
     private void checkData() {
@@ -350,7 +349,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private int countTryLinkPlayError = 0;
 
-    public void tryNextLinkPlay() {
+    protected void tryNextLinkPlay() {
         if (isLivestream) {
             //try to play 3 times
             if (countTryLinkPlayError >= 3) {
@@ -386,21 +385,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onClick1() {
                 LLog.e(TAG, "handleErrorNoData onClick1");
-                if (callback != null) {
+                if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    callback.isInitResult(false, null, null);
+                    uizaCallback.isInitResult(false, null, null);
 
-                    //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
+                    //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
 
             @Override
             public void onCancel() {
                 LLog.e(TAG, "handleErrorNoData onCancel");
-                if (callback != null) {
+                if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    callback.isInitResult(false, null, null);
-                    //callback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
+                    uizaCallback.isInitResult(false, null, null);
+                    //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
         });
@@ -481,7 +480,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void resetCountTryLinkPlayError() {
+    protected void resetCountTryLinkPlayError() {
         countTryLinkPlayError = 0;
     }
 
@@ -495,7 +494,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void removeVideoCover(boolean isFromHandleError) {
+    protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
@@ -865,10 +864,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void onStateReadyFirst() {
+    protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
-        if (callback != null) {
-            callback.isInitResult(true, mResultGetLinkPlay, mData);
+        if (uizaCallback != null) {
+            uizaCallback.isInitResult(true, mResultGetLinkPlay, mData);
         }
 
         if (isCastingChromecast) {
@@ -1018,8 +1017,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isLandscape) {
                 exoFullscreenIcon.performClick();
             } else {
-                if (callback != null) {
-                    callback.onClickBack();
+                if (uizaCallback != null) {
+                    uizaCallback.onClickBack();
                 }
             }
         } else if (v == exoVolume) {
@@ -1044,8 +1043,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onClickItem(Item item, int position) {
                     //LLog.d(TAG, "onClickItem " + gson.toJson(item));
-                    if (callback != null) {
-                        callback.onClickListEntityRelation(item, position);
+                    if (uizaCallback != null) {
+                        uizaCallback.onClickListEntityRelation(item, position);
                     }
                 }
 
@@ -1199,7 +1198,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         imageButtonWithSize.setImageResource(res);
     }
 
-    public void updateButtonVisibilities() {
+    protected void updateButtonVisibilities() {
         debugRootView.removeAllViews();
         if (uizaPlayerManagerV3.getPlayer() == null) {
             return;
@@ -1320,8 +1319,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
     //end on seekbar change
 
-    public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 6969;
-
     private void clickPiP() {
         //LLog.d(TAG, "clickPiP");
         if (activity == null) {
@@ -1332,7 +1329,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //to grant the permission.
             //LLog.d(TAG, "clickPiP if");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
             //LLog.d(TAG, "clickPiP else");
             initializePiP();
@@ -1347,8 +1344,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uizaPlayerManagerV3.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
-        if (callback != null) {
-            callback.onClickPip(intent);
+        if (uizaCallback != null) {
+            uizaCallback.onClickPip(intent);
         }
     }
 
@@ -1490,28 +1487,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public interface Callback {
-        //when video init done with result
-        public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
-
-        //user click an item in entity relation
-        public void onClickListEntityRelation(Item item, int position);
-
-        //user click button back in controller
-        public void onClickBack();
-
-        //user click button pip in controller
-        public void onClickPip(Intent intent);
-
-        //when pip video is inited success
-        public void onClickPipVideoInitSuccess(boolean isInitSuccess);
-
-        //when uiimavideo had an error
-        public void onError(Exception e);
-
-    }
-
-    private Callback callback;
+    private UizaCallback uizaCallback;
 
     private void trackUiza(final UizaTracking uizaTracking, final UizaTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
@@ -1536,6 +1512,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });
     }
 
+    /**
+     * seekTo position
+     */
     public void seekTo(long positionMs) {
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "seekTo positionMs: " + positionMs);
@@ -1587,14 +1566,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         //when pip float view init success
-        if (callback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
+        if (uizaCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
             //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
 
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uizaPlayerManagerV3.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
 
-            callback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            uizaCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             if (uizaPlayerManagerV3 != null) {
@@ -1611,7 +1590,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         playerView.hideController();
     }
 
-    public void hideControllerOnTouch(boolean isHide) {
+    protected void hideControllerOnTouch(boolean isHide) {
         playerView.setControllerHideOnTouch(isHide);
     }
 
@@ -1621,14 +1600,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         showLLMsg();
     }
 
-    private void showLLMsg() {
+    protected void showLLMsg() {
         if (rlMsg.getVisibility() != VISIBLE) {
             rlMsg.setVisibility(VISIBLE);
         }
         hideController();
     }
 
-    public void hideLLMsg() {
+    protected void hideLLMsg() {
         if (rlMsg.getVisibility() != GONE) {
             rlMsg.setVisibility(GONE);
         }
