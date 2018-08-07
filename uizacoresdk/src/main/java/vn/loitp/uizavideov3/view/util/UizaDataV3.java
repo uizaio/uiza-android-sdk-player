@@ -204,9 +204,9 @@ public class UizaDataV3 {
 
     public String getEntityName() {
         if (uizaInputV3 == null || uizaInputV3.getData() == null) {
-            return null;
+            return " - ";
         }
-        return uizaInputV3.getData().getEntityName();
+        return uizaInputV3.getData().getName();
     }
 
     public String getThumbnail() {
@@ -237,7 +237,7 @@ public class UizaDataV3 {
         return uizaInputV3.getUrlThumnailsPreviewSeekbar();
     }
 
-    public String getLastFeedId(){
+    public String getLastFeedId() {
         if (uizaInputV3 == null || uizaInputV3.getData() == null) {
             return null;
         }

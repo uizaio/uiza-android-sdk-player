@@ -302,13 +302,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
 
         isLivestream = UizaDataV3.getInstance().isLivestream();
-        LLog.d(TAG, "isLivestream " + isLivestream);
+        //LLog.d(TAG, "isLivestream " + isLivestream);
 
         if (LPref.getClickedPip(activity)) {
-            LLog.d(TAG, "-> trackUiza getClickedPip true -> dont clearAllValues");
+            //LLog.d(TAG, "-> trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
-            LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
+            //LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
         }
 
         if (uizaPlayerManagerV3 != null) {
