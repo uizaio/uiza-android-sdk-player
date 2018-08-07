@@ -700,6 +700,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     //tự tạo layout chromecast và background đen
     private void addChromecastLayer() {
+        //listener check state of chromecast
         CastContext castContext = CastContext.getSharedInstance(activity);
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addChromecastLayer setVisibility GONE");
