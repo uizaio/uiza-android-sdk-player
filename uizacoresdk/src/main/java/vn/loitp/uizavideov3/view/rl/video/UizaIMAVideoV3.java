@@ -34,6 +34,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastState;
+import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
 import com.google.gson.Gson;
@@ -554,6 +557,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         mediaRouteButton = new MediaRouteButton(activity);
         llTop.addView(mediaRouteButton);
         setUpMediaRouteButton();
+        addChromecastLayer();
     }
 
     private UizaPlayerView playerView;
@@ -693,12 +697,33 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
-
-        addChromecastLayer();
     }
 
     //tự tạo layout chromecast và background đen
     private void addChromecastLayer() {
+        CastContext castContext = CastContext.getSharedInstance(activity);
+        if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
+            //LLog.d(TAG, "addChromecastLayer setVisibility GONE");
+            mediaRouteButton.setVisibility(View.GONE);
+        } else {
+            //LLog.d(TAG, "addChromecastLayer setVisibility VISIBLE");
+            mediaRouteButton.setVisibility(View.VISIBLE);
+        }
+        castContext.addCastStateListener(new CastStateListener() {
+            @Override
+            public void onCastStateChanged(int state) {
+                if (state == CastState.NO_DEVICES_AVAILABLE) {
+                    //LLog.d(TAG, "addChromecastLayer setVisibility GONE");
+                    mediaRouteButton.setVisibility(View.GONE);
+                } else {
+                    if (mediaRouteButton.getVisibility() != View.VISIBLE) {
+                        //LLog.d(TAG, "addChromecastLayer setVisibility VISIBLE");
+                        mediaRouteButton.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
         rlChromeCast = new RelativeLayout(activity);
         RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlChromeCast.setLayoutParams(rlChromeCastParams);
@@ -1537,17 +1562,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uizaPlayerManagerV3 != null) {
                     LDialogUtil.clearAll();
-                    //hideLLMsg();
                     if (uizaPlayerManagerV3.getExoPlaybackException() == null) {
-                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        hideLLMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uizaPlayerManagerV3.setResumeIfConnectionError();
-                        //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
+                        LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             uizaPlayerManagerV3.init();
                             if (isCalledFromConnectionEventBus) {
@@ -1555,9 +1580,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                 isCalledFromConnectionEventBus = false;
                             }
                         } else {
-                            //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
+                            LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
+                }else{
+                    LLog.d(TAG, "onMessageEventConnectEvent uizaPlayerManagerV3 == null");
                 }
             } else {
                 showTvMsg(activity.getString(R.string.err_no_internet));
