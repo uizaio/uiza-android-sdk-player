@@ -1931,6 +1931,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final String pfOrderType = "DESC";
 
     private List<Data> dataList;
+    private int currentPositionOfDataList = 0;
 
     private void getListAllEntity(String metadataId) {
         if (uizaPlayerManagerV3 != null) {
@@ -1966,7 +1967,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 LLog.d(TAG, "list size: " + dataList.size());
-                playPlaylistPosition(0);
+                playPlaylistPosition(currentPositionOfDataList);
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.hideProgress();
                 }
@@ -1990,12 +1991,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
             return;
         }
-        Data data = dataList.get(position);
+        currentPositionOfDataList = position;
+        Data data = dataList.get(currentPositionOfDataList);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
             LLog.e(TAG, "playPlaylistPosition error: data null or cannot get id");
             return;
         }
-        init(dataList.get(position).getId());
+        LLog.d(TAG, "playPlaylistPosition " + position);
+        init(dataList.get(currentPositionOfDataList).getId());
+    }
+
+    protected void onPlayerEnded() {
+        playPlaylistPosition(++currentPositionOfDataList);
     }
     //END FOR PLAYLIST/FOLDER
 }
