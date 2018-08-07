@@ -133,7 +133,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ImageButtonWithSize exoVolume;
     private ImageButtonWithSize exoSetting;
     private ImageButtonWithSize exoCc;
-    private ImageButtonWithSize exoPlaylist;
+    private ImageButtonWithSize exoPlaylistRelation;//danh sach video co lien quan
     private ImageButtonWithSize exoHearing;
     private ImageButtonWithSize exoPictureInPicture;
     private ImageButtonWithSize exoShare;
@@ -642,7 +642,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
         exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
         exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
-        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
+        exoPlaylistRelation = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         //TODO exoHearing works fine, but QC dont want to show it, fuck QC team
@@ -678,7 +678,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoVolume.setOnClickListener(this);
         exoSetting.setOnClickListener(this);
         exoCc.setOnClickListener(this);
-        exoPlaylist.setOnClickListener(this);
+        exoPlaylistRelation.setOnClickListener(this);
         exoHearing.setOnClickListener(this);
         exoPictureInPicture.setOnClickListener(this);
         exoShare.setOnClickListener(this);
@@ -1041,7 +1041,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     UizaUtil.getBtText(debugRootView).performClick();
                 }
             }
-        } else if (v == exoPlaylist) {
+        } else if (v == exoPlaylistRelation) {
             UizaDialogListEntityRelationV3 uizaDialogListEntityRelation = new UizaDialogListEntityRelationV3(activity, isLandscape, new PlayListCallbackV3() {
                 @Override
                 public void onClickItem(Item item, int position) {
@@ -1163,7 +1163,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
-            exoPlaylist.setVisibility(GONE);
+            exoPlaylistRelation.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             rlTimeBar.setVisibility(GONE);
 
@@ -1176,7 +1176,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
             rlLiveInfo.setVisibility(VISIBLE);
         } else {
-            exoPlaylist.setVisibility(VISIBLE);
+            //TODO exoPlaylistRelation works fine, but QC wanne hide it
+            exoPlaylistRelation.setVisibility(GONE);
             exoCc.setVisibility(VISIBLE);
             rlTimeBar.setVisibility(VISIBLE);
 
