@@ -34,7 +34,7 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_fullscreen_black_48dp"
+                android:src="@drawable/baseline_fullscreen_white_48"
                 android:tint="@color/White" />
 
             <ImageButton
@@ -47,7 +47,7 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_pause_black_48dp"
+                android:src="@drawable/baseline_pause_circle_outline_white_48"
                 android:tint="@color/White" />
 
             <ImageButton

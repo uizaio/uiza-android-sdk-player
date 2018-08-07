@@ -668,8 +668,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            //TODO revert is VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1216,8 +1215,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //exoRew.setVisibility(VISIBLE);
             //exoFfwd.setVisibility(VISIBLE);
 
-            changeVisibilitiesOfButton(exoRew, true, R.drawable.ic_fast_rewind_black_48dp);
-            changeVisibilitiesOfButton(exoFfwd, true, R.drawable.ic_fast_forward_black_48dp);
+            changeVisibilitiesOfButton(exoRew, true, R.drawable.baseline_replay_10_white_48);
+            changeVisibilitiesOfButton(exoFfwd, true, R.drawable.baseline_forward_10_white_48);
 
             rlLiveInfo.setVisibility(GONE);
         }
@@ -1583,7 +1582,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
-                }else{
+                } else {
                     //LLog.d(TAG, "onMessageEventConnectEvent uizaPlayerManagerV3 == null");
                 }
             } else {

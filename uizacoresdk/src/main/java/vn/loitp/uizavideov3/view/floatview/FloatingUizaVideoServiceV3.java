@@ -198,9 +198,9 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 }
                 boolean isToggleResume = floatUizaIMAVideoV3.togglePauseResume();
                 if (isToggleResume) {
-                    btPlayPause.setImageResource(R.drawable.ic_pause_black_48dp);
+                    btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
                 } else {
-                    btPlayPause.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+                    btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
                 }
             }
         });
