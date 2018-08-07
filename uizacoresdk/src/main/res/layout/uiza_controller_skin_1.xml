@@ -334,7 +334,7 @@
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_playlist"
+                android:id="@id/exo_playlist_relation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"

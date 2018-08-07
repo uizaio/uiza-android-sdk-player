@@ -550,7 +550,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginRlLiveInfo();
 
         //setup chromecast
-        //mediaRouteButton = (MediaRouteButton) playerView.findViewById(R.id.media_route_button);
         mediaRouteButton = new MediaRouteButton(activity);
         llTop.addView(mediaRouteButton);
         setUpMediaRouteButton();
@@ -643,7 +642,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
         exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
         exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
-        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist);
+        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         //TODO exoHearing works fine, but QC dont want to show it, fuck QC team
