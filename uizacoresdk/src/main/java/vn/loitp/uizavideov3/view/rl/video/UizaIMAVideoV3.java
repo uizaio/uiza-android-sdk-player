@@ -1567,12 +1567,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (uizaPlayerManagerV3 != null) {
                     LDialogUtil.clearAll();
                     if (uizaPlayerManagerV3.getExoPlaybackException() == null) {
-                        LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
                         hideLLMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uizaPlayerManagerV3.setResumeIfConnectionError();
-                        LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
+                        //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             uizaPlayerManagerV3.init();
                             if (isCalledFromConnectionEventBus) {
@@ -1580,11 +1580,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                 isCalledFromConnectionEventBus = false;
                             }
                         } else {
-                            LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
+                            //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
                 }else{
-                    LLog.d(TAG, "onMessageEventConnectEvent uizaPlayerManagerV3 == null");
+                    //LLog.d(TAG, "onMessageEventConnectEvent uizaPlayerManagerV3 == null");
                 }
             } else {
                 showTvMsg(activity.getString(R.string.err_no_internet));
