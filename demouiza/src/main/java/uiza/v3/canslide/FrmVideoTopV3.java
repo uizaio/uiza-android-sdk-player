@@ -344,43 +344,19 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
             }
         });
     }
-    /*public void setupVideo(Data data, String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (data == null) {
-            return;
-        }
+
+    public void setupPlaylistFolder(final String metadataId) {
+        LLog.d(TAG, "setupPlaylistFolder " + metadataId);
         if (UizaDataV3.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "isSettingPlayer return");
             return;
         }
-        if (data == null || data.getId() == null || data.getId().isEmpty()) {
-            LDialogUtil.showDialog1(getActivity(), getActivity().getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    if (getActivity() != null) {
-                        getActivity().onBackPressed();
-                    }
-                }
-
-                @Override
-                public void onCancel() {
-                    if (getActivity() != null) {
-                        getActivity().onBackPressed();
-                    }
-                }
-            });
-            return;
-        }
-        UizaInputV3 uizaInputV3 = new UizaInputV3();
-        uizaInputV3.setData(data);
-        uizaInputV3.setUrlIMAAd(urlIMAAd);
-        uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-        UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init();
+                uizaIMAVideoV3.initPlaylistFolder(metadataId);
                 uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
             }
         });
-    }*/
+    }
 }

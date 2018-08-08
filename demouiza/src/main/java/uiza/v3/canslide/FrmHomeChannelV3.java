@@ -136,15 +136,10 @@ public class FrmHomeChannelV3 extends BaseFragment {
             public void onClick(View view) {
                 LLog.d(TAG, "onClick btPlayPlaylistFolder " + metadataId);
                 if (UizaDataV3.getInstance().isSettingPlayer()) {
+                    LLog.d(TAG, "isSettingPlayer return");
                     return;
                 }
-                /*uizaIMAVideoV3.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        uizaIMAVideoV3.initPlaylistFolder(metadataId);
-                        uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
-                    }
-                });*/
+                ((HomeV3CanSlideActivity) getActivity()).onClickPlaylistFolder(metadataId);
             }
         });
     }

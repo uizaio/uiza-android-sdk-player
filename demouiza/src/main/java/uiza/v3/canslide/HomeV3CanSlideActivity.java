@@ -282,4 +282,93 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
+
+    protected void onClickPlaylistFolder(String metadataId) {
+        LLog.d(TAG, "onClickPlaylistFolder metadataId " + metadataId);
+        initializeDraggablePanelPlaylistFolder(metadataId);
+    }
+
+    private void initializeDraggablePanelPlaylistFolder(final String metadataId) {
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            });
+            return;
+        }
+
+        if (draggablePanel.getVisibility() != View.VISIBLE) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
+
+        if (frmVideoTop != null || frmVideoBottom != null) {
+            clearUIFrmBottom();
+            frmVideoTop.setupPlaylistFolder(metadataId);
+            draggablePanel.maximize();
+            return;
+        }
+        frmVideoTop = new FrmVideoTopV3();
+        frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                frmVideoTop.setupPlaylistFolder(metadataId);
+            }
+        });
+        frmVideoBottom = new FrmVideoBottomV3();
+
+        draggablePanel.setFragmentManager(getSupportFragmentManager());
+        draggablePanel.setTopFragment(frmVideoTop);
+        draggablePanel.setBottomFragment(frmVideoBottom);
+
+        //draggablePanel.setXScaleFactor(xScaleFactor);
+        //draggablePanel.setYScaleFactor(yScaleFactor);
+        //draggablePanel.setTopViewHeight(800);
+        //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
+        //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
+        draggablePanel.setClickToMaximizeEnabled(true);
+        draggablePanel.setClickToMinimizeEnabled(false);
+        draggablePanel.setEnableHorizontalAlphaEffect(false);
+        setSizeFrmTop();
+        draggablePanel.initializeView();
+
+        frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
+            @Override
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+                /*if (LPref.getClickedPip(activity)) {
+                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+                    msgFromActivityIsInitSuccess.setInitSuccess(true);
+                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
+                }
+                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                    @Override
+                    public void onVisibilityChange(int visibility) {
+                        if (draggablePanel != null && !isLandscape) {
+                            if (draggablePanel.isMaximized()) {
+                                if (visibility == View.VISIBLE) {
+                                    draggablePanel.setEnableSlide(false);
+                                } else {
+                                    draggablePanel.setEnableSlide(true);
+                                }
+                            } else {
+                                draggablePanel.setEnableSlide(true);
+                            }
+                        }
+                    }
+                });
+                intFrmBottom(data)*/;
+            }
+
+            @Override
+            public void onClickListEntityRelation(Item item, int position) {
+                /*LPref.setClickedPip(activity, false);
+                clearUIFrmBottom();
+                initFrmTop(data.getId(), true);*/
+            }
+        });
+    }
 }
