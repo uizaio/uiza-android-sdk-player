@@ -3,6 +3,7 @@ package uiza.v3.canslide;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
@@ -40,7 +41,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
     private ProgressBar progressBar;
-
+    private FloatingActionButton btPlayPlaylistFolder;
     private final int NUMBER_OF_COLUMN_1 = 1;
     private final int NUMBER_OF_COLUMN_2 = 2;
     private final int POSITION_OF_LOADING_REFRESH = 2;
@@ -61,6 +62,12 @@ public class FrmHomeChannelV3 extends BaseFragment {
         isLivestream = HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_LIVESTREAM);
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        btPlayPlaylistFolder = (FloatingActionButton) view.findViewById(R.id.bt_play_playlist_folder);
+        if (isLivestream) {
+            btPlayPlaylistFolder.setVisibility(View.GONE);
+        } else {
+            btPlayPlaylistFolder.setVisibility(View.VISIBLE);
+        }
         if (Constants.IS_DEBUG) {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Debug: " + HomeDataV3.getInstance().getData().getName());
@@ -114,6 +121,14 @@ public class FrmHomeChannelV3 extends BaseFragment {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
         getData(false);
+
+        btPlayPlaylistFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+                LLog.d(TAG, "onClick");
+            }
+        });
     }
 
     @Override

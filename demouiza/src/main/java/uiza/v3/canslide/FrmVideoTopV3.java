@@ -333,6 +333,9 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
     }
 
     public void setupVideo(final String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        if (UizaDataV3.getInstance().isSettingPlayer()) {
+            return;
+        }
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {

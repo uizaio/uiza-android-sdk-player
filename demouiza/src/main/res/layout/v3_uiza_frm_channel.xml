@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,4 +39,19 @@
         android:layout_width="@dimen/w_20"
         android:layout_height="@dimen/w_20"
         android:layout_centerInParent="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/bt_play_playlist_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_15"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/baseline_playlist_play_white_48"
+        android:tint="@color/primaryColor"
+        app:backgroundTint="@color/White"
+        app:borderWidth="@dimen/w_1"
+        app:elevation="@dimen/w_1"
+        app:fabSize="normal" />
 </RelativeLayout>
