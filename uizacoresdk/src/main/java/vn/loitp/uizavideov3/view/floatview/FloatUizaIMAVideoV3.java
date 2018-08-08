@@ -35,12 +35,8 @@ import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.uizavideov3.view.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;
 
-/**
- * Created by www.muathu@gmail.com on 7/26/2017.
- */
-
 public class FloatUizaIMAVideoV3 extends RelativeLayout {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private PlayerView playerView;
     private FloatUizaPlayerManagerV3 floatUizaPlayerManager;
     private ProgressBar progressBar;
@@ -175,6 +171,10 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     private int oldPercent = Constants.NOT_FOUND;
+    private boolean isTracked25;
+    private boolean isTracked50;
+    private boolean isTracked75;
+    private boolean isTracked100;
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s), only track if isLivestream false
@@ -202,58 +202,18 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         if (oldPercent == percent) {
             return;
         }
-        LLog.d(TAG, "trackProgress percent: " + percent);
-        /*oldPercent = percent;
-        if (percent == Constants.PLAYTHROUGH_25) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(getContext())) {
-                //da track roi ko can track nua
-            } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(getContext(), true);
-                    }
-                });
-            }
-        } else if (percent == Constants.PLAYTHROUGH_50) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(getContext())) {
-                //da track roi ko can track nua
-            } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(getContext(), true);
-                    }
-                });
-            }
-        } else if (percent == Constants.PLAYTHROUGH_75) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(getContext())) {
-                //da track roi ko can track nua
-            } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(getContext(), true);
-                    }
-                });
-            }
-        } else if (percent == Constants.PLAYTHROUGH_100) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(getContext())) {
-                //da track roi ko can track nua
-            } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(getContext(), true);
-                    }
-                });
-            }
-        }*/
 
+        oldPercent = percent;
 
+        //LLog.d(TAG, "trackProgress percent: " + percent);
         if (percent >= Constants.PLAYTHROUGH_100) {
+            if (isTracked100) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(getContext())) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
+                isTracked100 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -263,8 +223,13 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_75) {
+            if (isTracked75) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(getContext())) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
+                isTracked75 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -274,8 +239,13 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_50) {
+            if (isTracked50) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(getContext())) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
+                isTracked50 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -285,8 +255,13 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_25) {
+            if (isTracked25) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(getContext())) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
+                isTracked25 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
