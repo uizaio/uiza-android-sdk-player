@@ -1994,16 +1994,24 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
 
+        //update UI for skip next and skip previous button
         if (position == 0) {
             exoSkipPrevious.setEnabled(false);
             exoSkipNext.setEnabled(true);
+            exoSkipPrevious.setColorFilter(Color.GRAY);
+            exoSkipNext.setColorFilter(Color.WHITE);
         } else if (position == dataList.size() - 1) {
             exoSkipPrevious.setEnabled(true);
             exoSkipNext.setEnabled(false);
+            exoSkipPrevious.setColorFilter(Color.WHITE);
+            exoSkipNext.setColorFilter(Color.GRAY);
         } else {
             exoSkipPrevious.setEnabled(true);
             exoSkipNext.setEnabled(true);
+            exoSkipPrevious.setColorFilter(Color.WHITE);
+            exoSkipNext.setColorFilter(Color.WHITE);
         }
+        //end update UI for skip next and skip previous button
 
         currentPositionOfDataList = position;
         Data data = dataList.get(currentPositionOfDataList);
