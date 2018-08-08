@@ -129,7 +129,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 return;
             }
         }
-        initializeDraggablePanel(data);
+        initializeDraggablePanelEntity(data);
     }
 
     private boolean isLandscape;
@@ -182,7 +182,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         initializeDraggablePanelPlaylistFolder(metadataId);
     }
 
-    private void initializeDraggablePanel(final Data data) {
+    private void initializeDraggablePanelEntity(final Data data) {
         if (data == null) {
             return;
         } else {
@@ -339,7 +339,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                /*if (LPref.getClickedPip(activity)) {
+                LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
+                if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -360,11 +361,12 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                         }
                     }
                 });
-                intFrmBottom(data)*/;
+                intFrmBottom(data);
             }
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
+                LLog.d(TAG, "initializeDraggablePanelPlaylistFolder onClickListEntityRelation " + position);
                 /*LPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data.getId(), true);*/

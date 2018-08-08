@@ -35,7 +35,7 @@ import vn.loitp.uizavideov3.view.util.UizaDataV3;
  */
 
 public class UizaIMAVideoInfoV3 extends RelativeLayout {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     //TODO remove
     private Gson gson = new Gson();

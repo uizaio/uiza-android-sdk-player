@@ -225,6 +225,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      * init player with entity id, ad, seekbar thumnail
      */
     public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        LLog.d(TAG, "=======================================================");
+        LLog.d(TAG, "=======================================================");
+        LLog.d(TAG, "=======================================================");
         LLog.d(TAG, "======================NEW SESSION======================");
         LLog.d(TAG, "entityId " + entityId);
         UizaDataV3.getInstance().setSettingPlayer(true);
@@ -233,7 +236,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onSuccess(Data d) {
                 mData = d;
-                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
+                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
+                LLog.d(TAG, "init getDetailEntity onSuccess");
 
                 //save current data
                 LPref.setData(activity, mData, gson);
@@ -313,10 +317,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "isLivestream " + isLivestream);
 
         if (LPref.getClickedPip(activity)) {
-            //LLog.d(TAG, "-> trackUiza getClickedPip true -> dont clearAllValues");
+            LLog.d(TAG, "__________trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
-            //LLog.d(TAG, "-> trackUiza getClickedPip false -> clearAllValues");
+            LLog.d(TAG, "__________trackUiza getClickedPip false -> clearAllValues");
         }
 
         if (uizaPlayerManagerV3 != null) {
@@ -859,31 +863,20 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
-        if (percent == Constants.PLAYTHROUGH_25) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {
-                //da track roi ko can track nua
+        if (percent >= Constants.PLAYTHROUGH_100) {
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(activity, true);
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(activity, true);
                     }
                 });
             }
-        } else if (percent == Constants.PLAYTHROUGH_50) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
-                //da track roi ko can track nua
-            } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(activity, true);
-                    }
-                });
-            }
-        } else if (percent == Constants.PLAYTHROUGH_75) {
+        } else if (percent >= Constants.PLAYTHROUGH_75) {
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(activity)) {
-                //da track roi ko can track nua
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -892,14 +885,25 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 });
             }
-        } else if (percent == Constants.PLAYTHROUGH_100) {
-            if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
-                //da track roi ko can track nua
+        } else if (percent >= Constants.PLAYTHROUGH_50) {
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
-                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(activity, true);
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(activity, true);
+                    }
+                });
+            }
+        } else if (percent >= Constants.PLAYTHROUGH_25) {
+            if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
+            } else {
+                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                    @Override
+                    public void onTrackingSuccess() {
+                        UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(activity, true);
                     }
                 });
             }
@@ -909,7 +913,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (uizaCallback != null) {
-            LLog.d(TAG, "===> isInitResult");
+            LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uizaCallback.isInitResult(true, mResultGetLinkPlay, mData);
         }
 
@@ -1472,7 +1476,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
-                    LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
+                    //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "getLinkPlayVOD onSuccess");
                     mResultGetLinkPlay = result;
                     isResultGetLinkPlayDone = true;
                     checkToSetUp();
@@ -1509,8 +1514,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, "<------------------------trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
-                //LLog.d(TAG, "Track success! " + uizaTracking.getEntityName() + " : " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough());
+                LLog.d(TAG, "------------------------>trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+                LLog.d(TAG, "<------------------------track success! " + uizaTracking.getEntityName() + " : " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
