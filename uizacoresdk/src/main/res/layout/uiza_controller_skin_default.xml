@@ -250,15 +250,15 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_5">
 
-            <!--<vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_prev"
+            <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+                android:id="@id/exo_skip_previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_skip_previous_black_48dp"
-                android:tint="@color/White" />-->
+                android:src="@drawable/baseline_skip_previous_white_48"
+                android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_rew"
@@ -300,15 +300,15 @@
                 android:src="@drawable/baseline_forward_10_white_48"
                 android:tint="@color/White" />
 
-            <!--<vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
-                android:id="@id/exo_next"
+            <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+                android:id="@id/exo_skip_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_skip_next_black_48dp"
-                android:tint="@color/White" />-->
+                android:src="@drawable/baseline_skip_next_white_48"
+                android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_volume"

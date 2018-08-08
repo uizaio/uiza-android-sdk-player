@@ -206,6 +206,16 @@
             android:orientation="horizontal">
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+                android:id="@id/exo_skip_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_skip_previous_white_48"
+                android:tint="@color/White" />
+
+            <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_rew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -243,6 +253,16 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_forward_10_white_48"
+                android:tint="@color/White" />
+
+            <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+                android:id="@id/exo_skip_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_skip_next_white_48"
                 android:tint="@color/White" />
         </LinearLayout>
 
