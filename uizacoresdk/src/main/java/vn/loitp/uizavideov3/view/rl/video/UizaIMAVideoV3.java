@@ -320,6 +320,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "__________trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
+            isTracked25 = false;
+            isTracked50 = false;
+            isTracked75 = false;
+            isTracked100 = false;
             LLog.d(TAG, "__________trackUiza getClickedPip false -> clearAllValues");
         }
 
@@ -835,6 +839,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private boolean isSetProgressSeekbarFirst;
     private int oldPercent = Constants.NOT_FOUND;
+    private boolean isTracked25;
+    private boolean isTracked50;
+    private boolean isTracked75;
+    private boolean isTracked100;
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
@@ -864,8 +872,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
         if (percent >= Constants.PLAYTHROUGH_100) {
+            if (isTracked100) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
+                isTracked100 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -875,8 +888,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_75) {
+            if (isTracked75) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
+                isTracked75 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -886,8 +904,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_50) {
+            if (isTracked50) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
+                isTracked50 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
@@ -897,8 +920,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 });
             }
         } else if (percent >= Constants.PLAYTHROUGH_25) {
+            if (isTracked25) {
+                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
+                return;
+            }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
+                isTracked25 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
