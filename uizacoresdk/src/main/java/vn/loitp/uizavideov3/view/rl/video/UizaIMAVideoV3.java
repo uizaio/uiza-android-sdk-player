@@ -316,16 +316,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isLivestream = UizaDataV3.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
 
-        if (LPref.getClickedPip(activity)) {
+        /*if (LPref.getClickedPip(activity)) {
             LLog.d(TAG, "__________trackUiza getClickedPip true -> dont clearAllValues");
         } else {
-            UizaTrackingUtil.clearAllValues(activity);
-            isTracked25 = false;
-            isTracked50 = false;
-            isTracked75 = false;
-            isTracked100 = false;
+            setDefautValueForFlagIsTracked();
             LLog.d(TAG, "__________trackUiza getClickedPip false -> clearAllValues");
-        }
+        }*/
+        setDefautValueForFlagIsTracked();
 
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
@@ -843,6 +840,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isTracked50;
     private boolean isTracked75;
     private boolean isTracked100;
+
+    private void setDefautValueForFlagIsTracked() {
+        UizaTrackingUtil.clearAllValues(activity);
+        isTracked25 = false;
+        isTracked50 = false;
+        isTracked75 = false;
+        isTracked100 = false;
+    }
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
@@ -1964,6 +1969,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
+        setDefautValueForFlagIsTracked();
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
             @Override
