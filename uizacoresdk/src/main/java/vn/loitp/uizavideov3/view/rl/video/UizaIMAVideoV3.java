@@ -143,6 +143,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ImageButtonWithSize exoHearing;
     private ImageButtonWithSize exoPictureInPicture;
     private ImageButtonWithSize exoShare;
+    private ImageButtonWithSize exoSkipPrevious;
+    private ImageButtonWithSize exoSkipNext;
     private VerticalSeekBar seekbarVolume;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
@@ -658,6 +660,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
+        exoSkipNext = (ImageButtonWithSize) playerView.findViewById(R.id.exo_skip_next);
+        exoSkipPrevious = (ImageButtonWithSize) playerView.findViewById(R.id.exo_skip_previous);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -694,10 +698,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoRew.setOnClickListener(this);
         exoPlay.setOnClickListener(this);
         exoPause.setOnClickListener(this);
+        exoSkipNext.setOnClickListener(this);
+        exoSkipPrevious.setOnClickListener(this);
 
         //seekbar change
         seekbarVolume.setOnSeekBarChangeListener(this);
         seekbarBirghtness.setOnSeekBarChangeListener(this);
+
+        //set visinility first
+        setVisibilityOfPlaylistFolderController(GONE);
     }
 
     //tự tạo layout chromecast và background đen
@@ -1101,6 +1110,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
+        } else if (v == exoSkipNext) {
+            handleClickSkipNext();
+        } else if (v == exoSkipPrevious) {
+            handleClickSkipPrevious();
         }
     }
 
@@ -1903,7 +1916,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    //START FOR PLAYLIST/FOLDER
+    //===================================================================START FOR PLAYLIST/FOLDER
     private final int pfLimit = 50;
     private int pfPage = 0;
     private int pfTotalPage = Integer.MAX_VALUE;
@@ -1950,6 +1963,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.hideProgress();
                 }
+
+                //show controller for playlist folder
+                setVisibilityOfPlaylistFolderController(VISIBLE);
             }
 
             @Override
@@ -1975,9 +1991,20 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void playPlaylistPosition(int position) {
         if (position < 0 || position > dataList.size() - 1) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
-            //TODO position is last of playlist
             return;
         }
+
+        if (position == 0) {
+            exoSkipPrevious.setEnabled(false);
+            exoSkipNext.setEnabled(true);
+        } else if (position == dataList.size() - 1) {
+            exoSkipPrevious.setEnabled(true);
+            exoSkipNext.setEnabled(false);
+        } else {
+            exoSkipPrevious.setEnabled(true);
+            exoSkipNext.setEnabled(true);
+        }
+
         currentPositionOfDataList = position;
         Data data = dataList.get(currentPositionOfDataList);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
@@ -2018,7 +2045,24 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
     }
 
-    //END FOR PLAYLIST/FOLDER
+    private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
+        exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
+        exoSkipNext.setVisibility(visibilityOfPlaylistFolderController);
+        exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
+    }
+
+    private void handleClickSkipNext() {
+        LLog.d(TAG, "handleClickSkipNext");
+        autoSwitchNextVideo();
+    }
+
+    private void handleClickSkipPrevious() {
+        LLog.d(TAG, "handleClickSkipPrevious");
+        autoSwitchPreviousLinkVideo();
+    }
+
+    //===================================================================END FOR PLAYLIST/FOLDER
+
     /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
      * Ngược lại, sẽ handle volume on/off ở exo player*/
     private void handleClickBtVolume() {
