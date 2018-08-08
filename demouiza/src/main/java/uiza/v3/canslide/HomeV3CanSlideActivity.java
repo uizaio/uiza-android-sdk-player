@@ -101,6 +101,87 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoTopV3 frmVideoTop;
     private FrmVideoBottomV3 frmVideoBottom;
 
+    private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        if (!LPref.getClickedPip(activity)) {
+            UizaUtil.stopServicePiPIfRunningV3(activity);
+        }
+        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+        String urlIMAAd = null;
+        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
+        String urlThumnailsPreviewSeekbar = null;
+
+        frmVideoTop.setupVideo(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+    }
+
+    private void intFrmBottom(Data data) {
+        frmVideoBottom.setup(data);
+    }
+
+    private void clearUIFrmBottom() {
+        frmVideoBottom.clearAllViews();
+    }
+
+    public void play(Data data) {
+        if (data == null) {
+            data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            if (data == null) {
+                LLog.e(TAG, "play error data null");
+                return;
+            }
+        }
+        initializeDraggablePanel(data);
+    }
+
+    private boolean isLandscape;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (activity != null) {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                isLandscape = true;
+                setSizeFrmTop();
+                draggablePanel.setEnableSlide(false);
+            } else {
+                isLandscape = false;
+                setSizeFrmTop();
+                draggablePanel.setEnableSlide(true);
+            }
+        }
+    }
+
+    private void setSizeFrmTop() {
+        if (isLandscape) {
+            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
+        } else {
+            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    public DraggablePanel getDraggablePanel() {
+        return draggablePanel;
+    }
+
+    @Override
+    protected void onDestroy() {
+        LPref.setAcitivityCanSlideIsRunning(activity, false);
+        HomeDataV3.getInstance().clearAll();
+        super.onDestroy();
+    }
+
+    protected void onClickPlaylistFolder(String metadataId) {
+        LLog.d(TAG, "onClickPlaylistFolder metadataId " + metadataId);
+        initializeDraggablePanelPlaylistFolder(metadataId);
+    }
+
     private void initializeDraggablePanel(final Data data) {
         if (data == null) {
             return;
@@ -205,87 +286,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 initFrmTop(data.getId(), true);
             }
         });
-    }
-
-    private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!LPref.getClickedPip(activity)) {
-            UizaUtil.stopServicePiPIfRunningV3(activity);
-        }
-        //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-        String urlIMAAd = null;
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-
-        frmVideoTop.setupVideo(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-    }
-
-    private void intFrmBottom(Data data) {
-        frmVideoBottom.setup(data);
-    }
-
-    private void clearUIFrmBottom() {
-        frmVideoBottom.clearAllViews();
-    }
-
-    public void play(Data data) {
-        if (data == null) {
-            data = LPref.getData(activity, LSApplication.getInstance().getGson());
-            if (data == null) {
-                LLog.e(TAG, "play error data null");
-                return;
-            }
-        }
-        initializeDraggablePanel(data);
-    }
-
-    private boolean isLandscape;
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (activity != null) {
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                isLandscape = true;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(false);
-            } else {
-                isLandscape = false;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(true);
-            }
-        }
-    }
-
-    private void setSizeFrmTop() {
-        if (isLandscape) {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
-        } else {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            super.onBackPressed();
-        }
-    }
-
-    public DraggablePanel getDraggablePanel() {
-        return draggablePanel;
-    }
-
-    @Override
-    protected void onDestroy() {
-        LPref.setAcitivityCanSlideIsRunning(activity, false);
-        HomeDataV3.getInstance().clearAll();
-        super.onDestroy();
-    }
-
-    protected void onClickPlaylistFolder(String metadataId) {
-        LLog.d(TAG, "onClickPlaylistFolder metadataId " + metadataId);
-        initializeDraggablePanelPlaylistFolder(metadataId);
     }
 
     private void initializeDraggablePanelPlaylistFolder(final String metadataId) {
