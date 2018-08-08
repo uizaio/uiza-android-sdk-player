@@ -900,6 +900,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst");
         if (uizaCallback != null) {
+            LLog.d(TAG, "===> isInitResult");
             uizaCallback.isInitResult(true, mResultGetLinkPlay, mData);
         }
 
@@ -2006,7 +2007,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onClickItem(Data data, int position) {
                 //LLog.d(TAG, "UizaDialogPlaylistFolder onClickItem " + gson.toJson(data));
-                playPlaylistPosition(position);
+                currentPositionOfDataList = position;
+                playPlaylistPosition(currentPositionOfDataList);
             }
 
             @Override
@@ -2084,14 +2086,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void handleClickHearing(){
+    private void handleClickHearing() {
         View view = UizaUtil.getBtAudio(debugRootView);
         if (view != null) {
             UizaUtil.getBtAudio(debugRootView).performClick();
         }
     }
 
-    private void handleClickShare(){
+    private void handleClickShare() {
         LSocialUtil.share(activity, isLandscape);
         isExoShareClicked = true;
     }
