@@ -157,9 +157,9 @@ public class Data {
     @Expose
     private Object embedMetadata;
 
-    @SerializedName("extendMetadata")
+    /*@SerializedName("extendMetadata")
     @Expose
-    private ExtendMetadata extendMetadata;
+    private ExtendMetadata extendMetadata;*/
 
     @SerializedName("createdAt")
     @Expose
@@ -292,13 +292,13 @@ public class Data {
         this.embedMetadata = embedMetadata;
     }
 
-    public ExtendMetadata getExtendMetadata() {
+    /*public ExtendMetadata getExtendMetadata() {
         return extendMetadata;
     }
 
     public void setExtendMetadata(ExtendMetadata extendMetadata) {
         this.extendMetadata = extendMetadata;
-    }
+    }*/
 
     public String getMode() {
         return mode;

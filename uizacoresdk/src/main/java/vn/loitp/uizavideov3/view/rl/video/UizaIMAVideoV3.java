@@ -1934,7 +1934,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
-                //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
+                LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                 if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                     return;
                 }
