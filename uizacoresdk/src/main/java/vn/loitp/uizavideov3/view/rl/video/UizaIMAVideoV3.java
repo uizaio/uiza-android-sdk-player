@@ -320,6 +320,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "__________trackUiza getClickedPip true -> dont clearAllValues");
         } else {
             UizaTrackingUtil.clearAllValues(activity);
+            isTracked25 = false;
+            isTracked50 = false;
+            isTracked75 = false;
+            isTracked100 = false;
             LLog.d(TAG, "__________trackUiza getClickedPip false -> clearAllValues");
         }
 
@@ -835,6 +839,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private boolean isSetProgressSeekbarFirst;
     private int oldPercent = Constants.NOT_FOUND;
+    private boolean isTracked25;
+    private boolean isTracked50;
+    private boolean isTracked75;
+    private boolean isTracked100;
 
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s)
@@ -863,7 +871,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //LLog.d(TAG, "trackProgress percent: " + percent);
         oldPercent = percent;
-        if (percent >= Constants.PLAYTHROUGH_100) {
+        if (percent >= Constants.PLAYTHROUGH_100 && !isTracked100) {
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
             } else {
@@ -871,10 +879,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(activity, true);
+                        isTracked100 = true;
                     }
                 });
             }
-        } else if (percent >= Constants.PLAYTHROUGH_75) {
+        } else if (percent >= Constants.PLAYTHROUGH_75 && !isTracked75) {
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
             } else {
@@ -882,10 +891,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(activity, true);
+                        isTracked75 = true;
                     }
                 });
             }
-        } else if (percent >= Constants.PLAYTHROUGH_50) {
+        } else if (percent >= Constants.PLAYTHROUGH_50 && !isTracked50) {
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
             } else {
@@ -893,10 +903,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(activity, true);
+                        isTracked50 = true;
                     }
                 });
             }
-        } else if (percent >= Constants.PLAYTHROUGH_25) {
+        } else if (percent >= Constants.PLAYTHROUGH_25 && !isTracked25) {
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
             } else {
@@ -904,6 +915,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(activity, true);
+                        isTracked25 = true;
                     }
                 });
             }
@@ -1175,7 +1187,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            exoPictureInPicture.setVisibility(GONE);
+            //TODO revert to GONE
+            exoPictureInPicture.setVisibility(VISIBLE);
         }
         if (isLivestream) {
             exoPlaylistRelation.setVisibility(GONE);
