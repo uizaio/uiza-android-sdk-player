@@ -28,6 +28,7 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRet
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -55,15 +56,23 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private final String orderType = "DESC";
 
     private boolean isLivestream;
+    private String metadataId = "";
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         isLivestream = HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_LIVESTREAM);
+        if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
+        } else {
+            metadataId = HomeDataV3.getInstance().getData().getId();
+        }
+        LLog.d(TAG, "metadataId " + metadataId);
+
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         btPlayPlaylistFolder = (FloatingActionButton) view.findViewById(R.id.bt_play_playlist_folder);
-        if (isLivestream) {
+        if (isLivestream || metadataId == null || metadataId.isEmpty()) {
             btPlayPlaylistFolder.setVisibility(View.GONE);
         } else {
             btPlayPlaylistFolder.setVisibility(View.VISIBLE);
@@ -125,8 +134,17 @@ public class FrmHomeChannelV3 extends BaseFragment {
         btPlayPlaylistFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-                LLog.d(TAG, "onClick");
+                LLog.d(TAG, "onClick btPlayPlaylistFolder " + metadataId);
+                if (UizaDataV3.getInstance().isSettingPlayer()) {
+                    return;
+                }
+                /*uizaIMAVideoV3.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        uizaIMAVideoV3.initPlaylistFolder(metadataId);
+                        uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
+                    }
+                });*/
             }
         });
     }
@@ -278,11 +296,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 }
             });
         } else {
-            String metadataId = "";
-            if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
-            } else {
-                metadataId = HomeDataV3.getInstance().getData().getId();
-            }
             //LLog.d(TAG, "getData metadataId: " + metadataId);
 
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
