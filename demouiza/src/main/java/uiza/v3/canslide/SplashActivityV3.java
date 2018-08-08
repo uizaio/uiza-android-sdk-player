@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import uiza.R;
@@ -26,14 +27,22 @@ public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId;
 
     //workspace loitp
-    private final String DF_DOMAIN_API = "android-api.uiza.co";
+    /*private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
+    private int environment = Constants.ENVIRONMENT_STAG;*/
 
     //workspace Yan
     /*private final String DF_DOMAIN_API = "wworkspace-api.uiza.co";
     private final String DF_TOKEN = "uap-30062fa1ee7f4ce4822c55f00c6dc130-fa14be2b";
-    private final String DF_APP_ID = "30062fa1ee7f4ce4822c55f00c6dc130";*/
+    private final String DF_APP_ID = "30062fa1ee7f4ce4822c55f00c6dc130";
+    private int environment = Constants.ENVIRONMENT_PROD;*/
+
+    //workspace Loc
+    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+    private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
+    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
+    private int environment = Constants.ENVIRONMENT_PROD;
 
     private EditText etApiDomain;
     private EditText etKey;
@@ -41,8 +50,6 @@ public class SplashActivityV3 extends BaseActivity {
     private Button btStart;
     private ProgressBar progressBar;
     private LinearLayout llInputInfo;
-
-    private int environment = Constants.ENVIRONMENT_STAG;//default
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,14 @@ public class SplashActivityV3 extends BaseActivity {
         etKey.setText(DF_TOKEN);
         etAppId.setText(DF_APP_ID);
         LUIUtil.setLastCursorEditText(etApiDomain);
+
+        if (environment == Constants.ENVIRONMENT_DEV) {
+            ((RadioButton) findViewById(R.id.rd_env_dev)).setChecked(true);
+        } else if (environment == Constants.ENVIRONMENT_STAG) {
+            ((RadioButton) findViewById(R.id.rd_env_stag)).setChecked(true);
+        } else if (environment == Constants.ENVIRONMENT_PROD) {
+            ((RadioButton) findViewById(R.id.rd_env_prod)).setChecked(true);
+        }
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rd_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

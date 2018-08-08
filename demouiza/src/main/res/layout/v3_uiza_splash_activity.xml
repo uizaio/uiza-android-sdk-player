@@ -139,7 +139,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
-                        android:checked="false"
                         android:text="DEV"
                         android:textColor="@color/White" />
 
@@ -148,7 +147,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
-                        android:checked="true"
                         android:text="STAG"
                         android:textColor="@color/White" />
 
@@ -157,7 +155,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/White"
-                        android:checked="false"
                         android:text="PROD"
                         android:textColor="@color/White" />
                 </RadioGroup>
