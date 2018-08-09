@@ -24,10 +24,12 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -67,16 +69,22 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
 
-        //check if play entity
-        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        LLog.d(TAG, "entityId " + entityId);
-        if (entityId != null) {
-            play(entityId);
+        if (LPref.getClickedPip(activity)) {
+            LLog.d(TAG, "called from pip enter fullscreen");
+            Data data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            play(data.getId());
         } else {
-            //check if play playlist/folder
-            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-            LLog.d(TAG, "metadataId " + metadataId);
-            playPlaylist(metadataId);
+            //check if play entity
+            String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            LLog.d(TAG, "entityId " + entityId);
+            if (entityId != null) {
+                play(entityId);
+            } else {
+                //check if play playlist/folder
+                String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+                LLog.d(TAG, "metadataId " + metadataId);
+                playPlaylist(metadataId);
+            }
         }
     }
 
@@ -315,11 +323,12 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     public void onClickPip(Intent intent) {
-
+        LLog.d(TAG, "onClickPip");
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -327,6 +336,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     public void onError(Exception e) {
+        LLog.d(TAG, "onError " + e.getMessage());
     }
 
     @Override

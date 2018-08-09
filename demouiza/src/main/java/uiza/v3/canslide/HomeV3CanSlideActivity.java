@@ -68,6 +68,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         });
         replaceFragment(new FrmHomeV3());
         if (LPref.getClickedPip(activity)) {
+            //TODO
             play(null);
         }
     }
@@ -256,11 +257,12 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                if (LPref.getClickedPip(activity)) {
+                /*if (LPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-                }
+                }*/
+                frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
                 frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {

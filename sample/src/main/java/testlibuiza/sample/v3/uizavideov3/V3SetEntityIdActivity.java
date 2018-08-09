@@ -13,6 +13,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
+import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
@@ -33,7 +34,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
     private final int env = Constants.ENVIRONMENT_PROD;
-    private final String entityIdDefaultVOD = "c3f5d430-e33c-4bb0-81ff-1d0d7ef10612";
+    private final String entityIdDefaultVOD = "71472a9b-662d-4eee-837e-3ad98b99140a";
     private final String entityIdDefaultLIVE = "6356e2c3-00af-495e-b60c-361f976b4084";
     private final String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
 
@@ -112,8 +113,8 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LPref.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
-
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
@@ -167,6 +168,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStartPf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LPref.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);
