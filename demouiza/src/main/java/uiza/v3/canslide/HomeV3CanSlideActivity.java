@@ -184,11 +184,11 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     }
 
     private void initializeDraggablePanelEntity(final Data data) {
-        if (data == null) {
+        /*if (data == null) {
             return;
         } else {
             UizaPref.setData(activity, data, LSApplication.getInstance().getGson());
-        }
+        }*/
         if (!LConnectivityUtil.isConnected(activity)) {
             LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                 @Override
