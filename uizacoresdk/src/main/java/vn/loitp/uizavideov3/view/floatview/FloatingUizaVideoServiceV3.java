@@ -194,8 +194,10 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
                 //stop video
                 floatUizaIMAVideoV3.getPlayer().setPlayWhenReady(false);
+                LUIUtil.showProgressBar(floatUizaIMAVideoV3.getProgressBar());
                 moveView.setOnTouchListener(null);//disabled move view
 
+                //bắn cho FloatClickFullScreenReceiverV3
                 UizaUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());

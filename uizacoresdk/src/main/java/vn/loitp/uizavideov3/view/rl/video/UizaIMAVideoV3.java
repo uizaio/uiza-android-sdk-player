@@ -347,7 +347,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         updateUI();
         setTitle();
-        setVideoCover();
+        if (!UizaUtil.getClickedPip(activity)) {
+            setVideoCover();
+        }
         getTokenStreaming();
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
