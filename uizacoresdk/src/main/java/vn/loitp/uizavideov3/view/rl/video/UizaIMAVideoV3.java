@@ -1964,9 +1964,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final String pfOrderBy = "createdAt";
     private final String pfOrderType = "DESC";
 
-    private List<Data> dataList;
-    private int currentPositionOfDataList = 0;
-
     private void getListAllEntity(String metadataId) {
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
@@ -1991,16 +1988,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                 }
                 LLog.d(TAG, "<<<getListAllEntity: " + pfPage + "/" + pfTotalPage);
-                dataList = result.getData();
-                if (dataList == null || dataList.isEmpty()) {
+                //dataList = result.getData();
+                UizaDataV3.getInstance().setDataList(result.getData());
+                if (UizaDataV3.getInstance().getDataList() == null || UizaDataV3.getInstance().getDataList().isEmpty()) {
                     LLog.e(TAG, "getListAllEntity success but noda");
                     if (uizaCallback != null) {
                         uizaCallback.onError(new Exception("getListAllEntity success but noda"));
                     }
                     return;
                 }
-                LLog.d(TAG, "list size: " + dataList.size());
-                playPlaylistPosition(currentPositionOfDataList);
+                LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
+                playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.hideProgress();
                 }
@@ -2023,14 +2021,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected boolean isPlayPlaylistFolder() {
-        if (dataList == null) {
+        if (UizaDataV3.getInstance().getDataList() == null) {
             return false;
         }
         return true;
     }
 
     private void playPlaylistPosition(int position) {
-        if (position < 0 || position > dataList.size() - 1) {
+        if (position < 0 || position > UizaDataV3.getInstance().getDataList().size() - 1) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
             return;
         }
@@ -2041,7 +2039,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSkipNext.setEnabled(true);
             exoSkipPrevious.setColorFilter(Color.GRAY);
             exoSkipNext.setColorFilter(Color.WHITE);
-        } else if (position == dataList.size() - 1) {
+        } else if (position == UizaDataV3.getInstance().getDataList().size() - 1) {
             exoSkipPrevious.setEnabled(true);
             exoSkipNext.setEnabled(false);
             exoSkipPrevious.setColorFilter(Color.WHITE);
@@ -2054,14 +2052,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //end update UI for skip next and skip previous button
 
-        currentPositionOfDataList = position;
-        Data data = dataList.get(currentPositionOfDataList);
+        //currentPositionOfDataList = position;
+        UizaDataV3.getInstance().setCurrentPositionOfDataList(position);
+        //Data data = dataList.get(currentPositionOfDataList);
+        Data data = UizaDataV3.getInstance().getDataWithPositionOfDataList(position);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
             LLog.e(TAG, "playPlaylistPosition error: data null or cannot get id");
             return;
         }
         LLog.d(TAG, "playPlaylistPosition " + position);
-        init(dataList.get(currentPositionOfDataList).getId());
+        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId());
     }
 
     protected void onPlayerEnded() {
@@ -2071,20 +2071,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void autoSwitchNextVideo() {
-        playPlaylistPosition(++currentPositionOfDataList);
+        playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList() + 1);
     }
 
     private void autoSwitchPreviousLinkVideo() {
-        playPlaylistPosition(--currentPositionOfDataList);
+        playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList() - 1);
     }
 
     private void handleClickPlaylistFolder() {
-        UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
+        UizaDialogPlaylistFolder uizaDialogPlaylistFolder = new UizaDialogPlaylistFolder(activity, isLandscape, UizaDataV3.getInstance().getDataList(), UizaDataV3.getInstance().getCurrentPositionOfDataList(), new CallbackPlaylistFolder() {
             @Override
             public void onClickItem(Data data, int position) {
                 //LLog.d(TAG, "UizaDialogPlaylistFolder onClickItem " + gson.toJson(data));
-                currentPositionOfDataList = position;
-                playPlaylistPosition(currentPositionOfDataList);
+                //currentPositionOfDataList = position;
+                UizaDataV3.getInstance().setCurrentPositionOfDataList(position);
+                //playPlaylistPosition(currentPositionOfDataList);
+                playPlaylistPosition(position);
             }
 
             @Override

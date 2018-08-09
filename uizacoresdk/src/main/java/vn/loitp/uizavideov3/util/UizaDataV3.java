@@ -378,4 +378,32 @@ public class UizaDataV3 {
         this.data = data;
     }
     //end singleton data if play entity
+
+    //start singleton data if play playlist folder
+    private List<Data> dataList;
+    private int currentPositionOfDataList = 0;
+
+    public void setDataList(List<Data> dataList) {
+        this.dataList = dataList;
+    }
+
+    public List<Data> getDataList() {
+        return dataList;
+    }
+
+    public int getCurrentPositionOfDataList() {
+        return currentPositionOfDataList;
+    }
+
+    public void setCurrentPositionOfDataList(int currentPositionOfDataList) {
+        this.currentPositionOfDataList = currentPositionOfDataList;
+    }
+
+    public Data getDataWithPositionOfDataList(int position) {
+        if (dataList == null || dataList.isEmpty() || dataList.get(position) == null) {
+            return null;
+        }
+        return dataList.get(position);
+    }
+    //end singleton data if play playlist folder
 }

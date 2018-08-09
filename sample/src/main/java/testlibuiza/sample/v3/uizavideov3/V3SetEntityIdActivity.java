@@ -21,22 +21,22 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
     //workspace stag
-    /*private final String DF_DOMAIN_API = "android-api.uiza.co";
+    private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final int env = Constants.ENVIRONMENT_STAG;
     private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
     private final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
-    private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";*/
+    private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
 
     //workspace prod
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+    /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
     private final int env = Constants.ENVIRONMENT_PROD;
     private final String entityIdDefaultVOD = "71472a9b-662d-4eee-837e-3ad98b99140a";
     private final String entityIdDefaultLIVE = "6356e2c3-00af-495e-b60c-361f976b4084";
-    private final String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
+    private final String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";*/
 
     //for entity id
     private EditText etInputEntityId;
