@@ -35,10 +35,10 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 /**

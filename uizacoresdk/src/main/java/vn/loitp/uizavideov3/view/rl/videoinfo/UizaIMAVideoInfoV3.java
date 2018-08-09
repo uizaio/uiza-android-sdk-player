@@ -27,8 +27,8 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideov3.UizaUtil;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.

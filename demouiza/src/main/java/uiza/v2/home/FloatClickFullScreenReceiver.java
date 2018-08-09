@@ -7,7 +7,7 @@ import android.content.Intent;
 import uiza.v2.home.cannotslide.UizaPlayerActivityV2;
 import uiza.v2.home.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
  * Created by loitp on 5/8/2018.

@@ -20,8 +20,8 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.UizaUtil;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId;

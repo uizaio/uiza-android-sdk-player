@@ -28,7 +28,7 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRet
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 

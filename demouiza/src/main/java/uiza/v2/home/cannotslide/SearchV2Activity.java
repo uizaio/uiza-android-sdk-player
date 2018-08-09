@@ -28,7 +28,7 @@ import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 

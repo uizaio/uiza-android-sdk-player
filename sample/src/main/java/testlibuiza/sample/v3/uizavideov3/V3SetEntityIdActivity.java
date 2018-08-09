@@ -14,8 +14,8 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.UizaUtil;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 public class V3SetEntityIdActivity extends BaseActivity {
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;

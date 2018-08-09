@@ -25,8 +25,8 @@ import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.UizaUtil;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 public class MainActivity extends BaseActivity {
 

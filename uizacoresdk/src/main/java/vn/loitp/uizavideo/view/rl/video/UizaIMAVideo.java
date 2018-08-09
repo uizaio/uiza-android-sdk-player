@@ -68,7 +68,7 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
  * Created by loitp on 5/8/2018.

@@ -14,7 +14,7 @@ import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
  * Created by LENOVO on 4/28/2018.

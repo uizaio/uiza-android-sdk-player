@@ -33,7 +33,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetada
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {

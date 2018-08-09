@@ -32,7 +32,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.FloatUizaPlayerManager;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 /**

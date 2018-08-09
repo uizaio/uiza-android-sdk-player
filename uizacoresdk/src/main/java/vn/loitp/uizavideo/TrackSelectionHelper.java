@@ -47,7 +47,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.util.DemoUtil;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
  * Helper class for displaying track selection dialogs.

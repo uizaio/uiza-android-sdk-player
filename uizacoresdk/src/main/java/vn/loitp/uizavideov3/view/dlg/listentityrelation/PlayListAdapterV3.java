@@ -23,7 +23,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideov3.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class PlayListAdapterV3 extends RecyclerView.Adapter<PlayListAdapterV3.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();

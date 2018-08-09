@@ -40,8 +40,8 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
-import vn.loitp.uizavideov3.view.util.UizaInputV3;
+import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaInputV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
