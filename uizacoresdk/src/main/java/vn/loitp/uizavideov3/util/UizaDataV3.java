@@ -387,6 +387,17 @@ public class UizaDataV3 {
     private List<Data> dataList;
     private int currentPositionOfDataList = 0;
 
+    /*
+    **Trả về true nếu playlist folder
+    * Trả về flase nếu play entity
+     */
+    public boolean isPlayWithPlaylistFolder() {
+        if (dataList == null) {
+            return true;
+        }
+        return false;
+    }
+
     public void setDataList(List<Data> dataList) {
         this.dataList = dataList;
     }

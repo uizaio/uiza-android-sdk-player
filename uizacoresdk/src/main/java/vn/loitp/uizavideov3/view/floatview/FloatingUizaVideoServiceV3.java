@@ -47,7 +47,6 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideov3.util.UizaDataV3;
@@ -483,7 +482,13 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public void onPlayerStateEnded() {
         //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
+        if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+            LLog.d(TAG, "Đang play ở chế độ playlist folder -> auto switch next data");
 
+
+        } else {
+            LLog.d(TAG, "Đang play ở chế độ entity -> do nothing");
+        }
     }
 
     private boolean isSendMsgToActivity;
