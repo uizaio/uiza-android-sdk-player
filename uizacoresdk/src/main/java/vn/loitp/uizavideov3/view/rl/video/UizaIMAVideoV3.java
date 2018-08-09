@@ -62,7 +62,6 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.data.EventBusData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
@@ -240,7 +239,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "init getDetailEntity onSuccess");
 
                 //save current data
-                UizaPref.setData(activity, mData, gson);
+                UizaUtil.setData(activity, mData, gson);
 
                 UizaInputV3 uizaInputV3 = new UizaInputV3();
                 uizaInputV3.setData(mData);
@@ -316,7 +315,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isLivestream = UizaDataV3.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
 
-        if (UizaPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
         } else {
             setDefautValueForFlagIsTracked();
@@ -549,7 +548,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
-        UizaPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
+        UizaUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
@@ -678,7 +677,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to visible
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1759,7 +1759,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*Kiểm tra xem nếu activity được tạo thành công nếu user click vào pip thì sẽ bắn 1 eventbus báo rằng đã init success
      * receiver FloatingUizaVideoServiceV3 để truyền current position */
     public void setEventBusMsgFromActivityIsInitSuccess() {
-        if (UizaPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);
             ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

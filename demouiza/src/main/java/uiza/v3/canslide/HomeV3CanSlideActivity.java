@@ -16,7 +16,6 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -36,7 +35,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
-        UizaPref.setAcitivityCanSlideIsRunning(activity, true);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -66,7 +65,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             }
         });
         replaceFragment(new FrmHomeV3());
-        if (UizaPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
             //TODO
             play(null);
         }
@@ -103,7 +102,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoBottomV3 frmVideoBottom;
 
     private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!UizaPref.getClickedPip(activity)) {
+        if (!UizaUtil.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
@@ -124,7 +123,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     public void play(Data data) {
         if (data == null) {
-            data = UizaPref.getData(activity, LSApplication.getInstance().getGson());
+            data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
             if (data == null) {
                 LLog.e(TAG, "play error data null");
                 return;
@@ -173,7 +172,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        UizaPref.setAcitivityCanSlideIsRunning(activity, false);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
         HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
@@ -226,7 +225,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
-                        UizaPref.setClickedPip(activity, false);
+                        UizaUtil.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(data.getId(), true);
                     }
@@ -283,7 +282,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                UizaPref.setClickedPip(activity, false);
+                UizaUtil.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data.getId(), true);
             }
@@ -342,7 +341,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
-                if (UizaPref.getClickedPip(activity)) {
+                if (UizaUtil.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

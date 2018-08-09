@@ -19,8 +19,8 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 public class SplashActivityV3 extends BaseActivity {
@@ -156,7 +156,7 @@ public class SplashActivityV3 extends BaseActivity {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
-                            UizaPref.setClickedPip(activity, false);
+                            UizaUtil.setClickedPip(activity, false);
                             startActivity(intent);
                             LActivityUtil.tranIn(activity);
                             finish();

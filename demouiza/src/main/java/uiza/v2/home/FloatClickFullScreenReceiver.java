@@ -7,7 +7,7 @@ import android.content.Intent;
 import uiza.v2.home.cannotslide.UizaPlayerActivityV2;
 import uiza.v2.home.canslide.HomeV2CanSlideActivity;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.UizaPref;
+import vn.loitp.uizavideov3.UizaUtil;
 
 /**
  * Created by loitp on 5/8/2018.
@@ -23,11 +23,11 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         String entityCover = i.getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
         String entityTitle = i.getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
 
-        boolean isSlideUizaVideoEnabled = UizaPref.getSlideUizaVideoEnabled(context);
+        boolean isSlideUizaVideoEnabled = UizaUtil.getSlideUizaVideoEnabled(context);
 
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             if (isSlideUizaVideoEnabled) {
-                boolean isActivityRunning = UizaPref.getAcitivityCanSlideIsRunning(context);
+                boolean isActivityRunning = UizaUtil.getAcitivityCanSlideIsRunning(context);
                 Intent intent = new Intent(context, HomeV2CanSlideActivity.class);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);

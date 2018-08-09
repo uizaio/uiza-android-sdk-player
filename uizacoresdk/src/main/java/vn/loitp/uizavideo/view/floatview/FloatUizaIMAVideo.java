@@ -22,7 +22,6 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.ApiMaster;
 import vn.loitp.restapi.restclient.RestClientTracking;
@@ -33,6 +32,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.manager.FloatUizaPlayerManager;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.views.LToast;
 
 /**
@@ -228,7 +228,7 @@ public class FloatUizaIMAVideo extends RelativeLayout {
     private void trackUiza(final UizaTracking uizaTracking) {
         //LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
-            String currentApiTrackingEndPoint = UizaPref.getApiTrackEndPoint(getContext());
+            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint(getContext());
             //LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");

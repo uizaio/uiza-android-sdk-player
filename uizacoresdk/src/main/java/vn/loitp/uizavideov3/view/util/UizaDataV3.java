@@ -14,11 +14,11 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.utils.util.Utils;
 
 /**
@@ -44,7 +44,7 @@ public class UizaDataV3 {
 
     public void setCurrentPlayerId(String currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
-        UizaPref.setSlideUizaVideoEnabled(Utils.getContext(), true);
+        UizaUtil.setSlideUizaVideoEnabled(Utils.getContext(), true);
     }
 
     private String mDomainAPI;
@@ -81,7 +81,7 @@ public class UizaDataV3 {
         mAppId = appId;
 
         RestClientV3.init(Constants.PREFIXS + domainAPI, token);
-        UizaPref.setToken(Utils.getContext(), token);
+        UizaUtil.setToken(Utils.getContext(), token);
 
         if (environment == Constants.ENVIRONMENT_DEV) {
             RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
@@ -116,7 +116,7 @@ public class UizaDataV3 {
     private void initTracking(String domainAPITracking) {
         mDomainAPITracking = domainAPITracking;
         RestClientTracking.init(domainAPITracking);
-        UizaPref.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
+        UizaUtil.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
     }
 
     private List<UizaInputV3> uizaInputV3List = new ArrayList<>();

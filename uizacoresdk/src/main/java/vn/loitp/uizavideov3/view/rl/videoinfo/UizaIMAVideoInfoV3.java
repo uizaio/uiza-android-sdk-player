@@ -23,11 +23,11 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
 /**
@@ -159,7 +159,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         this.data = data;
         if (this.data == null || this.data.getId() == null || this.data.getId() == null) {
             LLog.d(TAG, "setup data is null");
-            this.data = UizaPref.getData(activity, gson);
+            this.data = UizaUtil.getData(activity, gson);
         }
         LLog.d(TAG, "setup " + gson.toJson(this.data));
         updateUI();

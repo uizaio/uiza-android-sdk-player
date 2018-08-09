@@ -29,13 +29,13 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
@@ -69,9 +69,9 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
 
-        if (UizaPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            Data data = UizaPref.getData(activity, LSApplication.getInstance().getGson());
+            Data data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
             play(data.getId());
         } else {
             //check if play entity

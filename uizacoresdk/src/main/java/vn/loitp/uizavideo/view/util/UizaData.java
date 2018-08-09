@@ -12,9 +12,9 @@ import java.util.List;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
+import vn.loitp.uizavideov3.UizaUtil;
 
 /**
  * Created by LENOVO on 4/28/2018.
@@ -124,7 +124,7 @@ public class UizaData {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
         Gson gson = new Gson();
-        Auth auth = UizaPref.getAuth(context, gson);
+        Auth auth = UizaUtil.getAuth(context, gson);
         if (auth != null) {
             uizaTracking.setAppId(auth.getData().getAppId());
         }

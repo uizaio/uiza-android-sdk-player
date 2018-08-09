@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
@@ -24,8 +23,8 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
     public void onReceive(Context context, Intent i) {
         String packageNameReceived = i.getStringExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME);
         //LLog.d(TAG, "packageNameReceived " + packageNameReceived);
-        String classNameOfPlayer = UizaPref.getClassNameOfPlayer(context);
-        data = UizaPref.getData(context, gson);
+        String classNameOfPlayer = UizaUtil.getClassNameOfPlayer(context);
+        data = UizaUtil.getData(context, gson);
         if (data == null || classNameOfPlayer == null) {
             return;
         }
@@ -35,7 +34,7 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
                 //TODO check current app is background or forground
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
                 Intent intent = new Intent(context, classNamePfPlayer);
-                UizaPref.setClassNameOfPlayer(context, null);//clear class name of player
+                UizaUtil.setClassNameOfPlayer(context, null);//clear class name of player
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

@@ -12,7 +12,6 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
@@ -30,7 +29,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UizaPref.setAcitivityCanSlideIsRunning(activity, true);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -59,7 +58,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         });
         UizaUtil.setupRestClientV2(activity);
         replaceFragment(new FrmHome());
-        if (UizaPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
             //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
@@ -127,7 +126,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
-                        UizaPref.setClickedPip(activity, false);
+                        UizaUtil.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
                     }
@@ -157,7 +156,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTop.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-                if (UizaPref.getClickedPip(activity)) {
+                if (UizaUtil.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -183,7 +182,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                UizaPref.setClickedPip(activity, false);
+                UizaUtil.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(item.getId(), item.getName(), item.getThumbnail(), true);
             }
@@ -191,7 +190,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
     }
 
     private void initFrmTop(String entityId, String entityTitle, String videoCoverUrl, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!UizaPref.getClickedPip(activity)) {
+        if (!UizaUtil.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunning(activity);
         }
 
@@ -257,7 +256,7 @@ public class HomeV2CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        UizaPref.setAcitivityCanSlideIsRunning(activity, false);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
         super.onDestroy();
     }
 }
