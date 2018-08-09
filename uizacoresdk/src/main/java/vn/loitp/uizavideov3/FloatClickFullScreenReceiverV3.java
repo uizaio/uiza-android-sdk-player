@@ -32,6 +32,7 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         LLog.d(TAG, "onReceive " + LPref.getClassNameOfPlayer(context));
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             try {
+                //TODO check current app is background or forground
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
                 Intent intent = new Intent(context, classNamePfPlayer);
                 LPref.setClassNameOfPlayer(context, null);//clear class name of player
