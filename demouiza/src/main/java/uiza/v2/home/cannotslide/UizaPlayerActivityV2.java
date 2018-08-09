@@ -26,7 +26,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -53,7 +53,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
         String entityId = null;
         String entityCover = null;
         String entityTitle = null;
-        if (LPref.getClickedPip(activity)) {
+        if (UizaPref.getClickedPip(activity)) {
             //activity is called from PiP Service
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
@@ -294,7 +294,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            if (LPref.getClickedPip(activity)) {
+            if (UizaPref.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -312,7 +312,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             } else {
                 boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
                 if (isPlayPrev) {
-                    LPref.setClickedPip(activity, false);
+                    UizaPref.setClickedPip(activity, false);
                     setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
                     activity.onBackPressed();
@@ -323,7 +323,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        LPref.setClickedPip(activity, false);
+        UizaPref.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 
@@ -355,7 +355,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     public void onClickItemBottom(Item item, int position) {
-        LPref.setClickedPip(activity, false);
+        UizaPref.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 

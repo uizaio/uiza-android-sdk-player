@@ -59,7 +59,7 @@ import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -240,7 +240,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "init getDetailEntity onSuccess");
 
                 //save current data
-                LPref.setData(activity, mData, gson);
+                UizaPref.setData(activity, mData, gson);
 
                 UizaInputV3 uizaInputV3 = new UizaInputV3();
                 uizaInputV3.setData(mData);
@@ -316,7 +316,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isLivestream = UizaDataV3.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
 
-        if (LPref.getClickedPip(activity)) {
+        if (UizaPref.getClickedPip(activity)) {
             LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
         } else {
             setDefautValueForFlagIsTracked();
@@ -549,7 +549,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
-        LPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
+        UizaPref.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
@@ -1757,7 +1757,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*Kiểm tra xem nếu activity được tạo thành công nếu user click vào pip thì sẽ bắn 1 eventbus báo rằng đã init success
      * receiver FloatingUizaVideoServiceV3 để truyền current position */
     public void setEventBusMsgFromActivityIsInitSuccess() {
-        if (LPref.getClickedPip(activity)) {
+        if (UizaPref.getClickedPip(activity)) {
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);
             ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

@@ -16,7 +16,7 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -26,7 +26,6 @@ import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideo.view.util.UizaUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
-import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -37,7 +36,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
-        LPref.setAcitivityCanSlideIsRunning(activity, true);
+        UizaPref.setAcitivityCanSlideIsRunning(activity, true);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -67,7 +66,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             }
         });
         replaceFragment(new FrmHomeV3());
-        if (LPref.getClickedPip(activity)) {
+        if (UizaPref.getClickedPip(activity)) {
             //TODO
             play(null);
         }
@@ -104,7 +103,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoBottomV3 frmVideoBottom;
 
     private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaPref.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
@@ -125,7 +124,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     public void play(Data data) {
         if (data == null) {
-            data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            data = UizaPref.getData(activity, LSApplication.getInstance().getGson());
             if (data == null) {
                 LLog.e(TAG, "play error data null");
                 return;
@@ -174,7 +173,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        LPref.setAcitivityCanSlideIsRunning(activity, false);
+        UizaPref.setAcitivityCanSlideIsRunning(activity, false);
         HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
@@ -188,7 +187,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         if (data == null) {
             return;
         } else {
-            LPref.setData(activity, data, LSApplication.getInstance().getGson());
+            UizaPref.setData(activity, data, LSApplication.getInstance().getGson());
         }
         if (!LConnectivityUtil.isConnected(activity)) {
             LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
@@ -227,7 +226,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV2.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
-                        LPref.setClickedPip(activity, false);
+                        UizaPref.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(data.getId(), true);
                     }
@@ -257,7 +256,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                /*if (LPref.getClickedPip(activity)) {
+                /*if (UizaPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -284,7 +283,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                LPref.setClickedPip(activity, false);
+                UizaPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data.getId(), true);
             }
@@ -343,7 +342,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
-                if (LPref.getClickedPip(activity)) {
+                if (UizaPref.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -370,7 +369,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void onClickListEntityRelation(Item item, int position) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder onClickListEntityRelation " + position);
-                /*LPref.setClickedPip(activity, false);
+                /*UizaPref.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data.getId(), true);*/
             }

@@ -44,7 +44,7 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -193,7 +193,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LUIUtil.showProgressBar(progressBar);
 
         //ko track neu play tu clicked pip
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaPref.getClickedPip(activity)) {
             //cannot delete delay below, only works after 500mls
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -570,7 +570,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
         //ko track neu play tu clicked pip
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaPref.getClickedPip(activity)) {
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
@@ -913,7 +913,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //LLog.d(TAG, "getLinkPlay");
         UizaUtil.setupRestClientV2(activity);
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
+        Auth auth = UizaPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
@@ -1016,7 +1016,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     /*private void getLinkDownload() {
         LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
+        Auth auth = UizaPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             showDialogError("Error auth == null || auth.getAppId() == null");
             return;

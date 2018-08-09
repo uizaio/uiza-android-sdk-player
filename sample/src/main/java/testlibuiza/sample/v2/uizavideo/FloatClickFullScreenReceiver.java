@@ -8,7 +8,7 @@ import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 
 /**
  * Created by LENOVO on 5/8/2018.
@@ -28,11 +28,11 @@ public class FloatClickFullScreenReceiver extends BroadcastReceiver {
         LLog.d(TAG, "entityCover " + entityCover);
         LLog.d(TAG, "entityTitle " + entityTitle);
 
-        boolean isSlideUizaVideoEnabled = LPref.getSlideUizaVideoEnabled(context);
+        boolean isSlideUizaVideoEnabled = UizaPref.getSlideUizaVideoEnabled(context);
         //LLog.d(TAG, "isSlideUizaVideoEnabled " + isSlideUizaVideoEnabled);
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             if (isSlideUizaVideoEnabled) {
-                boolean isActivityRunning = LPref.getAcitivityCanSlideIsRunning(context);
+                boolean isActivityRunning = UizaPref.getAcitivityCanSlideIsRunning(context);
                 Intent intent = new Intent(context, V2UizaVideoIMActivitySlide.class);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_ID, entityId);
                 intent.putExtra(Constants.FLOAT_LINK_ENTITY_TITLE, entityTitle);

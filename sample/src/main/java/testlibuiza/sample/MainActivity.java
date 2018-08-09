@@ -16,7 +16,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV2;
@@ -58,21 +58,21 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_uiza_video_cannot_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setAcitivityCanSlideIsRunning(activity, false);
+                UizaPref.setAcitivityCanSlideIsRunning(activity, false);
                 callUizaVideoCannotSlideV2();
             }
         });
         findViewById(R.id.bt_uiza_video_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setAcitivityCanSlideIsRunning(activity, true);
+                UizaPref.setAcitivityCanSlideIsRunning(activity, true);
                 callUizaVideoSlideV2();
             }
         });
         findViewById(R.id.bt_uiza_video_slide_v2_2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setAcitivityCanSlideIsRunning(activity, true);
+                UizaPref.setAcitivityCanSlideIsRunning(activity, true);
                 callUizaVideoSlideV2_2();
             }
         });
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity {
         subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
-                LPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
+                UizaPref.setAuth(activity, auth, LSApplication.getInstance().getGson());
                 RestClientV2.addAuthorization(auth.getData().getToken());
             }
 
@@ -135,21 +135,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void callUizaVideoCannotSlideV2() {
-        LPref.setSlideUizaVideoEnabled(activity, false);
+        UizaPref.setSlideUizaVideoEnabled(activity, false);
         Intent intent = new Intent(activity, V2UizaVideoIMActivity.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
 
     private void callUizaVideoSlideV2() {
-        LPref.setSlideUizaVideoEnabled(activity, true);
+        UizaPref.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
 
     private void callUizaVideoSlideV2_2() {
-        LPref.setSlideUizaVideoEnabled(activity, true);
+        UizaPref.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide2.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);

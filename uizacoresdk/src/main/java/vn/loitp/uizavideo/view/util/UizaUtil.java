@@ -28,7 +28,7 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
@@ -279,17 +279,17 @@ public class UizaUtil {
 
     public static void setupRestClientV2(Activity activity) {
         if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
-            String currentApi = LPref.getApiEndPoint(activity);
+            String currentApi = UizaPref.getApiEndPoint(activity);
             if (currentApi == null || currentApi.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
                 return;
             }
-            String token = LPref.getToken(activity);
+            String token = UizaPref.getToken(activity);
             if (token == null || token.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 trackUiza token==null||token.isEmpty()");
                 return;
             }
-            String currentTrackApi = LPref.getApiTrackEndPoint(activity);
+            String currentTrackApi = UizaPref.getApiTrackEndPoint(activity);
             if (currentTrackApi == null || currentTrackApi.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 currentTrackApi == null || currentTrackApi.isEmpty()");
                 return;

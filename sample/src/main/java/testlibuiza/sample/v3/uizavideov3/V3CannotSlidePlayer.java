@@ -29,7 +29,7 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -69,9 +69,9 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
 
-        if (LPref.getClickedPip(activity)) {
+        if (UizaPref.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            Data data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            Data data = UizaPref.getData(activity, LSApplication.getInstance().getGson());
             play(data.getId());
         } else {
             //check if play entity

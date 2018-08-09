@@ -13,7 +13,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 
@@ -113,7 +113,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setClickedPip(activity, false);
+                UizaPref.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
@@ -168,7 +168,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStartPf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setClickedPip(activity, false);
+                UizaPref.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);

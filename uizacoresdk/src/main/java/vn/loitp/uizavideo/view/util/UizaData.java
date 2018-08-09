@@ -12,7 +12,7 @@ import java.util.List;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 
@@ -124,7 +124,7 @@ public class UizaData {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
         Gson gson = new Gson();
-        Auth auth = LPref.getAuth(context, gson);
+        Auth auth = UizaPref.getAuth(context, gson);
         if (auth != null) {
             uizaTracking.setAppId(auth.getData().getAppId());
         }
@@ -189,7 +189,7 @@ public class UizaData {
     /*public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
-        ResultGetToken resultGetToken = LPref.getResultGetToken(context);
+        ResultGetToken resultGetToken = UizaPref.getResultGetToken(context);
         uizaTracking.setAppId(resultGetToken.getData().getAppId());
         //page_type
         uizaTracking.setPageType("app");

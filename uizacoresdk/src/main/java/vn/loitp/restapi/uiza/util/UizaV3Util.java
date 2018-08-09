@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -30,7 +30,7 @@ public class UizaV3Util {
         if (uizaWorkspaceInfo == null || uizaWorkspaceInfo.getUsername() == null || uizaWorkspaceInfo.getPassword() == null || uizaWorkspaceInfo.getUrlApi() == null) {
             throw new NullPointerException("UizaWorkspaceInfo cannot be null or empty!");
         }
-        LPref.setUizaWorkspaceInfo(context, uizaWorkspaceInfo);
+        UizaPref.setUizaWorkspaceInfo(context, uizaWorkspaceInfo);
         RestClientV3.init(Constants.PREFIXS + uizaWorkspaceInfo.getUrlApi());
     }
 
@@ -38,15 +38,15 @@ public class UizaV3Util {
         if (context == null) {
             return null;
         }
-        return LPref.getUizaWorkspaceInfo(context);
+        return UizaPref.getUizaWorkspaceInfo(context);
     }
 
     public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
-        LPref.setResultGetToken(context, resultGetToken);
+        UizaPref.setResultGetToken(context, resultGetToken);
     }
 
     public static ResultGetToken getResultGetToken(Context context) {
-        return LPref.getResultGetToken(context);
+        return UizaPref.getResultGetToken(context);
     }
 
     public static String getToken(Context context) {
@@ -128,10 +128,10 @@ public class UizaV3Util {
     }
 
     /*public static void setData(Activity activity, Data data) {
-        LPref.setData(activity, data, new Gson());
+        UizaPref.setData(activity, data, new Gson());
     }*/
 
     public static Data getData(Activity activity) {
-        return LPref.getData(activity, new Gson());
+        return UizaPref.getData(activity, new Gson());
     }
 }

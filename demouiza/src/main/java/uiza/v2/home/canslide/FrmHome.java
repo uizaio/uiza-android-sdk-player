@@ -27,7 +27,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
@@ -162,9 +162,9 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         genHomeMenu();
 
         if (RestClientV2.getRetrofit() == null) {
-            String apiEndPoint = LPref.getApiEndPoint(getActivity());
-            String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getActivity());
-            String token = LPref.getToken(getActivity());
+            String apiEndPoint = UizaPref.getApiEndPoint(getActivity());
+            String currentApiTrackingEndPoint = UizaPref.getApiTrackEndPoint(getActivity());
+            String token = UizaPref.getToken(getActivity());
 
             LLog.d(TAG, "getRetrofit apiEndPoint " + apiEndPoint);
             LLog.d(TAG, "getRetrofit currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
@@ -280,7 +280,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Item item, int position) {
-        LPref.setClickedPip(getActivity(), false);
+        UizaPref.setClickedPip(getActivity(), false);
         ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 

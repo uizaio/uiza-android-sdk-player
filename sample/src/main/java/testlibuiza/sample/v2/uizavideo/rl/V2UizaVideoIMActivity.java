@@ -26,7 +26,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
@@ -273,7 +273,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            if (LPref.getClickedPip(activity)) {
+            if (UizaPref.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

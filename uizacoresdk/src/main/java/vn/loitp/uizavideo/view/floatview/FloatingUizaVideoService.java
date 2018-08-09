@@ -40,7 +40,7 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
@@ -148,7 +148,7 @@ public class FloatingUizaVideoService extends Service implements FloatUizaIMAVid
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setClickedPip(getApplicationContext(), true);
+                UizaPref.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 //intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());

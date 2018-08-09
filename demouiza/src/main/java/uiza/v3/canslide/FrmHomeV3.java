@@ -29,7 +29,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
@@ -265,7 +265,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Data data, int position) {
-        LPref.setClickedPip(getActivity(), false);
+        UizaPref.setClickedPip(getActivity(), false);
         ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 

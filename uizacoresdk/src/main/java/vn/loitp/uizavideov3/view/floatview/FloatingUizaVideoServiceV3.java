@@ -45,7 +45,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -82,7 +82,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
-        data = LPref.getData(this, gson);
+        data = UizaPref.getData(this, gson);
         if (data == null) {
             LLog.d(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);
@@ -182,7 +182,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setClickedPip(getApplicationContext(), true);
+                UizaPref.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
