@@ -961,19 +961,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
+        if (UizaUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
+            uizaPlayerManagerV3.getPlayer().setPlayWhenReady(true);
+        }
         if (uizaCallback != null) {
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uizaCallback.isInitResult(true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
         }
-
         if (isCastingChromecast) {
             LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
             lastCurrentPosition = 0;
             handleConnectedChromecast();
             showController();
         }
-
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
@@ -1042,6 +1044,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
             uizaPlayerManagerV3.init();
+            if (UizaUtil.getClickedPip(activity)) {
+                LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
+                uizaPlayerManagerV3.getPlayer().setPlayWhenReady(false);
+            } else {
+                LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
+            }
             if (isCalledFromConnectionEventBus) {
                 uizaPlayerManagerV3.setRunnable();
                 isCalledFromConnectionEventBus = false;
