@@ -619,7 +619,7 @@ public class UizaUtil {
         editor.apply();
     }
 
-    public static Data getData(Context context, Gson gson) {
+    /*public static Data getData(Context context, Gson gson) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(V3DATA, null);
         return gson.fromJson(json, Data.class);
@@ -629,6 +629,6 @@ public class UizaUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(V3DATA, gson.toJson(data));
         editor.apply();
-    }
+    }*/
     //=============================================================================END PREF
 }

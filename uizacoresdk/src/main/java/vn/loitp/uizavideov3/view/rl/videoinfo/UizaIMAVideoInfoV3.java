@@ -50,7 +50,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
     private TextView tvDebug;
     private TextView tvMoreLikeThisMsg;
     private NestedScrollView nestedScrollView;
-    private Data data;
+    //private Data data;
 
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -156,12 +156,12 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
             LLog.d(TAG, "setup resultRetrieveAnEntity == null");
             return;
         }
-        this.data = data;
-        if (this.data == null || this.data.getId() == null || this.data.getId() == null) {
-            LLog.d(TAG, "setup data is null");
-            this.data = UizaUtil.getData(activity, gson);
+        //this.data = data;
+        if (UizaDataV3.getInstance().getData() == null || UizaDataV3.getInstance().getData().getId() == null || UizaDataV3.getInstance().getData().getId() == null) {
+            LLog.e(TAG, "setup data is null");
+            //this.data = UizaUtil.getData(activity, gson);
         }
-        LLog.d(TAG, "setup " + gson.toJson(this.data));
+        //LLog.d(TAG, "setup " + gson.toJson(UizaDataV3.getInstance().getData()));
         updateUI();
     }
 
@@ -169,12 +169,12 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "Data is null";
         try {
-            tvVideoName.setText(data.getName());
+            tvVideoName.setText(UizaDataV3.getInstance().getData().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
         }
-        if (data.getCreatedAt() != null && !data.getCreatedAt().isEmpty()) {
-            tvVideoTime.setText(LDateUtils.getDateWithoutTime(data.getCreatedAt()));
+        if (UizaDataV3.getInstance().getData().getCreatedAt() != null && !UizaDataV3.getInstance().getData().getCreatedAt().isEmpty()) {
+            tvVideoTime.setText(LDateUtils.getDateWithoutTime(UizaDataV3.getInstance().getData().getCreatedAt()));
         } else {
             tvVideoTime.setText(nullS);
         }
@@ -182,7 +182,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         tvVideoRate.setText("12+");
 
         try {
-            tvVideoDescription.setText(data.getDescription().isEmpty() ? data.getShortDescription().isEmpty() ? emptyS : data.getShortDescription() : data.getDescription());
+            tvVideoDescription.setText(UizaDataV3.getInstance().getData().getDescription().isEmpty() ? UizaDataV3.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UizaDataV3.getInstance().getData().getShortDescription() : UizaDataV3.getInstance().getData().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
         }

@@ -123,7 +123,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     public void play(Data data) {
         if (data == null) {
-            data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
+            //data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
+            data = UizaDataV3.getInstance().getData();
             if (data == null) {
                 LLog.e(TAG, "play error data null");
                 return;

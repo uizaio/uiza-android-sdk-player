@@ -50,6 +50,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
@@ -70,7 +71,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private WindowManager.LayoutParams params;
 
-    private Data data;
+    //private Data data;
     private String linkPlay;
     private Gson gson = new Gson();
 
@@ -82,8 +83,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
-        data = UizaUtil.getData(this, gson);
-        if (data == null) {
+        //data = UizaUtil.getData(this, gson);
+        if (UizaDataV3.getInstance().getData() == null) {
             LLog.e(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);
         }

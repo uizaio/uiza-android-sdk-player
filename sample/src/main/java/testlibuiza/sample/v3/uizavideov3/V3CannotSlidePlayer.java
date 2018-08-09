@@ -70,7 +70,8 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            Data data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
+            //Data data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
+            Data data = UizaDataV3.getInstance().getData();
             play(data.getId());
         } else {
             //check if play entity

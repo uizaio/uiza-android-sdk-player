@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
@@ -17,7 +17,7 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
     private final String TAG = getClass().getSimpleName();
-    private Data data;
+    //private Data data;
     private Gson gson = new Gson();
 
     @Override
@@ -25,8 +25,8 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         String packageNameReceived = i.getStringExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME);
         //LLog.d(TAG, "packageNameReceived " + packageNameReceived);
         String classNameOfPlayer = UizaUtil.getClassNameOfPlayer(context);
-        data = UizaUtil.getData(context, gson);
-        if (data == null || classNameOfPlayer == null) {
+        //data = UizaUtil.getData(context, gson);
+        if (UizaDataV3.getInstance().getData() == null || classNameOfPlayer == null) {
             return;
         }
         //LLog.d(TAG, "onReceive " + UizaPref.getClassNameOfPlayer(context));

@@ -18,6 +18,7 @@ import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.utils.util.Utils;
 
 /**
@@ -365,4 +366,16 @@ public class UizaDataV3 {
                 .setContentId(contentId)
                 .setLanguage(language).build();
     }
+
+    //start singleton data if play entity
+    private Data data;
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+    //end singleton data if play entity
 }

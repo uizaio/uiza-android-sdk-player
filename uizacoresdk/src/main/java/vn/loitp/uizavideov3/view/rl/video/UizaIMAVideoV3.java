@@ -158,7 +158,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int firstBrightness = Constants.NOT_FOUND;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
-    private Data mData;//infortion of video (VOD or LIVE)
+    //private Data mData;//information of video (VOD or LIVE)
     private boolean isResultGetLinkPlayDone;
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
@@ -234,15 +234,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaUtil.getDetailEntity((BaseActivity) activity, entityId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
-                mData = d;
+                //mData = d;
                 //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
                 LLog.d(TAG, "init getDetailEntity onSuccess");
 
                 //save current data
-                UizaUtil.setData(activity, mData, gson);
+                //UizaUtil.setData(activity, mData, gson);
+                UizaDataV3.getInstance().setData(d);
 
                 UizaInputV3 uizaInputV3 = new UizaInputV3();
-                uizaInputV3.setData(mData);
+                uizaInputV3.setData(d);
 
                 //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
                 uizaInputV3.setUrlIMAAd(urlIMAAd);
@@ -423,7 +424,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void checkToSetUp() {
         //LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
         if (isResultGetLinkPlayDone) {
-            if (mResultGetLinkPlay != null && mData != null) {
+            if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
                 //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
@@ -946,7 +947,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "onStateReadyFirst");
         if (uizaCallback != null) {
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
-            uizaCallback.isInitResult(true, mResultGetLinkPlay, mData);
+            uizaCallback.isInitResult(true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
         }
 
         if (isCastingChromecast) {
@@ -1818,7 +1819,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private long lastCurrentPosition;
 
     private void playChromecast() {
-        if (mData == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
+        if (UizaDataV3.getInstance().getData() == null || uizaPlayerManagerV3 == null || uizaPlayerManagerV3.getPlayer() == null) {
             return;
         }
         if (uizaPlayerManagerV3 != null) {
@@ -1828,9 +1829,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mData.getDescription());
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, mData.getEntityName());
-        movieMetadata.addImage(new WebImage(Uri.parse(mData.getThumbnail())));
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, UizaDataV3.getInstance().getData().getDescription());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, UizaDataV3.getInstance().getData().getEntityName());
+        movieMetadata.addImage(new WebImage(Uri.parse(UizaDataV3.getInstance().getData().getThumbnail())));
 
         //TODO add subtile vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
