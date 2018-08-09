@@ -54,6 +54,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     private String linkPlay;
     private boolean isLivestream;
 
+    //Lấy vị trí của pip player
     public long getCurrentPosition() {
         return getPlayer().getCurrentPosition();
     }
@@ -148,7 +149,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        //LLog.d(TAG, "initData");
+        //LLog.d(TAG, "initData linkPlay " + linkPlay);
         floatUizaPlayerManager = new FloatUizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         floatUizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
@@ -208,7 +209,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         //LLog.d(TAG, "trackProgress percent: " + percent);
         if (percent >= Constants.PLAYTHROUGH_100) {
             if (isTracked100) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(getContext())) {
@@ -224,7 +225,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
             }
         } else if (percent >= Constants.PLAYTHROUGH_75) {
             if (isTracked75) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(getContext())) {
@@ -240,7 +241,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
             }
         } else if (percent >= Constants.PLAYTHROUGH_50) {
             if (isTracked50) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(getContext())) {
@@ -256,7 +257,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
             }
         } else if (percent >= Constants.PLAYTHROUGH_25) {
             if (isTracked25) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(getContext())) {
@@ -309,6 +310,8 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
 
     public interface Callback {
         public void isInitResult(boolean isInitSuccess);
+
+        public void onPlayerStateEnded();
     }
 
     private Callback callback;
@@ -353,14 +356,14 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
                 UizaDataV3.getInstance().getUizaInputV3().getData().getName(), ivVideoCover, R.drawable.uiza);
     }
 
-    public void removeVideoCover() {
+    protected void removeVideoCover() {
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "removeVideoCover");
             ivVideoCover.setVisibility(GONE);
         }
     }
 
-    public void seekTo(long position) {
+    protected void seekTo(long position) {
         if (floatUizaPlayerManager != null) {
             floatUizaPlayerManager.seekTo(position);
         }
@@ -368,10 +371,18 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
 
     //return true if toggleResume
     //return false if togglePause
-    public boolean togglePauseResume() {
+    protected boolean togglePauseResume() {
         if (floatUizaPlayerManager == null) {
             return false;
         }
         return floatUizaPlayerManager.togglePauseResume();
+    }
+
+    //Nếu pip đang play 1 playlist folder end thì mình phải switch sang position kế tiếp
+    protected void onPlayerStateEnded() {
+        LLog.d(TAG, "onPlayerStateEnded");
+        if (callback != null) {
+            callback.onPlayerStateEnded();
+        }
     }
 }

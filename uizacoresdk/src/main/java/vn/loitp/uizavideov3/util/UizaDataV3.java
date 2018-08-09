@@ -377,6 +377,10 @@ public class UizaDataV3 {
     public void setData(Data data) {
         this.data = data;
     }
+
+    public void clearDataForEntity() {
+        data = null;
+    }
     //end singleton data if play entity
 
     //start singleton data if play playlist folder
@@ -404,6 +408,11 @@ public class UizaDataV3 {
             return null;
         }
         return dataList.get(position);
+    }
+
+    public void clearDataForPlaylistFolder() {
+        dataList = null;
+        currentPositionOfDataList = 0;
     }
     //end singleton data if play playlist folder
 }

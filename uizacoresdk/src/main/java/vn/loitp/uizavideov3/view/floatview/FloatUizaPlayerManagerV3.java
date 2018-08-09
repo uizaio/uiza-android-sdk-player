@@ -404,6 +404,9 @@ import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
+                    if (floatUizaIMAVideoV3 != null) {
+                        floatUizaIMAVideoV3.onPlayerStateEnded();
+                    }
                     hideProgress();
                     break;
                 case Player.STATE_IDLE:

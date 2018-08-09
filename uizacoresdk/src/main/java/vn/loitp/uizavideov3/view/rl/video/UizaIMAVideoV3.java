@@ -84,15 +84,15 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
 import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
+import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaInputV3;
+import vn.loitp.uizavideov3.util.UizaTrackingUtil;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
 import vn.loitp.uizavideov3.view.dlg.playlistfolder.CallbackPlaylistFolder;
 import vn.loitp.uizavideov3.view.dlg.playlistfolder.UizaDialogPlaylistFolder;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaInputV3;
-import vn.loitp.uizavideov3.util.UizaTrackingUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -222,12 +222,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    protected void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "=======================================================");
         LLog.d(TAG, "=======================================================");
         LLog.d(TAG, "=======================================================");
         LLog.d(TAG, "======================NEW SESSION======================");
         LLog.d(TAG, "entityId " + entityId);
+        if (isClearDataPlaylistFolder) {
+            LLog.d(TAG, "xxxxxxxxxxxxxx clearDataForPlaylistFolder");
+            UizaDataV3.getInstance().clearDataForPlaylistFolder();
+        } else {
+            LLog.d(TAG, "xxxxxxxxxxxxxx !clearDataForPlaylistFolder");
+        }
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
@@ -267,15 +273,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
+    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
+    }
+
+    /**
+     * init player with entity id, ad, seekbar thumnail
+     */
     public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
-        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false);
+        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false, true);
     }
 
     /**
      * init player with entity id
      */
     public void init(@NonNull String entityId) {
-        init(entityId, null, null, false);
+        init(entityId, null, null, false, true);
     }
 
     /**
@@ -288,8 +301,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with metadatId (playlist/folder)
      */
+
     public void initPlaylistFolder(String metadataId) {
         LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
+        UizaDataV3.getInstance().clearDataForPlaylistFolder();
         getListAllEntity(metadataId);
     }
 
@@ -2061,7 +2076,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         LLog.d(TAG, "playPlaylistPosition " + position);
-        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId());
+        //init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId());
+        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, null, false, false);
     }
 
     protected void onPlayerEnded() {

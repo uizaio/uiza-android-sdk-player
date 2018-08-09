@@ -480,6 +480,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         }
     }
 
+    @Override
+    public void onPlayerStateEnded() {
+        //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
+
+    }
+
     private boolean isSendMsgToActivity;
 
     private void setupVideo() {
