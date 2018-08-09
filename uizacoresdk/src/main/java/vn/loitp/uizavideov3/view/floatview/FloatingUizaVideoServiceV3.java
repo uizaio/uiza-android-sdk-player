@@ -51,6 +51,7 @@ import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.views.LToast;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -483,12 +484,16 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     public void onPlayerStateEnded() {
         //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
         if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+            //TODO iplm this
             LLog.d(TAG, "Đang play ở chế độ playlist folder -> auto switch next data");
-
-
+            if (Constants.IS_DEBUG) {
+                LToast.show(getApplicationContext(), "TODO iplm Đang play ở chế độ playlist folder -> auto switch next data");
+            }
         } else {
             LLog.d(TAG, "Đang play ở chế độ entity -> do nothing");
         }
+        //Hiện tại khi play xong cho nó ẩn luôn
+        stopSelf();
     }
 
     private boolean isSendMsgToActivity;
@@ -512,8 +517,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         if (rlControl.getVisibility() == View.VISIBLE) {
             //LLog.d(TAG, "setSizeMoveView if");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
-            moveView.getLayoutParams().width = widthScreen * 70 / 100;
-            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
+
+            /*moveView.getLayoutParams().width = widthScreen * 70 / 100;
+            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;*/
+
+            moveView.getLayoutParams().width = widthScreen;
+            moveView.getLayoutParams().height = widthScreen * 9 / 16;
         } else {
             //LLog.d(TAG, "setSizeMoveView else");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
