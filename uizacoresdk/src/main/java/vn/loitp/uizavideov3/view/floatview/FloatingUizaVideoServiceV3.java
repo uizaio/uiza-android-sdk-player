@@ -84,7 +84,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         //LLog.d(TAG, "onStartCommand");
         data = UizaPref.getData(this, gson);
         if (data == null) {
-            LLog.d(TAG, "onStartCommand data == null");
+            LLog.e(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);
         }
         if (intent != null && intent.getExtras() != null) {
@@ -463,13 +463,14 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && floatUizaIMAVideoV3 != null) {
-            //LLog.d(TAG, "isInitResult lastCurrentPosition: " + lastCurrentPosition);
+            LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
             setListener();
             if (lastCurrentPosition > 0) {
                 floatUizaIMAVideoV3.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
+                //bắn cho UizaIMAVideoV3 nhận
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -518,21 +519,24 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         return moveView.getLayoutParams().height;
     }
 
-    //listen msg from activity
+    //listen msg from UizaIMAVideoV3
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
         if (msg == null) {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
+            //Nhận được vị trí từ UizaIMAVideoV3, tiến hành seek tới vị trí này
             //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (floatUizaIMAVideoV3 != null) {
                 floatUizaIMAVideoV3.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
+            //lắng nghe UizaIMAVideoV3 đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
             if (floatUizaIMAVideoV3 != null) {
                 //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
+                //lấy vị trí của pip hiện tại để bắn cho UizaIMAVideoV3
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
                 msgFromServicePosition.setPosition(floatUizaIMAVideoV3.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);

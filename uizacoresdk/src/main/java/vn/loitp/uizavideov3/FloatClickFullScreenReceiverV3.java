@@ -29,7 +29,7 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         if (data == null || classNameOfPlayer == null) {
             return;
         }
-        LLog.d(TAG, "onReceive " + UizaPref.getClassNameOfPlayer(context));
+        //LLog.d(TAG, "onReceive " + UizaPref.getClassNameOfPlayer(context));
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             try {
                 //TODO check current app is background or forground

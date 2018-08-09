@@ -1613,7 +1613,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    //listen msg from service
+    //listen msg from service FloatingUizaVideoServiceV3
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
         //LLog.d(TAG, "get event from service");
@@ -1622,14 +1622,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //when pip float view init success
         if (uizaCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
+            //Hàm này được gọi khi player ở FloatingUizaVideoServiceV3 đã init xong (nó đang play ở vị trí 0)
+            //Nhiệm vụ là mình sẽ gửi vị trí hiện tại sang cho FloatingUizaVideoServiceV3 nó biết
             //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
-
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uizaPlayerManagerV3.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
-
             uizaCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
+            //FloatingUizaVideoService trước khi hủy đã gửi position của pip tới đây
+            //Nhận được vị trí từ FloatingUizaVideoServiceV3 rồi seek tới vị trí này
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
