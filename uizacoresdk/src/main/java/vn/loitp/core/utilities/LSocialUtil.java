@@ -14,7 +14,7 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.uizavideo.view.dlg.share.UizaDialogShare;
-import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.views.LToast;
 
 

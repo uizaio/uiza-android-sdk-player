@@ -19,11 +19,10 @@ import com.daimajia.androidanimations.library.Techniques;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.UizaUtil;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -74,13 +73,13 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
 
         //playListHolder.tvDuration.setText(item.getDuration());
-        UizaUtil.setDuration(playListHolder.tvDuration, data.getDuration());
+        UizaUtil.setTextDuration(playListHolder.tvDuration, data.getDuration());
         //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
         playListHolder.tvName.setText(data.getName());
 
         //TODO correct this
         playListHolder.tvYear.setText("2018");
-        UizaUtil.setDuration(playListHolder.tvDuration2, data.getDuration());
+        UizaUtil.setTextDuration(playListHolder.tvDuration2, data.getDuration());
 
         //TODO correct this
         playListHolder.tvRate.setText("12+");

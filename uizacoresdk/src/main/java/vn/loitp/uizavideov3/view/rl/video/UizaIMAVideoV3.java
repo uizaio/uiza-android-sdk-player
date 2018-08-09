@@ -59,10 +59,10 @@ import vn.loitp.core.utilities.LDeviceUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.core.utilities.UizaPref;
 import vn.loitp.data.EventBusData;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV3;
@@ -80,13 +80,12 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeS
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
 import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
-import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.PlayListCallbackV3;
 import vn.loitp.uizavideov3.view.dlg.listentityrelation.UizaDialogListEntityRelationV3;
 import vn.loitp.uizavideov3.view.dlg.playlistfolder.CallbackPlaylistFolder;
@@ -232,7 +231,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LLog.d(TAG, "entityId " + entityId);
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
-        UizaV3Util.getDetailEntity((BaseActivity) activity, entityId, new UizaV3Util.Callback() {
+        hideLLMsg();
+        UizaUtil.getDetailEntity((BaseActivity) activity, entityId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
                 mData = d;

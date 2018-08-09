@@ -24,7 +24,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.UizaUtil;
 import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;

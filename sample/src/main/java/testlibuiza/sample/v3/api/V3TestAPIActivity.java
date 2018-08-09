@@ -32,7 +32,6 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMeta
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
-import vn.loitp.restapi.uiza.util.UizaV3Util;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.views.LToast;
 
