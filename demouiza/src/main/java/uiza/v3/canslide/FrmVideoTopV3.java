@@ -38,10 +38,11 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
-import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaInputV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
+import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
@@ -347,9 +348,16 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
 
     public void setupPlaylistFolder(final String metadataId) {
         LLog.d(TAG, "setupPlaylistFolder " + metadataId);
+        if (getActivity() == null) {
+            LLog.e(TAG, "setupPlaylistFolder getActivity() == null -> return");
+            return;
+        }
         if (UizaDataV3.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer return");
             return;
+        }
+        if (!UizaUtil.getClickedPip(getActivity())) {
+            UizaUtil.stopServicePiPIfRunningV3(getActivity());
         }
         uizaIMAVideoV3.post(new Runnable() {
             @Override
