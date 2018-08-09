@@ -893,7 +893,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         oldPercent = percent;
         if (percent >= Constants.PLAYTHROUGH_100) {
             if (isTracked100) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again isTracked100 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
@@ -909,7 +909,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else if (percent >= Constants.PLAYTHROUGH_75) {
             if (isTracked75) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again isTracked75 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought75(activity)) {
@@ -925,11 +925,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else if (percent >= Constants.PLAYTHROUGH_50) {
             if (isTracked50) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again isTracked50 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
                 trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
@@ -941,7 +941,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else if (percent >= Constants.PLAYTHROUGH_25) {
             if (isTracked25) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again isTracked25 true");
                 return;
             }
             if (UizaTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {

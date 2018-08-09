@@ -5,7 +5,6 @@ import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 
 import com.google.android.gms.cast.MediaTrack;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +170,7 @@ public class UizaDataV3 {
                 break;
             }
         }
-        LLog.d(TAG, "setUizaInput existAt " + existAt);
+        //LLog.d(TAG, "setUizaInput existAt " + existAt);
         if (existAt != Constants.NOT_FOUND) {
             uizaInputV3List.remove(existAt);
         }
@@ -184,7 +183,7 @@ public class UizaDataV3 {
             for (UizaInputV3 u : uizaInputV3List) {
                 x += " > " + u.getData().getEntityName();
             }
-            LLog.d(TAG, "setUizaInput " + x);
+            //LLog.d(TAG, "setUizaInput " + x);
         }
     }
 
@@ -312,10 +311,10 @@ public class UizaDataV3 {
         uizaTracking.setPlayThrough(playThrough);
         //event_type
         uizaTracking.setEventType(eventType);
-        if (Constants.IS_DEBUG) {
+        /*if (Constants.IS_DEBUG) {
             Gson gson = new Gson();
             LLog.d(TAG, "createTrackingInput " + gson.toJson(uizaTracking));
-        }
+        }*/
         return uizaTracking;
     }
 
@@ -388,18 +387,24 @@ public class UizaDataV3 {
     private int currentPositionOfDataList = 0;
 
     /*
-    **Trả về true nếu playlist folder
-    * Trả về flase nếu play entity
+     **Trả về true nếu playlist folder
+     * Trả về flase nếu play entity
      */
     public boolean isPlayWithPlaylistFolder() {
         if (dataList == null) {
-            return true;
+            //LLog.d(TAG, "isPlayWithPlaylistFolder false");
+            return false;
         }
-        return false;
+        //LLog.d(TAG, "isPlayWithPlaylistFolder true");
+        return true;
     }
 
     public void setDataList(List<Data> dataList) {
         this.dataList = dataList;
+        /*LLog.d(TAG, "setDataList " + dataList.size());
+        if (Constants.IS_DEBUG) {
+            isPlayWithPlaylistFolder();
+        }*/
     }
 
     public List<Data> getDataList() {
@@ -422,6 +427,7 @@ public class UizaDataV3 {
     }
 
     public void clearDataForPlaylistFolder() {
+        LLog.d(TAG, "clearDataForPlaylistFolder");
         dataList = null;
         currentPositionOfDataList = 0;
     }
