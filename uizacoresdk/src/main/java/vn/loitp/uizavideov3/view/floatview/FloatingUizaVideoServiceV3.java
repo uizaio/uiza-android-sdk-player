@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -76,6 +75,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private Gson gson = new Gson();
 
     private boolean isLivestream;
+    private int widthScreen;
 
     public FloatingUizaVideoServiceV3() {
     }
@@ -97,6 +97,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     }
 
     private void findViews() {
+        widthScreen = LScreenUtil.getScreenWidth();
+        LLog.d(TAG, "widthScreen " + widthScreen);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -183,6 +185,17 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //set UI
+                moveView.getLayoutParams().width = widthScreen;
+                moveView.getLayoutParams().height = widthScreen * 9 / 16;
+                moveView.requestLayout();
+                updateUISlide(0, 0);
+                rlControl.setVisibility(View.GONE);
+
+                //stop video
+                floatUizaIMAVideoV3.getPlayer().setPlayWhenReady(false);
+                moveView.setOnTouchListener(null);//disabled move view
+
                 UizaUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
@@ -207,32 +220,39 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         });
     }
 
-    private void slideToPosition(int goToPosX, int goToPosY) {
+    /*private void slideToPosition(int goToPosX, int goToPosY) {
         int currentPosX = params.x;
         int currentPosY = params.y;
-        //LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
+        LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
+
+//        final int a = (int) Math.abs(goToPosX - currentPosX);
+//        final int b = (int) Math.abs(goToPosY - currentPosY);
+
+//        final int a = goToPosX;
+//        final int b = goToPosY;
 
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
-        //LLog.d(TAG, "slideToLeft " + a + " : " + b);
 
-        rlControl.setVisibility(View.GONE);
-        setSizeMoveView();
+        LLog.d(TAG, "slideToPosition " + a + " : " + b);
+
+        //rlControl.setVisibility(View.GONE);
+        //setSizeMoveView();
 
         new CountDownTimer(500, 5) {
             public void onTick(long t) {
                 float step = (500 - t) / 5;
-                //LLog.d(TAG, "slideToLeft onTick step: " + step);
-                //LLog.d(TAG, "slideToLeft onTick: " + a * step / 100 + " - " + b * step / 100);
+                LLog.d(TAG, "slideToLeft onTick step: " + step);
+                //LLog.d(TAG, "slideToPosition onTick: " + a * step / 100 + " - " + b * step / 100);
                 updateUISlide((int) (a * step / 100), (int) (b * step / 100));
             }
 
             public void onFinish() {
-                //LLog.d(TAG, "slideToLeft onFinish");
+                LLog.d(TAG, "slideToLeft onFinish " + a + " x " + b);
                 updateUISlide(a, b);
             }
         }.start();
-    }
+    }*/
 
     private void updateUISlide(int x, int y) {
         params.x = x;
@@ -513,16 +533,18 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     }
 
     private void setSizeMoveView() {
-        int widthScreen = LScreenUtil.getScreenWidth();
         if (rlControl.getVisibility() == View.VISIBLE) {
             //LLog.d(TAG, "setSizeMoveView if");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
 
-            /*moveView.getLayoutParams().width = widthScreen * 70 / 100;
-            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;*/
+            /*moveView.getLayoutParams().width = widthScreen * 50 / 100;
+            moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;*/
 
-            moveView.getLayoutParams().width = widthScreen;
-            moveView.getLayoutParams().height = widthScreen * 9 / 16;
+            moveView.getLayoutParams().width = widthScreen * 70 / 100;
+            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
+
+            /*moveView.getLayoutParams().width = widthScreen;
+            moveView.getLayoutParams().height = widthScreen * 9 / 16;*/
         } else {
             //LLog.d(TAG, "setSizeMoveView else");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
