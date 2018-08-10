@@ -1,6 +1,7 @@
 package vn.loitp.core.utilities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -373,13 +374,13 @@ public class LScreenUtil {
         }
     }
 
-    //0<=value<=99
+    //0<=value<=255
     public static void setBrightness(final Context context, int value) {
         if (context == null) {
             return;
         }
         boolean isCanWriteSystem = checkSystemWritePermission(context);
-        LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
+        //LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
 
         if (!isCanWriteSystem) {
             LDialogUtil.showDialog1(context, "Thông báo", "Uiza cần bạn cần cấp quyền điều chỉnh độ sáng màn hình", "Cấp phép", new LDialogUtil.Callback1() {
@@ -401,7 +402,7 @@ public class LScreenUtil {
         }
 
         //constrain the value of brightness
-        int brightness = 0;
+        /*int brightness = 0;
         if (value <= 0) {
             brightness = 0;
         } else if (value >= 99) {
@@ -424,7 +425,16 @@ public class LScreenUtil {
 
         } catch (Exception e) {
             LLog.e(TAG, "Exception setBrightness " + e.toString());
+        }*/
+        if (value <= 0) {
+            value = 0;
         }
+        if (value >= 255) {
+            value = 255;
+        }
+        ContentResolver cResolver = context.getApplicationContext().getContentResolver();
+        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, value);
+        LLog.d(TAG, "setBrightness: " + value);
     }
 
     //1<=getCurrentBrightness<=255

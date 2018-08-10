@@ -841,9 +841,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
 
         //set bightness max in first play
-        firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255;
+        firstBrightness = LScreenUtil.getCurrentBrightness(getContext());
         LLog.d(TAG, "firstBrightness " + firstBrightness);
-        seekbarBirghtness.setMax(100);
+        seekbarBirghtness.setMax(255);
         setProgressSeekbar(seekbarBirghtness, firstBrightness);
         isSetProgressSeekbarFirst = false;
         //========================<<<<<end init seekbar
@@ -1349,17 +1349,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isSetProgressSeekbarFirst) {
                 exoIvPreview.setVisibility(INVISIBLE);
             } else {
-                if (progress >= 85) {
+                if (progress >= 210) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
-                } else if (progress >= 71) {
+                } else if (progress >= 175) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
-                } else if (progress >= 57) {
+                } else if (progress >= 140) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
-                } else if (progress >= 42) {
+                } else if (progress >= 105) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
-                } else if (progress >= 28) {
+                } else if (progress >= 70) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
-                } else if (progress >= 14) {
+                } else if (progress >= 35) {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
                 } else {
                     exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
