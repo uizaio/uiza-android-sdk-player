@@ -72,7 +72,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             LLog.d(TAG, "called from pip enter fullscreen");
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
-                //TODO
+                playPlaylist(null);
             } else {
                 LLog.d(TAG, "called from pip enter fullscreen -> playlist entity");
                 play(null);

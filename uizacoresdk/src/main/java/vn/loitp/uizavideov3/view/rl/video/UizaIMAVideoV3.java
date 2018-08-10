@@ -314,7 +314,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void initPlaylistFolder(String metadataId) {
         LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
-        UizaDataV3.getInstance().clearDataForPlaylistFolder();
+        if (metadataId == null) {
+            //Được gọi initPlaylistFolder nếu click fullscreen từ pip
+            //do pass metadataId null
+        } else {
+            UizaDataV3.getInstance().clearDataForPlaylistFolder();
+        }
         getListAllEntity(metadataId);
     }
 
@@ -971,9 +976,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        //LLog.d(TAG, "onStateReadyFirst");
         if (UizaUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
+            LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
             uizaPlayerManagerV3.getPlayer().setPlayWhenReady(true);
         }
         if (uizaCallback != null) {
@@ -1057,8 +1062,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 != null) {
             //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
             uizaPlayerManagerV3.init();
-            if (UizaUtil.getClickedPip(activity)) {
-                //LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
+            if (UizaUtil.getClickedPip(activity) && !UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+                LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
                 uizaPlayerManagerV3.getPlayer().setPlayWhenReady(false);
             } else {
                 //LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
@@ -2008,6 +2013,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.showProgress();
         }
         if (UizaDataV3.getInstance().getDataList() == null) {
+            LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() == null -> call api lấy data list");
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
             activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
                 @Override
@@ -2059,12 +2065,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
         } else {
+            LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() != null -> không cần call api lấy data list nữa mà lấy dữ liệu có sẵn play luôn");
             //LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
             playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.hideProgress();
             }
-
             //show controller for playlist folder
             setVisibilityOfPlaylistFolderController(VISIBLE);
         }
