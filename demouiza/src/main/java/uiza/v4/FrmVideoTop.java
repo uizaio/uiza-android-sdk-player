@@ -33,6 +33,7 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -303,7 +304,14 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
-            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+            uizaIMAVideoV3.pauseVideo();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                }
+            });
         }
     }
 

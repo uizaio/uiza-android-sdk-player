@@ -534,6 +534,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void setVideoCover() {
         if (ivVideoCover.getVisibility() != VISIBLE) {
+            LLog.d(TAG, "setVideoCover");
             resetCountTryLinkPlayError();
 
             ivVideoCover.setVisibility(VISIBLE);
@@ -544,7 +545,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            //LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
+            LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
                 tvLiveTime.setText("-");
@@ -641,13 +642,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updatePositionOfProgressBar() {
-        //LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
+        LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
         playerView.post(new Runnable() {
             @Override
             public void run() {
                 int marginL = playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
                 int marginT = playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                //LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
+                LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
                 LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
             }
         });

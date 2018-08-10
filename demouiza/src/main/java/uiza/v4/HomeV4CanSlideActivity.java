@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.google.android.exoplayer2.ui.PlayerControlView;
-
 import uiza.R;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.draggablepanel.DraggableListener;
@@ -114,60 +113,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         setSizeFrmTop();
         draggablePanel.initializeView();
         draggablePanel.setVisibility(View.GONE);
-
-        /*frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
-            @Override
-            public void onViewCreated() {
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
-                    @Override
-                    public void onVisibilityChange(int visibility) {
-                        if (draggablePanel != null && !isLandscape) {
-                            if (draggablePanel.isMaximized()) {
-                                if (visibility == View.VISIBLE) {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
-                                    draggablePanel.setEnableSlide(false);
-                                } else {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
-                                    draggablePanel.setEnableSlide(true);
-                                }
-                            } else {
-                                draggablePanel.setEnableSlide(true);
-                            }
-                        }
-                    }
-                });
-            }
-        });*/
-
-        /*frmVideoTop.setFrmTopCallback(new FrmVideoTop.FrmTopCallback() {
-            @Override
-            public void initDone() {
-                LLog.d(TAG, "initDone");
-                if (UizaUtil.getClickedPip(activity)) {
-                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-                    msgFromActivityIsInitSuccess.setInitSuccess(true);
-                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-                }
-                frmVideoTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
-                    @Override
-                    public void onVisibilityChange(int visibility) {
-                        if (draggablePanel != null && !isLandscape) {
-                            if (draggablePanel.isMaximized()) {
-                                if (visibility == View.VISIBLE) {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
-                                    draggablePanel.setEnableSlide(false);
-                                } else {
-                                    LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
-                                    draggablePanel.setEnableSlide(true);
-                                }
-                            } else {
-                                draggablePanel.setEnableSlide(true);
-                            }
-                        }
-                    }
-                });
-            }
-        });*/
     }
 
     private boolean isLandscape;
@@ -213,7 +158,17 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
-        draggablePanel.maximize();
+        if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
+            draggablePanel.minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    draggablePanel.maximize();
+                }
+            });
+        } else {
+            draggablePanel.maximize();
+        }
         if (frmVideoTop != null) {
             frmVideoTop.initEntity(entityId);
         }
@@ -223,7 +178,17 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
-        draggablePanel.maximize();
+        if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
+            draggablePanel.minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    draggablePanel.maximize();
+                }
+            });
+        } else {
+            draggablePanel.maximize();
+        }
         if (frmVideoTop != null) {
             frmVideoTop.initPlaylistFolder(metadataId);
         }
