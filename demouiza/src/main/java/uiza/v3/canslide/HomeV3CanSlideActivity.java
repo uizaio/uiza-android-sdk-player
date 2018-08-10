@@ -8,7 +8,6 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v3.data.HomeDataV3;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
@@ -23,8 +22,8 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -184,11 +183,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     }
 
     private void initializeDraggablePanelEntity(final Data data) {
-        /*if (data == null) {
-            return;
-        } else {
-            UizaPref.setData(activity, data, LSApplication.getInstance().getGson());
-        }*/
         if (!LConnectivityUtil.isConnected(activity)) {
             LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
                 @Override
@@ -256,11 +250,6 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                /*if (UizaPref.getClickedPip(activity)) {
-                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-                    msgFromActivityIsInitSuccess.setInitSuccess(true);
-                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-                }*/
                 frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
                 frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
