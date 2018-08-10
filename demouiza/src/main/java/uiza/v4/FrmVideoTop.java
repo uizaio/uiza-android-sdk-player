@@ -25,7 +25,6 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.List;
@@ -290,7 +289,12 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
 
     @Override
     public void onClickBack() {
-        onBackPressed();
+        if (LScreenUtil.isFullScreen(getActivity())) {
+            uizaIMAVideoV3.toggleScreenOritation();
+        } else {
+            uizaIMAVideoV3.hideController();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        }
     }
 
     @Override
