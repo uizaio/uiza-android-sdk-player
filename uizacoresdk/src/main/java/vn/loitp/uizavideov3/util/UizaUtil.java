@@ -45,6 +45,7 @@ import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrie
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
+import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -444,6 +445,95 @@ public class UizaUtil {
                 if (callback != null) {
                     callback.onError(e);
                 }
+            }
+        });
+    }
+
+    public static void initEntity(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String entityId) {
+        if (activity == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
+        if (uizaIMAVideoV3 == null) {
+            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
+        }
+        if (UizaUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "called from pip enter fullscreen");
+            play(uizaIMAVideoV3, null);
+        } else {
+            //check if play entity
+            UizaUtil.stopServicePiPIfRunningV3(activity);
+            if (entityId != null) {
+                play(uizaIMAVideoV3, entityId);
+            }
+        }
+    }
+
+    public static void initPlaylistFolder(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String metadataId) {
+        if (activity == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
+        if (uizaIMAVideoV3 == null) {
+            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
+        }
+        if (UizaUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "called from pip enter fullscreen");
+            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                playPlaylist(uizaIMAVideoV3, null);
+            }
+        } else {
+            //check if play entity
+            UizaUtil.stopServicePiPIfRunningV3(activity);
+            playPlaylist(uizaIMAVideoV3, metadataId);
+        }
+    }
+    /*public static void initEntityOrPlaylistFolder(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String entityId, String metadataId) {
+        if (activity == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
+        if (uizaIMAVideoV3 == null) {
+            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
+        }
+        if (UizaUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "called from pip enter fullscreen");
+            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                playPlaylist(uizaIMAVideoV3, null);
+            } else {
+                LLog.d(TAG, "called from pip enter fullscreen -> playlist entity");
+                play(uizaIMAVideoV3, null);
+            }
+        } else {
+            //check if play entity
+            UizaUtil.stopServicePiPIfRunningV3(activity);
+            if (entityId != null) {
+                play(uizaIMAVideoV3, entityId);
+            } else {
+                playPlaylist(uizaIMAVideoV3, metadataId);
+            }
+        }
+    }*/
+
+    private static void play(final UizaIMAVideoV3 uizaIMAVideoV3, final String entityId) {
+        if (UizaDataV3.getInstance().isSettingPlayer()) {
+            return;
+        }
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.init(entityId);
+            }
+        });
+    }
+
+    private static void playPlaylist(final UizaIMAVideoV3 uizaIMAVideoV3, final String metadataId) {
+        if (UizaDataV3.getInstance().isSettingPlayer()) {
+            return;
+        }
+        uizaIMAVideoV3.post(new Runnable() {
+            @Override
+            public void run() {
+                uizaIMAVideoV3.initPlaylistFolder(metadataId);
             }
         });
     }

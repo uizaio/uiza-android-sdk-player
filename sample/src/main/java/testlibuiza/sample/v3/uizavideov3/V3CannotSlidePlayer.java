@@ -68,53 +68,15 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
-        if (UizaUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
-            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
-                playPlaylist(null);
-            } else {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist entity");
-                play(null);
-            }
+
+        boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
+        if (isInitWithPlaylistFolder) {
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+            UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
         } else {
-            //check if play entity
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-            LLog.d(TAG, "entityId " + entityId);
-            UizaUtil.stopServicePiPIfRunningV3(activity);
-            if (entityId != null) {
-                play(entityId);
-            } else {
-                //check if play playlist/folder
-                String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-                LLog.d(TAG, "metadataId " + metadataId);
-                playPlaylist(metadataId);
-            }
+            UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
         }
-    }
-
-    private void play(final String entityId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
-            return;
-        }
-        uizaIMAVideoV3.post(new Runnable() {
-            @Override
-            public void run() {
-                uizaIMAVideoV3.init(entityId);
-            }
-        });
-    }
-
-    private void playPlaylist(final String metadataId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
-            return;
-        }
-        uizaIMAVideoV3.post(new Runnable() {
-            @Override
-            public void run() {
-                uizaIMAVideoV3.initPlaylistFolder(metadataId);
-            }
-        });
     }
 
     @Override

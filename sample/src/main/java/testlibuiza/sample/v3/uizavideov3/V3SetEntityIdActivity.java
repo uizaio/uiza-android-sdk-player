@@ -14,8 +14,8 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class V3SetEntityIdActivity extends BaseActivity {
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
@@ -116,6 +116,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
                 UizaUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
@@ -171,6 +172,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
                 UizaUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);
                 intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);

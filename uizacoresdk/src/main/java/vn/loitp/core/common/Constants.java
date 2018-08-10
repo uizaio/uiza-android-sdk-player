@@ -47,6 +47,7 @@ public class Constants {
     public final static String TEST_6 = "13308851AEDCA44443112D80A8D182CA";
 
     //public static String ASSET_FILE_GIFT = "img/ic_gift.png";
+    public final static String KEY_UIZA_IS_PLAYLIST_FOLDER = "KEY_UIZA_IS_PLAYLIST_FOLDER";
     public final static String KEY_UIZA_ENTITY_ID = "KEY_UIZA_ENTITY_ID";
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
