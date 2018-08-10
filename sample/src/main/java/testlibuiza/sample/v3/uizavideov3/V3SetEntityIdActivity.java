@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import testlibuiza.R;
+import testlibuiza.sample.v3.demoui.V3UizaVideoIMActivitySlide;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -25,9 +26,9 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
     private final int env = Constants.ENVIRONMENT_STAG;
-    private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    private final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
-    private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+    public static final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
+    public static final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
+    public static final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
 
     //workspace prod
     /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
@@ -60,6 +61,15 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart = (Button) findViewById(R.id.bt_start);
         etInputMetadataId = (EditText) findViewById(R.id.et_input_metadata_id);
         btStartPf = (Button) findViewById(R.id.bt_start_pf);
+
+        findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, V3UizaVideoIMActivitySlide.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
     }
 
     private void initWorkspace() {

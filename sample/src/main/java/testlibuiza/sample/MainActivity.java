@@ -84,13 +84,6 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
-        findViewById(R.id.bt_uiza_demo_ui_slide).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
-                callUizaVideoSlideV2_2();
-            }
-        });
     }
 
     private void authV2() {
@@ -143,13 +136,6 @@ public class MainActivity extends BaseActivity {
     private void callUizaVideoSlideV2() {
         UizaUtil.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide.class);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
-    }
-
-    private void callUizaVideoSlideV2_2() {
-        UizaUtil.setSlideUizaVideoEnabled(activity, true);
-        Intent intent = new Intent(activity, V3UizaVideoIMActivitySlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }

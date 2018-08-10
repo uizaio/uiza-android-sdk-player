@@ -3,8 +3,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
-    android:padding="@dimen/padding_5">
+    android:background="@color/White">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,9 +13,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/margin_10"
             android:layout_weight="1"
-            android:background="@color/White"
+            android:background="@color/LightBlue"
             android:padding="@dimen/padding_5">
 
             <TextView
@@ -73,9 +71,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/margin_10"
             android:layout_weight="1"
-            android:background="@color/White"
+            android:background="@color/LightPink"
             android:padding="@dimen/padding_5">
 
             <TextView
@@ -121,6 +118,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:text="START PLAYLIST/FOLDER" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/LightGoldenrodYellow"
+            android:padding="@dimen/padding_5"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/bt_demo_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DEMO UI" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

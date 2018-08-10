@@ -11,8 +11,10 @@ import testlibuiza.sample.v3.demoui.detail.WWLVideoPlayerFragment;
 import testlibuiza.sample.v3.demoui.detail.WWLVideoUpNextFragment;
 import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
 import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.wwlvideo.layout.WWLVideo;
 import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
@@ -26,6 +28,7 @@ public class V3UizaVideoIMActivitySlide extends BaseActivity implements WWLVideo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         this.wwlVideo = (WWLVideo) findViewById(R.id.watch_while_layout);
         this.wwlVideo.setListener(this);
