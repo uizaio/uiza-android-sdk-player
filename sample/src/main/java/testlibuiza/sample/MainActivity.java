@@ -9,7 +9,6 @@ import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import testlibuiza.sample.v3.demoui.V3UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.V3TestAPIActivity;
 import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
 import vn.loitp.core.base.BaseActivity;

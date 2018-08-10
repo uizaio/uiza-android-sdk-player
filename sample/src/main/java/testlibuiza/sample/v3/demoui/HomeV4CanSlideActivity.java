@@ -1,11 +1,11 @@
-package uiza.v4;
+package testlibuiza.sample.v3.demoui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import uiza.R;
+import testlibuiza.R;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;

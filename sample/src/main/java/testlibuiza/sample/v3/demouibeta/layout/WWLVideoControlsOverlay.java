@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.demoui.layout;
+package testlibuiza.sample.v3.demouibeta.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

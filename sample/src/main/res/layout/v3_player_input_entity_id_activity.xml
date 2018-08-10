@@ -124,14 +124,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/LightGoldenrodYellow"
-            android:padding="@dimen/padding_5"
-            android:visibility="gone">
+            android:padding="@dimen/padding_5">
+
+            <Button
+                android:id="@+id/bt_demo_ui_beta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DEMO UI"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/bt_demo_ui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DEMO UI" />
+                android:text="DEMO UI"
+                android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

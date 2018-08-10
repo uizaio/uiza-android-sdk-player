@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.demoui.detail;
+package testlibuiza.sample.v3.demouibeta.detail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demouibeta.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 
 /**

@@ -1,7 +1,10 @@
-package testlibuiza.sample.v3.demoui.detail;
+package testlibuiza.sample.v3.demoui;
+
+/**
+ * Created by www.muathu@gmail.com on 12/24/2017.
+ */
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,52 +30,39 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
-import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
-/**
- * Created by loitp on 2/26/17.
- */
-
-public class WWLVideoPlayerFragment extends BaseFragment implements UizaCallback {
+public class FrmVideoTop extends BaseFragment implements UizaCallback {
     private final String TAG = getClass().getSimpleName();
-    private FragmentHost mFragmentHost;
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
-    @Nullable
+    public UizaIMAVideoV3 getUizaIMAVideoV3() {
+        return uizaIMAVideoV3;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) view.findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
-
-        //String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-        //UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
-
-        String entityId = V3SetEntityIdActivity.entityIdDefaultVOD;
-        UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.wwl_video_player_fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mFragmentHost = (FragmentHost) context;
+        return R.layout.v4_frm_top;
     }
 
     @Override
@@ -263,6 +253,25 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaCallback
                 //LLog.d(TAG, "onCues");
             }
         });
+        uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+            @Override
+            public void onVisibilityChange(boolean isShow) {
+                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
+                        && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
+                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                        if (isShow) {
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                        } else {
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                        }
+                    } else {
+                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -279,7 +288,11 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaCallback
 
     @Override
     public void onClickBack() {
-        //onBackPressed();
+        if (LScreenUtil.isFullScreen(getActivity())) {
+            uizaIMAVideoV3.toggleScreenOritation();
+        } else {
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        }
     }
 
     @Override
@@ -291,7 +304,14 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaCallback
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
-            //onBackPressed();
+            uizaIMAVideoV3.pauseVideo();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                }
+            });
         }
     }
 
@@ -302,10 +322,20 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaCallback
 
     /*@Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (LScreenUtil.isFullScreen(getActivity())) {
             uizaIMAVideoV3.toggleScreenOritation();
         } else {
             super.onBackPressed();
         }
     }*/
+
+    public void initEntity(String entityId) {
+        UizaUtil.setClickedPip(getActivity(), false);
+        UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
+    }
+
+    public void initPlaylistFolder(String metadataId) {
+        UizaUtil.setClickedPip(getActivity(), false);
+        UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
+    }
 }

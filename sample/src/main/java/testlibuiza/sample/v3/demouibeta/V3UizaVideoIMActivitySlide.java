@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.demoui;
+package testlibuiza.sample.v3.demouibeta;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import testlibuiza.R;
-import testlibuiza.sample.v3.demoui.detail.WWLVideoMetaInfoFragment;
-import testlibuiza.sample.v3.demoui.detail.WWLVideoPlayerFragment;
-import testlibuiza.sample.v3.demoui.detail.WWLVideoUpNextFragment;
-import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
-import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demouibeta.detail.WWLVideoMetaInfoFragment;
+import testlibuiza.sample.v3.demouibeta.detail.WWLVideoPlayerFragment;
+import testlibuiza.sample.v3.demouibeta.detail.WWLVideoUpNextFragment;
+import testlibuiza.sample.v3.demouibeta.interfaces.FragmentHost;
+import testlibuiza.sample.v3.demouibeta.utils.WWLVideoDataset;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;

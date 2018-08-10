@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.demoui.detail;
+package testlibuiza.sample.v3.demouibeta.detail;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
-import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demouibeta.interfaces.FragmentHost;
+import testlibuiza.sample.v3.demouibeta.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LImageUtil;
 

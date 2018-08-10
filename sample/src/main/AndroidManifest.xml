@@ -32,7 +32,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".sample.v3.demoui.V3UizaVideoIMActivitySlide"
+            android:name=".sample.v3.demouibeta.V3UizaVideoIMActivitySlide"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
         <receiver
@@ -56,6 +56,9 @@
             android:name=".sample.v3.uizavideov3.V3CannotSlidePlayer"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <!--end for v3-->
+        <activity
+            android:name=".sample.v3.demoui.HomeV4CanSlideActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 
 </manifest>
