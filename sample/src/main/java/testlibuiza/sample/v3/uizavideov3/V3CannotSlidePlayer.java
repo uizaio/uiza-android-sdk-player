@@ -24,7 +24,6 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
@@ -35,10 +34,10 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
-import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 /**
@@ -68,11 +67,16 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+        uizaIMAVideoV3.setUizaCallback(this);
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            //Data data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
-            Data data = UizaDataV3.getInstance().getData();
-            play(data.getId());
+            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                //TODO
+            } else {
+                LLog.d(TAG, "called from pip enter fullscreen -> playlist entity");
+                play(null);
+            }
         } else {
             //check if play entity
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
@@ -97,7 +101,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void run() {
                 uizaIMAVideoV3.init(entityId);
-                uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
             }
         });
     }
@@ -110,7 +113,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void run() {
                 uizaIMAVideoV3.initPlaylistFolder(metadataId);
-                uizaIMAVideoV3.setUizaCallback(V3CannotSlidePlayer.this);
             }
         });
     }

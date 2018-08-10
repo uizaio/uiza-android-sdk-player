@@ -234,38 +234,50 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             //LLog.d(TAG, "xxxxxxxxxxxxxx !clearDataForPlaylistFolder");
         }
+        if (entityId == null) {
+            //do nothing
+            //Case này được gọi từ pip
+        } else {
+            UizaDataV3.getInstance().clearDataForEntity();
+        }
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
-        UizaUtil.getDetailEntity((BaseActivity) activity, entityId, new UizaUtil.Callback() {
-            @Override
-            public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
-                //LLog.d(TAG, "init getDetailEntity onSuccess");
+        //Nếu đã tồn tại Data rồi thì nó được gọi từ pip, mình ko cần phải call api lấy detail entity làm gì nữa
+        if (UizaDataV3.getInstance().getData() == null) {
+            LLog.d(TAG, "init UizaDataV3.getInstance().getData() == null -> call api lấy detail entity");
+            UizaUtil.getDetailEntity((BaseActivity) activity, entityId, new UizaUtil.Callback() {
+                @Override
+                public void onSuccess(Data d) {
+                    //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
+                    //LLog.d(TAG, "init getDetailEntity onSuccess");
+                    //save current data
+                    UizaDataV3.getInstance().setData(d);
+                    handleGetDetailEntityDone(urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                }
 
-                //save current data
-                UizaDataV3.getInstance().setData(d);
+                @Override
+                public void onError(Throwable e) {
+                    LLog.e(TAG, "init onError " + e.toString());
+                    LToast.show(activity, "init onError: " + e.getMessage());
+                }
+            });
+        } else {
+            //init player khi user click vào fullscreen của floating view (pic)
+            LLog.d(TAG, "init UizaDataV3.getInstance().getData() != null");
+            handleGetDetailEntityDone(urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        }
+    }
 
-                UizaInputV3 uizaInputV3 = new UizaInputV3();
-                uizaInputV3.setData(d);
-
-                //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
-                uizaInputV3.setUrlIMAAd(urlIMAAd);
-
-                //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
-                uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-
-                UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-
-                checkData();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LLog.e(TAG, "init onError " + e.toString());
-                LToast.show(activity, "init onError: " + e.getMessage());
-            }
-        });
+    private void handleGetDetailEntityDone(String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        UizaInputV3 uizaInputV3 = new UizaInputV3();
+        uizaInputV3.setData(UizaDataV3.getInstance().getData());
+        //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
+        uizaInputV3.setUrlIMAAd(urlIMAAd);
+        //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
+        uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        checkData();
     }
 
     /**
@@ -842,7 +854,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext());
-        LLog.d(TAG, "firstBrightness " + firstBrightness);
+        //LLog.d(TAG, "firstBrightness " + firstBrightness);
         seekbarBirghtness.setMax(255);
         setProgressSeekbar(seekbarBirghtness, firstBrightness);
         isSetProgressSeekbarFirst = false;
@@ -1006,13 +1018,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void onDestroy() {
         if (firstBrightness != Constants.NOT_FOUND) {
-            LLog.d(TAG, "onDestroy setBrightness " + firstBrightness);
+            //LLog.d(TAG, "onDestroy setBrightness " + firstBrightness);
             LScreenUtil.setBrightness(getContext(), firstBrightness);
         }
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.release();
         }
         UizaDataV3.getInstance().setSettingPlayer(false);
+        //UizaDataV3.getInstance().clearDataForPlaylistFolder();
+        //UizaDataV3.getInstance().clearDataForEntity();
         LDialogUtil.clearAll();
         activityIsPausing = true;
         isCastingChromecast = false;
@@ -1993,56 +2007,67 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
-            @Override
-            public void onSuccess(ResultListEntity result) {
-                //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
-                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                    return;
-                }
-                if (pfTotalPage == Integer.MAX_VALUE) {
-                    int totalItem = (int) result.getMetadata().getTotal();
-                    float ratio = (float) (totalItem / pfLimit);
-                    if (ratio == 0) {
-                        pfTotalPage = (int) ratio;
-                    } else if (ratio > 0) {
-                        pfTotalPage = (int) ratio + 1;
-                    } else {
-                        pfTotalPage = (int) ratio;
+        if (UizaDataV3.getInstance().getDataList() == null) {
+            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
+                @Override
+                public void onSuccess(ResultListEntity result) {
+                    //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
+                    if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                        return;
                     }
+                    if (pfTotalPage == Integer.MAX_VALUE) {
+                        int totalItem = (int) result.getMetadata().getTotal();
+                        float ratio = (float) (totalItem / pfLimit);
+                        if (ratio == 0) {
+                            pfTotalPage = (int) ratio;
+                        } else if (ratio > 0) {
+                            pfTotalPage = (int) ratio + 1;
+                        } else {
+                            pfTotalPage = (int) ratio;
+                        }
+                    }
+                    //TODO wait api from duyqt
+                    LLog.d(TAG, "<<<getListAllEntity: " + pfPage + "/" + pfTotalPage);
+                    UizaDataV3.getInstance().setDataList(result.getData());
+                    if (UizaDataV3.getInstance().getDataList() == null || UizaDataV3.getInstance().getDataList().isEmpty()) {
+                        LLog.e(TAG, "getListAllEntity success but noda");
+                        if (uizaCallback != null) {
+                            uizaCallback.onError(new Exception("getListAllEntity success but no data"));
+                        }
+                        return;
+                    }
+                    //LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
+                    playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
+                    if (uizaPlayerManagerV3 != null) {
+                        uizaPlayerManagerV3.hideProgress();
+                    }
+
+                    //show controller for playlist folder
+                    setVisibilityOfPlaylistFolderController(VISIBLE);
                 }
-                //TODO wait api from duyqt
-                LLog.d(TAG, "<<<getListAllEntity: " + pfPage + "/" + pfTotalPage);
-                UizaDataV3.getInstance().setDataList(result.getData());
-                if (UizaDataV3.getInstance().getDataList() == null || UizaDataV3.getInstance().getDataList().isEmpty()) {
-                    LLog.e(TAG, "getListAllEntity success but noda");
+
+                @Override
+                public void onFail(Throwable e) {
+                    LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
                     if (uizaCallback != null) {
-                        uizaCallback.onError(new Exception("getListAllEntity success but no data"));
+                        uizaCallback.onError(new Exception("getListAllEntity failed: " + e.toString()));
                     }
-                    return;
+                    if (uizaPlayerManagerV3 != null) {
+                        uizaPlayerManagerV3.hideProgress();
+                    }
                 }
-                //LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
-                playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
-                if (uizaPlayerManagerV3 != null) {
-                    uizaPlayerManagerV3.hideProgress();
-                }
-
-                //show controller for playlist folder
-                setVisibilityOfPlaylistFolderController(VISIBLE);
+            });
+        } else {
+            //LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
+            playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
+            if (uizaPlayerManagerV3 != null) {
+                uizaPlayerManagerV3.hideProgress();
             }
 
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
-                if (uizaCallback != null) {
-                    uizaCallback.onError(new Exception("getListAllEntity failed: " + e.toString()));
-                }
-                if (uizaPlayerManagerV3 != null) {
-                    uizaPlayerManagerV3.hideProgress();
-                }
-            }
-        });
+            //show controller for playlist folder
+            setVisibilityOfPlaylistFolderController(VISIBLE);
+        }
     }
 
     protected boolean isPlayPlaylistFolder() {

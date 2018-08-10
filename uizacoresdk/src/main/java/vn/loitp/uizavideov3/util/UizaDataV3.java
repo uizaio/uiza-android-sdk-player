@@ -427,7 +427,7 @@ public class UizaDataV3 {
     }
 
     public void clearDataForPlaylistFolder() {
-        LLog.d(TAG, "clearDataForPlaylistFolder");
+        //LLog.d(TAG, "clearDataForPlaylistFolder");
         dataList = null;
         currentPositionOfDataList = 0;
     }
