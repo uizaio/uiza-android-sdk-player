@@ -11,6 +11,7 @@ import android.view.View;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmLogin extends BaseFragment implements IOnBackPressed {
@@ -34,6 +35,7 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
+        LLog.d(TAG, "onBackPressed " + TAG);
         return false;
     }
 }

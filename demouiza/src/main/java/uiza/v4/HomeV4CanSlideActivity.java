@@ -39,6 +39,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
+                frmVideoTop.getUizaIMAVideoV3().hideController();
             }
 
             @Override
@@ -201,6 +202,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        LLog.d(TAG, "onBackPressed " + TAG);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             super.onBackPressed();

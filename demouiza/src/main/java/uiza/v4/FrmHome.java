@@ -10,9 +10,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import uiza.R;
+import uiza.v3.canslide.HomeV3CanSlideActivity;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -40,7 +47,11 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         });
 
         if (UizaUtil.getClickedPip(getActivity())) {
-            frmRootView.findViewById(R.id.bt).performClick();
+            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+                frmRootView.findViewById(R.id.bt_playlist_folder).performClick();
+            } else {
+                frmRootView.findViewById(R.id.bt_entity).performClick();
+            }
         }
     }
 
@@ -49,8 +60,30 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         return R.layout.v4_frm_home;
     }
 
+    private long backPressed;
+
     @Override
     public boolean onBackPressed() {
-        return false;
+        LLog.d(TAG, "onBackPressed " + TAG);
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            return false;
+        } else {
+            boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
+            if (isLandscapeScreen) {
+                LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
+            } else {
+                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
+                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                        return true;
+                    } else {
+                    }
+                } else {
+                }
+            }
+            LToast.show(getActivity(), getString(R.string.press_again_to_exit));
+        }
+        backPressed = System.currentTimeMillis();
+        return true;
     }
 }

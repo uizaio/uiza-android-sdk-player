@@ -6,17 +6,12 @@ package uiza.v4;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.uizavideo.view.IOnBackPressed;
 
-public class FrmVideoBottom extends BaseFragment implements IOnBackPressed {
+public class FrmVideoBottom extends BaseFragment {
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     protected int setLayoutResourceId() {
         return R.layout.v4_frm_bottom;
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return false;
     }
 }

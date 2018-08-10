@@ -33,12 +33,10 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaUtil;
@@ -46,7 +44,7 @@ import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
-public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPressed {
+public class FrmVideoTop extends BaseFragment implements UizaCallback {
     private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
@@ -261,10 +259,10 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
                         && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
                         if (isShow) {
-                            LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
                         } else {
-                            LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
                         }
                     } else {
@@ -292,7 +290,6 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
         if (LScreenUtil.isFullScreen(getActivity())) {
             uizaIMAVideoV3.toggleScreenOritation();
         } else {
-            uizaIMAVideoV3.hideController();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
         }
     }
@@ -306,7 +303,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
-            onBackPressed();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
         }
     }
 
@@ -323,24 +320,6 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
             super.onBackPressed();
         }
     }*/
-
-    @Override
-    public boolean onBackPressed() {
-        //return false;
-        if (LScreenUtil.isFullScreen(getActivity())) {
-            uizaIMAVideoV3.toggleScreenOritation();
-        } else {
-            uizaIMAVideoV3.pauseVideo();
-            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-                }
-            });
-        }
-        return false;
-    }
 
     public void initEntity(String entityId) {
         UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);

@@ -19,7 +19,6 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.util.UizaDataV3;
