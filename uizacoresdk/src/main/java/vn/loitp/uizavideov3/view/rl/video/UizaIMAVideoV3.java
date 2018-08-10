@@ -841,7 +841,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
 
         //set bightness max in first play
-        //firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255 + 1;
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext()) * 100 / 255;
         LLog.d(TAG, "firstBrightness " + firstBrightness);
         seekbarBirghtness.setMax(100);

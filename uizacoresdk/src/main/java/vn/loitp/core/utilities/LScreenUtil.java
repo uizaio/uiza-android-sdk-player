@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 
 /**
  * File created on 8/31/2017.
@@ -372,12 +373,11 @@ public class LScreenUtil {
         }
     }
 
-    //from 0 to 100
+    //0<=value<=99
     public static void setBrightness(final Context context, int value) {
         if (context == null) {
             return;
         }
-
         boolean isCanWriteSystem = checkSystemWritePermission(context);
         LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
 
@@ -404,8 +404,8 @@ public class LScreenUtil {
         int brightness = 0;
         if (value <= 0) {
             brightness = 0;
-        } else if (value >= 100) {
-            brightness = 100;
+        } else if (value >= 99) {
+            brightness = 99;
         } else {
             brightness = value * 255 / 100;
         }
@@ -427,15 +427,17 @@ public class LScreenUtil {
         }
     }
 
+    //1<=getCurrentBrightness<=255
     public static int getCurrentBrightness(Context context) {
         if (context == null) {
-            return 0;
+            return Constants.NOT_FOUND;
         }
         try {
-            return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            //return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
             LLog.e(TAG, "getCurrentBrightness" + e.toString());
-            return 0;
+            return Constants.NOT_FOUND;
         }
     }
 
