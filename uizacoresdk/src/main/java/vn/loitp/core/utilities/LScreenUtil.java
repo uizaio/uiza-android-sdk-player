@@ -402,9 +402,9 @@ public class LScreenUtil {
 
         //constrain the value of brightness
         int brightness = 0;
-        if (value < 0) {
+        if (value <= 0) {
             brightness = 0;
-        } else if (value > 100) {
+        } else if (value >= 100) {
             brightness = 100;
         } else {
             brightness = value * 255 / 100;
@@ -423,7 +423,7 @@ public class LScreenUtil {
             ((Activity) context).getWindow().setAttributes(lp);
 
         } catch (Exception e) {
-            LLog.e(TAG, "setBrightness " + e.toString());
+            LLog.e(TAG, "Exception setBrightness " + e.toString());
         }
     }
 

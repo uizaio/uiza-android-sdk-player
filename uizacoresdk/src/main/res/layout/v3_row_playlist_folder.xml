@@ -118,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_5"
+                    android:maxLines="3"
                     android:text="tv_description"
                     android:textColor="@color/grey_description"
                     android:textSize="@dimen/txt_8" />
