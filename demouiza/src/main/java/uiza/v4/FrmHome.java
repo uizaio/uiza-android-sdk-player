@@ -20,10 +20,16 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frmRootView.findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
+        frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId("b7297b29-c6c4-4bd6-a74f-b60d0118d275");
+            }
+        });
+        frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder("00932b61-1d39-45d2-8c7d-3d99ad9ea95a");
             }
         });
         frmRootView.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {

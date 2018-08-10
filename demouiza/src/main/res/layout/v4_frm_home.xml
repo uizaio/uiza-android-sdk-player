@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,10 +16,16 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/bt"
+                android:id="@+id/bt_entity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Play" />
+                android:text="Play entity" />
+
+            <Button
+                android:id="@+id/bt_playlist_folder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play Playlist folder" />
 
             <Button
                 android:id="@+id/bt_switch_screen"
@@ -29,8 +36,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:padding="@dimen/padding_5"
-                android:text="@string/app_name" />
+                android:text="This is Home Scren"
+                android:textSize="@dimen/txt_80" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

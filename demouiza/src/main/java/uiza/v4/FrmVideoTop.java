@@ -34,12 +34,14 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
@@ -253,13 +255,13 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
                 //LLog.d(TAG, "onCues");
             }
         });
-        uizaIMAVideoV3.getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+        uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
             @Override
-            public void onVisibilityChange(int visibility) {
+            public void onVisibilityChange(boolean isShow) {
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
                         && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        if (visibility == View.VISIBLE) {
+                        if (isShow) {
                             LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
                         } else {
@@ -324,18 +326,23 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback, IOnBackPr
         if (LScreenUtil.isFullScreen(getActivity())) {
             uizaIMAVideoV3.toggleScreenOritation();
         } else {
-            //super.onBackPressed();
+            uizaIMAVideoV3.pauseVideo();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                }
+            });
         }
         return false;
     }
 
     public void initEntity(String entityId) {
-        //String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
         UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        //String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
         UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
     }
 }

@@ -2248,4 +2248,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LSocialUtil.share(activity, isLandscape);
         isExoShareClicked = true;
     }
+
+    public void resumeVideo() {
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.resumeVideo();
+        }
+    }
+
+    public void pauseVideo() {
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.pauseVideo();
+        }
+    }
+
+    public void setControllerStateCallback(UizaPlayerView.ControllerStateCallback controllerStateCallback) {
+        if (playerView != null) {
+            playerView.setControllerStateCallback(controllerStateCallback);
+        }
+    }
 }

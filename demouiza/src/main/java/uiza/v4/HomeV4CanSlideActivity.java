@@ -44,11 +44,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
+                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
+                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
             }
 
             @Override
@@ -209,8 +211,19 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
+        draggablePanel.maximize();
         if (frmVideoTop != null) {
             frmVideoTop.initEntity(entityId);
+        }
+    }
+
+    public void playPlaylistFolder(final String metadataId) {
+        if (draggablePanel.getVisibility() != View.VISIBLE) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
+        draggablePanel.maximize();
+        if (frmVideoTop != null) {
+            frmVideoTop.initPlaylistFolder(metadataId);
         }
     }
 }
