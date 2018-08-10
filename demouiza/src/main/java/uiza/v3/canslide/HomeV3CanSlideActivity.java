@@ -20,6 +20,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
@@ -250,12 +251,12 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
                     @Override
-                    public void onVisibilityChange(int visibility) {
+                    public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
-                                if (visibility == View.VISIBLE) {
+                                if (isShow) {
                                     draggablePanel.setEnableSlide(false);
                                 } else {
                                     draggablePanel.setEnableSlide(true);
@@ -330,18 +331,13 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
-                /*if (UizaUtil.getClickedPip(activity)) {
-                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-                    msgFromActivityIsInitSuccess.setInitSuccess(true);
-                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-                }*/
                 frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
                     @Override
-                    public void onVisibilityChange(int visibility) {
+                    public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {
                             if (draggablePanel.isMaximized()) {
-                                if (visibility == View.VISIBLE) {
+                                if (isShow) {
                                     draggablePanel.setEnableSlide(false);
                                 } else {
                                     draggablePanel.setEnableSlide(true);
