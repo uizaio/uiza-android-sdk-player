@@ -1,4 +1,4 @@
-package testlibuiza.sample.v2.uizavideo.slide2.layout;
+package testlibuiza.sample.v3.demoui.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import testlibuiza.R;
 
 /**
- * Created by thangn on 2/26/17.
+ * Created by loitp on 2/26/17.
  */
 
 public class WWLVideoControlsOverlay extends FrameLayout implements View.OnClickListener {

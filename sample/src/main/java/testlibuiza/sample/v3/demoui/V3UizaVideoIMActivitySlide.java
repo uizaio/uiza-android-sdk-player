@@ -1,4 +1,4 @@
-package testlibuiza.sample.v2.uizavideo.slide2;
+package testlibuiza.sample.v3.demoui;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import testlibuiza.R;
-import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoMetaInfoFragment;
-import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoPlayerFragment;
-import testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoUpNextFragment;
-import testlibuiza.sample.v2.uizavideo.slide2.interfaces.FragmentHost;
-import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demoui.detail.WWLVideoMetaInfoFragment;
+import testlibuiza.sample.v3.demoui.detail.WWLVideoPlayerFragment;
+import testlibuiza.sample.v3.demoui.detail.WWLVideoUpNextFragment;
+import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
+import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.views.wwlvideo.layout.WWLVideo;
 import vn.loitp.views.wwlvideo.utils.WWLViewHelper;
 
-public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVideo.Listener, FragmentHost {
+public class V3UizaVideoIMActivitySlide extends BaseActivity implements WWLVideo.Listener, FragmentHost {
     private WWLVideo wwlVideo;
     private float mLastAlpha;
     private FrameLayout mPlayerFragmentContainer;
@@ -54,7 +54,7 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
     @Override
     public void onWWLSliding(float offset) {
         LLog.d(TAG, "onWWLSliding " + offset);
-        wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
+        //wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
         float alpha;
         if (offset > 2.0f) {
             alpha = this.mLastAlpha * (3.0f - offset);
@@ -86,14 +86,14 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
     @Override
     public void onWWLHided() {
         LLog.d(TAG, "onWWLHided");
-        this.wwlVideoPlayerFragment.stopPlay();
+        //this.wwlVideoPlayerFragment.stopPlay();
     }
 
     @Override
     public void onWWLminimized() {
         LLog.d(TAG, "onWWLminimized");
-        wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
-        wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(false);
+        //wwlVideoPlayerFragment.getUizaIMAVideo().hideController();
+        //wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(false);
         this.mLastAlpha = 0.0f;
         //this.wwlVideoPlayerFragment.hideControls();
     }
@@ -101,7 +101,7 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
     @Override
     public void onWWLmaximized() {
         LLog.d(TAG, "onWWLmaximized");
-        wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(true);
+        //wwlVideoPlayerFragment.getUizaIMAVideo().hideControllerOnTouch(true);
         this.mLastAlpha = 1.0f;
     }
 
@@ -118,7 +118,7 @@ public class V2UizaVideoIMActivitySlide2 extends BaseActivity implements WWLVide
         }
         this.wwlVideo.maximize(true);
 
-        this.wwlVideoPlayerFragment.startPlay(item);
+        //this.wwlVideoPlayerFragment.startPlay(item);
         if (this.wwlVideoUpNextFragment != null) {
             this.wwlVideoUpNextFragment.updateItem(item);
         }

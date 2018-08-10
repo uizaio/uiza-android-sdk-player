@@ -9,7 +9,7 @@ import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import testlibuiza.sample.v2.uizavideo.slide2.V2UizaVideoIMActivitySlide2;
+import testlibuiza.sample.v3.demoui.V3UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.V3TestAPIActivity;
 import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
 import vn.loitp.core.base.BaseActivity;
@@ -68,13 +68,6 @@ public class MainActivity extends BaseActivity {
                 callUizaVideoSlideV2();
             }
         });
-        findViewById(R.id.bt_uiza_video_slide_v2_2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
-                callUizaVideoSlideV2_2();
-            }
-        });
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +82,13 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(activity, V3SetEntityIdActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_uiza_demo_ui_slide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
+                callUizaVideoSlideV2_2();
             }
         });
     }
@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity {
 
     private void callUizaVideoSlideV2_2() {
         UizaUtil.setSlideUizaVideoEnabled(activity, true);
-        Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide2.class);
+        Intent intent = new Intent(activity, V3UizaVideoIMActivitySlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }

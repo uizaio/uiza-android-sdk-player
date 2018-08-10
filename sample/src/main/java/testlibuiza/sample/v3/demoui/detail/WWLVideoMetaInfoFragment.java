@@ -1,4 +1,4 @@
-package testlibuiza.sample.v2.uizavideo.slide2.detail;
+package testlibuiza.sample.v3.demoui.detail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 
 /**
- * Created by thangn on 2/26/17.
+ * Created by loitp on 2/26/17.
  */
 public class WWLVideoMetaInfoFragment extends BaseFragment {
     private TextView mTitleView;

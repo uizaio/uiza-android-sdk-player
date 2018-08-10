@@ -32,7 +32,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".sample.v2.uizavideo.slide2.V2UizaVideoIMActivitySlide2"
+            android:name=".sample.v3.demoui.V3UizaVideoIMActivitySlide"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
         <receiver

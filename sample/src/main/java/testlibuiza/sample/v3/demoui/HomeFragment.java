@@ -1,4 +1,4 @@
-package testlibuiza.sample.v2.uizavideo.slide2;
+package testlibuiza.sample.v3.demoui;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -16,13 +16,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import testlibuiza.R;
-import testlibuiza.sample.v2.uizavideo.slide2.interfaces.FragmentHost;
-import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
+import testlibuiza.sample.v3.demoui.utils.WWLVideoDataset;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LImageUtil;
 
 /**
- * Created by thangn on 2/26/17.
+ * Created by loitp on 2/26/17.
  */
 
 public class HomeFragment extends BaseFragment {

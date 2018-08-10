@@ -1,4 +1,4 @@
-package testlibuiza.sample.v2.uizavideo.slide2.utils;
+package testlibuiza.sample.v3.demoui.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import vn.loitp.core.common.Constants;
 
 /**
- * Created by thangn on 2/27/17.
+ * Created by loitp on 2/27/17.
  */
 
 public class WWLVideoDataset {

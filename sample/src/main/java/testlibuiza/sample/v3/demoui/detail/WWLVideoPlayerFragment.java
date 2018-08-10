@@ -1,60 +1,28 @@
-package testlibuiza.sample.v2.uizavideo.slide2.detail;
+package testlibuiza.sample.v3.demoui.detail;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Surface;
 import android.view.View;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
-
-import java.util.List;
-
 import testlibuiza.R;
-import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import testlibuiza.sample.v2.uizavideo.slide2.interfaces.FragmentHost;
-import testlibuiza.sample.v2.uizavideo.slide2.utils.WWLVideoDataset;
+import testlibuiza.sample.v3.demoui.interfaces.FragmentHost;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideo.view.util.UizaInput;
-import vn.loitp.views.LToast;
 
 /**
  * Created by thangn on 2/26/17.
  */
 
-public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo.Callback {
+//public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo.Callback {
+public class WWLVideoPlayerFragment extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
     private FragmentHost mFragmentHost;
-    private UizaIMAVideo uizaIMAVideo;
+    //private UizaIMAVideo uizaIMAVideo;
 
-    public UizaIMAVideo getUizaIMAVideo() {
+    /*public UizaIMAVideo getUizaIMAVideo() {
         return uizaIMAVideo;
-    }
+    }*/
 
     /*@Nullable
     @Override
@@ -66,9 +34,9 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
     @Nullable
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
+        //uizaIMAVideo = (UizaIMAVideo) view.findViewById(R.id.uiza_video);
         super.onViewCreated(view, savedInstanceState);
-        setListener();
+        //setListener();
     }
 
     @Override
@@ -82,7 +50,7 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
         this.mFragmentHost = (FragmentHost) context;
     }
 
-    public void startPlay(WWLVideoDataset.DatasetItem item) {
+    /*public void startPlay(WWLVideoDataset.DatasetItem item) {
         setupVideo("9213e9b8-a926-4282-b081-12b69555cb10", item.getTitle(), item.getCover(), null, null);
     }
 
@@ -273,14 +241,6 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
 
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
-        /*if (isInitSuccess) {
-            setListener();
-            if (frmTopCallback != null) {
-                frmTopCallback.initDone();
-            } else {
-                LLog.e(TAG, "isPiPInitResult else");
-            }
-        }*/
     }
 
     @Override
@@ -360,5 +320,5 @@ public class WWLVideoPlayerFragment extends BaseFragment implements UizaIMAVideo
     public void onStop() {
         super.onStop();
         uizaIMAVideo.onStop();
-    }
+    }*/
 }
