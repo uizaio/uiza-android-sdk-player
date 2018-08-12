@@ -60,13 +60,13 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                 if (tapStartTimeMs != 0) {
                     if (SystemClock.elapsedRealtime() - tapStartTimeMs < LONG_PRESS_THRESHOLD_MS) {
                         if (!controllerVisible) {
-                            LLog.d(TAG, "showController");
+                            //LLog.d(TAG, "showController");
                             showController();
                             if (controllerStateCallback != null) {
                                 controllerStateCallback.onVisibilityChange(true);
                             }
                         } else if (getControllerHideOnTouch()) {
-                            LLog.d(TAG, "hideController");
+                            //LLog.d(TAG, "hideController");
                             hideController();
                             if (controllerStateCallback != null) {
                                 controllerStateCallback.onVisibilityChange(false);
