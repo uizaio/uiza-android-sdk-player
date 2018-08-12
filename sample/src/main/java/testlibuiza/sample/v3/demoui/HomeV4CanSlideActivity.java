@@ -12,6 +12,8 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.draggablepanel.DraggableListener;
@@ -191,6 +193,14 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         }
         if (frmVideoTop != null) {
             frmVideoTop.initPlaylistFolder(metadataId);
+        }
+    }
+
+    //this method will be called when entity is ready to play
+    public void isInitResult(ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
+        if (frmVideoBottom != null) {
+            frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }
     }
 }
