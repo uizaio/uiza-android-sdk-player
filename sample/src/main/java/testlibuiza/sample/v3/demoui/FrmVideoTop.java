@@ -330,12 +330,10 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }*/
 
     public void initEntity(String entityId) {
-        UizaUtil.setClickedPip(getActivity(), false);
         UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        UizaUtil.setClickedPip(getActivity(), false);
         UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
     }
 }

@@ -1464,6 +1464,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
                 //LLog.d(TAG, "getTokenStreaming onSuccess: " + gson.toJson(result));
+                if (Constants.IS_DEBUG) {
+                    LToast.show(activity, "getTokenStreaming onSuccess");
+                }
                 if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
                     LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
                         @Override
@@ -1516,6 +1519,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "getLinkPlay isLivestream onSuccess");
+                    }
                     //LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
                     mResultGetLinkPlay = result;
                     isResultGetLinkPlayDone = true;
@@ -1555,6 +1561,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "getLinkPlay !isLivestream onSuccess");
+                    }
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess");
                     mResultGetLinkPlay = result;
@@ -1734,6 +1743,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
+                            if (Constants.IS_DEBUG) {
+                                LToast.show(activity, "updateLiveInfoCurrentView onSuccess");
+                            }
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 tvLiveView.setText(result.getData().getWatchnow() + "");
@@ -1773,6 +1785,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                         @Override
                         public void onSuccess(ResultTimeStartLive result) {
+                            if (Constants.IS_DEBUG) {
+                                LToast.show(activity, "updateLiveInfoTimeStartLive onSuccess");
+                            }
                             //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
                                 //LLog.d(TAG, "startTime " + result.getData().getStartTime());
@@ -2019,6 +2034,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "getListAllEntity onSuccess");
+                    }
                     //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         return;
