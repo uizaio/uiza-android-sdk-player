@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -48,6 +49,7 @@ import vn.loitp.views.LToast;
 
 public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     private UizaIMAVideoV3 uizaIMAVideoV3;
+    private Button btProgress;
 
     @Override
     protected boolean setFullScreen() {
@@ -69,6 +71,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+        btProgress = (Button) findViewById(R.id.bt_progress);
         uizaIMAVideoV3.setUizaCallback(this);
 
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
@@ -315,11 +318,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                btProgress.setText("Ad: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+                btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+                ;
             }
         });
         uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {

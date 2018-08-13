@@ -647,13 +647,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updatePositionOfProgressBar() {
-        LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
+        //LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
         playerView.post(new Runnable() {
             @Override
             public void run() {
                 int marginL = playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
                 int marginT = playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
+                //LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
                 LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
             }
         });
@@ -1916,7 +1916,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 "en-US");
         mediaTrackList.add(mediaTrack);*/
 
-        long duration = uizaPlayerManagerV3.getPlayer().getDuration();
+        long duration = getDuration();
         //LLog.d(TAG, "duration " + duration);
         if (duration < 0) {
             LLog.e(TAG, "invalid duration -> cannot play chromecast");
@@ -2389,5 +2389,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (exoPictureInPicture != null) {
             exoPictureInPicture.performClick();
         }
+    }
+
+    /*
+     **Lấy độ dài video
+     */
+    public long getDuration() {
+        if (uizaPlayerManagerV3 == null) {
+            return Constants.NOT_FOUND;
+        }
+        return uizaPlayerManagerV3.getPlayer().getDuration();
     }
 }
