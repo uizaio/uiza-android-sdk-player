@@ -2300,4 +2300,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             playerView.setUseController(isUseController);
         }
     }
+
+    /*
+     ** Bắt các event của player như click, long click...
+     */
+    public void setOnTouchEvent(UizaPlayerView.OnTouchEvent onTouchEvent) {
+        if (playerView != null) {
+            playerView.setOnTouchEvent(onTouchEvent);
+        }
+    }
 }

@@ -34,6 +34,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
@@ -80,6 +81,13 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
         //set uizaIMAVideoV3 hide all controller
         uizaIMAVideoV3.setUseController(false);
+
+        uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
+            @Override
+            public void onClick() {
+                LLog.d(TAG, "onClick");
+            }
+        });
     }
 
     @Override

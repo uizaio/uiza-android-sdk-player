@@ -41,6 +41,29 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         setControllerVisibilityListener(this);
     }
 
+    private OnTouchEvent onTouchEvent;
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+        //do nothing
+        controllerVisible = visibility == View.VISIBLE;
+        LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    }
+
+    public boolean isControllerVisible() {
+        return controllerVisible;
+    }
+
+    public interface ControllerStateCallback {
+        public void onVisibilityChange(boolean isShow);
+    }
+
+    private ControllerStateCallback controllerStateCallback;
+
+    public void setControllerStateCallback(ControllerStateCallback controllerStateCallback) {
+        this.controllerStateCallback = controllerStateCallback;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getActionMasked()) {
@@ -74,29 +97,19 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                         }
                     }
                     tapStartTimeMs = 0;
+                    if (onTouchEvent != null) {
+                        onTouchEvent.onClick();
+                    }
                 }
         }
         return true;
     }
 
-    @Override
-    public void onVisibilityChange(int visibility) {
-        //do nothing
-        controllerVisible = visibility == View.VISIBLE;
-        LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
+        this.onTouchEvent = onTouchEvent;
     }
 
-    public boolean isControllerVisible() {
-        return controllerVisible;
-    }
-
-    public interface ControllerStateCallback {
-        public void onVisibilityChange(boolean isShow);
-    }
-
-    private ControllerStateCallback controllerStateCallback;
-
-    public void setControllerStateCallback(ControllerStateCallback controllerStateCallback) {
-        this.controllerStateCallback = controllerStateCallback;
+    public interface OnTouchEvent {
+        public void onClick();
     }
 }
