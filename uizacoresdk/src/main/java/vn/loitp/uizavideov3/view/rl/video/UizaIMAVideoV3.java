@@ -2381,4 +2381,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoShare.performClick();
         }
     }
+
+    /*
+     ** Hiển thị picture in picture và close video view hiện tại
+     */
+    public void showPip() {
+        if (exoPictureInPicture != null) {
+            exoPictureInPicture.performClick();
+        }
+    }
 }
