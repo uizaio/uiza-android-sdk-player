@@ -2107,7 +2107,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void playPlaylistPosition(int position) {
-        if (position < 0 || position > UizaDataV3.getInstance().getDataList().size() - 1) {
+        if (UizaDataV3.getInstance().getDataList() == null || position < 0 || position > UizaDataV3.getInstance().getDataList().size() - 1) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
             return;
         }
@@ -2399,5 +2399,23 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return Constants.NOT_FOUND;
         }
         return uizaPlayerManagerV3.getPlayer().getDuration();
+    }
+
+    /*
+     ** Bỏ video hiện tại và chơi video tiếp theo trong playlist/folder
+     */
+    public void skipNextVideo() {
+        if (exoSkipNext != null) {
+            exoSkipNext.performClick();
+        }
+    }
+
+    /*
+     ** Bỏ video hiện tại và chơi lùi lại 1 video trong playlist/folder
+     */
+    public void skipPreviousVideo() {
+        if (exoSkipPrevious != null) {
+            exoSkipPrevious.performClick();
+        }
     }
 }

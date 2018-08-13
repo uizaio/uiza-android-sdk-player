@@ -183,6 +183,18 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 uizaIMAVideoV3.showPip();
             }
         });
+        findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.skipNextVideo();
+            }
+        });
+        findViewById(R.id.bt_prev_video).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.skipPreviousVideo();
+            }
+        });
     }
 
     @Override
