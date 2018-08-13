@@ -39,7 +39,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,7 +106,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    private Gson gson = new Gson();
+    //private Gson gson = new Gson();
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
@@ -2288,6 +2287,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void setControllerStateCallback(UizaPlayerView.ControllerStateCallback controllerStateCallback) {
         if (playerView != null) {
             playerView.setControllerStateCallback(controllerStateCallback);
+        }
+    }
+
+    /*
+     **Cho phép sử dụng controller hay không
+     * Mặc định: true
+     * Nếu truyền false sẽ ẩn tất cả các component
+     */
+    public void setUseController(boolean isUseController) {
+        if (playerView != null) {
+            playerView.setUseController(isUseController);
         }
     }
 }

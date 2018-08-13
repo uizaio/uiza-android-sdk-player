@@ -77,6 +77,9 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
         }
+
+        //set uizaIMAVideoV3 hide all controller
+        uizaIMAVideoV3.setUseController(false);
     }
 
     @Override
