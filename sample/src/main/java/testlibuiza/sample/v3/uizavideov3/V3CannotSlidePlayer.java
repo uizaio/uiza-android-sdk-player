@@ -97,6 +97,26 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             public void onDoubleTap() {
                 LLog.d(TAG, "onDoubleTap");
             }
+
+            @Override
+            public void onSwipeRight() {
+                LLog.d(TAG, "onSwipeRight");
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                LLog.d(TAG, "onSwipeLeft");
+            }
+
+            @Override
+            public void onSwipeBottom() {
+                LLog.d(TAG, "onSwipeBottom");
+            }
+
+            @Override
+            public void onSwipeTop() {
+                LLog.d(TAG, "onSwipeTop");
+            }
         });
     }
 

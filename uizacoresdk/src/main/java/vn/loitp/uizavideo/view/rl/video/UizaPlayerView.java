@@ -118,9 +118,19 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         public void onLongPress();
 
         public void onDoubleTap();
+
+        public void onSwipeRight();
+
+        public void onSwipeLeft();
+
+        public void onSwipeBottom();
+
+        public void onSwipeTop();
     }
 
     private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         @Override
         public boolean onDown(MotionEvent event) {
@@ -176,8 +186,43 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         }
 
         @Override
-        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             //LLog.d(TAG, "onFling");
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            //LLog.d(TAG, "onSwipeRight");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeRight();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeLeft");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeLeft();
+                            }
+                        }
+                    }
+                } else {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            //LLog.d(TAG, "onSwipeBottom");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeBottom();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeTop");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeTop();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             return true;
         }
     }
