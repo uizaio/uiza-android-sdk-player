@@ -1,15 +1,13 @@
 package vn.loitp.uizavideo.view.rl.video;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-
-import vn.loitp.core.utilities.LLog;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -36,18 +34,14 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         this(context, attrs, 0);
     }
 
-    public UizaPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setControllerVisibilityListener(this);
-    }
+    private GestureDetector mDetector;
 
     private OnTouchEvent onTouchEvent;
 
-    @Override
-    public void onVisibilityChange(int visibility) {
-        //do nothing
-        controllerVisible = visibility == View.VISIBLE;
-        LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    public UizaPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        setControllerVisibilityListener(this);
+        mDetector = new GestureDetector(context, new UizaGestureListener());
     }
 
     public boolean isControllerVisible() {
@@ -65,8 +59,19 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
     }
 
     @Override
+    public void onVisibilityChange(int visibility) {
+        //do nothing
+        controllerVisible = visibility == View.VISIBLE;
+        //LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    }
+
+    public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
+        this.onTouchEvent = onTouchEvent;
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getActionMasked()) {
+        /*switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 tapStartTimeMs = SystemClock.elapsedRealtime();
                 tapPositionX = ev.getX();
@@ -98,18 +103,82 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                     }
                     tapStartTimeMs = 0;
                     if (onTouchEvent != null) {
+                        LLog.d(TAG, "onTouchEvent");
                         onTouchEvent.onClick();
                     }
                 }
-        }
+        }*/
+        mDetector.onTouchEvent(ev);
         return true;
     }
 
-    public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
-        this.onTouchEvent = onTouchEvent;
+    public interface OnTouchEvent {
+        public void onSingleTapConfirmed();
+
+        public void onLongPress();
+
+        public void onDoubleTap();
     }
 
-    public interface OnTouchEvent {
-        public void onClick();
+    private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            //LLog.d(TAG, "onDown");
+            // don't return false here or else none of the other
+            // gestures will work
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            //LLog.d(TAG, "onSingleTapConfirmed");
+            if (!controllerVisible) {
+                //LLog.d(TAG, "showController");
+                showController();
+                if (controllerStateCallback != null) {
+                    controllerStateCallback.onVisibilityChange(true);
+                }
+            } else if (getControllerHideOnTouch()) {
+                //LLog.d(TAG, "hideController");
+                hideController();
+                if (controllerStateCallback != null) {
+                    controllerStateCallback.onVisibilityChange(false);
+                }
+            }
+            if (onTouchEvent != null) {
+                onTouchEvent.onSingleTapConfirmed();
+            }
+            return true;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            //LLog.d(TAG, "onLongPress");
+            if (onTouchEvent != null) {
+                onTouchEvent.onLongPress();
+            }
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            //LLog.d(TAG, "onDoubleTap");
+            if (onTouchEvent != null) {
+                onTouchEvent.onDoubleTap();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            //LLog.d(TAG, "onScroll");
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+            //LLog.d(TAG, "onFling");
+            return true;
+        }
     }
 }
