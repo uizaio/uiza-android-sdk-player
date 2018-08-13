@@ -253,10 +253,41 @@ public class UizaUtil {
             minutes = minutes.length() == 1 ? "0" + minutes : minutes;
             textView.setText((min / 60) + ":" + minutes);
         } catch (Exception e) {
-            //LLog.e(TAG, "setTextDuration " + e.toString());
+            LLog.e(TAG, "Error setTextDuration " + e.toString());
             textView.setText(" - ");
         }
     }
+
+    /*
+     **Hàm này set size của MediaRouteButton giống với size default của ImageButtonWithSize
+     */
+    /*public static void setUICastButton(MediaRouteButton uiCastButton) {
+        if (uiCastButton == null) {
+            return;
+        }
+        boolean isTablet = LDeviceUtil.isTablet(uiCastButton.getContext());
+        int ratioPort;
+        int ratioLand;
+        if (isTablet) {
+            ratioLand = Constants.RATIO_LAND_TABLET;
+            ratioPort = Constants.RATIO_PORTRAIT_TABLET;
+        } else {
+            ratioLand = Constants.RATIO_LAND_MOBILE;
+            ratioPort = Constants.RATIO_PORTRAIT_MOBILE;
+        }
+        int size;
+        if (LScreenUtil.isFullScreen(uiCastButton.getContext())) {
+            int screenWLandscape = LScreenUtil.getScreenHeightIncludeNavigationBar(uiCastButton.getContext());
+            size = screenWLandscape / (ratioLand + 1);
+        } else {
+            int screenWPortrait = LScreenUtil.getScreenWidth();
+            size = screenWPortrait / (ratioPort + 1);
+        }
+        LLog.d(TAG, "setUICastButton size: " + size + ", ratioPort: " + ratioPort + ", ratioLand: " + ratioLand);
+        uiCastButton.getLayoutParams().width = size;
+        uiCastButton.getLayoutParams().height = size;
+        uiCastButton.requestLayout();
+    }*/
 
     //return true if app is in foreground
     public static boolean isAppInForeground(Context context) {

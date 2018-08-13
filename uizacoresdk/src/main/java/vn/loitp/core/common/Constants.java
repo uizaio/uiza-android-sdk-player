@@ -138,4 +138,10 @@ public class Constants {
     public static final int ANIMATION_DURATION = 200;
 
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 6969;
+
+    public static final int RATIO_LAND_TABLET = 24;
+    public static final int RATIO_PORTRAIT_TABLET = 20;
+
+    public static final int RATIO_LAND_MOBILE = 18;
+    public static final int RATIO_PORTRAIT_MOBILE = 12;
 }

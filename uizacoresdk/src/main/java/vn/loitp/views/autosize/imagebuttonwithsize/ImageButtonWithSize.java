@@ -5,13 +5,13 @@ import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDeviceUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
 
 /**
- * Created by LENOVO on 4/19/2018.
+ * Created by loitp on 4/19/2018.
  */
 
 public class ImageButtonWithSize extends ImageButton {
@@ -45,11 +45,11 @@ public class ImageButtonWithSize extends ImageButton {
     private void initSizeScreenW() {
         isTablet = LDeviceUtil.isTablet(getContext());
         if (isTablet) {
-            ratioLand = 24;
-            ratioPort = 20;
+            ratioLand = Constants.RATIO_LAND_TABLET;
+            ratioPort = Constants.RATIO_PORTRAIT_TABLET;
         } else {
-            ratioLand = 18;
-            ratioPort = 12;
+            ratioLand = Constants.RATIO_LAND_MOBILE;
+            ratioPort = Constants.RATIO_PORTRAIT_MOBILE;
         }
 
         screenWPortrait = LScreenUtil.getScreenWidth();
