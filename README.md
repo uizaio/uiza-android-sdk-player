@@ -36,9 +36,9 @@ Uiza is the complete toolkit for building a powerful video streaming application
             public void onCreate() {
                 super.onCreate();
                 Utils.init(this);
-                String api = "api ";
-                String token = "token ";
-                String appId = "appId ";
+                String api = "api";
+                String token = "token";
+                String appId = "appId";
                 UizaDataV3.getInstance().initSDK(api, token, appId);
             }
         }
