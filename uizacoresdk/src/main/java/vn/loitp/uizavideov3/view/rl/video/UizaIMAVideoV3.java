@@ -2309,4 +2309,32 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             playerView.setOnTouchEvent(onTouchEvent);
         }
     }
+
+    /*
+     ** Đổi thời gian seek mặc định
+     */
+    public void setDefaultValueBackwardForward(int mls) {
+        DEFAULT_VALUE_BACKWARD_FORWARD = mls;
+    }
+
+    /*
+     ** Seek từ vị trí hiện tại cộng thêm bao nhiêu mls
+     */
+    public void seekToForward(int mls) {
+        setDefaultValueBackwardForward(mls);
+        if (exoFfwd != null) {
+            exoFfwd.performClick();
+        }
+    }
+    /*
+     ** Seek từ vị trí hiện tại trừ đi bao nhiêu mls
+     */
+
+    public void seekToBackward(int mls) {
+        setDefaultValueBackwardForward(mls);
+        if (exoRew != null) {
+            exoRew.performClick();
+        }
+    }
+
 }

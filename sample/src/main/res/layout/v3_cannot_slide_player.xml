@@ -46,11 +46,13 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/bt_next_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="next 10s" />
 
                 <Button
+                    android:id="@+id/bt_prev_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="pre 10s" />
