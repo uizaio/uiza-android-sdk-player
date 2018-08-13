@@ -54,7 +54,7 @@
             android:name=".v3.canslide.SplashActivityV3"
             android:screenOrientation="portrait" />
         <activity
-            android:name="testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity"
+            android:name=".v4.HomeV4CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
     </application>
