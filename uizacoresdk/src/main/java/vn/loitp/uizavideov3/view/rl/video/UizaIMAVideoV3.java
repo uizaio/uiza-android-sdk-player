@@ -711,8 +711,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            //TODO revert to visible
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1252,8 +1251,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isTablet) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
-            //TODO revert to GONE
-            exoPictureInPicture.setVisibility(VISIBLE);
+            exoPictureInPicture.setVisibility(GONE);
         }
         if (isLivestream) {
             exoPlaylistRelation.setVisibility(GONE);
