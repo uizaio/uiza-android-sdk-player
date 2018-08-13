@@ -145,6 +145,18 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 uizaIMAVideoV3.seekToBackward(10000);
             }
         });
+        findViewById(R.id.bt_volume_on_off).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.toggleVolume();
+            }
+        });
+        findViewById(R.id.bt_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.toggleFullscreen();
+            }
+        });
     }
 
     @Override
@@ -375,7 +387,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     @Override
     public void onBackPressed() {
         if (LScreenUtil.isFullScreen(activity)) {
-            uizaIMAVideoV3.toggleScreenOritation();
+            uizaIMAVideoV3.toggleFullscreen();
         } else {
             super.onBackPressed();
         }

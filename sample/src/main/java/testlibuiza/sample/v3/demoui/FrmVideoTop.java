@@ -291,7 +291,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     @Override
     public void onClickBack() {
         if (LScreenUtil.isFullScreen(getActivity())) {
-            uizaIMAVideoV3.toggleScreenOritation();
+            uizaIMAVideoV3.toggleFullscreen();
         } else {
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
         }

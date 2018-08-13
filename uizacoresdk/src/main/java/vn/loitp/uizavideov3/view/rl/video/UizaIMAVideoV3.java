@@ -1131,7 +1131,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoShareClicked;
     private boolean isExoVolumeClicked;
 
-    public void toggleScreenOritation() {
+    protected void toggleScreenOritation() {
         LActivityUtil.toggleScreenOritation(activity);
     }
 
@@ -2326,10 +2326,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoFfwd.performClick();
         }
     }
+
     /*
      ** Seek từ vị trí hiện tại trừ đi bao nhiêu mls
      */
-
     public void seekToBackward(int mls) {
         setDefaultValueBackwardForward(mls);
         if (exoRew != null) {
@@ -2337,4 +2337,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    /*
+     **toggle volume on/off
+     */
+    public void toggleVolume() {
+        if (exoVolume != null) {
+            exoVolume.performClick();
+        }
+    }
+
+    /*
+     **toggle fullscreen
+     */
+    public void toggleFullscreen() {
+        if (exoFullscreenIcon != null) {
+            exoFullscreenIcon.performClick();
+        }
+    }
 }
