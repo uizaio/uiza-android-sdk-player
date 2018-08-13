@@ -75,7 +75,8 @@ public class FrmHomeChannelV3 extends BaseFragment {
         if (isLivestream || metadataId == null || metadataId.isEmpty()) {
             btPlayPlaylistFolder.setVisibility(View.GONE);
         } else {
-            btPlayPlaylistFolder.setVisibility(View.VISIBLE);
+            //TODO iplm this -> revert to VISIBLE
+            btPlayPlaylistFolder.setVisibility(View.GONE);
         }
         if (Constants.IS_DEBUG) {
             tv.setVisibility(View.VISIBLE);
