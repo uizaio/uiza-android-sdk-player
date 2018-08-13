@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import testlibuiza.R;
 import testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity;
-import testlibuiza.sample.v3.demouibeta.V3UizaVideoIMActivitySlide;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -63,14 +62,6 @@ public class V3SetEntityIdActivity extends BaseActivity {
         etInputMetadataId = (EditText) findViewById(R.id.et_input_metadata_id);
         btStartPf = (Button) findViewById(R.id.bt_start_pf);
 
-        findViewById(R.id.bt_demo_ui_beta).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, V3UizaVideoIMActivitySlide.class);
-                startActivity(intent);
-                LActivityUtil.tranIn(activity);
-            }
-        });
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
