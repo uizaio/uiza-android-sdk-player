@@ -2354,4 +2354,31 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoFullscreenIcon.performClick();
         }
     }
+
+    /*
+     **Hiển thị subtitle
+     */
+    public void showCCPopup() {
+        if (exoCc != null) {
+            exoCc.performClick();
+        }
+    }
+
+    /*
+     **Hiển thị chất lượng video
+     */
+    public void showHQPopup() {
+        if (exoSetting != null) {
+            exoSetting.performClick();
+        }
+    }
+
+    /*
+     **Hiển thị share lên mạng xã hội
+     */
+    public void showSharePopup() {
+        if (exoShare != null) {
+            exoShare.performClick();
+        }
+    }
 }

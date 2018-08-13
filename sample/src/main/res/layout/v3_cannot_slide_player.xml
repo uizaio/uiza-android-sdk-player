@@ -71,16 +71,19 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/bt_cc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="cc" />
 
                 <Button
+                    android:id="@+id/bt_hq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="hq" />
 
                 <Button
+                    android:id="@+id/bt_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="share" />

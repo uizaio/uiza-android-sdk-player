@@ -126,7 +126,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 uizaIMAVideoV3.resumeVideo();
             }
         });
-
         findViewById(R.id.bt_pause).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,6 +154,24 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void onClick(View view) {
                 uizaIMAVideoV3.toggleFullscreen();
+            }
+        });
+        findViewById(R.id.bt_cc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.showCCPopup();
+            }
+        });
+        findViewById(R.id.bt_hq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.showHQPopup();
+            }
+        });
+        findViewById(R.id.bt_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.showSharePopup();
             }
         });
     }
