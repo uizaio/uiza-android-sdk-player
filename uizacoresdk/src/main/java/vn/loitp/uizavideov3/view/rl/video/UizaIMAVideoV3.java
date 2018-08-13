@@ -601,6 +601,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         addChromecastLayer();
     }
 
+    private void updateSizeOfMediaRouteButton() {
+        if (exoPlay != null) {
+            LLog.d(TAG, "updateSizeOfMediaRouteButton: " + exoPlay.getSize());
+        }
+    }
+
     private UizaPlayerView playerView;
 
     private void addPlayerView() {

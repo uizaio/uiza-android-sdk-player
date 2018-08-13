@@ -135,22 +135,28 @@ public class ImageButtonWithSize extends ImageButton {
         }
     }
 
-    private void updateSizePortrait() {
-        int sizePortrait = screenWPortrait / ratioPort;
-        //LLog.d(TAG, "updateSizePortrait sizePortrait " + sizePortrait);
+    private int size;
 
-        this.getLayoutParams().width = sizePortrait;
-        this.getLayoutParams().height = sizePortrait;
+    private void updateSizePortrait() {
+        size = screenWPortrait / ratioPort;
+        //LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
+
+        this.getLayoutParams().width = size;
+        this.getLayoutParams().height = size;
         this.requestLayout();
     }
 
     private void updateSizeLandscape() {
-        int sizeLandscape = screenWLandscape / ratioLand;
-        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + sizeLandscape);
+        size = screenWLandscape / ratioLand;
+        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
 
-        this.getLayoutParams().width = sizeLandscape;
-        this.getLayoutParams().height = sizeLandscape;
+        this.getLayoutParams().width = size;
+        this.getLayoutParams().height = size;
         this.requestLayout();
+    }
+
+    public int getSize() {
+        return size;
     }
 
     @Override
