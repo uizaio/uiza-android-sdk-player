@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Surface;
+import android.view.View;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -116,6 +117,20 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void onSwipeTop() {
                 LLog.d(TAG, "onSwipeTop");
+            }
+        });
+
+        findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.resumeVideo();
+            }
+        });
+
+        findViewById(R.id.bt_pause).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaIMAVideoV3.pauseVideo();
             }
         });
     }
