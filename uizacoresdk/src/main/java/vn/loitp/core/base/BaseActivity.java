@@ -163,7 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             showTvNoConnect();
         } else {
             if (tvConnectStt != null) {
-                LAnimationUtil.play(tvConnectStt, Techniques.FadeOut, new LAnimationUtil.Callback() {
+                LAnimationUtil.play(tvConnectStt, Techniques.FadeOut, new LAnimationUtil.UizaCallback() {
                     @Override
                     public void onCancel() {
                         //do nothing

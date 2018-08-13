@@ -14,7 +14,6 @@
         android:src="@drawable/uiza_logo_512" />
 
     <vn.loitp.views.realtimeblurview.RealtimeBlurView
-        android:id="@+id/blur_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:realtimeBlurRadius="@dimen/round_55"
@@ -76,9 +75,8 @@
             android:layout_width="@dimen/w_30"
             android:layout_height="@dimen/w_30"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/round_5"
             android:scaleType="centerInside"
-            android:src="@drawable/delete_border"
+            android:src="@drawable/ic_close_black_48dp"
             android:tint="@color/colorPrimary"
             android:visibility="gone" />
     </LinearLayout>

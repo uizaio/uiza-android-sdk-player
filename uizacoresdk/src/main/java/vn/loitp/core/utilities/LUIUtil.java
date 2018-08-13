@@ -63,8 +63,8 @@ public class LUIUtil {
     private static String TAG = LUIUtil.class.getSimpleName();
 
     /*
-      * settext marquee
-      */
+     * settext marquee
+     */
     public static void setMarquee(TextView tv, String text) {
         tv.setText(text);
         setMarquee(tv);
@@ -294,7 +294,7 @@ public class LUIUtil {
         searchEditText.setHint(ssb);
 
         ImageView close = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        close.setImageResource(R.drawable.delete_border);
+        close.setImageResource(R.drawable.ic_close_black_48dp);
 
         return searchView;
     }

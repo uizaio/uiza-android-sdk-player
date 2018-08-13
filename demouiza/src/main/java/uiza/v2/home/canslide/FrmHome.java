@@ -27,7 +27,6 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientTracking;
@@ -39,6 +38,7 @@ import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -162,9 +162,9 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         genHomeMenu();
 
         if (RestClientV2.getRetrofit() == null) {
-            String apiEndPoint = LPref.getApiEndPoint(getActivity());
-            String currentApiTrackingEndPoint = LPref.getApiTrackEndPoint(getActivity());
-            String token = LPref.getToken(getActivity());
+            String apiEndPoint = UizaUtil.getApiEndPoint(getActivity());
+            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint(getActivity());
+            String token = UizaUtil.getToken(getActivity());
 
             LLog.d(TAG, "getRetrofit apiEndPoint " + apiEndPoint);
             LLog.d(TAG, "getRetrofit currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
@@ -280,7 +280,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Item item, int position) {
-        LPref.setClickedPip(getActivity(), false);
+        UizaUtil.setClickedPip(getActivity(), false);
         ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 

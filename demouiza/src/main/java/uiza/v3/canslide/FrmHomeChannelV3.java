@@ -3,6 +3,7 @@ package uiza.v3.canslide;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
@@ -27,6 +28,7 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRet
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -40,7 +42,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
     private ProgressBar progressBar;
-
+    private FloatingActionButton btPlayPlaylistFolder;
     private final int NUMBER_OF_COLUMN_1 = 1;
     private final int NUMBER_OF_COLUMN_2 = 2;
     private final int POSITION_OF_LOADING_REFRESH = 2;
@@ -54,13 +56,28 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private final String orderType = "DESC";
 
     private boolean isLivestream;
+    private String metadataId = "";
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         isLivestream = HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_LIVESTREAM);
+        if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
+        } else {
+            metadataId = HomeDataV3.getInstance().getData().getId();
+        }
+        LLog.d(TAG, "metadataId " + metadataId);
+
         tv = (TextView) view.findViewById(R.id.tv);
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        btPlayPlaylistFolder = (FloatingActionButton) view.findViewById(R.id.bt_play_playlist_folder);
+        if (isLivestream || metadataId == null || metadataId.isEmpty()) {
+            btPlayPlaylistFolder.setVisibility(View.GONE);
+        } else {
+            //TODO iplm this -> revert to VISIBLE
+            btPlayPlaylistFolder.setVisibility(View.GONE);
+        }
         if (Constants.IS_DEBUG) {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Debug: " + HomeDataV3.getInstance().getData().getName());
@@ -114,6 +131,18 @@ public class FrmHomeChannelV3 extends BaseFragment {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getActivity(), R.color.White));
 
         getData(false);
+
+        btPlayPlaylistFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LLog.d(TAG, "onClick btPlayPlaylistFolder " + metadataId);
+                if (UizaDataV3.getInstance().isSettingPlayer()) {
+                    LLog.d(TAG, "isSettingPlayer return");
+                    return;
+                }
+                ((HomeV3CanSlideActivity) getActivity()).onClickPlaylistFolder(metadataId);
+            }
+        });
     }
 
     @Override
@@ -263,11 +292,6 @@ public class FrmHomeChannelV3 extends BaseFragment {
                 }
             });
         } else {
-            String metadataId = "";
-            if (HomeDataV3.getInstance().getData().getName().equals(Constants.MENU_HOME_V3)) {
-            } else {
-                metadataId = HomeDataV3.getInstance().getData().getId();
-            }
             //LLog.d(TAG, "getData metadataId: " + metadataId);
 
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);

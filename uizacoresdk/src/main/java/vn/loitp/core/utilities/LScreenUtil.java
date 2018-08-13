@@ -1,6 +1,7 @@
 package vn.loitp.core.utilities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -25,6 +26,7 @@ import android.view.WindowManager;
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 
 /**
  * File created on 8/31/2017.
@@ -372,14 +374,13 @@ public class LScreenUtil {
         }
     }
 
-    //from 0 to 100
+    //0<=value<=255
     public static void setBrightness(final Context context, int value) {
         if (context == null) {
             return;
         }
-
         boolean isCanWriteSystem = checkSystemWritePermission(context);
-        LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
+        //LLog.d(TAG, "isCanWriteSystem " + isCanWriteSystem);
 
         if (!isCanWriteSystem) {
             LDialogUtil.showDialog1(context, "Thông báo", "Uiza cần bạn cần cấp quyền điều chỉnh độ sáng màn hình", "Cấp phép", new LDialogUtil.Callback1() {
@@ -401,11 +402,11 @@ public class LScreenUtil {
         }
 
         //constrain the value of brightness
-        int brightness = 0;
-        if (value < 0) {
+        /*int brightness = 0;
+        if (value <= 0) {
             brightness = 0;
-        } else if (value > 100) {
-            brightness = 100;
+        } else if (value >= 99) {
+            brightness = 99;
         } else {
             brightness = value * 255 / 100;
         }
@@ -423,19 +424,30 @@ public class LScreenUtil {
             ((Activity) context).getWindow().setAttributes(lp);
 
         } catch (Exception e) {
-            LLog.e(TAG, "setBrightness " + e.toString());
+            LLog.e(TAG, "Exception setBrightness " + e.toString());
+        }*/
+        if (value <= 0) {
+            value = 0;
         }
+        if (value >= 255) {
+            value = 255;
+        }
+        ContentResolver cResolver = context.getApplicationContext().getContentResolver();
+        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, value);
+        LLog.d(TAG, "setBrightness: " + value);
     }
 
+    //1<=getCurrentBrightness<=255
     public static int getCurrentBrightness(Context context) {
         if (context == null) {
-            return 0;
+            return Constants.NOT_FOUND;
         }
         try {
-            return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            //return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
             LLog.e(TAG, "getCurrentBrightness" + e.toString());
-            return 0;
+            return Constants.NOT_FOUND;
         }
     }
 

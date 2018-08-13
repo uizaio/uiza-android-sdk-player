@@ -34,15 +34,17 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
+import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
  */
 
-public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.Callback {
+public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
     @Override
@@ -65,24 +67,16 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+        uizaIMAVideoV3.setUizaCallback(this);
 
-        String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        LLog.d(TAG, "entityId " + entityId);
-
-        play(entityId);
-    }
-
-    private void play(final String entityId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
-            return;
+        boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
+        if (isInitWithPlaylistFolder) {
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+            UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
+        } else {
+            String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
         }
-        uizaIMAVideoV3.post(new Runnable() {
-            @Override
-            public void run() {
-                uizaIMAVideoV3.init(entityId);
-                uizaIMAVideoV3.setCallback(V3CannotSlidePlayer.this);
-            }
-        });
     }
 
     @Override
@@ -294,11 +288,12 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onClickPip(Intent intent) {
-
+        LLog.d(TAG, "onClickPip");
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -306,6 +301,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaIMAVideoV3.
 
     @Override
     public void onError(Exception e) {
+        LLog.d(TAG, "onError " + e.getMessage());
     }
 
     @Override

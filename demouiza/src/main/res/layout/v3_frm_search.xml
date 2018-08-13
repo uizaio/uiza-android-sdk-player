@@ -75,9 +75,8 @@
             android:layout_width="@dimen/w_30"
             android:layout_height="@dimen/w_30"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/round_5"
             android:scaleType="centerInside"
-            android:src="@drawable/delete_border"
+            android:src="@drawable/ic_close_black_48dp"
             android:tint="@color/colorPrimary"
             android:visibility="gone" />
     </LinearLayout>

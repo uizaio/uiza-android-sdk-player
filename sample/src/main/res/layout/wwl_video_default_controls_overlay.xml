@@ -9,18 +9,18 @@
         android:layout_height="fill_parent">
 
         <View
-            android:id="@+id/bottom_bar_background"
             android:layout_width="fill_parent"
             android:layout_height="50.0dip"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/ic_settings_black_48dp" />
+            android:src="@drawable/ic_brightness_1_black_48dp"
+            android:tint="@color/White" />
 
         <View
-            android:id="@+id/top_bar_background"
             android:layout_width="fill_parent"
             android:layout_height="56.0dip"
             android:layout_alignParentTop="true"
-            android:background="@drawable/ic_settings_black_48dp" />
+            android:src="@drawable/ic_brightness_1_black_48dp"
+            android:tint="@color/White" />
 
         <LinearLayout
             android:id="@+id/bottom_end_container"
@@ -37,7 +37,7 @@
                 android:layout_width="48.0dip"
                 android:layout_height="48.0dip"
                 android:scaleType="center"
-                android:src="@drawable/ic_fullscreen_black_48dp" />
+                android:src="@drawable/baseline_fullscreen_white_48" />
         </LinearLayout>
 
         <ImageView
@@ -48,6 +48,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:scaleType="center"
-            android:src="@drawable/ic_arrow_back_white_48dp" />
+            android:src="@drawable/ic_brightness_1_black_48dp"
+            android:tint="@color/White" />
     </RelativeLayout>
 </RelativeLayout>

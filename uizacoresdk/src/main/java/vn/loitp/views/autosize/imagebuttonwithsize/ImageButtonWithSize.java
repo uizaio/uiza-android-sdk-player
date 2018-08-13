@@ -49,7 +49,7 @@ public class ImageButtonWithSize extends ImageButton {
             ratioPort = 20;
         } else {
             ratioLand = 18;
-            ratioPort = 14;
+            ratioPort = 12;
         }
 
         screenWPortrait = LScreenUtil.getScreenWidth();

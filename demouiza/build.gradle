@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:1.4.3'
+    //implementation 'com.github.uizaio:uiza-android-sdk-player:1.4.5'
     //implementation 'com.github.uizaio:uiza-android-sdk-player:1.3.8'
     //implementation 'com.github.uizaio:uiza-android-sdk-player:dev-SNAPSHOT'
 

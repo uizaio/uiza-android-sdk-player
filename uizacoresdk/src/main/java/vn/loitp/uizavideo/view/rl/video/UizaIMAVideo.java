@@ -44,7 +44,6 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -69,7 +68,7 @@ import vn.loitp.uizavideo.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uizavideo.view.dlg.listentityrelation.UizaDialogListEntityRelation;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideo.view.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -193,7 +192,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         LUIUtil.showProgressBar(progressBar);
 
         //ko track neu play tu clicked pip
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaUtil.getClickedPip(activity)) {
             //cannot delete delay below, only works after 500mls
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -441,7 +440,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
         exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
         exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
-        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist);
+        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
@@ -570,7 +569,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
         //ko track neu play tu clicked pip
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaUtil.getClickedPip(activity)) {
             //track event video_starts
             trackUiza(UizaData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
@@ -913,7 +912,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         //LLog.d(TAG, "getLinkPlay");
         UizaUtil.setupRestClientV2(activity);
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
+        Auth auth = UizaUtil.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
@@ -1016,7 +1015,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     /*private void getLinkDownload() {
         LLog.d(TAG, ">>>getLinkDownload entityId: " + inputModel.getEntityID());
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = LPref.getAuth(activity, gson);
+        Auth auth = UizaPref.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             showDialogError("Error auth == null || auth.getAppId() == null");
             return;

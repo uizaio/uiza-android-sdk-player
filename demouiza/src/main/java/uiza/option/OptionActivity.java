@@ -23,9 +23,9 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.Mode;
 import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager;
 
@@ -96,7 +96,7 @@ public class OptionActivity extends BaseActivity {
         });
 
         //set auth null every run this app
-        LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
+        UizaUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
 
         findViews();
         setupSkin();
@@ -233,7 +233,7 @@ public class OptionActivity extends BaseActivity {
                         radioCanSlide.setChecked(true);
                         break;
                 }
-                LPref.setAuth(activity, null, LSApplication.getInstance().getGson());
+                UizaUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
             }
         });
     }

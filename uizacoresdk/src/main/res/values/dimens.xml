@@ -87,4 +87,5 @@
     <dimen name="medium_font_size">16.0sp</dimen>
     <dimen name="small_font_size">14.0sp</dimen>
     <dimen name="watch_while_mini_player_shadow_size">4.0dip</dimen>
+    <dimen name="w_113">113dp</dimen>
 </resources>

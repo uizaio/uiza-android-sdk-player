@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -45,12 +44,13 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.ComunicateMng;
+import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.views.LToast;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -70,11 +70,12 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
     private WindowManager.LayoutParams params;
 
-    private Data data;
+    //private Data data;
     private String linkPlay;
     private Gson gson = new Gson();
 
     private boolean isLivestream;
+    private int widthScreen;
 
     public FloatingUizaVideoServiceV3() {
     }
@@ -82,9 +83,9 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
-        data = LPref.getData(this, gson);
-        if (data == null) {
-            LLog.d(TAG, "onStartCommand data == null");
+        //data = UizaUtil.getData(this, gson);
+        if (UizaDataV3.getInstance().getData() == null) {
+            LLog.e(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);
         }
         if (intent != null && intent.getExtras() != null) {
@@ -96,6 +97,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     }
 
     private void findViews() {
+        widthScreen = LScreenUtil.getScreenWidth();
+        LLog.d(TAG, "widthScreen " + widthScreen);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -182,7 +185,20 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LPref.setClickedPip(getApplicationContext(), true);
+                //set UI
+                moveView.getLayoutParams().width = widthScreen;
+                moveView.getLayoutParams().height = widthScreen * 9 / 16;
+                moveView.requestLayout();
+                updateUISlide(0, 0);
+                rlControl.setVisibility(View.GONE);
+
+                //stop video
+                floatUizaIMAVideoV3.getPlayer().setPlayWhenReady(false);
+                LUIUtil.showProgressBar(floatUizaIMAVideoV3.getProgressBar());
+                moveView.setOnTouchListener(null);//disabled move view
+
+                //bắn cho FloatClickFullScreenReceiverV3
+                UizaUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
                 intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
@@ -198,40 +214,47 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 }
                 boolean isToggleResume = floatUizaIMAVideoV3.togglePauseResume();
                 if (isToggleResume) {
-                    btPlayPause.setImageResource(R.drawable.ic_pause_black_48dp);
+                    btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
                 } else {
-                    btPlayPause.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+                    btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
                 }
             }
         });
     }
 
-    private void slideToPosition(int goToPosX, int goToPosY) {
+    /*private void slideToPosition(int goToPosX, int goToPosY) {
         int currentPosX = params.x;
         int currentPosY = params.y;
-        //LLog.d(TAG, "slideToLeft current Point: " + currentPosX + " x " + currentPosY);
+        LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
+
+//        final int a = (int) Math.abs(goToPosX - currentPosX);
+//        final int b = (int) Math.abs(goToPosY - currentPosY);
+
+//        final int a = goToPosX;
+//        final int b = goToPosY;
 
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
-        //LLog.d(TAG, "slideToLeft " + a + " : " + b);
 
-        rlControl.setVisibility(View.GONE);
-        setSizeMoveView();
+        LLog.d(TAG, "slideToPosition " + a + " : " + b);
+
+        //rlControl.setVisibility(View.GONE);
+        //setSizeMoveView();
 
         new CountDownTimer(500, 5) {
             public void onTick(long t) {
                 float step = (500 - t) / 5;
-                //LLog.d(TAG, "slideToLeft onTick step: " + step);
-                //LLog.d(TAG, "slideToLeft onTick: " + a * step / 100 + " - " + b * step / 100);
+                LLog.d(TAG, "slideToLeft onTick step: " + step);
+                //LLog.d(TAG, "slideToPosition onTick: " + a * step / 100 + " - " + b * step / 100);
                 updateUISlide((int) (a * step / 100), (int) (b * step / 100));
             }
 
             public void onFinish() {
-                //LLog.d(TAG, "slideToLeft onFinish");
+                LLog.d(TAG, "slideToLeft onFinish " + a + " x " + b);
                 updateUISlide(a, b);
             }
         }.start();
-    }
+    }*/
 
     private void updateUISlide(int x, int y) {
         params.x = x;
@@ -463,19 +486,36 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && floatUizaIMAVideoV3 != null) {
-            //LLog.d(TAG, "isInitResult lastCurrentPosition: " + lastCurrentPosition);
+            LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
             setListener();
             if (lastCurrentPosition > 0) {
                 floatUizaIMAVideoV3.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
+                //bắn cho UizaIMAVideoV3 nhận
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
                 isSendMsgToActivity = true;
             }
         }
+    }
+
+    @Override
+    public void onPlayerStateEnded() {
+        //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
+        if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+            //TODO iplm this
+            LLog.d(TAG, "Đang play ở chế độ playlist folder -> auto switch next data");
+            if (Constants.IS_DEBUG) {
+                LToast.show(getApplicationContext(), "TODO iplm Đang play ở chế độ playlist folder -> auto switch next data");
+            }
+        } else {
+            LLog.d(TAG, "Đang play ở chế độ entity -> do nothing");
+        }
+        //Hiện tại khi play xong cho nó ẩn luôn
+        stopSelf();
     }
 
     private boolean isSendMsgToActivity;
@@ -495,12 +535,18 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     }
 
     private void setSizeMoveView() {
-        int widthScreen = LScreenUtil.getScreenWidth();
         if (rlControl.getVisibility() == View.VISIBLE) {
             //LLog.d(TAG, "setSizeMoveView if");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
+
+            /*moveView.getLayoutParams().width = widthScreen * 50 / 100;
+            moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;*/
+
             moveView.getLayoutParams().width = widthScreen * 70 / 100;
             moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
+
+            /*moveView.getLayoutParams().width = widthScreen;
+            moveView.getLayoutParams().height = widthScreen * 9 / 16;*/
         } else {
             //LLog.d(TAG, "setSizeMoveView else");
             //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
@@ -518,21 +564,24 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         return moveView.getLayoutParams().height;
     }
 
-    //listen msg from activity
+    //listen msg from UizaIMAVideoV3
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
         if (msg == null) {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
+            //Nhận được vị trí từ UizaIMAVideoV3, tiến hành seek tới vị trí này
             //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (floatUizaIMAVideoV3 != null) {
                 floatUizaIMAVideoV3.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
+            //lắng nghe UizaIMAVideoV3 đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
             if (floatUizaIMAVideoV3 != null) {
                 //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
+                //lấy vị trí của pip hiện tại để bắn cho UizaIMAVideoV3
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
                 msgFromServicePosition.setPosition(floatUizaIMAVideoV3.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);

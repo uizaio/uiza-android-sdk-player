@@ -52,7 +52,7 @@ vn.loitp.uizavideov3.view.floatview
 vn.loitp.uizavideov3.view.manager
 vn.loitp.uizavideov3.view.rl.video
 vn.loitp.uizavideov3.view.rl.videoinfo
-vn.loitp.uizavideov3.view.util
+vn.loitp.uizavideov3.util
 vn.loitp.utils.constant
 vn.loitp.utils.util
 vn.loitp.views

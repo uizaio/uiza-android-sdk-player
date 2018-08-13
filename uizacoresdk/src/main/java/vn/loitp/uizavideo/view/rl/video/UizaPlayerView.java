@@ -9,6 +9,8 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import vn.loitp.core.utilities.LLog;
+
 /**
  * Created by loitp on 6/8/2018.
  */
@@ -18,8 +20,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 public final class UizaPlayerView extends PlayerView implements PlayerControlView.VisibilityListener {
     private final String TAG = getClass().getSimpleName();
-    private static final float DRAG_THRESHOLD = 10;
-    private static final long LONG_PRESS_THRESHOLD_MS = 500;
+    private static final float DRAG_THRESHOLD = 10;//original 10
+    private static final long LONG_PRESS_THRESHOLD_MS = 500;//original 500
 
     private boolean controllerVisible;
     private long tapStartTimeMs;
@@ -60,13 +62,18 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                         if (!controllerVisible) {
                             //LLog.d(TAG, "showController");
                             showController();
+                            if (controllerStateCallback != null) {
+                                controllerStateCallback.onVisibilityChange(true);
+                            }
                         } else if (getControllerHideOnTouch()) {
                             //LLog.d(TAG, "hideController");
                             hideController();
+                            if (controllerStateCallback != null) {
+                                controllerStateCallback.onVisibilityChange(false);
+                            }
                         }
                     }
                     tapStartTimeMs = 0;
-                    controllerVisible = !controllerVisible;
                 }
         }
         return true;
@@ -76,10 +83,20 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
     public void onVisibilityChange(int visibility) {
         //do nothing
         controllerVisible = visibility == View.VISIBLE;
-        //LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+        LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
     }
 
     public boolean isControllerVisible() {
         return controllerVisible;
+    }
+
+    public interface ControllerStateCallback {
+        public void onVisibilityChange(boolean isShow);
+    }
+
+    private ControllerStateCallback controllerStateCallback;
+
+    public void setControllerStateCallback(ControllerStateCallback controllerStateCallback) {
+        this.controllerStateCallback = controllerStateCallback;
     }
 }

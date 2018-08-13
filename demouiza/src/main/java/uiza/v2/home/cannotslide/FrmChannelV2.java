@@ -24,7 +24,6 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDisplayUtils;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV2;
 import vn.loitp.restapi.uiza.UizaServiceV2;
@@ -33,6 +32,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -132,7 +132,7 @@ public class FrmChannelV2 extends BaseFragment {
     private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
         /*//poster
         List<Item> itemListPoster = getSubList(itemList, 0, 5);
-        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.Callback() {
+        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.UizaCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -144,7 +144,7 @@ public class FrmChannelV2 extends BaseFragment {
         channelObjectTopMovies.setChannelName("Top Movies");
         List<Item> itemListTopMovies = getSubList(itemList, 6, 15);
         channelObjectTopMovies.setItemList(itemListTopMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.Callback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.UizaCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -156,7 +156,7 @@ public class FrmChannelV2 extends BaseFragment {
         channelObjectNewestMovies.setChannelName("Newest Movies");
         List<Item> itemListNewestMovies = getSubList(itemList, 16, itemList.size() - 1);
         channelObjectNewestMovies.setItemList(itemListNewestMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.Callback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.UizaCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -167,7 +167,7 @@ public class FrmChannelV2 extends BaseFragment {
         ChannelObject channelObjectAllMovies = new ChannelObject();
         channelObjectAllMovies.setChannelName("All Movies");
         channelObjectAllMovies.setItemList(itemList);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.Callback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.UizaCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -218,7 +218,7 @@ public class FrmChannelV2 extends BaseFragment {
         if (UizaData.getInstance().isSettingPlayer()) {
             return;
         }
-        LPref.setClickedPip(getActivity(), false);
+        UizaUtil.setClickedPip(getActivity(), false);
         Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());

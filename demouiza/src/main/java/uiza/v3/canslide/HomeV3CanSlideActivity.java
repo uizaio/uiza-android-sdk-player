@@ -8,7 +8,6 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v3.data.HomeDataV3;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
@@ -16,16 +15,15 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LPref;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.util.UizaUtil;
-import vn.loitp.uizavideov3.view.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -36,7 +34,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
-        LPref.setAcitivityCanSlideIsRunning(activity, true);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -66,7 +64,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             }
         });
         replaceFragment(new FrmHomeV3());
-        if (LPref.getClickedPip(activity)) {
+        if (UizaUtil.getClickedPip(activity)) {
+            //TODO
             play(null);
         }
     }
@@ -101,114 +100,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoTopV3 frmVideoTop;
     private FrmVideoBottomV3 frmVideoBottom;
 
-    private void initializeDraggablePanel(final Data data) {
-        if (data == null) {
-            return;
-        } else {
-            LPref.setData(activity, data, LSApplication.getInstance().getGson());
-        }
-        if (!LConnectivityUtil.isConnected(activity)) {
-            LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                }
-
-                @Override
-                public void onCancel() {
-                }
-            });
-            return;
-        }
-
-        if (draggablePanel.getVisibility() != View.VISIBLE) {
-            draggablePanel.setVisibility(View.VISIBLE);
-        }
-
-        if (frmVideoTop != null || frmVideoBottom != null) {
-            clearUIFrmBottom();
-            initFrmTop(data.getId(), false);
-            draggablePanel.maximize();
-            return;
-        }
-        frmVideoTop = new FrmVideoTopV3();
-        frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
-            @Override
-            public void onViewCreated() {
-                initFrmTop(data.getId(), false);
-            }
-        });
-        frmVideoBottom = new FrmVideoBottomV3();
-        frmVideoBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
-            @Override
-            public void onViewCreated() {
-                frmVideoBottom.init(new ItemAdapterV2.Callback() {
-                    @Override
-                    public void onClickItemBottom(Item item, int position) {
-                        LPref.setClickedPip(activity, false);
-                        clearUIFrmBottom();
-                        initFrmTop(data.getId(), true);
-                    }
-
-                    @Override
-                    public void onLoadMore() {
-                    }
-                });
-            }
-        });
-
-        draggablePanel.setFragmentManager(getSupportFragmentManager());
-        draggablePanel.setTopFragment(frmVideoTop);
-        draggablePanel.setBottomFragment(frmVideoBottom);
-
-        //draggablePanel.setXScaleFactor(xScaleFactor);
-        //draggablePanel.setYScaleFactor(yScaleFactor);
-        //draggablePanel.setTopViewHeight(800);
-        //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
-        //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
-        draggablePanel.setClickToMaximizeEnabled(true);
-        draggablePanel.setClickToMinimizeEnabled(false);
-        draggablePanel.setEnableHorizontalAlphaEffect(false);
-        setSizeFrmTop();
-        draggablePanel.initializeView();
-
-        frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
-            @Override
-            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                if (LPref.getClickedPip(activity)) {
-                    ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-                    msgFromActivityIsInitSuccess.setInitSuccess(true);
-                    ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
-                }
-                frmVideoTop.getUizaIMAVideoV3().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
-                    @Override
-                    public void onVisibilityChange(int visibility) {
-                        if (draggablePanel != null && !isLandscape) {
-                            if (draggablePanel.isMaximized()) {
-                                if (visibility == View.VISIBLE) {
-                                    draggablePanel.setEnableSlide(false);
-                                } else {
-                                    draggablePanel.setEnableSlide(true);
-                                }
-                            } else {
-                                draggablePanel.setEnableSlide(true);
-                            }
-                        }
-                    }
-                });
-                intFrmBottom(data);
-            }
-
-            @Override
-            public void onClickListEntityRelation(Item item, int position) {
-                LPref.setClickedPip(activity, false);
-                clearUIFrmBottom();
-                initFrmTop(data.getId(), true);
-            }
-        });
-    }
-
     private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!LPref.getClickedPip(activity)) {
+        if (!UizaUtil.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
@@ -229,13 +122,14 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     public void play(Data data) {
         if (data == null) {
-            data = LPref.getData(activity, LSApplication.getInstance().getGson());
+            //data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
+            data = UizaDataV3.getInstance().getData();
             if (data == null) {
                 LLog.e(TAG, "play error data null");
                 return;
             }
         }
-        initializeDraggablePanel(data);
+        initializeDraggablePanelEntity(data);
     }
 
     private boolean isLandscape;
@@ -278,8 +172,192 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        LPref.setAcitivityCanSlideIsRunning(activity, false);
+        UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
         HomeDataV3.getInstance().clearAll();
         super.onDestroy();
+    }
+
+    protected void onClickPlaylistFolder(String metadataId) {
+        LLog.d(TAG, "onClickPlaylistFolder metadataId " + metadataId);
+        initializeDraggablePanelPlaylistFolder(metadataId);
+    }
+
+    private void initializeDraggablePanelEntity(final Data data) {
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            });
+            return;
+        }
+
+        if (draggablePanel.getVisibility() != View.VISIBLE) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
+
+        if (frmVideoTop != null || frmVideoBottom != null) {
+            clearUIFrmBottom();
+            initFrmTop(data.getId(), false);
+            draggablePanel.maximize();
+            return;
+        }
+        frmVideoTop = new FrmVideoTopV3();
+        frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                initFrmTop(data.getId(), false);
+            }
+        });
+        frmVideoBottom = new FrmVideoBottomV3();
+        frmVideoBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                frmVideoBottom.init(new ItemAdapterV2.Callback() {
+                    @Override
+                    public void onClickItemBottom(Item item, int position) {
+                        UizaUtil.setClickedPip(activity, false);
+                        clearUIFrmBottom();
+                        initFrmTop(data.getId(), true);
+                    }
+
+                    @Override
+                    public void onLoadMore() {
+                    }
+                });
+            }
+        });
+
+        draggablePanel.setFragmentManager(getSupportFragmentManager());
+        draggablePanel.setTopFragment(frmVideoTop);
+        draggablePanel.setBottomFragment(frmVideoBottom);
+
+        //draggablePanel.setXScaleFactor(xScaleFactor);
+        //draggablePanel.setYScaleFactor(yScaleFactor);
+        //draggablePanel.setTopViewHeight(800);
+        //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
+        //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
+        draggablePanel.setClickToMaximizeEnabled(true);
+        draggablePanel.setClickToMinimizeEnabled(false);
+        draggablePanel.setEnableHorizontalAlphaEffect(false);
+        setSizeFrmTop();
+        draggablePanel.initializeView();
+
+        frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
+            @Override
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+                frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+                    @Override
+                    public void onVisibilityChange(boolean isShow) {
+                        if (draggablePanel != null && !isLandscape) {
+                            if (draggablePanel.isMaximized()) {
+                                if (isShow) {
+                                    draggablePanel.setEnableSlide(false);
+                                } else {
+                                    draggablePanel.setEnableSlide(true);
+                                }
+                            } else {
+                                draggablePanel.setEnableSlide(true);
+                            }
+                        }
+                    }
+                });
+                intFrmBottom(data);
+            }
+
+            @Override
+            public void onClickListEntityRelation(Item item, int position) {
+                UizaUtil.setClickedPip(activity, false);
+                clearUIFrmBottom();
+                initFrmTop(data.getId(), true);
+            }
+        });
+    }
+
+    private void initializeDraggablePanelPlaylistFolder(final String metadataId) {
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LDialogUtil.showDialog1(activity, getString(R.string.err_no_internet), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            });
+            return;
+        }
+
+        if (draggablePanel.getVisibility() != View.VISIBLE) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
+
+        if (frmVideoTop != null || frmVideoBottom != null) {
+            clearUIFrmBottom();
+            frmVideoTop.setupPlaylistFolder(metadataId);
+            draggablePanel.maximize();
+            return;
+        }
+        frmVideoTop = new FrmVideoTopV3();
+        frmVideoTop.setFragmentCallback(new BaseFragment.FragmentCallback() {
+            @Override
+            public void onViewCreated() {
+                frmVideoTop.setupPlaylistFolder(metadataId);
+            }
+        });
+        frmVideoBottom = new FrmVideoBottomV3();
+
+        draggablePanel.setFragmentManager(getSupportFragmentManager());
+        draggablePanel.setTopFragment(frmVideoTop);
+        draggablePanel.setBottomFragment(frmVideoBottom);
+
+        //draggablePanel.setXScaleFactor(xScaleFactor);
+        //draggablePanel.setYScaleFactor(yScaleFactor);
+        //draggablePanel.setTopViewHeight(800);
+        //draggablePanel.setTopFragmentMarginRight(topViewMarginRight);
+        //draggablePanel.setTopFragmentMarginBottom(topViewMargnBottom);
+        draggablePanel.setClickToMaximizeEnabled(true);
+        draggablePanel.setClickToMinimizeEnabled(false);
+        draggablePanel.setEnableHorizontalAlphaEffect(false);
+        setSizeFrmTop();
+        draggablePanel.initializeView();
+
+        frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
+            @Override
+            public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+                LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
+                frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+                    @Override
+                    public void onVisibilityChange(boolean isShow) {
+                        if (draggablePanel != null && !isLandscape) {
+                            if (draggablePanel.isMaximized()) {
+                                if (isShow) {
+                                    draggablePanel.setEnableSlide(false);
+                                } else {
+                                    draggablePanel.setEnableSlide(true);
+                                }
+                            } else {
+                                draggablePanel.setEnableSlide(true);
+                            }
+                        }
+                    }
+                });
+                intFrmBottom(data);
+            }
+
+            @Override
+            public void onClickListEntityRelation(Item item, int position) {
+                LLog.d(TAG, "initializeDraggablePanelPlaylistFolder onClickListEntityRelation " + position);
+                /*UizaPref.setClickedPip(activity, false);
+                clearUIFrmBottom();
+                initFrmTop(data.getId(), true);*/
+            }
+        });
     }
 }

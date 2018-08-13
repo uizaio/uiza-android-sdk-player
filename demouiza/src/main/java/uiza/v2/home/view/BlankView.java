@@ -32,7 +32,7 @@ public class BlankView {
 
     }*/
 
-    /*public interface Callback {
+    /*public interface UizaCallback {
         public void onClick(Item item, int position);
     }*/
 }

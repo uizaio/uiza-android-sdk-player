@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true">
 
     <FrameLayout
-        android:id="@+id/accessibility_layer_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fitsSystemWindows="true">
@@ -34,20 +33,20 @@
 
                 <fragment
                     android:id="@+id/player_fragment"
-                    android:name="testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoPlayerFragment"
+                    android:name="testlibuiza.sample.v3.demouibeta.detail.WWLVideoPlayerFragment"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </FrameLayout>
 
             <fragment
                 android:id="@+id/up_next_fragment"
-                android:name="testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoUpNextFragment"
+                android:name="testlibuiza.sample.v3.demouibeta.detail.WWLVideoUpNextFragment"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 
             <fragment
                 android:id="@+id/meta_info_fragment"
-                android:name="testlibuiza.sample.v2.uizavideo.slide2.detail.WWLVideoMetaInfoFragment"
+                android:name="testlibuiza.sample.v3.demouibeta.detail.WWLVideoMetaInfoFragment"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 

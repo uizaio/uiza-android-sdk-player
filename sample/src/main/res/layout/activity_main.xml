@@ -50,14 +50,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Uiza Video Slide" />
-
-                <Button
-                    android:id="@+id/bt_uiza_video_slide_v2_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="true"
-                    android:text="Uiza Video Slide 2 (Beta)"
-                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,6 +79,14 @@
                     android:background="@color/Green"
                     android:padding="@dimen/padding_5"
                     android:text="Test UizaSDK V3" />
+
+                <!--<Button
+                    android:id="@+id/bt_uiza_demo_ui_slide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="Uiza Video Slide UI"
+                    android:visibility="visible" />-->
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

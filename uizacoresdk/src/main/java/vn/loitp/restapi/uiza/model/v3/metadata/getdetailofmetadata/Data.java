@@ -4,6 +4,7 @@ package vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPullInfo;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ExtendMetadata;
 
@@ -156,9 +157,9 @@ public class Data {
     @Expose
     private Object embedMetadata;
 
-    @SerializedName("extendMetadata")
+    /*@SerializedName("extendMetadata")
     @Expose
-    private ExtendMetadata extendMetadata;
+    private ExtendMetadata extendMetadata;*/
 
     @SerializedName("createdAt")
     @Expose
@@ -265,6 +266,9 @@ public class Data {
     }
 
     public String getThumbnail() {
+        if (thumbnail == null) {
+            return Constants.URL_IMG_THUMBNAIL;
+        }
         return thumbnail;
     }
 
@@ -288,13 +292,13 @@ public class Data {
         this.embedMetadata = embedMetadata;
     }
 
-    public ExtendMetadata getExtendMetadata() {
+    /*public ExtendMetadata getExtendMetadata() {
         return extendMetadata;
     }
 
     public void setExtendMetadata(ExtendMetadata extendMetadata) {
         this.extendMetadata = extendMetadata;
-    }
+    }*/
 
     public String getMode() {
         return mode;

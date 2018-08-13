@@ -3,56 +3,135 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
-    android:padding="@dimen/padding_5">
-
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter entity id" />
-
-    <EditText
-        android:id="@+id/et_input_entity_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv"
-        android:hint="Enter entity id"
-        android:singleLine="true"
-        android:textColor="@color/Black"
-        android:textColorHint="@color/Gray"
-        android:textSize="@dimen/txt_14" />
+    android:background="@color/White">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_input_entity_id"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/bt_vod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VOD" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/LightBlue"
+            android:padding="@dimen/padding_5">
 
-        <Button
-            android:id="@+id/bt_live"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LIVE" />
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ENTITY"
+                android:textSize="@dimen/txt_30" />
 
-        <Button
-            android:id="@+id/bt_clear"
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_input_entity_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv"
+                android:hint="Enter entity id"
+                android:singleLine="true"
+                android:textColor="@color/Black"
+                android:textColorHint="@color/Gray"
+                android:textSize="@dimen/txt_14" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_input_entity_id"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_vod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VOD" />
+
+                <Button
+                    android:id="@+id/bt_live"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIVE" />
+
+                <Button
+                    android:id="@+id/bt_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CLEAR" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="START ENTITY" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/LightPink"
+            android:padding="@dimen/padding_5">
+
+            <TextView
+                android:id="@+id/tv_pf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PLAYLIST/FOLDER"
+                android:textSize="@dimen/txt_30" />
+
+            <EditText
+                android:id="@+id/et_input_metadata_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_pf"
+                android:hint="Enter Metadata Id"
+                android:singleLine="true"
+                android:textColor="@color/Black"
+                android:textColorHint="@color/Gray"
+                android:textSize="@dimen/txt_14" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_input_metadata_id"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_play_list_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Playlist 0" />
+
+                <Button
+                    android:id="@+id/bt_clear_pf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CLEAR" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_start_pf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="START PLAYLIST/FOLDER" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CLEAR" />
+            android:background="@color/LightGoldenrodYellow"
+            android:padding="@dimen/padding_5">
+
+            <Button
+                android:id="@+id/bt_demo_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DEMO UI"
+                android:visibility="visible" />
+        </RelativeLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/bt_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="START" />
-
 </RelativeLayout>

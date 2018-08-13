@@ -25,8 +25,8 @@
 
             <ImageButton
                 android:id="@+id/bt_full_screen"
-                android:layout_width="@dimen/w_50"
-                android:layout_height="@dimen/w_50"
+                android:layout_width="@dimen/w_40"
+                android:layout_height="@dimen/w_40"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_marginRight="@dimen/margin_10"
@@ -34,26 +34,26 @@
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_fullscreen_black_48dp"
+                android:src="@drawable/baseline_fullscreen_white_48"
                 android:tint="@color/White" />
 
             <ImageButton
                 android:id="@+id/bt_play_pause"
-                android:layout_width="@dimen/w_50"
-                android:layout_height="@dimen/w_50"
+                android:layout_width="@dimen/w_40"
+                android:layout_height="@dimen/w_40"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_pause_black_48dp"
+                android:src="@drawable/baseline_pause_circle_outline_white_48"
                 android:tint="@color/White" />
 
             <ImageButton
                 android:id="@+id/bt_exit"
-                android:layout_width="@dimen/w_50"
-                android:layout_height="@dimen/w_50"
+                android:layout_width="@dimen/w_40"
+                android:layout_height="@dimen/w_40"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_marginLeft="@dimen/margin_10"

@@ -47,9 +47,11 @@ public class Constants {
     public final static String TEST_6 = "13308851AEDCA44443112D80A8D182CA";
 
     //public static String ASSET_FILE_GIFT = "img/ic_gift.png";
+    public final static String KEY_UIZA_IS_PLAYLIST_FOLDER = "KEY_UIZA_IS_PLAYLIST_FOLDER";
     public final static String KEY_UIZA_ENTITY_ID = "KEY_UIZA_ENTITY_ID";
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
+    public final static String KEY_UIZA_METADAT_ENTITY_ID = "KEY_UIZA_METADAT_ENTITY_ID";
 
     public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     public final static String URL_IMG_16x9 = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
@@ -73,7 +75,7 @@ public class Constants {
     public final static String URL_GET_LINK_PLAY_STAG = "https://stag-ucc.uiza.io/";
     public final static String URL_GET_LINK_PLAY_PROD = "https://ucc.uiza.io/";
 
-    public final static String URL_TRACKING_DEV = "https://dev-tracking.uiza.io/analytic-tracking/";
+    public final static String URL_TRACKING_DEV = "https://dev-tracking.uizadev.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
 
@@ -134,4 +136,6 @@ public class Constants {
     public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
 
     public static final int ANIMATION_DURATION = 200;
+
+    public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 6969;
 }
