@@ -42,6 +42,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Retrieve an user" />
+
+                    <Button
+                        android:id="@+id/bt_list_all_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List all user" />
                 </LinearLayout>
             </HorizontalScrollView>
 

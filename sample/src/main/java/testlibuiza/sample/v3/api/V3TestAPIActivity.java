@@ -44,6 +44,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         tv = (TextView) findViewById(R.id.tv);
         findViewById(R.id.bt_create_an_user).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_list_all_user).setOnClickListener(this);
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
@@ -86,6 +87,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_retrieve_an_user:
                 retrieveAnUser();
+                break;
+            case R.id.bt_list_all_user:
+                listAllUser();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -170,6 +174,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void retrieveAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.retrieveAnUser("9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void listAllUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));

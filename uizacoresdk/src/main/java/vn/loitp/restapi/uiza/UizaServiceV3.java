@@ -49,7 +49,7 @@ public interface UizaServiceV3 {
     Observable<Object> retrieveAnUser(@Query("id") String id);
 
     @GET("/api/public/v3/admin/user")
-    Observable<Object> retrieveAnUser();
+    Observable<Object> listAllUser();
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")
