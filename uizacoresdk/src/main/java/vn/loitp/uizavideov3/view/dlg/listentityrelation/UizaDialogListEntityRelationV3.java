@@ -21,7 +21,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelatio
 import vn.loitp.uizavideo.view.util.UizaData;
 
 /**
- * Created by LENOVO on 5/2/2018.
+ * Created by loitp on 5/2/2018.
  */
 
 public class UizaDialogListEntityRelationV3 extends Dialog {
