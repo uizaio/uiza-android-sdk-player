@@ -24,6 +24,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDeta
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
 import vn.loitp.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 
@@ -61,6 +62,10 @@ public interface UizaServiceV3 {
     @HTTP(method = "DELETE", path = "/api/public/v3/admin/user", hasBody = true)
     //@DELETE("/api/public/v3/admin/user")
     Observable<Object> deleteAnUser(@Body CreateUser deleteUser);
+
+    //https://docs.uiza.io/#update-password
+    @PUT("/api/public/v3/admin/user/changepassword")
+    Observable<Object> updatePassword(@Body UpdatePassword updatePassword);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")

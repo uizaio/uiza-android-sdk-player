@@ -60,6 +60,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Delete an user" />
+
+                    <Button
+                        android:id="@+id/bt_update_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update password" />
                 </LinearLayout>
             </HorizontalScrollView>
 
