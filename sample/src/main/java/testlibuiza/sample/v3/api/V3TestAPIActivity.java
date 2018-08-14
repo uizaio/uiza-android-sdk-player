@@ -169,15 +169,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void retrieveAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        CreateUser createUser = new CreateUser();
-        createUser.setStatus(1);
-        createUser.setUsername("username " + System.currentTimeMillis());
-        createUser.setEmail("email " + System.currentTimeMillis());
-        createUser.setPassword("123456789");
-        createUser.setDob("11/11/1111");
-        createUser.setFullname("fullname");
-        createUser.setAvatar("path");
-        subscribe(service.createAnUser(createUser), new ApiSubscriber<Object>() {
+        subscribe(service.retrieveAnUser("9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
