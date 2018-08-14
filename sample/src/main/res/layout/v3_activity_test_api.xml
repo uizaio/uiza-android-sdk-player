@@ -48,6 +48,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List all user" />
+
+                    <Button
+                        android:id="@+id/bt_update_an_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update an user" />
                 </LinearLayout>
             </HorizontalScrollView>
 

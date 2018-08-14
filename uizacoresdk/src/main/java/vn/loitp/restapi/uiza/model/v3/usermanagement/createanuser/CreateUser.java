@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CreateUser {
-
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("status")
     @Expose
     private long status;
@@ -105,4 +107,11 @@ public class CreateUser {
         this.isAdmin = isAdmin;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

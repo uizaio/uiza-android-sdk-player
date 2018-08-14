@@ -42,18 +42,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
+
         findViewById(R.id.bt_create_an_user).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
         findViewById(R.id.bt_list_all_user).setOnClickListener(this);
+        findViewById(R.id.bt_update_an_user).setOnClickListener(this);
+
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
         findViewById(R.id.bt_update_metadata).setOnClickListener(this);
         findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
+
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
+
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
@@ -90,6 +95,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_list_all_user:
                 listAllUser();
+                break;
+            case R.id.bt_update_an_user:
+                updateAnUser();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -191,6 +199,32 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void listAllUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void updateAnUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateUser user = new CreateUser();
+        user.setId("489260ed-c306-4e31-ad4b-ebde50d5bec4");
+        user.setStatus(1);
+        user.setUsername("username " + System.currentTimeMillis());
+        user.setEmail("email " + System.currentTimeMillis());
+        user.setPassword("123456789");
+        user.setDob("11/11/1111");
+        user.setFullname("fullname");
+        user.setAvatar("path");
+        subscribe(service.updateAnUser(user), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));

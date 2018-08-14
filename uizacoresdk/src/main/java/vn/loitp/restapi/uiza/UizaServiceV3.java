@@ -48,8 +48,13 @@ public interface UizaServiceV3 {
     @GET("/api/public/v3/admin/user")
     Observable<Object> retrieveAnUser(@Query("id") String id);
 
+    //https://docs.uiza.io/#list-all-users
     @GET("/api/public/v3/admin/user")
     Observable<Object> listAllUser();
+
+    //https://docs.uiza.io/#update-an-user
+    @PUT("/api/public/v3/admin/user")
+    Observable<Object> updateAnUser(@Body CreateUser updateUser);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")
