@@ -2259,6 +2259,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleClickCC() {
+        if (uizaPlayerManagerV3 == null) {
+            LLog.e(TAG, "Error handleClickCC uizaPlayerManagerV3 == null");
+            return;
+        }
         if (uizaPlayerManagerV3.getSubtitleList() == null || uizaPlayerManagerV3.getSubtitleList().isEmpty()) {
             UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
             UizaUtil.showUizaDialog(activity, uizaDialogInfo);
