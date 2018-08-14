@@ -1221,7 +1221,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
-                if (isTablet) {
+                if (isTablet && !isCastingChromecast()) {
                     exoPictureInPicture.setVisibility(VISIBLE);
                 }
             }
@@ -1254,7 +1254,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void updateUI() {
         //LLog.d(TAG, "updateUI isTablet " + isTablet);
-        if (isTablet) {
+        if (isTablet && !isCastingChromecast()) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
             exoPictureInPicture.setVisibility(GONE);
@@ -1424,6 +1424,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleClickPictureInPicture() {
         //LLog.d(TAG, "handleClickPictureInPicture");
         if (activity == null) {
+            return;
+        }
+        if (isTablet) {
+            LLog.d(TAG, "handleClickPictureInPicture only available for tablet -> return");
+            return;
+        }
+        if (isCastingChromecast()) {
+            LLog.d(TAG, "handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
@@ -2392,10 +2400,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     /*
      ** Hiển thị picture in picture và close video view hiện tại
+     * Chỉ work nếu local player đang không casting
+     * Device phải là tablet
      */
     public void showPip() {
-        if (exoPictureInPicture != null) {
-            exoPictureInPicture.performClick();
+        if (isCastingChromecast() || !isTablet) {
+            LLog.d(TAG, "showPip isCastingChromecast || !isTablet -> return");
+        } else {
+            if (exoPictureInPicture != null) {
+                exoPictureInPicture.performClick();
+            }
         }
     }
 
