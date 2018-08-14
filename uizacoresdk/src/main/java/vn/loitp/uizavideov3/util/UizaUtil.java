@@ -201,6 +201,9 @@ public class UizaUtil {
     }
 
     public static void showUizaDialog(Activity activity, Dialog dialog) {
+        if (activity == null || dialog == null) {
+            return;
+        }
         boolean isFullScreen = LScreenUtil.isFullScreen(activity);
         if (isFullScreen) {
             dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
