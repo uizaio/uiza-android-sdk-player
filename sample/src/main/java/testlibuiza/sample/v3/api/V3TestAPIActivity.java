@@ -2,11 +2,7 @@ package testlibuiza.sample.v3.api;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -16,8 +12,6 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
@@ -43,8 +37,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
-        findViewById(R.id.bt_get_token).setOnClickListener(this);
-        findViewById(R.id.bt_check_token).setOnClickListener(this);
+        findViewById(R.id.bt_create_an_user).setOnClickListener(this);
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
@@ -61,26 +54,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
         findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
         findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
-
-        LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
-        viewList = rootView.getTouchables();
-        setEnableAllButton(false);
-    }
-
-    private List<View> viewList = new ArrayList<>();
-
-    private void setEnableAllButton(boolean isEnable) {
-        if (isEnable) {
-            for (View view : viewList) {
-                view.setEnabled(true);
-            }
-        } else {
-            for (View view : viewList) {
-                if (view.getId() != R.id.bt_get_token) {
-                    view.setEnabled(false);
-                }
-            }
-        }
     }
 
     @Override
@@ -102,11 +75,8 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         tv.setText("Loading...");
         switch (v.getId()) {
-            case R.id.bt_get_token:
-                getToken();
-                break;
-            case R.id.bt_check_token:
-                checkToken();
+            case R.id.bt_create_an_user:
+                createAnUser();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -163,39 +133,13 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         LUIUtil.printBeautyJson(o, tv);
     }
 
-    private void getToken() {
+    private void createAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        UizaWorkspaceInfo uizaWorkspaceInfo = UizaUtil.getUizaWorkspace(activity);
-        if (uizaWorkspaceInfo == null) {
-            return;
-        }
-        subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
+        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
-                LLog.d(TAG, "getToken " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                UizaUtil.setResultGetToken(activity, resultGetToken);
-                String token = resultGetToken.getData().getToken();
-                LLog.d(TAG, "token: " + token);
-                RestClientV3.addAuthorization(token);
-                showTv(resultGetToken);
-                setEnableAllButton(true);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getToken onFail " + e.getMessage());
-                showTv(e.getMessage());
-            }
-        });
-    }
-
-    private void checkToken() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
-            @Override
-            public void onSuccess(Object resultGetToken) {
-                LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                showTv(resultGetToken);
+            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
+                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                showTv(resultGetListMetadata);
             }
 
             @Override
