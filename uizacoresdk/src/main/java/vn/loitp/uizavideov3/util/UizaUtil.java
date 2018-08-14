@@ -413,7 +413,7 @@ public class UizaUtil {
         return resultGetToken.getData().getToken();
     }*/
 
-    public static String getAppId(Context context) {
+    /*public static String getAppId(Context context) {
         if (context == null) {
             return null;
         }
@@ -422,7 +422,7 @@ public class UizaUtil {
             return null;
         }
         return resultGetToken.getData().getAppId();
-    }
+    }*/
 
     public interface Callback {
         public void onSuccess(Data data);
