@@ -14,7 +14,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LUIUtil;
 
 /**
- * Created by LENOVO on 5/2/2018.
+ * Created by loitp on 5/2/2018.
  */
 
 public class UizaDialogInfo extends Dialog {

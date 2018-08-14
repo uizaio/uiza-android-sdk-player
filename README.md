@@ -43,6 +43,14 @@ Uiza is the complete toolkit for building a powerful video streaming application
             }
         }
 
+  Manifest
+
+
+    <application
+      android:name=".App "  <!-- important this line -->
+      ........
+      >
+
 
 # How to call API?:
 **Step1: You must extend your activity/fragment like this**
@@ -54,6 +62,12 @@ or
 
     public class YourFragment extends BaseFragment{
     }
+
+**make sure add this line below**
+
+    UizaDataV3.getInstance().setCasty(Casty.create(this));
+
+before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 
 **Step 2: Call api by using this function**
 
