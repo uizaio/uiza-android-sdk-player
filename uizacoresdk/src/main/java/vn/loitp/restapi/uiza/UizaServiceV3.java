@@ -3,6 +3,7 @@ package vn.loitp.restapi.uiza;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -55,6 +56,11 @@ public interface UizaServiceV3 {
     //https://docs.uiza.io/#update-an-user
     @PUT("/api/public/v3/admin/user")
     Observable<Object> updateAnUser(@Body CreateUser updateUser);
+
+    //https://docs.uiza.io/#update-an-user
+    @HTTP(method = "DELETE", path = "/api/public/v3/admin/user", hasBody = true)
+    //@DELETE("/api/public/v3/admin/user")
+    Observable<Object> deleteAnUser(@Body CreateUser deleteUser);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")

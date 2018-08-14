@@ -47,6 +47,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
         findViewById(R.id.bt_list_all_user).setOnClickListener(this);
         findViewById(R.id.bt_update_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_delete_an_user).setOnClickListener(this);
 
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
@@ -98,6 +99,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_update_an_user:
                 updateAnUser();
+                break;
+            case R.id.bt_delete_an_user:
+                deleteAnUser();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -225,6 +229,25 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         user.setFullname("fullname");
         user.setAvatar("path");
         subscribe(service.updateAnUser(user), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void deleteAnUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateUser user = new CreateUser();
+        user.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
+        subscribe(service.deleteAnUser(user), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
