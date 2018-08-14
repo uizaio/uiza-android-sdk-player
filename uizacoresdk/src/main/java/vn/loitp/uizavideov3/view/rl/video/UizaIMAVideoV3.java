@@ -1839,7 +1839,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onConnected() {
                 //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
-                lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+                if (uizaPlayerManagerV3 != null) {
+                    lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+                }
                 handleConnectedChromecast();
             }
 
@@ -2272,15 +2274,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isExoShareClicked = true;
     }
 
+    /*
+     ** Phát tiếp video
+     */
     public void resumeVideo() {
-        if (uizaPlayerManagerV3 != null) {
-            uizaPlayerManagerV3.resumeVideo();
+        if (exoPlay != null) {
+            exoPlay.performClick();
         }
     }
 
+    /*
+     ** Tạm dừng video
+     */
     public void pauseVideo() {
-        if (uizaPlayerManagerV3 != null) {
-            uizaPlayerManagerV3.pauseVideo();
+        if (exoPause != null) {
+            exoPause.performClick();
         }
     }
 
