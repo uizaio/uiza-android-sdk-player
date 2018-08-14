@@ -22,6 +22,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 
@@ -38,6 +39,10 @@ public interface UizaServiceV3 {
     //@Headers("Content-Type: application/json")
     @POST("/api/public/v3/admin/user/auth/check-token")
     Observable<Object> checkToken();
+
+    //https://docs.uiza.io/#create-an-user
+    @POST("/api/public/v3/admin/user")
+    Observable<Object> createAnUser(@Body CreateUser createUser);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")

@@ -24,6 +24,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
@@ -139,16 +140,24 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void createAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+        CreateUser createUser = new CreateUser();
+        createUser.setStatus(1);
+        createUser.setUsername("username " + System.currentTimeMillis());
+        createUser.setEmail("email " + System.currentTimeMillis());
+        createUser.setPassword("123456789");
+        createUser.setDob("11/11/1111");
+        createUser.setFullname("fullname");
+        createUser.setAvatar("path");
+        subscribe(service.createAnUser(createUser), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
-                showTv(resultGetListMetadata);
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
                 showTv(e.getMessage());
             }
         });
