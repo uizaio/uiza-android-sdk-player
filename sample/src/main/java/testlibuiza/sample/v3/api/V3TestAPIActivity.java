@@ -43,6 +43,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
         findViewById(R.id.bt_create_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
@@ -82,6 +83,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.bt_create_an_user:
                 createAnUser();
+                break;
+            case R.id.bt_retrieve_an_user:
+                retrieveAnUser();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -139,6 +143,31 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void createAnUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateUser createUser = new CreateUser();
+        createUser.setStatus(1);
+        createUser.setUsername("username " + System.currentTimeMillis());
+        createUser.setEmail("email " + System.currentTimeMillis());
+        createUser.setPassword("123456789");
+        createUser.setDob("11/11/1111");
+        createUser.setFullname("fullname");
+        createUser.setAvatar("path");
+        subscribe(service.createAnUser(createUser), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void retrieveAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         CreateUser createUser = new CreateUser();
         createUser.setStatus(1);
