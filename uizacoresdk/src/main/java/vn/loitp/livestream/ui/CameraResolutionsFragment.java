@@ -66,8 +66,7 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
                 this.mCameraResolutions = (ArrayList<Resolution>) savedInstanceState.getSerializable(CAMERA_RESOLUTIONS);
             }
 
-            if (savedInstanceState.containsKey(SELECTED_SIZE_WIDTH) &&
-                    savedInstanceState.containsKey(SELECTED_SIZE_WIDTH)) {
+            if (savedInstanceState.containsKey(SELECTED_SIZE_WIDTH) && savedInstanceState.containsKey(SELECTED_SIZE_WIDTH)) {
                 mselectedSizeWidth = savedInstanceState.getInt(SELECTED_SIZE_WIDTH);
                 mselectedSizeHeight = savedInstanceState.getInt(SELECTED_SIZE_HEIGHT);
             }
@@ -130,13 +129,9 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
 
             //reverse order. Highest resolution is at top
             Resolution size = getItem(i);
-
-            if (size.width == mselectedSizeWidth &&
-                    size.height == mselectedSizeHeight) {
-
+            if (size.width == mselectedSizeWidth && size.height == mselectedSizeHeight) {
                 {
                     mCameraResolutionsListView.setItemChecked(i, true);
-
                 }
             }
             String resolutionText = size.width + " x " + size.height;
