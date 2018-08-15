@@ -14,7 +14,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LUIUtil;
 
 /**
- * Created by LENOVO on 5/2/2018.
+ * Created by loitp on 5/2/2018.
  */
 
 public class UizaDialogInfo extends Dialog {
@@ -28,6 +28,7 @@ public class UizaDialogInfo extends Dialog {
 
     public UizaDialogInfo(Activity activity, String title, String msg) {
         super(activity);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.activity = activity;
         this.title = title;
         this.msg = msg;
@@ -36,7 +37,6 @@ public class UizaDialogInfo extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_info);
 
         progressBar = (ProgressBar) findViewById(R.id.pb);

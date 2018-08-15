@@ -39,7 +39,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,7 +106,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    private Gson gson = new Gson();
+    //private Gson gson = new Gson();
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
@@ -587,6 +586,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
+        LLog.d(TAG, "onCreate isTablet " + isTablet);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
@@ -599,6 +599,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         llTop.addView(mediaRouteButton);
         setUpMediaRouteButton();
         addChromecastLayer();
+    }
+
+    private void updateSizeOfMediaRouteButton() {
+        if (exoPlay != null) {
+            LLog.d(TAG, "updateSizeOfMediaRouteButton: " + exoPlay.getSize());
+        }
     }
 
     private UizaPlayerView playerView;
@@ -642,13 +648,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updatePositionOfProgressBar() {
-        LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
+        //LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
         playerView.post(new Runnable() {
             @Override
             public void run() {
                 int marginL = playerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
                 int marginT = playerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
+                //LLog.d(TAG, "updatePositionOfProgressBar " + marginL + "x" + marginT);
                 LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
             }
         });
@@ -711,7 +717,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to VISIBILE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1125,7 +1132,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoShareClicked;
     private boolean isExoVolumeClicked;
 
-    public void toggleScreenOritation() {
+    protected void toggleScreenOritation() {
         LActivityUtil.toggleScreenOritation(activity);
     }
 
@@ -1215,7 +1222,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
-                if (isTablet) {
+                if (isTablet && !isCastingChromecast()) {
                     exoPictureInPicture.setVisibility(VISIBLE);
                 }
             }
@@ -1248,7 +1255,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void updateUI() {
         //LLog.d(TAG, "updateUI isTablet " + isTablet);
-        if (isTablet) {
+        if (isTablet && !isCastingChromecast()) {
             exoPictureInPicture.setVisibility(VISIBLE);
         } else {
             exoPictureInPicture.setVisibility(GONE);
@@ -1418,6 +1425,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleClickPictureInPicture() {
         //LLog.d(TAG, "handleClickPictureInPicture");
         if (activity == null) {
+            return;
+        }
+        if (isTablet) {
+            LLog.d(TAG, "handleClickPictureInPicture only available for tablet -> return");
+            return;
+        }
+        if (isCastingChromecast()) {
+            LLog.d(TAG, "handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
@@ -1833,7 +1848,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onConnected() {
                 //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
-                lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+                if (uizaPlayerManagerV3 != null) {
+                    lastCurrentPosition = uizaPlayerManagerV3.getCurrentPosition();
+                }
                 handleConnectedChromecast();
             }
 
@@ -1910,7 +1927,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 "en-US");
         mediaTrackList.add(mediaTrack);*/
 
-        long duration = uizaPlayerManagerV3.getPlayer().getDuration();
+        long duration = getDuration();
         //LLog.d(TAG, "duration " + duration);
         if (duration < 0) {
             LLog.e(TAG, "invalid duration -> cannot play chromecast");
@@ -2101,7 +2118,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void playPlaylistPosition(int position) {
-        if (position < 0 || position > UizaDataV3.getInstance().getDataList().size() - 1) {
+        if (UizaDataV3.getInstance().getDataList() == null || position < 0 || position > UizaDataV3.getInstance().getDataList().size() - 1) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
             return;
         }
@@ -2243,6 +2260,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleClickCC() {
+        if (uizaPlayerManagerV3 == null) {
+            LLog.e(TAG, "Error handleClickCC uizaPlayerManagerV3 == null");
+            return;
+        }
         if (uizaPlayerManagerV3.getSubtitleList() == null || uizaPlayerManagerV3.getSubtitleList().isEmpty()) {
             UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
             UizaUtil.showUizaDialog(activity, uizaDialogInfo);
@@ -2266,21 +2287,162 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isExoShareClicked = true;
     }
 
+    /*
+     ** Phát tiếp video
+     */
     public void resumeVideo() {
-        if (uizaPlayerManagerV3 != null) {
-            uizaPlayerManagerV3.resumeVideo();
+        if (exoPlay != null) {
+            exoPlay.performClick();
         }
     }
 
+    /*
+     ** Tạm dừng video
+     */
     public void pauseVideo() {
-        if (uizaPlayerManagerV3 != null) {
-            uizaPlayerManagerV3.pauseVideo();
+        if (exoPause != null) {
+            exoPause.performClick();
         }
     }
 
     public void setControllerStateCallback(UizaPlayerView.ControllerStateCallback controllerStateCallback) {
         if (playerView != null) {
             playerView.setControllerStateCallback(controllerStateCallback);
+        }
+    }
+
+    /*
+     **Cho phép sử dụng controller hay không
+     * Mặc định: true
+     * Nếu truyền false sẽ ẩn tất cả các component
+     */
+    public void setUseController(boolean isUseController) {
+        if (playerView != null) {
+            playerView.setUseController(isUseController);
+        }
+    }
+
+    /*
+     ** Bắt các event của player như click, long click...
+     */
+    public void setOnTouchEvent(UizaPlayerView.OnTouchEvent onTouchEvent) {
+        if (playerView != null) {
+            playerView.setOnTouchEvent(onTouchEvent);
+        }
+    }
+
+    /*
+     ** Đổi thời gian seek mặc định
+     */
+    public void setDefaultValueBackwardForward(int mls) {
+        DEFAULT_VALUE_BACKWARD_FORWARD = mls;
+    }
+
+    /*
+     ** Seek từ vị trí hiện tại cộng thêm bao nhiêu mls
+     */
+    public void seekToForward(int mls) {
+        setDefaultValueBackwardForward(mls);
+        if (exoFfwd != null) {
+            exoFfwd.performClick();
+        }
+    }
+
+    /*
+     ** Seek từ vị trí hiện tại trừ đi bao nhiêu mls
+     */
+    public void seekToBackward(int mls) {
+        setDefaultValueBackwardForward(mls);
+        if (exoRew != null) {
+            exoRew.performClick();
+        }
+    }
+
+    /*
+     **toggle volume on/off
+     */
+    public void toggleVolume() {
+        if (exoVolume != null) {
+            exoVolume.performClick();
+        }
+    }
+
+    /*
+     **toggle fullscreen
+     */
+    public void toggleFullscreen() {
+        if (exoFullscreenIcon != null) {
+            exoFullscreenIcon.performClick();
+        }
+    }
+
+    /*
+     **Hiển thị subtitle
+     */
+    public void showCCPopup() {
+        if (exoCc != null) {
+            exoCc.performClick();
+        }
+    }
+
+    /*
+     **Hiển thị chất lượng video
+     */
+    public void showHQPopup() {
+        if (exoSetting != null) {
+            exoSetting.performClick();
+        }
+    }
+
+    /*
+     **Hiển thị share lên mạng xã hội
+     */
+    public void showSharePopup() {
+        if (exoShare != null) {
+            exoShare.performClick();
+        }
+    }
+
+    /*
+     ** Hiển thị picture in picture và close video view hiện tại
+     * Chỉ work nếu local player đang không casting
+     * Device phải là tablet
+     */
+    public void showPip() {
+        if (isCastingChromecast() || !isTablet) {
+            LLog.d(TAG, "showPip isCastingChromecast || !isTablet -> return");
+        } else {
+            if (exoPictureInPicture != null) {
+                exoPictureInPicture.performClick();
+            }
+        }
+    }
+
+    /*
+     **Lấy độ dài video
+     */
+    public long getDuration() {
+        if (uizaPlayerManagerV3 == null) {
+            return Constants.NOT_FOUND;
+        }
+        return uizaPlayerManagerV3.getPlayer().getDuration();
+    }
+
+    /*
+     ** Bỏ video hiện tại và chơi video tiếp theo trong playlist/folder
+     */
+    public void skipNextVideo() {
+        if (exoSkipNext != null) {
+            exoSkipNext.performClick();
+        }
+    }
+
+    /*
+     ** Bỏ video hiện tại và chơi lùi lại 1 video trong playlist/folder
+     */
+    public void skipPreviousVideo() {
+        if (exoSkipPrevious != null) {
+            exoSkipPrevious.performClick();
         }
     }
 }

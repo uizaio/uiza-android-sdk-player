@@ -43,6 +43,14 @@ Uiza is the complete toolkit for building a powerful video streaming application
             }
         }
 
+  Manifest
+
+
+    <application
+      android:name=".App "  <!-- important this line -->
+      ........
+      >
+
 
 # How to call API?:
 **Step1: You must extend your activity/fragment like this**
@@ -54,6 +62,12 @@ or
 
     public class YourFragment extends BaseFragment{
     }
+
+**make sure add this line below**
+
+    UizaDataV3.getInstance().setCasty(Casty.create(this));
+
+before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 
 **Step 2: Call api by using this function**
 
@@ -89,7 +103,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements UizaIMAVideoV3.Callback{
+    public class MainActivity extends BaseActivity implements UizaCallback{
        public void isInitResult();
        public void onClickListEntityRelation();
        public void onClickBack();
@@ -256,70 +270,109 @@ All listener  (If you want to listen all events)
             }
 
             @Override
-		    public void onAudioDisabled(DecoderCounters counters) {
+          public void onAudioDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioDisabled");
-	        }
+           }
         });
         uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
             @Override
-	        public void onAdProgress(float currentMls, int s, float duration, int percent) {
+           public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-	        }
+           }
 
             @Override
-	         public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-	         }
+            }
         });
         uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
-	        public void onVideoEnabled(DecoderCounters counters) {
+           public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
-	        }
+           }
 
             @Override
-	        public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+           public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
                 //LLog.d(TAG, "onVideoDecoderInitialized");
-	        }
+           }
 
             @Override
-	        public void onVideoInputFormatChanged(Format format) {
+           public void onVideoInputFormatChanged(Format format) {
                 //LLog.d(TAG, "onVideoInputFormatChanged");
-	        }
+           }
 
             @Override
-	        public void onDroppedFrames(int count, long elapsedMs) {
+           public void onDroppedFrames(int count, long elapsedMs) {
                 //LLog.d(TAG, "onDroppedFrames");
-	        }
+           }
 
             @Override
-	        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+           public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
                 //LLog.d(TAG, "onAudioDisabled");
-	        }
+           }
 
             @Override
-	        public void onRenderedFirstFrame(Surface surface) {
+           public void onRenderedFirstFrame(Surface surface) {
                 //LLog.d(TAG, "onRenderedFirstFrame");
-	        }
+           }
 
             @Override
-		    public void onVideoDisabled(DecoderCounters counters) {
+          public void onVideoDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoDisabled");
-	        }
+           }
         });
         uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
-	        public void onMetadata(Metadata metadata) {
+           public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
-	        }
+           }
         });
         uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
             @Override
-	        public void onCues(List<Cue> cues) {
+           public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
-	        }
+           }
         });
     }
+Listener touch event
+
+    uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
+        @Override
+        public void onSingleTapConfirmed() {
+            LLog.d(TAG, "onSingleTapConfirmed");
+        }
+
+        @Override
+        public void onLongPress() {
+            LLog.d(TAG, "onLongPress");
+        }
+
+        @Override
+        public void onDoubleTap() {
+            LLog.d(TAG, "onDoubleTap");
+        }
+
+        @Override
+        public void onSwipeRight() {
+            LLog.d(TAG, "onSwipeRight");
+        }
+
+        @Override
+        public void onSwipeLeft() {
+            LLog.d(TAG, "onSwipeLeft");
+        }
+
+        @Override
+        public void onSwipeBottom() {
+            LLog.d(TAG, "onSwipeBottom");
+        }
+
+        @Override
+        public void onSwipeTop() {
+            LLog.d(TAG, "onSwipeTop");
+        }
+    });
+
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
 ## Docs

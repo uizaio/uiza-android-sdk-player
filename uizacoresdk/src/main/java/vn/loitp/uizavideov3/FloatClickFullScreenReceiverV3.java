@@ -22,6 +22,9 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent i) {
+        if (context == null || i == null) {
+            return;
+        }
         String packageNameReceived = i.getStringExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME);
         //LLog.d(TAG, "packageNameReceived " + packageNameReceived);
         String classNameOfPlayer = UizaUtil.getClassNameOfPlayer(context);

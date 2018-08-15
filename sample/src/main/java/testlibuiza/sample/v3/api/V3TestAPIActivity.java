@@ -2,11 +2,7 @@ package testlibuiza.sample.v3.api;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -16,8 +12,6 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.restclient.RestClientV3GetLinkPlay;
 import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.loitp.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
@@ -30,30 +24,44 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.views.LToast;
 
 public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
 
+    private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
+    private final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
+    private final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv = (TextView) findViewById(R.id.tv);
-        findViewById(R.id.bt_get_token).setOnClickListener(this);
-        findViewById(R.id.bt_check_token).setOnClickListener(this);
+
+        findViewById(R.id.bt_create_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_retrieve_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_list_all_user).setOnClickListener(this);
+        findViewById(R.id.bt_update_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_delete_an_user).setOnClickListener(this);
+        findViewById(R.id.bt_update_password).setOnClickListener(this);
+
         findViewById(R.id.bt_get_list_metadata).setOnClickListener(this);
         findViewById(R.id.bt_create_metadata).setOnClickListener(this);
         findViewById(R.id.bt_get_detail_of_metadata).setOnClickListener(this);
         findViewById(R.id.bt_update_metadata).setOnClickListener(this);
         findViewById(R.id.bt_delete_an_metadata).setOnClickListener(this);
+
         findViewById(R.id.bt_list_all_entity).setOnClickListener(this);
         findViewById(R.id.bt_list_all_entity_metadata).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_an_entity).setOnClickListener(this);
         findViewById(R.id.bt_search_entity).setOnClickListener(this);
+
         findViewById(R.id.bt_get_token_streaming).setOnClickListener(this);
         findViewById(R.id.bt_get_link_play).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_a_live_event).setOnClickListener(this);
@@ -61,26 +69,6 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
         findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
         findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
-
-        LinearLayout rootView = (LinearLayout) findViewById(R.id.root_view);
-        viewList = rootView.getTouchables();
-        setEnableAllButton(false);
-    }
-
-    private List<View> viewList = new ArrayList<>();
-
-    private void setEnableAllButton(boolean isEnable) {
-        if (isEnable) {
-            for (View view : viewList) {
-                view.setEnabled(true);
-            }
-        } else {
-            for (View view : viewList) {
-                if (view.getId() != R.id.bt_get_token) {
-                    view.setEnabled(false);
-                }
-            }
-        }
     }
 
     @Override
@@ -102,11 +90,23 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         tv.setText("Loading...");
         switch (v.getId()) {
-            case R.id.bt_get_token:
-                getToken();
+            case R.id.bt_create_an_user:
+                createAnUser();
                 break;
-            case R.id.bt_check_token:
-                checkToken();
+            case R.id.bt_retrieve_an_user:
+                retrieveAnUser();
+                break;
+            case R.id.bt_list_all_user:
+                listAllUser();
+                break;
+            case R.id.bt_update_an_user:
+                updateAnUser();
+                break;
+            case R.id.bt_delete_an_user:
+                deleteAnUser();
+                break;
+            case R.id.bt_update_password:
+                updatePassword();
                 break;
             case R.id.bt_get_list_metadata:
                 getListMetadata();
@@ -163,44 +163,126 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         LUIUtil.printBeautyJson(o, tv);
     }
 
-    private void getToken() {
+    private void createAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        UizaWorkspaceInfo uizaWorkspaceInfo = UizaUtil.getUizaWorkspace(activity);
-        if (uizaWorkspaceInfo == null) {
-            return;
-        }
-        subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
+        CreateUser createUser = new CreateUser();
+        createUser.setStatus(1);
+        createUser.setUsername("username " + System.currentTimeMillis());
+        createUser.setEmail("email " + System.currentTimeMillis());
+        createUser.setPassword("123456789");
+        createUser.setDob("11/11/1111");
+        createUser.setFullname("fullname");
+        createUser.setAvatar("path");
+        subscribe(service.createAnUser(createUser), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
-                LLog.d(TAG, "getToken " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                UizaUtil.setResultGetToken(activity, resultGetToken);
-                String token = resultGetToken.getData().getToken();
-                LLog.d(TAG, "token: " + token);
-                RestClientV3.addAuthorization(token);
-                showTv(resultGetToken);
-                setEnableAllButton(true);
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getToken onFail " + e.getMessage());
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
                 showTv(e.getMessage());
             }
         });
     }
 
-    private void checkToken() {
+    private void retrieveAnUser() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.checkToken(), new ApiSubscriber<Object>() {
+        subscribe(service.retrieveAnUser("9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(Object resultGetToken) {
-                LLog.d(TAG, "checkToken onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetToken));
-                showTv(resultGetToken);
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "checkToken onFail " + e.getMessage());
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void listAllUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void updateAnUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateUser user = new CreateUser();
+        user.setId("489260ed-c306-4e31-ad4b-ebde50d5bec4");
+        user.setStatus(1);
+        user.setUsername("username " + System.currentTimeMillis());
+        user.setEmail("email " + System.currentTimeMillis());
+        user.setPassword("123456789");
+        user.setDob("11/11/1111");
+        user.setFullname("fullname");
+        user.setAvatar("path");
+        subscribe(service.updateAnUser(user), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void deleteAnUser() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        CreateUser user = new CreateUser();
+        user.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
+        subscribe(service.deleteAnUser(user), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void updatePassword() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UpdatePassword updatePassword = new UpdatePassword();
+        updatePassword.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
+        updatePassword.setOldPassword("oldpassword");
+        updatePassword.setNewPassword("newpassword");
+        subscribe(service.updatePassword(updatePassword), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
+                showTv(o);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "createAnUser onFail " + e.toString());
                 showTv(e.getMessage());
             }
         });
@@ -390,8 +472,8 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void getTokenStreaming() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaUtil.getAppId(activity));
-        sendGetTokenStreaming.setEntityId("1ca56834-4c6f-4008-9c1f-2ca2a67c6814");
+        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
+        sendGetTokenStreaming.setEntityId(entityIdDefaultVOD);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
@@ -418,10 +500,9 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         }
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        String appId = UizaUtil.getAppId(activity);
-        String entityId = "1ca56834-4c6f-4008-9c1f-2ca2a67c6814";
+        String appId = UizaDataV3.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
-        subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+        subscribe(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
             public void onSuccess(ResultGetLinkPlay result) {
                 LLog.d(TAG, "getLinkPlay onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -462,8 +543,8 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void getTokenStreamingLive() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaUtil.getAppId(activity));
-        sendGetTokenStreaming.setEntityId("8e133d0d-5f67-45e8-8812-44b2ddfd9fe2");
+        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
+        sendGetTokenStreaming.setEntityId(entityIdDefaultLIVE);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
         subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
@@ -488,7 +569,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         }
         RestClientV3GetLinkPlay.addAuthorization(tokenStreamingLive);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        String appId = UizaUtil.getAppId(activity);
+        String appId = UizaDataV3.getInstance().getAppId();
         String streamName = "ffdfdfdfd";
         subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override

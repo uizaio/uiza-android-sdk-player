@@ -39,6 +39,7 @@ public class UizaDialogPlaylistFolder extends Dialog {
 
     public UizaDialogPlaylistFolder(Activity activity, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         super(activity);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.activity = activity;
         this.isLandscape = isLandscape;
         this.dataList = dataList;
@@ -49,7 +50,6 @@ public class UizaDialogPlaylistFolder extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.v3_dialog_list_playlist_folder);
 
         //progressBar = (ProgressBar) findViewById(R.id.pb);

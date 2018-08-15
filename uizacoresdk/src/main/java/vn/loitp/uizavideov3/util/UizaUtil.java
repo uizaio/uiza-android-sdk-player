@@ -201,18 +201,26 @@ public class UizaUtil {
     }
 
     public static void showUizaDialog(Activity activity, Dialog dialog) {
-        boolean isFullScreen = LScreenUtil.isFullScreen(activity);
-        if (isFullScreen) {
-            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            dialog.getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        if (activity == null || dialog == null) {
+            return;
         }
+        boolean isFullScreen = LScreenUtil.isFullScreen(activity);
+        /*if (isFullScreen) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // Call some material design APIs here
+                dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+                dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                dialog.getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+            } else {
+                // Implement this feature without material design
+            }
+        }*/
         dialog.show();
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.uiza_dialog_animation;
@@ -253,10 +261,41 @@ public class UizaUtil {
             minutes = minutes.length() == 1 ? "0" + minutes : minutes;
             textView.setText((min / 60) + ":" + minutes);
         } catch (Exception e) {
-            //LLog.e(TAG, "setTextDuration " + e.toString());
+            LLog.e(TAG, "Error setTextDuration " + e.toString());
             textView.setText(" - ");
         }
     }
+
+    /*
+     **Hàm này set size của MediaRouteButton giống với size default của ImageButtonWithSize
+     */
+    /*public static void setUICastButton(MediaRouteButton uiCastButton) {
+        if (uiCastButton == null) {
+            return;
+        }
+        boolean isTablet = LDeviceUtil.isTablet(uiCastButton.getContext());
+        int ratioPort;
+        int ratioLand;
+        if (isTablet) {
+            ratioLand = Constants.RATIO_LAND_TABLET;
+            ratioPort = Constants.RATIO_PORTRAIT_TABLET;
+        } else {
+            ratioLand = Constants.RATIO_LAND_MOBILE;
+            ratioPort = Constants.RATIO_PORTRAIT_MOBILE;
+        }
+        int size;
+        if (LScreenUtil.isFullScreen(uiCastButton.getContext())) {
+            int screenWLandscape = LScreenUtil.getScreenHeightIncludeNavigationBar(uiCastButton.getContext());
+            size = screenWLandscape / (ratioLand + 1);
+        } else {
+            int screenWPortrait = LScreenUtil.getScreenWidth();
+            size = screenWPortrait / (ratioPort + 1);
+        }
+        LLog.d(TAG, "setUICastButton size: " + size + ", ratioPort: " + ratioPort + ", ratioLand: " + ratioLand);
+        uiCastButton.getLayoutParams().width = size;
+        uiCastButton.getLayoutParams().height = size;
+        uiCastButton.requestLayout();
+    }*/
 
     //return true if app is in foreground
     public static boolean isAppInForeground(Context context) {
@@ -382,7 +421,7 @@ public class UizaUtil {
         return resultGetToken.getData().getToken();
     }*/
 
-    public static String getAppId(Context context) {
+    /*public static String getAppId(Context context) {
         if (context == null) {
             return null;
         }
@@ -391,7 +430,7 @@ public class UizaUtil {
             return null;
         }
         return resultGetToken.getData().getAppId();
-    }
+    }*/
 
     public interface Callback {
         public void onSuccess(Data data);

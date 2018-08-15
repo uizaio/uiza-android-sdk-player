@@ -39,6 +39,14 @@ public class V3SetEntityIdActivity extends BaseActivity {
     private final String entityIdDefaultLIVE = "6356e2c3-00af-495e-b60c-361f976b4084";
     private final String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";*/
 
+    /*private final String DF_DOMAIN_API = "vingroup-api.uiza.co";
+    private final String DF_TOKEN = "uap-a905fa990e5844c2ac92262cc8ee7a3f-4b52b053";
+    private final String DF_APP_ID = "a905fa990e5844c2ac92262cc8ee7a3f";
+    private final int env = Constants.ENVIRONMENT_PROD;
+    public static final String entityIdDefaultVOD = "8bbb46b8-37e0-49a7-8061-5bfeb7e577dd";
+    public static final String entityIdDefaultLIVE = "";
+    public static final String metadataDefault0 = "";*/
+
     //for entity id
     private EditText etInputEntityId;
     private Button btStart;

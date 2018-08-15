@@ -3,6 +3,7 @@ package vn.loitp.restapi.uiza;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -22,6 +23,8 @@ import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMe
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
+import vn.loitp.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 
@@ -38,6 +41,31 @@ public interface UizaServiceV3 {
     //@Headers("Content-Type: application/json")
     @POST("/api/public/v3/admin/user/auth/check-token")
     Observable<Object> checkToken();
+
+    //https://docs.uiza.io/#create-an-user
+    @POST("/api/public/v3/admin/user")
+    Observable<Object> createAnUser(@Body CreateUser createUser);
+
+    //https://docs.uiza.io/#retrieve-an-user
+    @GET("/api/public/v3/admin/user")
+    Observable<Object> retrieveAnUser(@Query("id") String id);
+
+    //https://docs.uiza.io/#list-all-users
+    @GET("/api/public/v3/admin/user")
+    Observable<Object> listAllUser();
+
+    //https://docs.uiza.io/#update-an-user
+    @PUT("/api/public/v3/admin/user")
+    Observable<Object> updateAnUser(@Body CreateUser updateUser);
+
+    //https://docs.uiza.io/#update-an-user
+    @HTTP(method = "DELETE", path = "/api/public/v3/admin/user", hasBody = true)
+    //@DELETE("/api/public/v3/admin/user")
+    Observable<Object> deleteAnUser(@Body CreateUser deleteUser);
+
+    //https://docs.uiza.io/#update-password
+    @PUT("/api/public/v3/admin/user/changepassword")
+    Observable<Object> updatePassword(@Body UpdatePassword updatePassword);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
     @GET("/api/public/v3/media/metadata")

@@ -1,15 +1,13 @@
 package vn.loitp.uizavideo.view.rl.video;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-
-import vn.loitp.core.utilities.LLog;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -36,14 +34,44 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         this(context, attrs, 0);
     }
 
+    private GestureDetector mDetector;
+
+    private OnTouchEvent onTouchEvent;
+
     public UizaPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setControllerVisibilityListener(this);
+        mDetector = new GestureDetector(context, new UizaGestureListener());
+    }
+
+    public boolean isControllerVisible() {
+        return controllerVisible;
+    }
+
+    public interface ControllerStateCallback {
+        public void onVisibilityChange(boolean isShow);
+    }
+
+    private ControllerStateCallback controllerStateCallback;
+
+    public void setControllerStateCallback(ControllerStateCallback controllerStateCallback) {
+        this.controllerStateCallback = controllerStateCallback;
+    }
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+        //do nothing
+        controllerVisible = visibility == View.VISIBLE;
+        //LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    }
+
+    public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
+        this.onTouchEvent = onTouchEvent;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getActionMasked()) {
+        /*switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 tapStartTimeMs = SystemClock.elapsedRealtime();
                 tapPositionX = ev.getX();
@@ -74,29 +102,128 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
                         }
                     }
                     tapStartTimeMs = 0;
+                    if (onTouchEvent != null) {
+                        LLog.d(TAG, "onTouchEvent");
+                        onTouchEvent.onClick();
+                    }
                 }
-        }
+        }*/
+        mDetector.onTouchEvent(ev);
         return true;
     }
 
-    @Override
-    public void onVisibilityChange(int visibility) {
-        //do nothing
-        controllerVisible = visibility == View.VISIBLE;
-        LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+    public interface OnTouchEvent {
+        public void onSingleTapConfirmed();
+
+        public void onLongPress();
+
+        public void onDoubleTap();
+
+        public void onSwipeRight();
+
+        public void onSwipeLeft();
+
+        public void onSwipeBottom();
+
+        public void onSwipeTop();
     }
 
-    public boolean isControllerVisible() {
-        return controllerVisible;
-    }
+    private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
-    public interface ControllerStateCallback {
-        public void onVisibilityChange(boolean isShow);
-    }
+        @Override
+        public boolean onDown(MotionEvent event) {
+            //LLog.d(TAG, "onDown");
+            // don't return false here or else none of the other
+            // gestures will work
+            return true;
+        }
 
-    private ControllerStateCallback controllerStateCallback;
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            //LLog.d(TAG, "onSingleTapConfirmed");
+            if (!controllerVisible) {
+                //LLog.d(TAG, "showController");
+                showController();
+                if (controllerStateCallback != null) {
+                    controllerStateCallback.onVisibilityChange(true);
+                }
+            } else if (getControllerHideOnTouch()) {
+                //LLog.d(TAG, "hideController");
+                hideController();
+                if (controllerStateCallback != null) {
+                    controllerStateCallback.onVisibilityChange(false);
+                }
+            }
+            if (onTouchEvent != null) {
+                onTouchEvent.onSingleTapConfirmed();
+            }
+            return true;
+        }
 
-    public void setControllerStateCallback(ControllerStateCallback controllerStateCallback) {
-        this.controllerStateCallback = controllerStateCallback;
+        @Override
+        public void onLongPress(MotionEvent e) {
+            //LLog.d(TAG, "onLongPress");
+            if (onTouchEvent != null) {
+                onTouchEvent.onLongPress();
+            }
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            //LLog.d(TAG, "onDoubleTap");
+            if (onTouchEvent != null) {
+                onTouchEvent.onDoubleTap();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            //LLog.d(TAG, "onScroll");
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            //LLog.d(TAG, "onFling");
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            //LLog.d(TAG, "onSwipeRight");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeRight();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeLeft");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeLeft();
+                            }
+                        }
+                    }
+                } else {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            //LLog.d(TAG, "onSwipeBottom");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeBottom();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeTop");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeTop();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return true;
+        }
     }
 }

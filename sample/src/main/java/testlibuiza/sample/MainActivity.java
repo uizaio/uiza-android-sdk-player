@@ -6,6 +6,7 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
@@ -24,8 +25,8 @@ import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -79,6 +80,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, V3SetEntityIdActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_guide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, TestAPI.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

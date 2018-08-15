@@ -1,12 +1,16 @@
-package testlibuiza.sample.v3.uizavideov3;
+package uiza.v4;
+
+/**
+ * Created by www.muathu@gmail.com on 12/24/2017.
+ */
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -25,176 +29,40 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.List;
 
-import testlibuiza.R;
-import vn.loitp.chromecast.Casty;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
+import uiza.R;
+import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
-import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
-/**
- * Created by loitp on 7/16/2018.
- */
-
-public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
+public class FrmVideoTop extends BaseFragment implements UizaCallback {
+    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoV3 uizaIMAVideoV3;
-    private Button btProgress;
 
-    @Override
-    protected boolean setFullScreen() {
-        return false;
+    public UizaIMAVideoV3 getUizaIMAVideoV3() {
+        return uizaIMAVideoV3;
     }
 
     @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        uizaIMAVideoV3 = (UizaIMAVideoV3) view.findViewById(R.id.uiza_video);
+        uizaIMAVideoV3.setUizaCallback(this);
     }
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v3_cannot_slide_player;
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UizaDataV3.getInstance().setCasty(Casty.create(this));
-        super.onCreate(savedInstanceState);
-        uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-        btProgress = (Button) findViewById(R.id.bt_progress);
-        uizaIMAVideoV3.setUizaCallback(this);
-
-        boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
-        if (isInitWithPlaylistFolder) {
-            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-            UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
-        } else {
-            String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-            UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
-        }
-
-        //set uizaIMAVideoV3 hide all controller
-        uizaIMAVideoV3.setUseController(true);
-
-        uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
-            @Override
-            public void onSingleTapConfirmed() {
-                LLog.d(TAG, "onSingleTapConfirmed");
-            }
-
-            @Override
-            public void onLongPress() {
-                LLog.d(TAG, "onLongPress");
-            }
-
-            @Override
-            public void onDoubleTap() {
-                LLog.d(TAG, "onDoubleTap");
-            }
-
-            @Override
-            public void onSwipeRight() {
-                LLog.d(TAG, "onSwipeRight");
-            }
-
-            @Override
-            public void onSwipeLeft() {
-                LLog.d(TAG, "onSwipeLeft");
-            }
-
-            @Override
-            public void onSwipeBottom() {
-                LLog.d(TAG, "onSwipeBottom");
-            }
-
-            @Override
-            public void onSwipeTop() {
-                LLog.d(TAG, "onSwipeTop");
-            }
-        });
-
-        findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.resumeVideo();
-            }
-        });
-        findViewById(R.id.bt_pause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.pauseVideo();
-            }
-        });
-        findViewById(R.id.bt_next_10).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.seekToForward(10000);
-            }
-        });
-        findViewById(R.id.bt_prev_10).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.seekToBackward(10000);
-            }
-        });
-        findViewById(R.id.bt_volume_on_off).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.toggleVolume();
-            }
-        });
-        findViewById(R.id.bt_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.toggleFullscreen();
-            }
-        });
-        findViewById(R.id.bt_cc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.showCCPopup();
-            }
-        });
-        findViewById(R.id.bt_hq).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.showHQPopup();
-            }
-        });
-        findViewById(R.id.bt_share).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.showSharePopup();
-            }
-        });
-        findViewById(R.id.bt_picture_in_picture).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.showPip();
-            }
-        });
-        findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.skipNextVideo();
-            }
-        });
-        findViewById(R.id.bt_prev_video).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uizaIMAVideoV3.skipPreviousVideo();
-            }
-        });
+        return R.layout.v4_frm_top;
     }
 
     @Override
@@ -233,7 +101,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             if (resultCode == Activity.RESULT_OK) {
                 uizaIMAVideoV3.initializePiP();
             } else {
-                LToast.show(activity, "Draw over other app permission not available");
+                LToast.show(getActivity(), "Draw over other app permission not available");
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -330,14 +198,11 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-                btProgress.setText("Ad: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-                btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
-                ;
             }
         });
         uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
@@ -388,10 +253,31 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 //LLog.d(TAG, "onCues");
             }
         });
+        uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+            @Override
+            public void onVisibilityChange(boolean isShow) {
+                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
+                        && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
+                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                        if (isShow) {
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
+                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                        } else {
+                            //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
+                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                        }
+                    } else {
+                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        LLog.d(TAG, "isInitResult " + isInitSuccess);
+        ((HomeV4CanSlideActivity) getActivity()).isInitResult(resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
@@ -404,7 +290,11 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     public void onClickBack() {
-        onBackPressed();
+        if (LScreenUtil.isFullScreen(getActivity())) {
+            uizaIMAVideoV3.toggleScreenOritation();
+        } else {
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        }
     }
 
     @Override
@@ -416,7 +306,14 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
-            onBackPressed();
+            uizaIMAVideoV3.pauseVideo();
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                }
+            });
         }
     }
 
@@ -425,12 +322,20 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         LLog.d(TAG, "onError " + e.getMessage());
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
-            uizaIMAVideoV3.toggleFullscreen();
+        if (LScreenUtil.isFullScreen(getActivity())) {
+            uizaIMAVideoV3.toggleScreenOritation();
         } else {
             super.onBackPressed();
         }
+    }*/
+
+    public void initEntity(String entityId) {
+        UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
+    }
+
+    public void initPlaylistFolder(String metadataId) {
+        UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
     }
 }
