@@ -235,6 +235,9 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
             mCameraResolutionsDialog.setCallback(new CameraResolutionsFragment.Callback() {
                 @Override
                 public void onClick(Resolution size) {
+                    /*mGLView.getLayoutParams().width = size.width;
+                    mGLView.getLayoutParams().height = size.height;
+                    mGLView.requestLayout();*/
                     setResolution(size);
                 }
             });
