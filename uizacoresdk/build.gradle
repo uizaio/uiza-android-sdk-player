@@ -83,4 +83,7 @@ dependencies {
 
     //https://github.com/juliome10/DoubleViewPager
     //compile 'com.github.juliome10:DoubleViewPager:1.0.4@aar'
+
+    //for livestream
+    compile 'net.butterflytv.utils:rtmp-client:3.0.1'
 }

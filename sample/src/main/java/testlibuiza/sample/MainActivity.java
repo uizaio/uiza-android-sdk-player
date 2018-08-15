@@ -7,6 +7,7 @@ import android.view.View;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
+import testlibuiza.sample.livestream.LiveVideoBroadcasterActivity;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
@@ -92,6 +93,15 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
+        findViewById(R.id.bt_livestream).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, LiveVideoBroadcasterActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+
     }
 
     private void authV2() {
