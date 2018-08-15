@@ -21,27 +21,22 @@ import vn.loitp.livestream.utils.Resolution;
  * Created by loitp on 2/3/15.
  */
 public class CameraResolutionsFragment extends DialogFragment implements AdapterView.OnItemClickListener {
-
     private static final String CAMERA_RESOLUTIONS = "CAMERA_RESOLUTIONS";
     private static final String SELECTED_SIZE_WIDTH = "SELECTED_SIZE_WIDTH";
     private static final String SELECTED_SIZE_HEIGHT = "SELECTED_SIZE_HEIGHT";
     private ListView mCameraResolutionsListView;
     private Dialog dialog;
     private CameResolutionsAdapter mresolutionAdapter = new CameResolutionsAdapter();
-
     private ArrayList<Resolution> mCameraResolutions;
     private int mselectedSizeWidth;
     private int mselectedSizeHeight;
 
-
     public void setCameraResolutions(ArrayList<Resolution> cameraResolutions, Resolution selectedSize) {
         this.mCameraResolutions = cameraResolutions;
-
         this.mselectedSizeWidth = selectedSize.width;
         this.mselectedSizeHeight = selectedSize.height;
         mresolutionAdapter.setCameResolutions(mCameraResolutions);
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -69,10 +64,8 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         restoreState(savedInstanceState);
         View v = inflater.inflate(R.layout.layout_camera_resolutions, container, false);
-
         mCameraResolutionsListView = (ListView) v.findViewById(R.id.camera_resolutions_listview);
         mCameraResolutionsListView.setAdapter(mresolutionAdapter);
         mCameraResolutionsListView.setOnItemClickListener(this);
@@ -92,17 +85,12 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Resolution size = mresolutionAdapter.getItem(i);
-
         setCameraResolution(size);
-
     }
 
-
     class CameResolutionsAdapter extends BaseAdapter {
-
         ArrayList<Resolution> mcameraResolutions;
-
-
+        
         public void setCameResolutions(ArrayList<Resolution> cameraResolutions) {
             this.mcameraResolutions = cameraResolutions;
         }

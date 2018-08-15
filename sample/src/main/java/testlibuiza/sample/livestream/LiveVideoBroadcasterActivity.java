@@ -21,7 +21,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -34,16 +33,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import testlibuiza.R;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.livestream.ILiveVideoBroadcaster;
 import vn.loitp.livestream.LiveVideoBroadcaster;
 import vn.loitp.livestream.utils.Resolution;
 
-public class LiveVideoBroadcasterActivity extends AppCompatActivity {
+public class LiveVideoBroadcasterActivity extends BaseActivity {
     private final String RTMP_BASE_URL = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/ed2fc3cf-3427-4010-a27e-3efa94a3b8bf?token=2be18c2c0e80efe230078edd695bee95";
     public TimerHandler mTimerHandler;
     boolean mIsRecording = false;
     private ViewGroup mRootView;
-    //private EditText mStreamNameEditText;
     private Timer mTimer;
     private long mElapsedTime;
     private ImageButton mSettingsButton;
@@ -61,7 +60,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
             LiveVideoBroadcaster.LocalBinder binder = (LiveVideoBroadcaster.LocalBinder) service;
             if (mLiveVideoBroadcaster == null) {
                 mLiveVideoBroadcaster = binder.getService();
@@ -78,25 +76,24 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
     };
 
     public static String getDurationString(int seconds) {
-
-        if (seconds < 0 || seconds > 2000000)//there is an codec problem and duration is not set correctly,so display meaningfull string
+        //there is an codec problem and duration is not set correctly,so display meaningfull string
+        if (seconds < 0 || seconds > 2000000) {
             seconds = 0;
+        }
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
-
-        if (hours == 0)
+        if (hours == 0) {
             return twoDigitString(minutes) + " : " + twoDigitString(seconds);
-        else
+        } else {
             return twoDigitString(hours) + " : " + twoDigitString(minutes) + " : " + twoDigitString(seconds);
+        }
     }
 
     public static String twoDigitString(int number) {
-
         if (number == 0) {
             return "00";
         }
-
         if (number / 10 == 0) {
             return "0" + number;
         }
@@ -106,10 +103,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Hide title
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -117,11 +110,9 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
         mLiveVideoBroadcasterServiceIntent = new Intent(this, LiveVideoBroadcaster.class);
         //this makes service do its job until done
         startService(mLiveVideoBroadcasterServiceIntent);
-
-        setContentView(R.layout.activity_live_video_broadcaster);
+        super.onCreate(savedInstanceState);
 
         mTimerHandler = new TimerHandler();
-        //mStreamNameEditText = (EditText) findViewById(R.id.stream_name_edit_text);
 
         mRootView = (ViewGroup) findViewById(R.id.root_layout);
         mSettingsButton = (ImageButton) findViewById(R.id.settings_button);
@@ -137,6 +128,21 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected boolean setFullScreen() {
+        return true;
+    }
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
+
+    @Override
+    protected int setLayoutResourceId() {
+        return R.layout.activity_live_video_broadcaster;
+    }
+
     public void changeCamera(View v) {
         if (mLiveVideoBroadcaster != null) {
             mLiveVideoBroadcaster.changeCamera();
@@ -146,14 +152,11 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //this lets activity bind
         bindService(mLiveVideoBroadcasterServiceIntent, mConnection, 0);
-
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LiveVideoBroadcaster.PERMISSIONS_REQUEST: {
                 if (mLiveVideoBroadcaster.isPermissionGranted()) {
@@ -170,7 +173,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
                                 .setMessage(getString(R.string.app_doesnot_work_without_permissions))
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-
                                         try {
                                             //Open the specific App Info page:
                                             Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -198,7 +200,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //hide dialog if visible not to create leaked window exception
         if (mCameraResolutionsDialog != null && mCameraResolutionsDialog.isVisible()) {
             mCameraResolutionsDialog.dismiss();
         }
@@ -214,34 +215,26 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mLiveVideoBroadcaster.setDisplayOrientation();
         }
-
     }
 
     public void showSetResolutionDialog(View v) {
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fragmentDialog = getSupportFragmentManager().findFragmentByTag("dialog");
         if (fragmentDialog != null) {
-
             ft.remove(fragmentDialog);
         }
 
         ArrayList<Resolution> sizeList = mLiveVideoBroadcaster.getPreviewSizeList();
-
-
         if (sizeList != null && sizeList.size() > 0) {
             mCameraResolutionsDialog = new CameraResolutionsFragment();
-
             mCameraResolutionsDialog.setCameraResolutions(sizeList, mLiveVideoBroadcaster.getPreviewSize());
             mCameraResolutionsDialog.show(ft, "resolutiton_dialog");
         } else {
             Snackbar.make(mRootView, "No resolution available", Snackbar.LENGTH_LONG).show();
         }
-
     }
 
     public void toggleBroadcasting(View v) {
@@ -249,7 +242,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
             if (mLiveVideoBroadcaster != null) {
                 if (!mLiveVideoBroadcaster.isConnected()) {
                     //String streamName = mStreamNameEditText.getText().toString();
-
                     new AsyncTask<String, String, Boolean>() {
                         ContentLoadingProgressBar
                                 progressBar;
@@ -282,7 +274,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
                                 triggerStopRecording();
                             }
                         }
-                        //}.execute(RTMP_BASE_URL + streamName);
                     }.execute(RTMP_BASE_URL);
                 } else {
                     Snackbar.make(mRootView, R.string.streaming_not_finished, Snackbar.LENGTH_LONG).show();
@@ -293,7 +284,6 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
         } else {
             triggerStopRecording();
         }
-
     }
 
     public void triggerStopRecording() {
@@ -313,11 +303,9 @@ public class LiveVideoBroadcasterActivity extends AppCompatActivity {
 
     //This method starts a mTimer and updates the textview to show elapsed time for recording
     public void startTimer() {
-
         if (mTimer == null) {
             mTimer = new Timer();
         }
-
         mElapsedTime = 0;
         mTimer.scheduleAtFixedRate(new TimerTask() {
 
