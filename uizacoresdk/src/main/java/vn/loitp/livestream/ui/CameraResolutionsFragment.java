@@ -1,4 +1,4 @@
-package testlibuiza.sample.livestream;
+package vn.loitp.livestream.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import testlibuiza.R;
+import loitp.core.R;
 import vn.loitp.livestream.utils.Resolution;
 
 /**
@@ -30,6 +30,20 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
     private ArrayList<Resolution> mCameraResolutions;
     private int mselectedSizeWidth;
     private int mselectedSizeHeight;
+
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Resolution size = mresolutionAdapter.getItem(i);
+        if (callback != null) {
+            callback.onClick(size);
+        }
+    }
 
     public void setCameraResolutions(ArrayList<Resolution> cameraResolutions, Resolution selectedSize) {
         this.mCameraResolutions = cameraResolutions;
@@ -75,22 +89,13 @@ public class CameraResolutionsFragment extends DialogFragment implements Adapter
         return v;
     }
 
-    private void setCameraResolution(Resolution size) {
-        if (getActivity() instanceof LiveVideoBroadcasterActivity) {
-            ((LiveVideoBroadcasterActivity) getActivity()).setResolution(size);
-        }
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Resolution size = mresolutionAdapter.getItem(i);
-        setCameraResolution(size);
+    public interface Callback {
+        public void onClick(Resolution size);
     }
 
     class CameResolutionsAdapter extends BaseAdapter {
         ArrayList<Resolution> mcameraResolutions;
-        
+
         public void setCameResolutions(ArrayList<Resolution> cameraResolutions) {
             this.mcameraResolutions = cameraResolutions;
         }

@@ -36,6 +36,7 @@ import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.livestream.ILiveVideoBroadcaster;
 import vn.loitp.livestream.LiveVideoBroadcaster;
+import vn.loitp.livestream.ui.CameraResolutionsFragment;
 import vn.loitp.livestream.utils.Resolution;
 
 public class LiveVideoBroadcasterActivity extends BaseActivity {
@@ -231,6 +232,12 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         if (sizeList != null && sizeList.size() > 0) {
             mCameraResolutionsDialog = new CameraResolutionsFragment();
             mCameraResolutionsDialog.setCameraResolutions(sizeList, mLiveVideoBroadcaster.getPreviewSize());
+            mCameraResolutionsDialog.setCallback(new CameraResolutionsFragment.Callback() {
+                @Override
+                public void onClick(Resolution size) {
+                    setResolution(size);
+                }
+            });
             mCameraResolutionsDialog.show(ft, "resolutiton_dialog");
         } else {
             Snackbar.make(mRootView, "No resolution available", Snackbar.LENGTH_LONG).show();
