@@ -16,4 +16,22 @@ public class LLog {
             Log.e(tag, msg);
         }
     }
+
+    public static void v(String tag, String msg) {
+        if (Constants.IS_DEBUG) {
+            Log.v(tag, msg);
+        }
+    }
+
+    public static void i(String tag, String msg) {
+        if (Constants.IS_DEBUG) {
+            Log.i(tag, msg);
+        }
+    }
+
+    public static void w(String tag, String msg) {
+        if (Constants.IS_DEBUG) {
+            Log.w(tag, msg);
+        }
+    }
 }

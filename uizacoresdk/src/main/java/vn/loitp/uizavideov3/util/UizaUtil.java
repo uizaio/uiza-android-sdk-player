@@ -591,6 +591,8 @@ public class UizaUtil {
     private final static String CLICKED_PIP = "CLICKED_PIP";
     private final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
     private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
+    private final static String PREF_CAMERA_ID = "pref_camera_id";
+    private final static String PREF_STATE_FILTER = "state_filter";
 
     //for api v3
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
@@ -758,5 +760,25 @@ public class UizaUtil {
         editor.putString(V3DATA, gson.toJson(data));
         editor.apply();
     }*/
+
+    public static String getStoredCameraId(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(PREF_CAMERA_ID, "");
+    }
+
+    public static void storeCameraId(Context context, String id) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        pref.edit().putString(PREF_CAMERA_ID, id).apply();
+    }
+
+    public static boolean getStoredFilterState(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getBoolean(PREF_STATE_FILTER, false);
+    }
+
+    public static void storeFilterState(Context context, boolean on) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        pref.edit().putBoolean(PREF_STATE_FILTER, on).apply();
+    }
     //=============================================================================END PREF
 }
