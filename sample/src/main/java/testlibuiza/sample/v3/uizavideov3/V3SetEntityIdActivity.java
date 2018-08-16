@@ -21,6 +21,9 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 public class V3SetEntityIdActivity extends BaseActivity {
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
+    /*https://loctbprod01.uiza.co
+    loctb@uiza.io / 123456789*/
+
     //workspace stag
     private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";

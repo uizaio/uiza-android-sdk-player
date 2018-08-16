@@ -40,7 +40,7 @@ import vn.loitp.livestream.ui.CameraResolutionsFragment;
 import vn.loitp.livestream.utils.Resolution;
 
 public class LiveVideoBroadcasterActivity extends BaseActivity {
-    private final String RTMP_BASE_URL = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/a33719fd-849d-4eb2-84e5-181ac72a02bd?token=5007f86a8daadb2935de3a2876964d59";
+    private final String RTMP_BASE_URL = "rtmp://ap-southeast-1-u-01.uiza.io:80/push2transcode/b0e45a98-032d-40dc-8440-b1c4c7c262e2?token=44f775b10e49269269de1b4846d3d3ec";
     public TimerHandler mTimerHandler;
     boolean mIsRecording = false;
     private ViewGroup mRootView;
