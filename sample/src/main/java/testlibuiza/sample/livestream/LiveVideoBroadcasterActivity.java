@@ -104,16 +104,6 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
     }
 
-    private void endLiveStream(boolean isSave, String title) {
-        if (mStreamerGL != null) {
-            mStreamerGL.stopVideoCapture();
-            mStreamerGL.stopAudioCapture();
-            mStreamerGL.release();
-            mStreamerGL = null;
-            //releaseConnection();
-        }
-    }
-
     private void startLivestream() {
         if (mStreamerGL != null) {
             createConnection("rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp?token=6cb67bc8a7f0ecb8988376c44a8093dc");
@@ -150,6 +140,28 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
         return null;
     }
 
+    private void releaseStreaming() {
+        mIsStreaming = false;
+        if (mStreamerGL != null) {
+            mStreamerGL.stopVideoCapture();
+            mStreamerGL.stopAudioCapture();
+            mStreamerGL.release();
+            mStreamerGL = null;
+        }
+        mPreview = null;
+    }
+
+    private void releaseConnection() {
+        if (mConnectionId == -1) {
+            return;
+        }
+        if (mStreamerGL != null) {
+            mStreamerGL.releaseConnection(mConnectionId);
+        }
+        mConnectionId = -1;
+        mIsStreaming = false;
+    }
+
     @Override
     public void OnConnectionStateChanged(int id, Streamer.CONNECTION_STATE state, Streamer.STATUS status) {
         if (null == mStreamerGL) {
@@ -182,26 +194,9 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
                     }
                     LLog.e(TAG, msg);
                 }
-                mIsStreaming = false;
-                if (mStreamerGL != null) {
-                    mStreamerGL.stopVideoCapture();
-                    mStreamerGL.stopAudioCapture();
-                    mStreamerGL.release();
-                    mStreamerGL = null;
-                }
+                releaseStreaming();
                 break;
         }
-    }
-
-    protected void releaseConnection() {
-        if (mConnectionId == -1) {
-            return;
-        }
-        if (mStreamerGL != null) {
-            mStreamerGL.releaseConnection(mConnectionId);
-        }
-        mConnectionId = -1;
-        mIsStreaming = false;
     }
 
     @Override
@@ -274,16 +269,17 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
 
         try {
             builder.addCamera(mFrontCameraId, videoSizeFront);
-            LLog.d(TAG, "Add camera front " + videoSizeFront.height + videoSizeFront.width);
-            LLog.d(TAG, "Add camera front VIDEO_RES " + VIDEO_RES.height + VIDEO_RES.width);
+            LLog.d(TAG, "Add camera front " + videoSizeFront.height + "x" + videoSizeFront.width);
+            LLog.d(TAG, "Add camera front VIDEO_RES " + VIDEO_RES.height + "x" + VIDEO_RES.width);
         } catch (NullPointerException e) {
             builder.addCamera(mFrontCameraId, VIDEO_RES);
         }
         try {
             builder.addCamera(mBackCameraId, videoSizeBack);
-            LLog.d(TAG, "Add camera back " + videoSizeBack.height + videoSizeBack.width);
-            LLog.d(TAG, "Add camera back VIDEO_RES " + VIDEO_RES.height + VIDEO_RES.width);
+            LLog.d(TAG, "Add camera back " + videoSizeBack.height + "x" + videoSizeBack.width);
+            LLog.d(TAG, "Add camera back VIDEO_RES " + VIDEO_RES.height + "x" + VIDEO_RES.width);
         } catch (NullPointerException e) {
+            LLog.e(TAG, "Error StreamerGLBuilder " + e.toString());
             builder.addCamera(mFrontCameraId, VIDEO_RES);
         }
         return builder;
@@ -370,14 +366,7 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
     @Override
     protected void onDestroy() {
         releaseConnection();
-        if (mStreamerGL != null) {
-            mStreamerGL.stopVideoCapture();
-            mStreamerGL.stopAudioCapture();
-            mStreamerGL.release();
-            mStreamerGL = null;
-
-        }
-        mPreview = null;
+        releaseStreaming();
         super.onDestroy();
     }
 
