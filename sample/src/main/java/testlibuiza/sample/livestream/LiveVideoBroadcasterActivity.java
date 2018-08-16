@@ -35,7 +35,6 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
     private String mBackCameraId;
     private Streamer.Size videoSizeFront;
     private Streamer.Size videoSizeBack;
-    private boolean mFilterOn;
     private SurfaceView mPreview;
     private boolean mIsFrontCamera = true;
 
@@ -73,9 +72,6 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
                     }
                 }
             }.execute();
-            if (mFilterOn) {
-                mFilterOn = false;
-            }
         }
 
         @Override
@@ -373,14 +369,12 @@ public class LiveVideoBroadcasterActivity extends BaseActivity implements Stream
     @Override
     protected void onPause() {
         super.onPause();
-        UizaUtil.storeFilterState(this, mFilterOn);
         UizaUtil.storeCameraId(this, mIsFrontCamera ? mFrontCameraId : mBackCameraId);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mFilterOn = UizaUtil.getStoredFilterState(this);
         if (mPreview == null) {
             mPreview = (SurfaceView) findViewById(R.id.surface);
             SurfaceHolder surfaceHolder = mPreview.getHolder();
