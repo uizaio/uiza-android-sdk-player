@@ -9,7 +9,7 @@ android {
             storePassword '04021993'
         }*/
     }
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.uiza.module.sample"
