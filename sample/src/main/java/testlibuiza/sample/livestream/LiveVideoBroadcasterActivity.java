@@ -44,7 +44,6 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         btStartLivestream.setEnabled(false);
         btStopLivestream.setEnabled(false);
         btSwitchCamera.setEnabled(false);
-
         uizaLivestream.setCallback(new UizaLivestream.Callback() {
             @Override
             public void onReadyToLivestream() {

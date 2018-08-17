@@ -411,6 +411,17 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         mIsFrontCamera = !mIsFrontCamera;
     }
 
+    /*
+     ** Set filter mode Filters.FILTER_BILATERAL
+     * not work
+     */
+    /*public void setFilter(int filter) {
+        if (mStreamerGL == null) {
+            return;
+        }
+        mStreamerGL.setFilter(filter);
+    }*/
+
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
