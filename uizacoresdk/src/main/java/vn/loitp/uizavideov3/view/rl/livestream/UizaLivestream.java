@@ -64,6 +64,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
     }
+
     SurfaceHolder.Callback mPreviewCallback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(final SurfaceHolder surfaceHolder) {
@@ -397,6 +398,17 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
             surfaceHolder = mPreview.getHolder();
             surfaceHolder.addCallback(mPreviewCallback);
         }
+    }
+
+    /*
+     ** Chuyển đổi camera trước sau
+     */
+    public void flipCamera() {
+        if (mStreamerGL == null) {
+            return;
+        }
+        mStreamerGL.flip();
+        mIsFrontCamera = !mIsFrontCamera;
     }
 
     public void setCallback(Callback callback) {

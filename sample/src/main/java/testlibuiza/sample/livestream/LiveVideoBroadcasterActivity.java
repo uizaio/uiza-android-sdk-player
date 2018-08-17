@@ -77,7 +77,7 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         btSwitchCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                uizaLivestream.flipCamera();
             }
         });
     }
