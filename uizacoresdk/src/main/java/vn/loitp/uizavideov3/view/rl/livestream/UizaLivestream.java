@@ -2,6 +2,7 @@ package vn.loitp.uizavideov3.view.rl.livestream;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.MediaCodecInfo;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import java.net.URI;
@@ -17,7 +19,9 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.libstream.Streamer;
 import vn.loitp.libstream.StreamerGL;
 import vn.loitp.libstream.StreamerGLBuilder;
@@ -44,6 +48,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
     private SurfaceView mPreview;
     private boolean mIsFrontCamera = true;
     private Callback callback;
+    private ProgressBar progressBar;
 
     public UizaLivestream(Context context) {
         super(context);
@@ -106,6 +111,8 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
     private void onCreate() {
         inflate(getContext(), R.layout.v3_uiza_livestream, this);
+        progressBar = (ProgressBar) findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
     }
 
     public void setStreamUrl(String streamUrl) {
@@ -375,6 +382,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         //mStreamerGL.setDisplayRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 1 : 0);
 
         LLog.d(TAG, "onReady to startLivestream");
+        LDialogUtil.hide(progressBar);
         if (callback != null) {
             callback.onReadyToLivestream();
         }

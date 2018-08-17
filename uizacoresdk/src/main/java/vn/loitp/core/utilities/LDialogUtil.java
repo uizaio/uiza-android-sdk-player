@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,6 +286,18 @@ public class LDialogUtil {
     public static void hide(Dialog dialog) {
         if (dialog != null && dialog.isShowing()) {
             dialog.cancel();
+        }
+    }
+
+    public static void show(ProgressBar progressBar) {
+        if (progressBar != null && progressBar.getVisibility() != View.VISIBLE) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void hide(ProgressBar progressBar) {
+        if (progressBar != null && progressBar.getVisibility() != View.GONE) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 
