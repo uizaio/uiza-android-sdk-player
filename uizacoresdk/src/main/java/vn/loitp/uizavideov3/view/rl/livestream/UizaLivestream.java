@@ -31,6 +31,8 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 public class UizaLivestream extends RelativeLayout implements Streamer.Listener {
     private static final Streamer.Size VIDEO_RES = new Streamer.Size(1280, 720);
     private final String TAG = "TAG" + getClass().getSimpleName();
+    private SurfaceHolder surfaceHolder;
+    private String mStreamUrl;
     private StreamerGL mStreamerGL = null;
     private int mConnectionId = -1;
     private boolean mIsStreaming;
@@ -41,45 +43,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
     private Streamer.Size videoSizeBack;
     private SurfaceView mPreview;
     private boolean mIsFrontCamera = true;
-    SurfaceHolder.Callback mPreviewCallback = new SurfaceHolder.Callback() {
-        @Override
-        public void surfaceCreated(final SurfaceHolder holder) {
-            LLog.d(TAG, "surfaceCreated");
-            new AsyncTask<Integer, Integer, StreamerGLBuilder>() {
-                protected StreamerGLBuilder doInBackground(Integer... urls) {
-                    return initEncoders();
-                }
-
-                protected void onProgressUpdate(Integer... progress) {
-
-                }
-
-                protected void onPostExecute(StreamerGLBuilder builder) {
-                    if (builder != null) {
-                        startRecord(builder, holder);
-                    }
-                }
-            }.execute();
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            LLog.d(TAG, "surfaceChanged " + width + "x" + height);
-            /*if (null != mStreamerGL) {
-                //LLog.d(TAG, "MainActivity: surfaceChanged() set " + width + "x" + height);
-                //mStreamerGL.setSurfaceSize(new Streamer.Size(width, height));
-            }*/
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            LLog.d(TAG, "surfaceDestroyed");
-            if (null != mStreamerGL) {
-                mStreamerGL.stopVideoCapture();
-                mStreamerGL.stopAudioCapture();
-            }
-        }
-    };
+    private Callback callback;
 
     public UizaLivestream(Context context) {
         super(context);
@@ -100,40 +64,62 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
     }
+    SurfaceHolder.Callback mPreviewCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(final SurfaceHolder surfaceHolder) {
+            LLog.d(TAG, "surfaceCreated");
+            new AsyncTask<Integer, Integer, StreamerGLBuilder>() {
+                protected StreamerGLBuilder doInBackground(Integer... urls) {
+                    return initEncoders();
+                }
+
+                protected void onProgressUpdate(Integer... progress) {
+                }
+
+                protected void onPostExecute(StreamerGLBuilder builder) {
+                    if (builder != null) {
+                        startRecord(builder, surfaceHolder);
+                    }
+                }
+            }.execute();
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+            LLog.d(TAG, "surfaceChanged " + width + "x" + height);
+            /*if (null != mStreamerGL) {
+                //LLog.d(TAG, "MainActivity: surfaceChanged() set " + width + "x" + height);
+                //mStreamerGL.setSurfaceSize(new Streamer.Size(width, height));
+            }*/
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            LLog.d(TAG, "surfaceDestroyed");
+            if (null != mStreamerGL) {
+                mStreamerGL.stopVideoCapture();
+                mStreamerGL.stopAudioCapture();
+            }
+        }
+    };
 
     private void onCreate() {
         inflate(getContext(), R.layout.v3_uiza_livestream, this);
     }
 
-    private void startLivestream() {
+    public void setStreamUrl(String streamUrl) {
+        LLog.d(TAG, "setStreamUrl " + streamUrl);
+        this.mStreamUrl = streamUrl;
+    }
+
+    public void startLivestream() {
         if (mStreamerGL != null) {
-            createConnection("rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp?token=6cb67bc8a7f0ecb8988376c44a8093dc");
+            createConnection(mStreamUrl);
         }
     }
 
-    private void createConnection(String url) {
-        if (url == null || url.isEmpty()) {
-            LLog.e(TAG, "Error: url cannot be null or empty");
-            return;
-        }
-        URI uri = null;
-        try {
-            uri = new URI(url);
-        } catch (Exception e) {
-            LLog.e(TAG, "createConnection -> Exception " + e.toString());
-            return;
-        }
-
-        LLog.d(TAG, "createConnection -> " + url);
-
-        Streamer.MODE mode = Streamer.MODE.AUDIO_VIDEO;
-        mConnectionId = mStreamerGL.createConnection(uri.toString(), mode, this);
-        LLog.d(TAG, "createConnection -> mConnectionId " + mConnectionId);
-        mIsStreaming = !(mConnectionId == -1);
-        if (mConnectionId == -1) {
-            LLog.e(TAG, "createConnection -> Network failure, could not connect to server ");
-            mIsStreaming = false;
-        }
+    public void stopLivestream() {
+        releaseConnection();
     }
 
     @Override
@@ -286,30 +272,29 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         return builder;
     }
 
-    private void startRecord(StreamerGLBuilder builder, SurfaceHolder holder) {
-        builder.setSurface(holder.getSurface());
-        builder.setSurfaceSize(calcPreviewSize(videoSizeFront));
+    private void createConnection(String url) {
+        if (url == null || url.isEmpty()) {
+            LLog.e(TAG, "Error createConnection: url cannot be null or empty");
+            return;
+        }
+        URI uri = null;
+        try {
+            uri = new URI(url);
+        } catch (Exception e) {
+            LLog.e(TAG, "createConnection -> Exception " + e.toString());
+            return;
+        }
 
-        // Rotate preview
-        // This will be later set to device orientation when user press "Broadcast" button
-        //        builder.setVideoRotation(0);
-        //        builder.setDisplayRotation(0);
+        LLog.d(TAG, "createConnection -> " + url);
 
-        //add front camera
-
-        //Starting cupturing from Audio and Video source
-        LLog.d(TAG, "w: " + videoSizeFront.width + " h: " + videoSizeFront.height);
-        VideoEncoder videoEncoder = VideoEncoder.createVideoEncoder(videoSizeFront);
-        mStreamerGL = builder.build();
-        mStreamerGL.setVideoOrientation(1);
-        mStreamerGL.startVideoCapture();
-        mStreamerGL.startVideoCapture(getContext(), mFrontCameraId, holder, videoEncoder, this, 1);
-        mStreamerGL.startAudioCapture();
-
-        //mStreamerGL.setDisplayRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 1 : 0);
-        //mStreamerGL.setDisplayRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 1 : 0);
-
-        startLivestream();
+        Streamer.MODE mode = Streamer.MODE.AUDIO_VIDEO;
+        mConnectionId = mStreamerGL.createConnection(uri.toString(), mode, this);
+        LLog.d(TAG, "createConnection -> mConnectionId " + mConnectionId);
+        mIsStreaming = !(mConnectionId == -1);
+        if (mConnectionId == -1) {
+            LLog.e(TAG, "createConnection -> Network failure, could not connect to server ");
+            mIsStreaming = false;
+        }
     }
 
     private Streamer.Size findClosestRes(Streamer.Size requested, Streamer.Size[] recordSizes) {
@@ -364,20 +349,61 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         return fpsRanges[minmaxId];
     }
 
+    private void startRecord(StreamerGLBuilder builder, SurfaceHolder holder) {
+        LLog.d(TAG, "startRecord");
+        builder.setSurface(holder.getSurface());
+        builder.setSurfaceSize(calcPreviewSize(videoSizeFront));
+
+        // Rotate preview
+        // This will be later set to device orientation when user press "Broadcast" button
+        //        builder.setVideoRotation(0);
+        //        builder.setDisplayRotation(0);
+
+        //add front camera
+
+        //Starting cupturing from Audio and Video source
+        LLog.d(TAG, "-> startRecord w: " + videoSizeFront.width + " h: " + videoSizeFront.height);
+        VideoEncoder videoEncoder = VideoEncoder.createVideoEncoder(videoSizeFront);
+        mStreamerGL = builder.build();
+        mStreamerGL.setVideoOrientation(1);
+        mStreamerGL.startVideoCapture();
+        mStreamerGL.startVideoCapture(getContext(), mFrontCameraId, holder, videoEncoder, this, 1);
+        mStreamerGL.startAudioCapture();
+
+        //mStreamerGL.setDisplayRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 1 : 0);
+        //mStreamerGL.setDisplayRotation((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 1 : 0);
+
+        LLog.d(TAG, "onReady to startLivestream");
+        if (callback != null) {
+            callback.onReadyToLivestream();
+        }
+    }
+
     public void onDestroy() {
+        LLog.d(TAG, "onDestroy");
         releaseConnection();
         releaseStreaming();
     }
 
     public void onPause() {
+        LLog.d(TAG, "onPause");
         UizaUtil.storeCameraId(getContext(), mIsFrontCamera ? mFrontCameraId : mBackCameraId);
     }
 
     public void onResume() {
+        LLog.d(TAG, "onResume");
         if (mPreview == null) {
             mPreview = (SurfaceView) findViewById(R.id.surface);
-            SurfaceHolder surfaceHolder = mPreview.getHolder();
+            surfaceHolder = mPreview.getHolder();
             surfaceHolder.addCallback(mPreviewCallback);
         }
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public interface Callback {
+        public void onReadyToLivestream();
     }
 }

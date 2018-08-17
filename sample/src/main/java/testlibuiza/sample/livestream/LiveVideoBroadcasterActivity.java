@@ -2,7 +2,9 @@ package testlibuiza.sample.livestream;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
@@ -10,6 +12,8 @@ import vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream;
 
 public class LiveVideoBroadcasterActivity extends BaseActivity {
     private UizaLivestream uizaLivestream;
+    private Button btStartLivestream;
+    private Button btStopLivestream;
 
     @Override
     protected boolean setFullScreen() {
@@ -31,7 +35,40 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
+        btStartLivestream = (Button) findViewById(R.id.bt_start_livestream);
+        btStopLivestream = (Button) findViewById(R.id.bt_stop_livestream);
+        btStartLivestream.setEnabled(false);
+        btStopLivestream.setEnabled(false);
+
+        uizaLivestream.setCallback(new UizaLivestream.Callback() {
+            @Override
+            public void onReadyToLivestream() {
+                btStartLivestream.setEnabled(true);
+            }
+        });
+
+        btStartLivestream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaLivestream.setStreamUrl("rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp?token=6cb67bc8a7f0ecb8988376c44a8093dc");
+                uizaLivestream.startLivestream();
+
+                btStartLivestream.setEnabled(false);
+                btStopLivestream.setEnabled(true);
+            }
+        });
+
+        btStopLivestream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uizaLivestream.stopLivestream();
+
+                btStartLivestream.setEnabled(true);
+                btStopLivestream.setEnabled(false);
+            }
+        });
     }
 
     @Override
