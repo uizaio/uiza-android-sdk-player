@@ -14,6 +14,7 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
     private UizaLivestream uizaLivestream;
     private Button btStartLivestream;
     private Button btStopLivestream;
+    private Button btSwitchCamera;
 
     @Override
     protected boolean setFullScreen() {
@@ -39,13 +40,16 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
         btStartLivestream = (Button) findViewById(R.id.bt_start_livestream);
         btStopLivestream = (Button) findViewById(R.id.bt_stop_livestream);
+        btSwitchCamera = (Button) findViewById(R.id.bt_switch_camera);
         btStartLivestream.setEnabled(false);
         btStopLivestream.setEnabled(false);
+        btSwitchCamera.setEnabled(false);
 
         uizaLivestream.setCallback(new UizaLivestream.Callback() {
             @Override
             public void onReadyToLivestream() {
                 btStartLivestream.setEnabled(true);
+                btSwitchCamera.setEnabled(true);
             }
         });
 
@@ -67,6 +71,13 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
 
                 btStartLivestream.setEnabled(true);
                 btStopLivestream.setEnabled(false);
+            }
+        });
+
+        btSwitchCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
