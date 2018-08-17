@@ -13,12 +13,14 @@ import android.view.SurfaceView;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.net.URI;
 import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -49,6 +51,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
     private boolean mIsFrontCamera = true;
     private Callback callback;
     private ProgressBar progressBar;
+    private TextView tvLiveStatus;
 
     public UizaLivestream(Context context) {
         super(context);
@@ -111,6 +114,8 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
     private void onCreate() {
         inflate(getContext(), R.layout.v3_uiza_livestream, this);
+        tvLiveStatus = (TextView) findViewById(R.id.tv_live_status);
+        tvLiveStatus.setVisibility(GONE);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
     }
@@ -128,6 +133,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
     public void stopLivestream() {
         releaseConnection();
+        clearAnimtionTvStatus();
     }
 
     @Override
@@ -302,6 +308,20 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
         if (mConnectionId == -1) {
             LLog.e(TAG, "createConnection -> Network failure, could not connect to server ");
             mIsStreaming = false;
+        }
+
+        playAnimTvStatusLive();
+    }
+
+    private void playAnimTvStatusLive() {
+        tvLiveStatus.setVisibility(VISIBLE);
+        LAnimationUtil.fade(tvLiveStatus);
+    }
+
+    private void clearAnimtionTvStatus() {
+        if (tvLiveStatus != null) {
+            tvLiveStatus.clearAnimation();
+            tvLiveStatus.setVisibility(GONE);
         }
     }
 
