@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream;
 
 public class LiveVideoBroadcasterActivity extends BaseActivity {
@@ -18,6 +19,7 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
 
     @Override
     protected boolean setFullScreen() {
+        LScreenUtil.hideDefaultControls(activity);
         return true;
     }
 
@@ -55,7 +57,9 @@ public class LiveVideoBroadcasterActivity extends BaseActivity {
         btStartLivestream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaLivestream.setStreamUrl("rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp?token=6cb67bc8a7f0ecb8988376c44a8093dc");
+                String streamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only";
+                String streamKey = "4e9bea68-b59e-4932-b5c7-9724c62fe8f2?token=6d8317424131fc7da87c7168d8189b01";
+                uizaLivestream.setStreamUrl(streamUrl + "/" + streamKey);
                 uizaLivestream.startLivestream();
 
                 btStartLivestream.setEnabled(false);
