@@ -85,7 +85,6 @@ public class Drawable2d {
         return this.mPrefab != null ? "[Drawable2d: " + this.mPrefab + "]" : "[Drawable2d: ...]";
     }
 
-
     public static enum Prefab {
 
         TRIANGLE("TRIANGLE", 0),
@@ -93,7 +92,6 @@ public class Drawable2d {
         FULL_RECTANGLE("FULL_RECTANGLE", 2);
         // $FF: synthetic field
         private static final Drawable2d.Prefab[] $VALUES = new Drawable2d.Prefab[]{TRIANGLE, RECTANGLE, FULL_RECTANGLE};
-
 
         private Prefab(String var1, int var2) {
         }

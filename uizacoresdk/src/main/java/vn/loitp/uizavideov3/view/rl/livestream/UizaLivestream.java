@@ -20,7 +20,6 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -315,7 +314,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
     private void playAnimTvStatusLive() {
         tvLiveStatus.setVisibility(VISIBLE);
-        LAnimationUtil.fade(tvLiveStatus);
+        //LAnimationUtil.fade(tvLiveStatus);
     }
 
     private void clearAnimtionTvStatus() {

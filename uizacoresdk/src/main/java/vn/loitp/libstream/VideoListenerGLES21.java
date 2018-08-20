@@ -51,7 +51,7 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
     private Surface mPreviewSurface;
     private android.hardware.camera2.CameraCaptureSession.StateCallback mSessionStateCallback = new android.hardware.camera2.CameraCaptureSession.StateCallback() {
         public void onConfigured(CameraCaptureSession session) {
-            Log.d("VideoListenerGLES21", "onConfigured");
+            LLog.d("VideoListenerGLES21", "onConfigured");
             VideoListenerGLES21.this.mCaptureSession = session;
 
             try {
@@ -72,7 +72,6 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
                 LLog.e("VideoListenerGLES21", Log.getStackTraceString(var4));
                 VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.FAILED);
             }
-
         }
 
         public void onConfigureFailed(CameraCaptureSession session) {
@@ -101,7 +100,7 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
     };
     private StateCallback mCameraStateCallback = new StateCallback() {
         public void onOpened(CameraDevice camera) {
-            Log.d("VideoListenerGLES21", "onOpened");
+            LLog.d("VideoListenerGLES21", "onOpened");
             VideoListenerGLES21.this.mCamera2 = camera;
 
             try {
@@ -109,14 +108,14 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
                 e.add(VideoListenerGLES21.this.mPreviewSurface);
                 VideoListenerGLES21.this.mCamera2.createCaptureSession(e, VideoListenerGLES21.this.mSessionStateCallback, VideoListenerGLES21.this.mCameraHandler);
             } catch (Exception var3) {
-                Log.e("VideoListenerGLES21", Log.getStackTraceString(var3));
+                LLog.e("VideoListenerGLES21", Log.getStackTraceString(var3));
                 VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.FAILED);
             }
 
         }
 
         public void onClosed(CameraDevice camera) {
-            Log.d("VideoListenerGLES21", "onClosed");
+            LLog.d("VideoListenerGLES21", "onClosed");
             if (VideoListenerGLES21.this.isCameraClosing) {
                 VideoListenerGLES21.this.stopCameraThread();
                 VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.STOPPED);
@@ -132,7 +131,7 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
                 }
 
                 if (!VideoListenerGLES21.this.openCamera(VideoListenerGLES21.this.mContext, cameraIdStr == null ? Integer.toString(VideoListenerGLES21.this.cameraId) : cameraIdStr)) {
-                    Log.e("VideoListenerGLES21", "failed to open camera");
+                    LLog.e("VideoListenerGLES21", "failed to open camera");
                     VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.FAILED);
                     VideoListenerGLES21.this.stop();
                 }
@@ -141,12 +140,12 @@ class VideoListenerGLES21 extends VideoListener implements OnFrameAvailableListe
         }
 
         public void onDisconnected(CameraDevice camera) {
-            Log.d("VideoListenerGLES21", "onDisconnected");
+            LLog.d("VideoListenerGLES21", "onDisconnected");
             VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.FAILED);
         }
 
         public void onError(CameraDevice camera, int error) {
-            Log.d("VideoListenerGLES21", "onError, error=" + error);
+            LLog.d("VideoListenerGLES21", "onError, error=" + error);
             VideoListenerGLES21.this.setVideoCaptureState(Streamer.CAPTURE_STATE.FAILED);
         }
     };

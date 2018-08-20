@@ -29,7 +29,6 @@ class ConnectionManager {
     private long last_ts_ = 0L;
     private String userAgent_ = "SoftvelumLarixBroadcaster/1.0.12";
 
-
     ConnectionManager(StreamBuffer streamBuffer) {
         this.streamBuffer_ = streamBuffer;
         this.connectionMap = new HashMap();
@@ -260,7 +259,6 @@ class ConnectionManager {
             if (this.connectionMap.isEmpty()) {
                 this.stopConnectionThread();
             }
-
         }
     }
 
