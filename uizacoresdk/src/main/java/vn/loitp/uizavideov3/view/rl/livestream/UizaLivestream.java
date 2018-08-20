@@ -37,7 +37,7 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 public class UizaLivestream extends RelativeLayout implements Streamer.Listener {
     private static final Streamer.Size VIDEO_RES = new Streamer.Size(1280, 720);
     private final String TAG = "TAG" + getClass().getSimpleName();
-    private SurfaceHolder surfaceHolder;
+    private SurfaceHolder mSurfaceHolder;
     private String mStreamUrl;
     private StreamerGL mStreamerGL = null;
     private int mConnectionId = -1;
@@ -47,7 +47,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
     private String mBackCameraId;
     private Streamer.Size videoSizeFront;
     private Streamer.Size videoSizeBack;
-    private SurfaceView mPreview;
+    private SurfaceView mSurfaceView;
     private boolean mIsFrontCamera = true;
     private Callback callback;
     private ProgressBar progressBar;
@@ -149,7 +149,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
             mStreamerGL.release();
             mStreamerGL = null;
         }
-        mPreview = null;
+        mSurfaceView = null;
     }
 
     private void releaseConnection() {
@@ -342,8 +342,8 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
     }
 
     private Streamer.Size calcPreviewSize(Streamer.Size video_size) {
-        int height = mPreview.getHeight();
-        ViewGroup.LayoutParams params = mPreview.getLayoutParams();
+        int height = mSurfaceView.getHeight();
+        ViewGroup.LayoutParams params = mSurfaceView.getLayoutParams();
         params.height = height;
         //LLog.i(TAG, "calcPreviewSize navi: " + getBottomBarHeight());
         //LLog.i(TAG, "calcPreviewSize status: " + getStatusBarHeight());
@@ -356,7 +356,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
             params.width = (int) (height * video_size.getRatio());
             //LLog.i(TAG, "calcPreviewSize -> LANS: " + params.width);
         }
-        mPreview.setLayoutParams(params);
+        mSurfaceView.setLayoutParams(params);
 
         //LLog.i(TAG, "calcPreviewSize w: " + params.width + " h: " + params.height);
         return new Streamer.Size(params.width, params.height);
@@ -389,7 +389,7 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
         //add front camera
 
-        //Starting cupturing from Audio and Video source
+        //Starting capturing from Audio and Video source
         LLog.d(TAG, "-> startRecord w: " + videoSizeFront.width + " h: " + videoSizeFront.height);
         VideoEncoder videoEncoder = VideoEncoder.createVideoEncoder(videoSizeFront);
         mStreamerGL = builder.build();
@@ -421,10 +421,10 @@ public class UizaLivestream extends RelativeLayout implements Streamer.Listener 
 
     public void onResume() {
         LLog.d(TAG, "onResume");
-        if (mPreview == null) {
-            mPreview = (SurfaceView) findViewById(R.id.surface);
-            surfaceHolder = mPreview.getHolder();
-            surfaceHolder.addCallback(mPreviewCallback);
+        if (mSurfaceView == null) {
+            mSurfaceView = (SurfaceView) findViewById(R.id.surface);
+            mSurfaceHolder = mSurfaceView.getHolder();
+            mSurfaceHolder.addCallback(mPreviewCallback);
         }
     }
 
