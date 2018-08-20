@@ -57,7 +57,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".sample.guidecallapi.TestAPI" />
         <activity
-            android:name=".sample.livestream.LiveVideoBroadcasterActivity"
+            android:name=".sample.livestream.derecated.LiveVideoBroadcasterActivity"
             android:screenOrientation="portrait" />
 
         <service android:name="vn.loitp.livestream.LiveVideoBroadcaster" />

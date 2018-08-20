@@ -85,5 +85,6 @@ dependencies {
     //compile 'com.github.juliome10:DoubleViewPager:1.0.4@aar'
 
     //for livestream
-    compile 'net.butterflytv.utils:rtmp-client:3.0.1'
+    //https://github.com/tplloi/rtmp-rtsp-stream-client-java
+    compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.0'
 }
