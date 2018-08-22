@@ -28,7 +28,7 @@ import vn.loitp.views.LToast;
  */
 
 public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
     private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Uizalivestream");
@@ -123,7 +123,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         LLog.d(TAG, "surfaceChanged");
-        rtmpCamera1.startPreview();
+        //rtmpCamera1.startPreview();
+        rtmpCamera1.startPreview(1280, 720);
     }
 
     @Override

@@ -70,7 +70,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override

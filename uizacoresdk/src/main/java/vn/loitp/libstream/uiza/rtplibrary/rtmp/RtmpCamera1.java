@@ -19,7 +19,7 @@ import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
  * More documentation see:
  * {@link Camera1Base}
  * <p>
- * Created by pedro on 25/01/17.
+ * Created by loitp on 25/01/17.
  */
 
 public class RtmpCamera1 extends Camera1Base {
