@@ -273,7 +273,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     bStartStopStore.setText("Stop streaming");
                     bStartStop.setEnabled(false);
                 } else {
-                    bStartStopStore.setText("Start streaming");
+                    bStartStopStore.setText("Start stream and Store");
                     bStartStop.setEnabled(true);
                 }
                 break;
@@ -287,31 +287,61 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onConnectionSuccessRtmp() {
-        LToast.show(activity, "onConnectionSuccessRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "onConnectionSuccessRtmp");
+            }
+        });
     }
 
     @Override
     public void onConnectionFailedRtmp(String reason) {
-        LToast.show(activity, "onConnectionFailedRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "onConnectionFailedRtmp");
+            }
+        });
     }
 
     @Override
     public void onDisconnectRtmp() {
-        LToast.show(activity, "onDisconnectRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "onDisconnectRtmp");
+            }
+        });
     }
 
     @Override
     public void onAuthErrorRtmp() {
-        LToast.show(activity, "onAuthErrorRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "onAuthErrorRtmp");
+            }
+        });
     }
 
     @Override
     public void onAuthSuccessRtmp() {
-        LToast.show(activity, "onAuthSuccessRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "onAuthSuccessRtmp");
+            }
+        });
     }
 
     @Override
     public void surfaceCreated() {
-        LToast.show(activity, "surfaceCreated");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "surfaceCreated");
+            }
+        });
     }
 }
