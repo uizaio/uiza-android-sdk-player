@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LLog;
+
 /**
  * Created by pedro on 20/01/17.
  * This class need use same resolution, fps and imageFormat that VideoEncoder
@@ -336,6 +339,13 @@ public class Camera1ApiManager implements Camera.PreviewCallback, Camera.FaceDet
         } else {
             previews = previewSizeFront;
         }
+
+        if (Constants.IS_DEBUG) {
+            for (Camera.Size size : previews) {
+                LLog.d(TAG, "loitp: " + size.width + "x" + size.height);
+            }
+        }
+
         for (Camera.Size size : previews) {
             if (size.width == width && size.height == height) {
                 return true;
