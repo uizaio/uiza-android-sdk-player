@@ -101,6 +101,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 });
             }
         });
+
+        uizaLivestream.setId("26a409a2-0177-4a84-8459-4feb2d131d35");
     }
 
     private void handleFilterClick(MenuItem item) {

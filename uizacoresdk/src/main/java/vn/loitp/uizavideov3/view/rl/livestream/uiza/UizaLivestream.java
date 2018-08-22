@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -18,6 +20,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import loitp.core.R;
+import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BaseFilterRender;
@@ -28,6 +31,8 @@ import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.libstream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
 import vn.loitp.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 /**
@@ -318,5 +323,22 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             LToast.show(getContext(), "Error " + e.toString());
             return false;
         }
+    }
+
+    public void setId(String entityLiveId) {
+        if (entityLiveId == null || entityLiveId.isEmpty()) {
+            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
+        }
+        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
+            @Override
+            public void onSuccess(Data d) {
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "setId onError " + e.toString());
+            }
+        });
     }
 }

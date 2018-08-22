@@ -18,15 +18,10 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
-import vn.loitp.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.loitp.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class MainActivity extends BaseActivity {
@@ -37,15 +32,6 @@ public class MainActivity extends BaseActivity {
 
         //auth v2
         authV2();
-
-        //auth v3
-        String domainApi = "android-api.uiza.co";
-        String token = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
-        String appId = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-        //UizaDataV3.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_1);
-        UizaDataV3.getInstance().initSDK(domainApi, token, appId, Constants.ENVIRONMENT_STAG);
-
-        authV3();
 
         findViewById(R.id.bt_test_api_v2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,26 +143,4 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
-
-    //for uiza api v3
-    private void authV3() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        UizaWorkspaceInfo uizaWorkspaceInfo = UizaUtil.getUizaWorkspace(activity);
-        if (uizaWorkspaceInfo == null) {
-            return;
-        }
-        subscribe(service.getToken(uizaWorkspaceInfo), new ApiSubscriber<ResultGetToken>() {
-            @Override
-            public void onSuccess(ResultGetToken resultGetToken) {
-                String token = resultGetToken.getData().getToken();
-                RestClientV3.addAuthorization(token);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
-            }
-        });
-    }
-    //end for uiza api v3
 }
