@@ -50,7 +50,7 @@ import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.uizavideov3.view.rl.livestream.uiza.UizaLivestream;
 import vn.loitp.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener {
+public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UizaLivestream.Callback {
     private UizaLivestream uizaLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -87,7 +87,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switchCamera.setOnClickListener(this);
         etUrl = findViewById(R.id.et_rtp_url);
         etUrl.setHint(R.string.hint_rtmp);
-        etUrl.setText("rtmp://ap-southeast-1-u-01.uiza.io:80/push2transcode/test-loitp?token=ee86cb59c26bf734898ac4635aff1e82");
+        etUrl.setText("rtmp://ap-southeast-1-u-01.uiza.io:80/push2transcode/trung-nhi?token=38f9666b2158d39d26ff55d75ce48f2b");
 
         Button filter = (Button) findViewById(R.id.filter);
         filter.setOnClickListener(new View.OnClickListener() {
@@ -285,5 +285,33 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         }
     }
 
+    @Override
+    public void onConnectionSuccessRtmp() {
+        LToast.show(activity, "onConnectionSuccessRtmp");
+    }
 
+    @Override
+    public void onConnectionFailedRtmp(String reason) {
+        LToast.show(activity, "onConnectionFailedRtmp");
+    }
+
+    @Override
+    public void onDisconnectRtmp() {
+        LToast.show(activity, "onDisconnectRtmp");
+    }
+
+    @Override
+    public void onAuthErrorRtmp() {
+        LToast.show(activity, "onAuthErrorRtmp");
+    }
+
+    @Override
+    public void onAuthSuccessRtmp() {
+        LToast.show(activity, "onAuthSuccessRtmp");
+    }
+
+    @Override
+    public void surfaceCreated() {
+        LToast.show(activity, "surfaceCreated");
+    }
 }

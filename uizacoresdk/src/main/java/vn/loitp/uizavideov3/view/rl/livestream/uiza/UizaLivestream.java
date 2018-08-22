@@ -96,36 +96,68 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //openGlView.setFrontPreviewFlip(true);
     }
 
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
     @Override
     public void onConnectionSuccessRtmp() {
-        LToast.show(getContext(), "Connection success");
+        if (callback != null) {
+            callback.onConnectionSuccessRtmp();
+        }
     }
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
-        LToast.show(getContext(), "Connection failed");
+        if (callback != null) {
+            callback.onConnectionFailedRtmp(reason);
+        }
         rtmpCamera1.stopStream();
     }
 
     @Override
     public void onDisconnectRtmp() {
-        LToast.show(getContext(), "Disconnected");
+        if (callback != null) {
+            callback.onDisconnectRtmp();
+        }
     }
 
     @Override
     public void onAuthErrorRtmp() {
-        LToast.show(getContext(), "Auth error");
+        if (callback != null) {
+            callback.onAuthErrorRtmp();
+        }
     }
 
     @Override
     public void onAuthSuccessRtmp() {
-        LToast.show(getContext(), "Auth success");
+        if (callback != null) {
+            callback.onAuthSuccessRtmp();
+        }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        LLog.d(TAG, "surfaceCreated");
+        if (callback != null) {
+            callback.surfaceCreated();
+        }
         LUIUtil.hideProgressBar(progressBar);
+    }
+
+    public interface Callback {
+        public void onConnectionSuccessRtmp();
+
+        public void onConnectionFailedRtmp(String reason);
+
+        public void onDisconnectRtmp();
+
+        public void onAuthErrorRtmp();
+
+        public void onAuthSuccessRtmp();
+
+        public void surfaceCreated();
     }
 
     @Override
