@@ -57,16 +57,12 @@
             android:name=".sample.v3.demoui.HomeV4CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".sample.guidecallapi.TestAPI" />
-        <activity
-            android:name=".sample.livestream.derecated.LiveVideoBroadcasterActivity"
-            android:screenOrientation="portrait" />
 
         <!--<service android:name=".sample.livestream.derecated.LiveVideoBroadcasterActivity" />-->
 
         <!--for livestream-->
         <activity
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
-            android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
     </application>
 

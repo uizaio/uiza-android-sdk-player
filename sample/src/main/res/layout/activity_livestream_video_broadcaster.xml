@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView
-        android:id="@+id/surfaceView"
+    <vn.loitp.uizavideov3.view.rl.livestream.uiza.UizaLivestream
+        android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

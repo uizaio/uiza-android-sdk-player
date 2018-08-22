@@ -13,7 +13,7 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 21
         versionCode 3
         versionName "1.0.3"

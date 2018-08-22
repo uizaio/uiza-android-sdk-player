@@ -5,6 +5,11 @@
     android:animateLayoutChanges="true"
     android:background="@drawable/background_video_info">
 
+    <vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ProgressBar
         android:id="@id/pb"
         style="?android:attr/progressBarStyleLarge"
@@ -22,5 +27,6 @@
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:text="@string/live"
-        android:textColor="@color/White" />
+        android:textColor="@color/White"
+        android:visibility="gone" />
 </RelativeLayout>
