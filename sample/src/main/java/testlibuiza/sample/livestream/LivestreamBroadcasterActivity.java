@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPopupMenu;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
@@ -100,7 +102,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
 
-        uizaLivestream.setId("26a409a2-0177-4a84-8459-4feb2d131d35");
+        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
+        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -239,8 +242,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio(128, 44100, true, false, false)
-                            && uizaLivestream.prepareVideo(1280, 720, 30, 2500000, false, 90)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo1080p(false)) {
                         uizaLivestream.startStream(tvMainUrl.getText().toString().trim());
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -295,6 +297,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
+        LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);

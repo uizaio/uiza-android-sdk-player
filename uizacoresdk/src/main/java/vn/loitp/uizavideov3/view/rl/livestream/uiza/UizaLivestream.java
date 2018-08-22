@@ -11,8 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -162,7 +160,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
-                LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
+                //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
                     throw new NullPointerException("Data is null");
                 }
@@ -247,13 +245,27 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         tvLiveStatus.setVisibility(GONE);
     }
 
+    public boolean prepareAudio() {
+        return prepareAudio(128, 44100, true, false, false);
+    }
+
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
-        //return rtmpCamera1.prepareAudio(128, 44100, true, false, false);
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
+    public boolean prepareVideo1080p(boolean isLandscape) {
+        return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
+    }
+
+    public boolean prepareVideo720p(boolean isLandscape) {
+        return prepareVideo(1280, 730, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
+    }
+
+    public boolean prepareVideo480p(boolean isLandscape) {
+        return prepareVideo(854, 480, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+    }
+
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
-        //return rtmpCamera1.prepareVideo(1920, 1080, 30, 2500000, false, 0);
         return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
     }
 
