@@ -151,18 +151,34 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         LUIUtil.hideProgressBar(progressBar);
     }
 
-    public interface Callback {
-        public void onConnectionSuccessRtmp();
+    public void setId(String entityLiveId) {
+        if (entityLiveId == null || entityLiveId.isEmpty()) {
+            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
+        }
+        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
+            @Override
+            public void onSuccess(Data d) {
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
+                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
+                    throw new NullPointerException("Data is null");
+                }
+                String streamKey = d.getLastPushInfo().get(0).getStreamKey();
+                String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
+                String mainUrl = streamUrl + "/" + streamKey;
+                LLog.d(TAG, "mainUrl: " + mainUrl);
 
-        public void onConnectionFailedRtmp(String reason);
+                boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
+                LLog.d(TAG, "isTranscode " + isTranscode);
+                if (callback != null) {
+                    callback.onGetDataSuccess(d, mainUrl, isTranscode);
+                }
+            }
 
-        public void onDisconnectRtmp();
-
-        public void onAuthErrorRtmp();
-
-        public void onAuthSuccessRtmp();
-
-        public void surfaceCreated();
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "setId onError " + e.toString());
+            }
+        });
     }
 
     @Override
@@ -325,20 +341,19 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         }
     }
 
-    public void setId(String entityLiveId) {
-        if (entityLiveId == null || entityLiveId.isEmpty()) {
-            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
-        }
-        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
-            @Override
-            public void onSuccess(Data d) {
-                LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
-            }
+    public interface Callback {
+        public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode);
 
-            @Override
-            public void onError(Throwable e) {
-                LLog.e(TAG, "setId onError " + e.toString());
-            }
-        });
+        public void onConnectionSuccessRtmp();
+
+        public void onConnectionFailedRtmp(String reason);
+
+        public void onDisconnectRtmp();
+
+        public void onAuthErrorRtmp();
+
+        public void onAuthSuccessRtmp();
+
+        public void surfaceCreated();
     }
 }

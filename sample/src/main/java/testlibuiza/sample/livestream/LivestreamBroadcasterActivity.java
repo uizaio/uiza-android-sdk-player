@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
@@ -47,6 +47,7 @@ import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRend
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideov3.view.rl.livestream.uiza.UizaLivestream;
 import vn.loitp.views.LToast;
 
@@ -54,7 +55,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private UizaLivestream uizaLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
-    private EditText etUrl;
+    private Button btSwitchCamera;
+    private Button btFilter;
+    private TextView tvMainUrl;
 
     @Override
     protected boolean setFullScreen() {
@@ -79,28 +82,22 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         //LActivityUtil.changeScreenLandscape(activity);
 
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
+        uizaLivestream.setCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
+        btSwitchCamera = findViewById(R.id.b_switch_camera);
+        btFilter = (Button) findViewById(R.id.b_filter);
+        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
+
+        bStartStop.setEnabled(false);
+        bStartStopStore.setEnabled(false);
+        btSwitchCamera.setEnabled(false);
+        btFilter.setEnabled(false);
+
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
-        Button switchCamera = findViewById(R.id.switch_camera);
-        switchCamera.setOnClickListener(this);
-        etUrl = findViewById(R.id.et_rtp_url);
-        etUrl.setHint(R.string.hint_rtmp);
-        etUrl.setText("rtmp://ap-southeast-1-u-01.uiza.io:80/push2transcode/trung-nhi?token=38f9666b2158d39d26ff55d75ce48f2b");
-
-        Button filter = (Button) findViewById(R.id.filter);
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LPopupMenu.show(activity, v, R.menu.gl_menu, new LPopupMenu.CallBack() {
-                    @Override
-                    public void clickOnItem(MenuItem menuItem) {
-                        handleFilterClick(menuItem);
-                    }
-                });
-            }
-        });
+        btSwitchCamera.setOnClickListener(this);
+        btFilter.setOnClickListener(this);
 
         uizaLivestream.setId("26a409a2-0177-4a84-8459-4feb2d131d35");
     }
@@ -214,7 +211,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 uizaLivestream.setFilter(new SharpnessFilterRender());
                 break;
             case R.id.surface_filter:
-                //You can render this filter with other api that draw in a surface. for example you can use VLC
+                //You can render this btFilter with other api that draw in a surface. for example you can use VLC
                 SurfaceFilterRender surfaceFilterRender = new SurfaceFilterRender();
                 uizaLivestream.setFilter(surfaceFilterRender);
                 MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.big_bunny_240p);
@@ -243,7 +240,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 if (!uizaLivestream.isStreaming()) {
                     if (uizaLivestream.prepareAudio(128, 44100, true, false, false)
                             && uizaLivestream.prepareVideo(1280, 720, 30, 2500000, false, 90)) {
-                        uizaLivestream.startStream(etUrl.getText().toString());
+                        uizaLivestream.startStream(tvMainUrl.getText().toString().trim());
                     } else {
                         LToast.show(activity, "Cannot start");
                     }
@@ -263,7 +260,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 if (!uizaLivestream.isStreaming()) {
                     if (uizaLivestream.prepareAudio(128, 44100, true, false, false)
                             && uizaLivestream.prepareVideo(1280, 720, 30, 2500000, false, 90)) {
-                        uizaLivestream.startStream(etUrl.getText().toString(), true);
+                        uizaLivestream.startStream(tvMainUrl.getText().toString().trim(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
                     }
@@ -279,8 +276,16 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     bStartStop.setEnabled(true);
                 }
                 break;
-            case R.id.switch_camera:
+            case R.id.b_switch_camera:
                 uizaLivestream.switchCamera();
+                break;
+            case R.id.b_filter:
+                LPopupMenu.show(activity, btFilter, R.menu.gl_menu, new LPopupMenu.CallBack() {
+                    @Override
+                    public void clickOnItem(MenuItem menuItem) {
+                        handleFilterClick(menuItem);
+                    }
+                });
                 break;
             default:
                 break;
@@ -288,62 +293,35 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     }
 
     @Override
+    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode) {
+        bStartStop.setEnabled(true);
+        bStartStopStore.setEnabled(true);
+        btSwitchCamera.setEnabled(true);
+        btFilter.setEnabled(true);
+        tvMainUrl.setText(mainUrl);
+    }
+
+    @Override
     public void onConnectionSuccessRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "onConnectionSuccessRtmp");
-            }
-        });
     }
 
     @Override
     public void onConnectionFailedRtmp(String reason) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "onConnectionFailedRtmp");
-            }
-        });
     }
 
     @Override
     public void onDisconnectRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "onDisconnectRtmp");
-            }
-        });
     }
 
     @Override
     public void onAuthErrorRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "onAuthErrorRtmp");
-            }
-        });
     }
 
     @Override
     public void onAuthSuccessRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "onAuthSuccessRtmp");
-            }
-        });
     }
 
     @Override
     public void surfaceCreated() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, "surfaceCreated");
-            }
-        });
     }
 }
