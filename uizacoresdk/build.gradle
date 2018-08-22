@@ -87,5 +87,5 @@ dependencies {
     //for livestream
     //https://github.com/tplloi/rtmp-rtsp-stream-client-java
     //compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.0'
-    compile project(':rtplibrary')
+    //compile project(':rtplibrary')
 }

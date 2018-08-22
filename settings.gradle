@@ -1,1 +1,1 @@
-include ':uizacoresdk', ':sample', ':demouiza',':rtmp', ':encoder', ':rtsp', ':rtplibrary'
+include ':uizacoresdk', ':sample', ':demouiza'

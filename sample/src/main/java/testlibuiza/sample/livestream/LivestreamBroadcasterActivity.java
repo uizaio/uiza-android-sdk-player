@@ -14,49 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
-import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
-import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
-import com.pedro.encoder.input.gl.render.filters.BlurFilterRender;
-import com.pedro.encoder.input.gl.render.filters.BrightnessFilterRender;
-import com.pedro.encoder.input.gl.render.filters.CartoonFilterRender;
-import com.pedro.encoder.input.gl.render.filters.ColorFilterRender;
-import com.pedro.encoder.input.gl.render.filters.ContrastFilterRender;
-import com.pedro.encoder.input.gl.render.filters.DuotoneFilterRender;
-import com.pedro.encoder.input.gl.render.filters.EarlyBirdFilterRender;
-import com.pedro.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
-import com.pedro.encoder.input.gl.render.filters.ExposureFilterRender;
-import com.pedro.encoder.input.gl.render.filters.FireFilterRender;
-import com.pedro.encoder.input.gl.render.filters.GammaFilterRender;
-import com.pedro.encoder.input.gl.render.filters.GreyScaleFilterRender;
-import com.pedro.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
-import com.pedro.encoder.input.gl.render.filters.Image70sFilterRender;
-import com.pedro.encoder.input.gl.render.filters.LamoishFilterRender;
-import com.pedro.encoder.input.gl.render.filters.MoneyFilterRender;
-import com.pedro.encoder.input.gl.render.filters.NegativeFilterRender;
-import com.pedro.encoder.input.gl.render.filters.NoFilterRender;
-import com.pedro.encoder.input.gl.render.filters.PixelatedFilterRender;
-import com.pedro.encoder.input.gl.render.filters.PolygonizationFilterRender;
-import com.pedro.encoder.input.gl.render.filters.RGBSaturationFilterRender;
-import com.pedro.encoder.input.gl.render.filters.RainbowFilterRender;
-import com.pedro.encoder.input.gl.render.filters.RippleFilterRender;
-import com.pedro.encoder.input.gl.render.filters.RotationFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SaturationFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SepiaFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SharpnessFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SurfaceFilterRender;
-import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
-import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
-import com.pedro.encoder.input.gl.render.filters.object.GifObjectFilterRender;
-import com.pedro.encoder.input.gl.render.filters.object.ImageObjectFilterRender;
-import com.pedro.encoder.input.gl.render.filters.object.TextObjectFilterRender;
-import com.pedro.encoder.input.video.CameraOpenException;
-import com.pedro.encoder.utils.gl.TranslateTo;
-import com.pedro.rtplibrary.rtmp.RtmpCamera1;
-import com.pedro.rtplibrary.view.OpenGlView;
-
-import net.ossrs.rtmp.ConnectCheckerRtmp;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -66,6 +23,47 @@ import java.util.Locale;
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LPopupMenu;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BeautyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BlurFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BrightnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.CartoonFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ColorFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ContrastFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.DuotoneFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EarlyBirdFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ExposureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.FireFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GammaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GreyScaleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.Image70sFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.LamoishFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.MoneyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NegativeFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NoFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PixelatedFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PolygonizationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RGBSaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RainbowFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RippleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RotationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SepiaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SharpnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.GifObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.ImageObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.TextObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.video.CameraOpenException;
+import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
+import vn.loitp.libstream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
+import vn.loitp.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
+import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
 
 public class LivestreamBroadcasterActivity extends BaseActivity implements ConnectCheckerRtmp, View.OnClickListener, SurfaceHolder.Callback {
     private RtmpCamera1 rtmpCamera1;
@@ -74,8 +72,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements Conne
     private EditText etUrl;
 
     private String currentDateAndTime = "";
-    private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-            + "/rtmp-rtsp-stream-client-java");
+    private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/rtmp-rtsp-stream-client-java");
     private OpenGlView openGlView;
 
     @Override
