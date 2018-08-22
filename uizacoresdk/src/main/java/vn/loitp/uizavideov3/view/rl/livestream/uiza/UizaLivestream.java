@@ -153,6 +153,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         LUIUtil.hideProgressBar(progressBar);
     }
 
+    private String mainStreamUrl;
+
+    public String getMainStreamUrl() {
+        return mainStreamUrl;
+    }
+
     public void setId(String entityLiveId) {
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
@@ -168,6 +174,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 String mainUrl = streamUrl + "/" + streamKey;
                 LLog.d(TAG, "mainUrl: " + mainUrl);
+
+                mainStreamUrl = mainUrl;
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
@@ -201,7 +209,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        LLog.d(TAG, "surfaceChanged");
+        //LLog.d(TAG, "surfaceChanged");
         //rtmpCamera1.startPreview();
         //rtmpCamera1.startPreview(1280, 720);
         rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
@@ -250,6 +258,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
+        LLog.d(TAG, "prepareAudio ===> bitrate " + bitrate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
@@ -266,6 +275,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
+        LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
         return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
     }
 
