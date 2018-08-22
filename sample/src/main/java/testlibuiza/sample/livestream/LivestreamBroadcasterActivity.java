@@ -48,6 +48,7 @@ import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilter
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.view.rl.livestream.uiza.PresetLiveStreamingFeed;
 import vn.loitp.uizavideov3.view.rl.livestream.uiza.UizaLivestream;
 import vn.loitp.views.LToast;
 
@@ -293,7 +294,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     }
 
     @Override
-    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode) {
+    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);

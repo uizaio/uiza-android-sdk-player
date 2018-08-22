@@ -45,7 +45,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     private String currentDateAndTime = "";
     private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Uizalivestream");
     private OpenGlView openGlView;
-
+    private PresetLiveStreamingFeed presetLiveStreamingFeed;
     private ProgressBar progressBar;
     private TextView tvLiveStatus;
 
@@ -63,6 +63,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     public OpenGlView getOpenGlView() {
         return openGlView;
+    }
+
+    public PresetLiveStreamingFeed getPresetLiveStreamingFeed() {
+        return presetLiveStreamingFeed;
     }
 
     public UizaLivestream(Context context) {
@@ -169,8 +173,24 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
+
+                presetLiveStreamingFeed = new PresetLiveStreamingFeed();
+                presetLiveStreamingFeed.setTranscode(isTranscode);
+
+                if (isTranscode) {
+                    //Push with Transcode
+                    presetLiveStreamingFeed.setS1080p(5000000);
+                    presetLiveStreamingFeed.setS720p(3000000);
+                    presetLiveStreamingFeed.setS480p(1500000);
+                } else {
+                    //Push-only, no transcode
+                    presetLiveStreamingFeed.setS1080p(2500000);
+                    presetLiveStreamingFeed.setS720p(1500000);
+                    presetLiveStreamingFeed.setS480p(800000);
+                }
+
                 if (callback != null) {
-                    callback.onGetDataSuccess(d, mainUrl, isTranscode);
+                    callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                 }
             }
 
@@ -342,7 +362,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public interface Callback {
-        public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode);
+        public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed);
 
         public void onConnectionSuccessRtmp();
 
