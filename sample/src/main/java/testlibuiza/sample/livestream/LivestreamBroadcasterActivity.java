@@ -279,7 +279,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
             case R.id.b_start_stop:
                 if (!uizaLivestream.isStreaming()) {
                     if (uizaLivestream.prepareAudio(128, 44100, true, false, false)
-                            && uizaLivestream.prepareVideo(1920, 1080, 30, 2500000, false, 0)) {
+                            && uizaLivestream.prepareVideo(1280, 720, 30, 2500000, false, 90)) {
                         uizaLivestream.startStream(etUrl.getText().toString());
                     } else {
                         LToast.show(activity, "Cannot start");
