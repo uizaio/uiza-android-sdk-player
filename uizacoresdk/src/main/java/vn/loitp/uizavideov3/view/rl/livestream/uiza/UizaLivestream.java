@@ -1,6 +1,7 @@
 package vn.loitp.uizavideov3.view.rl.livestream.uiza;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -18,6 +19,10 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BaseFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.GifObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.ImageObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.TextObjectFilterRender;
+import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.libstream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
 import vn.loitp.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
@@ -228,5 +233,39 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     public int getStreamHeight() {
         return rtmpCamera1.getStreamHeight();
+    }
+
+    public void setTextToStream(String text, int textSize, int textCorlor, TranslateTo translateTo) {
+        TextObjectFilterRender textObjectFilterRender = new TextObjectFilterRender();
+        setFilter(textObjectFilterRender);
+        textObjectFilterRender.setText(text, textSize, textCorlor);
+        textObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
+        textObjectFilterRender.setPosition(translateTo);
+        textObjectFilterRender.setListeners(getOpenGlView());  //Optional
+    }
+
+    public void setImageToStream(int res, TranslateTo translateTo) {
+        ImageObjectFilterRender imageObjectFilterRender = new ImageObjectFilterRender();
+        setFilter(imageObjectFilterRender);
+        imageObjectFilterRender.setImage(BitmapFactory.decodeResource(getResources(), res));
+        imageObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
+        imageObjectFilterRender.setPosition(translateTo);
+        imageObjectFilterRender.setListeners(getOpenGlView()); //Optional
+    }
+
+    public boolean setGifToStream(int res, TranslateTo translateTo) {
+        try {
+            GifObjectFilterRender gifObjectFilterRender = new GifObjectFilterRender();
+            gifObjectFilterRender.setGif(getResources().openRawResource(res));
+            setFilter(gifObjectFilterRender);
+            gifObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
+            gifObjectFilterRender.setPosition(translateTo);
+            gifObjectFilterRender.setListeners(getOpenGlView()); //Optional
+            return true;
+        } catch (IOException e) {
+            LLog.e(TAG, "Error setGifToStream " + e.toString());
+            LToast.show(getContext(), "Error " + e.toString());
+            return false;
+        }
     }
 }

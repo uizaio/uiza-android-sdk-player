@@ -1,6 +1,5 @@
 package testlibuiza.sample.livestream;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,11 +10,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.IOException;
-
 import testlibuiza.R;
 import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPopupMenu;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
@@ -50,9 +46,6 @@ import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SharpnessFilterRe
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
-import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.GifObjectFilterRender;
-import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.ImageObjectFilterRender;
-import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.TextObjectFilterRender;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.uizavideov3.view.rl.livestream.uiza.UizaLivestream;
 import vn.loitp.views.LToast;
@@ -163,7 +156,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 uizaLivestream.setFilter(new GammaFilterRender());
                 break;
             case R.id.gif:
-                setGifToStream();
+                uizaLivestream.setGifToStream(R.raw.banana, TranslateTo.BOTTOM);
                 break;
             case R.id.grey_scale:
                 uizaLivestream.setFilter(new GreyScaleFilterRender());
@@ -172,7 +165,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 uizaLivestream.setFilter(new HalftoneLinesFilterRender());
                 break;
             case R.id.image:
-                setImageToStream();
+                uizaLivestream.setImageToStream(R.mipmap.ic_launcher, TranslateTo.RIGHT);
                 break;
             case R.id.image_70s:
                 uizaLivestream.setFilter(new Image70sFilterRender());
@@ -233,43 +226,11 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 uizaLivestream.setFilter(new TemperatureFilterRender());
                 break;
             case R.id.text:
-                setTextToStream();
+                uizaLivestream.setTextToStream("Hello Uiza", 40, Color.RED, TranslateTo.CENTER);
                 break;
             case R.id.zebra:
                 uizaLivestream.setFilter(new ZebraFilterRender());
                 break;
-        }
-    }
-
-    private void setTextToStream() {
-        TextObjectFilterRender textObjectFilterRender = new TextObjectFilterRender();
-        uizaLivestream.setFilter(textObjectFilterRender);
-        textObjectFilterRender.setText("Hello Uiza", 40, Color.RED);
-        textObjectFilterRender.setDefaultScale(uizaLivestream.getStreamWidth(), uizaLivestream.getStreamHeight());
-        textObjectFilterRender.setPosition(TranslateTo.CENTER);
-        textObjectFilterRender.setListeners(uizaLivestream.getOpenGlView());  //Optional
-    }
-
-    private void setImageToStream() {
-        ImageObjectFilterRender imageObjectFilterRender = new ImageObjectFilterRender();
-        uizaLivestream.setFilter(imageObjectFilterRender);
-        imageObjectFilterRender.setImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        imageObjectFilterRender.setDefaultScale(uizaLivestream.getStreamWidth(), uizaLivestream.getStreamHeight());
-        imageObjectFilterRender.setPosition(TranslateTo.RIGHT);
-        imageObjectFilterRender.setListeners(uizaLivestream.getOpenGlView()); //Optional
-    }
-
-    private void setGifToStream() {
-        try {
-            GifObjectFilterRender gifObjectFilterRender = new GifObjectFilterRender();
-            gifObjectFilterRender.setGif(getResources().openRawResource(R.raw.banana));
-            uizaLivestream.setFilter(gifObjectFilterRender);
-            gifObjectFilterRender.setDefaultScale(uizaLivestream.getStreamWidth(), uizaLivestream.getStreamHeight());
-            gifObjectFilterRender.setPosition(TranslateTo.BOTTOM);
-            gifObjectFilterRender.setListeners(uizaLivestream.getOpenGlView()); //Optional
-        } catch (IOException e) {
-            LLog.e(TAG, "Error setGifToStream " + e.toString());
-            LToast.show(activity, "Error " + e.toString());
         }
     }
 
