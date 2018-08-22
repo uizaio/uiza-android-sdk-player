@@ -96,6 +96,7 @@ Spider-Man: Homecoming premiered in Hollywood on June 28, 2017, and was released
     </string>
     <string name="start_record">Start record</string>
     <string name="start_button">Start stream</string>
+    <string name="start_button_saved">Start stream and Store</string>
     <string name="stop_button">Stop stream</string>
     <string name="switch_camera_button">Switch camera</string><!--filters-->
     <string name="no_filter">No filter</string>

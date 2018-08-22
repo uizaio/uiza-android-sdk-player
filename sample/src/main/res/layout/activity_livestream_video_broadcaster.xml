@@ -28,16 +28,16 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/b_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_record" />
-
-        <Button
             android:id="@+id/b_start_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/start_button" />
+
+        <Button
+            android:id="@+id/b_start_stop_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_button_saved" />
 
         <Button
             android:id="@+id/switch_camera"

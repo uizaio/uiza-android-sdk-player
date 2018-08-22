@@ -2,6 +2,8 @@ package vn.loitp.uizavideov3.view.rl.livestream.uiza;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.hardware.Camera;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -82,6 +84,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         inflate(getContext(), R.layout.v3_uiza_livestream, this);
         tvLiveStatus = (TextView) findViewById(R.id.tv_live_status);
         progressBar = (ProgressBar) findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
         openGlView = findViewById(R.id.surfaceView);
         //Number of filters to use at same time.
         // You must modify it before create rtmp or rtsp object.
@@ -129,7 +132,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         LLog.d(TAG, "surfaceChanged");
         //rtmpCamera1.startPreview();
-        rtmpCamera1.startPreview(1280, 720);
+        //rtmpCamera1.startPreview(1280, 720);
+        rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
     }
 
     @Override
@@ -150,11 +154,22 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public void startStream(String streamUrl) {
+        startStream(streamUrl, false);
+    }
+
+    public void startStream(String streamUrl, boolean isSavedToDevice) {
         rtmpCamera1.startStream(streamUrl);
         tvLiveStatus.setVisibility(VISIBLE);
+
+        if (isSavedToDevice) {
+            startRecord();
+        }
     }
 
     public void stopStream() {
+        if (isRecording()) {
+            stopRecord();
+        }
         rtmpCamera1.stopStream();
         tvLiveStatus.setVisibility(GONE);
     }
@@ -177,7 +192,11 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return rtmpCamera1.isRecording();
     }
 
-    public void startRecord() {
+    private void startRecord() {
+        if (!isStreaming()) {
+            LLog.e(TAG, "startRecord !isStreaming() -> return");
+            return;
+        }
         try {
             if (!folder.exists()) {
                 folder.mkdir();
@@ -201,7 +220,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         }
     }
 
-    public void stopRecord() {
+    private void stopRecord() {
         rtmpCamera1.stopRecord();
         LToast.show(getContext(), "file " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
         currentDateAndTime = "";

@@ -53,7 +53,7 @@ import vn.loitp.views.LToast;
 public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener {
     private UizaLivestream uizaLivestream;
     private Button bStartStop;
-    private Button bRecord;
+    private Button bStartStopStore;
     private EditText etUrl;
 
     @Override
@@ -80,9 +80,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
         bStartStop = findViewById(R.id.b_start_stop);
+        bStartStopStore = findViewById(R.id.b_start_stop_store);
         bStartStop.setOnClickListener(this);
-        bRecord = findViewById(R.id.b_record);
-        bRecord.setOnClickListener(this);
+        bStartStopStore.setOnClickListener(this);
         Button switchCamera = findViewById(R.id.switch_camera);
         switchCamera.setOnClickListener(this);
         etUrl = findViewById(R.id.et_rtp_url);
@@ -249,16 +249,36 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     bStartStop.setText(R.string.start_button);
                     uizaLivestream.stopStream();
                 }
+                if (uizaLivestream.isStreaming()) {
+                    bStartStop.setText("Stop streaming");
+                    bStartStopStore.setEnabled(false);
+                } else {
+                    bStartStop.setText("Start streaming");
+                    bStartStopStore.setEnabled(true);
+                }
+                break;
+            case R.id.b_start_stop_store:
+                if (!uizaLivestream.isStreaming()) {
+                    if (uizaLivestream.prepareAudio(128, 44100, true, false, false)
+                            && uizaLivestream.prepareVideo(1280, 720, 30, 2500000, false, 90)) {
+                        uizaLivestream.startStream(etUrl.getText().toString(), true);
+                    } else {
+                        LToast.show(activity, "Cannot start");
+                    }
+                } else {
+                    bStartStopStore.setText(R.string.start_button);
+                    uizaLivestream.stopStream();
+                }
+                if (uizaLivestream.isStreaming()) {
+                    bStartStopStore.setText("Stop streaming");
+                    bStartStop.setEnabled(false);
+                } else {
+                    bStartStopStore.setText("Start streaming");
+                    bStartStop.setEnabled(true);
+                }
                 break;
             case R.id.switch_camera:
                 uizaLivestream.switchCamera();
-                break;
-            case R.id.b_record:
-                if (!uizaLivestream.isRecording()) {
-                    uizaLivestream.startRecord();
-                } else {
-                    uizaLivestream.stopRecord();
-                }
                 break;
             default:
                 break;
