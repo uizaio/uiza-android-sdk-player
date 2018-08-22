@@ -72,7 +72,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements Conne
     private EditText etUrl;
 
     private String currentDateAndTime = "";
-    private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/rtmp-rtsp-stream-client-java");
+    private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Uizalivestream");
     private OpenGlView openGlView;
 
     @Override
