@@ -83,6 +83,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //ManagerRender.numFilters = 2;
         rtmpCamera1 = new RtmpCamera1(openGlView, this);
         openGlView.getHolder().addCallback(this);
+
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
     }
@@ -115,11 +116,13 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        LLog.d(TAG, "surfaceCreated");
         LUIUtil.hideProgressBar(progressBar);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        LLog.d(TAG, "surfaceChanged");
         rtmpCamera1.startPreview();
     }
 
