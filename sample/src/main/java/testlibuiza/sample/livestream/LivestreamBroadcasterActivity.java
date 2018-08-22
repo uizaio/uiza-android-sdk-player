@@ -96,6 +96,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements Conne
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
+        //LActivityUtil.changeScreenLandscape(activity);
+
         openGlView = findViewById(R.id.surfaceView);
         button = findViewById(R.id.b_start_stop);
         button.setOnClickListener(this);
@@ -368,7 +370,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements Conne
                                 Toast.LENGTH_SHORT).show();
                     }*/
                     if (rtmpCamera1.prepareAudio(128, 44100, true, false,
-                            false) && rtmpCamera1.prepareVideo(1920, 1080, 30, 2500000, false, 90)) {
+                            false) && rtmpCamera1.prepareVideo(1920, 1080, 30, 2500000, false, 0)) {
                         rtmpCamera1.startStream(etUrl.getText().toString());
                     } else {
                     }
