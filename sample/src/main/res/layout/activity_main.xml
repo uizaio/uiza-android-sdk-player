@@ -125,13 +125,6 @@
                     android:textSize="@dimen/txt_30" />
 
                 <Button
-                    android:id="@+id/bt_livestream"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:text="Livestream (Deprecated)" />
-
-                <Button
                     android:id="@+id/bt_livestream_broadcaster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

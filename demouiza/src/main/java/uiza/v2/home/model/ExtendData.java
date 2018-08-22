@@ -1,4 +1,3 @@
-
 package uiza.v2.home.model;
 
 import com.google.gson.annotations.Expose;

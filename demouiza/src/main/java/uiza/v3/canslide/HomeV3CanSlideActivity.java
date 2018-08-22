@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.google.android.exoplayer2.ui.PlayerControlView;
-
 import uiza.R;
 import uiza.v3.data.HomeDataV3;
 import vn.loitp.chromecast.Casty;
