@@ -99,6 +99,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //ManagerRender.numFilters = 2;
         rtmpCamera1 = new RtmpCamera1(openGlView, this);
         openGlView.getHolder().addCallback(this);
+        //openGlView.getHolder().setFixedSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenWidth() * 16 / 9);
 
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
@@ -221,7 +222,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
         rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
-        updateUISurfaceView();
+        //updateUISurfaceView();
     }
 
     @Override
@@ -274,7 +275,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public boolean prepareVideo1080p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1920, 1080);
         if (size == null) {
-            throw new NullPointerException("Cannot open the camera");
+            throw new IllegalArgumentException("Your device was not supported this resolution");
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
     }
@@ -282,22 +283,25 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public boolean prepareVideo720p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1280, 720);
         if (size == null) {
-            throw new NullPointerException("Cannot open the camera");
+            throw new IllegalArgumentException("Your device was not supported this resolution");
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
+        //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo480p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(854, 480);
         if (size == null) {
-            throw new NullPointerException("Cannot open the camera");
+            throw new IllegalArgumentException("Your device was not supported this resolution");
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
-        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
+        boolean isPrepareVideo = rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
+        //updateUISurfaceView();
+        return isPrepareVideo;
     }
 
     public void switchCamera() {
