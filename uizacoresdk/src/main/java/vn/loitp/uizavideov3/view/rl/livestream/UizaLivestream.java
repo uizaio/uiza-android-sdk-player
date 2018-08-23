@@ -159,7 +159,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         if (callback != null) {
             callback.surfaceCreated();
-            callback.onSupportedCameraResolutionList(getListCameraResolutionSupportFront(), getListCameraResolutionSupportBack());
         }
         LUIUtil.hideProgressBar(progressBar);
     }
@@ -222,7 +221,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
-    public boolean prepareVideo1080p(boolean isLandscape) {
+    public boolean prepareVideoFullHD(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1920, 1080);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -231,7 +230,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
     }
 
-    public boolean prepareVideo720p(boolean isLandscape) {
+    public boolean prepareVideoHD(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1280, 720);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -241,8 +240,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
     }
 
-    public boolean prepareVideo480p(boolean isLandscape) {
-        Camera.Size size = getCorrectCameraSize(854, 480);
+    public boolean prepareVideoSD(boolean isLandscape) {
+        Camera.Size size = getCorrectCameraSize(640, 360);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
             return false;
@@ -440,7 +439,5 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         public void onAuthSuccessRtmp();
 
         public void surfaceCreated();
-
-        public void onSupportedCameraResolutionList(List<Camera.Size> sizeListFrontCamera, List<Camera.Size> sizeListBackCamera);
     }
 }

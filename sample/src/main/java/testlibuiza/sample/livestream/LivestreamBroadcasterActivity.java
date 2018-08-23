@@ -1,7 +1,6 @@
 package testlibuiza.sample.livestream;
 
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -245,7 +242,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo480p(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoSD(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
                         LToast.show(activity, getString(R.string.err_dont_support));
@@ -264,7 +261,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo720p(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -330,17 +327,5 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void surfaceCreated() {
-    }
-
-    @Override
-    public void onSupportedCameraResolutionList(List<Camera.Size> sizeListFrontCamera, List<Camera.Size> sizeListBackCamera) {
-        //front
-        for (Camera.Size size : sizeListFrontCamera) {
-            LLog.d(TAG, "getListCameraResolutionSupportFront " + size.width + "x" + size.height);
-        }
-        //back
-        for (Camera.Size size : sizeListBackCamera) {
-            LLog.d(TAG, "getListCameraResolutionSupportBack " + size.width + "x" + size.height);
-        }
     }
 }
