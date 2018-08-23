@@ -16,10 +16,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -160,58 +162,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             callback.surfaceCreated();
         }
         LUIUtil.hideProgressBar(progressBar);
-    }
-
-    public String getMainStreamUrl() {
-        return mainStreamUrl;
-    }
-
-    public void setId(String entityLiveId) {
-        if (entityLiveId == null || entityLiveId.isEmpty()) {
-            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
-        }
-        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
-            @Override
-            public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
-                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
-                    throw new NullPointerException("Data is null");
-                }
-                String streamKey = d.getLastPushInfo().get(0).getStreamKey();
-                String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
-                String mainUrl = streamUrl + "/" + streamKey;
-                LLog.d(TAG, "mainUrl: " + mainUrl);
-
-                mainStreamUrl = mainUrl;
-
-                boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
-                LLog.d(TAG, "isTranscode " + isTranscode);
-
-                presetLiveStreamingFeed = new PresetLiveStreamingFeed();
-                presetLiveStreamingFeed.setTranscode(isTranscode);
-
-                if (isTranscode) {
-                    //Push with Transcode
-                    presetLiveStreamingFeed.setS1080p(5000000);
-                    presetLiveStreamingFeed.setS720p(3000000);
-                    presetLiveStreamingFeed.setS480p(1500000);
-                } else {
-                    //Push-only, no transcode
-                    presetLiveStreamingFeed.setS1080p(2500000);
-                    presetLiveStreamingFeed.setS720p(1500000);
-                    presetLiveStreamingFeed.setS480p(800000);
-                }
-
-                if (callback != null) {
-                    callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LLog.e(TAG, "setId onError " + e.toString());
-            }
-        });
+        getListCameraResolutionBack();
+        getListCameraResolutionFront();
     }
 
     @Override
@@ -412,8 +364,80 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         }
     }
 
-    public Camera.Size getCorrectCameraSize(int width, int height) {
+    private Camera.Size getCorrectCameraSize(int width, int height) {
         return rtmpCamera1.getCorrectCameraSize(width, height);
+    }
+
+    public List<Camera.Size> getListCameraResolutionBack() {
+        if (Constants.IS_DEBUG) {
+            List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportBack();
+            for (Camera.Size size : sizeList) {
+                LLog.d(TAG, "getListCameraResolutionBack " + size.width + "x" + size.height);
+            }
+        }
+        return rtmpCamera1.getListCameraResolutionSupportBack();
+    }
+
+    public List<Camera.Size> getListCameraResolutionFront() {
+        if (Constants.IS_DEBUG) {
+            List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportFront();
+            for (Camera.Size size : sizeList) {
+                LLog.d(TAG, "getListCameraResolutionFront " + size.width + "x" + size.height);
+            }
+        }
+        return rtmpCamera1.getListCameraResolutionSupportFront();
+    }
+
+    public String getMainStreamUrl() {
+        return mainStreamUrl;
+    }
+
+    public void setId(String entityLiveId) {
+        if (entityLiveId == null || entityLiveId.isEmpty()) {
+            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
+        }
+        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
+            @Override
+            public void onSuccess(Data d) {
+                //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
+                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
+                    throw new NullPointerException("Data is null");
+                }
+                String streamKey = d.getLastPushInfo().get(0).getStreamKey();
+                String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
+                String mainUrl = streamUrl + "/" + streamKey;
+                LLog.d(TAG, "mainUrl: " + mainUrl);
+
+                mainStreamUrl = mainUrl;
+
+                boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
+                LLog.d(TAG, "isTranscode " + isTranscode);
+
+                presetLiveStreamingFeed = new PresetLiveStreamingFeed();
+                presetLiveStreamingFeed.setTranscode(isTranscode);
+
+                if (isTranscode) {
+                    //Push with Transcode
+                    presetLiveStreamingFeed.setS1080p(5000000);
+                    presetLiveStreamingFeed.setS720p(3000000);
+                    presetLiveStreamingFeed.setS480p(1500000);
+                } else {
+                    //Push-only, no transcode
+                    presetLiveStreamingFeed.setS1080p(2500000);
+                    presetLiveStreamingFeed.setS720p(1500000);
+                    presetLiveStreamingFeed.setS480p(800000);
+                }
+
+                if (callback != null) {
+                    callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LLog.e(TAG, "setId onError " + e.toString());
+            }
+        });
     }
 
     public interface Callback {

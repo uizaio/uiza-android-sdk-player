@@ -14,6 +14,7 @@ import android.view.TextureView;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.loitp.libstream.uiza.encoder.audio.AudioEncoder;
@@ -657,5 +658,33 @@ public abstract class Camera1Base
 
     public Camera.Size getCorrectCameraSize(int width, int height) {
         return cameraManager.getCorrectCameraSize(width, height);
+    }
+
+    public List<Camera.Size> getListCameraResolutionSupportBack() {
+        List<Camera.Size> sizeList = cameraManager.getPreviewSizeBack();
+        if (sizeList == null) {
+            return null;
+        }
+        List<Camera.Size> supportedList = new ArrayList<>();
+        for (Camera.Size size : sizeList) {
+            if (size.height * 16 / 9 == size.width) {
+                supportedList.add(size);
+            }
+        }
+        return supportedList;
+    }
+
+    public List<Camera.Size> getListCameraResolutionSupportFront() {
+        List<Camera.Size> sizeList = cameraManager.getPreviewSizeFront();
+        if (sizeList == null) {
+            return null;
+        }
+        List<Camera.Size> supportedList = new ArrayList<>();
+        for (Camera.Size size : sizeList) {
+            if (size.height * 16 / 9 == size.width) {
+                supportedList.add(size);
+            }
+        }
+        return supportedList;
     }
 }
