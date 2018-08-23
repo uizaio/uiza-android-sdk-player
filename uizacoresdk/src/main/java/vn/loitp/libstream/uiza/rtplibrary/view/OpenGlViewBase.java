@@ -17,7 +17,7 @@ import java.util.concurrent.Semaphore;
 import vn.loitp.libstream.uiza.encoder.input.gl.SurfaceManager;
 
 /**
- * Created by pedro on 10/03/18.
+ * Created by loitp on 10/03/18.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
