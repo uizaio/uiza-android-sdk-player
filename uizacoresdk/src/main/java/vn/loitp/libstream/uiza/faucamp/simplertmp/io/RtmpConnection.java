@@ -131,9 +131,7 @@ public class RtmpConnection implements RtmpPublisher {
             if (!tlsEnabled) {
                 socket = new Socket();
                 SocketAddress socketAddress = new InetSocketAddress(host, port);
-                if (socket != null) {
-                    socket.connect(socketAddress, 5000);
-                }
+                socket.connect(socketAddress, 5000);
             } else {
                 socket = CreateSSLSocket.createSSlSocket(host, port);
                 if (socket == null) throw new IOException("Socket creation failed");

@@ -166,10 +166,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         LLog.d(TAG, "surfaceChanged " + i1 + "x" + i2);
-        //rtmpCamera1.startPreview();
+        rtmpCamera1.startPreview();
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
-        rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
+        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
         //updateUISurfaceView();
     }
@@ -240,14 +240,14 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
     }
 
-    public boolean prepareVideoSD(boolean isLandscape) {
+    /*public boolean prepareVideoSD(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(640, 360);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
             return false;
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
-    }
+    }*/
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
