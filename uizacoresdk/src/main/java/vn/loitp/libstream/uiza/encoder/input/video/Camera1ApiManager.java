@@ -332,6 +332,28 @@ public class Camera1ApiManager implements Camera.PreviewCallback, Camera.FaceDet
         }
     }
 
+    public Camera.Size getCorrectCameraSize(int width, int height) {
+        List<Camera.Size> previews;
+        if (cameraSelect == selectCameraBack()) {
+            previews = previewSizeBack;
+        } else {
+            previews = previewSizeFront;
+        }
+
+        if (Constants.IS_DEBUG) {
+            for (Camera.Size size : previews) {
+                LLog.d(TAG, "loitp: " + size.width + "x" + size.height);
+            }
+        }
+
+        for (Camera.Size size : previews) {
+            if (size.width == width || size.height == height) {
+                return size;
+            }
+        }
+        return null;
+    }
+
     private boolean checkCanOpen() {
         List<Camera.Size> previews;
         if (cameraSelect == selectCameraBack()) {

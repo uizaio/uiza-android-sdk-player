@@ -654,4 +654,8 @@ public abstract class Camera1Base
     public void onAudioFormat(MediaFormat mediaFormat) {
         audioFormat = mediaFormat;
     }
+
+    public Camera.Size getCorrectCameraSize(int width, int height) {
+        return cameraManager.getCorrectCameraSize(width, height);
+    }
 }

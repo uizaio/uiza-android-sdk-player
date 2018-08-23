@@ -263,15 +263,27 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideo1080p(boolean isLandscape) {
-        return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
+        Camera.Size size = getCorrectCameraSize(1920, 1080);
+        if (size == null) {
+            throw new NullPointerException("Cannot open the camera");
+        }
+        return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo720p(boolean isLandscape) {
-        return prepareVideo(1280, 730, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
+        Camera.Size size = getCorrectCameraSize(1280, 720);
+        if (size == null) {
+            throw new NullPointerException("Cannot open the camera");
+        }
+        return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo480p(boolean isLandscape) {
-        return prepareVideo(854, 480, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+        Camera.Size size = getCorrectCameraSize(854, 480);
+        if (size == null) {
+            throw new NullPointerException("Cannot open the camera");
+        }
+        return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
@@ -397,5 +409,16 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         public void onAuthSuccessRtmp();
 
         public void surfaceCreated();
+    }
+
+    public Camera.Size getCorrectCameraSize(int width, int height) {
+        /*Camera.Size size = rtmpCamera1.getCorrectCameraSize(width, height);
+        if (size == null) {
+            LLog.d(TAG, "size == null");
+        } else {
+            LLog.d(TAG, "getCorrectCameraSize " + size.width + "x" + size.height);
+        }
+        return size;*/
+        return rtmpCamera1.getCorrectCameraSize(width, height);
     }
 }
