@@ -340,11 +340,11 @@ public class Camera1ApiManager implements Camera.PreviewCallback, Camera.FaceDet
             previews = previewSizeFront;
         }
 
-        /*if (Constants.IS_DEBUG) {
+        if (Constants.IS_DEBUG) {
             for (Camera.Size size : previews) {
                 LLog.d(TAG, "getCorrectCameraSize: " + size.width + "x" + size.height);
             }
-        }*/
+        }
 
         for (Camera.Size size : previews) {
             if (size.width == width || size.height == height) {

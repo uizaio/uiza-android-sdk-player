@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -222,6 +223,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
         rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
+        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
         //updateUISurfaceView();
     }
 
@@ -275,7 +277,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public boolean prepareVideo1080p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1920, 1080);
         if (size == null) {
-            throw new IllegalArgumentException("Your device was not supported this resolution");
+            Log.e(TAG, getContext().getString(R.string.err_dont_support));
+            return false;
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
     }
@@ -283,7 +286,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public boolean prepareVideo720p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(1280, 720);
         if (size == null) {
-            throw new IllegalArgumentException("Your device was not supported this resolution");
+            Log.e(TAG, getContext().getString(R.string.err_dont_support));
+            return false;
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
         //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
@@ -292,13 +296,15 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public boolean prepareVideo480p(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(854, 480);
         if (size == null) {
-            throw new IllegalArgumentException("Your device was not supported this resolution");
+            Log.e(TAG, getContext().getString(R.string.err_dont_support));
+            return false;
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
+        rtmpCamera1.startPreview(width, height);
         boolean isPrepareVideo = rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
         //updateUISurfaceView();
         return isPrepareVideo;
@@ -425,14 +431,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public Camera.Size getCorrectCameraSize(int width, int height) {
-        /*Camera.Size size = rtmpCamera1.getCorrectCameraSize(width, height);
-        if (size == null) {
-            LLog.d(TAG, "size == null");
-            return null;
-        } else {
-            LLog.d(TAG, "getCorrectCameraSize " + size.width + "x" + size.height);
-        }
-        return size;*/
         return rtmpCamera1.getCorrectCameraSize(width, height);
     }
 }

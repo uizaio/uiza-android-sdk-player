@@ -245,7 +245,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo720p(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
-                        LToast.show(activity, "Cannot start");
+                        LToast.show(activity, getString(R.string.err_dont_support));
                     }
                 } else {
                     bStartStop.setText(R.string.start_button);

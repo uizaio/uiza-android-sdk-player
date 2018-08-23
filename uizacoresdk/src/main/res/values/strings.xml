@@ -76,4 +76,5 @@
     <string name="only_one_camera_exists">Only one camera exists in this device</string>
     <string name="camera_permission_is_required">Camera permission is required to run this app</string>
     <string name="microphone_permission_is_required">Microphone permission is required to run this app</string>
+    <string name="err_dont_support">Your device was not supported this resolution</string>
 </resources>
