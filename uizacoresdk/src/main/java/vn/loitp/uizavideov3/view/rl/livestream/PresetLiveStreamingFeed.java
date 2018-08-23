@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.view.rl.livestream.uiza;
+package vn.loitp.uizavideov3.view.rl.livestream;
 
 public class PresetLiveStreamingFeed {
     private boolean isTranscode;

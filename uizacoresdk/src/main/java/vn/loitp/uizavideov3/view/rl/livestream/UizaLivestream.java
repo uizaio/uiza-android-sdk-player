@@ -1,4 +1,4 @@
-package vn.loitp.uizavideov3.view.rl.livestream.uiza;
+package vn.loitp.uizavideov3.view.rl.livestream;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;

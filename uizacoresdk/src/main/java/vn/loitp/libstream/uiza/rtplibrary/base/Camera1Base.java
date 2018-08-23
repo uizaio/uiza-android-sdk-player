@@ -144,8 +144,7 @@ public abstract class Camera1Base
      * @return true if success, false if you get a error (Normally because the encoder selected
      * doesn't support any configuration seated or your device hasn't a H264 encoder).
      */
-    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation,
-                                int iFrameInterval, int rotation) {
+    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int iFrameInterval, int rotation) {
         if (onPreview) {
             stopPreview();
             onPreview = true;
@@ -153,19 +152,16 @@ public abstract class Camera1Base
         int imageFormat = ImageFormat.NV21; //supported nv21 and yv12
         if (glInterface == null) {
             cameraManager.prepareCamera(width, height, fps, imageFormat);
-            return videoEncoder.prepareVideoEncoder(width, height, fps, bitrate, rotation,
-                    hardwareRotation, iFrameInterval, FormatVideoEncoder.YUV420Dynamical);
+            return videoEncoder.prepareVideoEncoder(width, height, fps, bitrate, rotation, hardwareRotation, iFrameInterval, FormatVideoEncoder.YUV420Dynamical);
         } else {
-            return videoEncoder.prepareVideoEncoder(width, height, fps, bitrate, rotation,
-                    hardwareRotation, iFrameInterval, FormatVideoEncoder.SURFACE);
+            return videoEncoder.prepareVideoEncoder(width, height, fps, bitrate, rotation, hardwareRotation, iFrameInterval, FormatVideoEncoder.SURFACE);
         }
     }
 
     /**
      * backward compatibility reason
      */
-    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation,
-                                int rotation) {
+    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
         return prepareVideo(width, height, fps, bitrate, hardwareRotation, 2, rotation);
     }
 
