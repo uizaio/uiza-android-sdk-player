@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -160,10 +159,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         if (callback != null) {
             callback.surfaceCreated();
+            callback.onSupportedCameraResolutionList(getListCameraResolutionSupportFront(), getListCameraResolutionSupportBack());
         }
         LUIUtil.hideProgressBar(progressBar);
-        getListCameraResolutionSupportBack();
-        getListCameraResolutionSupportFront();
     }
 
     @Override
@@ -369,22 +367,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public List<Camera.Size> getListCameraResolutionSupportBack() {
-        if (Constants.IS_DEBUG) {
-            List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportBack();
-            for (Camera.Size size : sizeList) {
-                LLog.d(TAG, "getListCameraResolutionSupportBack " + size.width + "x" + size.height);
-            }
-        }
         return rtmpCamera1.getListCameraResolutionSupportBack();
     }
 
     public List<Camera.Size> getListCameraResolutionSupportFront() {
-        if (Constants.IS_DEBUG) {
-            List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportFront();
-            for (Camera.Size size : sizeList) {
-                LLog.d(TAG, "getListCameraResolutionSupportFront " + size.width + "x" + size.height);
-            }
-        }
         return rtmpCamera1.getListCameraResolutionSupportFront();
     }
 
@@ -454,5 +440,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         public void onAuthSuccessRtmp();
 
         public void surfaceCreated();
+
+        public void onSupportedCameraResolutionList(List<Camera.Size> sizeListFrontCamera, List<Camera.Size> sizeListBackCamera);
     }
 }
