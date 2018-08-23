@@ -162,8 +162,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             callback.surfaceCreated();
         }
         LUIUtil.hideProgressBar(progressBar);
-        getListCameraResolutionBack();
-        getListCameraResolutionFront();
+        getListCameraResolutionSupportBack();
+        getListCameraResolutionSupportFront();
     }
 
     @Override
@@ -368,21 +368,21 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return rtmpCamera1.getCorrectCameraSize(width, height);
     }
 
-    public List<Camera.Size> getListCameraResolutionBack() {
+    public List<Camera.Size> getListCameraResolutionSupportBack() {
         if (Constants.IS_DEBUG) {
             List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportBack();
             for (Camera.Size size : sizeList) {
-                LLog.d(TAG, "getListCameraResolutionBack " + size.width + "x" + size.height);
+                LLog.d(TAG, "getListCameraResolutionSupportBack " + size.width + "x" + size.height);
             }
         }
         return rtmpCamera1.getListCameraResolutionSupportBack();
     }
 
-    public List<Camera.Size> getListCameraResolutionFront() {
+    public List<Camera.Size> getListCameraResolutionSupportFront() {
         if (Constants.IS_DEBUG) {
             List<Camera.Size> sizeList = rtmpCamera1.getListCameraResolutionSupportFront();
             for (Camera.Size size : sizeList) {
-                LLog.d(TAG, "getListCameraResolutionFront " + size.width + "x" + size.height);
+                LLog.d(TAG, "getListCameraResolutionSupportFront " + size.width + "x" + size.height);
             }
         }
         return rtmpCamera1.getListCameraResolutionSupportFront();
