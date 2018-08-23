@@ -102,8 +102,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
 
-        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
-        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
+        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
+        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -242,13 +242,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uizaLivestream.isStreaming()) {
-                    /*if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo480p(false)) {
-                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
-                    } else {
-                        LToast.show(activity, "Cannot start");
-                    }*/
-
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo1080p(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo480p(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -267,7 +261,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo1080p(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideo480p(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");

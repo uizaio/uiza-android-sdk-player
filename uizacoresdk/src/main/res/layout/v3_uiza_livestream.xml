@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/background_video_info">
+    android:background="@color/Black">
 
     <vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
     <ProgressBar
         android:id="@id/pb"
@@ -22,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginTop="@dimen/margin_55"
         android:background="@drawable/background_live"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"

@@ -20,6 +20,7 @@ import java.util.Locale;
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BaseFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.object.GifObjectFilterRender;
@@ -101,6 +102,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
+    }
+
+    private void updateUISurfaceView() {
+        openGlView.getLayoutParams().width = LScreenUtil.getScreenWidth();
+        openGlView.getLayoutParams().height = LScreenUtil.getScreenWidth() * 16 / 9;
+        openGlView.requestLayout();
     }
 
     private Callback callback;
@@ -209,10 +216,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        //LLog.d(TAG, "surfaceChanged");
+        LLog.d(TAG, "surfaceChanged " + i1 + "x" + i2);
         //rtmpCamera1.startPreview();
+        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
-        rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
+        rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
+        updateUISurfaceView();
     }
 
     @Override
@@ -415,6 +424,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         /*Camera.Size size = rtmpCamera1.getCorrectCameraSize(width, height);
         if (size == null) {
             LLog.d(TAG, "size == null");
+            return null;
         } else {
             LLog.d(TAG, "getCorrectCameraSize " + size.width + "x" + size.height);
         }
