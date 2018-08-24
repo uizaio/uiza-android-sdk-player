@@ -242,7 +242,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoFullHD(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
                         LToast.show(activity, getString(R.string.err_dont_support));
@@ -261,7 +261,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoFullHD(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -331,6 +331,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
-        startPreview.onSizeStartPreview(1280, 720);
+        startPreview.onSizeStartPreview(1920, 1080);
     }
 }
