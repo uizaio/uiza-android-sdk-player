@@ -67,7 +67,11 @@ public class UizaUtil {
         }
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover) {
+    /*
+     ** isDisplayPortrait true thì để portrait display như YUP
+     ** isDisplayPortrait false thì sẽ bóp về 16/9 video
+     */
+    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait) {
         //LLog.d(TAG, "resizeLayout");
         int widthScreen = 0;
         int heightScreen = 0;
@@ -77,7 +81,11 @@ public class UizaUtil {
             heightScreen = LScreenUtil.getScreenHeight();
         } else {
             widthScreen = LScreenUtil.getScreenWidth();
-            heightScreen = widthScreen * 9 / 16;
+            if (isDisplayPortrait) {
+                heightScreen = LScreenUtil.getScreenHeight();
+            } else {
+                heightScreen = widthScreen * 9 / 16;
+            }
         }
         //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
         viewGroup.getLayoutParams().width = widthScreen;

@@ -373,7 +373,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
         findViews();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout(false);
     }
@@ -744,7 +744,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
                 setMarginPreviewTimeBarLayout(false);
             }
         }
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
     }
 
     private void setMarginPreviewTimeBarLayout(boolean isLandscape) {

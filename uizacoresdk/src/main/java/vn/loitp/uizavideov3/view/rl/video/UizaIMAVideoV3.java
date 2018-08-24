@@ -169,6 +169,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
 
+    private boolean isDisplayPortrait;
+
+    public boolean isDisplayPortrait() {
+        return isDisplayPortrait;
+    }
+
+    public void setDisplayPortrait(boolean isDisplayPortrait) {
+        this.isDisplayPortrait = isDisplayPortrait;
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+    }
+
     /**
      * return player view
      */
@@ -590,7 +601,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LLog.d(TAG, "onCreate isTablet " + isTablet);
         addPlayerView();
         findViews();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
@@ -1134,7 +1145,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoVolumeClicked;
 
     protected void toggleScreenOritation() {
-        LActivityUtil.toggleScreenOritation(activity);
+        boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
+        if (isLandToPort) {
+            //do nothing
+        } else {
+            UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
+        }
     }
 
     @Override
@@ -1230,7 +1246,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updatePositionOfProgressBar();
     }
 
