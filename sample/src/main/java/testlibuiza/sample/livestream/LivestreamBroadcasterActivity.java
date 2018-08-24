@@ -295,6 +295,16 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     }
 
     @Override
+    public void onError(final String reason) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, reason);
+            }
+        });
+    }
+
+    @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
         LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
 

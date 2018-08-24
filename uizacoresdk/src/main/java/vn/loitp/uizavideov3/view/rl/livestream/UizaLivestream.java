@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import loitp.core.R;
+import retrofit2.HttpException;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
@@ -37,6 +38,7 @@ import vn.loitp.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.ErrorBody;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
@@ -395,6 +397,45 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
+
+        startLivestream(entityLiveId);
+    }
+
+    private void startLivestream(final String entityLiveId) {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
+        bodyStartALiveFeed.setId(entityLiveId);
+        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<ResultRetrieveAnEntity>() {
+            @Override
+            public void onSuccess(ResultRetrieveAnEntity result) {
+                //LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
+                getDetailEntity(entityLiveId);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                //Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
+                HttpException error = (HttpException) e;
+                String responseBody = null;
+                try {
+                    responseBody = error.response().errorBody().string();
+                    Gson gson = new Gson();
+                    ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
+                    Log.e(TAG, "startLivestream onFail " + errorBody);
+                    if (callback != null) {
+                        callback.onError(errorBody.getMessage());
+                    }
+                } catch (IOException e1) {
+                    Log.e(TAG, "startLivestream IOException " + e1.toString());
+                    if (callback != null) {
+                        callback.onError(e1.getMessage());
+                    }
+                }
+            }
+        });
+    }
+
+    private void getDetailEntity(String entityLiveId) {
         UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
@@ -428,9 +469,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
 
-                //TODO
-                //startLivestream(entityLiveId);
-
                 if (callback != null) {
                     callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                 }
@@ -439,28 +477,16 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void onError(Throwable e) {
                 LLog.e(TAG, "setId onError " + e.toString());
-            }
-        });
-    }
-
-    private void startLivestream(String entityLiveId) {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
-        bodyStartALiveFeed.setId(entityLiveId);
-        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<ResultRetrieveAnEntity>() {
-            @Override
-            public void onSuccess(ResultRetrieveAnEntity result) {
-                LLog.d(TAG, "startLivestream " + new Gson().toJson(result));
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                Log.e(TAG, "startLivestream " + e.toString());
+                if (callback != null) {
+                    callback.onError(e.getMessage());
+                }
             }
         });
     }
 
     public interface Callback {
+        public void onError(String reason);
+
         public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed);
 
         public void onConnectionSuccessRtmp();
