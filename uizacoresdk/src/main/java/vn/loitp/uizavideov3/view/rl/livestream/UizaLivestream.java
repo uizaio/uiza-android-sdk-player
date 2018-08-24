@@ -41,7 +41,6 @@ import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.ErrorBody;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
@@ -405,9 +404,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
-            public void onSuccess(ResultRetrieveAnEntity result) {
+            public void onSuccess(Object result) {
                 //LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
                 getDetailEntity(entityLiveId);
             }
