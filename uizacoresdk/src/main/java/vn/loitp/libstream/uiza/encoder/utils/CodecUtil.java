@@ -18,6 +18,7 @@ public class CodecUtil {
     public static final String H264_MIME = "video/avc";
     public static final String H265_MIME = "video/hevc";
     public static final String AAC_MIME = "audio/mp4a-latm";
+    //public static final String AAC_MIME = "audio/vnd.dlna.adts";
     private static final String TAG = "CodecUtil";
 
     public static List<MediaCodecInfo> getAllCodecs() {
