@@ -102,8 +102,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
 
-        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
-        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
+        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
+        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
     }
 
     private void handleFilterClick(MenuItem item) {
