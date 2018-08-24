@@ -38,7 +38,7 @@ public class LSApplication extends MultiDexApplication {
     public static String entityIdDefaultLIVE = "6356e2c3-00af-495e-b60c-361f976b4084";
     public static String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
     public static String entityIdDefaultLIVE_TRANSCODE = "26a409a2-0177-4a84-8459-4feb2d131d35";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "c504ce3a-39d0-4b96-8b56-d6d87636974b";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "7cdac737-20d5-4cf4-abcf-ffd8c9c02f73";
     private final int env = Constants.ENVIRONMENT_PROD;
 
     /*private final String DF_DOMAIN_API = "vingroup-api.uiza.co";
