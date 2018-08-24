@@ -292,18 +292,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
             currentDateAndTime = sdf.format(new Date());
-            if (!rtmpCamera1.isStreaming()) {
-                //TODO config
-                if (rtmpCamera1.prepareAudio() && rtmpCamera1.prepareVideo()) {
-                    rtmpCamera1.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
-                    LLog.d(TAG, "if Recording...");
-                } else {
-                    LLog.e(TAG, "Error preparing stream, This device cant do it");
-                }
-            } else {
-                rtmpCamera1.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
-                LLog.d(TAG, "else Recording...");
-            }
+            rtmpCamera1.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
+            LLog.d(TAG, "Recording...");
         } catch (IOException e) {
             rtmpCamera1.stopRecord();
             LLog.e(TAG, "Error startRecord " + e.toString());
