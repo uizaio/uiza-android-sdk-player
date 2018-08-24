@@ -167,12 +167,24 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         LLog.d(TAG, "surfaceChanged " + i1 + "x" + i2);
-        rtmpCamera1.startPreview();
+        //rtmpCamera1.startPreview();
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
         //updateUISurfaceView();
+        if (callback != null) {
+            callback.surfaceChanged(new StartPreview() {
+                @Override
+                public void onSizeStartPreview(int width, int height) {
+                    rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, width, height);
+                }
+            });
+        }
+    }
+
+    public interface StartPreview {
+        public void onSizeStartPreview(int width, int height);
     }
 
     @Override
@@ -441,5 +453,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         public void onAuthSuccessRtmp();
 
         public void surfaceCreated();
+
+        public void surfaceChanged(StartPreview startPreview);
     }
 }
