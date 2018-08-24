@@ -110,9 +110,11 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //openGlView.setFrontPreviewFlip(true);
     }
 
-    private void updateUISurfaceView() {
-        openGlView.getLayoutParams().width = LScreenUtil.getScreenWidth();
-        openGlView.getLayoutParams().height = LScreenUtil.getScreenWidth() * 16 / 9;
+    private void updateUISurfaceView(int width, int height) {
+        int screenWidth = LScreenUtil.getScreenWidth();
+        openGlView.getLayoutParams().width = screenWidth;
+        openGlView.getLayoutParams().height = width * screenWidth / height;
+        LLog.d(TAG, "updateUISurfaceView " + screenWidth + "x" + (width * screenWidth / height));
         openGlView.requestLayout();
     }
 
@@ -178,6 +180,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 @Override
                 public void onSizeStartPreview(int width, int height) {
                     rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, width, height);
+                    updateUISurfaceView(width, height);
                 }
             });
         }

@@ -331,6 +331,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
-        startPreview.onSizeStartPreview(1920, 1080);
+        startPreview.onSizeStartPreview(640, 360);
     }
 }
