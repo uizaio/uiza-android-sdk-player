@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -240,14 +241,14 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
     }
 
-    /*public boolean prepareVideoSD(boolean isLandscape) {
+    public boolean prepareVideoSD(boolean isLandscape) {
         Camera.Size size = getCorrectCameraSize(640, 360);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
             return false;
         }
         return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
-    }*/
+    }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
@@ -401,16 +402,17 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
 
+                boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
                 if (isTranscode) {
                     //Push with Transcode
-                    presetLiveStreamingFeed.setS1080p(5000000);
-                    presetLiveStreamingFeed.setS720p(3000000);
-                    presetLiveStreamingFeed.setS480p(1500000);
+                    presetLiveStreamingFeed.setS1080p(isConnectedFast ? 5000000 : 2500000);
+                    presetLiveStreamingFeed.setS720p(isConnectedFast ? 3000000 : 1500000);
+                    presetLiveStreamingFeed.setS480p(isConnectedFast ? 1500000 : 800000);
                 } else {
                     //Push-only, no transcode
-                    presetLiveStreamingFeed.setS1080p(2500000);
-                    presetLiveStreamingFeed.setS720p(1500000);
-                    presetLiveStreamingFeed.setS480p(800000);
+                    presetLiveStreamingFeed.setS1080p(isConnectedFast ? 2500000 : 1500000);
+                    presetLiveStreamingFeed.setS720p(isConnectedFast ? 1500000 : 800000);
+                    presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
 
                 if (callback != null) {
