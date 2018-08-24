@@ -17,6 +17,7 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeS
 import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.CreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.createmetadata.ResultCreateMetadata;
 import vn.loitp.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMetadata;
@@ -137,6 +138,9 @@ public interface UizaServiceV3 {
 
     @GET("/api/public/v3/live/entity")
     Observable<ResultRetrieveALive> retrieveALiveEvent(@Query("id") String entityId);
+
+    @POST("/api/public/v3/live/entity/feed")
+    Observable<Object> startALiveEvent(@Body BodyStartALiveFeed bodyStartALiveFeed);
 
     @GET("/api/private/v3/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);

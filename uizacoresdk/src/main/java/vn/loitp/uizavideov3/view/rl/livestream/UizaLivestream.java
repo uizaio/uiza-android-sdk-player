@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,7 +35,12 @@ import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.libstream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
 import vn.loitp.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
@@ -384,7 +391,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return mainStreamUrl;
     }
 
-    public void setId(String entityLiveId) {
+    public void setId(final String entityLiveId) {
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
@@ -421,6 +428,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
 
+                //TODO
+                //startLivestream(entityLiveId);
+
                 if (callback != null) {
                     callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                 }
@@ -433,8 +443,21 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         });
     }
 
-    private void startLivestream() {
+    private void startLivestream(String entityLiveId) {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
+        bodyStartALiveFeed.setId(entityLiveId);
+        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<ResultRetrieveAnEntity>() {
+            @Override
+            public void onSuccess(ResultRetrieveAnEntity result) {
+                LLog.d(TAG, "startLivestream " + new Gson().toJson(result));
+            }
 
+            @Override
+            public void onFail(Throwable e) {
+                Log.e(TAG, "startLivestream " + e.toString());
+            }
+        });
     }
 
     public interface Callback {
