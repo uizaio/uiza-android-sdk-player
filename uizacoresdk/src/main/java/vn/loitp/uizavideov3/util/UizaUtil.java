@@ -469,7 +469,7 @@ public class UizaUtil {
         });
     }
 
-    private static void getDataFromEntityIdLIVE(final BaseActivity activity, String entityId, final Callback callback) {
+    public static void getDataFromEntityIdLIVE(final BaseActivity activity, String entityId, final Callback callback) {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         activity.subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override

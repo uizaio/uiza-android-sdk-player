@@ -395,7 +395,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
-        UizaUtil.getDetailEntity((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
+        UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
                 //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
