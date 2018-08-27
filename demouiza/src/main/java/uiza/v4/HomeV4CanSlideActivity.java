@@ -65,8 +65,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvEntities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                LLog.d(TAG, "onClick tv_entities");
+                replaceFragment(new FrmEntities());
                 drawerLayout.closeDrawers();
             }
         });
