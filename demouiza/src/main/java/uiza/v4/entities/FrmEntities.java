@@ -1,4 +1,4 @@
-package uiza.v4;
+package uiza.v4.entities;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -7,30 +7,41 @@ package uiza.v4;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uiza.R;
+import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
 
-    private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+    //private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
+    //private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
     private long backPressed;
+
+
+    private List<Entity> entityList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private EntitiesAdapter mAdapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
+        /*frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UizaUtil.setClickedPip(getActivity(), false);
@@ -44,13 +55,6 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });
-        frmRootView.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(new FrmLogin());
-            }
-        });
-
         if (UizaUtil.getClickedPip(getActivity())) {
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
@@ -61,7 +65,35 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
                 LLog.d(TAG, "Called if user click pip fullscreen playEntityId");
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
             }
-        }
+        }*/
+
+        recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
+
+        mAdapter = new EntitiesAdapter(getActivity(), entityList, new EntitiesAdapter.Callback() {
+            @Override
+            public void onClick(Entity entity, int position) {
+                LToast.show(getActivity(), "Click " + entity.getTitle());
+            }
+
+            @Override
+            public void onLongClick(Entity entity, int position) {
+                boolean isRemoved = entityList.remove(entity);
+                if (isRemoved) {
+                    mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyItemRangeChanged(position, entityList.size());
+                }
+            }
+
+            @Override
+            public void onLoadMore() {
+                loadMore();
+            }
+        });
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mAdapter);
+        LUIUtil.setPullLikeIOSVertical(recyclerView);
+        prepareMovieData();
     }
 
     @Override
@@ -92,5 +124,17 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         }
         backPressed = System.currentTimeMillis();
         return true;
+    }
+
+    private void prepareMovieData() {
+        for (int i = 0; i < 100; i++) {
+            Entity entity = new Entity("Loitp " + i, "Action & Adventure " + i, "Year: " + i, Constants.URL_IMG);
+            entityList.add(entity);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void loadMore() {
+
     }
 }

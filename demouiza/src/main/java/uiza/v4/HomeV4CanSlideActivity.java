@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import uiza.R;
+import uiza.v4.entities.FrmEntities;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
