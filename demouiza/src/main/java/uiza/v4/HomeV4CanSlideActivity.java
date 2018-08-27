@@ -2,8 +2,15 @@ package uiza.v4;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import uiza.R;
 import vn.loitp.chromecast.Casty;
@@ -29,10 +36,46 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         return draggablePanel;
     }
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close);
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        navigationView = (NavigationView) findViewById(R.id.nv);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.settings:
+                        LLog.d(TAG, "onClick tv_login");
+                        drawerLayout.closeDrawer(Gravity.START, true);
+                    default:
+                        return true;
+                }
+            }
+        });
+        TextView tvLogin = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_login);
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                LLog.d(TAG, "onClick tv_login");
+            }
+        });
+
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -200,5 +243,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (frmVideoBottom != null) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

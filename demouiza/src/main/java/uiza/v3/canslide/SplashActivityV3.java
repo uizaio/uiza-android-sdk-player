@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 
 import uiza.R;
 import uiza.option.OptionActivity;
+import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -151,8 +152,8 @@ public class SplashActivityV3 extends BaseActivity {
                 UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
 
-                final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
-                //final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
+                //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
+                final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
                 if (intent != null) {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override

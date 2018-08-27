@@ -19,4 +19,6 @@
     <string name="press_again_to_exit">Press once again to exit!</string>
     <string name="this_is_last_page">This is last page</string>
     <string name="cannot_draw">Draw over other app permission not available</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>
