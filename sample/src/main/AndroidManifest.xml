@@ -30,9 +30,6 @@
             android:name=".sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".sample.v3.demouibeta.V3UizaVideoIMActivitySlide"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
         <receiver
             android:name=".sample.v2.uizavideo.FloatClickFullScreenReceiver"
@@ -59,7 +56,14 @@
         <activity
             android:name=".sample.v3.demoui.HomeV4CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity android:name=".sample.guidecallapi.TestAPI"></activity>
+        <activity android:name=".sample.guidecallapi.TestAPI" />
+
+        <!--<service android:name=".sample.livestream.derecated.LiveVideoBroadcasterActivity" />-->
+
+        <!--for livestream-->
+        <activity
+            android:name=".sample.livestream.LivestreamBroadcasterActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

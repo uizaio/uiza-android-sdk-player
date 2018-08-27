@@ -1,6 +1,8 @@
 package vn.loitp.core.utilities;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
@@ -135,5 +137,26 @@ public class LAnimationUtil {
         scaleDown.setRepeatCount(2);
         scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
         scaleDown.start();
+    }
+
+    //https://stackoverflow.com/questions/14156837/animation-fade-in-and-out
+    public static void fade(View v) {
+        if (v == null) {
+            return;
+        }
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(v, "alpha", 1f, .3f);
+        fadeOut.setDuration(1000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(v, "alpha", .3f, 1f);
+        fadeIn.setDuration(1000);
+        final AnimatorSet mAnimationSet = new AnimatorSet();
+        mAnimationSet.play(fadeIn).after(fadeOut);
+        mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationSet.start();
+            }
+        });
+        mAnimationSet.start();
     }
 }

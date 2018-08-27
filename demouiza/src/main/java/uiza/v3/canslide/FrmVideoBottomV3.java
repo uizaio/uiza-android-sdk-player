@@ -13,7 +13,6 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
 

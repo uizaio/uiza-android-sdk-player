@@ -39,6 +39,7 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -106,7 +107,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();
     private RelativeLayout rootView;
     private UizaPlayerManagerV3 uizaPlayerManagerV3;
     private ProgressBar progressBar;
@@ -167,6 +168,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private MediaRouteButton mediaRouteButton;
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
+
+    private boolean isDisplayPortrait;
+
+    public boolean isDisplayPortrait() {
+        return isDisplayPortrait;
+    }
+
+    public void setDisplayPortrait(boolean isDisplayPortrait) {
+        this.isDisplayPortrait = isDisplayPortrait;
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+    }
 
     /**
      * return player view
@@ -249,7 +261,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(mData));
-                    //LLog.d(TAG, "init getDetailEntity onSuccess");
+                    LLog.d(TAG, "init getDetailEntity onSuccess");
                     //save current data
                     UizaDataV3.getInstance().setData(d);
                     handleGetDetailEntityDone(urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
@@ -589,7 +601,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LLog.d(TAG, "onCreate isTablet " + isTablet);
         addPlayerView();
         findViews();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
@@ -1133,7 +1145,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isExoVolumeClicked;
 
     protected void toggleScreenOritation() {
-        LActivityUtil.toggleScreenOritation(activity);
+        boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
+        if (isLandToPort) {
+            //do nothing
+        } else {
+            UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
+        }
     }
 
     @Override
@@ -1229,7 +1246,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover);
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updatePositionOfProgressBar();
     }
 
@@ -1495,7 +1512,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                //LLog.d(TAG, "getTokenStreaming onSuccess: " + tokenStreaming);
+                LLog.d(TAG, "getTokenStreaming onSuccess: " + tokenStreaming);
                 getLinkPlay(tokenStreaming);
             }
 
@@ -1535,7 +1552,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     if (Constants.IS_DEBUG) {
                         LToast.show(activity, "getLinkPlay isLivestream onSuccess");
                     }
-                    //LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
                     mResultGetLinkPlay = result;
                     isResultGetLinkPlayDone = true;
                     checkToSetUp();
@@ -2052,7 +2069,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     if (Constants.IS_DEBUG) {
                         LToast.show(activity, "getListAllEntity onSuccess");
                     }
-                    //LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         return;
                     }

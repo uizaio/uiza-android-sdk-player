@@ -375,6 +375,55 @@ Listener touch event
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
+# How to livestream with UizaSDK?:
+It's very easy, plz follow these step below:
+XML:
+
+    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream  
+      android:id="@+id/uiza_livestream"  
+      android:layout_width="match_parent"  
+      android:layout_height="match_parent" />
+
+In class LivestreamBroadcasterActivity:
+
+    public class LivestreamBroadcasterActivity extends BaseActivity implements  UizaLivestream.Callback {
+    ...
+    }
+
+func onCreate():
+
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+    uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);  
+    uizaLivestream.setCallback(this);
+    uizaLivestream.setId("Put the entity id for livestream here");
+
+Then put this line on surfaceChanged(UizaLivestream.StartPreview startPreview);
+
+    startPreview.onSizeStartPreview(1280, 720);
+
+Start a livestream:
+
+    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {  
+        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());  
+    }
+
+Start a livestream and save to mp4 file:
+
+    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {  
+        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);  
+    }
+
+Stop streaming (It auto save mp4 file in your gallery if you start a livestream with option save local file)
+
+    uizaLivestream.stopStream();
+
+Switch camera:
+
+    uizaLivestream.switchCamera();
+
+This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/livestream)
+
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
 

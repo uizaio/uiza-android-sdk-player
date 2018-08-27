@@ -100,6 +100,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             @Override
             public void onDoubleTap() {
                 LLog.d(TAG, "onDoubleTap");
+                uizaIMAVideoV3.setDisplayPortrait(!uizaIMAVideoV3.isDisplayPortrait());
             }
 
             @Override

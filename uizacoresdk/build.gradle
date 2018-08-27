@@ -7,7 +7,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 21
         versionCode 7
         versionName "1.3.7"
@@ -83,4 +83,9 @@ dependencies {
 
     //https://github.com/juliome10/DoubleViewPager
     //compile 'com.github.juliome10:DoubleViewPager:1.0.4@aar'
+
+    //for livestream
+    //https://github.com/tplloi/rtmp-rtsp-stream-client-java
+    //compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.0'
+    //compile project(':rtplibrary')
 }

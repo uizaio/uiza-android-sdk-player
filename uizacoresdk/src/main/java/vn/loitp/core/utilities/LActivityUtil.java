@@ -140,13 +140,20 @@ public class LActivityUtil {
         activity.getWindow().setAttributes(attrs);
     }
 
-    public static void toggleScreenOritation(Activity activity) {
+    /*
+     **return true if ORIENTATION_LANDSCAPE->SCREEN_ORIENTATION_SENSOR_PORTRAIT
+     **return false if ORIENTATION_PORTRAIT->SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+     */
+    public static boolean toggleScreenOritation(Activity activity) {
         int s = getScreenOrientation(activity);
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            return true;
         } else if (s == Configuration.ORIENTATION_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            return false;
         }
+        return false;
     }
 
     public static void changeScreenPortrait(Activity activity) {

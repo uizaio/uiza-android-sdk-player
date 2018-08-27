@@ -4,9 +4,11 @@ package vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPullInfo;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ExtendMetadata;
+import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPushInfo;
 
 public class Data {
 
@@ -89,9 +91,9 @@ public class Data {
     @Expose
     private LastPullInfo lastPullInfo;
 
-    /*@SerializedName("lastPushInfo")
+    @SerializedName("lastPushInfo")
     @Expose
-    private List<LastPushInfo> lastPushInfo = null;*/
+    private List<LastPushInfo> lastPushInfo = null;
 
     @SerializedName("lastProcess")
     @Expose
@@ -168,6 +170,7 @@ public class Data {
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
 
     public String getName() {
         return name;
@@ -356,13 +359,13 @@ public class Data {
         this.lastPullInfo = lastPullInfo;
     }
 
-    /*public List<LastPushInfo> getLastPushInfo() {
+    public List<LastPushInfo> getLastPushInfo() {
         return lastPushInfo;
     }
 
     public void setLastPushInfo(List<LastPushInfo> lastPushInfo) {
         this.lastPushInfo = lastPushInfo;
-    }*/
+    }
 
     public String getLastProcess() {
         return lastProcess;
