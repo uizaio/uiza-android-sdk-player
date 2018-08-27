@@ -20,7 +20,7 @@ import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
-public class FrmHome extends BaseFragment implements IOnBackPressed {
+public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
 
     private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";

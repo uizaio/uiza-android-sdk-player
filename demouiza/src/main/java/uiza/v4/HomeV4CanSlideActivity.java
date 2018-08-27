@@ -119,11 +119,11 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             }
         });
         initializeDraggablePanel();
-        replaceFragment(new FrmHome());
+        replaceFragment(new FrmEntities());
     }
 
     public void replaceFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmHome) {
+        if (baseFragment instanceof FrmEntities) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
