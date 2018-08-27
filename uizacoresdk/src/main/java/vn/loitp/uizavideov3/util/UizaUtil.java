@@ -509,6 +509,7 @@ public class UizaUtil {
             //check if play entity
             UizaUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
+                LLog.d(TAG, "initEntity entityId: " + entityId);
                 play(uizaIMAVideoV3, entityId);
             }
         }
@@ -562,6 +563,7 @@ public class UizaUtil {
 
     private static void play(final UizaIMAVideoV3 uizaIMAVideoV3, final String entityId) {
         if (UizaDataV3.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "isSettingPlayer");
             return;
         }
         uizaIMAVideoV3.post(new Runnable() {

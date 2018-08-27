@@ -332,6 +332,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }*/
 
     public void initEntity(String entityId) {
+        LLog.d(TAG, "initEntity " + entityId);
         UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 

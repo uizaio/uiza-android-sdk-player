@@ -221,6 +221,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaCallback != null) {
             uizaCallback.onError(e);
         }
+        UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
     /**
@@ -271,6 +272,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 public void onError(Throwable e) {
                     LLog.e(TAG, "init onError " + e.toString());
                     LToast.show(activity, "init onError: " + e.getMessage());
+                    UizaDataV3.getInstance().setSettingPlayer(false);
                 }
             });
         } else {
@@ -351,6 +353,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
                 }
             });
+            UizaDataV3.getInstance().setSettingPlayer(false);
             return;
         }
 
