@@ -56,9 +56,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                LLog.d(TAG, "onClick tv_login");
                 drawerLayout.closeDrawers();
+                replaceFragment(new FrmLogin());
             }
         });
         TextView tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
