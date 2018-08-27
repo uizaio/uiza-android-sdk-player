@@ -15,6 +15,9 @@ public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
 
+    /*chivas69.uizadev.io
+    trunglh@uiza.io / 123456789*/
+
     /*https://loctbprod01.uiza.co
     loctb@uiza.io / 123456789*/
 
