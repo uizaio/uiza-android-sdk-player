@@ -2,12 +2,11 @@ package uiza.v4;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -47,32 +46,46 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close);
-
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         navigationView = (NavigationView) findViewById(R.id.nv);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.settings:
-                        LLog.d(TAG, "onClick tv_login");
-                        drawerLayout.closeDrawer(Gravity.START, true);
-                    default:
-                        return true;
-                }
-            }
-        });
-        TextView tvLogin = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_login);
+        NestedScrollView nestedScrollView = (NestedScrollView) navigationView.findViewById(R.id.scroll_view);
+        LUIUtil.setPullLikeIOSVertical(nestedScrollView);
+        TextView tvLogin = (TextView) navigationView.findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_login");
+                drawerLayout.closeDrawers();
+            }
+        });
+        TextView tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
+        tvEntities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                LLog.d(TAG, "onClick tv_entities");
+                drawerLayout.closeDrawers();
+            }
+        });
+        TextView tvCategories = (TextView) navigationView.findViewById(R.id.tv_categories);
+        tvCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                LLog.d(TAG, "onClick tv_categories");
+                drawerLayout.closeDrawers();
+            }
+        });
+        TextView tvLivestream = (TextView) navigationView.findViewById(R.id.tv_livestream);
+        tvLivestream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                LLog.d(TAG, "onClick tv_livestream");
+                drawerLayout.closeDrawers();
             }
         });
 
