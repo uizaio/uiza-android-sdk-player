@@ -54,7 +54,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private int totalPage = Integer.MAX_VALUE;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
-
+    private final String publishToCdn = "success";
     private boolean isLivestream;
     private String metadataId = "";
 
@@ -295,7 +295,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
             //LLog.d(TAG, "getData metadataId: " + metadataId);
 
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-            subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+            subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {

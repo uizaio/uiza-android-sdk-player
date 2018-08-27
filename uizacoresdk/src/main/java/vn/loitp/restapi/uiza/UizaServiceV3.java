@@ -98,7 +98,8 @@ public interface UizaServiceV3 {
                                                   @Query("limit") int limit,
                                                   @Query("page") int page,
                                                   @Query("orderBy") String orderBy,
-                                                  @Query("orderType") String orderType);
+                                                  @Query("orderType") String orderType,
+                                                  @Query("publishToCdn") String publishToCdn);
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")

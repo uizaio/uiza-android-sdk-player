@@ -2055,6 +2055,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int pfTotalPage = Integer.MAX_VALUE;
     private final String pfOrderBy = "createdAt";
     private final String pfOrderType = "DESC";
+    private final String publishToCdn = "success";
 
     private void getListAllEntity(String metadataId) {
         if (uizaPlayerManagerV3 != null) {
@@ -2063,7 +2064,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (UizaDataV3.getInstance().getDataList() == null) {
             LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() == null -> call api lấy data list");
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-            activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
+            activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (Constants.IS_DEBUG) {

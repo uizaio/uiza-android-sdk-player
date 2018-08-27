@@ -5,18 +5,19 @@ package uiza.v4.entities;
  */
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import uiza.R;
 import vn.loitp.core.utilities.LImageUtil;
+import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHolder> {
@@ -24,11 +25,13 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
     private Context context;
     private Callback callback;
     private List<Data> dataList;
+    private int sizeH;
 
     public EntitiesAdapter(Context context, List<Data> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
+        this.sizeH = LScreenUtil.getScreenWidth() * 9 / 16;
     }
 
     @Override
@@ -40,10 +43,14 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
     @Override
     public void onBindViewHolder(final DataHolder holder, final int position) {
         final Data data = dataList.get(position);
+
+        holder.cardView.getLayoutParams().height = sizeH;
+        holder.cardView.requestLayout();
+
         holder.tvTitle.setText(data.getName());
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
@@ -51,7 +58,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
                 }
             }
         });
-        holder.rootView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (callback != null) {
@@ -83,13 +90,13 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
     public class DataHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
         public ImageView ivThumnail;
-        public RelativeLayout rootView;
+        public CardView cardView;
 
         public DataHolder(View view) {
             super(view);
             tvTitle = (TextView) view.findViewById(R.id.tv_title);
             ivThumnail = (ImageView) view.findViewById(R.id.iv_thumnail);
-            rootView = (RelativeLayout) view.findViewById(R.id.root_view);
+            cardView = (CardView) view.findViewById(R.id.card_view);
         }
     }
 }
