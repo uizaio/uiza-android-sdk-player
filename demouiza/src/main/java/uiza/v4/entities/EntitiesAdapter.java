@@ -9,44 +9,45 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import uiza.R;
+import vn.loitp.core.utilities.LImageUtil;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.MovieViewHolder> {
-    // Allows to remember the last item shown on screen
+public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHolder> {
     private int lastPosition = -1;
     private Context context;
     private Callback callback;
-    private List<Entity> moviesList;
+    private List<Data> dataList;
 
-    public EntitiesAdapter(Context context, List<Entity> moviesList, Callback callback) {
+    public EntitiesAdapter(Context context, List<Data> dataList, Callback callback) {
         this.context = context;
-        this.moviesList = moviesList;
+        this.dataList = dataList;
         this.callback = callback;
     }
 
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_row, parent, false);
-        return new MovieViewHolder(itemView);
+    public DataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.v4_item_data, parent, false);
+        return new DataHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MovieViewHolder holder, final int position) {
-        final Entity entity = moviesList.get(position);
-        holder.title.setText(entity.getTitle());
-        holder.genre.setText(entity.getGenre());
-        holder.year.setText(entity.getYear());
+    public void onBindViewHolder(final DataHolder holder, final int position) {
+        final Data data = dataList.get(position);
+        holder.tvTitle.setText(data.getName());
+        LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
-                    callback.onClick(entity, position);
+                    callback.onClick(data, position);
                 }
             }
         });
@@ -54,12 +55,12 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.MovieV
             @Override
             public boolean onLongClick(View v) {
                 if (callback != null) {
-                    callback.onLongClick(entity, position);
+                    callback.onLongClick(data, position);
                 }
                 return true;
             }
         });
-        if (position == moviesList.size() - 1) {
+        if (position == dataList.size() - 1) {
             if (callback != null) {
                 callback.onLoadMore();
             }
@@ -68,27 +69,27 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.MovieV
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return dataList.size();
     }
 
     public interface Callback {
-        public void onClick(Entity entity, int position);
+        public void onClick(Data data, int position);
 
-        public void onLongClick(Entity entity, int position);
+        public void onLongClick(Data data, int position);
 
         public void onLoadMore();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
-        public LinearLayout rootView;
+    public class DataHolder extends RecyclerView.ViewHolder {
+        public TextView tvTitle;
+        public ImageView ivThumnail;
+        public RelativeLayout rootView;
 
-        public MovieViewHolder(View view) {
+        public DataHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
-            rootView = (LinearLayout) view.findViewById(R.id.root_view);
+            tvTitle = (TextView) view.findViewById(R.id.tv_title);
+            ivThumnail = (ImageView) view.findViewById(R.id.iv_thumnail);
+            rootView = (RelativeLayout) view.findViewById(R.id.root_view);
         }
     }
 }

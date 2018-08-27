@@ -10,11 +10,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
@@ -23,6 +25,11 @@ import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 
@@ -33,10 +40,15 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     //private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
     private long backPressed;
 
-
-    private List<Entity> entityList = new ArrayList<>();
+    private final int limit = 20;
+    private final String orderBy = "createdAt";
     private RecyclerView recyclerView;
     private EntitiesAdapter mAdapter;
+    private final String orderType = "DESC";
+    private TextView tvMsg;
+    private List<Data> dataList = new ArrayList<>();
+    private int page = 0;
+    private int totalPage = Integer.MAX_VALUE;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -67,21 +79,17 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
             }
         }*/
 
+        tvMsg = (TextView) frmRootView.findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
 
-        mAdapter = new EntitiesAdapter(getActivity(), entityList, new EntitiesAdapter.Callback() {
+        mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
-            public void onClick(Entity entity, int position) {
-                LToast.show(getActivity(), "Click " + entity.getTitle());
+            public void onClick(Data data, int position) {
+                LToast.show(getActivity(), "Click " + data.getName());
             }
 
             @Override
-            public void onLongClick(Entity entity, int position) {
-                boolean isRemoved = entityList.remove(entity);
-                if (isRemoved) {
-                    mAdapter.notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(position, entityList.size());
-                }
+            public void onLongClick(Data data, int position) {
             }
 
             @Override
@@ -93,7 +101,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
         LUIUtil.setPullLikeIOSVertical(recyclerView);
-        prepareMovieData();
+        getListAllEntities();
     }
 
     @Override
@@ -126,15 +134,57 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         return true;
     }
 
-    private void prepareMovieData() {
-        for (int i = 0; i < 100; i++) {
-            Entity entity = new Entity("Loitp " + i, "Action & Adventure " + i, "Year: " + i, Constants.URL_IMG);
-            entityList.add(entity);
+    private void getListAllEntities() {
+        page++;
+        if (page >= totalPage) {
+            if (Constants.IS_DEBUG) {
+                LToast.show(getActivity(), getString(R.string.this_is_last_page));
+            }
+            return;
         }
-        mAdapter.notifyDataSetChanged();
+        if (Constants.IS_DEBUG) {
+            LToast.show(getActivity(), getString(R.string.load_page) + page);
+        }
+        LLog.d(TAG, "getListAllEntities " + page + "/" + totalPage);
+        tvMsg.setVisibility(View.GONE);
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        String metadataId = "";
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+            @Override
+            public void onSuccess(ResultListEntity result) {
+                LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));
+                if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                    tvMsg.setVisibility(View.VISIBLE);
+                    tvMsg.setText(getString(R.string.empty_list));
+                    return;
+                }
+                if (totalPage == Integer.MAX_VALUE) {
+                    int totalItem = (int) result.getMetadata().getTotal();
+                    float ratio = (float) (totalItem / limit);
+                    if (ratio == 0) {
+                        totalPage = (int) ratio;
+                    } else if (ratio > 0) {
+                        totalPage = (int) ratio + 1;
+                    } else {
+                        totalPage = (int) ratio;
+                    }
+                }
+                LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + result.getData().size());
+                dataList.addAll(result.getData());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                tvMsg.setVisibility(View.VISIBLE);
+                tvMsg.setText(e.getMessage());
+            }
+        });
     }
 
     private void loadMore() {
-
+        LLog.d(TAG, "loadMore");
+        getListAllEntities();
     }
 }
