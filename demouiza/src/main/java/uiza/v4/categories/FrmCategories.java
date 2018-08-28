@@ -14,8 +14,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
+import vn.loitp.restapi.restclient.RestClientV3;
+import vn.loitp.restapi.uiza.UizaServiceV3;
+import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmCategories extends BaseFragment implements IOnBackPressed {
@@ -41,5 +47,28 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         tvMsg = (TextView) view.findViewById(R.id.tv_msg);
         pb = (ProgressBar) view.findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(pb, Color.WHITE);
+
+        getListMetadata();
+    }
+
+    private void getListMetadata() {
+        tvMsg.setVisibility(View.GONE);
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+            @Override
+            public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
+                if (resultGetListMetadata == null) {
+                    tvMsg.setText("Error ResultGetListMetadata is null");
+                    return;
+                }
+                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListAllMetadata onFail " + e.getMessage());
+                tvMsg.setText("Error ResultGetListMetadata: " + e.getMessage());
+            }
+        });
     }
 }
