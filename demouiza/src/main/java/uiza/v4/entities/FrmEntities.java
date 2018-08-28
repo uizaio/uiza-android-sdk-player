@@ -33,6 +33,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
@@ -72,17 +73,15 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });*/
-        /*if (UizaUtil.getClickedPip(getActivity())) {
+        if (UizaUtil.getClickedPip(getActivity())) {
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
-                //frmRootView.findViewById(R.id.bt_playlist_folder).performClick();
-                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
+                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
-                //frmRootView.findViewById(R.id.bt_entity).performClick();
                 LLog.d(TAG, "Called if user click pip fullscreen playEntityId");
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
+                ((HomeV4CanSlideActivity) getActivity()).playEntityId(null);
             }
-        }*/
+        }
 
         tvMsg = (TextView) frmRootView.findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);

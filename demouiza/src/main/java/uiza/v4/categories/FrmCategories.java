@@ -62,6 +62,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
                     return;
                 }
                 LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+                resultGetListMetadata.getData();
             }
 
             @Override

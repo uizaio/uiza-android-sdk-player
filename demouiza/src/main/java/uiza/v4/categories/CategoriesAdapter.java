@@ -1,4 +1,4 @@
-package uiza.v4.entities;
+package uiza.v4.categories;
 
 /**
  * Created by www.muathu@gmail.com on 12/8/2017.
@@ -20,14 +20,14 @@ import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.DataHolder> {
     private int lastPosition = -1;
     private Context context;
     private Callback callback;
     private List<Data> dataList;
     private int sizeH;
 
-    public EntitiesAdapter(Context context, List<Data> dataList, Callback callback) {
+    public CategoriesAdapter(Context context, List<Data> dataList, Callback callback) {
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
@@ -36,7 +36,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
 
     @Override
     public DataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.v4_item_entities, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.v4_item_categories, parent, false);
         return new DataHolder(itemView);
     }
 
