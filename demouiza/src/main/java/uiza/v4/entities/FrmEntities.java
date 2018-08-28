@@ -56,6 +56,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        LLog.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         if (UizaUtil.getClickedPip(getActivity())) {
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {

@@ -41,6 +41,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        LLog.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         ivClearText = (ImageView) view.findViewById(R.id.iv_clear_text);
