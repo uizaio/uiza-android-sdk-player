@@ -4,6 +4,7 @@ package uiza.v4.entities;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -86,6 +87,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         tvMsg = (TextView) frmRootView.findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
         pb = (ProgressBar) frmRootView.findViewById(R.id.pb);
+        LUIUtil.setColorProgressBar(pb, Color.WHITE);
 
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
