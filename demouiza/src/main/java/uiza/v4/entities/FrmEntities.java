@@ -24,6 +24,7 @@ import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -136,7 +137,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
             LToast.show(getActivity(), getString(R.string.load_page) + page);
         }
         LLog.d(TAG, "getListAllEntities " + page + "/" + totalPage);
-        pb.setVisibility(View.VISIBLE);
+        LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         String metadataId = "";
@@ -163,7 +164,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
                 LLog.d(TAG, "-> totalPage: " + totalPage + ", size: " + result.getData().size());
                 dataList.addAll(result.getData());
                 mAdapter.notifyDataSetChanged();
-                pb.setVisibility(View.GONE);
+                LDialogUtil.hide(pb);
             }
 
             @Override
@@ -171,7 +172,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
                 LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
                 tvMsg.setVisibility(View.VISIBLE);
                 tvMsg.setText("onFail: " + e.getMessage());
-                pb.setVisibility(View.GONE);
+                LDialogUtil.hide(pb);
             }
         });
     }

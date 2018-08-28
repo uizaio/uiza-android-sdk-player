@@ -29,8 +29,7 @@
         android:background="@drawable/bt_duration"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_5"
-        android:visibility="invisible">
+        android:padding="@dimen/padding_5">
 
         <ImageView
             android:id="@+id/iv_back"

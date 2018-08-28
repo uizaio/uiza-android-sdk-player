@@ -12,10 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.daimajia.androidanimations.library.Techniques;
 
 import java.util.List;
 
@@ -24,7 +21,6 @@ import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -42,12 +38,10 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     private ImageView ivClearText;
     private EditText etSearch;
     private TextView tv;
-    private LinearLayout llSearch;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        llSearch = (LinearLayout) view.findViewById(R.id.ll_search);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         ivClearText = (ImageView) view.findViewById(R.id.iv_clear_text);
         etSearch = (EditText) view.findViewById(R.id.et_search);
@@ -82,14 +76,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
                 search(etSearch.getText().toString(), false);
             }
         });
-        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                llSearch.setVisibility(View.VISIBLE);
-                LAnimationUtil.play(llSearch, Techniques.SlideInDown);
-                KeyboardUtils.showSoftInput(etSearch);
-            }
-        });
+        KeyboardUtils.showSoftInput(etSearch);
     }
 
     @Override
