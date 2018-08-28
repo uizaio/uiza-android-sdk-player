@@ -50,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         LDialogUtil.clearAll();
         super.onDestroyView();
+        //TODO loitp, what the fucking case =="
         /*if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }*/
