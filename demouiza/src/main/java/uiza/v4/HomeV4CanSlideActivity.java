@@ -2,11 +2,13 @@ package uiza.v4;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
+    private FloatingActionButton btMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 replaceFragment(new FrmEntities());
-                drawerLayout.closeDrawers();
+                drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
         TextView tvCategories = (TextView) navigationView.findViewById(R.id.tv_categories);
@@ -75,7 +78,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_categories");
-                drawerLayout.closeDrawers();
+                drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
         TextView tvLivestream = (TextView) navigationView.findViewById(R.id.tv_livestream);
@@ -84,7 +87,19 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_livestream");
-                drawerLayout.closeDrawers();
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+
+        btMenu = (FloatingActionButton) findViewById(R.id.bt_menu);
+        btMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerVisible(Gravity.START)) {
+                    drawerLayout.closeDrawer(Gravity.START, true);
+                } else {
+                    drawerLayout.openDrawer(Gravity.START, true);
+                }
             }
         });
 
@@ -93,11 +108,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onMaximized() {
                 //LLog.d(TAG, "onMaximized");
+                btMenu.setVisibility(View.GONE);
             }
 
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
+                btMenu.setVisibility(View.VISIBLE);
                 frmVideoTop.getUizaIMAVideoV3().hideController();
             }
 
