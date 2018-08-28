@@ -18,6 +18,7 @@ import java.util.List;
 import uiza.R;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHolder> {
@@ -48,6 +49,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
         holder.cardView.requestLayout();
 
         holder.tvTitle.setText(data.getName());
+        LUIUtil.setTextShadow(holder.tvTitle);
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
