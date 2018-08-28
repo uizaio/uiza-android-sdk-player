@@ -23,6 +23,7 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
+import loitp.core.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
@@ -332,9 +333,9 @@ public class LScreenUtil {
 
     public static void replaceFragment(BaseFragment baseFragment, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
         FragmentTransaction transaction = baseFragment.getChildFragmentManager().beginTransaction();
-        //transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
-        //transaction.replace(containerFrameLayoutIdRes, fragment);
-        transaction.add(containerFrameLayoutIdRes, fragment);
+        transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }
@@ -344,8 +345,8 @@ public class LScreenUtil {
     public static void replaceFragment(Activity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
         FragmentTransaction transaction = ((BaseActivity) activity).getSupportFragmentManager().beginTransaction();
         //transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
-        //transaction.replace(containerFrameLayoutIdRes, fragment);
-        transaction.add(containerFrameLayoutIdRes, fragment);
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }

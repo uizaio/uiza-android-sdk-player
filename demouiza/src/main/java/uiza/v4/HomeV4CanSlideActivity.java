@@ -71,6 +71,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
+                llActionBar.setVisibility(View.GONE);
                 replaceFragment(new FrmLogin());
             }
         });
@@ -119,8 +120,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new FrmSearch());
                 llActionBar.setVisibility(View.GONE);
+                replaceFragment(new FrmSearch());
             }
         });
 

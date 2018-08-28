@@ -125,6 +125,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     public void onDestroyView() {
+        ((HomeV4CanSlideActivity) getActivity()).llActionBar.setVisibility(View.VISIBLE);
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();
     }
