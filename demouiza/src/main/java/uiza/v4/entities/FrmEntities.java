@@ -39,9 +39,6 @@ import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
-
-    //private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    //private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
     private long backPressed;
 
     private final int limit = 20;
@@ -59,20 +56,6 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UizaUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
-            }
-        });
-        frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UizaUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
-            }
-        });*/
         if (UizaUtil.getClickedPip(getActivity())) {
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");

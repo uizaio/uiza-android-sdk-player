@@ -39,12 +39,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/black_85"
                 android:padding="@dimen/padding_5"
                 android:singleLine="true"
                 android:text="@string/app_name"
-                android:textColor="@color/White"
-                android:textSize="@dimen/txt_14"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_25"
                 android:textStyle="bold" />
         </RelativeLayout>
 

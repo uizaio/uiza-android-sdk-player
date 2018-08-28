@@ -31,7 +31,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
         this.context = context;
         this.dataList = dataList;
         this.callback = callback;
-        this.sizeH = LScreenUtil.getScreenWidth() * 9 / 16;
+        this.sizeH = LScreenUtil.getScreenWidth() / 3;
     }
 
     @Override
