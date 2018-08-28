@@ -42,6 +42,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private FloatingActionButton btMenu;
+    private TextView tvTitle;
+    private TextView tvEntities;
+    private TextView tvCategories;
+    private TextView tvLivestream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,33 +68,37 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 replaceFragment(new FrmLogin());
             }
         });
-        TextView tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
+        tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
         tvEntities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tvTitle.setText(tvEntities.getText().toString());
                 replaceFragment(new FrmEntities());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
-        TextView tvCategories = (TextView) navigationView.findViewById(R.id.tv_categories);
+        tvCategories = (TextView) navigationView.findViewById(R.id.tv_categories);
         tvCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_categories");
+                tvTitle.setText(tvCategories.getText().toString());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
-        TextView tvLivestream = (TextView) navigationView.findViewById(R.id.tv_livestream);
+        tvLivestream = (TextView) navigationView.findViewById(R.id.tv_livestream);
         tvLivestream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_livestream");
+                tvTitle.setText(tvLivestream.getText().toString());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
 
+        tvTitle = (TextView) findViewById(R.id.tv_title);
         btMenu = (FloatingActionButton) findViewById(R.id.bt_menu);
         btMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +145,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         });
         initializeDraggablePanel();
         replaceFragment(new FrmEntities());
+        tvTitle.setText(tvEntities.getText().toString());
     }
 
     public void replaceFragment(BaseFragment baseFragment) {

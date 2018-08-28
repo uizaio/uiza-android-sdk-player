@@ -10,25 +10,57 @@
         android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/WhiteSmoke">
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/uiza_logo_512" />
+
+        <vn.loitp.views.realtimeblurview.RealtimeBlurView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:realtimeBlurRadius="@dimen/round_80"
+            app:realtimeOverlayColor="@color/black_65" />
+
+        <RelativeLayout
+            android:id="@+id/ll_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/bt_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_5"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_menu_black_48dp"
+                android:tint="@color/primaryColor"
+                app:backgroundTint="@color/White"
+                app:borderWidth="@dimen/w_1"
+                app:elevation="@dimen/w_1"
+                app:fabSize="mini" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/bt_menu"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_32"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/fl_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/bt_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_5"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_menu_black_48dp"
-            android:tint="@color/primaryColor"
-            app:backgroundTint="@color/White"
-            app:borderWidth="@dimen/w_1"
-            app:elevation="@dimen/w_1"
-            app:fabSize="mini" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_action_bar" />
 
         <vn.loitp.views.draggablepanel.DraggablePanel
             android:id="@+id/draggable_panel"
