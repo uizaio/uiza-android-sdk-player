@@ -50,9 +50,9 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         LDialogUtil.clearAll();
         super.onDestroyView();
-        if (!compositeSubscription.isUnsubscribed()) {
+        /*if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
-        }
+        }*/
     }
 
     @SuppressWarnings("unchecked")
