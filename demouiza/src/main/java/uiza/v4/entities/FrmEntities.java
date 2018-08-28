@@ -20,13 +20,10 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
@@ -104,7 +101,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
-        if (backPressed + 2000 > System.currentTimeMillis()) {
+        /*if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
@@ -122,8 +119,8 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));
         }
-        backPressed = System.currentTimeMillis();
-        return true;
+        backPressed = System.currentTimeMillis();*/
+        return false;
     }
 
     private void getListAllEntities() {

@@ -240,9 +240,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            LLog.d(TAG, "onBackPressed " + TAG);
             super.onBackPressed();
         }
     }

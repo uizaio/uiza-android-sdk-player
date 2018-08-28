@@ -25,7 +25,7 @@ import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class SplashActivityV3 extends BaseActivity {
-    private String currentPlayerId;
+    private String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
     //workspace loitp
     /*private final String DF_DOMAIN_API = "android-api.uiza.co";

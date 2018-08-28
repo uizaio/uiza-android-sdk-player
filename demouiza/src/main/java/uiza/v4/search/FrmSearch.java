@@ -127,6 +127,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
 
     @Override
     public boolean onBackPressed() {
+        LLog.d(TAG, "onBackPressed " + TAG);
         boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
         if (isLandscapeScreen) {
             LActivityUtil.toggleScreenOritation((BaseActivity) getContext());

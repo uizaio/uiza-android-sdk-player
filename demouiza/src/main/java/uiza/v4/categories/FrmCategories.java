@@ -44,6 +44,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
+        LLog.d(TAG, "onBackPressed " + TAG);
         return false;
     }
 
