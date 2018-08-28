@@ -353,6 +353,20 @@ public class LScreenUtil {
         transaction.commit();
     }
 
+    public void loadFragment(Activity activity, int containerFrameLayoutIdRes, final Fragment fragment) {
+        final FragmentTransaction transaction = ((BaseActivity) activity).getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        transaction.addToBackStack(fragment.getClass().getName());
+        transaction.commit();
+    }
+
+    public void backToFragment(Activity activity, final Fragment fragment) {
+        ((BaseActivity) activity).getSupportFragmentManager().popBackStackImmediate(fragment.getClass().getName(), 0);
+        // use 0 or the below constant as flag parameter
+        // FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    }
+
     public static void addFragment(Activity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
         FragmentTransaction transaction = ((BaseActivity) activity).getSupportFragmentManager().beginTransaction();
         transaction.add(containerFrameLayoutIdRes, fragment);
