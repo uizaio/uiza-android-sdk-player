@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_search"
+        android:layout_marginTop="@dimen/margin_5"
+        android:gravity="center"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_18"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_search" />
+
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_margin="@dimen/round_5"
+        android:background="@drawable/bt_duration"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_5"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/w_30"
+            android:layout_height="@dimen/w_30"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_keyboard_arrow_left_black_48dp"
+            android:tint="@color/colorPrimary" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="Tìm kiếm"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/Gray" />
+
+        <ImageView
+            android:id="@+id/iv_clear_text"
+            android:layout_width="@dimen/w_30"
+            android:layout_height="@dimen/w_30"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_black_48dp"
+            android:tint="@color/colorPrimary"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>
+

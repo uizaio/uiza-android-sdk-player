@@ -11,11 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
+import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
@@ -43,16 +45,19 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private FloatingActionButton btMenu;
+    public RelativeLayout llActionBar;
     private TextView tvTitle;
     private TextView tvEntities;
     private TextView tvCategories;
     private TextView tvLivestream;
+    private FloatingActionButton btSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
 
+        llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -108,6 +113,14 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 } else {
                     drawerLayout.openDrawer(Gravity.START, true);
                 }
+            }
+        });
+        btSearch = (FloatingActionButton) findViewById(R.id.bt_search);
+        btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llActionBar.setVisibility(View.GONE);
+                LScreenUtil.replaceFragment(activity, R.id.fl_container, new FrmSearch(), true);
             }
         });
 
