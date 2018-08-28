@@ -119,8 +119,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                llActionBar.setVisibility(View.GONE);
                 replaceFragment(new FrmSearch());
+                llActionBar.setVisibility(View.GONE);
             }
         });
 
