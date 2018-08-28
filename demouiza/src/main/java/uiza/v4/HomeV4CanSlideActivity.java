@@ -116,13 +116,11 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onMaximized() {
                 //LLog.d(TAG, "onMaximized");
-                btMenu.setVisibility(View.GONE);
             }
 
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                btMenu.setVisibility(View.VISIBLE);
                 frmVideoTop.getUizaIMAVideoV3().hideController();
             }
 
