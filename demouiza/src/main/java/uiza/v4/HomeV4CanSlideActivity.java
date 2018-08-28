@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import uiza.R;
+import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
@@ -81,9 +82,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                LLog.d(TAG, "onClick tv_categories");
                 tvTitle.setText(tvCategories.getText().toString());
+                replaceFragment(new FrmCategories());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
