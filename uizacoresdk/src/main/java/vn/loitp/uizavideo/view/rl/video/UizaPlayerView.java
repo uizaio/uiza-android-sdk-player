@@ -63,6 +63,9 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         //do nothing
         controllerVisible = visibility == View.VISIBLE;
         //LLog.d(TAG, "onVisibilityChange visibility controllerVisible " + controllerVisible);
+        if (controllerStateCallback != null) {
+            controllerStateCallback.onVisibilityChange(controllerVisible);
+        }
     }
 
     public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
@@ -128,6 +131,11 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         public void onSwipeTop();
     }
 
+    @Override
+    public void hideController() {
+        super.hideController();
+    }
+
     private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final int SWIPE_THRESHOLD = 100;
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
@@ -146,15 +154,15 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
             if (!controllerVisible) {
                 //LLog.d(TAG, "showController");
                 showController();
-                if (controllerStateCallback != null) {
+                /*if (controllerStateCallback != null) {
                     controllerStateCallback.onVisibilityChange(true);
-                }
+                }*/
             } else if (getControllerHideOnTouch()) {
                 //LLog.d(TAG, "hideController");
                 hideController();
-                if (controllerStateCallback != null) {
+                /*if (controllerStateCallback != null) {
                     controllerStateCallback.onVisibilityChange(false);
-                }
+                }*/
             }
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed();

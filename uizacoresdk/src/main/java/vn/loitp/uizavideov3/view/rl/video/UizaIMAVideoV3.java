@@ -1193,19 +1193,25 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                }
             }
         } else if (v == exoRew) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                }
             }
         } else if (v == exoPause) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().pause();
             } else {
-                uizaPlayerManagerV3.pauseVideo();
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.pauseVideo();
+                }
             }
             exoPause.setVisibility(GONE);
             exoPlay.setVisibility(VISIBLE);
@@ -1213,7 +1219,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().play();
             } else {
-                uizaPlayerManagerV3.resumeVideo();
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.resumeVideo();
+                }
             }
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -2246,6 +2254,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleClickBackScreen() {
+        hideController();
         if (isLandscape) {
             exoFullscreenIcon.performClick();
         } else {

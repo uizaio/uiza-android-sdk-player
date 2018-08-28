@@ -256,6 +256,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
         uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
+                LLog.d(TAG, "onVisibilityChange isShow " + isShow);
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
                         && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
