@@ -120,7 +120,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 llActionBar.setVisibility(View.GONE);
-                LScreenUtil.replaceFragment(activity, R.id.fl_container, new FrmSearch(), true);
+                replaceFragment(new FrmSearch());
             }
         });
 
