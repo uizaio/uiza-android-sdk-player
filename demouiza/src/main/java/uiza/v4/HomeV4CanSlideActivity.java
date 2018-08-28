@@ -227,6 +227,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (frmVideoTop != null) {
             frmVideoTop.initEntity(entityId);
         }
+        if (frmVideoBottom != null) {
+            frmVideoBottom.clearUI();
+        }
     }
 
     public void playPlaylistFolder(final String metadataId) {
