@@ -321,6 +321,13 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     @Override
     public void onError(Exception e) {
         LLog.d(TAG, "onError " + e.getMessage());
+        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+            }
+        });
     }
 
     /*@Override
