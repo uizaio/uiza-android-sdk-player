@@ -52,6 +52,12 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private TextView tvLivestream;
     private FloatingActionButton btSearch;
 
+    private final String TITLE_ENTITIES = "Entities";
+    private final String TITLE_CATEGORIES = "Categories";
+    private final String TITLE_LIVESTREAMING = "Livestreaming";
+    private final String TITLE_LOGIN = "Login";
+    private final String TITLE_SEARCH = "Search";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
@@ -72,15 +78,14 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 llActionBar.setVisibility(View.GONE);
-                replaceFragment(new FrmLogin());
+                replaceFragment(new FrmLogin(), TITLE_LOGIN);
             }
         });
         tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
         tvEntities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvTitle.setText(tvEntities.getText().toString());
-                replaceFragment(new FrmEntities());
+                replaceFragment(new FrmEntities(), TITLE_ENTITIES);
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -88,8 +93,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvTitle.setText(tvCategories.getText().toString());
-                replaceFragment(new FrmCategories());
+                replaceFragment(new FrmCategories(), TITLE_CATEGORIES);
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -99,7 +103,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onClick(View v) {
                 //TODO
                 LLog.d(TAG, "onClick tv_livestream");
-                tvTitle.setText(tvLivestream.getText().toString());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -121,7 +124,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 llActionBar.setVisibility(View.GONE);
-                replaceFragment(new FrmSearch());
+                replaceFragment(new FrmSearch(), TITLE_SEARCH);
             }
         });
 
@@ -156,16 +159,16 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             }
         });
         initializeDraggablePanel();
-        replaceFragment(new FrmEntities());
-        tvTitle.setText(tvEntities.getText().toString());
+        replaceFragment(new FrmEntities(), TITLE_ENTITIES);
     }
 
-    public void replaceFragment(BaseFragment baseFragment) {
+    public void replaceFragment(BaseFragment baseFragment, String title) {
         if (baseFragment instanceof FrmEntities) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
         }
+        tvTitle.setText(title);
     }
 
     @Override
