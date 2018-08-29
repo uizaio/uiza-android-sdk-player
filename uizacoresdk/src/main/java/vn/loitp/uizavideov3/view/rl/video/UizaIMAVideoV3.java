@@ -252,6 +252,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             UizaDataV3.getInstance().clearDataForEntity();
         }
+        if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+            setVisibilityOfPlaylistFolderController(View.VISIBLE);
+        } else {
+            setVisibilityOfPlaylistFolderController(View.GONE);
+        }
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
@@ -2120,7 +2125,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
 
                     //show controller for playlist folder
-                    setVisibilityOfPlaylistFolderController(VISIBLE);
+                    //setVisibilityOfPlaylistFolderController(VISIBLE);
                 }
 
                 @Override
@@ -2142,7 +2147,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.hideProgress();
             }
             //show controller for playlist folder
-            setVisibilityOfPlaylistFolderController(VISIBLE);
+            //setVisibilityOfPlaylistFolderController(VISIBLE);
         }
     }
 
