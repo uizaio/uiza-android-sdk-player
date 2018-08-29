@@ -143,7 +143,7 @@ public interface UizaServiceV3 {
     @POST("/api/public/v3/live/entity/feed")
     Observable<Object> startALiveEvent(@Body BodyStartALiveFeed bodyStartALiveFeed);
 
-    @GET("/api/private/v3/live/entity/tracking/current-view")
+    @GET("/api/public/v3/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
 
     @GET("/api/private/v3/live/entity/tracking/")
