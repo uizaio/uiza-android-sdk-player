@@ -1,4 +1,4 @@
-package uiza.v4;
+package uiza.v4.login;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import uiza.R;
+import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -46,7 +47,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
         LUIUtil.setTextViewUnderLine(tvForgotPw);
         LUIUtil.setTextViewUnderLine(tvDontHaveAcc);
 
-        view.findViewById(R.id.iv_close_activity).setOnClickListener(this);
+        //view.findViewById(R.id.iv_close_activity).setOnClickListener(this);
 
         etId.addTextChangedListener(new TextWatcher() {
             @Override
@@ -113,9 +114,9 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
             case R.id.tv_login:
                 login();
                 break;
-            case R.id.iv_close_activity:
+            /*case R.id.iv_close_activity:
                 getActivity().onBackPressed();
-                break;
+                break;*/
         }
     }
 
@@ -127,7 +128,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     public void onDestroyView() {
-        ((HomeV4CanSlideActivity) getActivity()).llActionBar.setVisibility(View.VISIBLE);
+        ((HomeV4CanSlideActivity) getActivity()).setVisibilityBtSearch(View.VISIBLE);
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();
     }

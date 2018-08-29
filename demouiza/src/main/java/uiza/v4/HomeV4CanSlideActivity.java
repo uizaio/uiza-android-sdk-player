@@ -17,6 +17,7 @@ import android.widget.TextView;
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
+import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
@@ -77,7 +78,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
-                llActionBar.setVisibility(View.GONE);
+                setVisibilityBtSearch(View.INVISIBLE);
                 replaceFragment(new FrmLogin(), TITLE_LOGIN);
             }
         });
@@ -307,5 +308,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setVisibilityBtSearch(int visibilityBtSearch) {
+        btSearch.setVisibility(visibilityBtSearch);
     }
 }
