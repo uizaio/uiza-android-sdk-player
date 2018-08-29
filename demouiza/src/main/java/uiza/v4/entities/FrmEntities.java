@@ -39,7 +39,6 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private long backPressed;
 
     private final int limit = 20;
@@ -53,6 +52,11 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
     private ProgressBar pb;
+
+    @Override
+    protected String setTag() {
+        return "Entities";
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

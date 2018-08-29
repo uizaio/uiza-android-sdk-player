@@ -25,9 +25,10 @@ import vn.loitp.core.utilities.LDialogUtil;
 public abstract class BaseFragment extends Fragment {
     protected Context context;
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
-    protected final String BASE_TAG = BaseFragment.class.getSimpleName();
-
+    public String TAG = setTag();
     protected View frmRootView;
+
+    protected abstract String setTag();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

@@ -30,7 +30,6 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmCategories extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private RecyclerView recyclerView;
     private TextView tvMsg;
     private ProgressBar pb;
@@ -46,6 +45,11 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
         return false;
+    }
+
+    @Override
+    protected String setTag() {
+        return "Categories";
     }
 
     @Override

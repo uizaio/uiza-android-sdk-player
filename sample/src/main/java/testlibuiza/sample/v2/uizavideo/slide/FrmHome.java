@@ -14,7 +14,11 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
+
+    @Override
+    protected String setTag() {
+        return null;
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

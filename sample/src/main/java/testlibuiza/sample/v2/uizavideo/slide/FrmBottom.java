@@ -10,6 +10,11 @@ import vn.loitp.core.base.BaseFragment;
 public class FrmBottom extends BaseFragment {
 
     @Override
+    protected String setTag() {
+        return null;
+    }
+
+    @Override
     protected int setLayoutResourceId() {
         return R.layout.v2_frm_bottom;
     }

@@ -163,7 +163,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
         }
-        tvTitle.setText(baseFragment.getClass().getSimpleName());
+        tvTitle.setText(baseFragment.TAG);
     }
 
     @Override
@@ -244,7 +244,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             super.onBackPressed();
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
             //LLog.d(TAG, "loitp currentFragment " + currentFragment.getClass().getSimpleName());
-            tvTitle.setText(currentFragment.getClass().getSimpleName());
+            if (currentFragment instanceof BaseFragment) {
+                tvTitle.setText(((BaseFragment) currentFragment).TAG);
+            }
         }
     }
 

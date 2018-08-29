@@ -396,7 +396,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -418,7 +418,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType), new ApiSubscriber<ResultListEntity>() {
+        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));

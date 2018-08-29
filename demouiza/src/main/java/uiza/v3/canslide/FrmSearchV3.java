@@ -38,7 +38,6 @@ import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private ImageView ivBack;
     private ImageView ivClearText;
     private EditText etSearch;
@@ -52,6 +51,11 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
     private final int limit = 50;
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

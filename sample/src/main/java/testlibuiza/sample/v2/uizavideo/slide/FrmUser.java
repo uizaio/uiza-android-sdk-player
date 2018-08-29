@@ -9,7 +9,10 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmUser extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
+    @Override
+    protected String setTag() {
+        return null;
+    }
 
     @Override
     protected int setLayoutResourceId() {

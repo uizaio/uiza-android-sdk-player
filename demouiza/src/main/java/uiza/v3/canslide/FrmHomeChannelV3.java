@@ -37,7 +37,6 @@ import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
  */
 
 public class FrmHomeChannelV3 extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
     private TextView tv;
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
@@ -57,6 +56,11 @@ public class FrmHomeChannelV3 extends BaseFragment {
     private final String publishToCdn = "success";
     private boolean isLivestream;
     private String metadataId = "";
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

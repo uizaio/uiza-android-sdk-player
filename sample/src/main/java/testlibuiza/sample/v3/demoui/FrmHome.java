@@ -21,10 +21,14 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
 
     private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
     private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

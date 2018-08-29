@@ -17,8 +17,12 @@ import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
 
 public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Callback {
-    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

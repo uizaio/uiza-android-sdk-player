@@ -41,7 +41,6 @@ import vn.loitp.utils.util.KeyboardUtils;
 import vn.loitp.views.LToast;
 
 public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private ImageView ivBack;
     private ImageView ivClearText;
     private EditText etSearch;
@@ -56,6 +55,11 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     private List<Data> dataList = new ArrayList<>();
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
+
+    @Override
+    protected String setTag() {
+        return "Search";
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

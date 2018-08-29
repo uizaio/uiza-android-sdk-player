@@ -16,8 +16,12 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
 
 public class FrmVideoBottom extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     protected int setLayoutResourceId() {
