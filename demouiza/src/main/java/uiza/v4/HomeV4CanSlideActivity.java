@@ -268,15 +268,15 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        /*if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                        if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
                             LLog.d(TAG, "handleOnbackpressFrmEntities 2");
                         } else {
                             draggablePanel.minimize();
                             LLog.d(TAG, "handleOnbackpressFrmEntities 3");
                             return true;
-                        }*/
-                        draggablePanel.minimize();
-                        return true;
+                        }
+                        //draggablePanel.minimize();
+                        //return true;
                     } else {
                     }
                 } else {

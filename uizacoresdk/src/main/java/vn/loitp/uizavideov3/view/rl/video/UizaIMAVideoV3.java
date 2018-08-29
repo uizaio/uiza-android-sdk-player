@@ -1189,9 +1189,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else if (v == rlChromeCast) {
             //dangerous to remove
             //LLog.d(TAG, "do nothing click rl_chrome_cast");
-            if (uizaCallback != null) {
-                uizaCallback.onClickRlChromecast();
-            }
         } else if (v == exoFfwd) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
@@ -2023,7 +2020,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
-            //exoBackScreen.setVisibility(GONE);
+            exoBackScreen.setVisibility(GONE);
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -2044,7 +2041,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
-            //exoBackScreen.setVisibility(VISIBLE);
+            exoBackScreen.setVisibility(VISIBLE);
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
