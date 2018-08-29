@@ -45,7 +45,8 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
+        return false;
+        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     @Override

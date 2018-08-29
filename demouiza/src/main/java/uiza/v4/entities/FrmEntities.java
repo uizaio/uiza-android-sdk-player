@@ -108,7 +108,8 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
-        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
+        return false;
+        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     private void getListAllEntities() {

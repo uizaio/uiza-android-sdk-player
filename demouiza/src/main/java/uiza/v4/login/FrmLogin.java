@@ -125,7 +125,8 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     public boolean onBackPressed() {
-        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
+        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
+        return false;
     }
 
     @Override

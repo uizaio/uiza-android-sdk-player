@@ -194,21 +194,8 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
-        /*boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
-        if (isLandscapeScreen) {
-            LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
-        } else {
-            if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
-                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-                    return true;
-                } else {
-                }
-            } else {
-            }
-        }
-        return false;*/
-        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
+        return false;
+        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     @Override
