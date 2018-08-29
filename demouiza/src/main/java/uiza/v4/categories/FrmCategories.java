@@ -20,6 +20,7 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
+import uiza.v4.entities.FrmEntities;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -62,7 +63,9 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         mAdapter = new CategoriesAdapter(getActivity(), dataList, new CategoriesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                LLog.d(TAG, "onClick " + data.getName());
+                FrmEntities frmEntities = new FrmEntities();
+                frmEntities.setMetadataId(data.getId());
+                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(frmEntities);
             }
 
             @Override

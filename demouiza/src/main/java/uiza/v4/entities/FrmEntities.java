@@ -47,6 +47,11 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
     private ProgressBar pb;
+    private String metadataId = "";
+
+    public void setMetadataId(String metadataId) {
+        this.metadataId = metadataId;
+    }
 
     @Override
     protected String setTag() {
@@ -107,6 +112,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     }
 
     private void getListAllEntities() {
+        LLog.d(TAG, "getListAllEntities metadataId: " + metadataId);
         page++;
         if (page >= totalPage) {
             if (Constants.IS_DEBUG) {
@@ -121,7 +127,6 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        String metadataId = "";
         subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
