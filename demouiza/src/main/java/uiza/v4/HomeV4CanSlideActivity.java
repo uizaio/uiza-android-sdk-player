@@ -53,12 +53,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private TextView tvLivestream;
     private FloatingActionButton btSearch;
 
-    private final String TITLE_ENTITIES = "Entities";
-    private final String TITLE_CATEGORIES = "Categories";
-    private final String TITLE_LIVESTREAMING = "Livestreaming";
-    private final String TITLE_LOGIN = "Login";
-    private final String TITLE_SEARCH = "Search";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
@@ -79,14 +73,14 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 setVisibilityBtSearch(View.INVISIBLE);
-                replaceFragment(new FrmLogin(), TITLE_LOGIN);
+                replaceFragment(new FrmLogin());
             }
         });
         tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
         tvEntities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new FrmEntities(), TITLE_ENTITIES);
+                replaceFragment(new FrmEntities());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -94,7 +88,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new FrmCategories(), TITLE_CATEGORIES);
+                replaceFragment(new FrmCategories());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -125,7 +119,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 llActionBar.setVisibility(View.GONE);
-                replaceFragment(new FrmSearch(), TITLE_SEARCH);
+                replaceFragment(new FrmSearch());
             }
         });
 
@@ -160,16 +154,15 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             }
         });
         initializeDraggablePanel();
-        replaceFragment(new FrmEntities(), TITLE_ENTITIES);
+        replaceFragment(new FrmEntities());
     }
 
-    public void replaceFragment(BaseFragment baseFragment, String title) {
+    public void replaceFragment(BaseFragment baseFragment) {
         if (baseFragment instanceof FrmEntities) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
         }
-        tvTitle.setText(title);
     }
 
     @Override
@@ -245,6 +238,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        tvTitle.setText(fragment.getClass().getSimpleName());
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             LLog.d(TAG, "onBackPressed " + TAG);
             super.onBackPressed();
