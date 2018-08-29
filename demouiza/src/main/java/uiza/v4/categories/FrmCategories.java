@@ -62,6 +62,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         mAdapter = new CategoriesAdapter(getActivity(), dataList, new CategoriesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
+                LLog.d(TAG, "onClick " + data.getName());
             }
 
             @Override
