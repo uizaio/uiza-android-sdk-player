@@ -2015,6 +2015,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
             return;
         }
+        LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
             uizaPlayerManagerV3.setVolume(0f);
