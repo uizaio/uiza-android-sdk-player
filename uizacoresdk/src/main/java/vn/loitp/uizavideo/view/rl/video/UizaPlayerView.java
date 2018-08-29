@@ -68,6 +68,14 @@ public final class UizaPlayerView extends PlayerView implements PlayerControlVie
         }
     }
 
+    public void toggleShowHideController() {
+        if (controllerVisible) {
+            hideController();
+        } else {
+            showController();
+        }
+    }
+
     public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
         this.onTouchEvent = onTouchEvent;
     }

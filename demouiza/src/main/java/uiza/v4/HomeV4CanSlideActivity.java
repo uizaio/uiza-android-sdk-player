@@ -255,15 +255,24 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     private long backPressed;
 
     public boolean handleOnbackpressFrmEntities() {
+        //LLog.d(TAG, "handleOnbackpressFrmEntities");
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation(activity);
+                return true;
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
+                        /*if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                            LLog.d(TAG, "handleOnbackpressFrmEntities 2");
+                        } else {
+                            draggablePanel.minimize();
+                            LLog.d(TAG, "handleOnbackpressFrmEntities 3");
+                            return true;
+                        }*/
                         draggablePanel.minimize();
                         return true;
                     } else {
