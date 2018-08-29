@@ -52,6 +52,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
         LUIUtil.setTextShadow(holder.tvTitle);
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
+        holder.ivPlaylistFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onClickPlaylistFolder(data, position);
+                }
+            }
+        });
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +93,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
     public interface Callback {
         public void onClick(Data data, int position);
 
+        public void onClickPlaylistFolder(Data data, int position);
+
         public void onLongClick(Data data, int position);
 
         public void onLoadMore();
@@ -92,12 +103,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Da
     public class DataHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
         public ImageView ivThumnail;
+        public ImageView ivPlaylistFolder;
         public CardView cardView;
 
         public DataHolder(View view) {
             super(view);
             tvTitle = (TextView) view.findViewById(R.id.tv_title);
             ivThumnail = (ImageView) view.findViewById(R.id.iv_thumnail);
+            ivPlaylistFolder = (ImageView) view.findViewById(R.id.iv_playlist_folder);
             cardView = (CardView) view.findViewById(R.id.card_view);
         }
     }

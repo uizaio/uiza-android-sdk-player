@@ -19,6 +19,7 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
+import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -43,8 +44,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
-        return false;
+        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     @Override
@@ -63,6 +63,11 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
             @Override
             public void onClick(Data data, int position) {
                 LLog.d(TAG, "onClick " + data.getName());
+            }
+
+            @Override
+            public void onClickPlaylistFolder(Data data, int position) {
+                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(data.getId());
             }
 
             @Override

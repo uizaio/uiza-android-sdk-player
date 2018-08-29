@@ -17,7 +17,6 @@ import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.utils.util.KeyboardUtils;
@@ -126,8 +125,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
-        return false;
+        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     @Override

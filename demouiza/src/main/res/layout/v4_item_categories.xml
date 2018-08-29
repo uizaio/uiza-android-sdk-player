@@ -47,6 +47,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/iv_playlist_folder"
                 android:layout_width="@dimen/w_30"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"

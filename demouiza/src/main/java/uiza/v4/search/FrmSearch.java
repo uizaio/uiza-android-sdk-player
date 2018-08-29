@@ -23,12 +23,9 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
-import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
@@ -197,7 +194,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
-        boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
+        /*boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
         if (isLandscapeScreen) {
             LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
         } else {
@@ -210,7 +207,8 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
             } else {
             }
         }
-        return false;
+        return false;*/
+        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
     @Override

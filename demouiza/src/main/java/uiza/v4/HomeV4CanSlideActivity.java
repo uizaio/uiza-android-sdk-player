@@ -256,8 +256,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     private long backPressed;
 
-    public boolean handleOnbackpressFrmEntities() {
-        //LLog.d(TAG, "handleOnbackpressFrmEntities");
+    public boolean handleOnbackpressFrm() {
+        //LLog.d(TAG, "handleOnbackpressFrm");
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
@@ -269,10 +269,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
                         if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
-                            LLog.d(TAG, "handleOnbackpressFrmEntities 2");
+                            LLog.d(TAG, "handleOnbackpressFrm 2");
                         } else {
                             draggablePanel.minimize();
-                            LLog.d(TAG, "handleOnbackpressFrmEntities 3");
+                            LLog.d(TAG, "handleOnbackpressFrm 3");
                             return true;
                         }
                         //draggablePanel.minimize();
