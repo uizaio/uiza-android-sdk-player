@@ -20,13 +20,10 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
 import vn.loitp.restapi.uiza.UizaServiceV3;
@@ -39,8 +36,6 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
-    private long backPressed;
-
     private final int limit = 20;
     private final String orderBy = "createdAt";
     private RecyclerView recyclerView;
@@ -108,26 +103,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public boolean onBackPressed() {
         LLog.d(TAG, "onBackPressed " + TAG);
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            return false;
-        } else {
-            boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
-            if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
-            } else {
-                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
-                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-                        return true;
-                    } else {
-                    }
-                } else {
-                }
-            }
-            LToast.show(getActivity(), getString(R.string.press_again_to_exit));
-        }
-        backPressed = System.currentTimeMillis();
-        return true;
+        return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrmEntities();
     }
 
     private void getListAllEntities() {

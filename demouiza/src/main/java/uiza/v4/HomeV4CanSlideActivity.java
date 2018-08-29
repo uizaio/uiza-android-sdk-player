@@ -22,6 +22,7 @@ import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -29,6 +30,7 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -248,6 +250,31 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 tvTitle.setText(((BaseFragment) currentFragment).TAG);
             }
         }
+    }
+
+    private long backPressed;
+
+    public boolean handleOnbackpressFrmEntities() {
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            return false;
+        } else {
+            boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
+            if (isLandscapeScreen) {
+                LActivityUtil.toggleScreenOritation(activity);
+            } else {
+                if (draggablePanel.getVisibility() == View.VISIBLE) {
+                    if (draggablePanel.isMaximized()) {
+                        draggablePanel.minimize();
+                        return true;
+                    } else {
+                    }
+                } else {
+                }
+            }
+            LToast.show(activity, getString(R.string.press_again_to_exit));
+        }
+        backPressed = System.currentTimeMillis();
+        return true;
     }
 
     public void playEntityId(final String entityId) {
