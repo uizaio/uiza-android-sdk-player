@@ -320,6 +320,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
     }
 
     @Override
+    public void onClickRlChromecast() {
+
+    }
+
+    @Override
     public void onClickPip(Intent intent) {
         ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().setVisibility(View.INVISIBLE);
     }

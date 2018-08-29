@@ -303,6 +303,13 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }
 
     @Override
+    public void onClickRlChromecast() {
+        if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMinimized()) {
+            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().maximize();
+        }
+    }
+
+    @Override
     public void onClickPip(Intent intent) {
         LLog.d(TAG, "onClickPip");
     }

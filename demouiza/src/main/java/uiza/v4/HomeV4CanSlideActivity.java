@@ -136,9 +136,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
                 frmVideoTop.getUizaIMAVideoV3().hideController();
-                if (frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
-                    draggablePanel.setEnableSlide(true);
-                }
             }
 
             @Override
@@ -228,7 +225,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                draggablePanel.setEnableSlide(true);
+                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    draggablePanel.setEnableSlide(true);
+                }
             }
         }
     }

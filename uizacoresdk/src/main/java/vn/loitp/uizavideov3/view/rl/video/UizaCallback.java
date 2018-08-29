@@ -16,6 +16,9 @@ public interface UizaCallback {
     //user click button back in controller
     public void onClickBack();
 
+    //user click rlChromeCast
+    public void onClickRlChromecast();
+
     //user click button pip in controller
     public void onClickPip(Intent intent);
 

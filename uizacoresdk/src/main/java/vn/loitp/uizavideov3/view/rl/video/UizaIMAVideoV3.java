@@ -1189,6 +1189,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else if (v == rlChromeCast) {
             //dangerous to remove
             //LLog.d(TAG, "do nothing click rl_chrome_cast");
+            if (uizaCallback != null) {
+                uizaCallback.onClickRlChromecast();
+            }
         } else if (v == exoFfwd) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
