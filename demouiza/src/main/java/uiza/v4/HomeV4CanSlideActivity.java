@@ -136,6 +136,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
                 frmVideoTop.getUizaIMAVideoV3().hideController();
+                if (frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    draggablePanel.setEnableSlide(true);
+                }
             }
 
             @Override
