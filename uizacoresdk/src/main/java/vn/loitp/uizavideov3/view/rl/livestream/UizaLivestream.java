@@ -434,12 +434,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 try {
                     responseBody = error.response().errorBody().string();
                     ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                    Log.e(TAG, "startLivestream onFail " + errorBody);
+                    //Log.e(TAG, "startLivestream onFail " + errorBody);
                     if (callback != null) {
                         callback.onError(errorBody.getMessage());
                     }
                 } catch (IOException e1) {
-                    Log.e(TAG, "startLivestream IOException " + e1.toString());
+                    //Log.e(TAG, "startLivestream IOException " + e1.toString());
                     if (callback != null) {
                         callback.onError(e1.getMessage());
                     }
