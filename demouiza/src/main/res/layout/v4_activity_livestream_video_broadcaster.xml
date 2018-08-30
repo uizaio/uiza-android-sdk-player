@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_example_rtmp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,22 +45,32 @@
         android:textColor="@color/White"
         android:textSize="@dimen/txt_18" />
 
-    <ImageView
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/b_switch_camera"
-        android:layout_width="@dimen/w_50"
-        android:layout_height="@dimen/w_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_5"
+        android:layout_margin="@dimen/margin_10"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/baseline_switch_video_white_48dp" />
+        android:src="@drawable/baseline_switch_video_white_48dp"
+        android:tint="@color/primaryColor"
+        app:backgroundTint="@color/White"
+        app:borderWidth="@dimen/w_1"
+        app:elevation="@dimen/w_1"
+        app:fabSize="mini" />
 
-    <ImageView
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/b_filter"
-        android:layout_width="@dimen/w_50"
-        android:layout_height="@dimen/w_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/b_switch_camera"
-        android:layout_marginRight="@dimen/margin_5"
+        android:layout_margin="@dimen/margin_10"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/baseline_movie_filter_white_48dp" />
+        android:src="@drawable/baseline_movie_filter_white_48dp"
+        android:tint="@color/primaryColor"
+        app:backgroundTint="@color/White"
+        app:borderWidth="@dimen/w_1"
+        app:elevation="@dimen/w_1"
+        app:fabSize="mini" />
 </RelativeLayout>

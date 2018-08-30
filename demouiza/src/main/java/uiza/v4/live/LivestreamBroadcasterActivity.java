@@ -4,10 +4,10 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import uiza.R;
@@ -59,8 +59,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private UizaLivestream uizaLivestream;
     private TextView bStartStop;
     private TextView bStartStopStore;
-    private ImageView btSwitchCamera;
-    private ImageView btFilter;
+    private FloatingActionButton btSwitchCamera;
+    private FloatingActionButton btFilter;
 
     @Override
     protected boolean setFullScreen() {
