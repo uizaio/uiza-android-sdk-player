@@ -66,7 +66,8 @@ public class AudioEncoder implements GetMicrophoneData {
             MediaFormat audioFormat = MediaFormat.createAudioFormat(CodecUtil.AAC_MIME, sampleRate, a);
             audioFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
             audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
-            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);//work
+            //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLTP);
             audioEncoder.configure(audioFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             running = false;
             return true;

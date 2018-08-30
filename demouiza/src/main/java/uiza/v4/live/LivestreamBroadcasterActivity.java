@@ -1,7 +1,6 @@
 package uiza.v4.live;
 
 import android.graphics.Color;
-import android.media.MediaCodecInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
@@ -52,7 +49,6 @@ import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SharpnessFilterRe
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
-import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideov3.view.rl.livestream.PresetLiveStreamingFeed;
@@ -110,10 +106,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         uizaLivestream.setId(entityId);
 
+        /*String x = "";
         List<MediaCodecInfo> mediaCodecInfos = CodecUtil.getAllCodecs();
         for (MediaCodecInfo mediaCodecInfo : mediaCodecInfos) {
-            LLog.d(TAG, "loitp " + mediaCodecInfo.getName());
+            x += mediaCodecInfo.getName() + "\n";
         }
+        LLog.d(TAG, "loitp " + x);*/
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -263,12 +261,14 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 }
                 if (uizaLivestream.isStreaming()) {
                     bStartStop.setText("Stop streaming");
-                    bStartStopStore.setEnabled(false);
                     bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
+
+                    bStartStopStore.setVisibility(View.GONE);
                 } else {
                     bStartStop.setText("Start streaming");
-                    bStartStopStore.setEnabled(true);
                     bStartStop.setBackgroundResource(R.drawable.bt_live_enable);
+
+                    bStartStopStore.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.b_start_stop_store:
@@ -284,12 +284,14 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 }
                 if (uizaLivestream.isStreaming()) {
                     bStartStopStore.setText("Stop streaming");
-                    bStartStop.setEnabled(false);
                     bStartStopStore.setBackgroundResource(R.drawable.bt_live_disabled);
+
+                    bStartStop.setVisibility(View.GONE);
                 } else {
                     bStartStopStore.setText("Start stream and Store");
-                    bStartStop.setEnabled(true);
                     bStartStopStore.setBackgroundResource(R.drawable.bt_live_enable);
+
+                    bStartStop.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.b_switch_camera:

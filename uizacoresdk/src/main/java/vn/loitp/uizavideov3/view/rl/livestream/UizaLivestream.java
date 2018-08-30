@@ -446,13 +446,13 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 try {
                     responseBody = error.response().errorBody().string();
                     ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                    //Log.e(TAG, "startLivestream onFail " + errorBody);
+                    Log.e(TAG, "startLivestream onFail try " + errorBody);
                     /*if (callback != null) {
                         callback.onError(errorBody.getMessage());
                     }*/
                     getDetailEntity(entityLiveId, true, errorBody.getMessage());
                 } catch (IOException e1) {
-                    //Log.e(TAG, "startLivestream IOException " + e1.toString());
+                    Log.e(TAG, "startLivestream IOException catch " + e1.toString());
                     /*if (callback != null) {
                         callback.onError(e1.getMessage());
                     }*/
@@ -466,7 +466,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
                     throw new NullPointerException("Data is null");
                 }
@@ -499,6 +499,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
                         if (callback != null) {
+                            LLog.d(TAG, "isErrorStartLive -> onError Last process null");
                             callback.onError("Error: Last process null");
                         }
                     } else {
@@ -516,6 +517,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     }
                 } else {
                     if (callback != null) {
+                        LLog.d(TAG, "onGetDataSuccess");
                         callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                     }
                 }

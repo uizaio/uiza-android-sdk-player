@@ -40,10 +40,16 @@ public class SplashActivityV3 extends BaseActivity {
     private int environment = Constants.ENVIRONMENT_PROD;*/
 
     //workspace Loc
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+    /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private int environment = Constants.ENVIRONMENT_PROD;
+    private int environment = Constants.ENVIRONMENT_PROD;*/
+
+    //workspace stag
+    private final String DF_DOMAIN_API = "stagyann007.uiza.co";
+    private final String DF_TOKEN = "uap-91d64fe24bf5435f9ff4ad74a5195f4c-c055d414";
+    private final String DF_APP_ID = "91d64fe24bf5435f9ff4ad74a5195f4c";
+    private int environment = Constants.ENVIRONMENT_STAG;
 
     private EditText etApiDomain;
     private EditText etKey;
