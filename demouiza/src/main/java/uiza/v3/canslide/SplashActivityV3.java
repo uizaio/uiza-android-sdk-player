@@ -28,10 +28,10 @@ public class SplashActivityV3 extends BaseActivity {
     private String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
     //workspace loitp
-    /*private final String DF_DOMAIN_API = "android-api.uiza.co";
+    private final String DF_DOMAIN_API = "android-api.uiza.co";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
     private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-    private int environment = Constants.ENVIRONMENT_STAG;*/
+    private int environment = Constants.ENVIRONMENT_STAG;
 
     //workspace Yan
     /*private final String DF_DOMAIN_API = "wworkspace-api.uiza.co";
@@ -40,10 +40,10 @@ public class SplashActivityV3 extends BaseActivity {
     private int environment = Constants.ENVIRONMENT_PROD;*/
 
     //workspace Loc
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+    /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private int environment = Constants.ENVIRONMENT_PROD;
+    private int environment = Constants.ENVIRONMENT_PROD;*/
 
     //workspace stag
     /*private final String DF_DOMAIN_API = "stagyann007.uiza.co";
