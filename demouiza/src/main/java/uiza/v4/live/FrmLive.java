@@ -20,7 +20,6 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import uiza.v4.entities.EntitiesAdapter;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
@@ -43,7 +42,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     private final String orderType = "DESC";
     private final String publishToCdn = "success";
     private RecyclerView recyclerView;
-    private EntitiesAdapter mAdapter;
+    private LiveAdapter mAdapter;
     private TextView tvMsg;
     private List<Data> dataList = new ArrayList<>();
     private int page = 0;
@@ -74,11 +73,15 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         LUIUtil.setColorProgressBar(pb, Color.WHITE);
         LDialogUtil.hide(pb);
 
-        mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
+        mAdapter = new LiveAdapter(getActivity(), dataList, new LiveAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                UizaUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
+                if (data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
+                    UizaUtil.setClickedPip(getActivity(), false);
+                    ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
+                } else {
+                    LToast.show(getActivity(), "This content is not streaming now");
+                }
             }
 
             @Override

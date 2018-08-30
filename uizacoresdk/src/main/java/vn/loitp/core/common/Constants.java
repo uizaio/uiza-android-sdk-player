@@ -145,4 +145,7 @@ public class Constants {
 
     public static final int RATIO_LAND_MOBILE = 18;
     public static final int RATIO_PORTRAIT_MOBILE = 12;
+
+    public static final String LAST_PROCESS_START = "start";
+    public static final String LAST_PROCESS_STOP = "stop";
 }
