@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -26,11 +25,13 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.utils.util.AppUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
@@ -68,8 +69,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         actionBarDrawerToggle.syncState();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView = (NavigationView) findViewById(R.id.nv);
-        NestedScrollView nestedScrollView = (NestedScrollView) navigationView.findViewById(R.id.scroll_view);
-        LUIUtil.setPullLikeIOSVertical(nestedScrollView);
 
         navigationView.findViewById(R.id.ll_home).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +77,15 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 LLog.d(TAG, "onClick ll_home");
             }
         });
+        navigationView.findViewById(R.id.ll_browser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LSocialUtil.openUrlInBrowser(activity, "https://uiza.io/");
+            }
+        });
 
+        TextView tvCopyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
+        tvCopyright.setText("© 2018 Uiza. All rights reserved.\nVersion " + AppUtils.getAppVersionCode() + "\nContact: Loitp@uiza.io");
         TextView tvLogin = (TextView) navigationView.findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
