@@ -51,6 +51,8 @@ import vn.loitp.views.LToast;
 
 public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
+    //TODO remove gson later
+    private Gson gson = new Gson();
     private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
     private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Uizalivestream");
@@ -255,6 +257,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideoHD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         Camera.Size size = getCorrectCameraSize(1280, 720);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -265,6 +271,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideoSD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         Camera.Size size = getCorrectCameraSize(640, 360);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -274,6 +284,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
         rtmpCamera1.startPreview(width, height);
         boolean isPrepareVideo = rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
@@ -396,8 +410,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
-
+        //Chỉ cần gọi start live thôi, ko cần quan tâm đến kết quả của api này start success hay ko
+        //Vẫn tiếp tục gọi detail entity để lấy streamUrl
         startLivestream(entityLiveId);
+        getDetailEntity(entityLiveId);
     }
 
     private void startLivestream(final String entityLiveId) {
@@ -407,18 +423,16 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                //LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
-                getDetailEntity(entityLiveId);
+                LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
             }
 
             @Override
             public void onFail(Throwable e) {
-                //Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
+                Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
                 HttpException error = (HttpException) e;
                 String responseBody = null;
                 try {
                     responseBody = error.response().errorBody().string();
-                    Gson gson = new Gson();
                     ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
                     Log.e(TAG, "startLivestream onFail " + errorBody);
                     if (callback != null) {
@@ -438,14 +452,14 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
+                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
                     throw new NullPointerException("Data is null");
                 }
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 String mainUrl = streamUrl + "/" + streamKey;
-                LLog.d(TAG, "mainUrl: " + mainUrl);
+                LLog.d(TAG, ">>>>mainUrl: " + mainUrl);
 
                 mainStreamUrl = mainUrl;
 
