@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
@@ -23,6 +26,8 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImageView iv = (ImageView) view.findViewById(R.id.iv);
+        LImageUtil.load(getActivity(), Constants.URL_IMG_THUMBNAIL_2, iv);
     }
 
     @Override
@@ -30,13 +35,8 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         return R.layout.v4_frm_home;
     }
 
-    private void login() {
-        //TODO login later
-    }
-
     @Override
     public boolean onBackPressed() {
-        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
         return false;
     }
 }

@@ -261,15 +261,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         }
     }
 
-    public void addFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmEntities) {
-            LScreenUtil.addFragment(activity, R.id.fl_container, baseFragment, false);
-        } else {
-            LScreenUtil.addFragment(activity, R.id.fl_container, baseFragment, true);
-        }
-        tvTitle.setText(baseFragment.TAG);
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(Gravity.START)) {
