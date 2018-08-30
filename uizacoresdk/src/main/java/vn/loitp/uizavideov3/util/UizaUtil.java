@@ -564,10 +564,11 @@ public class UizaUtil {
     }*/
 
     private static void play(final UizaIMAVideoV3 uizaIMAVideoV3, final String entityId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
+        /*if (UizaDataV3.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer");
             return;
-        }
+        }*/
+        UizaDataV3.getInstance().setSettingPlayer(false);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
@@ -577,9 +578,11 @@ public class UizaUtil {
     }
 
     private static void playPlaylist(final UizaIMAVideoV3 uizaIMAVideoV3, final String metadataId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
+        /*if (UizaDataV3.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "isSettingPlayer");
             return;
-        }
+        }*/
+        UizaDataV3.getInstance().setSettingPlayer(false);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {

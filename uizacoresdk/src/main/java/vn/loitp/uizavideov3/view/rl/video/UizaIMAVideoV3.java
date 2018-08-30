@@ -1034,8 +1034,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar,
-                                   final int progressSeekbar) {
+    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
         verticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
