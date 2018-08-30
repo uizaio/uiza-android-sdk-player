@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import uiza.R;
 import uiza.app.LSApplication;
@@ -56,8 +57,8 @@ import vn.loitp.views.LToast;
 
 public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UizaLivestream.Callback {
     private UizaLivestream uizaLivestream;
-    private Button bStartStop;
-    private Button bStartStopStore;
+    private TextView bStartStop;
+    private TextView bStartStopStore;
     private Button btSwitchCamera;
     private Button btFilter;
 
@@ -92,8 +93,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
-        btSwitchCamera.setEnabled(false);
-        btFilter.setEnabled(false);
+        bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
+        bStartStopStore.setBackgroundResource(R.drawable.bt_live_disabled);
+        btSwitchCamera.setVisibility(View.GONE);
+        btFilter.setVisibility(View.GONE);
 
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
@@ -310,8 +313,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
-        btSwitchCamera.setEnabled(true);
-        btFilter.setEnabled(true);
+        bStartStop.setBackgroundResource(R.drawable.bt_live_enable);
+        bStartStopStore.setBackgroundResource(R.drawable.bt_live_enable);
+        btSwitchCamera.setVisibility(View.VISIBLE);
+        btFilter.setVisibility(View.VISIBLE);
     }
 
     @Override

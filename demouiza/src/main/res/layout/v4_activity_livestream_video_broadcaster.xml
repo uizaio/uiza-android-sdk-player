@@ -2,43 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_example_rtmp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream
         android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/b_start_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/b_start_stop_store"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:background="@drawable/bt_live_enable"
+        android:paddingBottom="@dimen/padding_3"
+        android:paddingLeft="@dimen/padding_10"
+        android:paddingRight="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_3"
+        android:text="@string/start_button"
+        android:textAllCaps="false"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_25" />
+
+    <TextView
+        android:id="@+id/b_start_stop_store"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:background="@drawable/bt_live_enable"
+        android:paddingBottom="@dimen/padding_3"
+        android:paddingLeft="@dimen/padding_10"
+        android:paddingRight="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_3"
+        android:text="@string/start_button_saved"
+        android:textAllCaps="false"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_25" />
 
-        <Button
-            android:id="@+id/b_start_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_button" />
+    <Button
+        android:id="@+id/b_switch_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="@string/switch_camera_button" />
 
-        <Button
-            android:id="@+id/b_start_stop_store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_button_saved" />
-
-        <Button
-            android:id="@+id/b_switch_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/switch_camera_button" />
-
-        <Button
-            android:id="@+id/b_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/b_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/b_switch_camera"
+        android:text="Filter" />
 </RelativeLayout>
