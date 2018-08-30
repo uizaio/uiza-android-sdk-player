@@ -24,7 +24,7 @@
         android:paddingRight="@dimen/padding_10"
         android:paddingTop="@dimen/padding_3"
         android:text="@string/start_button"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="@color/White"
         android:textSize="@dimen/txt_18" />
 
@@ -41,7 +41,7 @@
         android:paddingRight="@dimen/padding_10"
         android:paddingTop="@dimen/padding_3"
         android:text="@string/start_button_saved"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="@color/White"
         android:textSize="@dimen/txt_18" />
 
