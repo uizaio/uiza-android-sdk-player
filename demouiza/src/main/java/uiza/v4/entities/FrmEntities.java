@@ -53,9 +53,15 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         this.metadataId = metadataId;
     }
 
+    public final static String TAG_ENTITIES = "Entities";
+
     @Override
     protected String setTag() {
-        return "Entities";
+        return TAG_ENTITIES;
+    }
+
+    public void setTag(String tag) {
+        TAG = tag;
     }
 
     @Override

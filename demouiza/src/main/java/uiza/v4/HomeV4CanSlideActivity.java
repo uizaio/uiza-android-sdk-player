@@ -2,6 +2,7 @@ package uiza.v4;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -159,6 +160,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         replaceFragment(new FrmEntities());
     }
 
+    private boolean doubleBackToExitPressedOnce = false;
+
     public void replaceFragment(BaseFragment baseFragment) {
         if (baseFragment instanceof FrmEntities) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
@@ -240,52 +243,59 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         }
     }
 
+    public void addFragment(BaseFragment baseFragment) {
+        if (baseFragment instanceof FrmEntities) {
+            LScreenUtil.addFragment(activity, R.id.fl_container, baseFragment, false);
+        } else {
+            LScreenUtil.addFragment(activity, R.id.fl_container, baseFragment, true);
+        }
+        tvTitle.setText(baseFragment.TAG);
+    }
+
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        //LLog.d(TAG, "loitp " + fragment.getClass().getSimpleName());
-        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            super.onBackPressed();
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-            //LLog.d(TAG, "loitp currentFragment " + currentFragment.getClass().getSimpleName());
-            if (currentFragment instanceof BaseFragment) {
-                tvTitle.setText(((BaseFragment) currentFragment).TAG);
+        LLog.d(TAG, "loitp before " + fragment.getClass().getSimpleName());
+        if (fragment instanceof FrmEntities) {
+            if (((FrmEntities) fragment).TAG.equals(FrmEntities.TAG_ENTITIES)) {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed();
+                    return;
+                }
+                this.doubleBackToExitPressedOnce = true;
+                LToast.show(activity, "Please click BACK again to exit");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+                return;
             }
         }
-    }
-
-    private long backPressed;
-
-    public boolean handleOnbackpressFrm() {
-        //LLog.d(TAG, "handleOnbackpressFrm");
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            return false;
-        } else {
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation(activity);
-                return true;
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
                         if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
-                            LLog.d(TAG, "handleOnbackpressFrm 2");
                         } else {
                             draggablePanel.minimize();
-                            LLog.d(TAG, "handleOnbackpressFrm 3");
-                            return true;
                         }
                         //draggablePanel.minimize();
-                        //return true;
-                    } else {
+                        return;
                     }
-                } else {
+                }
+                super.onBackPressed();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+                LLog.d(TAG, "loitp after " + currentFragment.getClass().getSimpleName());
+                if (currentFragment instanceof BaseFragment) {
+                    tvTitle.setText(((BaseFragment) currentFragment).TAG);
                 }
             }
-            LToast.show(activity, getString(R.string.press_again_to_exit));
         }
-        backPressed = System.currentTimeMillis();
-        return true;
     }
 
     public void playEntityId(final String entityId) {

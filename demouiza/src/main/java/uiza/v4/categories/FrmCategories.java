@@ -65,6 +65,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
             @Override
             public void onClick(Data data, int position) {
                 FrmEntities frmEntities = new FrmEntities();
+                frmEntities.setTag(data.getName());
                 frmEntities.setMetadataId(data.getId());
                 ((HomeV4CanSlideActivity) getActivity()).replaceFragment(frmEntities);
             }
