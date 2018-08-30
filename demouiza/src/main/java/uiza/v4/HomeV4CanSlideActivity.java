@@ -272,8 +272,12 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START, true);
+            return;
+        }
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        LLog.d(TAG, "loitp before " + fragment.getClass().getSimpleName());
+        //LLog.d(TAG, "onBackPressed before " + fragment.getClass().getSimpleName());
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
@@ -316,7 +320,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 }
                 super.onBackPressed();
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-                LLog.d(TAG, "loitp after " + currentFragment.getClass().getSimpleName());
+                //LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
                 if (currentFragment instanceof BaseFragment) {
                     tvTitle.setText(((BaseFragment) currentFragment).TAG);
                 }
