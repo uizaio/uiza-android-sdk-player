@@ -237,7 +237,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     public void startStream(String streamUrl, boolean isSavedToDevice) {
         rtmpCamera1.startStream(streamUrl);
-
+        LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
         if (isSavedToDevice) {
             startRecord();
         }

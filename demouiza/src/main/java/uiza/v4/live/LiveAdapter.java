@@ -49,12 +49,14 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
         holder.cardView.getLayoutParams().height = sizeH;
         holder.cardView.requestLayout();
 
-        if (data.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_START)) {
-            holder.tvLastProcess.setVisibility(View.VISIBLE);
-            //holder.ivLivestream.setVisibility(View.GONE);
-        } else {
-            holder.tvLastProcess.setVisibility(View.GONE);
-            //holder.ivLivestream.setVisibility(View.VISIBLE);
+        if (data.getLastProcess() != null) {
+            if (data.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_START)) {
+                holder.tvLastProcess.setVisibility(View.VISIBLE);
+                //holder.ivLivestream.setVisibility(View.GONE);
+            } else {
+                holder.tvLastProcess.setVisibility(View.GONE);
+                //holder.ivLivestream.setVisibility(View.VISIBLE);
+            }
         }
 
         holder.tvTitle.setText(data.getName());

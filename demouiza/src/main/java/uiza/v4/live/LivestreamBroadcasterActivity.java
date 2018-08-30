@@ -91,12 +91,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = (Button) findViewById(R.id.b_filter);
 
-        bStartStop.setEnabled(false);
+        /*bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
         bStartStopStore.setBackgroundResource(R.drawable.bt_live_disabled);
         btSwitchCamera.setVisibility(View.GONE);
-        btFilter.setVisibility(View.GONE);
+        btFilter.setVisibility(View.GONE);*/
 
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
@@ -263,12 +263,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     bStartStop.setText("Stop streaming");
                     bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
 
-                    bStartStopStore.setVisibility(View.GONE);
+                    bStartStopStore.setVisibility(View.INVISIBLE);
                 } else {
                     bStartStop.setText("Start streaming");
                     bStartStop.setBackgroundResource(R.drawable.bt_live_enable);
 
-                    bStartStopStore.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.INVISIBLE);
                 }
                 break;
             case R.id.b_start_stop_store:
@@ -347,6 +347,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onDisconnectRtmp() {
         LLog.d(TAG, "onDisconnectRtmp");
+        /*runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bStartStop.performClick();
+            }
+        });*/
     }
 
     @Override
