@@ -91,10 +91,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = findViewById(R.id.b_filter);
 
-        /*bStartStop.setVisibility(View.INVISIBLE);
+        bStartStop.setVisibility(View.INVISIBLE);
         bStartStopStore.setVisibility(View.INVISIBLE);
         btSwitchCamera.setVisibility(View.INVISIBLE);
-        btFilter.setVisibility(View.INVISIBLE);*/
+        btFilter.setVisibility(View.INVISIBLE);
 
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
@@ -319,10 +319,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
         LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
-        /*bStartStop.setVisibility(View.VISIBLE);
+        bStartStop.setVisibility(View.VISIBLE);
         bStartStopStore.setVisibility(View.VISIBLE);
         btSwitchCamera.setVisibility(View.VISIBLE);
-        btFilter.setVisibility(View.VISIBLE);*/
+        btFilter.setVisibility(View.VISIBLE);
     }
 
     @Override
