@@ -63,10 +63,10 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         mAdapter = new CategoriesAdapter(getActivity(), dataList, new CategoriesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                /*FrmEntities frmEntities = new FrmEntities();
-                frmEntities.setTag(data.getName());
-                frmEntities.setMetadataId(data.getId());
-                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(frmEntities);*/
+                FrmEntitiesOfCategory frmEntitiesOfCategory = new FrmEntitiesOfCategory();
+                frmEntitiesOfCategory.setTag(data.getName());
+                frmEntitiesOfCategory.setMetadataId(data.getId());
+                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(frmEntitiesOfCategory);
             }
 
             @Override
@@ -80,7 +80,6 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onLoadMore() {
-
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
