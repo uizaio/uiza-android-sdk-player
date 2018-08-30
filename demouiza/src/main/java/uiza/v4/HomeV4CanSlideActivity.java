@@ -18,6 +18,7 @@ import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
 import uiza.v4.home.FrmHome;
+import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
@@ -117,8 +118,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         tvLivestream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                LLog.d(TAG, "onClick tv_livestream");
+                replaceFragment(new FrmLive());
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
