@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import uiza.R;
@@ -59,8 +59,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private UizaLivestream uizaLivestream;
     private TextView bStartStop;
     private TextView bStartStopStore;
-    private Button btSwitchCamera;
-    private Button btFilter;
+    private ImageView btSwitchCamera;
+    private ImageView btFilter;
 
     @Override
     protected boolean setFullScreen() {
@@ -89,14 +89,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
-        btFilter = (Button) findViewById(R.id.b_filter);
+        btFilter = findViewById(R.id.b_filter);
 
-        /*bStartStop.setEnabled(false);
-        bStartStopStore.setEnabled(false);
-        bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
-        bStartStopStore.setBackgroundResource(R.drawable.bt_live_disabled);
-        btSwitchCamera.setVisibility(View.GONE);
-        btFilter.setVisibility(View.GONE);*/
+        bStartStop.setVisibility(View.INVISIBLE);
+        bStartStopStore.setVisibility(View.INVISIBLE);
+        btSwitchCamera.setVisibility(View.INVISIBLE);
+        btFilter.setVisibility(View.INVISIBLE);
 
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
@@ -260,15 +258,13 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     uizaLivestream.stopStream();
                 }
                 if (uizaLivestream.isStreaming()) {
-                    bStartStop.setText("Stop streaming");
-                    bStartStop.setBackgroundResource(R.drawable.bt_live_disabled);
-
+                    bStartStop.setText("Stop");
+                    bStartStop.setVisibility(View.VISIBLE);
                     bStartStopStore.setVisibility(View.INVISIBLE);
                 } else {
-                    bStartStop.setText("Start streaming");
-                    bStartStop.setBackgroundResource(R.drawable.bt_live_enable);
-
-                    bStartStopStore.setVisibility(View.INVISIBLE);
+                    bStartStop.setText("Start");
+                    bStartStop.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.b_start_stop_store:
@@ -283,15 +279,13 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     uizaLivestream.stopStream();
                 }
                 if (uizaLivestream.isStreaming()) {
-                    bStartStopStore.setText("Stop streaming");
-                    bStartStopStore.setBackgroundResource(R.drawable.bt_live_disabled);
-
-                    bStartStop.setVisibility(View.GONE);
+                    bStartStopStore.setText("Stop - save");
+                    bStartStop.setVisibility(View.INVISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
                 } else {
-                    bStartStopStore.setText("Start stream and Store");
-                    bStartStopStore.setBackgroundResource(R.drawable.bt_live_enable);
-
+                    bStartStopStore.setText("Start - save");
                     bStartStop.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.b_switch_camera:
@@ -325,11 +319,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
         LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
-
-        bStartStop.setEnabled(true);
-        bStartStopStore.setEnabled(true);
-        bStartStop.setBackgroundResource(R.drawable.bt_live_enable);
-        bStartStopStore.setBackgroundResource(R.drawable.bt_live_enable);
+        bStartStop.setVisibility(View.VISIBLE);
+        bStartStopStore.setVisibility(View.VISIBLE);
         btSwitchCamera.setVisibility(View.VISIBLE);
         btFilter.setVisibility(View.VISIBLE);
     }
@@ -347,12 +338,16 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onDisconnectRtmp() {
         LLog.d(TAG, "onDisconnectRtmp");
-        /*runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                bStartStop.performClick();
+                if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                    uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
+                } else {
+                    LToast.show(activity, "Cannot start");
+                }
             }
-        });*/
+        });
     }
 
     @Override

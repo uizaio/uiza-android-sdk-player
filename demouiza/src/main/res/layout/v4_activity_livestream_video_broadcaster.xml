@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/b_start_stop_store"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_25"
         android:background="@drawable/bt_live_enable"
         android:paddingBottom="@dimen/padding_3"
         android:paddingLeft="@dimen/padding_10"
@@ -44,18 +44,22 @@
         android:textColor="@color/White"
         android:textSize="@dimen/txt_18" />
 
-    <Button
+    <ImageView
         android:id="@+id/b_switch_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/w_50"
+        android:layout_height="@dimen/w_50"
         android:layout_alignParentRight="true"
-        android:text="@string/switch_camera_button" />
+        android:layout_marginRight="@dimen/margin_5"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/baseline_switch_video_white_48dp" />
 
-    <Button
+    <ImageView
         android:id="@+id/b_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/w_50"
+        android:layout_height="@dimen/w_50"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/b_switch_camera"
-        android:text="Filter" />
+        android:layout_marginRight="@dimen/margin_5"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/baseline_movie_filter_white_48dp" />
 </RelativeLayout>

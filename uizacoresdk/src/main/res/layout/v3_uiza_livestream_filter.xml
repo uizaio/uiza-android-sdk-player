@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_5"
-        android:layout_marginTop="@dimen/margin_25"
+        android:layout_marginTop="@dimen/margin_5"
         android:background="@drawable/background_live"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
