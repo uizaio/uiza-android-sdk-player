@@ -17,6 +17,7 @@ import android.widget.TextView;
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
+import uiza.v4.home.FrmHome;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
@@ -73,14 +74,15 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         navigationView.findViewById(R.id.ll_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                LLog.d(TAG, "onClick ll_home");
+                replaceFragment(new FrmHome());
+                drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
         navigationView.findViewById(R.id.ll_browser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LSocialUtil.openUrlInBrowser(activity, "https://uiza.io/");
+                drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
 

@@ -98,7 +98,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v4_frm_home;
+        return R.layout.v4_frm_entities;
     }
 
     @Override

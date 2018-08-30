@@ -94,7 +94,7 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v3_frm_login;
+        return R.layout.v4_frm_login;
     }
 
     private void login() {

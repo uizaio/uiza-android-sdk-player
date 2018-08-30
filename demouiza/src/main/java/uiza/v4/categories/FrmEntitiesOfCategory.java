@@ -107,7 +107,7 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v4_frm_home;
+        return R.layout.v4_frm_entities;
     }
 
     @Override
