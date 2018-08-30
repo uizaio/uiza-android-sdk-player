@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 import uiza.R;
 import uiza.app.LSApplication;
@@ -61,7 +60,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private Button bStartStopStore;
     private Button btSwitchCamera;
     private Button btFilter;
-    private TextView tvMainUrl;
 
     @Override
     protected boolean setFullScreen() {
@@ -91,7 +89,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = (Button) findViewById(R.id.b_filter);
-        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
 
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
@@ -314,7 +311,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);
         btFilter.setEnabled(true);
-        tvMainUrl.setText(mainUrl);
     }
 
     @Override
