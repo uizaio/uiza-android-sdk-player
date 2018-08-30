@@ -51,14 +51,23 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
 
         if (data.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_START)) {
             holder.tvLastProcess.setVisibility(View.VISIBLE);
+            holder.ivLivestream.setVisibility(View.GONE);
         } else {
             holder.tvLastProcess.setVisibility(View.GONE);
+            holder.ivLivestream.setVisibility(View.VISIBLE);
         }
 
         holder.tvTitle.setText(data.getName());
         LUIUtil.setTextShadow(holder.tvTitle);
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
-
+        holder.ivLivestream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onClickLivestream(data, position);
+                }
+            }
+        });
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +100,8 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
     public interface Callback {
         public void onClick(Data data, int position);
 
+        public void onClickLivestream(Data data, int position);
+
         public void onLongClick(Data data, int position);
 
         public void onLoadMore();
@@ -100,6 +111,7 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
         public TextView tvTitle;
         public TextView tvLastProcess;
         public ImageView ivThumnail;
+        public ImageView ivLivestream;
         public CardView cardView;
 
         public DataHolder(View view) {
@@ -107,6 +119,7 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
             tvTitle = (TextView) view.findViewById(R.id.tv_title);
             tvLastProcess = (TextView) view.findViewById(R.id.tv_last_process);
             ivThumnail = (ImageView) view.findViewById(R.id.iv_thumnail);
+            ivLivestream = (ImageView) view.findViewById(R.id.iv_livestream);
             cardView = (CardView) view.findViewById(R.id.card_view);
         }
     }

@@ -85,6 +85,11 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
             }
 
             @Override
+            public void onClickLivestream(Data data, int position) {
+
+            }
+
+            @Override
             public void onLongClick(Data data, int position) {
             }
 

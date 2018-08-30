@@ -34,6 +34,17 @@
                 android:scaleType="centerCrop"
                 android:src="@color/transparent" />
 
+            <ImageView
+                android:id="@+id/iv_livestream"
+                android:layout_width="@dimen/w_30"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/GreenTran"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_play_circle_outline_white_48" />
+
             <TextView
                 android:id="@+id/tv_last_process"
                 android:layout_width="wrap_content"
