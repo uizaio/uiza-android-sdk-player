@@ -24,6 +24,7 @@ import java.util.Locale;
 import loitp.core.R;
 import retrofit2.HttpException;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -413,7 +414,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         //Chỉ cần gọi start live thôi, ko cần quan tâm đến kết quả của api này start success hay ko
         //Vẫn tiếp tục gọi detail entity để lấy streamUrl
         startLivestream(entityLiveId);
-        getDetailEntity(entityLiveId);
     }
 
     private void startLivestream(final String entityLiveId) {
@@ -424,6 +424,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void onSuccess(Object result) {
                 LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
+                getDetailEntity(entityLiveId, false, null);
             }
 
             @Override
@@ -435,20 +436,22 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     responseBody = error.response().errorBody().string();
                     ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
                     //Log.e(TAG, "startLivestream onFail " + errorBody);
-                    if (callback != null) {
+                    /*if (callback != null) {
                         callback.onError(errorBody.getMessage());
-                    }
+                    }*/
+                    getDetailEntity(entityLiveId, true, errorBody.getMessage());
                 } catch (IOException e1) {
                     //Log.e(TAG, "startLivestream IOException " + e1.toString());
-                    if (callback != null) {
+                    /*if (callback != null) {
                         callback.onError(e1.getMessage());
-                    }
+                    }*/
+                    getDetailEntity(entityLiveId, true, e1.getMessage());
                 }
             }
         });
     }
 
-    private void getDetailEntity(String entityLiveId) {
+    private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
@@ -482,8 +485,28 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
 
-                if (callback != null) {
-                    callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                if (isErrorStartLive) {
+                    if (d.getLastProcess() == null) {
+                        if (callback != null) {
+                            callback.onError("Error: Last process null");
+                        }
+                    } else {
+                        if (d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_START)) {
+                            LLog.d(TAG, "Start live 400 but last process START -> can livestream");
+                            if (callback != null) {
+                                callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                            }
+                        } else if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
+                            LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
+                            if (callback != null) {
+                                callback.onError(errorMsg);
+                            }
+                        }
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                    }
                 }
             }
 

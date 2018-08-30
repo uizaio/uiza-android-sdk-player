@@ -294,6 +294,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onError(final String reason) {
+        LLog.d(TAG, "onError " + reason);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
