@@ -37,8 +37,8 @@ public class LSApplication extends MultiDexApplication {
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
     private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
-    public static String entityIdDefaultVOD = "71472a9b-662d-4eee-837e-3ad98b99140a";
-    public static String entityIdDefaultLIVE = "26a409a2-0177-4a84-8459-4feb2d131d35";
+    public static String entityIdDefaultVOD = "cbea2bfd-1ab7-4df1-92a0-6916c5875146";
+    public static String entityIdDefaultLIVE = "b61e21bf-ceaf-4176-8e88-c13243284bea";
     public static String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
     public static String entityIdDefaultLIVE_TRANSCODE = "b61e21bf-ceaf-4176-8e88-c13243284bea";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "9925fcbd-0fbe-41c5-8b16-1b250642a7e9";
