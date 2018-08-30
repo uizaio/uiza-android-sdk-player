@@ -70,6 +70,15 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         navigationView = (NavigationView) findViewById(R.id.nv);
         NestedScrollView nestedScrollView = (NestedScrollView) navigationView.findViewById(R.id.scroll_view);
         LUIUtil.setPullLikeIOSVertical(nestedScrollView);
+
+        navigationView.findViewById(R.id.ll_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                LLog.d(TAG, "onClick ll_home");
+            }
+        });
+
         TextView tvLogin = (TextView) navigationView.findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
