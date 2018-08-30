@@ -269,7 +269,7 @@ public class Data {
     }
 
     public String getThumbnail() {
-        if (thumbnail == null) {
+        if (thumbnail == null || thumbnail.isEmpty()) {
             return Constants.URL_IMG_THUMBNAIL;
         }
         return thumbnail;
