@@ -51,11 +51,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5"
                 android:background="@drawable/background_live"
-                android:padding="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_3"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10"
+                android:paddingTop="@dimen/padding_3"
                 android:singleLine="true"
                 android:text="@string/live"
                 android:textColor="@color/White"
-                android:textSize="@dimen/txt_18"
+                android:textSize="@dimen/txt_14"
                 android:textStyle="bold" />
 
             <TextView

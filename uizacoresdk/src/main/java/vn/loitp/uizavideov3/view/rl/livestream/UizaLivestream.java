@@ -1,5 +1,6 @@
 package vn.loitp.uizavideov3.view.rl.livestream;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -135,6 +136,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionSuccessRtmp() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(VISIBLE);
+            }
+        });
         if (callback != null) {
             callback.onConnectionSuccessRtmp();
         }
@@ -142,10 +149,16 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(GONE);
+                rtmpCamera1.stopStream();
+            }
+        });
         if (callback != null) {
             callback.onConnectionFailedRtmp(reason);
         }
-        rtmpCamera1.stopStream();
     }
 
     @Override
@@ -224,7 +237,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     public void startStream(String streamUrl, boolean isSavedToDevice) {
         rtmpCamera1.startStream(streamUrl);
-        tvLiveStatus.setVisibility(VISIBLE);
 
         if (isSavedToDevice) {
             startRecord();
@@ -236,7 +248,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             stopRecord();
         }
         rtmpCamera1.stopStream();
-        tvLiveStatus.setVisibility(GONE);
     }
 
     public boolean prepareAudio() {

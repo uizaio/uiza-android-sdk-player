@@ -299,6 +299,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
             @Override
             public void run() {
                 LToast.show(activity, reason);
+                onBackPressed();
             }
         });
     }
