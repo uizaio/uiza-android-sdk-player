@@ -467,7 +467,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void onSuccess(Data d) {
                 LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
-                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
+                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
                     throw new NullPointerException("Data is null");
                 }
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
