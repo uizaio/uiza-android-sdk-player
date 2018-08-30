@@ -49,19 +49,9 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     private ProgressBar pb;
     private String metadataId = "";
 
-    public void setMetadataId(String metadataId) {
-        this.metadataId = metadataId;
-    }
-
-    public final static String TAG_ENTITIES = "Entities";
-
     @Override
     protected String setTag() {
-        return TAG_ENTITIES;
-    }
-
-    public void setTag(String tag) {
-        TAG = tag;
+        return "Entities";
     }
 
     @Override

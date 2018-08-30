@@ -257,21 +257,29 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         LLog.d(TAG, "loitp before " + fragment.getClass().getSimpleName());
         if (fragment instanceof FrmEntities) {
-            if (((FrmEntities) fragment).TAG.equals(FrmEntities.TAG_ENTITIES)) {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
+            if (draggablePanel.getVisibility() == View.VISIBLE) {
+                if (draggablePanel.isMaximized()) {
+                    if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    } else {
+                        draggablePanel.minimize();
+                    }
+                    //draggablePanel.minimize();
                     return;
                 }
-                this.doubleBackToExitPressedOnce = true;
-                LToast.show(activity, "Please click BACK again to exit");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 2000);
+            }
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
                 return;
             }
+            this.doubleBackToExitPressedOnce = true;
+            LToast.show(activity, "Please click BACK again to exit");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+            return;
         }
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
