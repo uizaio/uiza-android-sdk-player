@@ -1006,7 +1006,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
             uizaPlayerManagerV3.getPlayer().setPlayWhenReady(true);

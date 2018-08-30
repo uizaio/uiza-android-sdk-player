@@ -65,7 +65,12 @@ public class AudioEncoder implements GetMicrophoneData {
             int a = (isStereo) ? 2 : 1;
             MediaFormat audioFormat = MediaFormat.createAudioFormat(CodecUtil.AAC_MIME, sampleRate, a);
             audioFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
-            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
+            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);//work
+
+            /*int value = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+            LLog.d(TAG, ">>>>>>>>>>>>>>>>>value " + value);
+            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, value);*/
+
             audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);//work
             //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLTP);
             //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectMain);
