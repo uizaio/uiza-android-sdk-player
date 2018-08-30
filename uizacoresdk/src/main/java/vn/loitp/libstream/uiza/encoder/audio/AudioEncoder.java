@@ -21,7 +21,6 @@ import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
  */
 
 public class AudioEncoder implements GetMicrophoneData {
-
     private String TAG = "AudioEncoder";
     private MediaCodec audioEncoder;
     private GetAacData getAacData;
@@ -45,7 +44,6 @@ public class AudioEncoder implements GetMicrophoneData {
     public boolean prepareAudioEncoder(int bitRate, int sampleRate, boolean isStereo) {
         this.sampleRate = sampleRate;
         try {
-
             List<MediaCodecInfo> encoders = new ArrayList<>();
             if (force == CodecUtil.Force.HARDWARE) {
                 encoders = CodecUtil.getAllHardwareEncoders(CodecUtil.AAC_MIME);
@@ -68,8 +66,7 @@ public class AudioEncoder implements GetMicrophoneData {
             MediaFormat audioFormat = MediaFormat.createAudioFormat(CodecUtil.AAC_MIME, sampleRate, a);
             audioFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
             audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
-            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE,
-                    MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
             audioEncoder.configure(audioFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             running = false;
             return true;

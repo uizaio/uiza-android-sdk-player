@@ -25,7 +25,7 @@
         android:text="@string/start_button"
         android:textAllCaps="false"
         android:textColor="@color/White"
-        android:textSize="@dimen/txt_25" />
+        android:textSize="@dimen/txt_18" />
 
     <TextView
         android:id="@+id/b_start_stop_store"
@@ -42,7 +42,7 @@
         android:text="@string/start_button_saved"
         android:textAllCaps="false"
         android:textColor="@color/White"
-        android:textSize="@dimen/txt_25" />
+        android:textSize="@dimen/txt_18" />
 
     <Button
         android:id="@+id/b_switch_camera"
