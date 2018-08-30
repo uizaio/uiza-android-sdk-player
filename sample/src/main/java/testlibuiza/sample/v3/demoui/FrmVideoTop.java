@@ -279,7 +279,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         LLog.d(TAG, "isInitResult " + isInitSuccess);
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(resultGetLinkPlay, data);
         if (isInitSuccess) {

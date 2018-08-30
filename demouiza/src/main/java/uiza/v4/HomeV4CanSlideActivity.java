@@ -363,9 +363,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     }
 
     //this method will be called when entity is ready to play
-    public void isInitResult(ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
-        if (frmVideoBottom != null) {
+        if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }
     }

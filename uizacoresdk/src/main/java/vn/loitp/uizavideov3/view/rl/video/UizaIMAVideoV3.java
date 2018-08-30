@@ -454,7 +454,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.e(TAG, "handleErrorNoData onClick1");
                 if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    uizaCallback.isInitResult(false, null, null);
+                    uizaCallback.isInitResult(false, false, null, null);
 
                     //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
@@ -465,7 +465,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.e(TAG, "handleErrorNoData onCancel");
                 if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    uizaCallback.isInitResult(false, null, null);
+                    uizaCallback.isInitResult(false, false, null, null);
                     //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
@@ -529,6 +529,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
                 initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                if (uizaCallback != null) {
+                    uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
+                }
                 initUizaPlayerManagerV3();
             } else {
                 //LLog.d(TAG, "checkToSetUp else");
@@ -1010,7 +1013,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (uizaCallback != null) {
             //LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
-            uizaCallback.isInitResult(true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
+            uizaCallback.isInitResult(true, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
