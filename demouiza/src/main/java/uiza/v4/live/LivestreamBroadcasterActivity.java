@@ -314,26 +314,32 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onConnectionSuccessRtmp() {
+        LLog.d(TAG, "onConnectionSuccessRtmp");
     }
 
     @Override
     public void onConnectionFailedRtmp(String reason) {
+        LLog.d(TAG, "onConnectionFailedRtmp");
     }
 
     @Override
     public void onDisconnectRtmp() {
+        LLog.d(TAG, "onDisconnectRtmp");
     }
 
     @Override
     public void onAuthErrorRtmp() {
+        LLog.d(TAG, "onAuthErrorRtmp");
     }
 
     @Override
     public void onAuthSuccessRtmp() {
+        LLog.d(TAG, "onAuthSuccessRtmp");
     }
 
     @Override
     public void surfaceCreated() {
+        LLog.d(TAG, "surfaceCreated");
     }
 
     @Override
