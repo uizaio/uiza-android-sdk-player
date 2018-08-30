@@ -4,6 +4,7 @@ package uiza.v4.live;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
@@ -86,7 +88,10 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onClickLivestream(Data data, int position) {
-
+                Intent intent = new Intent(getActivity(), LivestreamBroadcasterActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
+                startActivity(intent);
+                LActivityUtil.tranIn(getActivity());
             }
 
             @Override

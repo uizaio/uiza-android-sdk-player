@@ -109,8 +109,8 @@
                 android:id="@+id/temperature"
                 android:title="@string/temperature" />
             <item
-                android:id="@+id/text"
-                android:title="@string/text" />
+                android:id="@+id/text_live"
+                android:title="@string/text_live" />
             <item
                 android:id="@+id/zebra"
                 android:title="@string/zebra" />
