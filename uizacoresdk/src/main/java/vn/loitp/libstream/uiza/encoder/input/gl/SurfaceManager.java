@@ -19,7 +19,7 @@ import vn.loitp.libstream.uiza.encoder.utils.gl.GlUtil;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class SurfaceManager {
-
+    private final String TAG = getClass().getSimpleName();
     private static final int EGL_RECORDABLE_ANDROID = 0x3142;
 
     private EGLContext eglContext = null;

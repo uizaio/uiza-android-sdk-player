@@ -341,6 +341,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                uizaLivestream.stopStream();
                 if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
                     uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
                 } else {
@@ -368,5 +369,13 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
         startPreview.onSizeStartPreview(1280, 720);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (uizaLivestream != null) {
+            uizaLivestream.stopStream();
+        }
+        super.onDestroy();
     }
 }
