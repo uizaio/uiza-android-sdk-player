@@ -132,6 +132,7 @@ public class AudioEncoder implements GetMicrophoneData {
      */
     @Override
     public void inputPCMData(final byte[] buffer, final int size) {
+        //LLog.d(TAG, "inputPCMData " + size);
         if (Build.VERSION.SDK_INT >= 21) {
             getDataFromEncoderAPI21(buffer, size);
         } else {
@@ -152,13 +153,17 @@ public class AudioEncoder implements GetMicrophoneData {
         for (; ; ) {
             int outBufferIndex = audioEncoder.dequeueOutputBuffer(audioInfo, 0);
             if (outBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                LLog.d(TAG, "if onAudioFormat " + audioEncoder.getOutputFormat());
                 getAacData.onAudioFormat(audioEncoder.getOutputFormat());
             } else if (outBufferIndex >= 0) {
                 //This ByteBuffer is AAC
+                //LLog.d(TAG, "else onAudioFormat " + audioEncoder.getName() + " - " + audioEncoder.getCodecInfo().getName());
+
                 ByteBuffer bb = audioEncoder.getOutputBuffer(outBufferIndex);
                 getAacData.getAacData(bb, audioInfo);
                 audioEncoder.releaseOutputBuffer(outBufferIndex, false);
             } else {
+                //LLog.d(TAG, "else break");
                 break;
             }
         }
@@ -180,6 +185,7 @@ public class AudioEncoder implements GetMicrophoneData {
         for (; ; ) {
             int outBufferIndex = audioEncoder.dequeueOutputBuffer(audioInfo, 0);
             if (outBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                //LLog.d(TAG, "onAudioFormat " + audioEncoder.getOutputFormat());
                 getAacData.onAudioFormat(audioEncoder.getOutputFormat());
             } else if (outBufferIndex >= 0) {
                 //This ByteBuffer is AAC
