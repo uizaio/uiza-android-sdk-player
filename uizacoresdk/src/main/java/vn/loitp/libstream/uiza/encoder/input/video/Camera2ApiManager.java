@@ -30,7 +30,7 @@ import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_FRONT;
 
 /**
- * Created by pedro on 4/03/17.
+ * Created by loitp on 4/03/17.
  * <p>
  * Class for use surfaceEncoder to buffer encoder.
  * Advantage = you can use all resolutions.
@@ -43,9 +43,7 @@ import static android.hardware.camera2.CameraMetadata.LENS_FACING_FRONT;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Camera2ApiManager extends CameraDevice.StateCallback {
-
-    private final String TAG = "Camera2ApiManager";
-
+    private final String TAG = Camera2ApiManager.class.getSimpleName();
     private CameraDevice cameraDevice;
     private SurfaceView surfaceView;
     private TextureView textureView;

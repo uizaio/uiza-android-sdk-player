@@ -1,7 +1,7 @@
 package vn.loitp.libstream.uiza.encoder.input.decoder;
 
 /**
- * Created by pedro on 4/03/18.
+ * Created by loitp on 4/03/18.
  */
 
 public interface LoopFileInterface {

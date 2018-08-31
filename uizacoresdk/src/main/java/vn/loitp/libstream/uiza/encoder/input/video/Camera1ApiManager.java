@@ -17,7 +17,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 
 /**
- * Created by pedro on 20/01/17.
+ * Created by loitp on 20/01/17.
  * This class need use same resolution, fps and imageFormat that VideoEncoder
  * Tested with YV12 and NV21.
  * <p>
@@ -29,8 +29,7 @@ import vn.loitp.core.utilities.LLog;
  */
 
 public class Camera1ApiManager implements Camera.PreviewCallback, Camera.FaceDetectionListener {
-
-    private String TAG = "Camera1ApiManager";
+    private String TAG = Camera1ApiManager.class.getSimpleName();
     private Camera camera = null;
     private SurfaceView surfaceView;
     private TextureView textureView;
@@ -98,8 +97,7 @@ public class Camera1ApiManager implements Camera.PreviewCallback, Camera.FaceDet
     public void start(@Camera1Facing int cameraFacing, int width, int height) {
         this.width = width;
         this.height = height;
-        cameraSelect = (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) ? selectCameraBack()
-                : selectCameraFront();
+        cameraSelect = (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) ? selectCameraBack() : selectCameraFront();
         start();
     }
 

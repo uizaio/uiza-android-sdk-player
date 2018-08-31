@@ -5,7 +5,7 @@ import android.graphics.PointF;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 
 /**
- * Created by pedro on 17/11/17.
+ * Created by loitp on 17/11/17.
  * <p>
  * Sprite is drawn from top left of the image.
  * Sprite positions in screen:
