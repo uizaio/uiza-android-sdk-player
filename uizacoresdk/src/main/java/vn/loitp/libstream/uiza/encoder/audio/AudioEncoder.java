@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.libstream.uiza.encoder.input.audio.GetMicrophoneData;
 import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
 
@@ -21,7 +22,7 @@ import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
  */
 
 public class AudioEncoder implements GetMicrophoneData {
-    private String TAG = "AudioEncoder";
+    private String TAG = getClass().getSimpleName();
     private MediaCodec audioEncoder;
     private GetAacData getAacData;
     private MediaCodec.BufferInfo audioInfo = new MediaCodec.BufferInfo();
@@ -80,10 +81,10 @@ public class AudioEncoder implements GetMicrophoneData {
             running = false;
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException prepareAudioEncoder " + e.toString());
             return false;
         } catch (IllegalStateException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IllegalStateException prepareAudioEncoder " + e.toString());
             return false;
         }
     }
@@ -104,7 +105,7 @@ public class AudioEncoder implements GetMicrophoneData {
             mPresentTimeUs = System.nanoTime() / 1000;
             audioEncoder.start();
             running = true;
-            Log.i(TAG, "AudioEncoder started");
+            LLog.d(TAG, "AudioEncoder started");
         } else {
             Log.e(TAG, "AudioEncoder need be prepared, AudioEncoder not enabled");
         }
