@@ -23,7 +23,7 @@ public class CodecUtil {
     //public static final String AAC_MIME = "audio/mp4";
     //public static final String AAC_MIME = "audio/aac";
     //public static final String AAC_MIME = "audio/mpeg";
-    private static final String TAG = "CodecUtil";
+    private static final String TAG = CodecUtil.class.getSimpleName();
 
     public static List<MediaCodecInfo> getAllCodecs() {
         List<MediaCodecInfo> mediaCodecInfoList = new ArrayList<>();

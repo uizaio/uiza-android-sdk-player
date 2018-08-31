@@ -17,12 +17,12 @@ import vn.loitp.libstream.uiza.encoder.input.audio.GetMicrophoneData;
 import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
 
 /**
- * Created by pedro on 19/01/17.
+ * Created by loitp on 19/01/17.
  * Encode PCM audio data to ACC and return in a callback
  */
 
 public class AudioEncoder implements GetMicrophoneData {
-    private String TAG = getClass().getSimpleName();
+    private final String TAG = getClass().getSimpleName();
     private MediaCodec audioEncoder;
     private GetAacData getAacData;
     private MediaCodec.BufferInfo audioInfo = new MediaCodec.BufferInfo();
@@ -79,6 +79,7 @@ public class AudioEncoder implements GetMicrophoneData {
             //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectELD);
             audioEncoder.configure(audioFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             running = false;
+            LLog.d(TAG, "prepareAudioEncoder done");
             return true;
         } catch (IOException e) {
             Log.e(TAG, "IOException prepareAudioEncoder " + e.toString());
