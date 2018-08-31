@@ -142,9 +142,7 @@ public class SrsFlvMuxer {
 
         if (frame.is_video()) {
             if (frame.is_keyframe()) {
-                Log.i(TAG,
-                        String.format("worker: send frame type=%d, dts=%d, size=%dB", frame.type, frame.dts,
-                                frame.flvTag.array().length));
+                Log.i(TAG, String.format("worker: send frame type=%d, dts=%d, size=%dB", frame.type, frame.dts, frame.flvTag.array().length));
             }
             publisher.publishVideoData(frame.flvTag.array(), frame.flvTag.size(), frame.dts);
             mVideoAllocator.release(frame.flvTag);
