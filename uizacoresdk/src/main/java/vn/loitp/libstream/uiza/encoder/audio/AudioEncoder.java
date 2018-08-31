@@ -43,6 +43,7 @@ public class AudioEncoder implements GetMicrophoneData {
      * Prepare encoder with custom parameters
      */
     public boolean prepareAudioEncoder(int bitRate, int sampleRate, boolean isStereo) {
+        LLog.d(TAG, "prepareAudioEncoder bitRate: " + bitRate + ", sampleRate: " + sampleRate + ", isStereo " + isStereo);
         this.sampleRate = sampleRate;
         try {
             List<MediaCodecInfo> encoders = new ArrayList<>();
@@ -51,7 +52,7 @@ public class AudioEncoder implements GetMicrophoneData {
             } else if (force == CodecUtil.Force.SOFTWARE) {
                 encoders = CodecUtil.getAllSoftwareEncoders(CodecUtil.AAC_MIME);
             }
-
+            LLog.d(TAG, "encoders size: " + encoders.size());
             if (force == CodecUtil.Force.FIRST_COMPATIBLE_FOUND) {
                 audioEncoder = MediaCodec.createEncoderByType(CodecUtil.AAC_MIME);
             } else {
@@ -62,6 +63,7 @@ public class AudioEncoder implements GetMicrophoneData {
                     audioEncoder = MediaCodec.createByCodecName(encoders.get(0).getName());
                 }
             }
+            LLog.d(TAG, "audioEncoder " + audioEncoder.getName() + " - " + audioEncoder.getCodecInfo());
 
             int a = (isStereo) ? 2 : 1;
             MediaFormat audioFormat = MediaFormat.createAudioFormat(CodecUtil.AAC_MIME, sampleRate, a);
