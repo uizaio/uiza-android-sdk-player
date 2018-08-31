@@ -497,7 +497,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     presetLiveStreamingFeed.setS720p(isConnectedFast ? 1500000 : 800000);
                     presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
-
+                LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
                         if (callback != null) {
@@ -505,15 +505,16 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                             callback.onError("Error: Last process null");
                         }
                     } else {
-                        if (d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_START)) {
-                            LLog.d(TAG, "Start live 400 but last process START -> can livestream");
-                            if (callback != null) {
-                                callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
-                            }
-                        } else if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
+                        LLog.d(TAG, "getLastProcess " + d.getLastProcess());
+                        if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
                             LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
                             if (callback != null) {
                                 callback.onError(errorMsg);
+                            }
+                        } else {
+                            LLog.d(TAG, "Start live 400 but last process START || INIT -> can livestream");
+                            if (callback != null) {
+                                callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                             }
                         }
                     }
@@ -523,6 +524,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                         callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                     }
                 }
+                LLog.d(TAG, "===================finish");
             }
 
             @Override
