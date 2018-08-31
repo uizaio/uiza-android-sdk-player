@@ -5,16 +5,16 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.libstream.uiza.encoder.audio.DataTaken;
 
 /**
- * Created by pedro on 19/01/17.
+ * Created by loitp on 19/01/17.
  */
 
 public class MicrophoneManager {
-
+    private final String TAG = MicrophoneManager.class.getSimpleName();
     public static final int BUFFER_SIZE = 4096;
-    private final String TAG = "MicrophoneManager";
     private AudioRecord audioRecord;
     private GetMicrophoneData getMicrophoneData;
     private byte[] pcmBuffer = new byte[BUFFER_SIZE];
@@ -38,19 +38,16 @@ public class MicrophoneManager {
      */
     public void createMicrophone() {
         createMicrophone(sampleRate, true, false, false);
-        Log.i(TAG, "Microphone created, " + sampleRate + "hz, Stereo");
+        LLog.d(TAG, "Microphone created, " + sampleRate + "hz, Stereo");
     }
 
     /**
      * Create audio record with params
      */
-    public void createMicrophone(int sampleRate, boolean isStereo, boolean echoCanceler,
-                                 boolean noiseSuppressor) {
+    public void createMicrophone(int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         this.sampleRate = sampleRate;
         if (!isStereo) channel = AudioFormat.CHANNEL_IN_MONO;
-        audioRecord =
-                new AudioRecord(MediaRecorder.AudioSource.DEFAULT, sampleRate, channel, audioFormat,
-                        getPcmBufferSize() * 4);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, sampleRate, channel, audioFormat, getPcmBufferSize() * 4);
         audioPostProcessEffect = new AudioPostProcessEffect(audioRecord.getAudioSessionId());
         if (echoCanceler) audioPostProcessEffect.enableEchoCanceler();
         if (noiseSuppressor) audioPostProcessEffect.enableNoiseSuppressor();

@@ -6,12 +6,12 @@ import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
 
 /**
- * Created by pedro on 11/05/17.
+ * Created by loitp on 11/05/17.
  */
 
 public class AudioPostProcessEffect {
 
-    private final String TAG = "AudioPostProcessEffect";
+    private final String TAG = AudioPostProcessEffect.class.getSimpleName();
 
     private int microphoneId;
     private AcousticEchoCanceler acousticEchoCanceler = null;
