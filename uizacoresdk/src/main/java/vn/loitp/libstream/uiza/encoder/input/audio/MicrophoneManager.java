@@ -86,8 +86,7 @@ public class MicrophoneManager {
             running = true;
             Log.i(TAG, "Microphone started");
         } else {
-            Log.e(TAG, "Error starting, microphone was stopped or not created, "
-                    + "use createMicrophone() before start()");
+            Log.e(TAG, "Error starting, microphone was stopped or not created, use createMicrophone() before start()");
         }
     }
 
@@ -142,8 +141,7 @@ public class MicrophoneManager {
      * Get PCM buffer size
      */
     private int getPcmBufferSize() {
-        int pcmBufSize =
-                AudioRecord.getMinBufferSize(sampleRate, channel, AudioFormat.ENCODING_PCM_16BIT) + 8191;
+        int pcmBufSize = AudioRecord.getMinBufferSize(sampleRate, channel, AudioFormat.ENCODING_PCM_16BIT) + 8191;
         return pcmBufSize - (pcmBufSize % 8192);
     }
 
