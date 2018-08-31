@@ -188,7 +188,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (callback != null) {
             callback.surfaceCreated();
         }
-        LUIUtil.hideProgressBar(progressBar);
     }
 
     @Override
@@ -525,12 +524,14 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                         callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
                     }
                 }
+                LUIUtil.hideProgressBar(progressBar);
                 LLog.d(TAG, "===================finish");
             }
 
             @Override
             public void onError(Throwable e) {
                 LLog.e(TAG, "setId onError " + e.toString());
+                LUIUtil.hideProgressBar(progressBar);
                 if (callback != null) {
                     callback.onError(e.getMessage());
                 }
