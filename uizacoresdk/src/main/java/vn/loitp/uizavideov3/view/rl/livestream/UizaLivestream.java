@@ -251,7 +251,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareAudio() {
-        return prepareAudio(128, 44100, true, false, false);
+        return prepareAudio(128, 44100, true, true, true);
     }
 
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {

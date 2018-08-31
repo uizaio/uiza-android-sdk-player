@@ -176,7 +176,7 @@ public abstract class Camera1Base
      * @param isStereo        true if you want Stereo audio (2 audio channels), false if you want Mono audio
      *                        (1 audio channel).
      * @param echoCanceler    true enable echo canceler, false disable.
-     * @param noiseSuppressor true enable noise suppressor, false  disable.
+     * @param noiseSuppressor true enable noise suppressor, false disable.
      * @return true if success, false if you get a error (Normally because the encoder selected
      * doesn't support any configuration seated or your device hasn't a AAC encoder).
      */
