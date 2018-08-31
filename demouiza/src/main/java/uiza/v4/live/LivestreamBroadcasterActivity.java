@@ -79,9 +79,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        super.onCreate(savedInstanceState);
         //LActivityUtil.changeScreenLandscape(activity);
 
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
@@ -328,6 +328,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onConnectionSuccessRtmp() {
         LLog.d(TAG, "onConnectionSuccessRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "Connected");
+            }
+        });
     }
 
     @Override
@@ -341,6 +347,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LToast.show(activity, "Disconnected");
+            }
+        });
+        /*runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 uizaLivestream.stopStream();
                 if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
                     uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
@@ -348,7 +360,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     LToast.show(activity, "Cannot start");
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -369,13 +381,5 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
         startPreview.onSizeStartPreview(1280, 720);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (uizaLivestream != null) {
-            uizaLivestream.stopStream();
-        }
-        super.onDestroy();
     }
 }

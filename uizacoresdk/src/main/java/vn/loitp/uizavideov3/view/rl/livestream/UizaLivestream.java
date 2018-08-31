@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -50,7 +52,7 @@ import vn.loitp.views.LToast;
 /**
  * Created by loitp on 7/26/2017.
  */
-
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     //TODO remove gson later
@@ -117,7 +119,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         rtmpCamera1 = new RtmpCamera1(openGlView, this);
         openGlView.getHolder().addCallback(this);
         //openGlView.getHolder().setFixedSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenWidth() * 16 / 9);
-
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
     }
