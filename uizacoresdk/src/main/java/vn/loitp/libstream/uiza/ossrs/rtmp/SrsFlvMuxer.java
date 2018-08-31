@@ -290,6 +290,7 @@ public class SrsFlvMuxer {
      */
     private class SrsAacObjectType {
         public final static int AacLC = 2;
+        //public final static int AacLC = 5;
     }
 
     /**
@@ -745,6 +746,7 @@ public class SrsFlvMuxer {
             frame[offset + 1] |= 1;
             // profile: audio_object_type - 1 (2-bit)
             frame[offset + 2] = (SrsAacObjectType.AacLC - 1) << 6;
+            //frame[offset + 2] = (byte) ((SrsAacObjectType.AacLC - 1) << 6);
             // sampling frequency index: 4 (4-bit)
             frame[offset + 2] |= (4 & 0xf) << 2;
             // channel configuration (3-bit)
