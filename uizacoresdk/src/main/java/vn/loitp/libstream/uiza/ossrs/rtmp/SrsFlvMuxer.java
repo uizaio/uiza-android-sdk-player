@@ -45,8 +45,7 @@ import vn.loitp.libstream.uiza.faucamp.simplertmp.DefaultRtmpPublisher;
  * muxer.release();
  */
 public class SrsFlvMuxer {
-
-    private static final String TAG = "SrsFlvMuxer";
+    private static final String TAG = SrsFlvMuxer.class.getSimpleName();
 
     private static final int VIDEO_ALLOC_SIZE = 128 * 1024;
     private static final int AUDIO_ALLOC_SIZE = 4 * 1024;
@@ -426,8 +425,7 @@ public class SrsFlvMuxer {
             return nalu_header;
         }
 
-        public void muxSequenceHeader(ByteBuffer sps, ByteBuffer pps,
-                                      ArrayList<SrsFlvFrameBytes> frames) {
+        public void muxSequenceHeader(ByteBuffer sps, ByteBuffer pps, ArrayList<SrsFlvFrameBytes> frames) {
             // 5bytes sps/pps header:
             //      configurationVersion, AVCProfileIndication, profile_compatibility,
             //      AVCLevelIndication, lengthSizeMinusOne
@@ -514,8 +512,7 @@ public class SrsFlvMuxer {
             frames.add(pps_bb);
         }
 
-        public SrsAllocator.Allocation muxFlvTag(ArrayList<SrsFlvFrameBytes> frames, int frame_type,
-                                                 int avc_packet_type) {
+        public SrsAllocator.Allocation muxFlvTag(ArrayList<SrsFlvFrameBytes> frames, int frame_type, int avc_packet_type) {
             // for h264 in RTMP video payload, there is 5bytes header:
             //      1bytes, FrameType | CodecID
             //      1bytes, AVCPacketType
@@ -771,7 +768,6 @@ public class SrsFlvMuxer {
 
         public void writeVideoSample(final ByteBuffer bb, MediaCodec.BufferInfo bi) {
             if (bi.size < 4) return;
-
             int pts = (int) (bi.presentationTimeUs / 1000);
             int type = SrsCodecVideoAVCFrame.InterFrame;
             SrsFlvFrameBytes frame = avc.demuxAnnexb(bb, bi.size, true);
@@ -852,8 +848,7 @@ public class SrsFlvMuxer {
             writeRtmpPacket(SrsCodecFlvTag.Video, dts, frame_type, SrsCodecVideoAVCType.NALU, video_tag);
         }
 
-        private void writeRtmpPacket(int type, int dts, int frame_type, int avc_aac_type,
-                                     SrsAllocator.Allocation tag) {
+        private void writeRtmpPacket(int type, int dts, int frame_type, int avc_aac_type, SrsAllocator.Allocation tag) {
             SrsFlvFrame frame = new SrsFlvFrame();
             frame.flvTag = tag;
             frame.type = type;
