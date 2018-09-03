@@ -1,7 +1,7 @@
 package vn.loitp.libstream.uiza.ossrs.rtmp;
 
 /**
- * Created by pedro on 18/12/17.
+ * Created by loitp on 18/12/17.
  */
 
 public class ProfileIop {
