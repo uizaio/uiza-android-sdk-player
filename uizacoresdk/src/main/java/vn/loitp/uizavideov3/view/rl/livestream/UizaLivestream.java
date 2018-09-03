@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import loitp.core.R;
@@ -251,7 +250,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareAudio() {
-        return prepareAudio(128, 44100, true, true, true);
+        return prepareAudio(128 * 1024, 44100, true, true, true);
     }
 
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
@@ -406,13 +405,13 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return rtmpCamera1.getCorrectCameraSize(width, height);
     }
 
-    public List<Camera.Size> getListCameraResolutionSupportBack() {
+    /*public List<Camera.Size> getListCameraResolutionSupportBack() {
         return rtmpCamera1.getListCameraResolutionSupportBack();
-    }
+    }*/
 
-    public List<Camera.Size> getListCameraResolutionSupportFront() {
+    /*public List<Camera.Size> getListCameraResolutionSupportFront() {
         return rtmpCamera1.getListCameraResolutionSupportFront();
-    }
+    }*/
 
     public String getMainStreamUrl() {
         return mainStreamUrl;

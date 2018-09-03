@@ -14,7 +14,6 @@ import android.view.TextureView;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 import vn.loitp.libstream.uiza.encoder.audio.AudioEncoder;
@@ -45,13 +44,11 @@ import vn.loitp.libstream.uiza.rtplibrary.view.OpenGlView;
  * SurfaceView and TextureView mode: API 16+.
  * OpenGlView: API 18+.
  * <p>
- * Created by pedro on 7/07/17.
+ * Created by loitp on 7/07/17.
  */
 
-public abstract class Camera1Base
-        implements GetAacData, GetCameraData, GetH264Data, GetMicrophoneData {
-
-    private static final String TAG = "Camera1Base";
+public abstract class Camera1Base implements GetAacData, GetCameraData, GetH264Data, GetMicrophoneData {
+    private static final String TAG = Camera1Base.class.getSimpleName();
     protected VideoEncoder videoEncoder;
     private Context context;
     private Camera1ApiManager cameraManager;
@@ -180,8 +177,7 @@ public abstract class Camera1Base
      * @return true if success, false if you get a error (Normally because the encoder selected
      * doesn't support any configuration seated or your device hasn't a AAC encoder).
      */
-    public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler,
-                                boolean noiseSuppressor) {
+    public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         microphoneManager.createMicrophone(sampleRate, isStereo, echoCanceler, noiseSuppressor);
         prepareAudioRtp(isStereo, sampleRate);
         return audioEncoder.prepareAudioEncoder(bitrate, sampleRate, isStereo);
@@ -660,7 +656,7 @@ public abstract class Camera1Base
         return cameraManager.getCorrectCameraSize(width, height);
     }
 
-    public List<Camera.Size> getListCameraResolutionSupportBack() {
+    /*public List<Camera.Size> getListCameraResolutionSupportBack() {
         List<Camera.Size> sizeList = cameraManager.getPreviewSizeBack();
         if (sizeList == null) {
             return null;
@@ -672,9 +668,9 @@ public abstract class Camera1Base
             }
         }
         return supportedList;
-    }
+    }*/
 
-    public List<Camera.Size> getListCameraResolutionSupportFront() {
+    /*public List<Camera.Size> getListCameraResolutionSupportFront() {
         List<Camera.Size> sizeList = cameraManager.getPreviewSizeFront();
         if (sizeList == null) {
             return null;
@@ -686,5 +682,5 @@ public abstract class Camera1Base
             }
         }
         return supportedList;
-    }
+    }*/
 }
