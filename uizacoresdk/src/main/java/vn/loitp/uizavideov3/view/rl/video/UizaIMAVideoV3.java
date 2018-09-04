@@ -2097,6 +2097,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                     LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                        if (uizaCallback != null) {
+                            LToast.show(activity, activity.getString(R.string.no_data));
+                            uizaCallback.onError(new NullPointerException("Data is empty"));
+                        }
                         return;
                     }
                     if (pfTotalPage == Integer.MAX_VALUE) {
