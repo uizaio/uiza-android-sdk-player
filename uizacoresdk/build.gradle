@@ -15,11 +15,6 @@ android {
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
         multiDexEnabled true
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
-        }
     }
     buildTypes {
         release {
@@ -30,11 +25,6 @@ android {
     dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
-    }
-    externalNativeBuild {
-        ndkBuild {
-            path 'src/main/cpp/Android.mk'
-        }
     }
 }
 
