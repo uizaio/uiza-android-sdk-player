@@ -639,7 +639,7 @@ public class SrsFlvMuxer {
         }
 
         public void setAchannel(int achannel) {
-            //this.achannel = achannel;
+            this.achannel = achannel;
         }
 
         public void reset() {
