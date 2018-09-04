@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.tplloi'
 
-import org.apache.tools.ant.taskdefs.condition.Os
-
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -37,28 +35,6 @@ android {
         ndkBuild {
             path 'src/main/cpp/Android.mk'
         }
-    }
-    task ndkBuild(type: Exec) {
-        File ndkDir = new File(project.android.ndkDirectory.absolutePath)
-        if (ndkDir == null) {
-            ndkDir = file(System.getenv('NDK_ROOT'))
-        }
-        if (ndkDir == null) {
-            def gradle_project_root = project.rootProject.rootDir
-            throw new GradleException("NDK is not configured. Make sure there is a local.properties " +
-                    "file with an ndk.dir entry in the directory ${gradle_project_root}, or set the " +
-                    "ANDROID_NDK envrionment variable")
-        }
-        def ndkBuildExecutable
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            ndkBuildExecutable = new File(ndkDir, 'ndk-build.cmd')
-        } else {
-            ndkBuildExecutable = new File(ndkDir, 'ndk-build')
-        }
-        if (!ndkBuildExecutable.exists()) {
-            throw new GradleException("Could not find ndk-build. The configured NDK directory ${ndkDir} may not be correct.")
-        }
-        commandLine(ndkBuildExecutable, '-j8', '-C', file('src/main').absolutePath)
     }
 }
 
