@@ -90,6 +90,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     }
 
     private void getListMetadata() {
+        LLog.d(TAG, "getListMetadata");
         tvMsg.setVisibility(View.GONE);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
@@ -97,6 +98,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
                 if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty()) {
                     tvMsg.setText("Error ResultGetListMetadata is null or empty");
+                    LUIUtil.hideProgressBar(pb);
                     return;
                 }
                 LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
