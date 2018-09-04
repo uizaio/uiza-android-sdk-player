@@ -1,59 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:id="@+id/activity_example_rtmp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <vn.loitp.livestream.yasea.net.ossrs.yasea.SrsCameraView
-        android:id="@+id/glsurfaceview_camera"
+    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream
+        android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/publish"
+    <TextView
+        android:id="@+id/tv_main_url"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black_65"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_12" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="publish" />
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/swCam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/publish"
-        android:layout_toRightOf="@+id/publish"
-        android:text="switch" />
+        <Button
+            android:id="@+id/b_start_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_button" />
 
-    <Button
-        android:id="@+id/record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/publish"
-        android:layout_toRightOf="@id/swCam"
-        android:text="record" />
+        <Button
+            android:id="@+id/b_start_stop_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_button_saved" />
 
-    <Button
-        android:id="@+id/swEnc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/publish"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/record"
-        android:text="soft encoder" />
+        <Button
+            android:id="@+id/b_switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_camera_button" />
 
-    <EditText
-        android:id="@+id/url"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/accent_material_light"
-        android:textSize="14dp" />
-
+        <Button
+            android:id="@+id/b_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter" />
+    </LinearLayout>
 </RelativeLayout>

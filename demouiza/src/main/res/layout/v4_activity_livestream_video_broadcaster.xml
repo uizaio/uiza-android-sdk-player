@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
+    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream
+        android:id="@+id/uiza_livestream"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/b_start_stop"
         android:layout_width="wrap_content"

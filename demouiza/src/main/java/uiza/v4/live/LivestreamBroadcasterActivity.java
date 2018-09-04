@@ -1,17 +1,62 @@
 package uiza.v4.live;
 
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LLog;
+import vn.loitp.core.utilities.LPopupMenu;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BeautyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BlurFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BrightnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.CartoonFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ColorFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ContrastFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.DuotoneFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EarlyBirdFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ExposureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.FireFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GammaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GreyScaleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.Image70sFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.LamoishFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.MoneyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NegativeFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NoFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PixelatedFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PolygonizationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RGBSaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RainbowFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RippleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RotationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SepiaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SharpnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
+import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.view.rl.livestream.PresetLiveStreamingFeed;
+import vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream;
+import vn.loitp.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener {
+public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UizaLivestream.Callback {
+    private UizaLivestream uizaLivestream;
     private TextView bStartStop;
     private TextView bStartStopStore;
     private FloatingActionButton btSwitchCamera;
@@ -39,6 +84,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         super.onCreate(savedInstanceState);
         //LActivityUtil.changeScreenLandscape(activity);
 
+        uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
+        uizaLivestream.setCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
@@ -55,6 +102,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btFilter.setOnClickListener(this);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+        uizaLivestream.setId(entityId);
 
         /*String x = "";
         List<MediaCodecInfo> mediaCodecInfos = CodecUtil.getAllCodecs();
@@ -64,19 +112,274 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         LLog.d(TAG, "loitp " + x);*/
     }
 
+    private void handleFilterClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.e_d_fxaa:
+                uizaLivestream.enableAA(!uizaLivestream.isAAEnabled());
+                break;
+            case R.id.no_filter:
+                uizaLivestream.setFilter(new NoFilterRender());
+                break;
+            case R.id.android_view:
+                AndroidViewFilterRender androidViewFilterRender = new AndroidViewFilterRender();
+                androidViewFilterRender.setView(findViewById(R.id.activity_example_rtmp));
+                uizaLivestream.setFilter(androidViewFilterRender);
+                break;
+            case R.id.basic_deformation:
+                uizaLivestream.setFilter(new BasicDeformationFilterRender());
+                break;
+            case R.id.beauty:
+                uizaLivestream.setFilter(new BeautyFilterRender());
+                break;
+            case R.id.blur:
+                uizaLivestream.setFilter(new BlurFilterRender());
+                break;
+            case R.id.brightness:
+                uizaLivestream.setFilter(new BrightnessFilterRender());
+                break;
+            case R.id.cartoon:
+                uizaLivestream.setFilter(new CartoonFilterRender());
+                break;
+            case R.id.color:
+                uizaLivestream.setFilter(new ColorFilterRender());
+                break;
+            case R.id.contrast:
+                uizaLivestream.setFilter(new ContrastFilterRender());
+                break;
+            case R.id.duotone:
+                uizaLivestream.setFilter(new DuotoneFilterRender());
+                break;
+            case R.id.early_bird:
+                uizaLivestream.setFilter(new EarlyBirdFilterRender());
+                break;
+            case R.id.edge_detection:
+                uizaLivestream.setFilter(new EdgeDetectionFilterRender());
+                break;
+            case R.id.exposure:
+                uizaLivestream.setFilter(new ExposureFilterRender());
+                break;
+            case R.id.fire:
+                uizaLivestream.setFilter(new FireFilterRender());
+                break;
+            case R.id.gamma:
+                uizaLivestream.setFilter(new GammaFilterRender());
+                break;
+            case R.id.gif:
+                uizaLivestream.setGifToStream(R.raw.banana, TranslateTo.BOTTOM);
+                break;
+            case R.id.grey_scale:
+                uizaLivestream.setFilter(new GreyScaleFilterRender());
+                break;
+            case R.id.halftone_lines:
+                uizaLivestream.setFilter(new HalftoneLinesFilterRender());
+                break;
+            case R.id.image:
+                uizaLivestream.setImageToStream(R.mipmap.ic_launcher, TranslateTo.RIGHT);
+                break;
+            case R.id.image_70s:
+                uizaLivestream.setFilter(new Image70sFilterRender());
+                break;
+            case R.id.lamoish:
+                uizaLivestream.setFilter(new LamoishFilterRender());
+                break;
+            case R.id.money:
+                uizaLivestream.setFilter(new MoneyFilterRender());
+                break;
+            case R.id.negative:
+                uizaLivestream.setFilter(new NegativeFilterRender());
+                break;
+            case R.id.pixelated:
+                uizaLivestream.setFilter(new PixelatedFilterRender());
+                break;
+            case R.id.polygonization:
+                uizaLivestream.setFilter(new PolygonizationFilterRender());
+                break;
+            case R.id.rainbow:
+                uizaLivestream.setFilter(new RainbowFilterRender());
+                break;
+            case R.id.rgb_saturate:
+                RGBSaturationFilterRender rgbSaturationFilterRender = new RGBSaturationFilterRender();
+                uizaLivestream.setFilter(rgbSaturationFilterRender);
+                //Reduce green and blue colors 20%. Red will predominate.
+                rgbSaturationFilterRender.setRGBSaturation(1f, 0.8f, 0.8f);
+                break;
+            case R.id.ripple:
+                uizaLivestream.setFilter(new RippleFilterRender());
+                break;
+            case R.id.rotation:
+                RotationFilterRender rotationFilterRender = new RotationFilterRender();
+                uizaLivestream.setFilter(rotationFilterRender);
+                rotationFilterRender.setRotation(90);
+                break;
+            case R.id.saturation:
+                uizaLivestream.setFilter(new SaturationFilterRender());
+                break;
+            case R.id.sepia:
+                uizaLivestream.setFilter(new SepiaFilterRender());
+                break;
+            case R.id.sharpness:
+                uizaLivestream.setFilter(new SharpnessFilterRender());
+                break;
+            case R.id.surface_filter:
+                //You can render this btFilter with other api that draw in a surface. for example you can use VLC
+                SurfaceFilterRender surfaceFilterRender = new SurfaceFilterRender();
+                uizaLivestream.setFilter(surfaceFilterRender);
+                MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.big_bunny_240p);
+                mediaPlayer.setSurface(surfaceFilterRender.getSurface());
+                mediaPlayer.start();
+                //Video is 360x240 so select a percent to keep aspect ratio (50% x 33.3% screen)
+                surfaceFilterRender.setScale(50f, 33.3f);
+                surfaceFilterRender.setListeners(uizaLivestream.getOpenGlView()); //Optional
+                break;
+            case R.id.temperature:
+                uizaLivestream.setFilter(new TemperatureFilterRender());
+                break;
+            case R.id.text:
+                uizaLivestream.setTextToStream("Hello Uiza", 40, Color.RED, TranslateTo.CENTER);
+                break;
+            case R.id.zebra:
+                uizaLivestream.setFilter(new ZebraFilterRender());
+                break;
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b_start_stop:
+                if (!uizaLivestream.isStreaming()) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
+                    } else {
+                        LToast.show(activity, getString(R.string.err_dont_support));
+                    }
+                } else {
+                    bStartStop.setText(R.string.start_button);
+                    uizaLivestream.stopStream();
+                }
+                if (uizaLivestream.isStreaming()) {
+                    bStartStop.setText("Stop");
+                    bStartStop.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.INVISIBLE);
+                } else {
+                    bStartStop.setText("Start");
+                    bStartStop.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.b_start_stop_store:
+                if (!uizaLivestream.isStreaming()) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
+                    } else {
+                        LToast.show(activity, "Cannot start");
+                    }
+                } else {
+                    bStartStopStore.setText(R.string.start_button);
+                    uizaLivestream.stopStream();
+                }
+                if (uizaLivestream.isStreaming()) {
+                    bStartStopStore.setText("Stop - save");
+                    bStartStop.setVisibility(View.INVISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
+                } else {
+                    bStartStopStore.setText("Start - save");
+                    bStartStop.setVisibility(View.VISIBLE);
+                    bStartStopStore.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.b_switch_camera:
+                uizaLivestream.switchCamera();
                 break;
             case R.id.b_filter:
+                LPopupMenu.show(activity, btFilter, R.menu.gl_menu, new LPopupMenu.CallBack() {
+                    @Override
+                    public void clickOnItem(MenuItem menuItem) {
+                        handleFilterClick(menuItem);
+                    }
+                });
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onError(final String reason) {
+        LLog.d(TAG, "onError " + reason);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, reason);
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
+        LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+        bStartStop.setVisibility(View.VISIBLE);
+        bStartStopStore.setVisibility(View.VISIBLE);
+        btSwitchCamera.setVisibility(View.VISIBLE);
+        btFilter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onConnectionSuccessRtmp() {
+        LLog.d(TAG, "onConnectionSuccessRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "Connected");
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionFailedRtmp(String reason) {
+        LLog.d(TAG, "onConnectionFailedRtmp");
+    }
+
+    @Override
+    public void onDisconnectRtmp() {
+        LLog.d(TAG, "onDisconnectRtmp");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LToast.show(activity, "Disconnected");
+            }
+        });
+        /*runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                uizaLivestream.stopStream();
+                if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                    uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
+                } else {
+                    LToast.show(activity, "Cannot start");
+                }
+            }
+        });*/
+    }
+
+    @Override
+    public void onAuthErrorRtmp() {
+        LLog.d(TAG, "onAuthErrorRtmp");
+    }
+
+    @Override
+    public void onAuthSuccessRtmp() {
+        LLog.d(TAG, "onAuthSuccessRtmp");
+    }
+
+    @Override
+    public void surfaceCreated() {
+        LLog.d(TAG, "surfaceCreated");
+    }
+
+    @Override
+    public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
+        startPreview.onSizeStartPreview(1280, 720);
     }
 }

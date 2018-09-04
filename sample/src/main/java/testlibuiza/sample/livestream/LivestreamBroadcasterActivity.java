@@ -1,46 +1,66 @@
 package testlibuiza.sample.livestream;
 
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.hardware.Camera;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-
-import java.io.IOException;
-import java.net.SocketException;
-import java.util.Random;
+import android.widget.TextView;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
-import vn.loitp.livestream.yasea.com.github.faucamp.simplertmp.RtmpHandler;
-import vn.loitp.livestream.yasea.com.seu.magicfilter.utils.MagicFilterType;
-import vn.loitp.livestream.yasea.net.ossrs.yasea.SrsCameraView;
-import vn.loitp.livestream.yasea.net.ossrs.yasea.SrsEncodeHandler;
-import vn.loitp.livestream.yasea.net.ossrs.yasea.SrsPublisher;
-import vn.loitp.livestream.yasea.net.ossrs.yasea.SrsRecordHandler;
+import vn.loitp.core.utilities.LPopupMenu;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BeautyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BlurFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.BrightnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.CartoonFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ColorFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ContrastFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.DuotoneFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EarlyBirdFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ExposureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.FireFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GammaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.GreyScaleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.Image70sFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.LamoishFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.MoneyFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NegativeFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.NoFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PixelatedFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.PolygonizationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RGBSaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RainbowFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RippleFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.RotationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SaturationFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SepiaFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SharpnessFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
+import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
+import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
+import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.loitp.uizavideov3.view.rl.livestream.PresetLiveStreamingFeed;
+import vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream;
 import vn.loitp.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements RtmpHandler.RtmpListener, SrsRecordHandler.SrsRecordListener, SrsEncodeHandler.SrsEncodeListener {
-    private Button btnPublish;
-    private Button btnSwitchCamera;
-    private Button btnRecord;
-    private Button btnSwitchEncoder;
-    private SharedPreferences sp;
-    //private String rtmpUrl = "rtmp://ossrs.net/" + getRandomAlphaString(3) + '/' + getRandomAlphaDigitString(5);
-    //private String rtmpUrl = "rtmp://14.161.0.68/live-origin/testapp";
-    private String rtmpUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp-transcode?token=3968e51d19bc7eaaff759b6792fe9630";
-    //private String rtmpUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only/suzuki-no-transcode?token=b9b9684f2be521fde1263ab8a62b8894";
-    private String recPath = Environment.getExternalStorageDirectory().getPath() + "/testloitp.mp4";
-    private SrsPublisher mPublisher;
+public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UizaLivestream.Callback {
+    private UizaLivestream uizaLivestream;
+    private Button bStartStop;
+    private Button bStartStopStore;
+    private Button btSwitchCamera;
+    private Button btFilter;
+    private TextView tvMainUrl;
 
     @Override
     protected boolean setFullScreen() {
@@ -57,380 +77,270 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements RtmpH
         return R.layout.activity_livestream_video_broadcaster;
     }
 
-    private static String getRandomAlphaString(int length) {
-        String base = "abcdefghijklmnopqrstuvwxyz";
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
-        }
-        return sb.toString();
-    }
-
-    private static String getRandomAlphaDigitString(int length) {
-        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
-        }
-        return sb.toString();
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         super.onCreate(savedInstanceState);
-        // response screen rotation event
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         //LActivityUtil.changeScreenLandscape(activity);
-        // restore data.
-        sp = getSharedPreferences("Yasea", MODE_PRIVATE);
-        rtmpUrl = sp.getString("rtmpUrl", rtmpUrl);
 
-        // initialize url.
-        final EditText efu = (EditText) findViewById(R.id.url);
-        efu.setText(rtmpUrl);
+        uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
+        uizaLivestream.setCallback(this);
+        bStartStop = findViewById(R.id.b_start_stop);
+        bStartStopStore = findViewById(R.id.b_start_stop_store);
+        btSwitchCamera = findViewById(R.id.b_switch_camera);
+        btFilter = (Button) findViewById(R.id.b_filter);
+        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
 
-        btnPublish = (Button) findViewById(R.id.publish);
-        btnSwitchCamera = (Button) findViewById(R.id.swCam);
-        btnRecord = (Button) findViewById(R.id.record);
-        btnSwitchEncoder = (Button) findViewById(R.id.swEnc);
+        bStartStop.setEnabled(false);
+        bStartStopStore.setEnabled(false);
+        btSwitchCamera.setEnabled(false);
+        btFilter.setEnabled(false);
 
-        mPublisher = new SrsPublisher((SrsCameraView) findViewById(R.id.glsurfaceview_camera));
-        mPublisher.setEncodeHandler(new SrsEncodeHandler(this));
-        mPublisher.setRtmpHandler(new RtmpHandler(this));
-        mPublisher.setRecordHandler(new SrsRecordHandler(this));
-        mPublisher.setPreviewResolution(640, 360);
-        mPublisher.setOutputResolution(360, 640);
-        /*mPublisher.setPreviewResolution(1280, 720);
-        mPublisher.setOutputResolution(720, 1280);*/
-        mPublisher.setVideoHDMode();
-        mPublisher.startCamera();
+        bStartStop.setOnClickListener(this);
+        bStartStopStore.setOnClickListener(this);
+        btSwitchCamera.setOnClickListener(this);
+        btFilter.setOnClickListener(this);
 
-        btnPublish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnPublish.getText().toString().contentEquals("publish")) {
-                    rtmpUrl = efu.getText().toString();
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("rtmpUrl", rtmpUrl);
-                    editor.apply();
+        uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
+        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
+    }
 
-                    mPublisher.startPublish(rtmpUrl);
-                    mPublisher.startCamera();
+    private void handleFilterClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.e_d_fxaa:
+                uizaLivestream.enableAA(!uizaLivestream.isAAEnabled());
+                break;
+            case R.id.no_filter:
+                uizaLivestream.setFilter(new NoFilterRender());
+                break;
+            case R.id.android_view:
+                AndroidViewFilterRender androidViewFilterRender = new AndroidViewFilterRender();
+                androidViewFilterRender.setView(findViewById(R.id.activity_example_rtmp));
+                uizaLivestream.setFilter(androidViewFilterRender);
+                break;
+            case R.id.basic_deformation:
+                uizaLivestream.setFilter(new BasicDeformationFilterRender());
+                break;
+            case R.id.beauty:
+                uizaLivestream.setFilter(new BeautyFilterRender());
+                break;
+            case R.id.blur:
+                uizaLivestream.setFilter(new BlurFilterRender());
+                break;
+            case R.id.brightness:
+                uizaLivestream.setFilter(new BrightnessFilterRender());
+                break;
+            case R.id.cartoon:
+                uizaLivestream.setFilter(new CartoonFilterRender());
+                break;
+            case R.id.color:
+                uizaLivestream.setFilter(new ColorFilterRender());
+                break;
+            case R.id.contrast:
+                uizaLivestream.setFilter(new ContrastFilterRender());
+                break;
+            case R.id.duotone:
+                uizaLivestream.setFilter(new DuotoneFilterRender());
+                break;
+            case R.id.early_bird:
+                uizaLivestream.setFilter(new EarlyBirdFilterRender());
+                break;
+            case R.id.edge_detection:
+                uizaLivestream.setFilter(new EdgeDetectionFilterRender());
+                break;
+            case R.id.exposure:
+                uizaLivestream.setFilter(new ExposureFilterRender());
+                break;
+            case R.id.fire:
+                uizaLivestream.setFilter(new FireFilterRender());
+                break;
+            case R.id.gamma:
+                uizaLivestream.setFilter(new GammaFilterRender());
+                break;
+            case R.id.gif:
+                uizaLivestream.setGifToStream(R.raw.banana, TranslateTo.BOTTOM);
+                break;
+            case R.id.grey_scale:
+                uizaLivestream.setFilter(new GreyScaleFilterRender());
+                break;
+            case R.id.halftone_lines:
+                uizaLivestream.setFilter(new HalftoneLinesFilterRender());
+                break;
+            case R.id.image:
+                uizaLivestream.setImageToStream(R.mipmap.ic_launcher, TranslateTo.RIGHT);
+                break;
+            case R.id.image_70s:
+                uizaLivestream.setFilter(new Image70sFilterRender());
+                break;
+            case R.id.lamoish:
+                uizaLivestream.setFilter(new LamoishFilterRender());
+                break;
+            case R.id.money:
+                uizaLivestream.setFilter(new MoneyFilterRender());
+                break;
+            case R.id.negative:
+                uizaLivestream.setFilter(new NegativeFilterRender());
+                break;
+            case R.id.pixelated:
+                uizaLivestream.setFilter(new PixelatedFilterRender());
+                break;
+            case R.id.polygonization:
+                uizaLivestream.setFilter(new PolygonizationFilterRender());
+                break;
+            case R.id.rainbow:
+                uizaLivestream.setFilter(new RainbowFilterRender());
+                break;
+            case R.id.rgb_saturate:
+                RGBSaturationFilterRender rgbSaturationFilterRender = new RGBSaturationFilterRender();
+                uizaLivestream.setFilter(rgbSaturationFilterRender);
+                //Reduce green and blue colors 20%. Red will predominate.
+                rgbSaturationFilterRender.setRGBSaturation(1f, 0.8f, 0.8f);
+                break;
+            case R.id.ripple:
+                uizaLivestream.setFilter(new RippleFilterRender());
+                break;
+            case R.id.rotation:
+                RotationFilterRender rotationFilterRender = new RotationFilterRender();
+                uizaLivestream.setFilter(rotationFilterRender);
+                rotationFilterRender.setRotation(90);
+                break;
+            case R.id.saturation:
+                uizaLivestream.setFilter(new SaturationFilterRender());
+                break;
+            case R.id.sepia:
+                uizaLivestream.setFilter(new SepiaFilterRender());
+                break;
+            case R.id.sharpness:
+                uizaLivestream.setFilter(new SharpnessFilterRender());
+                break;
+            case R.id.surface_filter:
+                //You can render this btFilter with other api that draw in a surface. for example you can use VLC
+                SurfaceFilterRender surfaceFilterRender = new SurfaceFilterRender();
+                uizaLivestream.setFilter(surfaceFilterRender);
+                MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.big_bunny_240p);
+                mediaPlayer.setSurface(surfaceFilterRender.getSurface());
+                mediaPlayer.start();
+                //Video is 360x240 so select a percent to keep aspect ratio (50% x 33.3% screen)
+                surfaceFilterRender.setScale(50f, 33.3f);
+                surfaceFilterRender.setListeners(uizaLivestream.getOpenGlView()); //Optional
+                break;
+            case R.id.temperature:
+                uizaLivestream.setFilter(new TemperatureFilterRender());
+                break;
+            case R.id.text:
+                uizaLivestream.setTextToStream("Hello Uiza", 40, Color.RED, TranslateTo.CENTER);
+                break;
+            case R.id.zebra:
+                uizaLivestream.setFilter(new ZebraFilterRender());
+                break;
+        }
+    }
 
-                    if (btnSwitchEncoder.getText().toString().contentEquals("soft encoder")) {
-                        LToast.show(activity, "Use hard encoder");
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.b_start_stop:
+                if (!uizaLivestream.isStreaming()) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
-                        LToast.show(activity, "Use soft encoder");
+                        LToast.show(activity, getString(R.string.err_dont_support));
                     }
-                    btnPublish.setText("stop");
-                    btnSwitchEncoder.setEnabled(false);
-                } else if (btnPublish.getText().toString().contentEquals("stop")) {
-                    mPublisher.stopPublish();
-                    mPublisher.stopRecord();
-                    btnPublish.setText("publish");
-                    btnRecord.setText("record");
-                    btnSwitchEncoder.setEnabled(true);
+                } else {
+                    bStartStop.setText(R.string.start_button);
+                    uizaLivestream.stopStream();
                 }
-            }
-        });
-
-        btnSwitchCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPublisher.switchCameraFace((mPublisher.getCamraId() + 1) % Camera.getNumberOfCameras());
-            }
-        });
-
-        btnRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnRecord.getText().toString().contentEquals("record")) {
-                    if (mPublisher.startRecord(recPath)) {
-                        btnRecord.setText("pause");
+                if (uizaLivestream.isStreaming()) {
+                    bStartStop.setText("Stop streaming");
+                    bStartStopStore.setEnabled(false);
+                } else {
+                    bStartStop.setText("Start streaming");
+                    bStartStopStore.setEnabled(true);
+                }
+                break;
+            case R.id.b_start_stop_store:
+                if (!uizaLivestream.isStreaming()) {
+                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
+                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
+                    } else {
+                        LToast.show(activity, "Cannot start");
                     }
-                } else if (btnRecord.getText().toString().contentEquals("pause")) {
-                    mPublisher.pauseRecord();
-                    btnRecord.setText("resume");
-                } else if (btnRecord.getText().toString().contentEquals("resume")) {
-                    mPublisher.resumeRecord();
-                    btnRecord.setText("pause");
+                } else {
+                    bStartStopStore.setText(R.string.start_button);
+                    uizaLivestream.stopStream();
                 }
-            }
-        });
+                if (uizaLivestream.isStreaming()) {
+                    bStartStopStore.setText("Stop streaming");
+                    bStartStop.setEnabled(false);
+                } else {
+                    bStartStopStore.setText("Start stream and Store");
+                    bStartStop.setEnabled(true);
+                }
+                break;
+            case R.id.b_switch_camera:
+                uizaLivestream.switchCamera();
+                break;
+            case R.id.b_filter:
+                LPopupMenu.show(activity, btFilter, R.menu.gl_menu, new LPopupMenu.CallBack() {
+                    @Override
+                    public void clickOnItem(MenuItem menuItem) {
+                        handleFilterClick(menuItem);
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
 
-        btnSwitchEncoder.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onError(final String reason) {
+        runOnUiThread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                if (btnSwitchEncoder.getText().toString().contentEquals("soft encoder")) {
-                    mPublisher.switchToSoftEncoder();
-                    btnSwitchEncoder.setText("hard encoder");
-                } else if (btnSwitchEncoder.getText().toString().contentEquals("hard encoder")) {
-                    mPublisher.switchToHardEncoder();
-                    btnSwitchEncoder.setText("soft encoder");
-                }
+            public void run() {
+                LToast.show(activity, reason);
             }
         });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
+        LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+
+        bStartStop.setEnabled(true);
+        bStartStopStore.setEnabled(true);
+        btSwitchCamera.setEnabled(true);
+        btFilter.setEnabled(true);
+        tvMainUrl.setText(mainUrl);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else {
-            switch (id) {
-                case R.id.cool_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.COOL);
-                    break;
-                case R.id.beauty_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.BEAUTY);
-                    break;
-                case R.id.early_bird_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.EARLYBIRD);
-                    break;
-                case R.id.evergreen_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.EVERGREEN);
-                    break;
-                case R.id.n1977_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.N1977);
-                    break;
-                case R.id.nostalgia_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.NOSTALGIA);
-                    break;
-                case R.id.romance_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.ROMANCE);
-                    break;
-                case R.id.sunrise_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.SUNRISE);
-                    break;
-                case R.id.sunset_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.SUNSET);
-                    break;
-                case R.id.tender_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.TENDER);
-                    break;
-                case R.id.toast_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.TOASTER2);
-                    break;
-                case R.id.valencia_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.VALENCIA);
-                    break;
-                case R.id.walden_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.WALDEN);
-                    break;
-                case R.id.warm_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.WARM);
-                    break;
-                case R.id.original_filter:
-                default:
-                    mPublisher.switchCameraFilter(MagicFilterType.NONE);
-                    break;
-            }
-        }
-        setTitle(item.getTitle());
-
-        return super.onOptionsItemSelected(item);
+    public void onConnectionSuccessRtmp() {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        final Button btn = (Button) findViewById(R.id.publish);
-        btn.setEnabled(true);
-        mPublisher.resumeRecord();
+    public void onConnectionFailedRtmp(String reason) {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mPublisher.pauseRecord();
+    public void onDisconnectRtmp() {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPublisher.stopPublish();
-        mPublisher.stopRecord();
+    public void onAuthErrorRtmp() {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mPublisher.stopEncode();
-        mPublisher.stopRecord();
-        btnRecord.setText("record");
-        mPublisher.setScreenOrientation(newConfig.orientation);
-        if (btnPublish.getText().toString().contentEquals("stop")) {
-            mPublisher.startEncode();
-        }
-        mPublisher.startCamera();
-    }
-
-    private void handleException(Exception e) {
-        try {
-            LToast.show(activity, e.getMessage());
-            mPublisher.stopPublish();
-            mPublisher.stopRecord();
-            btnPublish.setText("publish");
-            btnRecord.setText("record");
-            btnSwitchEncoder.setEnabled(true);
-        } catch (Exception e1) {
-            //
-        }
-    }
-
-    // Implementation of SrsRtmpListener.
-
-    @Override
-    public void onRtmpConnecting(String msg) {
-        LLog.d(TAG, "onRtmpConnecting " + msg);
+    public void onAuthSuccessRtmp() {
     }
 
     @Override
-    public void onRtmpConnected(String msg) {
-        LLog.d(TAG, "onRtmpConnected " + msg);
+    public void surfaceCreated() {
     }
 
     @Override
-    public void onRtmpVideoStreaming() {
-        //LLog.d(TAG, "onRtmpVideoStreaming");
+    public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
+        startPreview.onSizeStartPreview(1280, 720);
     }
-
-    @Override
-    public void onRtmpAudioStreaming() {
-        //LLog.d(TAG, "onRtmpAudioStreaming");
-    }
-
-    @Override
-    public void onRtmpStopped() {
-        LLog.d(TAG, "onRtmpStopped");
-    }
-
-    @Override
-    public void onRtmpDisconnected() {
-        LLog.d(TAG, "onRtmpDisconnected");
-    }
-
-    @Override
-    public void onRtmpVideoFpsChanged(double fps) {
-        LLog.d(TAG, "onRtmpVideoFpsChanged fps " + fps);
-    }
-
-    @Override
-    public void onRtmpVideoBitrateChanged(double bitrate) {
-        int rate = (int) bitrate;
-        if (rate / 1000 > 0) {
-            LLog.d(TAG, String.format("onRtmpVideoBitrateChanged Video bitrate: %f kbps", bitrate / 1000));
-        } else {
-            LLog.d(TAG, String.format("onRtmpVideoBitrateChanged Video bitrate: %d bps", rate));
-        }
-    }
-
-    @Override
-    public void onRtmpAudioBitrateChanged(double bitrate) {
-        int rate = (int) bitrate;
-        if (rate / 1000 > 0) {
-            LLog.d(TAG, String.format("onRtmpAudioBitrateChanged Audio bitrate: %f kbps", bitrate / 1000));
-        } else {
-            LLog.d(TAG, String.format("onRtmpAudioBitrateChanged Audio bitrate: %d bps", rate));
-        }
-    }
-
-    @Override
-    public void onRtmpSocketException(SocketException e) {
-        LLog.e(TAG, "onRtmpSocketException " + e.toString());
-        handleException(e);
-    }
-
-    @Override
-    public void onRtmpIOException(IOException e) {
-        LLog.e(TAG, "onRtmpIOException " + e.toString());
-        handleException(e);
-    }
-
-    @Override
-    public void onRtmpIllegalArgumentException(IllegalArgumentException e) {
-        LLog.e(TAG, "onRtmpIllegalArgumentException " + e.toString());
-        handleException(e);
-    }
-
-    @Override
-    public void onRtmpIllegalStateException(IllegalStateException e) {
-        LLog.e(TAG, "onRtmpIllegalStateException " + e.toString());
-        handleException(e);
-    }
-
-    // Implementation of SrsRecordHandler.
-
-    @Override
-    public void onRecordPause() {
-        LLog.d(TAG, "onRecordPause");
-        LToast.show(activity, "Record paused");
-    }
-
-    @Override
-    public void onRecordResume() {
-        LLog.d(TAG, "onRecordResume");
-        LToast.show(activity, "Record resumed");
-    }
-
-    @Override
-    public void onRecordStarted(String msg) {
-        LLog.d(TAG, "onRecordStarted");
-        LToast.show(activity, "Recording file: " + msg);
-    }
-
-    @Override
-    public void onRecordFinished(String msg) {
-        LLog.d(TAG, "onRecordFinished");
-        LToast.show(activity, "MP4 file saved: " + msg);
-    }
-
-    @Override
-    public void onRecordIOException(IOException e) {
-        LLog.e(TAG, "onRecordIOException " + e.toString());
-        handleException(e);
-    }
-
-    @Override
-    public void onRecordIllegalArgumentException(IllegalArgumentException e) {
-        LLog.e(TAG, "onRecordIllegalArgumentException " + e.toString());
-        handleException(e);
-    }
-
-    // Implementation of SrsEncodeHandler.
-    @Override
-    public void onNetworkWeak() {
-        LToast.show(activity, "Network weak");
-    }
-
-    @Override
-    public void onNetworkResume() {
-        LToast.show(activity, "Network resume");
-    }
-
-    @Override
-    public void onEncodeIllegalArgumentException(IllegalArgumentException e) {
-        LLog.e(TAG, "onEncodeIllegalArgumentException " + e.toString());
-        handleException(e);
-    }
-
 }
