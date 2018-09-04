@@ -140,6 +140,7 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
                 if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                     tvMsg.setVisibility(View.VISIBLE);
                     tvMsg.setText(getString(R.string.empty_list));
+                    LDialogUtil.hide(pb);
                     return;
                 }
                 if (totalPage == Integer.MAX_VALUE) {
