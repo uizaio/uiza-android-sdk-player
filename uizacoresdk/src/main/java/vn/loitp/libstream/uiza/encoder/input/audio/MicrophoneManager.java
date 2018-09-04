@@ -14,7 +14,7 @@ import vn.loitp.libstream.uiza.encoder.audio.DataTaken;
 
 public class MicrophoneManager {
     private final String TAG = MicrophoneManager.class.getSimpleName();
-    public static final int BUFFER_SIZE = 4096;
+    private static final int BUFFER_SIZE = 4096;
     private AudioRecord audioRecord;
     private GetMicrophoneData getMicrophoneData;
     private byte[] pcmBuffer = new byte[BUFFER_SIZE];
