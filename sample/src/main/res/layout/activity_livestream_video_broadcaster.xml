@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream
-        android:id="@+id/uiza_livestream"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <TextView
         android:id="@+id/tv_main_url"
         android:layout_width="wrap_content"
