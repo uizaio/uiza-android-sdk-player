@@ -472,9 +472,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 String mainUrl = streamUrl + "/" + streamKey;
-                LLog.d(TAG, ">>>>mainUrl: " + mainUrl);
-
                 mainStreamUrl = mainUrl;
+                LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
                 //TODO remove harcode
                 mainStreamUrl = "rtmp://14.161.0.68/live-origin/testapp";
 
