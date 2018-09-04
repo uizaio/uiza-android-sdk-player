@@ -1,0 +1,23 @@
+{
+  "buildFiles": [
+    "C:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk",
+    "C:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib clean"
+  ],
+  "libraries": {
+    "enc-release-arm64-v8a": {
+      "artifactName": "enc",
+      "buildCommand": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib C:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libenc.so",
+      "abi": "arm64-v8a",
+      "output": "C:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\obj\\local\\arm64-v8a\\libenc.so"
+    },
+    "yuv-release-arm64-v8a": {
+      "artifactName": "yuv",
+      "buildCommand": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib C:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj/local/arm64-v8a/libyuv.so",
+      "abi": "arm64-v8a",
+      "output": "C:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\obj\\local\\arm64-v8a\\libyuv.so"
+    }
+  }
+}

@@ -15,6 +15,11 @@ android {
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
         multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+        }
     }
     buildTypes {
         release {
@@ -26,9 +31,15 @@ android {
         jumboMode true
         javaMaxHeapSize "4g"
     }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
 }
 
 dependencies {
+    compile fileTree(dir: 'libx264.libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
