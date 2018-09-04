@@ -36,7 +36,7 @@
 
 // GCC doesn't align stack variables on ARM, so use .bss
 #if ARCH_ARM
-                                                                                                                        #undef ALIGNED_16
+#undef ALIGNED_16
 #define ALIGNED_16( var ) DECLARE_ALIGNED( static var, 16 )
 #endif
 
@@ -51,7 +51,7 @@ pixel *pbuf3, *pbuf4;
 
 int quiet = 0;
 
-#define report(name) { \
+#define report( name ) { \
     if( used_asm && !quiet ) \
         fprintf( stderr, " - %-21s [%s]\n", name, ok ? "OK" : "FAILED" ); \
     if( !ok ) ret = -1; \
@@ -61,14 +61,16 @@ int quiet = 0;
 #define MAX_FUNCS 1000  // just has to be big enough to hold all the existing functions
 #define MAX_CPUS 30     // number of different combinations of cpu flags
 
-typedef struct {
+typedef struct
+{
     void *pointer; // just for detecting duplicates
     uint32_t cpu;
     uint64_t cycles;
     uint32_t den;
 } bench_t;
 
-typedef struct {
+typedef struct
+{
     char *name;
     bench_t vers[MAX_CPUS];
 } bench_func_t;
@@ -79,21 +81,20 @@ const char *bench_pattern = "";
 char func_name[100];
 static bench_func_t benchs[MAX_FUNCS];
 
-static const char *pixel_names[12] = {"16x16", "16x8", "8x16", "8x8", "8x4", "4x8", "4x4", "4x16",
-                                      "4x2", "2x8", "2x4", "2x2"};
-static const char *intra_predict_16x16_names[7] = {"v", "h", "dc", "p", "dcl", "dct", "dc8"};
-static const char *intra_predict_8x8c_names[7] = {"dc", "h", "v", "p", "dcl", "dct", "dc8"};
-static const char *intra_predict_4x4_names[12] = {"v", "h", "dc", "ddl", "ddr", "vr", "hd", "vl",
-                                                  "hu", "dcl", "dct", "dc8"};
+static const char *pixel_names[12] = { "16x16", "16x8", "8x16", "8x8", "8x4", "4x8", "4x4", "4x16", "4x2", "2x8", "2x4", "2x2" };
+static const char *intra_predict_16x16_names[7] = { "v", "h", "dc", "p", "dcl", "dct", "dc8" };
+static const char *intra_predict_8x8c_names[7] = { "dc", "h", "v", "p", "dcl", "dct", "dc8" };
+static const char *intra_predict_4x4_names[12] = { "v", "h", "dc", "ddl", "ddr", "vr", "hd", "vl", "hu", "dcl", "dct", "dc8" };
 static const char **intra_predict_8x8_names = intra_predict_4x4_names;
 static const char **intra_predict_8x16c_names = intra_predict_8x8c_names;
 
 #define set_func_name(...) snprintf( func_name, sizeof(func_name), __VA_ARGS__ )
 
-static inline uint32_t read_time(void) {
+static inline uint32_t read_time(void)
+{
     uint32_t a = 0;
 #if HAVE_X86_INLINE_ASM
-                                                                                                                            asm volatile( "lfence \n"
+    asm volatile( "lfence \n"
                   "rdtsc  \n"
                   : "=a"(a) :: "edx", "memory" );
 #elif ARCH_PPC
@@ -101,7 +102,7 @@ static inline uint32_t read_time(void) {
 #elif HAVE_ARM_INLINE_ASM    // ARMv7 only
     asm volatile( "mrc p15, 0, %0, c9, c13, 0" : "=r"(a) :: "memory" );
 #elif ARCH_AARCH64
-                                                                                                                            uint64_t b = 0;
+    uint64_t b = 0;
     asm volatile( "mrs %0, pmccntr_el0" : "=r"(b) :: "memory" );
     a = b;
 #elif ARCH_MIPS
@@ -110,68 +111,73 @@ static inline uint32_t read_time(void) {
     return a;
 }
 
-static bench_t *get_bench(const char *name, int cpu) {
+static bench_t* get_bench( const char *name, int cpu )
+{
     int i, j;
-    for (i = 0; benchs[i].name && strcmp(name, benchs[i].name); i++)
-        assert(i < MAX_FUNCS);
-    if (!benchs[i].name)
-        benchs[i].name = strdup(name);
-    if (!cpu)
+    for( i = 0; benchs[i].name && strcmp(name, benchs[i].name); i++ )
+        assert( i < MAX_FUNCS );
+    if( !benchs[i].name )
+        benchs[i].name = strdup( name );
+    if( !cpu )
         return &benchs[i].vers[0];
-    for (j = 1; benchs[i].vers[j].cpu && benchs[i].vers[j].cpu != cpu; j++)
-        assert(j < MAX_CPUS);
+    for( j = 1; benchs[i].vers[j].cpu && benchs[i].vers[j].cpu != cpu; j++ )
+        assert( j < MAX_CPUS );
     benchs[i].vers[j].cpu = cpu;
     return &benchs[i].vers[j];
 }
 
-static int cmp_nop(const void *a, const void *b) {
-    return *(uint16_t *) a - *(uint16_t *) b;
+static int cmp_nop( const void *a, const void *b )
+{
+    return *(uint16_t*)a - *(uint16_t*)b;
 }
 
-static int cmp_bench(const void *a, const void *b) {
+static int cmp_bench( const void *a, const void *b )
+{
     // asciibetical sort except preserving numbers
-    const char *sa = ((bench_func_t *) a)->name;
-    const char *sb = ((bench_func_t *) b)->name;
-    for (;; sa++, sb++) {
-        if (!*sa && !*sb)
+    const char *sa = ((bench_func_t*)a)->name;
+    const char *sb = ((bench_func_t*)b)->name;
+    for( ;; sa++, sb++ )
+    {
+        if( !*sa && !*sb )
             return 0;
-        if (isdigit(*sa) && isdigit(*sb) && isdigit(sa[1]) != isdigit(sb[1]))
-            return isdigit(sa[1]) - isdigit(sb[1]);
-        if (*sa != *sb)
+        if( isdigit( *sa ) && isdigit( *sb ) && isdigit( sa[1] ) != isdigit( sb[1] ) )
+            return isdigit( sa[1] ) - isdigit( sb[1] );
+        if( *sa != *sb )
             return *sa - *sb;
     }
 }
 
-static void print_bench(void) {
+static void print_bench(void)
+{
     uint16_t nops[10000];
-    int nfuncs, nop_time = 0;
+    int nfuncs, nop_time=0;
 
-    for (int i = 0; i < 10000; i++) {
+    for( int i = 0; i < 10000; i++ )
+    {
         uint32_t t = read_time();
         nops[i] = read_time() - t;
     }
-    qsort(nops, 10000, sizeof(uint16_t), cmp_nop);
-    for (int i = 500; i < 9500; i++)
+    qsort( nops, 10000, sizeof(uint16_t), cmp_nop );
+    for( int i = 500; i < 9500; i++ )
         nop_time += nops[i];
     nop_time /= 900;
-    printf("nop: %d\n", nop_time);
+    printf( "nop: %d\n", nop_time );
 
-    for (nfuncs = 0; nfuncs < MAX_FUNCS && benchs[nfuncs].name; nfuncs++);
-    qsort(benchs, nfuncs, sizeof(bench_func_t), cmp_bench);
-    for (int i = 0; i < nfuncs; i++)
-        for (int j = 0; j < MAX_CPUS && (!j || benchs[i].vers[j].cpu); j++) {
+    for( nfuncs = 0; nfuncs < MAX_FUNCS && benchs[nfuncs].name; nfuncs++ );
+    qsort( benchs, nfuncs, sizeof(bench_func_t), cmp_bench );
+    for( int i = 0; i < nfuncs; i++ )
+        for( int j = 0; j < MAX_CPUS && (!j || benchs[i].vers[j].cpu); j++ )
+        {
             int k;
             bench_t *b = &benchs[i].vers[j];
-            if (!b->den)
+            if( !b->den )
                 continue;
-            for (k = 0; k < j && benchs[i].vers[k].pointer != b->pointer; k++);
-            if (k < j)
+            for( k = 0; k < j && benchs[i].vers[k].pointer != b->pointer; k++ );
+            if( k < j )
                 continue;
-            printf("%s_%s%s: %"
-            PRId64
-            "\n", benchs[i].name,
+            printf( "%s_%s%s: %"PRId64"\n", benchs[i].name,
 #if HAVE_MMX
-                                                                                                                                    b->cpu&X264_CPU_AVX512 ? "avx512" :
+                    b->cpu&X264_CPU_AVX512 ? "avx512" :
                     b->cpu&X264_CPU_AVX2 ? "avx2" :
                     b->cpu&X264_CPU_BMI2 ? "bmi2" :
                     b->cpu&X264_CPU_BMI1 ? "bmi1" :
@@ -192,17 +198,17 @@ static void print_bench(void) {
 #elif ARCH_PPC
                     b->cpu&X264_CPU_ALTIVEC ? "altivec" :
 #elif ARCH_ARM
-                                                                                                                                    b->cpu&X264_CPU_NEON ? "neon" :
+                    b->cpu&X264_CPU_NEON ? "neon" :
                     b->cpu&X264_CPU_ARMV6 ? "armv6" :
 #elif ARCH_AARCH64
-                                                                                                                                    b->cpu&X264_CPU_NEON ? "neon" :
+                    b->cpu&X264_CPU_NEON ? "neon" :
                     b->cpu&X264_CPU_ARMV8 ? "armv8" :
 #elif ARCH_MIPS
                     b->cpu&X264_CPU_MSA ? "msa" :
 #endif
                     "c",
 #if HAVE_MMX
-                                                                                                                                    b->cpu&X264_CPU_CACHELINE_32 ? "_c32" :
+                    b->cpu&X264_CPU_CACHELINE_32 ? "_c32" :
                     b->cpu&X264_CPU_SLOW_ATOM && b->cpu&X264_CPU_CACHELINE_64 ? "_c64_atom" :
                     b->cpu&X264_CPU_CACHELINE_64 ? "_c64" :
                     b->cpu&X264_CPU_SLOW_SHUFFLE ? "_slowshuffle" :
@@ -212,7 +218,7 @@ static void print_bench(void) {
                     b->cpu&X264_CPU_FAST_NEON_MRC ? "_fast_mrc" :
 #endif
                     "",
-                    (int64_t)(10 * b->cycles / b->den - nop_time) / 4 );
+                    (int64_t)(10*b->cycles/b->den - nop_time)/4 );
         }
 }
 
@@ -221,12 +227,11 @@ static void print_bench(void) {
  * during which performance will be reduced and inconsistent which is problematic when
  * trying to benchmark individual functions. We can work around this by periodically
  * issuing "dummy" instructions that uses those registers to keep them powered on. */
-static void (*simd_warmup_func)(void) = NULL;
-
+static void (*simd_warmup_func)( void ) = NULL;
 #define simd_warmup() do { if( simd_warmup_func ) simd_warmup_func(); } while( 0 )
 
 #if ARCH_X86 || ARCH_X86_64
-                                                                                                                        int x264_stack_pagealign( int (*func)(), int align );
+int x264_stack_pagealign( int (*func)(), int align );
 void x264_checkasm_warmup_avx( void );
 void x264_checkasm_warmup_avx512( void );
 
@@ -234,7 +239,7 @@ void x264_checkasm_warmup_avx512( void );
  * needs an explicit asm check because it only sometimes crashes in normal use. */
 intptr_t x264_checkasm_call( intptr_t (*func)(), int *ok, ... );
 #else
-#define x264_stack_pagealign(func, align) func()
+#define x264_stack_pagealign( func, align ) func()
 #endif
 
 #if ARCH_AARCH64
@@ -242,15 +247,15 @@ intptr_t x264_checkasm_call( intptr_t (*func)(), int *ok, ... );
 #endif
 
 #if ARCH_ARM
-                                                                                                                        intptr_t x264_checkasm_call_neon( intptr_t (*func)(), int *ok, ... );
+intptr_t x264_checkasm_call_neon( intptr_t (*func)(), int *ok, ... );
 intptr_t x264_checkasm_call_noneon( intptr_t (*func)(), int *ok, ... );
 intptr_t (*x264_checkasm_call)( intptr_t (*func)(), int *ok, ... ) = x264_checkasm_call_noneon;
 #endif
 
-#define call_c1(func, ...) func(__VA_ARGS__)
+#define call_c1(func,...) func(__VA_ARGS__)
 
 #if ARCH_X86_64
-                                                                                                                        /* Evil hack: detect incorrect assumptions that 32-bit ints are zero-extended to 64-bit.
+/* Evil hack: detect incorrect assumptions that 32-bit ints are zero-extended to 64-bit.
  * This is done by clobbering the stack with junk around the stack pointer and calling the
  * assembly function through x264_checkasm_call with added dummy arguments which forces all
  * real arguments to be passed on the stack and not in registers. For 32-bit argument the
@@ -266,7 +271,7 @@ void x264_checkasm_stack_clobber( uint64_t clobber, ... );
     simd_warmup(); \
     x264_checkasm_call(( intptr_t(*)())func, &ok, 0, 0, 0, 0, __VA_ARGS__ ); })
 #elif ARCH_AARCH64 && !defined(__APPLE__)
-                                                                                                                        void x264_checkasm_stack_clobber( uint64_t clobber, ... );
+void x264_checkasm_stack_clobber( uint64_t clobber, ... );
 #define call_a1(func,...) ({ \
     uint64_t r = (rand() & 0xffff) * 0x0001000100010001ULL; \
     x264_checkasm_stack_clobber( r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r ); /* max_args+8 */ \
@@ -283,7 +288,7 @@ void x264_checkasm_stack_clobber( uint64_t clobber, ... );
 #define call_a1_64 call_a1
 #endif
 
-#define call_bench(func, cpu, ...)\
+#define call_bench(func,cpu,...)\
     if( do_bench && !strncmp(func_name, bench_pattern, bench_pattern_len) )\
     {\
         uint64_t tsum = 0;\
@@ -312,47 +317,49 @@ void x264_checkasm_stack_clobber( uint64_t clobber, ... );
 
 /* for most functions, run benchmark and correctness test at the same time.
  * for those that modify their inputs, run the above macros separately */
-#define call_a(func, ...) ({ call_a2(func,__VA_ARGS__); call_a1(func,__VA_ARGS__); })
-#define call_c(func, ...) ({ call_c2(func,__VA_ARGS__); call_c1(func,__VA_ARGS__); })
-#define call_a2(func, ...) ({ call_bench(func,cpu_new,__VA_ARGS__); })
-#define call_c2(func, ...) ({ call_bench(func,0,__VA_ARGS__); })
-#define call_a64(func, ...) ({ call_a2(func,__VA_ARGS__); call_a1_64(func,__VA_ARGS__); })
+#define call_a(func,...) ({ call_a2(func,__VA_ARGS__); call_a1(func,__VA_ARGS__); })
+#define call_c(func,...) ({ call_c2(func,__VA_ARGS__); call_c1(func,__VA_ARGS__); })
+#define call_a2(func,...) ({ call_bench(func,cpu_new,__VA_ARGS__); })
+#define call_c2(func,...) ({ call_bench(func,0,__VA_ARGS__); })
+#define call_a64(func,...) ({ call_a2(func,__VA_ARGS__); call_a1_64(func,__VA_ARGS__); })
 
 
-static int check_pixel(int cpu_ref, int cpu_new) {
+static int check_pixel( int cpu_ref, int cpu_new )
+{
     x264_pixel_function_t pixel_c;
     x264_pixel_function_t pixel_ref;
     x264_pixel_function_t pixel_asm;
     x264_predict_t predict_4x4[12];
     x264_predict8x8_t predict_8x8[12];
     x264_predict_8x8_filter_t predict_8x8_filter;
-    ALIGNED_16(pixel
-    edge[36] );
+    ALIGNED_16( pixel edge[36] );
     uint16_t cost_mv[32];
     int ret = 0, ok, used_asm;
 
-    x264_pixel_init(0, &pixel_c);
-    x264_pixel_init(cpu_ref, &pixel_ref);
-    x264_pixel_init(cpu_new, &pixel_asm);
-    x264_predict_4x4_init(0, predict_4x4);
-    x264_predict_8x8_init(0, predict_8x8, &predict_8x8_filter);
-    predict_8x8_filter(pbuf2 + 40, edge, ALL_NEIGHBORS, ALL_NEIGHBORS);
+    x264_pixel_init( 0, &pixel_c );
+    x264_pixel_init( cpu_ref, &pixel_ref );
+    x264_pixel_init( cpu_new, &pixel_asm );
+    x264_predict_4x4_init( 0, predict_4x4 );
+    x264_predict_8x8_init( 0, predict_8x8, &predict_8x8_filter );
+    predict_8x8_filter( pbuf2+40, edge, ALL_NEIGHBORS, ALL_NEIGHBORS );
 
     // maximize sum
-    for (int i = 0; i < 256; i++) {
-        int z = i | (i >> 4);
-        z ^= z >> 2;
-        z ^= z >> 1;
-        pbuf4[i] = -(z & 1) & PIXEL_MAX;
+    for( int i = 0; i < 256; i++ )
+    {
+        int z = i|(i>>4);
+        z ^= z>>2;
+        z ^= z>>1;
+        pbuf4[i] = -(z&1) & PIXEL_MAX;
         pbuf3[i] = ~pbuf4[i] & PIXEL_MAX;
     }
     // random pattern made of maxed pixel differences, in case an intermediate value overflows
-    for (int i = 256; i < 0x1000; i++) {
-        pbuf4[i] = -(pbuf1[i & ~0x88] & 1) & PIXEL_MAX;
+    for( int i = 256; i < 0x1000; i++ )
+    {
+        pbuf4[i] = -(pbuf1[i&~0x88]&1) & PIXEL_MAX;
         pbuf3[i] = ~(pbuf4[i]) & PIXEL_MAX;
     }
 
-#define TEST_PIXEL(name, align) \
+#define TEST_PIXEL( name, align ) \
     ok = 1, used_asm = 0; \
     for( int i = 0; i < ARRAY_ELEMS(pixel_c.name); i++ ) \
     { \
@@ -387,48 +394,50 @@ static int check_pixel(int cpu_ref, int cpu_new) {
     } \
     report( "pixel " #name " :" );
 
-    TEST_PIXEL(sad, 0);
-    TEST_PIXEL(sad_aligned, 1);
-    TEST_PIXEL(ssd, 1);
-    TEST_PIXEL(satd, 0);
-    TEST_PIXEL(sa8d, 1);
+    TEST_PIXEL( sad, 0 );
+    TEST_PIXEL( sad_aligned, 1 );
+    TEST_PIXEL( ssd, 1 );
+    TEST_PIXEL( satd, 0 );
+    TEST_PIXEL( sa8d, 1 );
 
     ok = 1, used_asm = 0;
-    if (pixel_asm.sa8d_satd[PIXEL_16x16] != pixel_ref.sa8d_satd[PIXEL_16x16]) {
-        set_func_name("sa8d_satd_%s", pixel_names[PIXEL_16x16]);
+    if( pixel_asm.sa8d_satd[PIXEL_16x16] != pixel_ref.sa8d_satd[PIXEL_16x16] )
+    {
+        set_func_name( "sa8d_satd_%s", pixel_names[PIXEL_16x16] );
         used_asm = 1;
-        for (int j = 0; j < 64; j++) {
-            uint32_t cost8_c = pixel_c.sa8d[PIXEL_16x16](pbuf1, 16, pbuf2, 64);
-            uint32_t cost4_c = pixel_c.satd[PIXEL_16x16](pbuf1, 16, pbuf2, 64);
-            uint64_t res_a = call_a64(pixel_asm.sa8d_satd[PIXEL_16x16], pbuf1, (intptr_t) 16, pbuf2,
-                                      (intptr_t) 64);
+        for( int j = 0; j < 64; j++ )
+        {
+            uint32_t cost8_c = pixel_c.sa8d[PIXEL_16x16]( pbuf1, 16, pbuf2, 64 );
+            uint32_t cost4_c = pixel_c.satd[PIXEL_16x16]( pbuf1, 16, pbuf2, 64 );
+            uint64_t res_a = call_a64( pixel_asm.sa8d_satd[PIXEL_16x16], pbuf1, (intptr_t)16, pbuf2, (intptr_t)64 );
             uint32_t cost8_a = res_a;
             uint32_t cost4_a = res_a >> 32;
-            if (cost8_a != cost8_c || cost4_a != cost4_c) {
+            if( cost8_a != cost8_c || cost4_a != cost4_c )
+            {
                 ok = 0;
-                fprintf(stderr, "sa8d_satd [%d]: (%d,%d) != (%d,%d) [FAILED]\n", PIXEL_16x16,
-                        cost8_c, cost4_c, cost8_a, cost4_a);
+                fprintf( stderr, "sa8d_satd [%d]: (%d,%d) != (%d,%d) [FAILED]\n", PIXEL_16x16,
+                         cost8_c, cost4_c, cost8_a, cost4_a );
                 break;
             }
         }
-        for (int j = 0; j < 0x1000 && ok; j += 256) \
- {
-            uint32_t cost8_c = pixel_c.sa8d[PIXEL_16x16](pbuf3 + j, 16, pbuf4 + j, 16);
-            uint32_t cost4_c = pixel_c.satd[PIXEL_16x16](pbuf3 + j, 16, pbuf4 + j, 16);
-            uint64_t res_a = pixel_asm.sa8d_satd[PIXEL_16x16](pbuf3 + j, 16, pbuf4 + j, 16);
+        for( int j = 0; j < 0x1000 && ok; j += 256 ) \
+        {
+            uint32_t cost8_c = pixel_c.sa8d[PIXEL_16x16]( pbuf3+j, 16, pbuf4+j, 16 );
+            uint32_t cost4_c = pixel_c.satd[PIXEL_16x16]( pbuf3+j, 16, pbuf4+j, 16 );
+            uint64_t res_a = pixel_asm.sa8d_satd[PIXEL_16x16]( pbuf3+j, 16, pbuf4+j, 16 );
             uint32_t cost8_a = res_a;
             uint32_t cost4_a = res_a >> 32;
-            if (cost8_a != cost8_c || cost4_a != cost4_c) {
+            if( cost8_a != cost8_c || cost4_a != cost4_c )
+            {
                 ok = 0;
-                fprintf(stderr, "sa8d_satd [%d]: overflow (%d,%d) != (%d,%d) [FAILED]\n",
-                        PIXEL_16x16,
-                        cost8_c, cost4_c, cost8_a, cost4_a);
+                fprintf( stderr, "sa8d_satd [%d]: overflow (%d,%d) != (%d,%d) [FAILED]\n", PIXEL_16x16,
+                         cost8_c, cost4_c, cost8_a, cost4_a );
             }
         }
     }
-    report("pixel sa8d_satd :");
+    report( "pixel sa8d_satd :" );
 
-#define TEST_PIXEL_X(N) \
+#define TEST_PIXEL_X( N ) \
     ok = 1; used_asm = 0; \
     for( int i = 0; i < 7; i++ ) \
     { \
@@ -470,7 +479,7 @@ static int check_pixel(int cpu_ref, int cpu_new) {
     TEST_PIXEL_X(3);
     TEST_PIXEL_X(4);
 
-#define TEST_PIXEL_VAR(i) \
+#define TEST_PIXEL_VAR( i ) \
     if( pixel_asm.var[i] != pixel_ref.var[i] ) \
     { \
         set_func_name( "%s_%s", "var", pixel_names[i] ); \
@@ -489,14 +498,13 @@ static int check_pixel(int cpu_ref, int cpu_new) {
         call_a2( pixel_asm.var[i], pbuf1, (intptr_t)16 ); \
     }
 
-    ok = 1;
-    used_asm = 0;
-    TEST_PIXEL_VAR(PIXEL_16x16);
-    TEST_PIXEL_VAR(PIXEL_8x16);
-    TEST_PIXEL_VAR(PIXEL_8x8);
-    report("pixel var :");
+    ok = 1; used_asm = 0;
+    TEST_PIXEL_VAR( PIXEL_16x16 );
+    TEST_PIXEL_VAR( PIXEL_8x16 );
+    TEST_PIXEL_VAR( PIXEL_8x8 );
+    report( "pixel var :" );
 
-#define TEST_PIXEL_VAR2(i) \
+#define TEST_PIXEL_VAR2( i ) \
     if( pixel_asm.var2[i] != pixel_ref.var2[i] ) \
     { \
         int res_c, res_asm; \
@@ -513,76 +521,80 @@ static int check_pixel(int cpu_ref, int cpu_new) {
         } \
     }
 
-    ok = 1;
-    used_asm = 0;
-    TEST_PIXEL_VAR2(PIXEL_8x16);
-    TEST_PIXEL_VAR2(PIXEL_8x8);
-    report("pixel var2 :");
+    ok = 1; used_asm = 0;
+    TEST_PIXEL_VAR2( PIXEL_8x16 );
+    TEST_PIXEL_VAR2( PIXEL_8x8 );
+    report( "pixel var2 :" );
 
-    ok = 1;
-    used_asm = 0;
-    for (int i = 0; i < 4; i++)
-        if (pixel_asm.hadamard_ac[i] != pixel_ref.hadamard_ac[i]) {
-            set_func_name("hadamard_ac_%s", pixel_names[i]);
+    ok = 1; used_asm = 0;
+    for( int i = 0; i < 4; i++ )
+        if( pixel_asm.hadamard_ac[i] != pixel_ref.hadamard_ac[i] )
+        {
+            set_func_name( "hadamard_ac_%s", pixel_names[i] );
             used_asm = 1;
-            for (int j = 0; j < 32; j++) {
-                pixel *pix = (j & 16 ? pbuf1 : pbuf3) + (j & 15) * 256;
-                call_c1(pixel_c.hadamard_ac[i], pbuf1, (intptr_t) 16);
-                call_a1(pixel_asm.hadamard_ac[i], pbuf1, (intptr_t) 16);
-                uint64_t rc = pixel_c.hadamard_ac[i](pix, 16);
-                uint64_t ra = pixel_asm.hadamard_ac[i](pix, 16);
-                if (rc != ra) {
+            for( int j = 0; j < 32; j++ )
+            {
+                pixel *pix = (j&16 ? pbuf1 : pbuf3) + (j&15)*256;
+                call_c1( pixel_c.hadamard_ac[i],   pbuf1, (intptr_t)16 );
+                call_a1( pixel_asm.hadamard_ac[i], pbuf1, (intptr_t)16 );
+                uint64_t rc = pixel_c.hadamard_ac[i]( pix, 16 );
+                uint64_t ra = pixel_asm.hadamard_ac[i]( pix, 16 );
+                if( rc != ra )
+                {
                     ok = 0;
-                    fprintf(stderr, "hadamard_ac[%d]: %d,%d != %d,%d\n", i, (int) rc,
-                            (int) (rc >> 32), (int) ra, (int) (ra >> 32));
+                    fprintf( stderr, "hadamard_ac[%d]: %d,%d != %d,%d\n", i, (int)rc, (int)(rc>>32), (int)ra, (int)(ra>>32) );
                     break;
                 }
             }
-            call_c2(pixel_c.hadamard_ac[i], pbuf1, (intptr_t) 16);
-            call_a2(pixel_asm.hadamard_ac[i], pbuf1, (intptr_t) 16);
+            call_c2( pixel_c.hadamard_ac[i],   pbuf1, (intptr_t)16 );
+            call_a2( pixel_asm.hadamard_ac[i], pbuf1, (intptr_t)16 );
         }
-    report("pixel hadamard_ac :");
+    report( "pixel hadamard_ac :" );
 
     // maximize sum
-    for (int i = 0; i < 32; i++)
-        for (int j = 0; j < 16; j++)
-            pbuf4[16 * i + j] = -((i + j) & 1) & PIXEL_MAX;
-    ok = 1;
-    used_asm = 0;
-    if (pixel_asm.vsad != pixel_ref.vsad) {
-        for (int h = 2; h <= 32; h += 2) {
+    for( int i = 0; i < 32; i++ )
+        for( int j = 0; j < 16; j++ )
+            pbuf4[16*i+j] = -((i+j)&1) & PIXEL_MAX;
+    ok = 1; used_asm = 0;
+    if( pixel_asm.vsad != pixel_ref.vsad )
+    {
+        for( int h = 2; h <= 32; h += 2 )
+        {
             int res_c, res_asm;
-            set_func_name("vsad");
+            set_func_name( "vsad" );
             used_asm = 1;
-            for (int j = 0; j < 2 && ok; j++) {
+            for( int j = 0; j < 2 && ok; j++ )
+            {
                 pixel *p = j ? pbuf4 : pbuf1;
-                res_c = call_c(pixel_c.vsad, p, (intptr_t) 16, h);
-                res_asm = call_a(pixel_asm.vsad, p, (intptr_t) 16, h);
-                if (res_c != res_asm) {
+                res_c   = call_c( pixel_c.vsad,   p, (intptr_t)16, h );
+                res_asm = call_a( pixel_asm.vsad, p, (intptr_t)16, h );
+                if( res_c != res_asm )
+                {
                     ok = 0;
-                    fprintf(stderr, "vsad: height=%d, %d != %d\n", h, res_c, res_asm);
+                    fprintf( stderr, "vsad: height=%d, %d != %d\n", h, res_c, res_asm );
                     break;
                 }
             }
         }
     }
-    report("pixel vsad :");
+    report( "pixel vsad :" );
 
-    ok = 1;
-    used_asm = 0;
-    if (pixel_asm.asd8 != pixel_ref.asd8) {
-        set_func_name("asd8");
+    ok = 1; used_asm = 0;
+    if( pixel_asm.asd8 != pixel_ref.asd8 )
+    {
+        set_func_name( "asd8" );
         used_asm = 1;
-        int res_c = call_c(pixel_c.asd8, pbuf1, (intptr_t) 8, pbuf2, (intptr_t) 8, 16);
-        int res_a = call_a(pixel_asm.asd8, pbuf1, (intptr_t) 8, pbuf2, (intptr_t) 8, 16);
-        if (res_c != res_a) {
+        int res_c = call_c( pixel_c.asd8,   pbuf1, (intptr_t)8, pbuf2, (intptr_t)8, 16 );
+        int res_a = call_a( pixel_asm.asd8, pbuf1, (intptr_t)8, pbuf2, (intptr_t)8, 16 );
+        if( res_c != res_a )
+        {
             ok = 0;
-            fprintf(stderr, "asd: %d != %d\n", res_c, res_a);
+            fprintf( stderr, "asd: %d != %d\n", res_c, res_a );
         }
     }
-    report("pixel asd :");
+    report( "pixel asd :" );
 
-#define TEST_INTRA_X3(name, i8x8, ...) \
+#define TEST_INTRA_X3( name, i8x8, ... ) \
     if( pixel_asm.name && pixel_asm.name != pixel_ref.name ) \
     { \
         ALIGNED_16( int res_c[3] ); \
@@ -600,7 +612,7 @@ static int check_pixel(int cpu_ref, int cpu_new) {
         } \
     }
 
-#define TEST_INTRA_X9(name, cmp) \
+#define TEST_INTRA_X9( name, cmp ) \
     if( pixel_asm.name && pixel_asm.name != pixel_ref.name ) \
     { \
         set_func_name( #name ); \
@@ -647,7 +659,7 @@ static int check_pixel(int cpu_ref, int cpu_new) {
         } \
     }
 
-#define TEST_INTRA8_X9(name, cmp) \
+#define TEST_INTRA8_X9( name, cmp ) \
     if( pixel_asm.name && pixel_asm.name != pixel_ref.name ) \
     { \
         set_func_name( #name ); \
@@ -713,177 +725,161 @@ static int check_pixel(int cpu_ref, int cpu_new) {
         } \
     }
 
-    memcpy(pbuf3, pbuf2, 20 * FDEC_STRIDE * sizeof(pixel));
-    ok = 1;
-    used_asm = 0;
-    TEST_INTRA_X3(intra_satd_x3_16x16, 0);
-    TEST_INTRA_X3(intra_satd_x3_8x16c, 0);
-    TEST_INTRA_X3(intra_satd_x3_8x8c, 0);
-    TEST_INTRA_X3(intra_sa8d_x3_8x8, 1, edge);
-    TEST_INTRA_X3(intra_satd_x3_4x4, 0);
-    report("intra satd_x3 :");
-    ok = 1;
-    used_asm = 0;
-    TEST_INTRA_X3(intra_sad_x3_16x16, 0);
-    TEST_INTRA_X3(intra_sad_x3_8x16c, 0);
-    TEST_INTRA_X3(intra_sad_x3_8x8c, 0);
-    TEST_INTRA_X3(intra_sad_x3_8x8, 1, edge);
-    TEST_INTRA_X3(intra_sad_x3_4x4, 0);
-    report("intra sad_x3 :");
-    ok = 1;
-    used_asm = 0;
-    TEST_INTRA_X9(intra_satd_x9_4x4, satd);
-    TEST_INTRA8_X9(intra_sa8d_x9_8x8, sa8d);
-    report("intra satd_x9 :");
-    ok = 1;
-    used_asm = 0;
-    TEST_INTRA_X9(intra_sad_x9_4x4, sad);
-    TEST_INTRA8_X9(intra_sad_x9_8x8, sad);
-    report("intra sad_x9 :");
+    memcpy( pbuf3, pbuf2, 20*FDEC_STRIDE*sizeof(pixel) );
+    ok = 1; used_asm = 0;
+    TEST_INTRA_X3( intra_satd_x3_16x16, 0 );
+    TEST_INTRA_X3( intra_satd_x3_8x16c, 0 );
+    TEST_INTRA_X3( intra_satd_x3_8x8c, 0 );
+    TEST_INTRA_X3( intra_sa8d_x3_8x8, 1, edge );
+    TEST_INTRA_X3( intra_satd_x3_4x4, 0 );
+    report( "intra satd_x3 :" );
+    ok = 1; used_asm = 0;
+    TEST_INTRA_X3( intra_sad_x3_16x16, 0 );
+    TEST_INTRA_X3( intra_sad_x3_8x16c, 0 );
+    TEST_INTRA_X3( intra_sad_x3_8x8c, 0 );
+    TEST_INTRA_X3( intra_sad_x3_8x8, 1, edge );
+    TEST_INTRA_X3( intra_sad_x3_4x4, 0 );
+    report( "intra sad_x3 :" );
+    ok = 1; used_asm = 0;
+    TEST_INTRA_X9( intra_satd_x9_4x4, satd );
+    TEST_INTRA8_X9( intra_sa8d_x9_8x8, sa8d );
+    report( "intra satd_x9 :" );
+    ok = 1; used_asm = 0;
+    TEST_INTRA_X9( intra_sad_x9_4x4, sad );
+    TEST_INTRA8_X9( intra_sad_x9_8x8, sad );
+    report( "intra sad_x9 :" );
 
-    ok = 1;
-    used_asm = 0;
-    if (pixel_asm.ssd_nv12_core != pixel_ref.ssd_nv12_core) {
+    ok = 1; used_asm = 0;
+    if( pixel_asm.ssd_nv12_core != pixel_ref.ssd_nv12_core )
+    {
         used_asm = 1;
-        set_func_name("ssd_nv12");
+        set_func_name( "ssd_nv12" );
         uint64_t res_u_c, res_v_c, res_u_a, res_v_a;
-        for (int w = 8; w <= 360; w += 8) {
-            pixel_c.ssd_nv12_core(pbuf1, 368, pbuf2, 368, w, 8, &res_u_c, &res_v_c);
-            pixel_asm.ssd_nv12_core(pbuf1, 368, pbuf2, 368, w, 8, &res_u_a, &res_v_a);
-            if (res_u_c != res_u_a || res_v_c != res_v_a) {
+        for( int w = 8; w <= 360; w += 8 )
+        {
+            pixel_c.ssd_nv12_core(   pbuf1, 368, pbuf2, 368, w, 8, &res_u_c, &res_v_c );
+            pixel_asm.ssd_nv12_core( pbuf1, 368, pbuf2, 368, w, 8, &res_u_a, &res_v_a );
+            if( res_u_c != res_u_a || res_v_c != res_v_a )
+            {
                 ok = 0;
-                fprintf(stderr, "ssd_nv12: %"
-                PRIu64
-                ",%"
-                PRIu64
-                " != %"
-                PRIu64
-                ",%"
-                PRIu64
-                "\n",
-                        res_u_c, res_v_c, res_u_a, res_v_a );
+                fprintf( stderr, "ssd_nv12: %"PRIu64",%"PRIu64" != %"PRIu64",%"PRIu64"\n",
+                         res_u_c, res_v_c, res_u_a, res_v_a );
             }
         }
-        call_c(pixel_c.ssd_nv12_core, pbuf1, (intptr_t) 368, pbuf2, (intptr_t) 368, 360, 8,
-               &res_u_c, &res_v_c);
-        call_a(pixel_asm.ssd_nv12_core, pbuf1, (intptr_t) 368, pbuf2, (intptr_t) 368, 360, 8,
-               &res_u_a, &res_v_a);
+        call_c( pixel_c.ssd_nv12_core,   pbuf1, (intptr_t)368, pbuf2, (intptr_t)368, 360, 8, &res_u_c, &res_v_c );
+        call_a( pixel_asm.ssd_nv12_core, pbuf1, (intptr_t)368, pbuf2, (intptr_t)368, 360, 8, &res_u_a, &res_v_a );
     }
-    report("ssd_nv12 :");
+    report( "ssd_nv12 :" );
 
-    if (pixel_asm.ssim_4x4x2_core != pixel_ref.ssim_4x4x2_core ||
-        pixel_asm.ssim_end4 != pixel_ref.ssim_end4) {
+    if( pixel_asm.ssim_4x4x2_core != pixel_ref.ssim_4x4x2_core ||
+        pixel_asm.ssim_end4 != pixel_ref.ssim_end4 )
+    {
         int cnt;
         float res_c, res_a;
-        ALIGNED_16(
-        int sums[5][4] ) = {{ 0 }};
+        ALIGNED_16( int sums[5][4] ) = {{0}};
         used_asm = ok = 1;
         x264_emms();
-        res_c = x264_pixel_ssim_wxh(&pixel_c, pbuf1 + 2, 32, pbuf2 + 2, 32, 32, 28, pbuf3, &cnt);
-        res_a = x264_pixel_ssim_wxh(&pixel_asm, pbuf1 + 2, 32, pbuf2 + 2, 32, 32, 28, pbuf3, &cnt);
-        if (fabs(res_c - res_a) > 1e-6) {
+        res_c = x264_pixel_ssim_wxh( &pixel_c,   pbuf1+2, 32, pbuf2+2, 32, 32, 28, pbuf3, &cnt );
+        res_a = x264_pixel_ssim_wxh( &pixel_asm, pbuf1+2, 32, pbuf2+2, 32, 32, 28, pbuf3, &cnt );
+        if( fabs( res_c - res_a ) > 1e-6 )
+        {
             ok = 0;
-            fprintf(stderr, "ssim: %.7f != %.7f [FAILED]\n", res_c, res_a);
+            fprintf( stderr, "ssim: %.7f != %.7f [FAILED]\n", res_c, res_a );
         }
-        set_func_name("ssim_core");
-        call_c(pixel_c.ssim_4x4x2_core, pbuf1 + 2, (intptr_t) 32, pbuf2 + 2, (intptr_t) 32, sums);
-        call_a(pixel_asm.ssim_4x4x2_core, pbuf1 + 2, (intptr_t) 32, pbuf2 + 2, (intptr_t) 32, sums);
-        set_func_name("ssim_end");
-        call_c2(pixel_c.ssim_end4, sums, sums, 4);
-        call_a2(pixel_asm.ssim_end4, sums, sums, 4);
+        set_func_name( "ssim_core" );
+        call_c( pixel_c.ssim_4x4x2_core,   pbuf1+2, (intptr_t)32, pbuf2+2, (intptr_t)32, sums );
+        call_a( pixel_asm.ssim_4x4x2_core, pbuf1+2, (intptr_t)32, pbuf2+2, (intptr_t)32, sums );
+        set_func_name( "ssim_end" );
+        call_c2( pixel_c.ssim_end4,   sums, sums, 4 );
+        call_a2( pixel_asm.ssim_end4, sums, sums, 4 );
         /* check incorrect assumptions that 32-bit ints are zero-extended to 64-bit */
-        call_c1(pixel_c.ssim_end4, sums, sums, 3);
-        call_a1(pixel_asm.ssim_end4, sums, sums, 3);
-        report("ssim :");
+        call_c1( pixel_c.ssim_end4,   sums, sums, 3 );
+        call_a1( pixel_asm.ssim_end4, sums, sums, 3 );
+        report( "ssim :" );
     }
 
-    ok = 1;
-    used_asm = 0;
-    for (int i = 0; i < 32; i++)
-        cost_mv[i] = i * 10;
-    for (int i = 0; i < 100 && ok; i++)
-        if (pixel_asm.ads[i & 3] != pixel_ref.ads[i & 3]) {
-            ALIGNED_16(uint16_t
-            sums[72] );
-            ALIGNED_16(
-            int dc[4] );
-            ALIGNED_16(int16_t
-            mvs_a[48] );
-            ALIGNED_16(int16_t
-            mvs_c[48] );
+    ok = 1; used_asm = 0;
+    for( int i = 0; i < 32; i++ )
+        cost_mv[i] = i*10;
+    for( int i = 0; i < 100 && ok; i++ )
+        if( pixel_asm.ads[i&3] != pixel_ref.ads[i&3] )
+        {
+            ALIGNED_16( uint16_t sums[72] );
+            ALIGNED_16( int dc[4] );
+            ALIGNED_16( int16_t mvs_a[48] );
+            ALIGNED_16( int16_t mvs_c[48] );
             int mvn_a, mvn_c;
             int thresh = rand() & 0x3fff;
-            set_func_name("esa_ads");
-            for (int j = 0; j < 72; j++)
+            set_func_name( "esa_ads" );
+            for( int j = 0; j < 72; j++ )
                 sums[j] = rand() & 0x3fff;
-            for (int j = 0; j < 4; j++)
+            for( int j = 0; j < 4; j++ )
                 dc[j] = rand() & 0x3fff;
             used_asm = 1;
-            mvn_c = call_c(pixel_c.ads[i & 3], dc, sums, 32, cost_mv, mvs_c, 28, thresh);
-            mvn_a = call_a(pixel_asm.ads[i & 3], dc, sums, 32, cost_mv, mvs_a, 28, thresh);
-            if (mvn_c != mvn_a || memcmp(mvs_c, mvs_a, mvn_c * sizeof(*mvs_c))) {
+            mvn_c = call_c( pixel_c.ads[i&3], dc, sums, 32, cost_mv, mvs_c, 28, thresh );
+            mvn_a = call_a( pixel_asm.ads[i&3], dc, sums, 32, cost_mv, mvs_a, 28, thresh );
+            if( mvn_c != mvn_a || memcmp( mvs_c, mvs_a, mvn_c*sizeof(*mvs_c) ) )
+            {
                 ok = 0;
-                printf("c%d: ", i & 3);
-                for (int j = 0; j < mvn_c; j++)
-                    printf("%d ", mvs_c[j]);
-                printf("\na%d: ", i & 3);
-                for (int j = 0; j < mvn_a; j++)
-                    printf("%d ", mvs_a[j]);
-                printf("\n\n");
+                printf( "c%d: ", i&3 );
+                for( int j = 0; j < mvn_c; j++ )
+                    printf( "%d ", mvs_c[j] );
+                printf( "\na%d: ", i&3 );
+                for( int j = 0; j < mvn_a; j++ )
+                    printf( "%d ", mvs_a[j] );
+                printf( "\n\n" );
             }
         }
-    report("esa ads:");
+    report( "esa ads:" );
 
     return ret;
 }
 
-static int check_dct(int cpu_ref, int cpu_new) {
+static int check_dct( int cpu_ref, int cpu_new )
+{
     x264_dct_function_t dct_c;
     x264_dct_function_t dct_ref;
     x264_dct_function_t dct_asm;
     x264_quant_function_t qf;
     int ret = 0, ok, used_asm, interlace = 0;
-    ALIGNED_ARRAY_64(dctcoef, dct1,[16],[16] );
-    ALIGNED_ARRAY_64(dctcoef, dct2,[16],[16] );
-    ALIGNED_ARRAY_64(dctcoef, dct4,[16],[16] );
-    ALIGNED_ARRAY_64(dctcoef, dct8,[4],[64] );
-    ALIGNED_16(dctcoef
-    dctdc[2][8] );
+    ALIGNED_ARRAY_64( dctcoef, dct1, [16],[16] );
+    ALIGNED_ARRAY_64( dctcoef, dct2, [16],[16] );
+    ALIGNED_ARRAY_64( dctcoef, dct4, [16],[16] );
+    ALIGNED_ARRAY_64( dctcoef, dct8, [4],[64] );
+    ALIGNED_16( dctcoef dctdc[2][8] );
     x264_t h_buf;
     x264_t *h = &h_buf;
 
-    x264_dct_init(0, &dct_c);
-    x264_dct_init(cpu_ref, &dct_ref);
-    x264_dct_init(cpu_new, &dct_asm);
+    x264_dct_init( 0, &dct_c );
+    x264_dct_init( cpu_ref, &dct_ref);
+    x264_dct_init( cpu_new, &dct_asm );
 
-    memset(h, 0, sizeof(*h));
-    x264_param_default(&h->param);
+    memset( h, 0, sizeof(*h) );
+    x264_param_default( &h->param );
     h->sps->i_chroma_format_idc = 1;
     h->chroma_qp_table = i_chroma_qp_table + 12;
     h->param.analyse.i_luma_deadzone[0] = 0;
     h->param.analyse.i_luma_deadzone[1] = 0;
     h->param.analyse.b_transform_8x8 = 1;
-    for (int i = 0; i < 6; i++)
+    for( int i = 0; i < 6; i++ )
         h->pps->scaling_list[i] = x264_cqm_flat16;
-    x264_cqm_init(h);
-    x264_quant_init(h, 0, &qf);
+    x264_cqm_init( h );
+    x264_quant_init( h, 0, &qf );
 
     /* overflow test cases */
-    for (int i = 0; i < 5; i++) {
-        pixel *enc = &pbuf3[16 * i * FENC_STRIDE];
-        pixel *dec = &pbuf4[16 * i * FDEC_STRIDE];
+    for( int i = 0; i < 5; i++ )
+    {
+        pixel *enc = &pbuf3[16*i*FENC_STRIDE];
+        pixel *dec = &pbuf4[16*i*FDEC_STRIDE];
 
-        for (int j = 0; j < 16; j++) {
-            int cond_a = (i < 2) ? 1 : ((j & 3) == 0 || (j & 3) == (i - 1));
+        for( int j = 0; j < 16; j++ )
+        {
+            int cond_a = (i < 2) ? 1 : ((j&3) == 0 || (j&3) == (i-1));
             int cond_b = (i == 0) ? 1 : !cond_a;
-            enc[0] = enc[1] = enc[4] = enc[5] = enc[8] = enc[9] = enc[12] = enc[13] = cond_a
-                                                                                      ? PIXEL_MAX
-                                                                                      : 0;
-            enc[2] = enc[3] = enc[6] = enc[7] = enc[10] = enc[11] = enc[14] = enc[15] = cond_b
-                                                                                        ? PIXEL_MAX
-                                                                                        : 0;
+            enc[0] = enc[1] = enc[4] = enc[5] = enc[8] = enc[9] = enc[12] = enc[13] = cond_a ? PIXEL_MAX : 0;
+            enc[2] = enc[3] = enc[6] = enc[7] = enc[10] = enc[11] = enc[14] = enc[15] = cond_b ? PIXEL_MAX : 0;
 
-            for (int k = 0; k < 4; k++)
+            for( int k = 0; k < 4; k++ )
                 dec[k] = PIXEL_MAX - enc[k];
 
             enc += FENC_STRIDE;
@@ -891,7 +887,7 @@ static int check_dct(int cpu_ref, int cpu_new) {
         }
     }
 
-#define TEST_DCT(name, t1, t2, size) \
+#define TEST_DCT( name, t1, t2, size ) \
     if( dct_asm.name != dct_ref.name ) \
     { \
         set_func_name( #name ); \
@@ -926,37 +922,37 @@ static int check_dct(int cpu_ref, int cpu_new) {
             dec += 16*FDEC_STRIDE; \
         } \
     }
-    ok = 1;
-    used_asm = 0;
-    TEST_DCT(sub4x4_dct, dct1[0], dct2[0], 16);
-    TEST_DCT(sub8x8_dct, dct1, dct2, 16 * 4);
-    TEST_DCT(sub8x8_dct_dc, dctdc[0], dctdc[1], 4);
-    TEST_DCT(sub8x16_dct_dc, dctdc[0], dctdc[1], 8);
-    TEST_DCT(sub16x16_dct, dct1, dct2, 16 * 16);
-    report("sub_dct4 :");
+    ok = 1; used_asm = 0;
+    TEST_DCT( sub4x4_dct, dct1[0], dct2[0], 16 );
+    TEST_DCT( sub8x8_dct, dct1, dct2, 16*4 );
+    TEST_DCT( sub8x8_dct_dc, dctdc[0], dctdc[1], 4 );
+    TEST_DCT( sub8x16_dct_dc, dctdc[0], dctdc[1], 8 );
+    TEST_DCT( sub16x16_dct, dct1, dct2, 16*16 );
+    report( "sub_dct4 :" );
 
-    ok = 1;
-    used_asm = 0;
-    TEST_DCT(sub8x8_dct8, (void *) dct1[0], (void *) dct2[0], 64);
-    TEST_DCT(sub16x16_dct8, (void *) dct1, (void *) dct2, 64 * 4);
-    report("sub_dct8 :");
+    ok = 1; used_asm = 0;
+    TEST_DCT( sub8x8_dct8, (void*)dct1[0], (void*)dct2[0], 64 );
+    TEST_DCT( sub16x16_dct8, (void*)dct1, (void*)dct2, 64*4 );
+    report( "sub_dct8 :" );
 #undef TEST_DCT
 
     // fdct and idct are denormalized by different factors, so quant/dequant
     // is needed to force the coefs into the right range.
-    dct_c.sub16x16_dct(dct4, pbuf1, pbuf2);
-    dct_c.sub16x16_dct8(dct8, pbuf1, pbuf2);
-    for (int i = 0; i < 16; i++) {
-        qf.quant_4x4(dct4[i], h->quant4_mf[CQM_4IY][20], h->quant4_bias[CQM_4IY][20]);
-        qf.dequant_4x4(dct4[i], h->dequant4_mf[CQM_4IY], 20);
+    dct_c.sub16x16_dct( dct4, pbuf1, pbuf2 );
+    dct_c.sub16x16_dct8( dct8, pbuf1, pbuf2 );
+    for( int i = 0; i < 16; i++ )
+    {
+        qf.quant_4x4( dct4[i], h->quant4_mf[CQM_4IY][20], h->quant4_bias[CQM_4IY][20] );
+        qf.dequant_4x4( dct4[i], h->dequant4_mf[CQM_4IY], 20 );
     }
-    for (int i = 0; i < 4; i++) {
-        qf.quant_8x8(dct8[i], h->quant8_mf[CQM_8IY][20], h->quant8_bias[CQM_8IY][20]);
-        qf.dequant_8x8(dct8[i], h->dequant8_mf[CQM_8IY], 20);
+    for( int i = 0; i < 4; i++ )
+    {
+        qf.quant_8x8( dct8[i], h->quant8_mf[CQM_8IY][20], h->quant8_bias[CQM_8IY][20] );
+        qf.dequant_8x8( dct8[i], h->dequant8_mf[CQM_8IY], 20 );
     }
-    x264_cqm_delete(h);
+    x264_cqm_delete( h );
 
-#define TEST_IDCT(name, src) \
+#define TEST_IDCT( name, src ) \
     if( dct_asm.name != dct_ref.name ) \
     { \
         set_func_name( #name ); \
@@ -975,23 +971,21 @@ static int check_dct(int cpu_ref, int cpu_new) {
         call_c2( dct_c.name, pbuf3, (void*)dct1 ); \
         call_a2( dct_asm.name, pbuf4, (void*)dct2 ); \
     }
-    ok = 1;
-    used_asm = 0;
-    TEST_IDCT(add4x4_idct, dct4);
-    TEST_IDCT(add8x8_idct, dct4);
-    TEST_IDCT(add8x8_idct_dc, dct4);
-    TEST_IDCT(add16x16_idct, dct4);
-    TEST_IDCT(add16x16_idct_dc, dct4);
-    report("add_idct4 :");
+    ok = 1; used_asm = 0;
+    TEST_IDCT( add4x4_idct, dct4 );
+    TEST_IDCT( add8x8_idct, dct4 );
+    TEST_IDCT( add8x8_idct_dc, dct4 );
+    TEST_IDCT( add16x16_idct, dct4 );
+    TEST_IDCT( add16x16_idct_dc, dct4 );
+    report( "add_idct4 :" );
 
-    ok = 1;
-    used_asm = 0;
-    TEST_IDCT(add8x8_idct8, dct8);
-    TEST_IDCT(add16x16_idct8, dct8);
-    report("add_idct8 :");
+    ok = 1; used_asm = 0;
+    TEST_IDCT( add8x8_idct8, dct8 );
+    TEST_IDCT( add16x16_idct8, dct8 );
+    report( "add_idct8 :" );
 #undef TEST_IDCT
 
-#define TEST_DCTDC(name)\
+#define TEST_DCTDC( name )\
     ok = 1; used_asm = 0;\
     if( dct_asm.name != dct_ref.name )\
     {\
@@ -1015,11 +1009,11 @@ static int check_dct(int cpu_ref, int cpu_new) {
     }\
     report( #name " :" );
 
-    TEST_DCTDC(dct4x4dc);
-    TEST_DCTDC(idct4x4dc);
+    TEST_DCTDC(  dct4x4dc );
+    TEST_DCTDC( idct4x4dc );
 #undef TEST_DCTDC
 
-#define TEST_DCTDC_CHROMA(name)\
+#define TEST_DCTDC_CHROMA( name )\
     ok = 1; used_asm = 0;\
     if( dct_asm.name != dct_ref.name )\
     {\
@@ -1046,17 +1040,17 @@ static int check_dct(int cpu_ref, int cpu_new) {
     }\
     report( #name " :" );
 
-    TEST_DCTDC_CHROMA(dct2x4dc);
+    TEST_DCTDC_CHROMA( dct2x4dc );
 #undef TEST_DCTDC_CHROMA
 
     x264_zigzag_function_t zigzag_c[2];
     x264_zigzag_function_t zigzag_ref[2];
     x264_zigzag_function_t zigzag_asm[2];
 
-    ALIGNED_ARRAY_64(dctcoef, level1,[64] );
-    ALIGNED_ARRAY_64(dctcoef, level2,[64] );
+    ALIGNED_ARRAY_64( dctcoef, level1,[64] );
+    ALIGNED_ARRAY_64( dctcoef, level2,[64] );
 
-#define TEST_ZIGZAG_SCAN(name, t1, t2, dct, size) \
+#define TEST_ZIGZAG_SCAN( name, t1, t2, dct, size ) \
     if( zigzag_asm[interlace].name != zigzag_ref[interlace].name ) \
     { \
         set_func_name( "zigzag_"#name"_%s", interlace?"field":"frame" ); \
@@ -1083,7 +1077,7 @@ static int check_dct(int cpu_ref, int cpu_new) {
         } \
     }
 
-#define TEST_ZIGZAG_SUB(name, t1, t2, size) \
+#define TEST_ZIGZAG_SUB( name, t1, t2, size ) \
     if( zigzag_asm[interlace].name != zigzag_ref[interlace].name ) \
     { \
         int nz_a, nz_c; \
@@ -1102,7 +1096,7 @@ static int check_dct(int cpu_ref, int cpu_new) {
         call_a2( zigzag_asm[interlace].name, t2, pbuf2, pbuf4 ); \
     }
 
-#define TEST_ZIGZAG_SUBAC(name, t1, t2) \
+#define TEST_ZIGZAG_SUBAC( name, t1, t2 ) \
     if( zigzag_asm[interlace].name != zigzag_ref[interlace].name ) \
     { \
         int nz_a, nz_c; \
@@ -1131,7 +1125,7 @@ static int check_dct(int cpu_ref, int cpu_new) {
         call_a2( zigzag_asm[interlace].name, t2, pbuf2, pbuf4, &dc_a ); \
     }
 
-#define TEST_INTERLEAVE(name, t1, t2, dct, size) \
+#define TEST_INTERLEAVE( name, t1, t2, dct, size ) \
     if( zigzag_asm[interlace].name != zigzag_ref[interlace].name ) \
     { \
         for( int j = 0; j < 100; j++ ) \
@@ -1151,24 +1145,23 @@ static int check_dct(int cpu_ref, int cpu_new) {
         } \
     }
 
-    x264_zigzag_init(0, &zigzag_c[0], &zigzag_c[1]);
-    x264_zigzag_init(cpu_ref, &zigzag_ref[0], &zigzag_ref[1]);
-    x264_zigzag_init(cpu_new, &zigzag_asm[0], &zigzag_asm[1]);
+    x264_zigzag_init( 0, &zigzag_c[0], &zigzag_c[1] );
+    x264_zigzag_init( cpu_ref, &zigzag_ref[0], &zigzag_ref[1] );
+    x264_zigzag_init( cpu_new, &zigzag_asm[0], &zigzag_asm[1] );
 
-    ok = 1;
-    used_asm = 0;
-    TEST_INTERLEAVE(interleave_8x8_cavlc, level1, level2, dct8[0], 64);
-    report("zigzag_interleave :");
+    ok = 1; used_asm = 0;
+    TEST_INTERLEAVE( interleave_8x8_cavlc, level1, level2, dct8[0], 64 );
+    report( "zigzag_interleave :" );
 
-    for (interlace = 0; interlace <= 1; interlace++) {
-        ok = 1;
-        used_asm = 0;
-        TEST_ZIGZAG_SCAN(scan_8x8, level1, level2, dct8[0], 8);
-        TEST_ZIGZAG_SCAN(scan_4x4, level1, level2, dct1[0], 4);
-        TEST_ZIGZAG_SUB(sub_4x4, level1, level2, 16);
-        TEST_ZIGZAG_SUB(sub_8x8, level1, level2, 64);
-        TEST_ZIGZAG_SUBAC(sub_4x4ac, level1, level2);
-        report(interlace ? "zigzag_field :" : "zigzag_frame :");
+    for( interlace = 0; interlace <= 1; interlace++ )
+    {
+        ok = 1; used_asm = 0;
+        TEST_ZIGZAG_SCAN( scan_8x8, level1, level2, dct8[0], 8 );
+        TEST_ZIGZAG_SCAN( scan_4x4, level1, level2, dct1[0], 4 );
+        TEST_ZIGZAG_SUB( sub_4x4, level1, level2, 16 );
+        TEST_ZIGZAG_SUB( sub_8x8, level1, level2, 64 );
+        TEST_ZIGZAG_SUBAC( sub_4x4ac, level1, level2 );
+        report( interlace ? "zigzag_field :" : "zigzag_frame :" );
     }
 #undef TEST_ZIGZAG_SCAN
 #undef TEST_ZIGZAG_SUB
@@ -1176,26 +1169,27 @@ static int check_dct(int cpu_ref, int cpu_new) {
     return ret;
 }
 
-static int check_mc(int cpu_ref, int cpu_new) {
+static int check_mc( int cpu_ref, int cpu_new )
+{
     x264_mc_functions_t mc_c;
     x264_mc_functions_t mc_ref;
     x264_mc_functions_t mc_a;
     x264_pixel_function_t pixf;
 
-    pixel *src = &(pbuf1)[2 * 64 + 2];
-    pixel *src2[4] = {&(pbuf1)[3 * 64 + 2], &(pbuf1)[5 * 64 + 2],
-                      &(pbuf1)[7 * 64 + 2], &(pbuf1)[9 * 64 + 2]};
-    pixel *dst1 = pbuf3;
-    pixel *dst2 = pbuf4;
+    pixel *src     = &(pbuf1)[2*64+2];
+    pixel *src2[4] = { &(pbuf1)[3*64+2], &(pbuf1)[5*64+2],
+                       &(pbuf1)[7*64+2], &(pbuf1)[9*64+2] };
+    pixel *dst1    = pbuf3;
+    pixel *dst2    = pbuf4;
 
     int ret = 0, ok, used_asm;
 
-    x264_mc_init(0, &mc_c, 0);
-    x264_mc_init(cpu_ref, &mc_ref, 0);
-    x264_mc_init(cpu_new, &mc_a, 0);
-    x264_pixel_init(0, &pixf);
+    x264_mc_init( 0, &mc_c, 0 );
+    x264_mc_init( cpu_ref, &mc_ref, 0 );
+    x264_mc_init( cpu_new, &mc_a, 0 );
+    x264_pixel_init( 0, &pixf );
 
-#define MC_TEST_LUMA(w, h) \
+#define MC_TEST_LUMA( w, h ) \
         if( mc_a.mc_luma != mc_ref.mc_luma && !(w&(w-1)) && h<=16 ) \
         { \
             const x264_weight_t *weight = x264_weight_none; \
@@ -1232,7 +1226,7 @@ static int check_mc(int cpu_ref, int cpu_new) {
                 } \
         }
 
-#define MC_TEST_CHROMA(w, h) \
+#define MC_TEST_CHROMA( w, h ) \
         if( mc_a.mc_chroma != mc_ref.mc_chroma ) \
         { \
             set_func_name( "mc_chroma_%dx%d", w, h ); \
@@ -1254,41 +1248,41 @@ static int check_mc(int cpu_ref, int cpu_new) {
                 ok = 0; \
             } \
         }
-    ok = 1;
-    used_asm = 0;
-    for (int dy = -8; dy < 8; dy++)
-        for (int dx = -128; dx < 128; dx++) {
-            if (rand() & 15) continue; // running all of them is too slow
-            MC_TEST_LUMA(20, 18);
-            MC_TEST_LUMA(16, 16);
-            MC_TEST_LUMA(16, 8);
-            MC_TEST_LUMA(12, 10);
-            MC_TEST_LUMA(8, 16);
-            MC_TEST_LUMA(8, 8);
-            MC_TEST_LUMA(8, 4);
-            MC_TEST_LUMA(4, 8);
-            MC_TEST_LUMA(4, 4);
+    ok = 1; used_asm = 0;
+    for( int dy = -8; dy < 8; dy++ )
+        for( int dx = -128; dx < 128; dx++ )
+        {
+            if( rand()&15 ) continue; // running all of them is too slow
+            MC_TEST_LUMA( 20, 18 );
+            MC_TEST_LUMA( 16, 16 );
+            MC_TEST_LUMA( 16, 8 );
+            MC_TEST_LUMA( 12, 10 );
+            MC_TEST_LUMA( 8, 16 );
+            MC_TEST_LUMA( 8, 8 );
+            MC_TEST_LUMA( 8, 4 );
+            MC_TEST_LUMA( 4, 8 );
+            MC_TEST_LUMA( 4, 4 );
         }
-    report("mc luma :");
+    report( "mc luma :" );
 
-    ok = 1;
-    used_asm = 0;
-    for (int dy = -1; dy < 9; dy++)
-        for (int dx = -128; dx < 128; dx++) {
-            if (rand() & 15) continue;
-            MC_TEST_CHROMA(8, 8);
-            MC_TEST_CHROMA(8, 4);
-            MC_TEST_CHROMA(4, 8);
-            MC_TEST_CHROMA(4, 4);
-            MC_TEST_CHROMA(4, 2);
-            MC_TEST_CHROMA(2, 4);
-            MC_TEST_CHROMA(2, 2);
+    ok = 1; used_asm = 0;
+    for( int dy = -1; dy < 9; dy++ )
+        for( int dx = -128; dx < 128; dx++ )
+        {
+            if( rand()&15 ) continue;
+            MC_TEST_CHROMA( 8, 8 );
+            MC_TEST_CHROMA( 8, 4 );
+            MC_TEST_CHROMA( 4, 8 );
+            MC_TEST_CHROMA( 4, 4 );
+            MC_TEST_CHROMA( 4, 2 );
+            MC_TEST_CHROMA( 2, 4 );
+            MC_TEST_CHROMA( 2, 2 );
         }
-    report("mc chroma :");
+    report( "mc chroma :" );
 #undef MC_TEST_LUMA
 #undef MC_TEST_CHROMA
 
-#define MC_TEST_AVG(name, weight) \
+#define MC_TEST_AVG( name, weight ) \
 { \
     for( int i = 0; i < 12; i++ ) \
     { \
@@ -1312,10 +1306,11 @@ static int check_mc(int cpu_ref, int cpu_new) {
 }
 
     ok = 1, used_asm = 0;
-    for (int w = -63; w <= 127 && ok; w++) MC_TEST_AVG(avg, w);
-    report("mc wpredb :");
+    for( int w = -63; w <= 127 && ok; w++ )
+        MC_TEST_AVG( avg, w );
+    report( "mc wpredb :" );
 
-#define MC_TEST_WEIGHT(name, weight, aligned) \
+#define MC_TEST_WEIGHT( name, weight, aligned ) \
     int align_off = (aligned ? 0 : rand()%16); \
     for( int i = 1; i <= 5; i++ ) \
     { \
@@ -1352,352 +1347,349 @@ static int check_mc(int cpu_ref, int cpu_new) {
         } \
     }
 
-    ok = 1;
-    used_asm = 0;
+    ok = 1; used_asm = 0;
 
     int align_cnt = 0;
-    for (int s = 0; s <= 127 && ok; s++) {
-        for (int o = -128; o <= 127 && ok; o++) {
-            if (rand() & 2047) continue;
-            for (int d = 0; d <= 7 && ok; d++) {
-                if (s == 1 << d)
+    for( int s = 0; s <= 127 && ok; s++ )
+    {
+        for( int o = -128; o <= 127 && ok; o++ )
+        {
+            if( rand() & 2047 ) continue;
+            for( int d = 0; d <= 7 && ok; d++ )
+            {
+                if( s == 1<<d )
                     continue;
-                x264_weight_t weight = {.i_scale = s, .i_denom = d, .i_offset = o};
-                MC_TEST_WEIGHT(weight, weight, (align_cnt++ % 4));
+                x264_weight_t weight = { .i_scale = s, .i_denom = d, .i_offset = o };
+                MC_TEST_WEIGHT( weight, weight, (align_cnt++ % 4) );
             }
         }
 
     }
-    report("mc weight :");
+    report( "mc weight :" );
 
-    ok = 1;
-    used_asm = 0;
-    for (int o = 0; o <= 127 && ok; o++) {
+    ok = 1; used_asm = 0;
+    for( int o = 0; o <= 127 && ok; o++ )
+    {
         int s = 1, d = 0;
-        if (rand() & 15) continue;
-        x264_weight_t weight = {.i_scale = 1, .i_denom = 0, .i_offset = o};
-        MC_TEST_WEIGHT(offsetadd, weight, (align_cnt++ % 4));
+        if( rand() & 15 ) continue;
+        x264_weight_t weight = { .i_scale = 1, .i_denom = 0, .i_offset = o };
+        MC_TEST_WEIGHT( offsetadd, weight, (align_cnt++ % 4) );
     }
-    report("mc offsetadd :");
-    ok = 1;
-    used_asm = 0;
-    for (int o = -128; o < 0 && ok; o++) {
+    report( "mc offsetadd :" );
+    ok = 1; used_asm = 0;
+    for( int o = -128; o < 0 && ok; o++ )
+    {
         int s = 1, d = 0;
-        if (rand() & 15) continue;
-        x264_weight_t weight = {.i_scale = 1, .i_denom = 0, .i_offset = o};
-        MC_TEST_WEIGHT(offsetsub, weight, (align_cnt++ % 4));
+        if( rand() & 15 ) continue;
+        x264_weight_t weight = { .i_scale = 1, .i_denom = 0, .i_offset = o };
+        MC_TEST_WEIGHT( offsetsub, weight, (align_cnt++ % 4) );
     }
-    report("mc offsetsub :");
+    report( "mc offsetsub :" );
 
-    memset(pbuf3, 0, 64 * 16);
-    memset(pbuf4, 0, 64 * 16);
-    ok = 1;
-    used_asm = 0;
-    for (int height = 8; height <= 16; height += 8) {
-        if (mc_a.store_interleave_chroma != mc_ref.store_interleave_chroma) {
-            set_func_name("store_interleave_chroma");
+    memset( pbuf3, 0, 64*16 );
+    memset( pbuf4, 0, 64*16 );
+    ok = 1; used_asm = 0;
+    for( int height = 8; height <= 16; height += 8 )
+    {
+        if( mc_a.store_interleave_chroma != mc_ref.store_interleave_chroma )
+        {
+            set_func_name( "store_interleave_chroma" );
             used_asm = 1;
-            call_c(mc_c.store_interleave_chroma, pbuf3, (intptr_t) 64, pbuf1, pbuf1 + 16, height);
-            call_a(mc_a.store_interleave_chroma, pbuf4, (intptr_t) 64, pbuf1, pbuf1 + 16, height);
-            if (memcmp(pbuf3, pbuf4, 64 * height)) {
+            call_c( mc_c.store_interleave_chroma, pbuf3, (intptr_t)64, pbuf1, pbuf1+16, height );
+            call_a( mc_a.store_interleave_chroma, pbuf4, (intptr_t)64, pbuf1, pbuf1+16, height );
+            if( memcmp( pbuf3, pbuf4, 64*height ) )
+            {
                 ok = 0;
-                fprintf(stderr, "store_interleave_chroma FAILED: h=%d\n", height);
+                fprintf( stderr, "store_interleave_chroma FAILED: h=%d\n", height );
                 break;
             }
         }
-        if (mc_a.load_deinterleave_chroma_fenc != mc_ref.load_deinterleave_chroma_fenc) {
-            set_func_name("load_deinterleave_chroma_fenc");
+        if( mc_a.load_deinterleave_chroma_fenc != mc_ref.load_deinterleave_chroma_fenc )
+        {
+            set_func_name( "load_deinterleave_chroma_fenc" );
             used_asm = 1;
-            call_c(mc_c.load_deinterleave_chroma_fenc, pbuf3, pbuf1, (intptr_t) 64, height);
-            call_a(mc_a.load_deinterleave_chroma_fenc, pbuf4, pbuf1, (intptr_t) 64, height);
-            if (memcmp(pbuf3, pbuf4, FENC_STRIDE * height)) {
+            call_c( mc_c.load_deinterleave_chroma_fenc, pbuf3, pbuf1, (intptr_t)64, height );
+            call_a( mc_a.load_deinterleave_chroma_fenc, pbuf4, pbuf1, (intptr_t)64, height );
+            if( memcmp( pbuf3, pbuf4, FENC_STRIDE*height ) )
+            {
                 ok = 0;
-                fprintf(stderr, "load_deinterleave_chroma_fenc FAILED: h=%d\n", height);
+                fprintf( stderr, "load_deinterleave_chroma_fenc FAILED: h=%d\n", height );
                 break;
             }
         }
-        if (mc_a.load_deinterleave_chroma_fdec != mc_ref.load_deinterleave_chroma_fdec) {
-            set_func_name("load_deinterleave_chroma_fdec");
+        if( mc_a.load_deinterleave_chroma_fdec != mc_ref.load_deinterleave_chroma_fdec )
+        {
+            set_func_name( "load_deinterleave_chroma_fdec" );
             used_asm = 1;
-            call_c(mc_c.load_deinterleave_chroma_fdec, pbuf3, pbuf1, (intptr_t) 64, height);
-            call_a(mc_a.load_deinterleave_chroma_fdec, pbuf4, pbuf1, (intptr_t) 64, height);
-            if (memcmp(pbuf3, pbuf4, FDEC_STRIDE * height)) {
+            call_c( mc_c.load_deinterleave_chroma_fdec, pbuf3, pbuf1, (intptr_t)64, height );
+            call_a( mc_a.load_deinterleave_chroma_fdec, pbuf4, pbuf1, (intptr_t)64, height );
+            if( memcmp( pbuf3, pbuf4, FDEC_STRIDE*height ) )
+            {
                 ok = 0;
-                fprintf(stderr, "load_deinterleave_chroma_fdec FAILED: h=%d\n", height);
+                fprintf( stderr, "load_deinterleave_chroma_fdec FAILED: h=%d\n", height );
                 break;
             }
         }
     }
-    report("store_interleave :");
+    report( "store_interleave :" );
 
     struct plane_spec {
         int w, h, src_stride;
-    } plane_specs[] = {{2,    2,  2},
-                       {8,    6,  8},
-                       {20,   31, 24},
-                       {32,   8,  40},
-                       {256,  10, 272},
-                       {504,  7,  505},
-                       {528,  6,  528},
-                       {256,  10, -256},
-                       {263,  9,  -264},
-                       {1904, 1,  0}};
-    ok = 1;
-    used_asm = 0;
-    if (mc_a.plane_copy != mc_ref.plane_copy) {
-        set_func_name("plane_copy");
+    } plane_specs[] = { {2,2,2}, {8,6,8}, {20,31,24}, {32,8,40}, {256,10,272}, {504,7,505}, {528,6,528}, {256,10,-256}, {263,9,-264}, {1904,1,0} };
+    ok = 1; used_asm = 0;
+    if( mc_a.plane_copy != mc_ref.plane_copy )
+    {
+        set_func_name( "plane_copy" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = plane_specs[i].w;
             int h = plane_specs[i].h;
             intptr_t src_stride = plane_specs[i].src_stride;
             intptr_t dst_stride = (w + 127) & ~63;
-            assert(dst_stride * h <= 0x1000);
-            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h - 1);
-            memset(pbuf3, 0, 0x1000 * sizeof(pixel));
-            memset(pbuf4, 0, 0x1000 * sizeof(pixel));
-            call_c(mc_c.plane_copy, pbuf3, dst_stride, src1, src_stride, w, h);
-            call_a(mc_a.plane_copy, pbuf4, dst_stride, src1, src_stride, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, w * sizeof(pixel))) {
+            assert( dst_stride * h <= 0x1000 );
+            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h-1);
+            memset( pbuf3, 0, 0x1000*sizeof(pixel) );
+            memset( pbuf4, 0, 0x1000*sizeof(pixel) );
+            call_c( mc_c.plane_copy, pbuf3, dst_stride, src1, src_stride, w, h );
+            call_a( mc_a.plane_copy, pbuf4, dst_stride, src1, src_stride, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride, pbuf4+y*dst_stride, w*sizeof(pixel) ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "plane_copy FAILED: w=%d h=%d stride=%d\n", w, h,
-                            (int) src_stride);
+                    fprintf( stderr, "plane_copy FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
     }
 
-    if (mc_a.plane_copy_swap != mc_ref.plane_copy_swap) {
-        set_func_name("plane_copy_swap");
+    if( mc_a.plane_copy_swap != mc_ref.plane_copy_swap )
+    {
+        set_func_name( "plane_copy_swap" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 1) >> 1;
             int h = plane_specs[i].h;
             intptr_t src_stride = plane_specs[i].src_stride;
-            intptr_t dst_stride = (2 * w + 127) & ~63;
-            assert(dst_stride * h <= 0x1000);
-            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h - 1);
-            memset(pbuf3, 0, 0x1000 * sizeof(pixel));
-            memset(pbuf4, 0, 0x1000 * sizeof(pixel));
-            call_c(mc_c.plane_copy_swap, pbuf3, dst_stride, src1, src_stride, w, h);
-            call_a(mc_a.plane_copy_swap, pbuf4, dst_stride, src1, src_stride, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, 2 * w * sizeof(pixel))) {
+            intptr_t dst_stride = (2*w + 127) & ~63;
+            assert( dst_stride * h <= 0x1000 );
+            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h-1);
+            memset( pbuf3, 0, 0x1000*sizeof(pixel) );
+            memset( pbuf4, 0, 0x1000*sizeof(pixel) );
+            call_c( mc_c.plane_copy_swap, pbuf3, dst_stride, src1, src_stride, w, h );
+            call_a( mc_a.plane_copy_swap, pbuf4, dst_stride, src1, src_stride, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride, pbuf4+y*dst_stride, 2*w*sizeof(pixel) ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "plane_copy_swap FAILED: w=%d h=%d stride=%d\n", w, h,
-                            (int) src_stride);
+                    fprintf( stderr, "plane_copy_swap FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
     }
 
-    if (mc_a.plane_copy_interleave != mc_ref.plane_copy_interleave) {
-        set_func_name("plane_copy_interleave");
+    if( mc_a.plane_copy_interleave != mc_ref.plane_copy_interleave )
+    {
+        set_func_name( "plane_copy_interleave" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 1) >> 1;
             int h = plane_specs[i].h;
             intptr_t src_stride = (plane_specs[i].src_stride + 1) >> 1;
-            intptr_t dst_stride = (2 * w + 127) & ~63;
-            assert(dst_stride * h <= 0x1000);
-            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h - 1);
-            memset(pbuf3, 0, 0x1000 * sizeof(pixel));
-            memset(pbuf4, 0, 0x1000 * sizeof(pixel));
-            call_c(mc_c.plane_copy_interleave, pbuf3, dst_stride, src1, src_stride, src1 + 1024,
-                   src_stride + 16, w, h);
-            call_a(mc_a.plane_copy_interleave, pbuf4, dst_stride, src1, src_stride, src1 + 1024,
-                   src_stride + 16, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, 2 * w * sizeof(pixel))) {
+            intptr_t dst_stride = (2*w + 127) & ~63;
+            assert( dst_stride * h <= 0x1000 );
+            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h-1);
+            memset( pbuf3, 0, 0x1000*sizeof(pixel) );
+            memset( pbuf4, 0, 0x1000*sizeof(pixel) );
+            call_c( mc_c.plane_copy_interleave, pbuf3, dst_stride, src1, src_stride, src1+1024, src_stride+16, w, h );
+            call_a( mc_a.plane_copy_interleave, pbuf4, dst_stride, src1, src_stride, src1+1024, src_stride+16, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride, pbuf4+y*dst_stride, 2*w*sizeof(pixel) ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "plane_copy_interleave FAILED: w=%d h=%d stride=%d\n", w, h,
-                            (int) src_stride);
+                    fprintf( stderr, "plane_copy_interleave FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
     }
 
-    if (mc_a.plane_copy_deinterleave != mc_ref.plane_copy_deinterleave) {
-        set_func_name("plane_copy_deinterleave");
+    if( mc_a.plane_copy_deinterleave != mc_ref.plane_copy_deinterleave )
+    {
+        set_func_name( "plane_copy_deinterleave" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 1) >> 1;
             int h = plane_specs[i].h;
             intptr_t dst_stride = w;
-            intptr_t src_stride = (2 * w + 127) & ~63;
-            intptr_t offv = (dst_stride * h + 63) & ~31;
-            memset(pbuf3, 0, 0x1000);
-            memset(pbuf4, 0, 0x1000);
-            call_c(mc_c.plane_copy_deinterleave, pbuf3, dst_stride, pbuf3 + offv, dst_stride, pbuf1,
-                   src_stride, w, h);
-            call_a(mc_a.plane_copy_deinterleave, pbuf4, dst_stride, pbuf4 + offv, dst_stride, pbuf1,
-                   src_stride, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, w) ||
-                    memcmp(pbuf3 + y * dst_stride + offv, pbuf4 + y * dst_stride + offv, w)) {
+            intptr_t src_stride = (2*w + 127) & ~63;
+            intptr_t offv = (dst_stride*h + 63) & ~31;
+            memset( pbuf3, 0, 0x1000 );
+            memset( pbuf4, 0, 0x1000 );
+            call_c( mc_c.plane_copy_deinterleave, pbuf3, dst_stride, pbuf3+offv, dst_stride, pbuf1, src_stride, w, h );
+            call_a( mc_a.plane_copy_deinterleave, pbuf4, dst_stride, pbuf4+offv, dst_stride, pbuf1, src_stride, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride,      pbuf4+y*dst_stride, w ) ||
+                    memcmp( pbuf3+y*dst_stride+offv, pbuf4+y*dst_stride+offv, w ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "plane_copy_deinterleave FAILED: w=%d h=%d stride=%d\n", w, h,
-                            (int) src_stride);
+                    fprintf( stderr, "plane_copy_deinterleave FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
     }
 
-    if (mc_a.plane_copy_deinterleave_yuyv != mc_ref.plane_copy_deinterleave_yuyv) {
-        set_func_name("plane_copy_deinterleave_yuyv");
+    if( mc_a.plane_copy_deinterleave_yuyv != mc_ref.plane_copy_deinterleave_yuyv )
+    {
+        set_func_name( "plane_copy_deinterleave_yuyv" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 1) >> 1;
             int h = plane_specs[i].h;
-            intptr_t dst_stride = ALIGN(w, 32 / sizeof(pixel));
+            intptr_t dst_stride = ALIGN( w, 32/sizeof(pixel) );
             intptr_t src_stride = (plane_specs[i].src_stride + 1) >> 1;
-            intptr_t offv = dst_stride * h;
-            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h - 1);
-            memset(pbuf3, 0, 0x1000);
-            memset(pbuf4, 0, 0x1000);
+            intptr_t offv = dst_stride*h;
+            pixel *src1 = pbuf1 + X264_MAX(0, -src_stride) * (h-1);
+            memset( pbuf3, 0, 0x1000 );
+            memset( pbuf4, 0, 0x1000 );
             /* Skip benchmarking since it's the same as plane_copy_deinterleave(), just verify correctness. */
-            call_c1(mc_c.plane_copy_deinterleave_yuyv, pbuf3, dst_stride, pbuf3 + offv, dst_stride,
-                    src1, src_stride, w, h);
-            call_a1(mc_a.plane_copy_deinterleave_yuyv, pbuf4, dst_stride, pbuf4 + offv, dst_stride,
-                    src1, src_stride, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, w * sizeof(pixel)) ||
-                    memcmp(pbuf3 + y * dst_stride + offv, pbuf4 + y * dst_stride + offv,
-                           w * sizeof(pixel))) {
-                    fprintf(stderr, "plane_copy_deinterleave_yuyv FAILED: w=%d h=%d stride=%d\n", w,
-                            h, (int) src_stride);
+            call_c1( mc_c.plane_copy_deinterleave_yuyv, pbuf3, dst_stride, pbuf3+offv, dst_stride, src1, src_stride, w, h );
+            call_a1( mc_a.plane_copy_deinterleave_yuyv, pbuf4, dst_stride, pbuf4+offv, dst_stride, src1, src_stride, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride,      pbuf4+y*dst_stride,      w*sizeof(pixel) ) ||
+                    memcmp( pbuf3+y*dst_stride+offv, pbuf4+y*dst_stride+offv, w*sizeof(pixel) ) )
+                {
+                    fprintf( stderr, "plane_copy_deinterleave_yuyv FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
     }
 
-    if (mc_a.plane_copy_deinterleave_rgb != mc_ref.plane_copy_deinterleave_rgb) {
-        set_func_name("plane_copy_deinterleave_rgb");
+    if( mc_a.plane_copy_deinterleave_rgb != mc_ref.plane_copy_deinterleave_rgb )
+    {
+        set_func_name( "plane_copy_deinterleave_rgb" );
         used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 2) >> 2;
             int h = plane_specs[i].h;
             intptr_t src_stride = plane_specs[i].src_stride;
-            intptr_t dst_stride = ALIGN(w, 16);
-            intptr_t offv = dst_stride * h + 16;
+            intptr_t dst_stride = ALIGN( w, 16 );
+            intptr_t offv = dst_stride*h + 16;
 
-            for (int pw = 3; pw <= 4; pw++) {
-                memset(pbuf3, 0, 0x1000);
-                memset(pbuf4, 0, 0x1000);
-                call_c(mc_c.plane_copy_deinterleave_rgb, pbuf3, dst_stride, pbuf3 + offv,
-                       dst_stride, pbuf3 + 2 * offv, dst_stride, pbuf1, src_stride, pw, w, h);
-                call_a(mc_a.plane_copy_deinterleave_rgb, pbuf4, dst_stride, pbuf4 + offv,
-                       dst_stride, pbuf4 + 2 * offv, dst_stride, pbuf1, src_stride, pw, w, h);
-                for (int y = 0; y < h; y++)
-                    if (memcmp(pbuf3 + y * dst_stride + 0 * offv, pbuf4 + y * dst_stride + 0 * offv,
-                               w) ||
-                        memcmp(pbuf3 + y * dst_stride + 1 * offv, pbuf4 + y * dst_stride + 1 * offv,
-                               w) ||
-                        memcmp(pbuf3 + y * dst_stride + 2 * offv, pbuf4 + y * dst_stride + 2 * offv,
-                               w)) {
+            for( int pw = 3; pw <= 4; pw++ )
+            {
+                memset( pbuf3, 0, 0x1000 );
+                memset( pbuf4, 0, 0x1000 );
+                call_c( mc_c.plane_copy_deinterleave_rgb, pbuf3, dst_stride, pbuf3+offv, dst_stride, pbuf3+2*offv, dst_stride, pbuf1, src_stride, pw, w, h );
+                call_a( mc_a.plane_copy_deinterleave_rgb, pbuf4, dst_stride, pbuf4+offv, dst_stride, pbuf4+2*offv, dst_stride, pbuf1, src_stride, pw, w, h );
+                for( int y = 0; y < h; y++ )
+                    if( memcmp( pbuf3+y*dst_stride+0*offv, pbuf4+y*dst_stride+0*offv, w ) ||
+                        memcmp( pbuf3+y*dst_stride+1*offv, pbuf4+y*dst_stride+1*offv, w ) ||
+                        memcmp( pbuf3+y*dst_stride+2*offv, pbuf4+y*dst_stride+2*offv, w ) )
+                    {
                         ok = 0;
-                        fprintf(stderr,
-                                "plane_copy_deinterleave_rgb FAILED: w=%d h=%d stride=%d pw=%d\n",
-                                w, h, (int) src_stride, pw);
+                        fprintf( stderr, "plane_copy_deinterleave_rgb FAILED: w=%d h=%d stride=%d pw=%d\n", w, h, (int)src_stride, pw );
                         break;
                     }
             }
         }
     }
-    report("plane_copy :");
+    report( "plane_copy :" );
 
-    if (mc_a.plane_copy_deinterleave_v210 != mc_ref.plane_copy_deinterleave_v210) {
-        set_func_name("plane_copy_deinterleave_v210");
-        ok = 1;
-        used_asm = 1;
-        for (int i = 0; i < sizeof(plane_specs) / sizeof(*plane_specs); i++) {
+    if( mc_a.plane_copy_deinterleave_v210 != mc_ref.plane_copy_deinterleave_v210 )
+    {
+        set_func_name( "plane_copy_deinterleave_v210" );
+        ok = 1; used_asm = 1;
+        for( int i = 0; i < sizeof(plane_specs)/sizeof(*plane_specs); i++ )
+        {
             int w = (plane_specs[i].w + 1) >> 1;
             int h = plane_specs[i].h;
-            intptr_t dst_stride = ALIGN(w, 32);
+            intptr_t dst_stride = ALIGN( w, 32 );
             intptr_t src_stride = (w + 47) / 48 * 128 / sizeof(uint32_t);
-            intptr_t offv = dst_stride * h + 32;
-            memset(pbuf3, 0, 0x1000);
-            memset(pbuf4, 0, 0x1000);
-            call_c(mc_c.plane_copy_deinterleave_v210, pbuf3, dst_stride, pbuf3 + offv, dst_stride,
-                   (uint32_t *) buf1, src_stride, w, h);
-            call_a(mc_a.plane_copy_deinterleave_v210, pbuf4, dst_stride, pbuf4 + offv, dst_stride,
-                   (uint32_t *) buf1, src_stride, w, h);
-            for (int y = 0; y < h; y++)
-                if (memcmp(pbuf3 + y * dst_stride, pbuf4 + y * dst_stride, w * sizeof(uint16_t)) ||
-                    memcmp(pbuf3 + y * dst_stride + offv, pbuf4 + y * dst_stride + offv,
-                           w * sizeof(uint16_t))) {
+            intptr_t offv = dst_stride*h + 32;
+            memset( pbuf3, 0, 0x1000 );
+            memset( pbuf4, 0, 0x1000 );
+            call_c( mc_c.plane_copy_deinterleave_v210, pbuf3, dst_stride, pbuf3+offv, dst_stride, (uint32_t *)buf1, src_stride, w, h );
+            call_a( mc_a.plane_copy_deinterleave_v210, pbuf4, dst_stride, pbuf4+offv, dst_stride, (uint32_t *)buf1, src_stride, w, h );
+            for( int y = 0; y < h; y++ )
+                if( memcmp( pbuf3+y*dst_stride,      pbuf4+y*dst_stride,      w*sizeof(uint16_t) ) ||
+                    memcmp( pbuf3+y*dst_stride+offv, pbuf4+y*dst_stride+offv, w*sizeof(uint16_t) ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "plane_copy_deinterleave_v210 FAILED: w=%d h=%d stride=%d\n", w,
-                            h, (int) src_stride);
+                    fprintf( stderr, "plane_copy_deinterleave_v210 FAILED: w=%d h=%d stride=%d\n", w, h, (int)src_stride );
                     break;
                 }
         }
-        report("v210 :");
+        report( "v210 :" );
     }
 
-    if (mc_a.hpel_filter != mc_ref.hpel_filter) {
-        pixel *srchpel = pbuf1 + 8 + 2 * 64;
-        pixel *dstc[3] = {pbuf3 + 8, pbuf3 + 8 + 16 * 64, pbuf3 + 8 + 32 * 64};
-        pixel *dsta[3] = {pbuf4 + 8, pbuf4 + 8 + 16 * 64, pbuf4 + 8 + 32 * 64};
-        void *tmp = pbuf3 + 49 * 64;
-        set_func_name("hpel_filter");
-        ok = 1;
-        used_asm = 1;
-        memset(pbuf3, 0, 4096 * sizeof(pixel));
-        memset(pbuf4, 0, 4096 * sizeof(pixel));
-        call_c(mc_c.hpel_filter, dstc[0], dstc[1], dstc[2], srchpel, (intptr_t) 64, 48, 10, tmp);
-        call_a(mc_a.hpel_filter, dsta[0], dsta[1], dsta[2], srchpel, (intptr_t) 64, 48, 10, tmp);
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 10; j++)
+    if( mc_a.hpel_filter != mc_ref.hpel_filter )
+    {
+        pixel *srchpel = pbuf1+8+2*64;
+        pixel *dstc[3] = { pbuf3+8, pbuf3+8+16*64, pbuf3+8+32*64 };
+        pixel *dsta[3] = { pbuf4+8, pbuf4+8+16*64, pbuf4+8+32*64 };
+        void *tmp = pbuf3+49*64;
+        set_func_name( "hpel_filter" );
+        ok = 1; used_asm = 1;
+        memset( pbuf3, 0, 4096 * sizeof(pixel) );
+        memset( pbuf4, 0, 4096 * sizeof(pixel) );
+        call_c( mc_c.hpel_filter, dstc[0], dstc[1], dstc[2], srchpel, (intptr_t)64, 48, 10, tmp );
+        call_a( mc_a.hpel_filter, dsta[0], dsta[1], dsta[2], srchpel, (intptr_t)64, 48, 10, tmp );
+        for( int i = 0; i < 3; i++ )
+            for( int j = 0; j < 10; j++ )
                 //FIXME ideally the first pixels would match too, but they aren't actually used
-                if (memcmp(dstc[i] + j * 64 + 2, dsta[i] + j * 64 + 2, 43 * sizeof(pixel))) {
+                if( memcmp( dstc[i]+j*64+2, dsta[i]+j*64+2, 43 * sizeof(pixel) ) )
+                {
                     ok = 0;
-                    fprintf(stderr, "hpel filter differs at plane %c line %d\n", "hvc"[i], j);
-                    for (int k = 0; k < 48; k++)
-                        printf("%02x%s", dstc[i][j * 64 + k], (k + 1) & 3 ? "" : " ");
-                    printf("\n");
-                    for (int k = 0; k < 48; k++)
-                        printf("%02x%s", dsta[i][j * 64 + k], (k + 1) & 3 ? "" : " ");
-                    printf("\n");
+                    fprintf( stderr, "hpel filter differs at plane %c line %d\n", "hvc"[i], j );
+                    for( int k = 0; k < 48; k++ )
+                        printf( "%02x%s", dstc[i][j*64+k], (k+1)&3 ? "" : " " );
+                    printf( "\n" );
+                    for( int k = 0; k < 48; k++ )
+                        printf( "%02x%s", dsta[i][j*64+k], (k+1)&3 ? "" : " " );
+                    printf( "\n" );
                     break;
                 }
-        report("hpel filter :");
+        report( "hpel filter :" );
     }
 
-    if (mc_a.frame_init_lowres_core != mc_ref.frame_init_lowres_core) {
-        pixel *dstc[4] = {pbuf3, pbuf3 + 1024, pbuf3 + 2048, pbuf3 + 3072};
-        pixel *dsta[4] = {pbuf4, pbuf4 + 1024, pbuf4 + 2048, pbuf4 + 3072};
-        set_func_name("lowres_init");
-        ok = 1;
-        used_asm = 1;
-        for (int w = 96; w <= 96 + 24; w += 8) {
-            intptr_t stride = (w * 2 + 31) & ~31;
-            intptr_t stride_lowres = (w + 31) & ~31;
-            call_c(mc_c.frame_init_lowres_core, pbuf1, dstc[0], dstc[1], dstc[2], dstc[3], stride,
-                   stride_lowres, w, 8);
-            call_a(mc_a.frame_init_lowres_core, pbuf1, dsta[0], dsta[1], dsta[2], dsta[3], stride,
-                   stride_lowres, w, 8);
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 4; j++)
-                    if (memcmp(dstc[j] + i * stride_lowres, dsta[j] + i * stride_lowres,
-                               w * sizeof(pixel))) {
+    if( mc_a.frame_init_lowres_core != mc_ref.frame_init_lowres_core )
+    {
+        pixel *dstc[4] = { pbuf3, pbuf3+1024, pbuf3+2048, pbuf3+3072 };
+        pixel *dsta[4] = { pbuf4, pbuf4+1024, pbuf4+2048, pbuf4+3072 };
+        set_func_name( "lowres_init" );
+        ok = 1; used_asm = 1;
+        for( int w = 96; w <= 96+24; w += 8 )
+        {
+            intptr_t stride = (w*2+31)&~31;
+            intptr_t stride_lowres = (w+31)&~31;
+            call_c( mc_c.frame_init_lowres_core, pbuf1, dstc[0], dstc[1], dstc[2], dstc[3], stride, stride_lowres, w, 8 );
+            call_a( mc_a.frame_init_lowres_core, pbuf1, dsta[0], dsta[1], dsta[2], dsta[3], stride, stride_lowres, w, 8 );
+            for( int i = 0; i < 8; i++ )
+            {
+                for( int j = 0; j < 4; j++ )
+                    if( memcmp( dstc[j]+i*stride_lowres, dsta[j]+i*stride_lowres, w * sizeof(pixel) ) )
+                    {
                         ok = 0;
-                        fprintf(stderr, "frame_init_lowres differs at plane %d line %d\n", j, i);
-                        for (int k = 0; k < w; k++)
-                            printf("%d ", dstc[j][k + i * stride_lowres]);
-                        printf("\n");
-                        for (int k = 0; k < w; k++)
-                            printf("%d ", dsta[j][k + i * stride_lowres]);
-                        printf("\n");
+                        fprintf( stderr, "frame_init_lowres differs at plane %d line %d\n", j, i );
+                        for( int k = 0; k < w; k++ )
+                            printf( "%d ", dstc[j][k+i*stride_lowres] );
+                        printf( "\n" );
+                        for( int k = 0; k < w; k++ )
+                            printf( "%d ", dsta[j][k+i*stride_lowres] );
+                        printf( "\n" );
                         break;
                     }
             }
         }
-        report("lowres init :");
+        report( "lowres init :" );
     }
 
-#define INTEGRAL_INIT(name, size, offset, cmp_len, ...)\
+#define INTEGRAL_INIT( name, size, offset, cmp_len, ... )\
     if( mc_a.name != mc_ref.name )\
     {\
         intptr_t stride = 96;\
@@ -1715,188 +1707,199 @@ static int check_mc(int cpu_ref, int cpu_new) {
         call_c2( mc_c.name, sum+offset, __VA_ARGS__ );\
         call_a2( mc_a.name, sum+offset, __VA_ARGS__ );\
     }
-    ok = 1;
-    used_asm = 0;
-    INTEGRAL_INIT(integral_init4h, 2, stride, stride - 4, pbuf2, stride);
-    INTEGRAL_INIT(integral_init8h, 2, stride, stride - 8, pbuf2, stride);
-    INTEGRAL_INIT(integral_init4v, 14, 0, stride - 8, sum + 9 * stride, stride);
-    INTEGRAL_INIT(integral_init8v, 9, 0, stride - 8, stride);
-    report("integral init :");
+    ok = 1; used_asm = 0;
+    INTEGRAL_INIT( integral_init4h, 2, stride, stride-4, pbuf2, stride );
+    INTEGRAL_INIT( integral_init8h, 2, stride, stride-8, pbuf2, stride );
+    INTEGRAL_INIT( integral_init4v, 14, 0, stride-8, sum+9*stride, stride );
+    INTEGRAL_INIT( integral_init8v, 9, 0, stride-8, stride );
+    report( "integral init :" );
 
-    ok = 1;
-    used_asm = 0;
-    if (mc_a.mbtree_propagate_cost != mc_ref.mbtree_propagate_cost) {
+    ok = 1; used_asm = 0;
+    if( mc_a.mbtree_propagate_cost != mc_ref.mbtree_propagate_cost )
+    {
         used_asm = 1;
         x264_emms();
-        for (int i = 0; i < 10; i++) {
-            float fps_factor = (rand() & 65535) / 65535.0f;
-            set_func_name("mbtree_propagate_cost");
-            int16_t *dsta = (int16_t *) buf3;
-            int16_t *dstc = dsta + 400;
-            uint16_t *prop = (uint16_t *) buf1;
-            uint16_t *intra = (uint16_t *) buf4;
-            uint16_t *inter = intra + 128;
-            uint16_t *qscale = inter + 128;
-            uint16_t *rnd = (uint16_t *) buf2;
+        for( int i = 0; i < 10; i++ )
+        {
+            float fps_factor = (rand()&65535) / 65535.0f;
+            set_func_name( "mbtree_propagate_cost" );
+            int16_t *dsta = (int16_t*)buf3;
+            int16_t *dstc = dsta+400;
+            uint16_t *prop = (uint16_t*)buf1;
+            uint16_t *intra = (uint16_t*)buf4;
+            uint16_t *inter = intra+128;
+            uint16_t *qscale = inter+128;
+            uint16_t *rnd = (uint16_t*)buf2;
             x264_emms();
-            for (int j = 0; j < 100; j++) {
-                intra[j] = *rnd++ & 0x7fff;
+            for( int j = 0; j < 100; j++ )
+            {
+                intra[j]  = *rnd++ & 0x7fff;
                 intra[j] += !intra[j];
-                inter[j] = *rnd++ & 0x7fff;
+                inter[j]  = *rnd++ & 0x7fff;
                 qscale[j] = *rnd++ & 0x7fff;
             }
-            call_c(mc_c.mbtree_propagate_cost, dstc, prop, intra, inter, qscale, &fps_factor, 100);
-            call_a(mc_a.mbtree_propagate_cost, dsta, prop, intra, inter, qscale, &fps_factor, 100);
+            call_c( mc_c.mbtree_propagate_cost, dstc, prop, intra, inter, qscale, &fps_factor, 100 );
+            call_a( mc_a.mbtree_propagate_cost, dsta, prop, intra, inter, qscale, &fps_factor, 100 );
             // I don't care about exact rounding, this is just how close the floating-point implementation happens to be
             x264_emms();
-            for (int j = 0; j < 100 && ok; j++) {
-                ok &= abs(dstc[j] - dsta[j]) <= 1 || fabs((double) dstc[j] / dsta[j] - 1) < 1e-4;
-                if (!ok)
-                    fprintf(stderr, "mbtree_propagate_cost FAILED: %d !~= %d\n", dstc[j], dsta[j]);
+            for( int j = 0; j < 100 && ok; j++ )
+            {
+                ok &= abs( dstc[j]-dsta[j] ) <= 1 || fabs( (double)dstc[j]/dsta[j]-1 ) < 1e-4;
+                if( !ok )
+                    fprintf( stderr, "mbtree_propagate_cost FAILED: %d !~= %d\n", dstc[j], dsta[j] );
             }
         }
     }
 
-    if (mc_a.mbtree_propagate_list != mc_ref.mbtree_propagate_list) {
+    if( mc_a.mbtree_propagate_list != mc_ref.mbtree_propagate_list )
+    {
         used_asm = 1;
-        for (int i = 0; i < 8; i++) {
-            set_func_name("mbtree_propagate_list");
+        for( int i = 0; i < 8; i++ )
+        {
+            set_func_name( "mbtree_propagate_list" );
             x264_t h;
             int height = 4;
             int width = 128;
-            int size = width * height;
+            int size = width*height;
             h.mb.i_mb_stride = width;
             h.mb.i_mb_width = width;
             h.mb.i_mb_height = height;
 
-            uint16_t *ref_costsc = (uint16_t *) buf3 + width;
-            uint16_t *ref_costsa = (uint16_t *) buf4 + width;
-            int16_t(*mvs)[2] = (int16_t(*)[2])(ref_costsc + width + size);
-            int16_t *propagate_amount = (int16_t * )(mvs + width);
-            uint16_t *lowres_costs = (uint16_t * )(propagate_amount + width);
-            h.scratch_buffer2 = (uint8_t * )(ref_costsa + width + size);
-            int bipred_weight = (rand() % 63) + 1;
-            int mb_y = rand() & 3;
-            int list = i & 1;
-            for (int j = -width; j < size + width; j++)
-                ref_costsc[j] = ref_costsa[j] = rand() & 32767;
-            for (int j = 0; j < width; j++) {
-                static const uint8_t list_dist[2][8] = {{0, 1, 1, 1, 1, 1, 1, 1},
-                                                        {1, 1, 3, 3, 3, 3, 3, 2}};
-                for (int k = 0; k < 2; k++)
-                    mvs[j][k] = (rand() & 127) - 64;
-                propagate_amount[j] = rand() & 32767;
-                lowres_costs[j] = list_dist[list][rand() & 7] << LOWRES_COST_SHIFT;
+            uint16_t *ref_costsc = (uint16_t*)buf3 + width;
+            uint16_t *ref_costsa = (uint16_t*)buf4 + width;
+            int16_t (*mvs)[2] = (int16_t(*)[2])(ref_costsc + width + size);
+            int16_t *propagate_amount = (int16_t*)(mvs + width);
+            uint16_t *lowres_costs = (uint16_t*)(propagate_amount + width);
+            h.scratch_buffer2 = (uint8_t*)(ref_costsa + width + size);
+            int bipred_weight = (rand()%63)+1;
+            int mb_y = rand()&3;
+            int list = i&1;
+            for( int j = -width; j < size+width; j++ )
+                ref_costsc[j] = ref_costsa[j] = rand()&32767;
+            for( int j = 0; j < width; j++ )
+            {
+                static const uint8_t list_dist[2][8] = {{0,1,1,1,1,1,1,1},{1,1,3,3,3,3,3,2}};
+                for( int k = 0; k < 2; k++ )
+                    mvs[j][k] = (rand()&127) - 64;
+                propagate_amount[j] = rand()&32767;
+                lowres_costs[j] = list_dist[list][rand()&7] << LOWRES_COST_SHIFT;
             }
 
-            call_c1(mc_c.mbtree_propagate_list, &h, ref_costsc, mvs, propagate_amount, lowres_costs,
-                    bipred_weight, mb_y, width, list);
-            call_a1(mc_a.mbtree_propagate_list, &h, ref_costsa, mvs, propagate_amount, lowres_costs,
-                    bipred_weight, mb_y, width, list);
+            call_c1( mc_c.mbtree_propagate_list, &h, ref_costsc, mvs, propagate_amount, lowres_costs, bipred_weight, mb_y, width, list );
+            call_a1( mc_a.mbtree_propagate_list, &h, ref_costsa, mvs, propagate_amount, lowres_costs, bipred_weight, mb_y, width, list );
 
-            for (int j = -width; j < size + width && ok; j++) {
+            for( int j = -width; j < size+width && ok; j++ )
+            {
                 ok &= abs(ref_costsa[j] - ref_costsc[j]) <= 1;
-                if (!ok)
-                    fprintf(stderr, "mbtree_propagate_list FAILED at %d: %d !~= %d\n", j,
-                            ref_costsc[j], ref_costsa[j]);
+                if( !ok )
+                    fprintf( stderr, "mbtree_propagate_list FAILED at %d: %d !~= %d\n", j, ref_costsc[j], ref_costsa[j] );
             }
 
-            call_c2(mc_c.mbtree_propagate_list, &h, ref_costsc, mvs, propagate_amount, lowres_costs,
-                    bipred_weight, mb_y, width, list);
-            call_a2(mc_a.mbtree_propagate_list, &h, ref_costsa, mvs, propagate_amount, lowres_costs,
-                    bipred_weight, mb_y, width, list);
+            call_c2( mc_c.mbtree_propagate_list, &h, ref_costsc, mvs, propagate_amount, lowres_costs, bipred_weight, mb_y, width, list );
+            call_a2( mc_a.mbtree_propagate_list, &h, ref_costsa, mvs, propagate_amount, lowres_costs, bipred_weight, mb_y, width, list );
         }
     }
 
-    if (mc_a.mbtree_fix8_pack != mc_ref.mbtree_fix8_pack) {
-        set_func_name("mbtree_fix8_pack");
+    if( mc_a.mbtree_fix8_pack != mc_ref.mbtree_fix8_pack )
+    {
+        set_func_name( "mbtree_fix8_pack" );
         used_asm = 1;
-        float *fix8_src = (float *) (buf3 + 0x800);
-        uint16_t *dstc = (uint16_t *) buf3;
-        uint16_t *dsta = (uint16_t *) buf4;
-        for (int i = 0; i < 5; i++) {
+        float *fix8_src = (float*)(buf3 + 0x800);
+        uint16_t *dstc = (uint16_t*)buf3;
+        uint16_t *dsta = (uint16_t*)buf4;
+        for( int i = 0; i < 5; i++ )
+        {
             int count = 256 + i;
 
-            for (int j = 0; j < count; j++)
+            for( int j = 0; j < count; j++ )
                 fix8_src[j] = (int16_t)(rand()) / 256.0f;
             dsta[count] = 0xAAAA;
 
-            call_c(mc_c.mbtree_fix8_pack, dstc, fix8_src, count);
-            call_a(mc_a.mbtree_fix8_pack, dsta, fix8_src, count);
+            call_c( mc_c.mbtree_fix8_pack, dstc, fix8_src, count );
+            call_a( mc_a.mbtree_fix8_pack, dsta, fix8_src, count );
 
-            if (memcmp(dsta, dstc, count * sizeof(uint16_t)) || dsta[count] != 0xAAAA) {
+            if( memcmp( dsta, dstc, count * sizeof(uint16_t) ) || dsta[count] != 0xAAAA )
+            {
                 ok = 0;
-                fprintf(stderr, "mbtree_fix8_pack FAILED\n");
+                fprintf( stderr, "mbtree_fix8_pack FAILED\n" );
                 break;
             }
         }
     }
 
-    if (mc_a.mbtree_fix8_unpack != mc_ref.mbtree_fix8_unpack) {
-        set_func_name("mbtree_fix8_unpack");
+    if( mc_a.mbtree_fix8_unpack != mc_ref.mbtree_fix8_unpack )
+    {
+        set_func_name( "mbtree_fix8_unpack" );
         used_asm = 1;
-        uint16_t *fix8_src = (uint16_t * )(buf3 + 0x800);
-        float *dstc = (float *) buf3;
-        float *dsta = (float *) buf4;
-        for (int i = 0; i < 5; i++) {
+        uint16_t *fix8_src = (uint16_t*)(buf3 + 0x800);
+        float *dstc = (float*)buf3;
+        float *dsta = (float*)buf4;
+        for( int i = 0; i < 5; i++ )
+        {
             int count = 256 + i;
 
-            for (int j = 0; j < count; j++)
+            for( int j = 0; j < count; j++ )
                 fix8_src[j] = rand();
-            M32(&dsta[count]) = 0xAAAAAAAA;
+            M32( &dsta[count] ) = 0xAAAAAAAA;
 
-            call_c(mc_c.mbtree_fix8_unpack, dstc, fix8_src, count);
-            call_a(mc_a.mbtree_fix8_unpack, dsta, fix8_src, count);
+            call_c( mc_c.mbtree_fix8_unpack, dstc, fix8_src, count );
+            call_a( mc_a.mbtree_fix8_unpack, dsta, fix8_src, count );
 
-            if (memcmp(dsta, dstc, count * sizeof(float)) || M32(&dsta[count]) != 0xAAAAAAAA) {
+            if( memcmp( dsta, dstc, count * sizeof(float) ) || M32( &dsta[count] ) != 0xAAAAAAAA )
+            {
                 ok = 0;
-                fprintf(stderr, "mbtree_fix8_unpack FAILED\n");
+                fprintf( stderr, "mbtree_fix8_unpack FAILED\n" );
                 break;
             }
         }
     }
-    report("mbtree :");
+    report( "mbtree :" );
 
-    if (mc_a.memcpy_aligned != mc_ref.memcpy_aligned) {
-        set_func_name("memcpy_aligned");
-        ok = 1;
-        used_asm = 1;
-        for (size_t size = 16; size < 512; size += 16) {
-            for (int i = 0; i < size; i++)
+    if( mc_a.memcpy_aligned != mc_ref.memcpy_aligned )
+    {
+        set_func_name( "memcpy_aligned" );
+        ok = 1; used_asm = 1;
+        for( size_t size = 16; size < 512; size += 16 )
+        {
+            for( int i = 0; i < size; i++ )
                 buf1[i] = rand();
-            memset(buf4 - 1, 0xAA, size + 2);
-            call_c(mc_c.memcpy_aligned, buf3, buf1, size);
-            call_a(mc_a.memcpy_aligned, buf4, buf1, size);
-            if (memcmp(buf3, buf4, size) || buf4[-1] != 0xAA || buf4[size] != 0xAA) {
+            memset( buf4-1, 0xAA, size + 2 );
+            call_c( mc_c.memcpy_aligned, buf3, buf1, size );
+            call_a( mc_a.memcpy_aligned, buf4, buf1, size );
+            if( memcmp( buf3, buf4, size ) || buf4[-1] != 0xAA || buf4[size] != 0xAA )
+            {
                 ok = 0;
-                fprintf(stderr, "memcpy_aligned FAILED: size=%d\n", (int) size);
+                fprintf( stderr, "memcpy_aligned FAILED: size=%d\n", (int)size );
                 break;
             }
         }
-        report("memcpy aligned :");
+        report( "memcpy aligned :" );
     }
 
-    if (mc_a.memzero_aligned != mc_ref.memzero_aligned) {
-        set_func_name("memzero_aligned");
-        ok = 1;
-        used_asm = 1;
-        for (size_t size = 128; size < 1024; size += 128) {
-            memset(buf4 - 1, 0xAA, size + 2);
-            call_c(mc_c.memzero_aligned, buf3, size);
-            call_a(mc_a.memzero_aligned, buf4, size);
-            if (memcmp(buf3, buf4, size) || buf4[-1] != 0xAA || buf4[size] != 0xAA) {
+    if( mc_a.memzero_aligned != mc_ref.memzero_aligned )
+    {
+        set_func_name( "memzero_aligned" );
+        ok = 1; used_asm = 1;
+        for( size_t size = 128; size < 1024; size += 128 )
+        {
+            memset( buf4-1, 0xAA, size + 2 );
+            call_c( mc_c.memzero_aligned, buf3, size );
+            call_a( mc_a.memzero_aligned, buf4, size );
+            if( memcmp( buf3, buf4, size ) || buf4[-1] != 0xAA || buf4[size] != 0xAA )
+            {
                 ok = 0;
-                fprintf(stderr, "memzero_aligned FAILED: size=%d\n", (int) size);
+                fprintf( stderr, "memzero_aligned FAILED: size=%d\n", (int)size );
                 break;
             }
         }
-        report("memzero aligned :");
+        report( "memzero aligned :" );
     }
 
     return ret;
 }
 
-static int check_deblock(int cpu_ref, int cpu_new) {
+static int check_deblock( int cpu_ref, int cpu_new )
+{
     x264_deblock_function_t db_c;
     x264_deblock_function_t db_ref;
     x264_deblock_function_t db_a;
@@ -1904,22 +1907,23 @@ static int check_deblock(int cpu_ref, int cpu_new) {
     int alphas[36], betas[36];
     int8_t tcs[36][4];
 
-    x264_deblock_init(0, &db_c, 0);
-    x264_deblock_init(cpu_ref, &db_ref, 0);
-    x264_deblock_init(cpu_new, &db_a, 0);
+    x264_deblock_init( 0, &db_c, 0 );
+    x264_deblock_init( cpu_ref, &db_ref, 0 );
+    x264_deblock_init( cpu_new, &db_a, 0 );
 
     /* not exactly the real values of a,b,tc but close enough */
-    for (int i = 35, a = 255, c = 250; i >= 0; i--) {
-        alphas[i] = a << (BIT_DEPTH - 8);
-        betas[i] = (i + 1) / 2 << (BIT_DEPTH - 8);
-        tcs[i][0] = tcs[i][3] = (c + 6) / 10 << (BIT_DEPTH - 8);
-        tcs[i][1] = (c + 7) / 15 << (BIT_DEPTH - 8);
-        tcs[i][2] = (c + 9) / 20 << (BIT_DEPTH - 8);
-        a = a * 9 / 10;
-        c = c * 9 / 10;
+    for( int i = 35, a = 255, c = 250; i >= 0; i-- )
+    {
+        alphas[i] = a << (BIT_DEPTH-8);
+        betas[i] = (i+1)/2 << (BIT_DEPTH-8);
+        tcs[i][0] = tcs[i][3] = (c+6)/10 << (BIT_DEPTH-8);
+        tcs[i][1] = (c+7)/15 << (BIT_DEPTH-8);
+        tcs[i][2] = (c+9)/20 << (BIT_DEPTH-8);
+        a = a*9/10;
+        c = c*9/10;
     }
 
-#define TEST_DEBLOCK(name, align, ...) \
+#define TEST_DEBLOCK( name, align, ... ) \
     for( int i = 0; i < 36; i++ ) \
     { \
         intptr_t off = 8*32 + (i&15)*4*!align; /* benchmark various alignments of h filter */ \
@@ -1944,51 +1948,55 @@ static int check_deblock(int cpu_ref, int cpu_new) {
         } \
     }
 
-    TEST_DEBLOCK(deblock_luma[0], 0, tcs[i]);
-    TEST_DEBLOCK(deblock_luma[1], 1, tcs[i]);
-    TEST_DEBLOCK(deblock_h_chroma_420, 0, tcs[i]);
-    TEST_DEBLOCK(deblock_h_chroma_422, 0, tcs[i]);
-    TEST_DEBLOCK(deblock_chroma_420_mbaff, 0, tcs[i]);
-    TEST_DEBLOCK(deblock_chroma_422_mbaff, 0, tcs[i]);
-    TEST_DEBLOCK(deblock_chroma[1], 1, tcs[i]);
-    TEST_DEBLOCK(deblock_luma_intra[0], 0);
-    TEST_DEBLOCK(deblock_luma_intra[1], 1);
-    TEST_DEBLOCK(deblock_h_chroma_420_intra, 0);
-    TEST_DEBLOCK(deblock_h_chroma_422_intra, 0);
-    TEST_DEBLOCK(deblock_chroma_420_intra_mbaff, 0);
-    TEST_DEBLOCK(deblock_chroma_422_intra_mbaff, 0);
-    TEST_DEBLOCK(deblock_chroma_intra[1], 1);
+    TEST_DEBLOCK( deblock_luma[0], 0, tcs[i] );
+    TEST_DEBLOCK( deblock_luma[1], 1, tcs[i] );
+    TEST_DEBLOCK( deblock_h_chroma_420, 0, tcs[i] );
+    TEST_DEBLOCK( deblock_h_chroma_422, 0, tcs[i] );
+    TEST_DEBLOCK( deblock_chroma_420_mbaff, 0, tcs[i] );
+    TEST_DEBLOCK( deblock_chroma_422_mbaff, 0, tcs[i] );
+    TEST_DEBLOCK( deblock_chroma[1], 1, tcs[i] );
+    TEST_DEBLOCK( deblock_luma_intra[0], 0 );
+    TEST_DEBLOCK( deblock_luma_intra[1], 1 );
+    TEST_DEBLOCK( deblock_h_chroma_420_intra, 0 );
+    TEST_DEBLOCK( deblock_h_chroma_422_intra, 0 );
+    TEST_DEBLOCK( deblock_chroma_420_intra_mbaff, 0 );
+    TEST_DEBLOCK( deblock_chroma_422_intra_mbaff, 0 );
+    TEST_DEBLOCK( deblock_chroma_intra[1], 1 );
 
-    if (db_a.deblock_strength != db_ref.deblock_strength) {
-        set_func_name("deblock_strength");
+    if( db_a.deblock_strength != db_ref.deblock_strength )
+    {
+        set_func_name( "deblock_strength" );
         used_asm = 1;
-        for (int i = 0; i < 100; i++) {
-            ALIGNED_ARRAY_16(uint8_t, nnz_buf,[X264_SCAN8_SIZE + 8] );
+        for( int i = 0; i < 100; i++ )
+        {
+            ALIGNED_ARRAY_16( uint8_t, nnz_buf, [X264_SCAN8_SIZE+8] );
             uint8_t *nnz = &nnz_buf[8];
-            ALIGNED_4(int8_t
-            ref[2][X264_SCAN8_LUMA_SIZE] );
-            ALIGNED_ARRAY_16(int16_t, mv,[2],[X264_SCAN8_LUMA_SIZE][2] );
-            ALIGNED_ARRAY_32(uint8_t, bs,[2],[2][8][4] );
-            memset(bs, 99, sizeof(uint8_t) * 2 * 4 * 8 * 2);
-            for (int j = 0; j < X264_SCAN8_SIZE; j++)
-                nnz[j] = ((rand() & 7) == 7) * rand() & 0xf;
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < X264_SCAN8_LUMA_SIZE; k++) {
-                    ref[j][k] = ((rand() & 3) != 3) ? 0 : (rand() & 31) - 2;
-                    for (int l = 0; l < 2; l++)
-                        mv[j][k][l] = ((rand() & 7) != 7) ? (rand() & 7) - 3 : (rand() & 16383) -
-                                                                               8192;
+            ALIGNED_4( int8_t ref[2][X264_SCAN8_LUMA_SIZE] );
+            ALIGNED_ARRAY_16( int16_t, mv, [2],[X264_SCAN8_LUMA_SIZE][2] );
+            ALIGNED_ARRAY_32( uint8_t, bs, [2],[2][8][4] );
+            memset( bs, 99, sizeof(uint8_t)*2*4*8*2 );
+            for( int j = 0; j < X264_SCAN8_SIZE; j++ )
+                nnz[j] = ((rand()&7) == 7) * rand() & 0xf;
+            for( int j = 0; j < 2; j++ )
+                for( int k = 0; k < X264_SCAN8_LUMA_SIZE; k++ )
+                {
+                    ref[j][k] = ((rand()&3) != 3) ? 0 : (rand() & 31) - 2;
+                    for( int l = 0; l < 2; l++ )
+                        mv[j][k][l] = ((rand()&7) != 7) ? (rand()&7) - 3 : (rand()&16383) - 8192;
                 }
-            call_c(db_c.deblock_strength, nnz, ref, mv, bs[0], 2 << (i & 1), ((i >> 1) & 1));
-            call_a(db_a.deblock_strength, nnz, ref, mv, bs[1], 2 << (i & 1), ((i >> 1) & 1));
-            if (memcmp(bs[0], bs[1], sizeof(uint8_t) * 2 * 4 * 8)) {
+            call_c( db_c.deblock_strength, nnz, ref, mv, bs[0], 2<<(i&1), ((i>>1)&1) );
+            call_a( db_a.deblock_strength, nnz, ref, mv, bs[1], 2<<(i&1), ((i>>1)&1) );
+            if( memcmp( bs[0], bs[1], sizeof(uint8_t)*2*4*8 ) )
+            {
                 ok = 0;
-                fprintf(stderr, "deblock_strength: [FAILED]\n");
-                for (int j = 0; j < 2; j++) {
-                    for (int k = 0; k < 2; k++)
-                        for (int l = 0; l < 4; l++) {
-                            for (int m = 0; m < 4; m++)
-                                printf("%d ", bs[j][k][l][m]);
+                fprintf( stderr, "deblock_strength: [FAILED]\n" );
+                for( int j = 0; j < 2; j++ )
+                {
+                    for( int k = 0; k < 2; k++ )
+                        for( int l = 0; l < 4; l++ )
+                        {
+                            for( int m = 0; m < 4; m++ )
+                                printf("%d ",bs[j][k][l][m]);
                             printf("\n");
                         }
                     printf("\n");
@@ -1998,60 +2006,67 @@ static int check_deblock(int cpu_ref, int cpu_new) {
         }
     }
 
-    report("deblock :");
+    report( "deblock :" );
 
     return ret;
 }
 
-static int check_quant(int cpu_ref, int cpu_new) {
+static int check_quant( int cpu_ref, int cpu_new )
+{
     x264_quant_function_t qf_c;
     x264_quant_function_t qf_ref;
     x264_quant_function_t qf_a;
-    ALIGNED_ARRAY_64(dctcoef, dct1,[64] );
-    ALIGNED_ARRAY_64(dctcoef, dct2,[64] );
-    ALIGNED_ARRAY_32(dctcoef, dct3,[8],[16] );
-    ALIGNED_ARRAY_32(dctcoef, dct4,[8],[16] );
-    ALIGNED_ARRAY_32(uint8_t, cqm_buf,[64] );
+    ALIGNED_ARRAY_64( dctcoef, dct1,[64] );
+    ALIGNED_ARRAY_64( dctcoef, dct2,[64] );
+    ALIGNED_ARRAY_32( dctcoef, dct3,[8],[16] );
+    ALIGNED_ARRAY_32( dctcoef, dct4,[8],[16] );
+    ALIGNED_ARRAY_32( uint8_t, cqm_buf,[64] );
     int ret = 0, ok, used_asm;
-    int oks[3] = {1, 1, 1}, used_asms[3] = {0, 0, 0};
+    int oks[3] = {1,1,1}, used_asms[3] = {0,0,0};
     x264_t h_buf;
     x264_t *h = &h_buf;
-    memset(h, 0, sizeof(*h));
+    memset( h, 0, sizeof(*h) );
     h->sps->i_chroma_format_idc = 1;
-    x264_param_default(&h->param);
+    x264_param_default( &h->param );
     h->chroma_qp_table = i_chroma_qp_table + 12;
     h->param.analyse.b_transform_8x8 = 1;
 
-    for (int i_cqm = 0; i_cqm < 4; i_cqm++) {
-        if (i_cqm == 0) {
-            for (int i = 0; i < 6; i++)
+    for( int i_cqm = 0; i_cqm < 4; i_cqm++ )
+    {
+        if( i_cqm == 0 )
+        {
+            for( int i = 0; i < 6; i++ )
                 h->pps->scaling_list[i] = x264_cqm_flat16;
             h->param.i_cqm_preset = h->pps->i_cqm_preset = X264_CQM_FLAT;
-        } else if (i_cqm == 1) {
-            for (int i = 0; i < 6; i++)
+        }
+        else if( i_cqm == 1 )
+        {
+            for( int i = 0; i < 6; i++ )
                 h->pps->scaling_list[i] = x264_cqm_jvt[i];
             h->param.i_cqm_preset = h->pps->i_cqm_preset = X264_CQM_JVT;
-        } else {
+        }
+        else
+        {
             int max_scale = BIT_DEPTH < 10 ? 255 : 228;
-            if (i_cqm == 2)
-                for (int i = 0; i < 64; i++)
+            if( i_cqm == 2 )
+                for( int i = 0; i < 64; i++ )
                     cqm_buf[i] = 10 + rand() % (max_scale - 9);
             else
-                for (int i = 0; i < 64; i++)
+                for( int i = 0; i < 64; i++ )
                     cqm_buf[i] = 1;
-            for (int i = 0; i < 6; i++)
+            for( int i = 0; i < 6; i++ )
                 h->pps->scaling_list[i] = cqm_buf;
             h->param.i_cqm_preset = h->pps->i_cqm_preset = X264_CQM_CUSTOM;
         }
 
         h->param.rc.i_qp_min = 0;
         h->param.rc.i_qp_max = QP_MAX_SPEC;
-        x264_cqm_init(h);
-        x264_quant_init(h, 0, &qf_c);
-        x264_quant_init(h, cpu_ref, &qf_ref);
-        x264_quant_init(h, cpu_new, &qf_a);
+        x264_cqm_init( h );
+        x264_quant_init( h, 0, &qf_c );
+        x264_quant_init( h, cpu_ref, &qf_ref );
+        x264_quant_init( h, cpu_new, &qf_a );
 
-#define INIT_QUANT8(j, max) \
+#define INIT_QUANT8(j,max) \
         { \
             static const int scale1d[8] = {32,31,24,31,32,31,24,31}; \
             for( int i = 0; i < max; i++ ) \
@@ -2061,7 +2076,7 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-#define INIT_QUANT4(j, max) \
+#define INIT_QUANT4(j,max) \
         { \
             static const int scale1d[4] = {4,6,4,6}; \
             for( int i = 0; i < max; i++ ) \
@@ -2071,7 +2086,7 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-#define TEST_QUANT_DC(name, cqm) \
+#define TEST_QUANT_DC( name, cqm ) \
         if( qf_a.name != qf_ref.name ) \
         { \
             set_func_name( #name ); \
@@ -2097,7 +2112,7 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-#define TEST_QUANT(qname, block, type, w, maxj) \
+#define TEST_QUANT( qname, block, type, w, maxj ) \
         if( qf_a.qname != qf_ref.qname ) \
         { \
             set_func_name( #qname ); \
@@ -2121,16 +2136,16 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-        TEST_QUANT(quant_8x8, CQM_8IY, 8, 8, 2);
-        TEST_QUANT(quant_8x8, CQM_8PY, 8, 8, 2);
-        TEST_QUANT(quant_4x4, CQM_4IY, 4, 4, 2);
-        TEST_QUANT(quant_4x4, CQM_4PY, 4, 4, 2);
-        TEST_QUANT(quant_4x4x4, CQM_4IY, 4, 8, 16);
-        TEST_QUANT(quant_4x4x4, CQM_4PY, 4, 8, 16);
-        TEST_QUANT_DC(quant_4x4_dc, **h->quant4_mf[CQM_4IY]);
-        TEST_QUANT_DC(quant_2x2_dc, **h->quant4_mf[CQM_4IC]);
+        TEST_QUANT( quant_8x8, CQM_8IY, 8, 8, 2 );
+        TEST_QUANT( quant_8x8, CQM_8PY, 8, 8, 2 );
+        TEST_QUANT( quant_4x4, CQM_4IY, 4, 4, 2 );
+        TEST_QUANT( quant_4x4, CQM_4PY, 4, 4, 2 );
+        TEST_QUANT( quant_4x4x4, CQM_4IY, 4, 8, 16 );
+        TEST_QUANT( quant_4x4x4, CQM_4PY, 4, 8, 16 );
+        TEST_QUANT_DC( quant_4x4_dc, **h->quant4_mf[CQM_4IY] );
+        TEST_QUANT_DC( quant_2x2_dc, **h->quant4_mf[CQM_4IC] );
 
-#define TEST_DEQUANT(qname, dqname, block, w) \
+#define TEST_DEQUANT( qname, dqname, block, w ) \
         if( qf_a.dqname != qf_ref.dqname ) \
         { \
             set_func_name( "%s_%s", #dqname, i_cqm?"cqm":"flat" ); \
@@ -2153,12 +2168,12 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-        TEST_DEQUANT(quant_8x8, dequant_8x8, CQM_8IY, 8);
-        TEST_DEQUANT(quant_8x8, dequant_8x8, CQM_8PY, 8);
-        TEST_DEQUANT(quant_4x4, dequant_4x4, CQM_4IY, 4);
-        TEST_DEQUANT(quant_4x4, dequant_4x4, CQM_4PY, 4);
+        TEST_DEQUANT( quant_8x8, dequant_8x8, CQM_8IY, 8 );
+        TEST_DEQUANT( quant_8x8, dequant_8x8, CQM_8PY, 8 );
+        TEST_DEQUANT( quant_4x4, dequant_4x4, CQM_4IY, 4 );
+        TEST_DEQUANT( quant_4x4, dequant_4x4, CQM_4PY, 4 );
 
-#define TEST_DEQUANT_DC(qname, dqname, block, w) \
+#define TEST_DEQUANT_DC( qname, dqname, block, w ) \
         if( qf_a.dqname != qf_ref.dqname ) \
         { \
             set_func_name( "%s_%s", #dqname, i_cqm?"cqm":"flat" ); \
@@ -2181,57 +2196,55 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-        TEST_DEQUANT_DC(quant_4x4_dc, dequant_4x4_dc, CQM_4IY, 4);
+        TEST_DEQUANT_DC( quant_4x4_dc, dequant_4x4_dc, CQM_4IY, 4 );
 
-        if (qf_a.idct_dequant_2x4_dc != qf_ref.idct_dequant_2x4_dc) {
-            set_func_name("idct_dequant_2x4_dc_%s", i_cqm ? "cqm" : "flat");
+        if( qf_a.idct_dequant_2x4_dc != qf_ref.idct_dequant_2x4_dc )
+        {
+            set_func_name( "idct_dequant_2x4_dc_%s", i_cqm?"cqm":"flat" );
             used_asms[1] = 1;
-            for (int qp = h->chroma_qp_table[h->param.rc.i_qp_max];
-                 qp >= h->chroma_qp_table[h->param.rc.i_qp_min]; qp--) {
-                for (int i = 0; i < 8; i++)
-                    dct1[i] = rand() % (PIXEL_MAX * 16 * 2 + 1) - PIXEL_MAX * 16;
-                qf_c.quant_2x2_dc(&dct1[0], h->quant4_mf[CQM_4IC][qp + 3][0] >> 1,
-                                  h->quant4_bias[CQM_4IC][qp + 3][0] >> 1);
-                qf_c.quant_2x2_dc(&dct1[4], h->quant4_mf[CQM_4IC][qp + 3][0] >> 1,
-                                  h->quant4_bias[CQM_4IC][qp + 3][0] >> 1);
-                call_c(qf_c.idct_dequant_2x4_dc, dct1, dct3, h->dequant4_mf[CQM_4IC], qp + 3);
-                call_a(qf_a.idct_dequant_2x4_dc, dct1, dct4, h->dequant4_mf[CQM_4IC], qp + 3);
-                for (int i = 0; i < 8; i++)
-                    if (dct3[i][0] != dct4[i][0]) {
+            for( int qp = h->chroma_qp_table[h->param.rc.i_qp_max]; qp >= h->chroma_qp_table[h->param.rc.i_qp_min]; qp-- )
+            {
+                for( int i = 0; i < 8; i++ )
+                    dct1[i] = rand()%(PIXEL_MAX*16*2+1) - PIXEL_MAX*16;
+                qf_c.quant_2x2_dc( &dct1[0], h->quant4_mf[CQM_4IC][qp+3][0]>>1, h->quant4_bias[CQM_4IC][qp+3][0]>>1 );
+                qf_c.quant_2x2_dc( &dct1[4], h->quant4_mf[CQM_4IC][qp+3][0]>>1, h->quant4_bias[CQM_4IC][qp+3][0]>>1 );
+                call_c( qf_c.idct_dequant_2x4_dc, dct1, dct3, h->dequant4_mf[CQM_4IC], qp+3 );
+                call_a( qf_a.idct_dequant_2x4_dc, dct1, dct4, h->dequant4_mf[CQM_4IC], qp+3 );
+                for( int i = 0; i < 8; i++ )
+                    if( dct3[i][0] != dct4[i][0] )
+                    {
                         oks[1] = 0;
-                        fprintf(stderr, "idct_dequant_2x4_dc (qp=%d, cqm=%d): [FAILED]\n", qp,
-                                i_cqm);
+                        fprintf( stderr, "idct_dequant_2x4_dc (qp=%d, cqm=%d): [FAILED]\n", qp, i_cqm );
                         break;
                     }
             }
         }
 
-        if (qf_a.idct_dequant_2x4_dconly != qf_ref.idct_dequant_2x4_dconly) {
-            set_func_name("idct_dequant_2x4_dconly_%s", i_cqm ? "cqm" : "flat");
+        if( qf_a.idct_dequant_2x4_dconly != qf_ref.idct_dequant_2x4_dconly )
+        {
+            set_func_name( "idct_dequant_2x4_dconly_%s", i_cqm?"cqm":"flat" );
             used_asms[1] = 1;
-            for (int qp = h->chroma_qp_table[h->param.rc.i_qp_max];
-                 qp >= h->chroma_qp_table[h->param.rc.i_qp_min]; qp--) {
-                for (int i = 0; i < 8; i++)
-                    dct1[i] = rand() % (PIXEL_MAX * 16 * 2 + 1) - PIXEL_MAX * 16;
-                qf_c.quant_2x2_dc(&dct1[0], h->quant4_mf[CQM_4IC][qp + 3][0] >> 1,
-                                  h->quant4_bias[CQM_4IC][qp + 3][0] >> 1);
-                qf_c.quant_2x2_dc(&dct1[4], h->quant4_mf[CQM_4IC][qp + 3][0] >> 1,
-                                  h->quant4_bias[CQM_4IC][qp + 3][0] >> 1);
-                memcpy(dct2, dct1, 8 * sizeof(dctcoef));
-                call_c1(qf_c.idct_dequant_2x4_dconly, dct1, h->dequant4_mf[CQM_4IC], qp + 3);
-                call_a1(qf_a.idct_dequant_2x4_dconly, dct2, h->dequant4_mf[CQM_4IC], qp + 3);
-                if (memcmp(dct1, dct2, 8 * sizeof(dctcoef))) {
+            for( int qp = h->chroma_qp_table[h->param.rc.i_qp_max]; qp >= h->chroma_qp_table[h->param.rc.i_qp_min]; qp-- )
+            {
+                for( int i = 0; i < 8; i++ )
+                    dct1[i] = rand()%(PIXEL_MAX*16*2+1) - PIXEL_MAX*16;
+                qf_c.quant_2x2_dc( &dct1[0], h->quant4_mf[CQM_4IC][qp+3][0]>>1, h->quant4_bias[CQM_4IC][qp+3][0]>>1 );
+                qf_c.quant_2x2_dc( &dct1[4], h->quant4_mf[CQM_4IC][qp+3][0]>>1, h->quant4_bias[CQM_4IC][qp+3][0]>>1 );
+                memcpy( dct2, dct1, 8*sizeof(dctcoef) );
+                call_c1( qf_c.idct_dequant_2x4_dconly, dct1, h->dequant4_mf[CQM_4IC], qp+3 );
+                call_a1( qf_a.idct_dequant_2x4_dconly, dct2, h->dequant4_mf[CQM_4IC], qp+3 );
+                if( memcmp( dct1, dct2, 8*sizeof(dctcoef) ) )
+                {
                     oks[1] = 0;
-                    fprintf(stderr, "idct_dequant_2x4_dconly (qp=%d, cqm=%d): [FAILED]\n", qp,
-                            i_cqm);
+                    fprintf( stderr, "idct_dequant_2x4_dconly (qp=%d, cqm=%d): [FAILED]\n", qp, i_cqm );
                     break;
                 }
-                call_c2(qf_c.idct_dequant_2x4_dconly, dct1, h->dequant4_mf[CQM_4IC], qp + 3);
-                call_a2(qf_a.idct_dequant_2x4_dconly, dct2, h->dequant4_mf[CQM_4IC], qp + 3);
+                call_c2( qf_c.idct_dequant_2x4_dconly, dct1, h->dequant4_mf[CQM_4IC], qp+3 );
+                call_a2( qf_a.idct_dequant_2x4_dconly, dct2, h->dequant4_mf[CQM_4IC], qp+3 );
             }
         }
 
-#define TEST_OPTIMIZE_CHROMA_DC(optname, size) \
+#define TEST_OPTIMIZE_CHROMA_DC( optname, size ) \
         if( qf_a.optname != qf_ref.optname ) \
         { \
             set_func_name( #optname ); \
@@ -2266,45 +2279,42 @@ static int check_quant(int cpu_ref, int cpu_new) {
             } \
         }
 
-        TEST_OPTIMIZE_CHROMA_DC(optimize_chroma_2x2_dc, 4);
-        TEST_OPTIMIZE_CHROMA_DC(optimize_chroma_2x4_dc, 8);
+        TEST_OPTIMIZE_CHROMA_DC( optimize_chroma_2x2_dc, 4 );
+        TEST_OPTIMIZE_CHROMA_DC( optimize_chroma_2x4_dc, 8 );
 
-        x264_cqm_delete(h);
+        x264_cqm_delete( h );
     }
 
-    ok = oks[0];
-    used_asm = used_asms[0];
-    report("quant :");
+    ok = oks[0]; used_asm = used_asms[0];
+    report( "quant :" );
 
-    ok = oks[1];
-    used_asm = used_asms[1];
-    report("dequant :");
+    ok = oks[1]; used_asm = used_asms[1];
+    report( "dequant :" );
 
-    ok = oks[2];
-    used_asm = used_asms[2];
-    report("optimize chroma dc :");
+    ok = oks[2]; used_asm = used_asms[2];
+    report( "optimize chroma dc :" );
 
-    ok = 1;
-    used_asm = 0;
-    if (qf_a.denoise_dct != qf_ref.denoise_dct) {
+    ok = 1; used_asm = 0;
+    if( qf_a.denoise_dct != qf_ref.denoise_dct )
+    {
         used_asm = 1;
-        for (int size = 16; size <= 64; size += 48) {
-            set_func_name("denoise_dct");
-            memcpy(dct1, buf1, size * sizeof(dctcoef));
-            memcpy(dct2, buf1, size * sizeof(dctcoef));
-            memcpy(buf3 + 256, buf3, 256);
-            call_c1(qf_c.denoise_dct, dct1, (uint32_t *) buf3, (udctcoef *) buf2, size);
-            call_a1(qf_a.denoise_dct, dct2, (uint32_t * )(buf3 + 256), (udctcoef *) buf2, size);
-            if (memcmp(dct1, dct2, size * sizeof(dctcoef)) ||
-                memcmp(buf3 + 4, buf3 + 256 + 4, (size - 1) * sizeof(uint32_t)))
+        for( int size = 16; size <= 64; size += 48 )
+        {
+            set_func_name( "denoise_dct" );
+            memcpy( dct1, buf1, size*sizeof(dctcoef) );
+            memcpy( dct2, buf1, size*sizeof(dctcoef) );
+            memcpy( buf3+256, buf3, 256 );
+            call_c1( qf_c.denoise_dct, dct1, (uint32_t*)buf3,       (udctcoef*)buf2, size );
+            call_a1( qf_a.denoise_dct, dct2, (uint32_t*)(buf3+256), (udctcoef*)buf2, size );
+            if( memcmp( dct1, dct2, size*sizeof(dctcoef) ) || memcmp( buf3+4, buf3+256+4, (size-1)*sizeof(uint32_t) ) )
                 ok = 0;
-            call_c2(qf_c.denoise_dct, dct1, (uint32_t *) buf3, (udctcoef *) buf2, size);
-            call_a2(qf_a.denoise_dct, dct2, (uint32_t * )(buf3 + 256), (udctcoef *) buf2, size);
+            call_c2( qf_c.denoise_dct, dct1, (uint32_t*)buf3,       (udctcoef*)buf2, size );
+            call_a2( qf_a.denoise_dct, dct2, (uint32_t*)(buf3+256), (udctcoef*)buf2, size );
         }
     }
-    report("denoise dct :");
+    report( "denoise dct :" );
 
-#define TEST_DECIMATE(decname, w, ac, thresh) \
+#define TEST_DECIMATE( decname, w, ac, thresh ) \
     if( qf_a.decname != qf_ref.decname ) \
     { \
         set_func_name( #decname ); \
@@ -2335,14 +2345,13 @@ static int check_quant(int cpu_ref, int cpu_new) {
         } \
     }
 
-    ok = 1;
-    used_asm = 0;
-    TEST_DECIMATE(decimate_score64, 8, 0, 6);
-    TEST_DECIMATE(decimate_score16, 4, 0, 6);
-    TEST_DECIMATE(decimate_score15, 4, 1, 7);
-    report("decimate_score :");
+    ok = 1; used_asm = 0;
+    TEST_DECIMATE( decimate_score64, 8, 0, 6 );
+    TEST_DECIMATE( decimate_score16, 4, 0, 6 );
+    TEST_DECIMATE( decimate_score15, 4, 1, 7 );
+    report( "decimate_score :" );
 
-#define TEST_LAST(last, lastname, size, ac) \
+#define TEST_LAST( last, lastname, size, ac ) \
     if( qf_a.last != qf_ref.last ) \
     { \
         set_func_name( #lastname ); \
@@ -2367,16 +2376,15 @@ static int check_quant(int cpu_ref, int cpu_new) {
         } \
     }
 
-    ok = 1;
-    used_asm = 0;
-    TEST_LAST(coeff_last4, coeff_last4, 4, 0);
-    TEST_LAST(coeff_last8, coeff_last8, 8, 0);
-    TEST_LAST(coeff_last[DCT_LUMA_AC], coeff_last15, 16, 1);
-    TEST_LAST(coeff_last[DCT_LUMA_4x4], coeff_last16, 16, 0);
-    TEST_LAST(coeff_last[DCT_LUMA_8x8], coeff_last64, 64, 0);
-    report("coeff_last :");
+    ok = 1; used_asm = 0;
+    TEST_LAST( coeff_last4              , coeff_last4,   4, 0 );
+    TEST_LAST( coeff_last8              , coeff_last8,   8, 0 );
+    TEST_LAST( coeff_last[  DCT_LUMA_AC], coeff_last15, 16, 1 );
+    TEST_LAST( coeff_last[ DCT_LUMA_4x4], coeff_last16, 16, 0 );
+    TEST_LAST( coeff_last[ DCT_LUMA_8x8], coeff_last64, 64, 0 );
+    report( "coeff_last :" );
 
-#define TEST_LEVELRUN(lastname, name, size, ac) \
+#define TEST_LEVELRUN( lastname, name, size, ac ) \
     if( qf_a.lastname != qf_ref.lastname ) \
     { \
         set_func_name( #name ); \
@@ -2406,54 +2414,55 @@ static int check_quant(int cpu_ref, int cpu_new) {
         } \
     }
 
-    ok = 1;
-    used_asm = 0;
-    TEST_LEVELRUN(coeff_level_run4, coeff_level_run4, 4, 0);
-    TEST_LEVELRUN(coeff_level_run8, coeff_level_run8, 8, 0);
-    TEST_LEVELRUN(coeff_level_run[DCT_LUMA_AC], coeff_level_run15, 16, 1);
-    TEST_LEVELRUN(coeff_level_run[DCT_LUMA_4x4], coeff_level_run16, 16, 0);
-    report("coeff_level_run :");
+    ok = 1; used_asm = 0;
+    TEST_LEVELRUN( coeff_level_run4              , coeff_level_run4,   4, 0 );
+    TEST_LEVELRUN( coeff_level_run8              , coeff_level_run8,   8, 0 );
+    TEST_LEVELRUN( coeff_level_run[  DCT_LUMA_AC], coeff_level_run15, 16, 1 );
+    TEST_LEVELRUN( coeff_level_run[ DCT_LUMA_4x4], coeff_level_run16, 16, 0 );
+    report( "coeff_level_run :" );
 
     return ret;
 }
 
-static int check_intra(int cpu_ref, int cpu_new) {
+static int check_intra( int cpu_ref, int cpu_new )
+{
     int ret = 0, ok = 1, used_asm = 0;
-    ALIGNED_ARRAY_32(pixel, edge,[36] );
-    ALIGNED_ARRAY_32(pixel, edge2,[36] );
-    ALIGNED_ARRAY_32(pixel, fdec,[FDEC_STRIDE * 20] );
-    struct {
-        x264_predict_t predict_16x16[4 + 3];
-        x264_predict_t predict_8x8c[4 + 3];
-        x264_predict_t predict_8x16c[4 + 3];
-        x264_predict8x8_t predict_8x8[9 + 3];
-        x264_predict_t predict_4x4[9 + 3];
+    ALIGNED_ARRAY_32( pixel, edge,[36] );
+    ALIGNED_ARRAY_32( pixel, edge2,[36] );
+    ALIGNED_ARRAY_32( pixel, fdec,[FDEC_STRIDE*20] );
+    struct
+    {
+        x264_predict_t      predict_16x16[4+3];
+        x264_predict_t      predict_8x8c[4+3];
+        x264_predict_t      predict_8x16c[4+3];
+        x264_predict8x8_t   predict_8x8[9+3];
+        x264_predict_t      predict_4x4[9+3];
         x264_predict_8x8_filter_t predict_8x8_filter;
     } ip_c, ip_ref, ip_a;
 
-    x264_predict_16x16_init(0, ip_c.predict_16x16);
-    x264_predict_8x8c_init(0, ip_c.predict_8x8c);
-    x264_predict_8x16c_init(0, ip_c.predict_8x16c);
-    x264_predict_8x8_init(0, ip_c.predict_8x8, &ip_c.predict_8x8_filter);
-    x264_predict_4x4_init(0, ip_c.predict_4x4);
+    x264_predict_16x16_init( 0, ip_c.predict_16x16 );
+    x264_predict_8x8c_init( 0, ip_c.predict_8x8c );
+    x264_predict_8x16c_init( 0, ip_c.predict_8x16c );
+    x264_predict_8x8_init( 0, ip_c.predict_8x8, &ip_c.predict_8x8_filter );
+    x264_predict_4x4_init( 0, ip_c.predict_4x4 );
 
-    x264_predict_16x16_init(cpu_ref, ip_ref.predict_16x16);
-    x264_predict_8x8c_init(cpu_ref, ip_ref.predict_8x8c);
-    x264_predict_8x16c_init(cpu_ref, ip_ref.predict_8x16c);
-    x264_predict_8x8_init(cpu_ref, ip_ref.predict_8x8, &ip_ref.predict_8x8_filter);
-    x264_predict_4x4_init(cpu_ref, ip_ref.predict_4x4);
+    x264_predict_16x16_init( cpu_ref, ip_ref.predict_16x16 );
+    x264_predict_8x8c_init( cpu_ref, ip_ref.predict_8x8c );
+    x264_predict_8x16c_init( cpu_ref, ip_ref.predict_8x16c );
+    x264_predict_8x8_init( cpu_ref, ip_ref.predict_8x8, &ip_ref.predict_8x8_filter );
+    x264_predict_4x4_init( cpu_ref, ip_ref.predict_4x4 );
 
-    x264_predict_16x16_init(cpu_new, ip_a.predict_16x16);
-    x264_predict_8x8c_init(cpu_new, ip_a.predict_8x8c);
-    x264_predict_8x16c_init(cpu_new, ip_a.predict_8x16c);
-    x264_predict_8x8_init(cpu_new, ip_a.predict_8x8, &ip_a.predict_8x8_filter);
-    x264_predict_4x4_init(cpu_new, ip_a.predict_4x4);
+    x264_predict_16x16_init( cpu_new, ip_a.predict_16x16 );
+    x264_predict_8x8c_init( cpu_new, ip_a.predict_8x8c );
+    x264_predict_8x16c_init( cpu_new, ip_a.predict_8x16c );
+    x264_predict_8x8_init( cpu_new, ip_a.predict_8x8, &ip_a.predict_8x8_filter );
+    x264_predict_4x4_init( cpu_new, ip_a.predict_4x4 );
 
-    memcpy(fdec, pbuf1, 32 * 20 * sizeof(pixel));\
+    memcpy( fdec, pbuf1, 32*20 * sizeof(pixel) );\
 
-    ip_c.predict_8x8_filter(fdec + 48, edge, ALL_NEIGHBORS, ALL_NEIGHBORS);
+    ip_c.predict_8x8_filter( fdec+48, edge, ALL_NEIGHBORS, ALL_NEIGHBORS );
 
-#define INTRA_TEST(name, dir, w, h, align, bench, ...)\
+#define INTRA_TEST( name, dir, w, h, align, bench, ... )\
     if( ip_a.name[dir] != ip_ref.name[dir] )\
     {\
         set_func_name( "intra_%s_%s", #name, intra_##name##_names[dir] );\
@@ -2496,39 +2505,41 @@ static int check_intra(int cpu_ref, int cpu_new) {
         }\
     }
 
-    for (int i = 0; i < 12; i++)
-        INTRA_TEST(predict_4x4, i, 4, 4, 4,);
-    for (int i = 0; i < 7; i++)
-        INTRA_TEST(predict_8x8c, i, 8, 8, 16,);
-    for (int i = 0; i < 7; i++)
-        INTRA_TEST(predict_8x16c, i, 8, 16, 16,);
-    for (int i = 0; i < 7; i++)
-        INTRA_TEST(predict_16x16, i, 16, 16, 16,);
-    for (int i = 0; i < 12; i++)
-        INTRA_TEST(predict_8x8, i, 8, 8, 8, , edge);
+    for( int i = 0; i < 12; i++ )
+        INTRA_TEST(   predict_4x4, i,  4,  4,  4, );
+    for( int i = 0; i < 7; i++ )
+        INTRA_TEST(  predict_8x8c, i,  8,  8, 16, );
+    for( int i = 0; i < 7; i++ )
+        INTRA_TEST( predict_8x16c, i,  8, 16, 16, );
+    for( int i = 0; i < 7; i++ )
+        INTRA_TEST( predict_16x16, i, 16, 16, 16, );
+    for( int i = 0; i < 12; i++ )
+        INTRA_TEST(   predict_8x8, i,  8,  8,  8, , edge );
 
     set_func_name("intra_predict_8x8_filter");
-    if (ip_a.predict_8x8_filter != ip_ref.predict_8x8_filter) {
+    if( ip_a.predict_8x8_filter != ip_ref.predict_8x8_filter )
+    {
         used_asm = 1;
-        for (int i = 0; i < 32; i++) {
-            if (!(i & 7) || ((i & MB_TOPRIGHT) && !(i & MB_TOP)))
+        for( int i = 0; i < 32; i++ )
+        {
+            if( !(i&7) || ((i&MB_TOPRIGHT) && !(i&MB_TOP)) )
                 continue;
-            int neighbor = (i & 24) >> 1;
-            memset(edge, 0, 36 * sizeof(pixel));
-            memset(edge2, 0, 36 * sizeof(pixel));
-            call_c(ip_c.predict_8x8_filter, pbuf1 + 48, edge, neighbor, i & 7);
-            call_a(ip_a.predict_8x8_filter, pbuf1 + 48, edge2, neighbor, i & 7);
-            if (!(neighbor & MB_TOPLEFT))
+            int neighbor = (i&24)>>1;
+            memset( edge,  0, 36*sizeof(pixel) );
+            memset( edge2, 0, 36*sizeof(pixel) );
+            call_c( ip_c.predict_8x8_filter, pbuf1+48, edge,  neighbor, i&7 );
+            call_a( ip_a.predict_8x8_filter, pbuf1+48, edge2, neighbor, i&7 );
+            if( !(neighbor&MB_TOPLEFT) )
                 edge[15] = edge2[15] = 0;
-            if (memcmp(edge + 7, edge2 + 7,
-                       (i & MB_TOPRIGHT ? 26 : i & MB_TOP ? 17 : 8) * sizeof(pixel))) {
-                fprintf(stderr, "predict_8x8_filter :  [FAILED] %d %d\n", (i & 24) >> 1, i & 7);
+            if( memcmp( edge+7, edge2+7, (i&MB_TOPRIGHT ? 26 : i&MB_TOP ? 17 : 8) * sizeof(pixel) ) )
+            {
+                fprintf( stderr, "predict_8x8_filter :  [FAILED] %d %d\n", (i&24)>>1, i&7);
                 ok = 0;
             }
         }
     }
 
-#define EXTREMAL_PLANE(w, h) \
+#define EXTREMAL_PLANE( w, h ) \
     { \
         int max[7]; \
         for( int j = 0; j < 7; j++ ) \
@@ -2546,16 +2557,17 @@ static int check_intra(int cpu_ref, int cpu_new) {
         fdec[48+(h-1)*FDEC_STRIDE-1] = (!!(i&64))*max[6]; \
     }
     /* Extremal test case for planar prediction. */
-    for (int test = 0; test < 100 && ok; test++)
-        for (int i = 0; i < 128 && ok; i++) {
-            EXTREMAL_PLANE(8, 8);
-            INTRA_TEST(predict_8x8c, I_PRED_CHROMA_P, 8, 8, 64, 1);
-            EXTREMAL_PLANE(8, 16);
-            INTRA_TEST(predict_8x16c, I_PRED_CHROMA_P, 8, 16, 64, 1);
-            EXTREMAL_PLANE(16, 16);
-            INTRA_TEST(predict_16x16, I_PRED_16x16_P, 16, 16, 64, 1);
+    for( int test = 0; test < 100 && ok; test++ )
+        for( int i = 0; i < 128 && ok; i++ )
+        {
+            EXTREMAL_PLANE(  8,  8 );
+            INTRA_TEST(  predict_8x8c, I_PRED_CHROMA_P,  8,  8, 64, 1 );
+            EXTREMAL_PLANE(  8, 16 );
+            INTRA_TEST( predict_8x16c, I_PRED_CHROMA_P,  8, 16, 64, 1 );
+            EXTREMAL_PLANE( 16, 16 );
+            INTRA_TEST( predict_16x16,  I_PRED_16x16_P, 16, 16, 64, 1 );
         }
-    report("intra pred :");
+    report( "intra pred :" );
     return ret;
 }
 
@@ -2584,9 +2596,7 @@ static void run_cabac_terminal_##cpu( x264_t *h, uint8_t *dst )\
     for( int i = 0; i < 0x1000; i++ )\
         x264_cabac_encode_terminal_##cpu( &cb );\
 }
-
 DECL_CABAC(c)
-
 #if HAVE_MMX
 DECL_CABAC(asm)
 #elif defined(ARCH_AARCH64)
@@ -2599,20 +2609,21 @@ DECL_CABAC(asm)
 
 extern const uint8_t x264_count_cat_m1[14];
 
-static int check_cabac(int cpu_ref, int cpu_new) {
+static int check_cabac( int cpu_ref, int cpu_new )
+{
     int ret = 0, ok = 1, used_asm = 0;
     x264_t h;
     h.sps->i_chroma_format_idc = 3;
 
     x264_bitstream_function_t bs_ref;
     x264_bitstream_function_t bs_a;
-    x264_bitstream_init(cpu_ref, &bs_ref);
-    x264_bitstream_init(cpu_new, &bs_a);
-    x264_quant_init(&h, cpu_new, &h.quantf);
+    x264_bitstream_init( cpu_ref, &bs_ref );
+    x264_bitstream_init( cpu_new, &bs_a );
+    x264_quant_init( &h, cpu_new, &h.quantf );
     h.quantf.coeff_last[DCT_CHROMA_DC] = h.quantf.coeff_last4;
 
 /* Reset cabac state to avoid buffer overruns in do_bench() with large BENCH_RUNS values. */
-#define GET_CB(i) (\
+#define GET_CB( i ) (\
     x264_cabac_encode_init( &cb[i], bitstream[i], bitstream[i]+0xfff0 ),\
     cb[i].f8_bits_encoded = 0, &cb[i] )
 
@@ -2676,123 +2687,126 @@ static int check_cabac(int cpu_ref, int cpu_new) {
 }\
 name##fail:
 
-    CABAC_RESIDUAL(cabac_block_residual, 0, DCT_LUMA_8x8, 0)
-    report("cabac residual:");
+    CABAC_RESIDUAL( cabac_block_residual, 0, DCT_LUMA_8x8, 0 )
+    report( "cabac residual:" );
 
-    ok = 1;
-    used_asm = 0;
-    CABAC_RESIDUAL(cabac_block_residual_rd, 0, DCT_LUMA_8x8 - 1, 1)
-CABAC_RESIDUAL(cabac_block_residual_8x8_rd, DCT_LUMA_8x8, DCT_LUMA_8x8, 1)
-    report("cabac residual rd:");
+    ok = 1; used_asm = 0;
+    CABAC_RESIDUAL( cabac_block_residual_rd, 0, DCT_LUMA_8x8-1, 1 )
+    CABAC_RESIDUAL( cabac_block_residual_8x8_rd, DCT_LUMA_8x8, DCT_LUMA_8x8, 1 )
+    report( "cabac residual rd:" );
 
-    if (cpu_ref || run_cabac_decision_c == run_cabac_decision_asm)
+    if( cpu_ref || run_cabac_decision_c == run_cabac_decision_asm )
         return ret;
-    ok = 1;
-    used_asm = 0;
-    x264_cabac_init(&h);
+    ok = 1; used_asm = 0;
+    x264_cabac_init( &h );
 
-    set_func_name("cabac_encode_decision");
-    memcpy(buf4, buf3, 0x1000);
-    call_c(run_cabac_decision_c, &h, buf3);
-    call_a(run_cabac_decision_asm, &h, buf4);
-    ok = !memcmp(buf3, buf4, 0x1000);
-    report("cabac decision:");
+    set_func_name( "cabac_encode_decision" );
+    memcpy( buf4, buf3, 0x1000 );
+    call_c( run_cabac_decision_c, &h, buf3 );
+    call_a( run_cabac_decision_asm, &h, buf4 );
+    ok = !memcmp( buf3, buf4, 0x1000 );
+    report( "cabac decision:" );
 
-    set_func_name("cabac_encode_bypass");
-    memcpy(buf4, buf3, 0x1000);
-    call_c(run_cabac_bypass_c, &h, buf3);
-    call_a(run_cabac_bypass_asm, &h, buf4);
-    ok = !memcmp(buf3, buf4, 0x1000);
-    report("cabac bypass:");
+    set_func_name( "cabac_encode_bypass" );
+    memcpy( buf4, buf3, 0x1000 );
+    call_c( run_cabac_bypass_c, &h, buf3 );
+    call_a( run_cabac_bypass_asm, &h, buf4 );
+    ok = !memcmp( buf3, buf4, 0x1000 );
+    report( "cabac bypass:" );
 
-    set_func_name("cabac_encode_terminal");
-    memcpy(buf4, buf3, 0x1000);
-    call_c(run_cabac_terminal_c, &h, buf3);
-    call_a(run_cabac_terminal_asm, &h, buf4);
-    ok = !memcmp(buf3, buf4, 0x1000);
-    report("cabac terminal:");
+    set_func_name( "cabac_encode_terminal" );
+    memcpy( buf4, buf3, 0x1000 );
+    call_c( run_cabac_terminal_c, &h, buf3 );
+    call_a( run_cabac_terminal_asm, &h, buf4 );
+    ok = !memcmp( buf3, buf4, 0x1000 );
+    report( "cabac terminal:" );
 
     return ret;
 }
 
-static int check_bitstream(int cpu_ref, int cpu_new) {
+static int check_bitstream( int cpu_ref, int cpu_new )
+{
     x264_bitstream_function_t bs_c;
     x264_bitstream_function_t bs_ref;
     x264_bitstream_function_t bs_a;
 
     int ret = 0, ok = 1, used_asm = 0;
 
-    x264_bitstream_init(0, &bs_c);
-    x264_bitstream_init(cpu_ref, &bs_ref);
-    x264_bitstream_init(cpu_new, &bs_a);
-    if (bs_a.nal_escape != bs_ref.nal_escape) {
+    x264_bitstream_init( 0, &bs_c );
+    x264_bitstream_init( cpu_ref, &bs_ref );
+    x264_bitstream_init( cpu_new, &bs_a );
+    if( bs_a.nal_escape != bs_ref.nal_escape )
+    {
         int size = 0x4000;
-        uint8_t *input = malloc(size + 100);
-        uint8_t *output1 = malloc(size * 2);
-        uint8_t *output2 = malloc(size * 2);
+        uint8_t *input = malloc(size+100);
+        uint8_t *output1 = malloc(size*2);
+        uint8_t *output2 = malloc(size*2);
         used_asm = 1;
-        set_func_name("nal_escape");
-        for (int i = 0; i < 100; i++) {
+        set_func_name( "nal_escape" );
+        for( int i = 0; i < 100; i++ )
+        {
             /* Test corner-case sizes */
-            int test_size = i < 10 ? i + 1 : rand() & 0x3fff;
+            int test_size = i < 10 ? i+1 : rand() & 0x3fff;
             /* Test 8 different probability distributions of zeros */
-            for (int j = 0; j < test_size + 32; j++)
-                input[j] = (rand() & ((1 << ((i & 7) + 1)) - 1)) * rand();
-            uint8_t *end_c = (uint8_t *) call_c1(bs_c.nal_escape, output1, input,
-                                                 input + test_size);
-            uint8_t *end_a = (uint8_t *) call_a1(bs_a.nal_escape, output2, input,
-                                                 input + test_size);
-            int size_c = end_c - output1;
-            int size_a = end_a - output2;
-            if (size_c != size_a || memcmp(output1, output2, size_c)) {
-                fprintf(stderr, "nal_escape :  [FAILED] %d %d\n", size_c, size_a);
+            for( int j = 0; j < test_size+32; j++ )
+                input[j] = (rand()&((1 << ((i&7)+1)) - 1)) * rand();
+            uint8_t *end_c = (uint8_t*)call_c1( bs_c.nal_escape, output1, input, input+test_size );
+            uint8_t *end_a = (uint8_t*)call_a1( bs_a.nal_escape, output2, input, input+test_size );
+            int size_c = end_c-output1;
+            int size_a = end_a-output2;
+            if( size_c != size_a || memcmp( output1, output2, size_c ) )
+            {
+                fprintf( stderr, "nal_escape :  [FAILED] %d %d\n", size_c, size_a );
                 ok = 0;
                 break;
             }
         }
-        for (int j = 0; j < size + 32; j++)
+        for( int j = 0; j < size+32; j++ )
             input[j] = rand();
-        call_c2(bs_c.nal_escape, output1, input, input + size);
-        call_a2(bs_a.nal_escape, output2, input, input + size);
+        call_c2( bs_c.nal_escape, output1, input, input+size );
+        call_a2( bs_a.nal_escape, output2, input, input+size );
         free(input);
         free(output1);
         free(output2);
     }
-    report("nal escape:");
+    report( "nal escape:" );
 
     return ret;
 }
 
-static int check_all_funcs(int cpu_ref, int cpu_new) {
-    return check_pixel(cpu_ref, cpu_new)
-           + check_dct(cpu_ref, cpu_new)
-           + check_mc(cpu_ref, cpu_new)
-           + check_intra(cpu_ref, cpu_new)
-           + check_deblock(cpu_ref, cpu_new)
-           + check_quant(cpu_ref, cpu_new)
-           + check_cabac(cpu_ref, cpu_new)
-           + check_bitstream(cpu_ref, cpu_new);
+static int check_all_funcs( int cpu_ref, int cpu_new )
+{
+    return check_pixel( cpu_ref, cpu_new )
+         + check_dct( cpu_ref, cpu_new )
+         + check_mc( cpu_ref, cpu_new )
+         + check_intra( cpu_ref, cpu_new )
+         + check_deblock( cpu_ref, cpu_new )
+         + check_quant( cpu_ref, cpu_new )
+         + check_cabac( cpu_ref, cpu_new )
+         + check_bitstream( cpu_ref, cpu_new );
 }
 
-static int add_flags(int *cpu_ref, int *cpu_new, int flags, const char *name) {
+static int add_flags( int *cpu_ref, int *cpu_new, int flags, const char *name )
+{
     *cpu_ref = *cpu_new;
     *cpu_new |= flags;
 #if STACK_ALIGNMENT < 16
     *cpu_new |= X264_CPU_STACK_MOD4;
 #endif
-    if (*cpu_new & X264_CPU_SSE2_IS_FAST)
+    if( *cpu_new & X264_CPU_SSE2_IS_FAST )
         *cpu_new &= ~X264_CPU_SSE2_IS_SLOW;
-    if (!quiet)
-        fprintf(stderr, "x264: %s\n", name);
-    return check_all_funcs(*cpu_ref, *cpu_new);
+    if( !quiet )
+        fprintf( stderr, "x264: %s\n", name );
+    return check_all_funcs( *cpu_ref, *cpu_new );
 }
 
-static int check_all_flags(void) {
+static int check_all_flags( void )
+{
     int ret = 0;
     int cpu0 = 0, cpu1 = 0;
     uint32_t cpu_detect = x264_cpu_detect();
 #if ARCH_X86 || ARCH_X86_64
-                                                                                                                            if( cpu_detect & X264_CPU_AVX512 )
+    if( cpu_detect & X264_CPU_AVX512 )
         simd_warmup_func = x264_checkasm_warmup_avx512;
     else if( cpu_detect & X264_CPU_AVX )
         simd_warmup_func = x264_checkasm_warmup_avx;
@@ -2800,7 +2814,7 @@ static int check_all_flags(void) {
     simd_warmup();
 
 #if HAVE_MMX
-                                                                                                                            if( cpu_detect & X264_CPU_MMX2 )
+    if( cpu_detect & X264_CPU_MMX2 )
     {
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_MMX | X264_CPU_MMX2, "MMX" );
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_CACHELINE_64, "MMX Cache64" );
@@ -2872,13 +2886,13 @@ static int check_all_flags(void) {
     if( cpu_detect & X264_CPU_AVX512 )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_AVX512, "AVX512" );
 #elif ARCH_PPC
-                                                                                                                            if( cpu_detect & X264_CPU_ALTIVEC )
+    if( cpu_detect & X264_CPU_ALTIVEC )
     {
         fprintf( stderr, "x264: ALTIVEC against C\n" );
         ret = check_all_funcs( 0, X264_CPU_ALTIVEC );
     }
 #elif ARCH_ARM
-                                                                                                                            if( cpu_detect & X264_CPU_NEON )
+    if( cpu_detect & X264_CPU_NEON )
         x264_checkasm_call = x264_checkasm_call_neon;
     if( cpu_detect & X264_CPU_ARMV6 )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_ARMV6, "ARMv6" );
@@ -2887,45 +2901,49 @@ static int check_all_flags(void) {
     if( cpu_detect & X264_CPU_FAST_NEON_MRC )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_FAST_NEON_MRC, "Fast NEON MRC" );
 #elif ARCH_AARCH64
-                                                                                                                            if( cpu_detect & X264_CPU_ARMV8 )
+    if( cpu_detect & X264_CPU_ARMV8 )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_ARMV8, "ARMv8" );
     if( cpu_detect & X264_CPU_NEON )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_NEON, "NEON" );
 #elif ARCH_MIPS
-                                                                                                                            if( cpu_detect & X264_CPU_MSA )
+    if( cpu_detect & X264_CPU_MSA )
         ret |= add_flags( &cpu0, &cpu1, X264_CPU_MSA, "MSA" );
 #endif
     return ret;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 #ifdef _WIN32
-                                                                                                                            /* Disable the Windows Error Reporting dialog */
+    /* Disable the Windows Error Reporting dialog */
     SetErrorMode( SEM_NOGPFAULTERRORBOX );
 #endif
 
-    if (argc > 1 && !strncmp(argv[1], "--bench", 7)) {
+    if( argc > 1 && !strncmp( argv[1], "--bench", 7 ) )
+    {
 #if !ARCH_X86 && !ARCH_X86_64 && !ARCH_PPC && !ARCH_ARM && !ARCH_AARCH64 && !ARCH_MIPS
-        fprintf(stderr, "no --bench for your cpu until you port rdtsc\n");
+        fprintf( stderr, "no --bench for your cpu until you port rdtsc\n" );
         return 1;
 #endif
         do_bench = 1;
-        if (argv[1][7] == '=') {
-            bench_pattern = argv[1] + 8;
+        if( argv[1][7] == '=' )
+        {
+            bench_pattern = argv[1]+8;
             bench_pattern_len = strlen(bench_pattern);
         }
         argc--;
         argv++;
     }
 
-    int seed = (argc > 1) ? atoi(argv[1]) : x264_mdate();
-    fprintf(stderr, "x264: using random seed %u\n", seed);
-    srand(seed);
+    int seed = ( argc > 1 ) ? atoi(argv[1]) : x264_mdate();
+    fprintf( stderr, "x264: using random seed %u\n", seed );
+    srand( seed );
 
-    buf1 = x264_malloc(0x1e00 + 0x2000 * sizeof(pixel));
-    pbuf1 = x264_malloc(0x1e00 * sizeof(pixel));
-    if (!buf1 || !pbuf1) {
-        fprintf(stderr, "malloc failed, unable to initiate tests!\n");
+    buf1 = x264_malloc( 0x1e00 + 0x2000*sizeof(pixel) );
+    pbuf1 = x264_malloc( 0x1e00*sizeof(pixel) );
+    if( !buf1 || !pbuf1 )
+    {
+        fprintf( stderr, "malloc failed, unable to initiate tests!\n" );
         return -1;
     }
 #define INIT_POINTER_OFFSETS\
@@ -2936,18 +2954,20 @@ int main(int argc, char *argv[]) {
     pbuf3 = (pixel*)buf3;\
     pbuf4 = (pixel*)buf4;
     INIT_POINTER_OFFSETS;
-    for (int i = 0; i < 0x1e00; i++) {
+    for( int i = 0; i < 0x1e00; i++ )
+    {
         buf1[i] = rand() & 0xFF;
         pbuf1[i] = rand() & PIXEL_MAX;
     }
-    memset(buf1 + 0x1e00, 0, 0x2000 * sizeof(pixel));
+    memset( buf1+0x1e00, 0, 0x2000*sizeof(pixel) );
 
-    if (x264_stack_pagealign(check_all_flags, 0)) {
-        fprintf(stderr, "x264: at least one test has failed. Go and fix that Right Now!\n");
+    if( x264_stack_pagealign( check_all_flags, 0 ) )
+    {
+        fprintf( stderr, "x264: at least one test has failed. Go and fix that Right Now!\n" );
         return -1;
     }
-    fprintf(stderr, "x264: All tests passed Yeah :)\n");
-    if (do_bench)
+    fprintf( stderr, "x264: All tests passed Yeah :)\n" );
+    if( do_bench )
         print_bench();
     return 0;
 }

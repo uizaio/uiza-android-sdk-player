@@ -61,33 +61,33 @@ typedef union {
 #endif
 
 typedef union {
-    uint32_t s[4];
-    vec_u32_t v;
+  uint32_t s[4];
+  vec_u32_t v;
 } vec_u32_u;
 
 typedef union {
-    int32_t s[4];
-    vec_s32_t v;
+  int32_t s[4];
+  vec_s32_t v;
 } vec_s32_u;
 
 typedef union {
-    uint16_t s[8];
-    vec_u16_t v;
+  uint16_t s[8];
+  vec_u16_t v;
 } vec_u16_u;
 
 typedef union {
-    int16_t s[8];
-    vec_s16_t v;
+  int16_t s[8];
+  vec_s16_t v;
 } vec_s16_u;
 
 typedef union {
-    uint8_t s[16];
-    vec_u8_t v;
+  uint8_t s[16];
+  vec_u8_t v;
 } vec_u8_u;
 
 typedef union {
-    int8_t s[16];
-    vec_s8_t v;
+  int8_t s[16];
+  vec_s8_t v;
 } vec_s8_u;
 
 /***********************************************************************
@@ -155,7 +155,7 @@ typedef union {
     vec_u8_t mask = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,  \
                       0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F } \
 
-#define VEC_STORE8(v, p)           \
+#define VEC_STORE8( v, p )           \
     _tmp3v = vec_vsx_ld( 0, p );     \
     v = vec_perm( v, _tmp3v, mask ); \
     vec_vsx_st( v, 0, p )
@@ -165,7 +165,7 @@ typedef union {
  ***********************************************************************
  * Transposes a 8x8 matrix of s16 vectors
  **********************************************************************/
-#define VEC_TRANSPOSE_8(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7) \
+#define VEC_TRANSPOSE_8(a0,a1,a2,a3,a4,a5,a6,a7,b0,b1,b2,b3,b4,b5,b6,b7) \
     b0 = vec_mergeh( a0, a4 ); \
     b1 = vec_mergel( a0, a4 ); \
     b2 = vec_mergeh( a1, a5 ); \
@@ -199,7 +199,7 @@ typedef union {
  * source are discarded and the low elements of the destination mustn't
  * be used.
  **********************************************************************/
-#define VEC_TRANSPOSE_4(a0, a1, a2, a3, b0, b1, b2, b3) \
+#define VEC_TRANSPOSE_4(a0,a1,a2,a3,b0,b1,b2,b3) \
     b0 = vec_mergeh( a0, a0 ); \
     b1 = vec_mergeh( a1, a0 ); \
     b2 = vec_mergeh( a2, a0 ); \
@@ -227,7 +227,7 @@ typedef union {
     LOAD_ZERO;              \
     vec_s16_t pix1v, pix2v;
 
-#define VEC_DIFF_H(p1, i1, p2, i2, n, d)                 \
+#define VEC_DIFF_H(p1,i1,p2,i2,n,d)                 \
     pix1v = vec_vsx_ld( 0, (int16_t *)p1 );         \
     pix1v = vec_u8_to_s16( pix1v );                 \
     pix2v = vec_vsx_ld( 0, (int16_t *)p2 );         \
@@ -247,7 +247,7 @@ typedef union {
  * dh, the diff of the low elements into dl, increments p1 and p2 by i1
  * and i2
  **********************************************************************/
-#define VEC_DIFF_HL(p1, i1, p2, i2, dh, dl)       \
+#define VEC_DIFF_HL(p1,i1,p2,i2,dh,dl)       \
     pix1v = (vec_s16_t)vec_ld(0, p1);        \
     temp0v = vec_u8_to_s16_h( pix1v );       \
     temp1v = vec_u8_to_s16_l( pix1v );       \
@@ -276,7 +276,7 @@ LOAD_ZERO;                     \
 vec_s16_t pix1v, pix2v;        \
 vec_u8_t pix1v8, pix2v8;       \
 
-#define VEC_DIFF_H_8BYTE_ALIGNED(p1, i1, p2, i2, n, d)     \
+#define VEC_DIFF_H_8BYTE_ALIGNED(p1,i1,p2,i2,n,d)     \
 pix1v8 = vec_vsx_ld( 0, p1 );                         \
 pix2v8 = vec_vsx_ld( 0, p2 );                         \
 pix1v = vec_u8_to_s16( pix1v8 );                      \

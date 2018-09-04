@@ -44,58 +44,58 @@
 #endif
 
 const x264_cpu_name_t x264_cpu_names[] =
-        {
+{
 #if HAVE_MMX
-        //  {"MMX",         X264_CPU_MMX},  // we don't support asm on mmx1 cpus anymore
+//  {"MMX",         X264_CPU_MMX},  // we don't support asm on mmx1 cpus anymore
 #define MMX2 X264_CPU_MMX|X264_CPU_MMX2
-            {"MMX2",        MMX2},
-            {"MMXEXT",      MMX2},
-            {"SSE",         MMX2|X264_CPU_SSE},
+    {"MMX2",        MMX2},
+    {"MMXEXT",      MMX2},
+    {"SSE",         MMX2|X264_CPU_SSE},
 #define SSE2 MMX2|X264_CPU_SSE|X264_CPU_SSE2
-            {"SSE2Slow",    SSE2|X264_CPU_SSE2_IS_SLOW},
-            {"SSE2",        SSE2},
-            {"SSE2Fast",    SSE2|X264_CPU_SSE2_IS_FAST},
-            {"LZCNT",       SSE2|X264_CPU_LZCNT},
-            {"SSE3",        SSE2|X264_CPU_SSE3},
-            {"SSSE3",       SSE2|X264_CPU_SSE3|X264_CPU_SSSE3},
-            {"SSE4.1",      SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4},
-            {"SSE4",        SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4},
-            {"SSE4.2",      SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4|X264_CPU_SSE42},
+    {"SSE2Slow",    SSE2|X264_CPU_SSE2_IS_SLOW},
+    {"SSE2",        SSE2},
+    {"SSE2Fast",    SSE2|X264_CPU_SSE2_IS_FAST},
+    {"LZCNT",       SSE2|X264_CPU_LZCNT},
+    {"SSE3",        SSE2|X264_CPU_SSE3},
+    {"SSSE3",       SSE2|X264_CPU_SSE3|X264_CPU_SSSE3},
+    {"SSE4.1",      SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4},
+    {"SSE4",        SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4},
+    {"SSE4.2",      SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4|X264_CPU_SSE42},
 #define AVX SSE2|X264_CPU_SSE3|X264_CPU_SSSE3|X264_CPU_SSE4|X264_CPU_SSE42|X264_CPU_AVX
-            {"AVX",         AVX},
-            {"XOP",         AVX|X264_CPU_XOP},
-            {"FMA4",        AVX|X264_CPU_FMA4},
-            {"FMA3",        AVX|X264_CPU_FMA3},
-            {"BMI1",        AVX|X264_CPU_LZCNT|X264_CPU_BMI1},
-            {"BMI2",        AVX|X264_CPU_LZCNT|X264_CPU_BMI1|X264_CPU_BMI2},
+    {"AVX",         AVX},
+    {"XOP",         AVX|X264_CPU_XOP},
+    {"FMA4",        AVX|X264_CPU_FMA4},
+    {"FMA3",        AVX|X264_CPU_FMA3},
+    {"BMI1",        AVX|X264_CPU_LZCNT|X264_CPU_BMI1},
+    {"BMI2",        AVX|X264_CPU_LZCNT|X264_CPU_BMI1|X264_CPU_BMI2},
 #define AVX2 AVX|X264_CPU_FMA3|X264_CPU_LZCNT|X264_CPU_BMI1|X264_CPU_BMI2|X264_CPU_AVX2
-            {"AVX2",        AVX2},
-            {"AVX512",      AVX2|X264_CPU_AVX512},
+    {"AVX2",        AVX2},
+    {"AVX512",      AVX2|X264_CPU_AVX512},
 #undef AVX2
 #undef AVX
 #undef SSE2
 #undef MMX2
-            {"Cache32",         X264_CPU_CACHELINE_32},
-            {"Cache64",         X264_CPU_CACHELINE_64},
-            {"SlowAtom",        X264_CPU_SLOW_ATOM},
-            {"SlowPshufb",      X264_CPU_SLOW_PSHUFB},
-            {"SlowPalignr",     X264_CPU_SLOW_PALIGNR},
-            {"SlowShuffle",     X264_CPU_SLOW_SHUFFLE},
-            {"UnalignedStack",  X264_CPU_STACK_MOD4},
+    {"Cache32",         X264_CPU_CACHELINE_32},
+    {"Cache64",         X264_CPU_CACHELINE_64},
+    {"SlowAtom",        X264_CPU_SLOW_ATOM},
+    {"SlowPshufb",      X264_CPU_SLOW_PSHUFB},
+    {"SlowPalignr",     X264_CPU_SLOW_PALIGNR},
+    {"SlowShuffle",     X264_CPU_SLOW_SHUFFLE},
+    {"UnalignedStack",  X264_CPU_STACK_MOD4},
 #elif ARCH_PPC
-                {"Altivec",         X264_CPU_ALTIVEC},
+    {"Altivec",         X264_CPU_ALTIVEC},
 #elif ARCH_ARM
-        {"ARMv6",           X264_CPU_ARMV6},
-        {"NEON",            X264_CPU_NEON},
-        {"FastNeonMRC",     X264_CPU_FAST_NEON_MRC},
+    {"ARMv6",           X264_CPU_ARMV6},
+    {"NEON",            X264_CPU_NEON},
+    {"FastNeonMRC",     X264_CPU_FAST_NEON_MRC},
 #elif ARCH_AARCH64
-        {"ARMv8",           X264_CPU_ARMV8},
-        {"NEON",            X264_CPU_NEON},
+    {"ARMv8",           X264_CPU_ARMV8},
+    {"NEON",            X264_CPU_NEON},
 #elif ARCH_MIPS
-                {"MSA",             X264_CPU_MSA},
+    {"MSA",             X264_CPU_MSA},
 #endif
-                {"", 0},
-        };
+    {"", 0},
+};
 
 #if (ARCH_PPC && SYS_LINUX) || (ARCH_ARM && !HAVE_NEON)
 #include <signal.h>
@@ -434,13 +434,15 @@ uint32_t x264_cpu_detect( void )
 
 #else
 
-uint32_t x264_cpu_detect(void) {
+uint32_t x264_cpu_detect( void )
+{
     return 0;
 }
 
 #endif
 
-int x264_cpu_num_processors(void) {
+int x264_cpu_num_processors( void )
+{
 #if !HAVE_THREAD
     return 1;
 

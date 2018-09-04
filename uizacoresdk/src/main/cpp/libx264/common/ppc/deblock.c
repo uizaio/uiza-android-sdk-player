@@ -45,12 +45,12 @@
     r3 = vec_mergel(r5, r7);  /*all set 3*/  \
 }
 
-static inline void write16x4(uint8_t *dst, int dst_stride,
-                             register vec_u8_t r0, register vec_u8_t r1,
-                             register vec_u8_t r2, register vec_u8_t r3) {
-    ALIGNED_16(
-    unsigned char result[64]);
-    uint32_t *src_int = (uint32_t *) result, *dst_int = (uint32_t *) dst;
+static inline void write16x4( uint8_t *dst, int dst_stride,
+                              register vec_u8_t r0, register vec_u8_t r1,
+                              register vec_u8_t r2, register vec_u8_t r3 )
+{
+    ALIGNED_16(unsigned char result[64]);
+    uint32_t *src_int = (uint32_t *)result, *dst_int = (uint32_t *)dst;
     int int_dst_stride = dst_stride >> 2;
 
     vec_st(r0, 0, result);
@@ -59,21 +59,21 @@ static inline void write16x4(uint8_t *dst, int dst_stride,
     vec_st(r3, 48, result);
     /* FIXME: there has to be a better way!!!! */
     *dst_int = *src_int;
-    *(dst_int + int_dst_stride) = *(src_int + 1);
-    *(dst_int + 2 * int_dst_stride) = *(src_int + 2);
-    *(dst_int + 3 * int_dst_stride) = *(src_int + 3);
-    *(dst_int + 4 * int_dst_stride) = *(src_int + 4);
-    *(dst_int + 5 * int_dst_stride) = *(src_int + 5);
-    *(dst_int + 6 * int_dst_stride) = *(src_int + 6);
-    *(dst_int + 7 * int_dst_stride) = *(src_int + 7);
-    *(dst_int + 8 * int_dst_stride) = *(src_int + 8);
-    *(dst_int + 9 * int_dst_stride) = *(src_int + 9);
-    *(dst_int + 10 * int_dst_stride) = *(src_int + 10);
-    *(dst_int + 11 * int_dst_stride) = *(src_int + 11);
-    *(dst_int + 12 * int_dst_stride) = *(src_int + 12);
-    *(dst_int + 13 * int_dst_stride) = *(src_int + 13);
-    *(dst_int + 14 * int_dst_stride) = *(src_int + 14);
-    *(dst_int + 15 * int_dst_stride) = *(src_int + 15);
+    *(dst_int+   int_dst_stride) = *(src_int + 1);
+    *(dst_int+ 2*int_dst_stride) = *(src_int + 2);
+    *(dst_int+ 3*int_dst_stride) = *(src_int + 3);
+    *(dst_int+ 4*int_dst_stride) = *(src_int + 4);
+    *(dst_int+ 5*int_dst_stride) = *(src_int + 5);
+    *(dst_int+ 6*int_dst_stride) = *(src_int + 6);
+    *(dst_int+ 7*int_dst_stride) = *(src_int + 7);
+    *(dst_int+ 8*int_dst_stride) = *(src_int + 8);
+    *(dst_int+ 9*int_dst_stride) = *(src_int + 9);
+    *(dst_int+10*int_dst_stride) = *(src_int + 10);
+    *(dst_int+11*int_dst_stride) = *(src_int + 11);
+    *(dst_int+12*int_dst_stride) = *(src_int + 12);
+    *(dst_int+13*int_dst_stride) = *(src_int + 13);
+    *(dst_int+14*int_dst_stride) = *(src_int + 14);
+    *(dst_int+15*int_dst_stride) = *(src_int + 15);
 }
 
 /** \brief performs a 6x16 transpose of data in src, and stores it to dst */
@@ -138,19 +138,18 @@ static inline void write16x4(uint8_t *dst, int dst_stride,
 }
 
 // out: o = |x-y| < a
-static inline vec_u8_t diff_lt_altivec(register vec_u8_t x, register vec_u8_t y,
-                                       register vec_u8_t a) {
+static inline vec_u8_t diff_lt_altivec( register vec_u8_t x, register vec_u8_t y, register vec_u8_t a )
+{
     register vec_u8_t diff = vec_subs(x, y);
     register vec_u8_t diffneg = vec_subs(y, x);
     register vec_u8_t o = vec_or(diff, diffneg); /* |x-y| */
-    o = (vec_u8_t) vec_cmplt(o, a);
+    o = (vec_u8_t)vec_cmplt(o, a);
     return o;
 }
 
-static inline vec_u8_t h264_deblock_mask(register vec_u8_t p0, register vec_u8_t p1,
-                                         register vec_u8_t q0,
-                                         register vec_u8_t q1, register vec_u8_t alpha,
-                                         register vec_u8_t beta) {
+static inline vec_u8_t h264_deblock_mask( register vec_u8_t p0, register vec_u8_t p1, register vec_u8_t q0,
+                                          register vec_u8_t q1, register vec_u8_t alpha, register vec_u8_t beta )
+{
     register vec_u8_t mask;
     register vec_u8_t tempmask;
 
@@ -164,9 +163,9 @@ static inline vec_u8_t h264_deblock_mask(register vec_u8_t p0, register vec_u8_t
 }
 
 // out: newp1 = clip((p2 + ((p0 + q0 + 1) >> 1)) >> 1, p1-tc0, p1+tc0)
-static inline vec_u8_t h264_deblock_q1(register vec_u8_t p0, register vec_u8_t p1,
-                                       register vec_u8_t p2,
-                                       register vec_u8_t q0, register vec_u8_t tc0) {
+static inline vec_u8_t h264_deblock_q1( register vec_u8_t p0, register vec_u8_t p1, register vec_u8_t p2,
+                                        register vec_u8_t q0, register vec_u8_t tc0 )
+{
 
     register vec_u8_t average = vec_avg(p0, q0);
     register vec_u8_t temp;
@@ -267,31 +266,33 @@ static inline vec_u8_t h264_deblock_q1(register vec_u8_t p0, register vec_u8_t p
     q1 = newq1;                                                                              \
 }
 
-void x264_deblock_v_luma_altivec(uint8_t *pix, intptr_t stride, int alpha, int beta, int8_t *tc0) {
-    if ((tc0[0] & tc0[1] & tc0[2] & tc0[3]) >= 0) {
-        register vec_u8_t p2 = vec_ld(-3 * stride, pix);
-        register vec_u8_t p1 = vec_ld(-2 * stride, pix);
-        register vec_u8_t p0 = vec_ld(-1 * stride, pix);
+void x264_deblock_v_luma_altivec( uint8_t *pix, intptr_t stride, int alpha, int beta, int8_t *tc0 )
+{
+    if( (tc0[0] & tc0[1] & tc0[2] & tc0[3]) >= 0 )
+    {
+        register vec_u8_t p2 = vec_ld(-3*stride, pix);
+        register vec_u8_t p1 = vec_ld(-2*stride, pix);
+        register vec_u8_t p0 = vec_ld(-1*stride, pix);
         register vec_u8_t q0 = vec_ld(0, pix);
         register vec_u8_t q1 = vec_ld(stride, pix);
-        register vec_u8_t q2 = vec_ld(2 * stride, pix);
+        register vec_u8_t q2 = vec_ld(2*stride, pix);
         h264_loop_filter_luma_altivec(p2, p1, p0, q0, q1, q2, alpha, beta, tc0);
-        vec_st(p1, -2 * stride, pix);
-        vec_st(p0, -1 * stride, pix);
+        vec_st(p1, -2*stride, pix);
+        vec_st(p0, -1*stride, pix);
         vec_st(q0, 0, pix);
         vec_st(q1, stride, pix);
     }
 }
 
-void x264_deblock_h_luma_altivec(uint8_t *pix, intptr_t stride, int alpha, int beta, int8_t *tc0) {
+void x264_deblock_h_luma_altivec( uint8_t *pix, intptr_t stride, int alpha, int beta, int8_t *tc0 )
+{
 
     register vec_u8_t line0, line1, line2, line3, line4, line5;
-    if ((tc0[0] & tc0[1] & tc0[2] & tc0[3]) < 0)
+    if( (tc0[0] & tc0[1] & tc0[2] & tc0[3]) < 0 )
         return;
-    read_and_transpose16x6(pix - 3, stride, line0, line1, line2, line3, line4, line5);
+    read_and_transpose16x6(pix-3, stride, line0, line1, line2, line3, line4, line5);
     h264_loop_filter_luma_altivec(line0, line1, line2, line3, line4, line5, alpha, beta, tc0);
     transpose4x16(line1, line2, line3, line4);
-    write16x4(pix - 2, stride, line1, line2, line3, line4);
+    write16x4(pix-2, stride, line1, line2, line3, line4);
 }
-
 #endif // !HIGH_BIT_DEPTH

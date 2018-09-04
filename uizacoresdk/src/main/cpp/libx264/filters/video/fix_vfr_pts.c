@@ -31,7 +31,8 @@
  * so it can be used by filters that will need to reconstruct pts due to
  * out-of-order frame requests */
 
-typedef struct {
+typedef struct
+{
     hnd_t prev_hnd;
     cli_vid_filter_t prev_filter;
 
@@ -47,13 +48,13 @@ typedef struct {
 
 cli_vid_filter_t fix_vfr_pts_filter;
 
-static int init(hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param,
-                char *opt_string) {
+static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param, char *opt_string )
+{
     /* if the input is not vfr, we don't do anything */
-    if (!info->vfr)
+    if( !info->vfr )
         return 0;
-    fix_vfr_pts_hnd_t *h = calloc(1, sizeof(fix_vfr_pts_hnd_t));
-    if (!h)
+    fix_vfr_pts_hnd_t *h = calloc( 1, sizeof(fix_vfr_pts_hnd_t) );
+    if( !h )
         return -1;
 
     h->holder_frame = -1;
@@ -65,43 +66,47 @@ static int init(hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x26
     return 0;
 }
 
-static int get_frame(hnd_t handle, cli_pic_t *output, int frame) {
+static int get_frame( hnd_t handle, cli_pic_t *output, int frame )
+{
     fix_vfr_pts_hnd_t *h = handle;
     /* if we want the holder picture and it errored, return the error. */
-    if (frame == h->holder_frame) {
-        if (h->holder_ret)
+    if( frame == h->holder_frame )
+    {
+        if( h->holder_ret )
             return h->holder_ret;
-    } else {
+    }
+    else
+    {
         /* if we have a holder frame and we don't want it, release the frame */
-        if (h->holder_frame > 0 && h->holder_frame < frame &&
-            h->prev_filter.release_frame(h->prev_hnd, &h->holder, h->holder_frame))
+        if( h->holder_frame > 0 && h->holder_frame < frame && h->prev_filter.release_frame( h->prev_hnd, &h->holder, h->holder_frame ) )
             return -1;
         h->holder_frame = -1;
-        if (h->prev_filter.get_frame(h->prev_hnd, &h->holder, frame))
+        if( h->prev_filter.get_frame( h->prev_hnd, &h->holder, frame ) )
             return -1;
     }
 
     /* if the frame's duration is not set already, read the next frame to set it. */
-    if (!h->holder.duration) {
+    if( !h->holder.duration )
+    {
         /* allocate a buffer picture if we didn't already */
-        if (!h->buffer_allocated) {
-            if (x264_cli_pic_alloc(&h->buffer, h->holder.img.csp, h->holder.img.width,
-                                   h->holder.img.height))
+        if( !h->buffer_allocated )
+        {
+            if( x264_cli_pic_alloc( &h->buffer, h->holder.img.csp, h->holder.img.width, h->holder.img.height ) )
                 return -1;
             h->buffer_allocated = 1;
         }
-        h->holder_frame = frame + 1;
+        h->holder_frame = frame+1;
         /* copy the current frame to the buffer, release it, and then read in the next frame to the placeholder */
-        if (x264_cli_pic_copy(&h->buffer, &h->holder) ||
-            h->prev_filter.release_frame(h->prev_hnd, &h->holder, frame))
+        if( x264_cli_pic_copy( &h->buffer, &h->holder ) || h->prev_filter.release_frame( h->prev_hnd, &h->holder, frame ) )
             return -1;
-        h->holder_ret = h->prev_filter.get_frame(h->prev_hnd, &h->holder, h->holder_frame);
+        h->holder_ret = h->prev_filter.get_frame( h->prev_hnd, &h->holder, h->holder_frame );
         /* suppress non-monotonic pts warnings by setting the duration to be at least 1 */
-        if (!h->holder_ret)
-            h->last_duration = X264_MAX(h->holder.pts - h->buffer.pts, 1);
+        if( !h->holder_ret )
+            h->last_duration = X264_MAX( h->holder.pts - h->buffer.pts, 1 );
         h->buffer.duration = h->last_duration;
         *output = h->buffer;
-    } else
+    }
+    else
         *output = h->holder;
 
     output->pts = h->pts;
@@ -110,21 +115,22 @@ static int get_frame(hnd_t handle, cli_pic_t *output, int frame) {
     return 0;
 }
 
-static int release_frame(hnd_t handle, cli_pic_t *pic, int frame) {
+static int release_frame( hnd_t handle, cli_pic_t *pic, int frame )
+{
     fix_vfr_pts_hnd_t *h = handle;
     /* if the frame is the buffered one, it's already been released */
-    if (frame == (h->holder_frame - 1))
+    if( frame == (h->holder_frame - 1) )
         return 0;
-    return h->prev_filter.release_frame(h->prev_hnd, pic, frame);
+    return h->prev_filter.release_frame( h->prev_hnd, pic, frame );
 }
 
-static void free_filter(hnd_t handle) {
+static void free_filter( hnd_t handle )
+{
     fix_vfr_pts_hnd_t *h = handle;
-    h->prev_filter.free(h->prev_hnd);
-    if (h->buffer_allocated)
-        x264_cli_pic_clean(&h->buffer);
-    free(h);
+    h->prev_filter.free( h->prev_hnd );
+    if( h->buffer_allocated )
+        x264_cli_pic_clean( &h->buffer );
+    free( h );
 }
 
-cli_vid_filter_t fix_vfr_pts_filter = {"fix_vfr_pts", NULL, init, get_frame, release_frame,
-                                       free_filter, NULL};
+cli_vid_filter_t fix_vfr_pts_filter = { "fix_vfr_pts", NULL, init, get_frame, release_frame, free_filter, NULL };

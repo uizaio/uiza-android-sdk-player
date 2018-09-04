@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 namespace libyuv {
-    extern "C" {
+extern "C" {
 #endif
 
 #define TANY(NAMEANY, TPOS_SIMD, MASK)                                         \
@@ -30,16 +30,16 @@ namespace libyuv {
     }
 
 #ifdef HAS_TRANSPOSEWX8_NEON
-    TANY(TransposeWx8_Any_NEON, TransposeWx8_NEON, 7)
+TANY(TransposeWx8_Any_NEON, TransposeWx8_NEON, 7)
 #endif
 #ifdef HAS_TRANSPOSEWX8_SSSE3
-    TANY(TransposeWx8_Any_SSSE3, TransposeWx8_SSSE3, 7)
+TANY(TransposeWx8_Any_SSSE3, TransposeWx8_SSSE3, 7)
 #endif
 #ifdef HAS_TRANSPOSEWX8_FAST_SSSE3
-    TANY(TransposeWx8_Fast_Any_SSSE3, TransposeWx8_Fast_SSSE3, 15)
+TANY(TransposeWx8_Fast_Any_SSSE3, TransposeWx8_Fast_SSSE3, 15)
 #endif
 #ifdef HAS_TRANSPOSEWX8_DSPR2
-    TANY(TransposeWx8_Any_DSPR2, TransposeWx8_DSPR2, 7)
+TANY(TransposeWx8_Any_DSPR2, TransposeWx8_DSPR2, 7)
 #endif
 #undef TANY
 
@@ -59,18 +59,18 @@ namespace libyuv {
     }
 
 #ifdef HAS_TRANSPOSEUVWX8_NEON
-    TUVANY(TransposeUVWx8_Any_NEON, TransposeUVWx8_NEON, 7)
+TUVANY(TransposeUVWx8_Any_NEON, TransposeUVWx8_NEON, 7)
 #endif
 #ifdef HAS_TRANSPOSEUVWX8_SSE2
-    TUVANY(TransposeUVWx8_Any_SSE2, TransposeUVWx8_SSE2, 7)
+TUVANY(TransposeUVWx8_Any_SSE2, TransposeUVWx8_SSE2, 7)
 #endif
 #ifdef HAS_TRANSPOSEUVWX8_DSPR2
-    TUVANY(TransposeUVWx8_Any_DSPR2, TransposeUVWx8_DSPR2, 7)
+TUVANY(TransposeUVWx8_Any_DSPR2, TransposeUVWx8_DSPR2, 7)
 #endif
 #undef TUVANY
 
 #ifdef __cplusplus
-    }  // extern "C"
+}  // extern "C"
 }  // namespace libyuv
 #endif
 

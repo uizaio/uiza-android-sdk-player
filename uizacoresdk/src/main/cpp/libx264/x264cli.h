@@ -34,40 +34,43 @@
 
 typedef void *hnd_t;
 
-static inline uint64_t gcd(uint64_t a, uint64_t b) {
-    while (1) {
+static inline uint64_t gcd( uint64_t a, uint64_t b )
+{
+    while( 1 )
+    {
         int64_t c = a % b;
-        if (!c)
+        if( !c )
             return b;
         a = b;
         b = c;
     }
 }
 
-static inline uint64_t lcm(uint64_t a, uint64_t b) {
-    return (a / gcd(a, b)) * b;
+static inline uint64_t lcm( uint64_t a, uint64_t b )
+{
+    return ( a / gcd( a, b ) ) * b;
 }
 
-static inline char *get_filename_extension(char *filename) {
-    char *ext = filename + strlen(filename);
-    while (*ext != '.' && ext > filename)
+static inline char *get_filename_extension( char *filename )
+{
+    char *ext = filename + strlen( filename );
+    while( *ext != '.' && ext > filename )
         ext--;
     ext += *ext == '.';
     return ext;
 }
 
-void x264_cli_log(const char *name, int i_level, const char *fmt, ...);
-
-void x264_cli_printf(int i_level, const char *fmt, ...);
+void x264_cli_log( const char *name, int i_level, const char *fmt, ... );
+void x264_cli_printf( int i_level, const char *fmt, ... );
 
 #ifdef _WIN32
 void x264_cli_set_console_title( const char *title );
 int x264_ansi_filename( const char *filename, char *ansi_filename, int size, int create_file );
 #else
-#define x264_cli_set_console_title(title)
+#define x264_cli_set_console_title( title )
 #endif
 
-#define RETURN_IF_ERR(cond, name, ret, ...)\
+#define RETURN_IF_ERR( cond, name, ret, ... )\
 do\
 {\
     if( cond )\
@@ -77,9 +80,10 @@ do\
     }\
 } while( 0 )
 
-#define FAIL_IF_ERR(cond, name, ...) RETURN_IF_ERR( cond, name, -1, __VA_ARGS__ )
+#define FAIL_IF_ERR( cond, name, ... ) RETURN_IF_ERR( cond, name, -1, __VA_ARGS__ )
 
-typedef enum {
+typedef enum
+{
     RANGE_AUTO = -1,
     RANGE_TV,
     RANGE_PC

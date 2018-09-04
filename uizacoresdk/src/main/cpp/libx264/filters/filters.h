@@ -30,13 +30,11 @@
 #include "x264cli.h"
 #include "filters/video/video.h"
 
-char **x264_split_options(const char *opt_str, const char *const *options);
-
-char *x264_get_option(const char *name, char **split_options);
-
-int x264_otob(const char *str, int def);    // option to bool
-double x264_otof(const char *str, double def); // option to float/double
-int x264_otoi(const char *str, int def);    // option to int
-char *x264_otos(char *str, char *def);        // option to string
+char **x264_split_options( const char *opt_str, const char * const *options );
+char  *x264_get_option( const char *name, char **split_options );
+int    x264_otob( const char *str, int def );    // option to bool
+double x264_otof( const char *str, double def ); // option to float/double
+int    x264_otoi( const char *str, int def );    // option to int
+char  *x264_otos( char *str, char *def );        // option to string
 
 #endif

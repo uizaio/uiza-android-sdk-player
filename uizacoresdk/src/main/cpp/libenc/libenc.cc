@@ -576,11 +576,9 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
         return JNI_ERR;
     }
 
-    //jclass clz = jenv->FindClass("net/ossrs/yasea/SrsEncoder");
-    jclass clz = jenv->FindClass("vn/loitp/livestream/yasea/net/ossrs/yasea/SrsEncoder");
+    jclass clz = jenv->FindClass("net/ossrs/yasea/SrsEncoder");
     if (clz == NULL) {
-        //LIBENC_LOGE("Class \"net/ossrs/yasea/SrsEncoder\" not found");
-        LIBENC_LOGE("Class \"vn/loitp/livestream/yasea/net/ossrs/yasea/SrsEncoder\" not found");
+        LIBENC_LOGE("Class \"net/ossrs/yasea/SrsEncoder\" not found");
         return JNI_ERR;
     }
 

@@ -36,11 +36,8 @@
 #include <sys/types.h>
 #include <sys/timeb.h>
 #else
-
 #include <sys/time.h>
-
 #endif
-
 #include <time.h>
 
 #if PTW32_STATIC_LIB
@@ -48,15 +45,16 @@
 extern int ptw32_processInitialized;
 #endif
 
-int64_t x264_mdate(void) {
+int64_t x264_mdate( void )
+{
 #if SYS_WINDOWS
     struct timeb tb;
     ftime( &tb );
     return ((int64_t)tb.time * 1000 + (int64_t)tb.millitm) * 1000;
 #else
     struct timeval tv_date;
-    gettimeofday(&tv_date, NULL);
-    return (int64_t) tv_date.tv_sec * 1000000 + (int64_t) tv_date.tv_usec;
+    gettimeofday( &tv_date, NULL );
+    return (int64_t)tv_date.tv_sec * 1000000 + (int64_t)tv_date.tv_usec;
 #endif
 }
 

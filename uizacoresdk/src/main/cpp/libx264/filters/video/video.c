@@ -27,9 +27,10 @@
 
 static cli_vid_filter_t *first_filter = NULL;
 
-static void register_vid_filter(cli_vid_filter_t *new_filter) {
+static void register_vid_filter( cli_vid_filter_t *new_filter )
+{
     cli_vid_filter_t *filter_i = first_filter;
-    while (filter_i->next)
+    while( filter_i->next )
         filter_i = filter_i->next;
     filter_i->next = new_filter;
     new_filter->next = NULL;
@@ -41,33 +42,36 @@ static void register_vid_filter(cli_vid_filter_t *new_filter) {
     register_vid_filter( &name##_filter );\
 }
 
-void x264_register_vid_filters(void) {
+void x264_register_vid_filters( void )
+{
     extern cli_vid_filter_t source_filter;
     first_filter = &source_filter;
-    REGISTER_VFILTER(cache);
-    REGISTER_VFILTER(crop);
-    REGISTER_VFILTER(fix_vfr_pts);
-    REGISTER_VFILTER(resize);
-    REGISTER_VFILTER(select_every);
-    REGISTER_VFILTER(depth);
+    REGISTER_VFILTER( cache );
+    REGISTER_VFILTER( crop );
+    REGISTER_VFILTER( fix_vfr_pts );
+    REGISTER_VFILTER( resize );
+    REGISTER_VFILTER( select_every );
+    REGISTER_VFILTER( depth );
 #if HAVE_GPL
 #endif
 }
 
-int x264_init_vid_filter(const char *name, hnd_t *handle, cli_vid_filter_t *filter,
-                         video_info_t *info, x264_param_t *param, char *opt_string) {
+int x264_init_vid_filter( const char *name, hnd_t *handle, cli_vid_filter_t *filter,
+                          video_info_t *info, x264_param_t *param, char *opt_string )
+{
     cli_vid_filter_t *filter_i = first_filter;
-    while (filter_i && strcasecmp(name, filter_i->name))
+    while( filter_i && strcasecmp( name, filter_i->name ) )
         filter_i = filter_i->next;
-    FAIL_IF_ERR(!filter_i, "x264", "invalid filter `%s'\n", name);
-    if (filter_i->init(handle, filter, info, param, opt_string))
+    FAIL_IF_ERR( !filter_i, "x264", "invalid filter `%s'\n", name );
+    if( filter_i->init( handle, filter, info, param, opt_string ) )
         return -1;
 
     return 0;
 }
 
-void x264_vid_filter_help(int longhelp) {
-    for (cli_vid_filter_t *filter_i = first_filter; filter_i; filter_i = filter_i->next)
-        if (filter_i->help)
-            filter_i->help(longhelp);
+void x264_vid_filter_help( int longhelp )
+{
+    for( cli_vid_filter_t *filter_i = first_filter; filter_i; filter_i = filter_i->next )
+        if( filter_i->help )
+            filter_i->help( longhelp );
 }

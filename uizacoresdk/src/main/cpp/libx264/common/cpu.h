@@ -26,14 +26,10 @@
 #ifndef X264_CPU_H
 #define X264_CPU_H
 
-uint32_t x264_cpu_detect(void);
-
-int x264_cpu_num_processors(void);
-
-void x264_cpu_emms(void);
-
-void x264_cpu_sfence(void);
-
+uint32_t x264_cpu_detect( void );
+int      x264_cpu_num_processors( void );
+void     x264_cpu_emms( void );
+void     x264_cpu_sfence( void );
 #if HAVE_MMX
 /* There is no way to forbid the compiler from using float instructions
  * before the emms so miscompilation could theoretically occur in the
@@ -64,10 +60,11 @@ void x264_cpu_sfence(void);
 intptr_t x264_stack_align( void (*func)(), ... );
 #define x264_stack_align(func,...) x264_stack_align((void (*)())func, __VA_ARGS__)
 #else
-#define x264_stack_align(func, ...) func(__VA_ARGS__)
+#define x264_stack_align(func,...) func(__VA_ARGS__)
 #endif
 
-typedef struct {
+typedef struct
+{
     const char *name;
     uint32_t flags;
 } x264_cpu_name_t;

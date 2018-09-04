@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 namespace libyuv {
-    extern "C" {
+extern "C" {
 #endif
 
 #if defined(__pnacl__) || defined(__CLR_VER) || \
@@ -60,61 +60,61 @@ namespace libyuv {
 #define HAS_TRANSPOSEUVWX8_DSPR2
 #endif  // defined(__mips__)
 
-    void TransposeWxH_C(const uint8 *src, int src_stride,
-                        uint8 *dst, int dst_stride, int width, int height);
+void TransposeWxH_C(const uint8* src, int src_stride,
+                    uint8* dst, int dst_stride, int width, int height);
 
-    void TransposeWx8_C(const uint8 *src, int src_stride,
-                        uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_NEON(const uint8 *src, int src_stride,
-                           uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_SSSE3(const uint8 *src, int src_stride,
-                            uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_Fast_SSSE3(const uint8 *src, int src_stride,
-                                 uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_DSPR2(const uint8 *src, int src_stride,
-                            uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_Fast_DSPR2(const uint8 *src, int src_stride,
-                                 uint8 *dst, int dst_stride, int width);
+void TransposeWx8_C(const uint8* src, int src_stride,
+                    uint8* dst, int dst_stride, int width);
+void TransposeWx8_NEON(const uint8* src, int src_stride,
+                       uint8* dst, int dst_stride, int width);
+void TransposeWx8_SSSE3(const uint8* src, int src_stride,
+                        uint8* dst, int dst_stride, int width);
+void TransposeWx8_Fast_SSSE3(const uint8* src, int src_stride,
+                             uint8* dst, int dst_stride, int width);
+void TransposeWx8_DSPR2(const uint8* src, int src_stride,
+                        uint8* dst, int dst_stride, int width);
+void TransposeWx8_Fast_DSPR2(const uint8* src, int src_stride,
+                             uint8* dst, int dst_stride, int width);
 
-    void TransposeWx8_Any_NEON(const uint8 *src, int src_stride,
-                               uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_Any_SSSE3(const uint8 *src, int src_stride,
-                                uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_Fast_Any_SSSE3(const uint8 *src, int src_stride,
-                                     uint8 *dst, int dst_stride, int width);
-    void TransposeWx8_Any_DSPR2(const uint8 *src, int src_stride,
-                                uint8 *dst, int dst_stride, int width);
+void TransposeWx8_Any_NEON(const uint8* src, int src_stride,
+                           uint8* dst, int dst_stride, int width);
+void TransposeWx8_Any_SSSE3(const uint8* src, int src_stride,
+                            uint8* dst, int dst_stride, int width);
+void TransposeWx8_Fast_Any_SSSE3(const uint8* src, int src_stride,
+                                 uint8* dst, int dst_stride, int width);
+void TransposeWx8_Any_DSPR2(const uint8* src, int src_stride,
+                            uint8* dst, int dst_stride, int width);
 
-    void TransposeUVWxH_C(const uint8 *src, int src_stride,
-                          uint8 *dst_a, int dst_stride_a,
-                          uint8 *dst_b, int dst_stride_b,
-                          int width, int height);
+void TransposeUVWxH_C(const uint8* src, int src_stride,
+                      uint8* dst_a, int dst_stride_a,
+                      uint8* dst_b, int dst_stride_b,
+                      int width, int height);
 
-    void TransposeUVWx8_C(const uint8 *src, int src_stride,
-                          uint8 *dst_a, int dst_stride_a,
-                          uint8 *dst_b, int dst_stride_b, int width);
-    void TransposeUVWx8_SSE2(const uint8 *src, int src_stride,
-                             uint8 *dst_a, int dst_stride_a,
-                             uint8 *dst_b, int dst_stride_b, int width);
-    void TransposeUVWx8_NEON(const uint8 *src, int src_stride,
-                             uint8 *dst_a, int dst_stride_a,
-                             uint8 *dst_b, int dst_stride_b, int width);
-    void TransposeUVWx8_DSPR2(const uint8 *src, int src_stride,
-                              uint8 *dst_a, int dst_stride_a,
-                              uint8 *dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_C(const uint8* src, int src_stride,
+                      uint8* dst_a, int dst_stride_a,
+                      uint8* dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
+                         uint8* dst_a, int dst_stride_a,
+                         uint8* dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_NEON(const uint8* src, int src_stride,
+                         uint8* dst_a, int dst_stride_a,
+                         uint8* dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_DSPR2(const uint8* src, int src_stride,
+                          uint8* dst_a, int dst_stride_a,
+                          uint8* dst_b, int dst_stride_b, int width);
 
-    void TransposeUVWx8_Any_SSE2(const uint8 *src, int src_stride,
-                                 uint8 *dst_a, int dst_stride_a,
-                                 uint8 *dst_b, int dst_stride_b, int width);
-    void TransposeUVWx8_Any_NEON(const uint8 *src, int src_stride,
-                                 uint8 *dst_a, int dst_stride_a,
-                                 uint8 *dst_b, int dst_stride_b, int width);
-    void TransposeUVWx8_Any_DSPR2(const uint8 *src, int src_stride,
-                                  uint8 *dst_a, int dst_stride_a,
-                                  uint8 *dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_Any_SSE2(const uint8* src, int src_stride,
+                             uint8* dst_a, int dst_stride_a,
+                             uint8* dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_Any_NEON(const uint8* src, int src_stride,
+                             uint8* dst_a, int dst_stride_a,
+                             uint8* dst_b, int dst_stride_b, int width);
+void TransposeUVWx8_Any_DSPR2(const uint8* src, int src_stride,
+                              uint8* dst_a, int dst_stride_a,
+                              uint8* dst_b, int dst_stride_b, int width);
 
 #ifdef __cplusplus
-    }  // extern "C"
+}  // extern "C"
 }  // namespace libyuv
 #endif
 

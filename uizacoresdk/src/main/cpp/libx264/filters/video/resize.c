@@ -24,17 +24,17 @@
  *****************************************************************************/
 
 #include "video.h"
-
 #define NAME "resize"
-#define FAIL_IF_ERROR(cond, ...) FAIL_IF_ERR( cond, NAME, __VA_ARGS__ )
+#define FAIL_IF_ERROR( cond, ... ) FAIL_IF_ERR( cond, NAME, __VA_ARGS__ )
 
 cli_vid_filter_t resize_filter;
 
-static int full_check(video_info_t *info, x264_param_t *param) {
+static int full_check( video_info_t *info, x264_param_t *param )
+{
     int required = 0;
-    required |= info->csp != param->i_csp;
-    required |= info->width != param->i_width;
-    required |= info->height != param->i_height;
+    required |= info->csp       != param->i_csp;
+    required |= info->width     != param->i_width;
+    required |= info->height    != param->i_height;
     required |= info->fullrange != param->vui.b_fullrange;
     return required;
 }
@@ -567,22 +567,22 @@ static void free_filter( hnd_t handle )
 }
 
 #else /* no swscale */
-
-static int init(hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param,
-                char *opt_string) {
+static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x264_param_t *param, char *opt_string )
+{
     int ret = 0;
 
-    if (!opt_string)
-        ret = full_check(info, param);
-    else {
-        if (!strcmp(opt_string, "normcsp"))
+    if( !opt_string )
+        ret = full_check( info, param );
+    else
+    {
+        if( !strcmp( opt_string, "normcsp" ) )
             ret = info->csp & X264_CSP_OTHER;
         else
             ret = -1;
     }
 
     /* pass if nothing needs to be done, otherwise fail */
-    FAIL_IF_ERROR(ret, "not compiled with swscale support\n");
+    FAIL_IF_ERROR( ret, "not compiled with swscale support\n" );
     return 0;
 }
 
@@ -594,4 +594,4 @@ static int init(hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x26
 
 #endif
 
-cli_vid_filter_t resize_filter = {NAME, help, init, get_frame, release_frame, free_filter, NULL};
+cli_vid_filter_t resize_filter = { NAME, help, init, get_frame, release_frame, free_filter, NULL };

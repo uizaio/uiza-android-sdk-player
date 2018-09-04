@@ -16,17 +16,17 @@
 
 #ifdef __cplusplus
 namespace libyuv {
-    extern "C" {
+extern "C" {
 #endif
 
 // Rotate ARGB frame
-    LIBYUV_API
-    int ARGBRotate(const uint8 *src_argb, int src_stride_argb,
-                   uint8 *dst_argb, int dst_stride_argb,
-                   int src_width, int src_height, enum RotationMode mode);
+LIBYUV_API
+int ARGBRotate(const uint8* src_argb, int src_stride_argb,
+               uint8* dst_argb, int dst_stride_argb,
+               int src_width, int src_height, enum RotationMode mode);
 
 #ifdef __cplusplus
-    }  // extern "C"
+}  // extern "C"
 }  // namespace libyuv
 #endif
 

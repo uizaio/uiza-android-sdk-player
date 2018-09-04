@@ -38,49 +38,45 @@
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION     0, X264_BUILD, X264_REV, X264_REV_DIFF
 PRODUCTVERSION  0, X264_BUILD, X264_REV, X264_REV_DIFF
-FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
 #ifdef DEBUG
 FILEFLAGS       VS_FF_DEBUG
 #else
 FILEFLAGS       0
 #endif
-FILEOS VOS_NT_WINDOWS32 /* Identical for x86-64 */
+FILEOS          VOS_NT_WINDOWS32 /* Identical for x86-64 */
 #ifdef DLL
 FILETYPE        VFT_DLL
 #else
-FILETYPE VFT_APP
+FILETYPE        VFT_APP
 #endif
-FILESUBTYPE VFT2_UNKNOWN
+FILESUBTYPE     VFT2_UNKNOWN
 BEGIN
-        BLOCK
-"StringFileInfo"
-BEGIN
-        BLOCK
-"040904B0"
-BEGIN
-        VALUE
-"CompanyName",      "x264 project"
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName",      "x264 project"
 #ifdef DLL
-VALUE "FileDescription",  "H.264 (MPEG-4 AVC) encoder library"
+            VALUE "FileDescription",  "H.264 (MPEG-4 AVC) encoder library"
 #else
-VALUE "FileDescription",  "H.264 (MPEG-4 AVC) encoder"
+            VALUE "FileDescription",  "H.264 (MPEG-4 AVC) encoder"
 #endif
-VALUE "FileVersion",      X264_POINTVER
-VALUE "InternalName",     "x264"
-VALUE "LegalCopyright",   "Copyright (C) 2003-2017 x264 project"
+            VALUE "FileVersion",      X264_POINTVER
+            VALUE "InternalName",     "x264"
+            VALUE "LegalCopyright",   "Copyright (C) 2003-2017 x264 project"
 #ifdef DLL
-VALUE "OriginalFilename", "libx264-" xstr(X264_BUILD) ".dll"
+            VALUE "OriginalFilename", "libx264-" xstr(X264_BUILD) ".dll"
 #else
-VALUE "OriginalFilename", "x264.exe"
+            VALUE "OriginalFilename", "x264.exe"
 #endif
-VALUE "ProductName",      "x264"
-VALUE "ProductVersion",   X264_POINTVER
-END
+            VALUE "ProductName",      "x264"
+            VALUE "ProductVersion",   X264_POINTVER
         END
+    END
 
-BLOCK "VarFileInfo"
-BEGIN
-        VALUE
-"Translation", 0x0409, 0x04B0 /* U.S. English (Unicode) */
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 0x04B0 /* U.S. English (Unicode) */
+    END
 END
-        END

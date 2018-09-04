@@ -32,80 +32,80 @@ extern "C" {
 
 /******************************************************************************/
 
-typedef struct _cl_platform_id *cl_platform_id;
-typedef struct _cl_device_id *cl_device_id;
-typedef struct _cl_context *cl_context;
-typedef struct _cl_command_queue *cl_command_queue;
-typedef struct _cl_mem *cl_mem;
-typedef struct _cl_program *cl_program;
-typedef struct _cl_kernel *cl_kernel;
-typedef struct _cl_event *cl_event;
-typedef struct _cl_sampler *cl_sampler;
+typedef struct _cl_platform_id *    cl_platform_id;
+typedef struct _cl_device_id *      cl_device_id;
+typedef struct _cl_context *        cl_context;
+typedef struct _cl_command_queue *  cl_command_queue;
+typedef struct _cl_mem *            cl_mem;
+typedef struct _cl_program *        cl_program;
+typedef struct _cl_kernel *         cl_kernel;
+typedef struct _cl_event *          cl_event;
+typedef struct _cl_sampler *        cl_sampler;
 
-typedef cl_uint cl_bool;                     /* WARNING!  Unlike cl_ types in cl_platform.h, cl_bool is not guaranteed to be the same size as the bool in kernels. */
-typedef cl_ulong cl_bitfield;
-typedef cl_bitfield cl_device_type;
-typedef cl_uint cl_platform_info;
-typedef cl_uint cl_device_info;
-typedef cl_bitfield cl_device_fp_config;
-typedef cl_uint cl_device_mem_cache_type;
-typedef cl_uint cl_device_local_mem_type;
-typedef cl_bitfield cl_device_exec_capabilities;
-typedef cl_bitfield cl_command_queue_properties;
-typedef intptr_t cl_device_partition_property;
-typedef cl_bitfield cl_device_affinity_domain;
+typedef cl_uint             cl_bool;                     /* WARNING!  Unlike cl_ types in cl_platform.h, cl_bool is not guaranteed to be the same size as the bool in kernels. */
+typedef cl_ulong            cl_bitfield;
+typedef cl_bitfield         cl_device_type;
+typedef cl_uint             cl_platform_info;
+typedef cl_uint             cl_device_info;
+typedef cl_bitfield         cl_device_fp_config;
+typedef cl_uint             cl_device_mem_cache_type;
+typedef cl_uint             cl_device_local_mem_type;
+typedef cl_bitfield         cl_device_exec_capabilities;
+typedef cl_bitfield         cl_command_queue_properties;
+typedef intptr_t            cl_device_partition_property;
+typedef cl_bitfield         cl_device_affinity_domain;
 
-typedef intptr_t cl_context_properties;
-typedef cl_uint cl_context_info;
-typedef cl_uint cl_command_queue_info;
-typedef cl_uint cl_channel_order;
-typedef cl_uint cl_channel_type;
-typedef cl_bitfield cl_mem_flags;
-typedef cl_uint cl_mem_object_type;
-typedef cl_uint cl_mem_info;
-typedef cl_bitfield cl_mem_migration_flags;
-typedef cl_uint cl_image_info;
-typedef cl_uint cl_buffer_create_type;
-typedef cl_uint cl_addressing_mode;
-typedef cl_uint cl_filter_mode;
-typedef cl_uint cl_sampler_info;
-typedef cl_bitfield cl_map_flags;
-typedef cl_uint cl_program_info;
-typedef cl_uint cl_program_build_info;
-typedef cl_uint cl_program_binary_type;
-typedef cl_int cl_build_status;
-typedef cl_uint cl_kernel_info;
-typedef cl_uint cl_kernel_arg_info;
-typedef cl_uint cl_kernel_arg_address_qualifier;
-typedef cl_uint cl_kernel_arg_access_qualifier;
-typedef cl_bitfield cl_kernel_arg_type_qualifier;
-typedef cl_uint cl_kernel_work_group_info;
-typedef cl_uint cl_event_info;
-typedef cl_uint cl_command_type;
-typedef cl_uint cl_profiling_info;
+typedef intptr_t            cl_context_properties;
+typedef cl_uint             cl_context_info;
+typedef cl_uint             cl_command_queue_info;
+typedef cl_uint             cl_channel_order;
+typedef cl_uint             cl_channel_type;
+typedef cl_bitfield         cl_mem_flags;
+typedef cl_uint             cl_mem_object_type;
+typedef cl_uint             cl_mem_info;
+typedef cl_bitfield         cl_mem_migration_flags;
+typedef cl_uint             cl_image_info;
+typedef cl_uint             cl_buffer_create_type;
+typedef cl_uint             cl_addressing_mode;
+typedef cl_uint             cl_filter_mode;
+typedef cl_uint             cl_sampler_info;
+typedef cl_bitfield         cl_map_flags;
+typedef cl_uint             cl_program_info;
+typedef cl_uint             cl_program_build_info;
+typedef cl_uint             cl_program_binary_type;
+typedef cl_int              cl_build_status;
+typedef cl_uint             cl_kernel_info;
+typedef cl_uint             cl_kernel_arg_info;
+typedef cl_uint             cl_kernel_arg_address_qualifier;
+typedef cl_uint             cl_kernel_arg_access_qualifier;
+typedef cl_bitfield         cl_kernel_arg_type_qualifier;
+typedef cl_uint             cl_kernel_work_group_info;
+typedef cl_uint             cl_event_info;
+typedef cl_uint             cl_command_type;
+typedef cl_uint             cl_profiling_info;
 
 
 typedef struct _cl_image_format {
-    cl_channel_order image_channel_order;
-    cl_channel_type image_channel_data_type;
+    cl_channel_order        image_channel_order;
+    cl_channel_type         image_channel_data_type;
 } cl_image_format;
 
 typedef struct _cl_image_desc {
-    cl_mem_object_type image_type;
-    size_t image_width;
-    size_t image_height;
-    size_t image_depth;
-    size_t image_array_size;
-    size_t image_row_pitch;
-    size_t image_slice_pitch;
-    cl_uint num_mip_levels;
-    cl_uint num_samples;
-    cl_mem buffer;
+    cl_mem_object_type      image_type;
+    size_t                  image_width;
+    size_t                  image_height;
+    size_t                  image_depth;
+    size_t                  image_array_size;
+    size_t                  image_row_pitch;
+    size_t                  image_slice_pitch;
+    cl_uint                 num_mip_levels;
+    cl_uint                 num_samples;
+    cl_mem                  buffer;
 } cl_image_desc;
 
 typedef struct _cl_buffer_region {
-    size_t origin;
-    size_t size;
+    size_t                  origin;
+    size_t                  size;
 } cl_buffer_region;
 
 
@@ -615,8 +615,7 @@ clCreateContext(const cl_context_properties * /* properties */,
 extern CL_API_ENTRY cl_context CL_API_CALL
 clCreateContextFromType(const cl_context_properties * /* properties */,
                         cl_device_type          /* device_type */,
-                        void (CL_CALLBACK *     /* pfn_notify*/ )(const char *, const void *,
-                                                                  size_t, void *),
+                        void (CL_CALLBACK *     /* pfn_notify*/ )(const char *, const void *, size_t, void *),
                         void *                  /* user_data */,
                         cl_int *                /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
 
@@ -705,10 +704,9 @@ clGetImageInfo(cl_mem           /* image */,
                size_t *         /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
 
 extern CL_API_ENTRY cl_int CL_API_CALL
-clSetMemObjectDestructorCallback(cl_mem /* memobj */,
-                                 void (CL_CALLBACK * /*pfn_notify*/)(cl_mem /* memobj */,
-                                                                     void * /*user_data*/),
-                                 void * /*user_data */ )             CL_API_SUFFIX__VERSION_1_1;
+clSetMemObjectDestructorCallback(  cl_mem /* memobj */,
+                                    void (CL_CALLBACK * /*pfn_notify*/)( cl_mem /* memobj */, void* /*user_data*/),
+                                    void * /*user_data */ )             CL_API_SUFFIX__VERSION_1_1;
 
 /* Sampler APIs */
 extern CL_API_ENTRY cl_sampler CL_API_CALL
@@ -766,8 +764,7 @@ clBuildProgram(cl_program           /* program */,
                cl_uint              /* num_devices */,
                const cl_device_id * /* device_list */,
                const char *         /* options */,
-               void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */,
-                                                      void * /* user_data */),
+               void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */, void * /* user_data */),
                void *               /* user_data */) CL_API_SUFFIX__VERSION_1_0;
 
 extern CL_API_ENTRY cl_int CL_API_CALL
@@ -778,8 +775,7 @@ clCompileProgram(cl_program           /* program */,
                  cl_uint              /* num_input_headers */,
                  const cl_program *   /* input_headers */,
                  const char **        /* header_include_names */,
-                 void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */,
-                                                        void * /* user_data */),
+                 void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */, void * /* user_data */),
                  void *               /* user_data */) CL_API_SUFFIX__VERSION_1_2;
 
 extern CL_API_ENTRY cl_program CL_API_CALL
@@ -789,8 +785,7 @@ clLinkProgram(cl_context           /* context */,
               const char *         /* options */,
               cl_uint              /* num_input_programs */,
               const cl_program *   /* input_programs */,
-              void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */,
-                                                     void * /* user_data */),
+              void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */, void * /* user_data */),
               void *               /* user_data */,
               cl_int *             /* errcode_ret */ ) CL_API_SUFFIX__VERSION_1_2;
 
@@ -887,10 +882,10 @@ clSetUserEventStatus(cl_event   /* event */,
                      cl_int     /* execution_status */) CL_API_SUFFIX__VERSION_1_1;
 
 extern CL_API_ENTRY cl_int CL_API_CALL
-clSetEventCallback(cl_event    /* event */,
-                   cl_int      /* command_exec_callback_type */,
-                   void (CL_CALLBACK * /* pfn_notify */)(cl_event, cl_int, void *),
-                   void *      /* user_data */) CL_API_SUFFIX__VERSION_1_1;
+clSetEventCallback( cl_event    /* event */,
+                    cl_int      /* command_exec_callback_type */,
+                    void (CL_CALLBACK * /* pfn_notify */)(cl_event, cl_int, void *),
+                    void *      /* user_data */) CL_API_SUFFIX__VERSION_1_1;
 
 /* Profiling APIs */
 extern CL_API_ENTRY cl_int CL_API_CALL
@@ -1068,7 +1063,7 @@ clEnqueueCopyBufferToImage(cl_command_queue /* command_queue */,
                            const cl_event * /* event_wait_list */,
                            cl_event *       /* event */) CL_API_SUFFIX__VERSION_1_0;
 
-extern CL_API_ENTRY void *CL_API_CALL
+extern CL_API_ENTRY void * CL_API_CALL
 clEnqueueMapBuffer(cl_command_queue /* command_queue */,
                    cl_mem           /* buffer */,
                    cl_bool          /* blocking_map */,
@@ -1080,7 +1075,7 @@ clEnqueueMapBuffer(cl_command_queue /* command_queue */,
                    cl_event *       /* event */,
                    cl_int *         /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
 
-extern CL_API_ENTRY void *CL_API_CALL
+extern CL_API_ENTRY void * CL_API_CALL
 clEnqueueMapImage(cl_command_queue  /* command_queue */,
                   cl_mem            /* image */,
                   cl_bool           /* blocking_map */,
@@ -1161,7 +1156,7 @@ clEnqueueBarrierWithWaitList(cl_command_queue /* command_queue */,
  * check to make sure the address is not NULL, before using or
  * calling the returned function address.
  */
-extern CL_API_ENTRY void *CL_API_CALL
+extern CL_API_ENTRY void * CL_API_CALL
 clGetExtensionFunctionAddressForPlatform(cl_platform_id /* platform */,
                                          const char *   /* func_name */) CL_API_SUFFIX__VERSION_1_2;
 
@@ -1195,8 +1190,8 @@ clEnqueueMarker(cl_command_queue    /* command_queue */,
 
 extern CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int CL_API_CALL
 clEnqueueWaitForEvents(cl_command_queue /* command_queue */,
-                       cl_uint          /* num_events */,
-                       const cl_event * /* event_list */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+                        cl_uint          /* num_events */,
+                        const cl_event * /* event_list */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
 extern CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int CL_API_CALL
 clEnqueueBarrier(cl_command_queue /* command_queue */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
@@ -1204,7 +1199,7 @@ clEnqueueBarrier(cl_command_queue /* command_queue */) CL_EXT_SUFFIX__VERSION_1_
 extern CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int CL_API_CALL
 clUnloadCompiler(void) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
-extern CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED void *CL_API_CALL
+extern CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED void * CL_API_CALL
 clGetExtensionFunctionAddress(const char * /* func_name */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
 #ifdef __cplusplus

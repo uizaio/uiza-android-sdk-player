@@ -34,75 +34,81 @@
 #endif
 
 const x264_cli_csp_t x264_cli_csps[] = {
-        [X264_CSP_I420] = {"i420", 3, {1, .5, .5}, {1, .5, .5}, 2, 2},
-        [X264_CSP_I422] = {"i422", 3, {1, .5, .5}, {1, 1, 1}, 2, 1},
-        [X264_CSP_I444] = {"i444", 3, {1, 1, 1}, {1, 1, 1}, 1, 1},
-        [X264_CSP_YV12] = {"yv12", 3, {1, .5, .5}, {1, .5, .5}, 2, 2},
-        [X264_CSP_YV16] = {"yv16", 3, {1, .5, .5}, {1, 1, 1}, 2, 1},
-        [X264_CSP_YV24] = {"yv24", 3, {1, 1, 1}, {1, 1, 1}, 1, 1},
-        [X264_CSP_NV12] = {"nv12", 2, {1, 1}, {1, .5}, 2, 2},
-        [X264_CSP_NV21] = {"nv21", 2, {1, 1}, {1, .5}, 2, 2},
-        [X264_CSP_NV16] = {"nv16", 2, {1, 1}, {1, 1}, 2, 1},
-        [X264_CSP_YUYV] = {"yuyv", 1, {2}, {1}, 2, 1},
-        [X264_CSP_UYVY] = {"uyvy", 1, {2}, {1}, 2, 1},
-        [X264_CSP_BGR]  = {"bgr", 1, {3}, {1}, 1, 1},
-        [X264_CSP_BGRA] = {"bgra", 1, {4}, {1}, 1, 1},
-        [X264_CSP_RGB]  = {"rgb", 1, {3}, {1}, 1, 1},
+    [X264_CSP_I420] = { "i420", 3, { 1, .5, .5 }, { 1, .5, .5 }, 2, 2 },
+    [X264_CSP_I422] = { "i422", 3, { 1, .5, .5 }, { 1,  1,  1 }, 2, 1 },
+    [X264_CSP_I444] = { "i444", 3, { 1,  1,  1 }, { 1,  1,  1 }, 1, 1 },
+    [X264_CSP_YV12] = { "yv12", 3, { 1, .5, .5 }, { 1, .5, .5 }, 2, 2 },
+    [X264_CSP_YV16] = { "yv16", 3, { 1, .5, .5 }, { 1,  1,  1 }, 2, 1 },
+    [X264_CSP_YV24] = { "yv24", 3, { 1,  1,  1 }, { 1,  1,  1 }, 1, 1 },
+    [X264_CSP_NV12] = { "nv12", 2, { 1,  1 },     { 1, .5 },     2, 2 },
+    [X264_CSP_NV21] = { "nv21", 2, { 1,  1 },     { 1, .5 },     2, 2 },
+    [X264_CSP_NV16] = { "nv16", 2, { 1,  1 },     { 1,  1 },     2, 1 },
+    [X264_CSP_YUYV] = { "yuyv", 1, { 2 },         { 1 },         2, 1 },
+    [X264_CSP_UYVY] = { "uyvy", 1, { 2 },         { 1 },         2, 1 },
+    [X264_CSP_BGR]  = { "bgr",  1, { 3 },         { 1 },         1, 1 },
+    [X264_CSP_BGRA] = { "bgra", 1, { 4 },         { 1 },         1, 1 },
+    [X264_CSP_RGB]  = { "rgb",  1, { 3 },         { 1 },         1, 1 },
 };
 
-int x264_cli_csp_is_invalid(int csp) {
+int x264_cli_csp_is_invalid( int csp )
+{
     int csp_mask = csp & X264_CSP_MASK;
     return csp_mask <= X264_CSP_NONE || csp_mask >= X264_CSP_CLI_MAX ||
            csp_mask == X264_CSP_V210 || csp & X264_CSP_OTHER;
 }
 
-int x264_cli_csp_depth_factor(int csp) {
-    if (x264_cli_csp_is_invalid(csp))
+int x264_cli_csp_depth_factor( int csp )
+{
+    if( x264_cli_csp_is_invalid( csp ) )
         return 0;
     return (csp & X264_CSP_HIGH_DEPTH) ? 2 : 1;
 }
 
-uint64_t x264_cli_pic_plane_size(int csp, int width, int height, int plane) {
+uint64_t x264_cli_pic_plane_size( int csp, int width, int height, int plane )
+{
     int csp_mask = csp & X264_CSP_MASK;
-    if (x264_cli_csp_is_invalid(csp) || plane < 0 || plane >= x264_cli_csps[csp_mask].planes)
+    if( x264_cli_csp_is_invalid( csp ) || plane < 0 || plane >= x264_cli_csps[csp_mask].planes )
         return 0;
-    uint64_t size = (uint64_t) width * height;
+    uint64_t size = (uint64_t)width * height;
     size *= x264_cli_csps[csp_mask].width[plane] * x264_cli_csps[csp_mask].height[plane];
-    size *= x264_cli_csp_depth_factor(csp);
+    size *= x264_cli_csp_depth_factor( csp );
     return size;
 }
 
-uint64_t x264_cli_pic_size(int csp, int width, int height) {
-    if (x264_cli_csp_is_invalid(csp))
+uint64_t x264_cli_pic_size( int csp, int width, int height )
+{
+    if( x264_cli_csp_is_invalid( csp ) )
         return 0;
     uint64_t size = 0;
     int csp_mask = csp & X264_CSP_MASK;
-    for (int i = 0; i < x264_cli_csps[csp_mask].planes; i++)
-        size += x264_cli_pic_plane_size(csp, width, height, i);
+    for( int i = 0; i < x264_cli_csps[csp_mask].planes; i++ )
+        size += x264_cli_pic_plane_size( csp, width, height, i );
     return size;
 }
 
-static int
-x264_cli_pic_init_internal(cli_pic_t *pic, int csp, int width, int height, int align, int alloc) {
-    memset(pic, 0, sizeof(cli_pic_t));
+static int x264_cli_pic_init_internal( cli_pic_t *pic, int csp, int width, int height, int align, int alloc )
+{
+    memset( pic, 0, sizeof(cli_pic_t) );
     int csp_mask = csp & X264_CSP_MASK;
-    if (x264_cli_csp_is_invalid(csp))
+    if( x264_cli_csp_is_invalid( csp ) )
         pic->img.planes = 0;
     else
         pic->img.planes = x264_cli_csps[csp_mask].planes;
-    pic->img.csp = csp;
-    pic->img.width = width;
+    pic->img.csp    = csp;
+    pic->img.width  = width;
     pic->img.height = height;
-    for (int i = 0; i < pic->img.planes; i++) {
+    for( int i = 0; i < pic->img.planes; i++ )
+    {
         int stride = width * x264_cli_csps[csp_mask].width[i];
-        stride *= x264_cli_csp_depth_factor(csp);
-        stride = ALIGN(stride, align);
+        stride *= x264_cli_csp_depth_factor( csp );
+        stride = ALIGN( stride, align );
         pic->img.stride[i] = stride;
 
-        if (alloc) {
+        if( alloc )
+        {
             size_t size = (size_t)(height * x264_cli_csps[csp_mask].height[i]) * stride;
-            pic->img.plane[i] = x264_malloc(size);
-            if (!pic->img.plane[i])
+            pic->img.plane[i] = x264_malloc( size );
+            if( !pic->img.plane[i] )
                 return -1;
         }
     }
@@ -110,32 +116,38 @@ x264_cli_pic_init_internal(cli_pic_t *pic, int csp, int width, int height, int a
     return 0;
 }
 
-int x264_cli_pic_alloc(cli_pic_t *pic, int csp, int width, int height) {
-    return x264_cli_pic_init_internal(pic, csp, width, height, 1, 1);
+int x264_cli_pic_alloc( cli_pic_t *pic, int csp, int width, int height )
+{
+    return x264_cli_pic_init_internal( pic, csp, width, height, 1, 1 );
 }
 
-int x264_cli_pic_alloc_aligned(cli_pic_t *pic, int csp, int width, int height) {
-    return x264_cli_pic_init_internal(pic, csp, width, height, NATIVE_ALIGN, 1);
+int x264_cli_pic_alloc_aligned( cli_pic_t *pic, int csp, int width, int height )
+{
+    return x264_cli_pic_init_internal( pic, csp, width, height, NATIVE_ALIGN, 1 );
 }
 
-int x264_cli_pic_init_noalloc(cli_pic_t *pic, int csp, int width, int height) {
-    return x264_cli_pic_init_internal(pic, csp, width, height, 1, 0);
+int x264_cli_pic_init_noalloc( cli_pic_t *pic, int csp, int width, int height )
+{
+    return x264_cli_pic_init_internal( pic, csp, width, height, 1, 0 );
 }
 
-void x264_cli_pic_clean(cli_pic_t *pic) {
-    for (int i = 0; i < pic->img.planes; i++)
-        x264_free(pic->img.plane[i]);
-    memset(pic, 0, sizeof(cli_pic_t));
+void x264_cli_pic_clean( cli_pic_t *pic )
+{
+    for( int i = 0; i < pic->img.planes; i++ )
+        x264_free( pic->img.plane[i] );
+    memset( pic, 0, sizeof(cli_pic_t) );
 }
 
-const x264_cli_csp_t *x264_cli_get_csp(int csp) {
-    if (x264_cli_csp_is_invalid(csp))
+const x264_cli_csp_t *x264_cli_get_csp( int csp )
+{
+    if( x264_cli_csp_is_invalid( csp ) )
         return NULL;
-    return x264_cli_csps + (csp & X264_CSP_MASK);
+    return x264_cli_csps + (csp&X264_CSP_MASK);
 }
 
 /* Functions for handling memory-mapped input frames */
-int x264_cli_mmap_init(cli_mmap_t *h, FILE *fh) {
+int x264_cli_mmap_init( cli_mmap_t *h, FILE *fh )
+{
 #ifdef _WIN32
     HANDLE osfhandle = (HANDLE)_get_osfhandle( _fileno( fh ) );
     if( osfhandle != INVALID_HANDLE_VALUE )
@@ -156,7 +168,8 @@ int x264_cli_mmap_init(cli_mmap_t *h, FILE *fh) {
     return -1;
 }
 
-void *x264_cli_mmap(cli_mmap_t *h, int64_t offset, size_t size) {
+void *x264_cli_mmap( cli_mmap_t *h, int64_t offset, size_t size )
+{
 #if defined(_WIN32) || HAVE_MMAP
     int align = offset & h->align_mask;
     offset -= align;
@@ -193,7 +206,8 @@ void *x264_cli_mmap(cli_mmap_t *h, int64_t offset, size_t size) {
     return NULL;
 }
 
-int x264_cli_munmap(cli_mmap_t *h, void *addr, size_t size) {
+int x264_cli_munmap( cli_mmap_t *h, void *addr, size_t size )
+{
 #if defined(_WIN32) || HAVE_MMAP
     void *base = (void*)((intptr_t)addr & ~h->align_mask);
 #ifdef _WIN32
@@ -205,7 +219,8 @@ int x264_cli_munmap(cli_mmap_t *h, void *addr, size_t size) {
     return -1;
 }
 
-void x264_cli_mmap_close(cli_mmap_t *h) {
+void x264_cli_mmap_close( cli_mmap_t *h )
+{
 #ifdef _WIN32
     CloseHandle( h->map_handle );
 #endif

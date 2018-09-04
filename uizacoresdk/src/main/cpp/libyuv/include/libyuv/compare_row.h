@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 namespace libyuv {
-    extern "C" {
+extern "C" {
 #endif
 
 #if defined(__pnacl__) || defined(__CLR_VER) || \
@@ -67,17 +67,17 @@ namespace libyuv {
 #define HAS_SUMSQUAREERROR_NEON
 #endif
 
-    uint32 SumSquareError_C(const uint8 *src_a, const uint8 *src_b, int count);
-    uint32 SumSquareError_SSE2(const uint8 *src_a, const uint8 *src_b, int count);
-    uint32 SumSquareError_AVX2(const uint8 *src_a, const uint8 *src_b, int count);
-    uint32 SumSquareError_NEON(const uint8 *src_a, const uint8 *src_b, int count);
+uint32 SumSquareError_C(const uint8* src_a, const uint8* src_b, int count);
+uint32 SumSquareError_SSE2(const uint8* src_a, const uint8* src_b, int count);
+uint32 SumSquareError_AVX2(const uint8* src_a, const uint8* src_b, int count);
+uint32 SumSquareError_NEON(const uint8* src_a, const uint8* src_b, int count);
 
-    uint32 HashDjb2_C(const uint8 *src, int count, uint32 seed);
-    uint32 HashDjb2_SSE41(const uint8 *src, int count, uint32 seed);
-    uint32 HashDjb2_AVX2(const uint8 *src, int count, uint32 seed);
+uint32 HashDjb2_C(const uint8* src, int count, uint32 seed);
+uint32 HashDjb2_SSE41(const uint8* src, int count, uint32 seed);
+uint32 HashDjb2_AVX2(const uint8* src, int count, uint32 seed);
 
 #ifdef __cplusplus
-    }  // extern "C"
+}  // extern "C"
 }  // namespace libyuv
 #endif
 

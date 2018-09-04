@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import vn.loitp.core.utilities.LLog;
+
 /**
  * Created by Leo Ma on 4/1/2016.
  */
@@ -39,8 +41,14 @@ public class SrsEncoder {
     public static int aChannelConfig = AudioFormat.CHANNEL_IN_STEREO;
 
     static {
-        System.loadLibrary("yuv");
-        System.loadLibrary("enc");
+        /*System.loadLibrary("yuv");
+        System.loadLibrary("enc");*/
+        try {
+            System.loadLibrary("yuv");
+            System.loadLibrary("enc");
+        } catch (UnsatisfiedLinkError e) {
+            LLog.e(TAG, "UnsatisfiedLinkError " + e.toString());
+        }
     }
 
     private SrsEncodeHandler mHandler;

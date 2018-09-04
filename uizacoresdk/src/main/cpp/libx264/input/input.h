@@ -35,7 +35,8 @@
 #endif
 
 /* options that are used by only some demuxers */
-typedef struct {
+typedef struct
+{
     char *index_file;
     char *format;
     char *resolution;
@@ -50,7 +51,8 @@ typedef struct {
 } cli_input_opt_t;
 
 /* properties of the source given by the demuxer */
-typedef struct {
+typedef struct
+{
     int csp;         /* colorspace of the input */
     uint32_t fps_num;
     uint32_t fps_den;
@@ -69,34 +71,32 @@ typedef struct {
 } video_info_t;
 
 /* image data type used by x264cli */
-typedef struct {
-    int csp;       /* colorspace */
-    int width;     /* width of the picture */
-    int height;    /* height of the picture */
-    int planes;    /* number of planes */
+typedef struct
+{
+    int     csp;       /* colorspace */
+    int     width;     /* width of the picture */
+    int     height;    /* height of the picture */
+    int     planes;    /* number of planes */
     uint8_t *plane[4]; /* pointers for each plane */
-    int stride[4]; /* strides for each plane */
+    int     stride[4]; /* strides for each plane */
 } cli_image_t;
 
-typedef struct {
+typedef struct
+{
     cli_image_t img;
     int64_t pts;       /* input pts */
     int64_t duration;  /* frame duration - used for vfr */
-    void *opaque;   /* opaque handle */
+    void    *opaque;   /* opaque handle */
 } cli_pic_t;
 
-typedef struct {
-    int (*open_file)(char *psz_filename, hnd_t *p_handle, video_info_t *info, cli_input_opt_t *opt);
-
-    int (*picture_alloc)(cli_pic_t *pic, hnd_t handle, int csp, int width, int height);
-
-    int (*read_frame)(cli_pic_t *pic, hnd_t handle, int i_frame);
-
-    int (*release_frame)(cli_pic_t *pic, hnd_t handle);
-
-    void (*picture_clean)(cli_pic_t *pic, hnd_t handle);
-
-    int (*close_file)(hnd_t handle);
+typedef struct
+{
+    int (*open_file)( char *psz_filename, hnd_t *p_handle, video_info_t *info, cli_input_opt_t *opt );
+    int (*picture_alloc)( cli_pic_t *pic, hnd_t handle, int csp, int width, int height );
+    int (*read_frame)( cli_pic_t *pic, hnd_t handle, int i_frame );
+    int (*release_frame)( cli_pic_t *pic, hnd_t handle );
+    void (*picture_clean)( cli_pic_t *pic, hnd_t handle );
+    int (*close_file)( hnd_t handle );
 } cli_input_t;
 
 extern const cli_input_t raw_input;
@@ -113,7 +113,8 @@ extern cli_input_t cli_input;
 #define X264_CSP_CLI_MAX        X264_CSP_MAX     /* end of list         */
 #define X264_CSP_OTHER          0x4000           /* non x264 colorspace */
 
-typedef struct {
+typedef struct
+{
     const char *name;
     int planes;
     float width[4];
@@ -124,25 +125,18 @@ typedef struct {
 
 extern const x264_cli_csp_t x264_cli_csps[];
 
-int x264_cli_csp_is_invalid(int csp);
+int      x264_cli_csp_is_invalid( int csp );
+int      x264_cli_csp_depth_factor( int csp );
+int      x264_cli_pic_alloc( cli_pic_t *pic, int csp, int width, int height );
+int      x264_cli_pic_alloc_aligned( cli_pic_t *pic, int csp, int width, int height );
+int      x264_cli_pic_init_noalloc( cli_pic_t *pic, int csp, int width, int height );
+void     x264_cli_pic_clean( cli_pic_t *pic );
+uint64_t x264_cli_pic_plane_size( int csp, int width, int height, int plane );
+uint64_t x264_cli_pic_size( int csp, int width, int height );
+const x264_cli_csp_t *x264_cli_get_csp( int csp );
 
-int x264_cli_csp_depth_factor(int csp);
-
-int x264_cli_pic_alloc(cli_pic_t *pic, int csp, int width, int height);
-
-int x264_cli_pic_alloc_aligned(cli_pic_t *pic, int csp, int width, int height);
-
-int x264_cli_pic_init_noalloc(cli_pic_t *pic, int csp, int width, int height);
-
-void x264_cli_pic_clean(cli_pic_t *pic);
-
-uint64_t x264_cli_pic_plane_size(int csp, int width, int height, int plane);
-
-uint64_t x264_cli_pic_size(int csp, int width, int height);
-
-const x264_cli_csp_t *x264_cli_get_csp(int csp);
-
-typedef struct {
+typedef struct
+{
     int align_mask;
 #ifdef _WIN32
     BOOL (WINAPI *prefetch_virtual_memory)( HANDLE, ULONG_PTR, PVOID, ULONG );
@@ -153,12 +147,9 @@ typedef struct {
 #endif
 } cli_mmap_t;
 
-int x264_cli_mmap_init(cli_mmap_t *h, FILE *fh);
-
-void *x264_cli_mmap(cli_mmap_t *h, int64_t offset, size_t size);
-
-int x264_cli_munmap(cli_mmap_t *h, void *addr, size_t size);
-
-void x264_cli_mmap_close(cli_mmap_t *h);
+int x264_cli_mmap_init( cli_mmap_t *h, FILE *fh );
+void *x264_cli_mmap( cli_mmap_t *h, int64_t offset, size_t size );
+int x264_cli_munmap( cli_mmap_t *h, void *addr, size_t size );
+void x264_cli_mmap_close( cli_mmap_t *h );
 
 #endif

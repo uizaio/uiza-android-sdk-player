@@ -31,10 +31,11 @@ extern unsigned long long __intel_cpu_feature_indicator;
 extern unsigned long long __intel_cpu_feature_indicator_x;
 
 /* CPU vendor independent version of dispatcher */
-void __intel_cpu_features_init_x(void);
+void __intel_cpu_features_init_x( void );
 
-static void x264_intel_dispatcher_override(void) {
-    if (__intel_cpu_feature_indicator & ~1ULL)
+static void x264_intel_dispatcher_override( void )
+{
+    if( __intel_cpu_feature_indicator & ~1ULL )
         return;
     __intel_cpu_feature_indicator = 0;
     __intel_cpu_feature_indicator_x = 0;

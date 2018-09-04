@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-#if !defined(_STDINT_H) && !defined(_STDINT_H_) && !defined(_STDINT_H_INCLUDED) && !defined(_STDINT) && \
+#if !defined(_STDINT_H) && !defined(_STDINT_H_) && !defined(_STDINT_H_INCLUDED) && !defined(_STDINT) &&\
     !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && !defined(_INTTYPES_H_) && !defined(_INTTYPES)
 # ifdef _MSC_VER
 #  pragma message("You must include stdint.h or inttypes.h before x264.h")
@@ -66,25 +66,27 @@ typedef struct x264_t x264_t;
  * NAL structure and functions
  ****************************************************************************/
 
-enum nal_unit_type_e {
-    NAL_UNKNOWN = 0,
-    NAL_SLICE = 1,
-    NAL_SLICE_DPA = 2,
-    NAL_SLICE_DPB = 3,
-    NAL_SLICE_DPC = 4,
-    NAL_SLICE_IDR = 5,    /* ref_idc != 0 */
-    NAL_SEI = 6,    /* ref_idc == 0 */
-    NAL_SPS = 7,
-    NAL_PPS = 8,
-    NAL_AUD = 9,
-    NAL_FILLER = 12,
+enum nal_unit_type_e
+{
+    NAL_UNKNOWN     = 0,
+    NAL_SLICE       = 1,
+    NAL_SLICE_DPA   = 2,
+    NAL_SLICE_DPB   = 3,
+    NAL_SLICE_DPC   = 4,
+    NAL_SLICE_IDR   = 5,    /* ref_idc != 0 */
+    NAL_SEI         = 6,    /* ref_idc == 0 */
+    NAL_SPS         = 7,
+    NAL_PPS         = 8,
+    NAL_AUD         = 9,
+    NAL_FILLER      = 12,
     /* ref_idc == 0 for 6,9,10,11,12 */
 };
-enum nal_priority_e {
+enum nal_priority_e
+{
     NAL_PRIORITY_DISPOSABLE = 0,
-    NAL_PRIORITY_LOW = 1,
-    NAL_PRIORITY_HIGH = 2,
-    NAL_PRIORITY_HIGHEST = 3,
+    NAL_PRIORITY_LOW        = 1,
+    NAL_PRIORITY_HIGH       = 2,
+    NAL_PRIORITY_HIGHEST    = 3,
 };
 
 /* The data within the payload is already NAL-encapsulated; the ref_idc and type
@@ -92,7 +94,8 @@ enum nal_priority_e {
  * All data returned in an x264_nal_t, including the data in p_payload, is no longer
  * valid after the next call to x264_encoder_encode.  Thus it must be used or copied
  * before calling x264_encoder_encode or x264_encoder_headers again. */
-typedef struct x264_nal_t {
+typedef struct x264_nal_t
+{
     int i_ref_idc;  /* nal_priority_e */
     int i_type;     /* nal_unit_type_e */
     int b_long_startcode;
@@ -100,7 +103,7 @@ typedef struct x264_nal_t {
     int i_last_mb;  /* If this NAL is a slice, the index of the last MB in the slice. */
 
     /* Size of payload (including any padding) in bytes. */
-    int i_payload;
+    int     i_payload;
     /* If param->b_annexb is set, Annex-B bytestream with startcode.
      * Otherwise, startcode is replaced with a 4-byte size.
      * This size is the size used in mp4/similar muxing; it is equal to i_payload-4 */
@@ -199,28 +202,19 @@ typedef struct x264_nal_t {
 #define X264_KEYINT_MIN_AUTO         0
 #define X264_KEYINT_MAX_INFINITE     (1<<30)
 
-static const char *const x264_direct_pred_names[] = {"none", "spatial", "temporal", "auto", 0};
-static const char *const x264_motion_est_names[] = {"dia", "hex", "umh", "esa", "tesa", 0};
-static const char *const x264_b_pyramid_names[] = {"none", "strict", "normal", 0};
-static const char *const x264_overscan_names[] = {"undef", "show", "crop", 0};
-static const char *const x264_vidformat_names[] = {"component", "pal", "ntsc", "secam", "mac",
-                                                   "undef", 0};
-static const char *const x264_fullrange_names[] = {"off", "on", 0};
-static const char *const x264_colorprim_names[] = {"", "bt709", "undef", "", "bt470m", "bt470bg",
-                                                   "smpte170m", "smpte240m", "film", "bt2020",
-                                                   "smpte428",
-                                                   "smpte431", "smpte432", 0};
-static const char *const x264_transfer_names[] = {"", "bt709", "undef", "", "bt470m", "bt470bg",
-                                                  "smpte170m", "smpte240m", "linear", "log100",
-                                                  "log316",
-                                                  "iec61966-2-4", "bt1361e", "iec61966-2-1",
-                                                  "bt2020-10", "bt2020-12", "smpte2084", "smpte428",
-                                                  0};
-static const char *const x264_colmatrix_names[] = {"GBR", "bt709", "undef", "", "fcc", "bt470bg",
-                                                   "smpte170m", "smpte240m", "YCgCo", "bt2020nc",
-                                                   "bt2020c",
-                                                   "smpte2085", 0};
-static const char *const x264_nal_hrd_names[] = {"none", "vbr", "cbr", 0};
+static const char * const x264_direct_pred_names[] = { "none", "spatial", "temporal", "auto", 0 };
+static const char * const x264_motion_est_names[] = { "dia", "hex", "umh", "esa", "tesa", 0 };
+static const char * const x264_b_pyramid_names[] = { "none", "strict", "normal", 0 };
+static const char * const x264_overscan_names[] = { "undef", "show", "crop", 0 };
+static const char * const x264_vidformat_names[] = { "component", "pal", "ntsc", "secam", "mac", "undef", 0 };
+static const char * const x264_fullrange_names[] = { "off", "on", 0 };
+static const char * const x264_colorprim_names[] = { "", "bt709", "undef", "", "bt470m", "bt470bg", "smpte170m", "smpte240m", "film", "bt2020", "smpte428",
+                                                     "smpte431", "smpte432", 0 };
+static const char * const x264_transfer_names[] = { "", "bt709", "undef", "", "bt470m", "bt470bg", "smpte170m", "smpte240m", "linear", "log100", "log316",
+                                                    "iec61966-2-4", "bt1361e", "iec61966-2-1", "bt2020-10", "bt2020-12", "smpte2084", "smpte428", 0 };
+static const char * const x264_colmatrix_names[] = { "GBR", "bt709", "undef", "", "fcc", "bt470bg", "smpte170m", "smpte240m", "YCgCo", "bt2020nc", "bt2020c",
+                                                     "smpte2085", 0 };
+static const char * const x264_nal_hrd_names[] = { "none", "vbr", "cbr", 0 };
 
 /* Colorspace type */
 #define X264_CSP_MASK           0x00ff  /* */
@@ -274,7 +268,8 @@ static const char *const x264_nal_hrd_names[] = {"none", "vbr", "cbr", 0};
 /* Zones: override ratecontrol or other options for specific sections of the video.
  * See x264_encoder_reconfig() for which options can be changed.
  * If zones overlap, whichever comes later in the list takes precedence. */
-typedef struct x264_zone_t {
+typedef struct x264_zone_t
+{
     int i_start, i_end; /* range of frame numbers */
     int b_force_qp; /* whether to use qp vs bitrate factor */
     int i_qp;
@@ -282,22 +277,23 @@ typedef struct x264_zone_t {
     struct x264_param_t *param;
 } x264_zone_t;
 
-typedef struct x264_param_t {
+typedef struct x264_param_t
+{
     /* CPU flags */
     unsigned int cpu;
-    int i_threads;           /* encode multiple frames in parallel */
-    int i_lookahead_threads; /* multiple threads for lookahead analysis */
-    int b_sliced_threads;  /* Whether to use slice-based threading. */
-    int b_deterministic; /* whether to allow non-deterministic optimizations when threaded */
-    int b_cpu_independent; /* force canonical behavior rather than cpu-dependent optimal algorithms */
-    int i_sync_lookahead; /* threaded lookahead buffer */
+    int         i_threads;           /* encode multiple frames in parallel */
+    int         i_lookahead_threads; /* multiple threads for lookahead analysis */
+    int         b_sliced_threads;  /* Whether to use slice-based threading. */
+    int         b_deterministic; /* whether to allow non-deterministic optimizations when threaded */
+    int         b_cpu_independent; /* force canonical behavior rather than cpu-dependent optimal algorithms */
+    int         i_sync_lookahead; /* threaded lookahead buffer */
 
     /* Video Properties */
-    int i_width;
-    int i_height;
-    int i_csp;         /* CSP of encoded bitstream */
-    int i_level_idc;
-    int i_frame_total; /* number of frames to encode if known, else 0 */
+    int         i_width;
+    int         i_height;
+    int         i_csp;         /* CSP of encoded bitstream */
+    int         i_level_idc;
+    int         i_frame_total; /* number of frames to encode if known, else 0 */
 
     /* NAL HRD
      * Uses Buffering and Picture Timing SEIs to signal HRD
@@ -305,152 +301,155 @@ typedef struct x264_param_t {
      * It is therefore not recommendeded to use NAL HRD with VFR.
      * Furthermore, reconfiguring the VBV (via x264_encoder_reconfig)
      * will currently generate invalid HRD. */
-    int i_nal_hrd;
+    int         i_nal_hrd;
 
-    struct {
+    struct
+    {
         /* they will be reduced to be 0 < x <= 65535 and prime */
-        int i_sar_height;
-        int i_sar_width;
+        int         i_sar_height;
+        int         i_sar_width;
 
-        int i_overscan;    /* 0=undef, 1=no overscan, 2=overscan */
+        int         i_overscan;    /* 0=undef, 1=no overscan, 2=overscan */
 
         /* see h264 annex E for the values of the following */
-        int i_vidformat;
-        int b_fullrange;
-        int i_colorprim;
-        int i_transfer;
-        int i_colmatrix;
-        int i_chroma_loc;    /* both top & bottom */
+        int         i_vidformat;
+        int         b_fullrange;
+        int         i_colorprim;
+        int         i_transfer;
+        int         i_colmatrix;
+        int         i_chroma_loc;    /* both top & bottom */
     } vui;
 
     /* Bitstream parameters */
-    int i_frame_reference;  /* Maximum number of reference frames */
-    int i_dpb_size;         /* Force a DPB size larger than that implied by B-frames and reference frames.
+    int         i_frame_reference;  /* Maximum number of reference frames */
+    int         i_dpb_size;         /* Force a DPB size larger than that implied by B-frames and reference frames.
                                      * Useful in combination with interactive error resilience. */
-    int i_keyint_max;       /* Force an IDR keyframe at this interval */
-    int i_keyint_min;       /* Scenecuts closer together than this are coded as I, not IDR. */
-    int i_scenecut_threshold; /* how aggressively to insert extra I frames */
-    int b_intra_refresh;    /* Whether or not to use periodic intra refresh instead of IDR frames. */
+    int         i_keyint_max;       /* Force an IDR keyframe at this interval */
+    int         i_keyint_min;       /* Scenecuts closer together than this are coded as I, not IDR. */
+    int         i_scenecut_threshold; /* how aggressively to insert extra I frames */
+    int         b_intra_refresh;    /* Whether or not to use periodic intra refresh instead of IDR frames. */
 
-    int i_bframe;   /* how many b-frame between 2 references pictures */
-    int i_bframe_adaptive;
-    int i_bframe_bias;
-    int i_bframe_pyramid;   /* Keep some B-frames as references: 0=off, 1=strict hierarchical, 2=normal */
-    int b_open_gop;
-    int b_bluray_compat;
-    int i_avcintra_class;
+    int         i_bframe;   /* how many b-frame between 2 references pictures */
+    int         i_bframe_adaptive;
+    int         i_bframe_bias;
+    int         i_bframe_pyramid;   /* Keep some B-frames as references: 0=off, 1=strict hierarchical, 2=normal */
+    int         b_open_gop;
+    int         b_bluray_compat;
+    int         i_avcintra_class;
 
-    int b_deblocking_filter;
-    int i_deblocking_filter_alphac0;    /* [-6, 6] -6 light filter, 6 strong */
-    int i_deblocking_filter_beta;       /* [-6, 6]  idem */
+    int         b_deblocking_filter;
+    int         i_deblocking_filter_alphac0;    /* [-6, 6] -6 light filter, 6 strong */
+    int         i_deblocking_filter_beta;       /* [-6, 6]  idem */
 
-    int b_cabac;
-    int i_cabac_init_idc;
+    int         b_cabac;
+    int         i_cabac_init_idc;
 
-    int b_interlaced;
-    int b_constrained_intra;
+    int         b_interlaced;
+    int         b_constrained_intra;
 
-    int i_cqm_preset;
-    char *psz_cqm_file;      /* filename (in UTF-8) of CQM file, JM format */
-    uint8_t cqm_4iy[16];        /* used only if i_cqm_preset == X264_CQM_CUSTOM */
-    uint8_t cqm_4py[16];
-    uint8_t cqm_4ic[16];
-    uint8_t cqm_4pc[16];
-    uint8_t cqm_8iy[64];
-    uint8_t cqm_8py[64];
-    uint8_t cqm_8ic[64];
-    uint8_t cqm_8pc[64];
+    int         i_cqm_preset;
+    char        *psz_cqm_file;      /* filename (in UTF-8) of CQM file, JM format */
+    uint8_t     cqm_4iy[16];        /* used only if i_cqm_preset == X264_CQM_CUSTOM */
+    uint8_t     cqm_4py[16];
+    uint8_t     cqm_4ic[16];
+    uint8_t     cqm_4pc[16];
+    uint8_t     cqm_8iy[64];
+    uint8_t     cqm_8py[64];
+    uint8_t     cqm_8ic[64];
+    uint8_t     cqm_8pc[64];
 
     /* Log */
-    void (*pf_log)(void *, int i_level, const char *psz, va_list);
-
-    void *p_log_private;
-    int i_log_level;
-    int b_full_recon;   /* fully reconstruct frames, even when not necessary for encoding.  Implied by psz_dump_yuv */
-    char *psz_dump_yuv;  /* filename (in UTF-8) for reconstructed frames */
+    void        (*pf_log)( void *, int i_level, const char *psz, va_list );
+    void        *p_log_private;
+    int         i_log_level;
+    int         b_full_recon;   /* fully reconstruct frames, even when not necessary for encoding.  Implied by psz_dump_yuv */
+    char        *psz_dump_yuv;  /* filename (in UTF-8) for reconstructed frames */
 
     /* Encoder analyser parameters */
-    struct {
+    struct
+    {
         unsigned int intra;     /* intra partitions */
         unsigned int inter;     /* inter partitions */
 
-        int b_transform_8x8;
-        int i_weighted_pred; /* weighting for P-frames */
-        int b_weighted_bipred; /* implicit weighting for B-frames */
-        int i_direct_mv_pred; /* spatial vs temporal mv prediction */
-        int i_chroma_qp_offset;
+        int          b_transform_8x8;
+        int          i_weighted_pred; /* weighting for P-frames */
+        int          b_weighted_bipred; /* implicit weighting for B-frames */
+        int          i_direct_mv_pred; /* spatial vs temporal mv prediction */
+        int          i_chroma_qp_offset;
 
-        int i_me_method; /* motion estimation algorithm to use (X264_ME_*) */
-        int i_me_range; /* integer pixel motion estimation search range (from predicted mv) */
-        int i_mv_range; /* maximum length of a mv (in pixels). -1 = auto, based on level */
-        int i_mv_range_thread; /* minimum space between threads. -1 = auto, based on number of threads. */
-        int i_subpel_refine; /* subpixel motion estimation quality */
-        int b_chroma_me; /* chroma ME for subpel and mode decision in P-frames */
-        int b_mixed_references; /* allow each mb partition to have its own reference number */
-        int i_trellis;  /* trellis RD quantization */
-        int b_fast_pskip; /* early SKIP detection on P-frames */
-        int b_dct_decimate; /* transform coefficient thresholding on P-frames */
-        int i_noise_reduction; /* adaptive pseudo-deadzone */
-        float f_psy_rd; /* Psy RD strength */
-        float f_psy_trellis; /* Psy trellis strength */
-        int b_psy; /* Toggle all psy optimizations */
+        int          i_me_method; /* motion estimation algorithm to use (X264_ME_*) */
+        int          i_me_range; /* integer pixel motion estimation search range (from predicted mv) */
+        int          i_mv_range; /* maximum length of a mv (in pixels). -1 = auto, based on level */
+        int          i_mv_range_thread; /* minimum space between threads. -1 = auto, based on number of threads. */
+        int          i_subpel_refine; /* subpixel motion estimation quality */
+        int          b_chroma_me; /* chroma ME for subpel and mode decision in P-frames */
+        int          b_mixed_references; /* allow each mb partition to have its own reference number */
+        int          i_trellis;  /* trellis RD quantization */
+        int          b_fast_pskip; /* early SKIP detection on P-frames */
+        int          b_dct_decimate; /* transform coefficient thresholding on P-frames */
+        int          i_noise_reduction; /* adaptive pseudo-deadzone */
+        float        f_psy_rd; /* Psy RD strength */
+        float        f_psy_trellis; /* Psy trellis strength */
+        int          b_psy; /* Toggle all psy optimizations */
 
-        int b_mb_info;            /* Use input mb_info data in x264_picture_t */
-        int b_mb_info_update; /* Update the values in mb_info according to the results of encoding. */
+        int          b_mb_info;            /* Use input mb_info data in x264_picture_t */
+        int          b_mb_info_update; /* Update the values in mb_info according to the results of encoding. */
 
         /* the deadzone size that will be used in luma quantization */
-        int i_luma_deadzone[2]; /* {inter, intra} */
+        int          i_luma_deadzone[2]; /* {inter, intra} */
 
-        int b_psnr;    /* compute and print PSNR stats */
-        int b_ssim;    /* compute and print SSIM stats */
+        int          b_psnr;    /* compute and print PSNR stats */
+        int          b_ssim;    /* compute and print SSIM stats */
     } analyse;
 
     /* Rate control parameters */
-    struct {
-        int i_rc_method;    /* X264_RC_* */
+    struct
+    {
+        int         i_rc_method;    /* X264_RC_* */
 
-        int i_qp_constant;  /* 0 to (51 + 6*(x264_bit_depth-8)). 0=lossless */
-        int i_qp_min;       /* min allowed QP value */
-        int i_qp_max;       /* max allowed QP value */
-        int i_qp_step;      /* max QP step between frames */
+        int         i_qp_constant;  /* 0 to (51 + 6*(x264_bit_depth-8)). 0=lossless */
+        int         i_qp_min;       /* min allowed QP value */
+        int         i_qp_max;       /* max allowed QP value */
+        int         i_qp_step;      /* max QP step between frames */
 
-        int i_bitrate;
-        float f_rf_constant;  /* 1pass VBR, nominal QP */
-        float f_rf_constant_max;  /* In CRF mode, maximum CRF as caused by VBV */
-        float f_rate_tolerance;
-        int i_vbv_max_bitrate;
-        int i_vbv_buffer_size;
-        float f_vbv_buffer_init; /* <=1: fraction of buffer_size. >1: kbit */
-        float f_ip_factor;
-        float f_pb_factor;
+        int         i_bitrate;
+        float       f_rf_constant;  /* 1pass VBR, nominal QP */
+        float       f_rf_constant_max;  /* In CRF mode, maximum CRF as caused by VBV */
+        float       f_rate_tolerance;
+        int         i_vbv_max_bitrate;
+        int         i_vbv_buffer_size;
+        float       f_vbv_buffer_init; /* <=1: fraction of buffer_size. >1: kbit */
+        float       f_ip_factor;
+        float       f_pb_factor;
 
         /* VBV filler: force CBR VBV and use filler bytes to ensure hard-CBR.
          * Implied by NAL-HRD CBR. */
-        int b_filler;
+        int         b_filler;
 
-        int i_aq_mode;      /* psy adaptive QP. (X264_AQ_*) */
-        float f_aq_strength;
-        int b_mb_tree;      /* Macroblock-tree ratecontrol. */
-        int i_lookahead;
+        int         i_aq_mode;      /* psy adaptive QP. (X264_AQ_*) */
+        float       f_aq_strength;
+        int         b_mb_tree;      /* Macroblock-tree ratecontrol. */
+        int         i_lookahead;
 
         /* 2pass */
-        int b_stat_write;   /* Enable stat writing in psz_stat_out */
-        char *psz_stat_out;  /* output filename (in UTF-8) of the 2pass stats file */
-        int b_stat_read;    /* Read stat from psz_stat_in and use it */
-        char *psz_stat_in;   /* input filename (in UTF-8) of the 2pass stats file */
+        int         b_stat_write;   /* Enable stat writing in psz_stat_out */
+        char        *psz_stat_out;  /* output filename (in UTF-8) of the 2pass stats file */
+        int         b_stat_read;    /* Read stat from psz_stat_in and use it */
+        char        *psz_stat_in;   /* input filename (in UTF-8) of the 2pass stats file */
 
         /* 2pass params (same as ffmpeg ones) */
-        float f_qcompress;    /* 0.0 => cbr, 1.0 => constant qp */
-        float f_qblur;        /* temporally blur quants */
-        float f_complexity_blur; /* temporally blur complexity */
+        float       f_qcompress;    /* 0.0 => cbr, 1.0 => constant qp */
+        float       f_qblur;        /* temporally blur quants */
+        float       f_complexity_blur; /* temporally blur complexity */
         x264_zone_t *zones;         /* ratecontrol overrides */
-        int i_zones;        /* number of zone_t's */
-        char *psz_zones;     /* alternate method of specifying zones */
+        int         i_zones;        /* number of zone_t's */
+        char        *psz_zones;     /* alternate method of specifying zones */
     } rc;
 
     /* Cropping Rectangle parameters: added to those implicitly defined by
        non-mod16 video resolutions. */
-    struct {
+    struct
+    {
         unsigned int i_left;
         unsigned int i_top;
         unsigned int i_right;
@@ -518,7 +517,7 @@ typedef struct x264_param_t {
      * Only used when the x264_param_t sits in memory for an indefinite period of time,
      * i.e. when an x264_param_t is passed to x264_t in an x264_picture_t or in zones.
      * Not used when x264_encoder_reconfig is called directly. */
-    void (*param_free)(void *);
+    void (*param_free)( void* );
 
     /* Optional low-level callback for low-latency encoding.  Called for each output NAL unit
      * immediately after the NAL unit is finished encoding.  This allows the calling application
@@ -554,29 +553,30 @@ typedef struct x264_param_t {
      * NAL unit. This helps distinguish between nalu_process calls from different sources,
      * e.g. if doing multiple encodes in one process.
      */
-    void (*nalu_process)(x264_t *h, x264_nal_t *nal, void *opaque);
+    void (*nalu_process)( x264_t *h, x264_nal_t *nal, void *opaque );
 } x264_param_t;
 
-void x264_nal_encode(x264_t *h, uint8_t *dst, x264_nal_t *nal);
+void x264_nal_encode( x264_t *h, uint8_t *dst, x264_nal_t *nal );
 
 /****************************************************************************
  * H.264 level restriction information
  ****************************************************************************/
 
-typedef struct x264_level_t {
-    uint8_t level_idc;
+typedef struct x264_level_t
+{
+    uint8_t  level_idc;
     uint32_t mbps;        /* max macroblock processing rate (macroblocks/sec) */
     uint32_t frame_size;  /* max frame size (macroblocks) */
     uint32_t dpb;         /* max decoded picture buffer (mbs) */
     uint32_t bitrate;     /* max bitrate (kbit/sec) */
     uint32_t cpb;         /* max vbv buffer (kbit) */
     uint16_t mv_range;    /* max vertical mv component range (pixels) */
-    uint8_t mvs_per_2mb; /* max mvs per 2 consecutive mbs. */
-    uint8_t slice_rate;  /* ?? */
-    uint8_t mincr;       /* min compression ratio */
-    uint8_t bipred8x8;   /* limit bipred to >=8x8 */
-    uint8_t direct8x8;   /* limit b_direct to >=8x8 */
-    uint8_t frame_only;  /* forbid interlacing */
+    uint8_t  mvs_per_2mb; /* max mvs per 2 consecutive mbs. */
+    uint8_t  slice_rate;  /* ?? */
+    uint8_t  mincr;       /* min compression ratio */
+    uint8_t  bipred8x8;   /* limit bipred to >=8x8 */
+    uint8_t  direct8x8;   /* limit b_direct to >=8x8 */
+    uint8_t  frame_only;  /* forbid interlacing */
 } x264_level_t;
 
 /* all of the levels defined in the standard, terminated by .level_idc=0 */
@@ -588,7 +588,7 @@ X264_API extern const x264_level_t x264_levels[];
 
 /* x264_param_default:
  *      fill x264_param_t with default values and do CPU detection */
-void x264_param_default(x264_param_t *);
+void    x264_param_default( x264_param_t * );
 
 /* x264_param_parse:
  *  set one parameter by name.
@@ -599,7 +599,7 @@ void x264_param_default(x264_param_t *);
  *  value=NULL means "true" for boolean options, but is a BAD_VALUE for non-booleans. */
 #define X264_PARAM_BAD_NAME  (-1)
 #define X264_PARAM_BAD_VALUE (-2)
-int x264_param_parse(x264_param_t *, const char *name, const char *value);
+int x264_param_parse( x264_param_t *, const char *name, const char *value );
 
 /****************************************************************************
  * Advanced parameter handling functions
@@ -624,9 +624,7 @@ int x264_param_parse(x264_param_t *, const char *name, const char *value);
  *      (either can be NULL, which implies no preset or no tune, respectively)
  *
  *      Currently available presets are, ordered from fastest to slowest: */
-static const char *const x264_preset_names[] = {"ultrafast", "superfast", "veryfast", "faster",
-                                                "fast", "medium", "slow", "slower", "veryslow",
-                                                "placebo", 0};
+static const char * const x264_preset_names[] = { "ultrafast", "superfast", "veryfast", "faster", "fast", "medium", "slow", "slower", "veryslow", "placebo", 0 };
 
 /*      The presets can also be indexed numerically, as in:
  *      x264_param_default_preset( &param, "3", ... )
@@ -638,27 +636,25 @@ static const char *const x264_preset_names[] = {"ultrafast", "superfast", "veryf
  *      100 times faster than placebo!
  *
  *      Currently available tunings are: */
-static const char *const x264_tune_names[] = {"film", "animation", "grain", "stillimage", "psnr",
-                                              "ssim", "fastdecode", "zerolatency", 0};
+static const char * const x264_tune_names[] = { "film", "animation", "grain", "stillimage", "psnr", "ssim", "fastdecode", "zerolatency", 0 };
 
 /*      Multiple tunings can be used if separated by a delimiter in ",./-+",
  *      however multiple psy tunings cannot be used.
  *      film, animation, grain, stillimage, psnr, and ssim are psy tunings.
  *
  *      returns 0 on success, negative on failure (e.g. invalid preset/tune name). */
-int x264_param_default_preset(x264_param_t *, const char *preset, const char *tune);
+int     x264_param_default_preset( x264_param_t *, const char *preset, const char *tune );
 
 /* x264_param_apply_fastfirstpass:
  *      If first-pass mode is set (rc.b_stat_read == 0, rc.b_stat_write == 1),
  *      modify the encoder settings to disable options generally not useful on
  *      the first pass. */
-void x264_param_apply_fastfirstpass(x264_param_t *);
+void    x264_param_apply_fastfirstpass( x264_param_t * );
 
 /* x264_param_apply_profile:
  *      Applies the restrictions of the given profile.
  *      Currently available profiles are, from most to least restrictive: */
-static const char *const x264_profile_names[] = {"baseline", "main", "high", "high10", "high422",
-                                                 "high444", 0};
+static const char * const x264_profile_names[] = { "baseline", "main", "high", "high10", "high422", "high444", 0 };
 
 /*      (can be NULL, in which case the function will do nothing)
  *
@@ -668,7 +664,7 @@ static const char *const x264_profile_names[] = {"baseline", "main", "high", "hi
  *      decrease them.
  *
  *      returns 0 on success, negative on failure (e.g. invalid profile name). */
-int x264_param_apply_profile(x264_param_t *, const char *profile);
+int     x264_param_apply_profile( x264_param_t *, const char *profile );
 
 /****************************************************************************
  * Picture structures and functions
@@ -690,19 +686,21 @@ X264_API extern const int x264_bit_depth;
  *      there are no restrictions. */
 X264_API extern const int x264_chroma_format;
 
-enum pic_struct_e {
-    PIC_STRUCT_AUTO = 0, // automatically decide (default)
-    PIC_STRUCT_PROGRESSIVE = 1, // progressive frame
+enum pic_struct_e
+{
+    PIC_STRUCT_AUTO              = 0, // automatically decide (default)
+    PIC_STRUCT_PROGRESSIVE       = 1, // progressive frame
     // "TOP" and "BOTTOM" are not supported in x264 (PAFF only)
-            PIC_STRUCT_TOP_BOTTOM = 4, // top field followed by bottom
-    PIC_STRUCT_BOTTOM_TOP = 5, // bottom field followed by top
-    PIC_STRUCT_TOP_BOTTOM_TOP = 6, // top field, bottom field, top field repeated
+    PIC_STRUCT_TOP_BOTTOM        = 4, // top field followed by bottom
+    PIC_STRUCT_BOTTOM_TOP        = 5, // bottom field followed by top
+    PIC_STRUCT_TOP_BOTTOM_TOP    = 6, // top field, bottom field, top field repeated
     PIC_STRUCT_BOTTOM_TOP_BOTTOM = 7, // bottom field, top field, bottom field repeated
-    PIC_STRUCT_DOUBLE = 8, // double frame
-    PIC_STRUCT_TRIPLE = 9, // triple frame
+    PIC_STRUCT_DOUBLE            = 8, // double frame
+    PIC_STRUCT_TRIPLE            = 9, // triple frame
 };
 
-typedef struct x264_hrd_t {
+typedef struct x264_hrd_t
+{
     double cpb_initial_arrival_time;
     double cpb_final_arrival_time;
     double cpb_removal_time;
@@ -719,28 +717,31 @@ typedef struct x264_hrd_t {
  * Payloads are written first in order of input, apart from in the case when HRD
  * is enabled where payloads are written after the Buffering Period SEI. */
 
-typedef struct x264_sei_payload_t {
+typedef struct x264_sei_payload_t
+{
     int payload_size;
     int payload_type;
     uint8_t *payload;
 } x264_sei_payload_t;
 
-typedef struct x264_sei_t {
+typedef struct x264_sei_t
+{
     int num_payloads;
     x264_sei_payload_t *payloads;
-
     /* In: optional callback to free each payload AND x264_sei_payload_t when used. */
-    void (*sei_free)(void *);
+    void (*sei_free)( void* );
 } x264_sei_t;
 
-typedef struct x264_image_t {
-    int i_csp;       /* Colorspace */
-    int i_plane;     /* Number of image planes */
-    int i_stride[4]; /* Strides for each plane */
+typedef struct x264_image_t
+{
+    int     i_csp;       /* Colorspace */
+    int     i_plane;     /* Number of image planes */
+    int     i_stride[4]; /* Strides for each plane */
     uint8_t *plane[4];   /* Pointers to each plane */
 } x264_image_t;
 
-typedef struct x264_image_properties_t {
+typedef struct x264_image_properties_t
+{
     /* All arrays of data here are ordered as follows:
      * each array contains one offset per macroblock, in raster scan order.  In interlaced
      * mode, top-field MBs and bottom-field MBs are interleaved at the row level.
@@ -754,10 +755,9 @@ typedef struct x264_image_properties_t {
      *     Adaptive quantization must be enabled to use this feature.  Behavior if quant
      *     offsets differ between encoding passes is undefined. */
     float *quant_offsets;
-
     /* In: optional callback to free quant_offsets when used.
      *     Useful if one wants to use a different quant_offset array for each frame. */
-    void (*quant_offsets_free)(void *);
+    void (*quant_offsets_free)( void* );
 
     /* In: optional array of flags for each macroblock.
      *     Allows specifying additional information for the encoder such as which macroblocks
@@ -778,12 +778,11 @@ typedef struct x264_image_properties_t {
      *      negatives, but no false positives.)
      */
     uint8_t *mb_info;
-
     /* In: optional callback to free mb_info when used. */
-    void (*mb_info_free)(void *);
+    void (*mb_info_free)( void* );
 
     /* The macroblock is constant and remains unchanged from the previous frame. */
-#define X264_MBINFO_CONSTANT   (1<<0)
+    #define X264_MBINFO_CONSTANT   (1<<0)
     /* More flags may be added in the future. */
 
     /* Out: SSIM of the the frame luma (if x264_param_t.b_ssim is set) */
@@ -797,21 +796,22 @@ typedef struct x264_image_properties_t {
     double f_crf_avg;
 } x264_image_properties_t;
 
-typedef struct x264_picture_t {
+typedef struct x264_picture_t
+{
     /* In: force picture type (if not auto)
      *     If x264 encoding parameters are violated in the forcing of picture types,
      *     x264 will correct the input picture type and log a warning.
      * Out: type of the picture encoded */
-    int i_type;
+    int     i_type;
     /* In: force quantizer for != X264_QP_AUTO */
-    int i_qpplus1;
+    int     i_qpplus1;
     /* In: pic_struct, for pulldown/doubling/etc...used only if b_pic_struct=1.
      *     use pic_struct_e for pic_struct inputs
      * Out: pic_struct element associated with frame */
-    int i_pic_struct;
+    int     i_pic_struct;
     /* Out: whether this frame is a keyframe.  Important when using modes that result in
      * SEI recovery points being used instead of IDR frames. */
-    int b_keyframe;
+    int     b_keyframe;
     /* In: user pts, Out: pts of encoded picture (user)*/
     int64_t i_pts;
     /* Out: frame dts. When the pts of the first frame is close to zero,
@@ -843,17 +843,17 @@ typedef struct x264_picture_t {
 /* x264_picture_init:
  *  initialize an x264_picture_t.  Needs to be done if the calling application
  *  allocates its own x264_picture_t as opposed to using x264_picture_alloc. */
-void x264_picture_init(x264_picture_t *pic);
+void x264_picture_init( x264_picture_t *pic );
 
 /* x264_picture_alloc:
  *  alloc data for a picture. You must call x264_picture_clean on it.
  *  returns 0 on success, or -1 on malloc failure or invalid colorspace. */
-int x264_picture_alloc(x264_picture_t *pic, int i_csp, int i_width, int i_height);
+int x264_picture_alloc( x264_picture_t *pic, int i_csp, int i_width, int i_height );
 
 /* x264_picture_clean:
  *  free associated resource for a x264_picture_t allocated with
  *  x264_picture_alloc ONLY */
-void x264_picture_clean(x264_picture_t *pic);
+void x264_picture_clean( x264_picture_t *pic );
 
 /****************************************************************************
  * Encoder functions
@@ -862,13 +862,13 @@ void x264_picture_clean(x264_picture_t *pic);
 /* Force a link error in the case of linking against an incompatible API version.
  * Glue #defines exist to force correct macro expansion; the final output of the macro
  * is x264_encoder_open_##X264_BUILD (for purposes of dlopen). */
-#define x264_encoder_glue1(x, y) x##y
-#define x264_encoder_glue2(x, y) x264_encoder_glue1(x,y)
+#define x264_encoder_glue1(x,y) x##y
+#define x264_encoder_glue2(x,y) x264_encoder_glue1(x,y)
 #define x264_encoder_open x264_encoder_glue2(x264_encoder_open_,X264_BUILD)
 
 /* x264_encoder_open:
  *      create a new encoder handler, all parameters from x264_param_t are copied */
-x264_t *x264_encoder_open(x264_param_t *);
+x264_t *x264_encoder_open( x264_param_t * );
 
 /* x264_encoder_reconfig:
  *      various parameters from x264_param_t are copied.
@@ -883,7 +883,7 @@ x264_t *x264_encoder_open(x264_param_t *);
  *      more so than for other presets, many of the speed shortcuts used in ultrafast cannot be
  *      switched out of; using reconfig to switch between ultrafast and other presets is not
  *      recommended without a more fine-grained breakdown of parameters to take this into account. */
-int x264_encoder_reconfig(x264_t *, x264_param_t *);
+int     x264_encoder_reconfig( x264_t *, x264_param_t * );
 /* x264_encoder_parameters:
  *      copies the current internal set of parameters to the pointer provided
  *      by the caller.  useful when the calling application needs to know
@@ -891,33 +891,32 @@ int x264_encoder_reconfig(x264_t *, x264_param_t *);
  *      of the encoder after multiple x264_encoder_reconfig calls.
  *      note that the data accessible through pointers in the returned param struct
  *      (e.g. filenames) should not be modified by the calling application. */
-void x264_encoder_parameters(x264_t *, x264_param_t *);
+void    x264_encoder_parameters( x264_t *, x264_param_t * );
 /* x264_encoder_headers:
  *      return the SPS and PPS that will be used for the whole stream.
  *      *pi_nal is the number of NAL units outputted in pp_nal.
  *      returns the number of bytes in the returned NALs.
  *      returns negative on error.
  *      the payloads of all output NALs are guaranteed to be sequential in memory. */
-int x264_encoder_headers(x264_t *, x264_nal_t **pp_nal, int *pi_nal);
+int     x264_encoder_headers( x264_t *, x264_nal_t **pp_nal, int *pi_nal );
 /* x264_encoder_encode:
  *      encode one picture.
  *      *pi_nal is the number of NAL units outputted in pp_nal.
  *      returns the number of bytes in the returned NALs.
  *      returns negative on error and zero if no NAL units returned.
  *      the payloads of all output NALs are guaranteed to be sequential in memory. */
-int x264_encoder_encode(x264_t *, x264_nal_t **pp_nal, int *pi_nal, x264_picture_t *pic_in,
-                        x264_picture_t *pic_out);
+int     x264_encoder_encode( x264_t *, x264_nal_t **pp_nal, int *pi_nal, x264_picture_t *pic_in, x264_picture_t *pic_out );
 /* x264_encoder_close:
  *      close an encoder handler */
-void x264_encoder_close(x264_t *);
+void    x264_encoder_close( x264_t * );
 /* x264_encoder_delayed_frames:
  *      return the number of currently delayed (buffered) frames
  *      this should be used at the end of the stream, to know when you have all the encoded frames. */
-int x264_encoder_delayed_frames(x264_t *);
+int     x264_encoder_delayed_frames( x264_t * );
 /* x264_encoder_maximum_delayed_frames( x264_t *h ):
  *      return the maximum number of delayed (buffered) frames that can occur with the current
  *      parameters. */
-int x264_encoder_maximum_delayed_frames(x264_t *h);
+int     x264_encoder_maximum_delayed_frames( x264_t *h );
 /* x264_encoder_intra_refresh:
  *      If an intra refresh is not in progress, begin one with the next P-frame.
  *      If an intra refresh is in progress, begin one as soon as the current one finishes.
@@ -931,7 +930,7 @@ int x264_encoder_maximum_delayed_frames(x264_t *h);
  *      behavior is undefined.
  *
  *      Should not be called during an x264_encoder_encode. */
-void x264_encoder_intra_refresh(x264_t *);
+void    x264_encoder_intra_refresh( x264_t * );
 /* x264_encoder_invalidate_reference:
  *      An interactive error resilience tool, designed for use in a low-latency one-encoder-few-clients
  *      system.  When the client has packet loss or otherwise incorrectly decodes a frame, the encoder
@@ -954,7 +953,7 @@ void x264_encoder_intra_refresh(x264_t *);
  *      Should not be called during an x264_encoder_encode, but multiple calls can be made simultaneously.
  *
  *      Returns 0 on success, negative on failure. */
-int x264_encoder_invalidate_reference(x264_t *, int64_t pts);
+int x264_encoder_invalidate_reference( x264_t *, int64_t pts );
 
 #ifdef __cplusplus
 }

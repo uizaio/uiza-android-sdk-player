@@ -36,6 +36,10 @@ android {
             path 'src/main/cpp/Android.mk'
         }
     }
+    /*task buildNative(type: Exec) {
+        workingDir 'jni'// directory app/jni
+        commandLine("${android.ndkDirectory}\\ndk-build.cmd", '-j', Runtime.runtime.availableProcessors())
+    }*/
 }
 
 dependencies {

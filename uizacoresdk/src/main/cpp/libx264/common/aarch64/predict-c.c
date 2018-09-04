@@ -28,118 +28,112 @@
 #include "predict.h"
 #include "pixel.h"
 
-void x264_predict_4x4_dc_top_neon(uint8_t *src);
+void x264_predict_4x4_dc_top_neon( uint8_t *src );
+void x264_predict_4x4_ddr_neon( uint8_t *src );
+void x264_predict_4x4_ddl_neon( uint8_t *src );
 
-void x264_predict_4x4_ddr_neon(uint8_t *src);
+void x264_predict_8x8c_dc_top_neon( uint8_t *src );
+void x264_predict_8x8c_dc_left_neon( uint8_t *src );
+void x264_predict_8x8c_p_neon( uint8_t *src );
 
-void x264_predict_4x4_ddl_neon(uint8_t *src);
+void x264_predict_8x16c_dc_left_neon( uint8_t *src );
+void x264_predict_8x16c_dc_top_neon( uint8_t *src );
+void x264_predict_8x16c_p_neon( uint8_t *src );
 
-void x264_predict_8x8c_dc_top_neon(uint8_t *src);
+void x264_predict_8x8_ddl_neon( uint8_t *src, uint8_t edge[36] );
+void x264_predict_8x8_ddr_neon( uint8_t *src, uint8_t edge[36] );
+void x264_predict_8x8_vl_neon( uint8_t *src, uint8_t edge[36] );
+void x264_predict_8x8_vr_neon( uint8_t *src, uint8_t edge[36] );
+void x264_predict_8x8_hd_neon( uint8_t *src, uint8_t edge[36] );
+void x264_predict_8x8_hu_neon( uint8_t *src, uint8_t edge[36] );
 
-void x264_predict_8x8c_dc_left_neon(uint8_t *src);
+void x264_predict_16x16_dc_top_neon( uint8_t *src );
+void x264_predict_16x16_dc_left_neon( uint8_t *src );
+void x264_predict_16x16_p_neon( uint8_t *src );
 
-void x264_predict_8x8c_p_neon(uint8_t *src);
-
-void x264_predict_8x16c_dc_left_neon(uint8_t *src);
-
-void x264_predict_8x16c_dc_top_neon(uint8_t *src);
-
-void x264_predict_8x16c_p_neon(uint8_t *src);
-
-void x264_predict_8x8_ddl_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_8x8_ddr_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_8x8_vl_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_8x8_vr_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_8x8_hd_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_8x8_hu_neon(uint8_t *src, uint8_t edge[36]);
-
-void x264_predict_16x16_dc_top_neon(uint8_t *src);
-
-void x264_predict_16x16_dc_left_neon(uint8_t *src);
-
-void x264_predict_16x16_p_neon(uint8_t *src);
-
-void x264_predict_4x4_init_aarch64(int cpu, x264_predict_t pf[12]) {
+void x264_predict_4x4_init_aarch64( int cpu, x264_predict_t pf[12] )
+{
 #if !HIGH_BIT_DEPTH
-    if (cpu & X264_CPU_ARMV8) {
-        pf[I_PRED_4x4_H] = x264_predict_4x4_h_aarch64;
-        pf[I_PRED_4x4_V] = x264_predict_4x4_v_aarch64;
+    if( cpu&X264_CPU_ARMV8 )
+    {
+        pf[I_PRED_4x4_H]   = x264_predict_4x4_h_aarch64;
+        pf[I_PRED_4x4_V]   = x264_predict_4x4_v_aarch64;
     }
 
-    if (cpu & X264_CPU_NEON) {
-        pf[I_PRED_4x4_DC] = x264_predict_4x4_dc_neon;
+    if( cpu&X264_CPU_NEON )
+    {
+        pf[I_PRED_4x4_DC]     = x264_predict_4x4_dc_neon;
         pf[I_PRED_4x4_DC_TOP] = x264_predict_4x4_dc_top_neon;
-        pf[I_PRED_4x4_DDL] = x264_predict_4x4_ddl_neon;
-        pf[I_PRED_4x4_DDR] = x264_predict_4x4_ddr_neon;
+        pf[I_PRED_4x4_DDL]    = x264_predict_4x4_ddl_neon;
+        pf[I_PRED_4x4_DDR]    = x264_predict_4x4_ddr_neon;
     }
 #endif // !HIGH_BIT_DEPTH
 }
 
-void x264_predict_8x8c_init_aarch64(int cpu, x264_predict_t pf[7]) {
+void x264_predict_8x8c_init_aarch64( int cpu, x264_predict_t pf[7] )
+{
 #if !HIGH_BIT_DEPTH
-    if (cpu & X264_CPU_ARMV8) {
-        pf[I_PRED_CHROMA_V] = x264_predict_8x8c_v_aarch64;
+    if( cpu&X264_CPU_ARMV8 )
+    {
+        pf[I_PRED_CHROMA_V]   = x264_predict_8x8c_v_aarch64;
     }
 
-    if (!(cpu & X264_CPU_NEON))
+    if( !(cpu&X264_CPU_NEON) )
         return;
 
-    pf[I_PRED_CHROMA_DC] = x264_predict_8x8c_dc_neon;
-    pf[I_PRED_CHROMA_DC_TOP] = x264_predict_8x8c_dc_top_neon;
+    pf[I_PRED_CHROMA_DC]      = x264_predict_8x8c_dc_neon;
+    pf[I_PRED_CHROMA_DC_TOP]  = x264_predict_8x8c_dc_top_neon;
     pf[I_PRED_CHROMA_DC_LEFT] = x264_predict_8x8c_dc_left_neon;
-    pf[I_PRED_CHROMA_H] = x264_predict_8x8c_h_neon;
-    pf[I_PRED_CHROMA_P] = x264_predict_8x8c_p_neon;
+    pf[I_PRED_CHROMA_H]       = x264_predict_8x8c_h_neon;
+    pf[I_PRED_CHROMA_P]       = x264_predict_8x8c_p_neon;
 #endif // !HIGH_BIT_DEPTH
 }
 
 
-void x264_predict_8x16c_init_aarch64(int cpu, x264_predict_t pf[7]) {
-    if (!(cpu & X264_CPU_NEON))
+void x264_predict_8x16c_init_aarch64( int cpu, x264_predict_t pf[7] )
+{
+    if( !(cpu&X264_CPU_NEON) )
         return;
 
 #if !HIGH_BIT_DEPTH
-    pf[I_PRED_CHROMA_V] = x264_predict_8x16c_v_neon;
-    pf[I_PRED_CHROMA_H] = x264_predict_8x16c_h_neon;
-    pf[I_PRED_CHROMA_DC] = x264_predict_8x16c_dc_neon;
-    pf[I_PRED_CHROMA_P] = x264_predict_8x16c_p_neon;
-    pf[I_PRED_CHROMA_DC_LEFT] = x264_predict_8x16c_dc_left_neon;
-    pf[I_PRED_CHROMA_DC_TOP] = x264_predict_8x16c_dc_top_neon;
+    pf[I_PRED_CHROMA_V ]     = x264_predict_8x16c_v_neon;
+    pf[I_PRED_CHROMA_H ]     = x264_predict_8x16c_h_neon;
+    pf[I_PRED_CHROMA_DC]     = x264_predict_8x16c_dc_neon;
+    pf[I_PRED_CHROMA_P ]     = x264_predict_8x16c_p_neon;
+    pf[I_PRED_CHROMA_DC_LEFT]= x264_predict_8x16c_dc_left_neon;
+    pf[I_PRED_CHROMA_DC_TOP ]= x264_predict_8x16c_dc_top_neon;
 #endif // !HIGH_BIT_DEPTH
 }
 
-void x264_predict_8x8_init_aarch64(int cpu, x264_predict8x8_t pf[12],
-                                   x264_predict_8x8_filter_t *predict_filter) {
-    if (!(cpu & X264_CPU_NEON))
+void x264_predict_8x8_init_aarch64( int cpu, x264_predict8x8_t pf[12], x264_predict_8x8_filter_t *predict_filter )
+{
+    if( !(cpu&X264_CPU_NEON) )
         return;
 
 #if !HIGH_BIT_DEPTH
     pf[I_PRED_8x8_DDL] = x264_predict_8x8_ddl_neon;
     pf[I_PRED_8x8_DDR] = x264_predict_8x8_ddr_neon;
-    pf[I_PRED_8x8_VL] = x264_predict_8x8_vl_neon;
-    pf[I_PRED_8x8_VR] = x264_predict_8x8_vr_neon;
-    pf[I_PRED_8x8_DC] = x264_predict_8x8_dc_neon;
-    pf[I_PRED_8x8_H] = x264_predict_8x8_h_neon;
-    pf[I_PRED_8x8_HD] = x264_predict_8x8_hd_neon;
-    pf[I_PRED_8x8_HU] = x264_predict_8x8_hu_neon;
-    pf[I_PRED_8x8_V] = x264_predict_8x8_v_neon;
+    pf[I_PRED_8x8_VL]  = x264_predict_8x8_vl_neon;
+    pf[I_PRED_8x8_VR]  = x264_predict_8x8_vr_neon;
+    pf[I_PRED_8x8_DC]  = x264_predict_8x8_dc_neon;
+    pf[I_PRED_8x8_H]   = x264_predict_8x8_h_neon;
+    pf[I_PRED_8x8_HD]  = x264_predict_8x8_hd_neon;
+    pf[I_PRED_8x8_HU]  = x264_predict_8x8_hu_neon;
+    pf[I_PRED_8x8_V]   = x264_predict_8x8_v_neon;
 #endif // !HIGH_BIT_DEPTH
 }
 
-void x264_predict_16x16_init_aarch64(int cpu, x264_predict_t pf[7]) {
-    if (!(cpu & X264_CPU_NEON))
+void x264_predict_16x16_init_aarch64( int cpu, x264_predict_t pf[7] )
+{
+    if( !(cpu&X264_CPU_NEON) )
         return;
 
 #if !HIGH_BIT_DEPTH
-    pf[I_PRED_16x16_DC] = x264_predict_16x16_dc_neon;
+    pf[I_PRED_16x16_DC ]    = x264_predict_16x16_dc_neon;
     pf[I_PRED_16x16_DC_TOP] = x264_predict_16x16_dc_top_neon;
-    pf[I_PRED_16x16_DC_LEFT] = x264_predict_16x16_dc_left_neon;
-    pf[I_PRED_16x16_H] = x264_predict_16x16_h_neon;
-    pf[I_PRED_16x16_V] = x264_predict_16x16_v_neon;
-    pf[I_PRED_16x16_P] = x264_predict_16x16_p_neon;
+    pf[I_PRED_16x16_DC_LEFT]= x264_predict_16x16_dc_left_neon;
+    pf[I_PRED_16x16_H ]     = x264_predict_16x16_h_neon;
+    pf[I_PRED_16x16_V ]     = x264_predict_16x16_v_neon;
+    pf[I_PRED_16x16_P ]     = x264_predict_16x16_p_neon;
 #endif // !HIGH_BIT_DEPTH
 }

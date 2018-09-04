@@ -30,7 +30,6 @@
 
 #define _LARGEFILE_SOURCE 1
 #define _FILE_OFFSET_BITS 64
-
 #include <stdio.h>
 #include <sys/stat.h>
 #include <inttypes.h>
@@ -41,9 +40,7 @@
 #ifdef __INTEL_COMPILER
 #include <mathimf.h>
 #else
-
 #include <math.h>
-
 #endif
 
 #if !HAVE_LOG2F
@@ -64,9 +61,7 @@ int x264_vsnprintf( char *s, size_t n, const char *fmt, va_list arg );
 #define vsnprintf x264_vsnprintf
 #endif
 #else
-
 #include <strings.h>
-
 #endif
 
 #if !defined(va_copy) && defined(__INTEL_COMPILER)
@@ -98,7 +93,7 @@ int x264_stat( const char *path, x264_struct_stat *buf );
 #endif
 
 /* mdate: return the current date in microsecond */
-int64_t x264_mdate(void);
+int64_t x264_mdate( void );
 
 #if defined(_WIN32) && !HAVE_WINRT
 int x264_vfprintf( FILE *stream, const char *format, va_list arg );
@@ -111,12 +106,12 @@ int x264_is_pipe( const char *path );
 #ifdef _MSC_VER
 #define DECLARE_ALIGNED( var, n ) __declspec(align(n)) var
 #else
-#define DECLARE_ALIGNED(var, n) var __attribute__((aligned(n)))
+#define DECLARE_ALIGNED( var, n ) var __attribute__((aligned(n)))
 #endif
 
-#define ALIGNED_4(var)  DECLARE_ALIGNED( var, 4 )
-#define ALIGNED_8(var)  DECLARE_ALIGNED( var, 8 )
-#define ALIGNED_16(var) DECLARE_ALIGNED( var, 16 )
+#define ALIGNED_4( var )  DECLARE_ALIGNED( var, 4 )
+#define ALIGNED_8( var )  DECLARE_ALIGNED( var, 8 )
+#define ALIGNED_16( var ) DECLARE_ALIGNED( var, 16 )
 
 // ARM compiliers don't reliably align stack variables
 // - EABI requires only 8 byte stack alignment to be maintained
@@ -125,20 +120,20 @@ int x264_is_pipe( const char *path );
 // - Apple gcc only maintains 4 byte alignment
 // - llvm can align the stack, but only in svn and (unrelated) it exposes bugs in all released GNU binutils...
 
-#define ALIGNED_ARRAY_EMU(mask, type, name, sub1, ...)\
+#define ALIGNED_ARRAY_EMU( mask, type, name, sub1, ... )\
     uint8_t name##_u [sizeof(type sub1 __VA_ARGS__) + mask]; \
     type (*name) __VA_ARGS__ = (void*)((intptr_t)(name##_u+mask) & ~mask)
 
 #if ARCH_ARM && SYS_MACOSX
 #define ALIGNED_ARRAY_8( ... ) EXPAND( ALIGNED_ARRAY_EMU( 7, __VA_ARGS__ ) )
 #else
-#define ALIGNED_ARRAY_8(type, name, sub1, ...) ALIGNED_8( type name sub1 __VA_ARGS__ )
+#define ALIGNED_ARRAY_8( type, name, sub1, ... ) ALIGNED_8( type name sub1 __VA_ARGS__ )
 #endif
 
 #if ARCH_ARM
 #define ALIGNED_ARRAY_16( ... ) EXPAND( ALIGNED_ARRAY_EMU( 15, __VA_ARGS__ ) )
 #else
-#define ALIGNED_ARRAY_16(type, name, sub1, ...) ALIGNED_16( type name sub1 __VA_ARGS__ )
+#define ALIGNED_ARRAY_16( type, name, sub1, ... ) ALIGNED_16( type name sub1 __VA_ARGS__ )
 #endif
 
 #define EXPAND(x) x
@@ -227,21 +222,21 @@ static inline int x264_pthread_create( x264_pthread_t *t, void *a, void *(*f)(vo
 
 #else
 #define x264_pthread_t               int
-#define x264_pthread_create(t, u, f, d) 0
-#define x264_pthread_join(t, s)
+#define x264_pthread_create(t,u,f,d) 0
+#define x264_pthread_join(t,s)
 #endif //HAVE_*THREAD
 
 #if !HAVE_POSIXTHREAD && !HAVE_WIN32THREAD
 #define x264_pthread_mutex_t         int
-#define x264_pthread_mutex_init(m, f) 0
+#define x264_pthread_mutex_init(m,f) 0
 #define x264_pthread_mutex_destroy(m)
 #define x264_pthread_mutex_lock(m)
 #define x264_pthread_mutex_unlock(m)
 #define x264_pthread_cond_t          int
-#define x264_pthread_cond_init(c, f)  0
+#define x264_pthread_cond_init(c,f)  0
 #define x264_pthread_cond_destroy(c)
 #define x264_pthread_cond_broadcast(c)
-#define x264_pthread_cond_wait(c, m)
+#define x264_pthread_cond_wait(c,m)
 #define x264_pthread_attr_t          int
 #define x264_pthread_attr_init(a)    0
 #define x264_pthread_attr_destroy(a)
@@ -254,8 +249,8 @@ int x264_threading_init( void );
 #define x264_threading_init() 0
 #endif
 
-static ALWAYS_INLINE int
-x264_pthread_fetch_and_add(int *val, int add, x264_pthread_mutex_t *mutex) {
+static ALWAYS_INLINE int x264_pthread_fetch_and_add( int *val, int add, x264_pthread_mutex_t *mutex )
+{
 #if HAVE_THREAD
 #if defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 0) && (ARCH_X86 || ARCH_X86_64)
     return __sync_fetch_and_add( val, add );
@@ -296,11 +291,10 @@ static ALWAYS_INLINE uint32_t endian_fix32( uint32_t x )
     return x;
 }
 #else
-
-static ALWAYS_INLINE uint32_t endian_fix32(uint32_t x) {
-    return (x << 24) + ((x << 8) & 0xff0000) + ((x >> 8) & 0xff00) + (x >> 24);
+static ALWAYS_INLINE uint32_t endian_fix32( uint32_t x )
+{
+    return (x<<24) + ((x<<8)&0xff0000) + ((x>>8)&0xff00) + (x>>24);
 }
-
 #endif
 #if HAVE_X86_INLINE_ASM && ARCH_X86_64
 static ALWAYS_INLINE uint64_t endian_fix64( uint64_t x )
@@ -309,26 +303,25 @@ static ALWAYS_INLINE uint64_t endian_fix64( uint64_t x )
     return x;
 }
 #else
-
-static ALWAYS_INLINE uint64_t endian_fix64(uint64_t x) {
-    return endian_fix32(x >> 32) + ((uint64_t) endian_fix32(x) << 32);
+static ALWAYS_INLINE uint64_t endian_fix64( uint64_t x )
+{
+    return endian_fix32(x>>32) + ((uint64_t)endian_fix32(x)<<32);
 }
-
 #endif
-
-static ALWAYS_INLINE intptr_t endian_fix(intptr_t x) {
+static ALWAYS_INLINE intptr_t endian_fix( intptr_t x )
+{
     return WORD_SIZE == 8 ? endian_fix64(x) : endian_fix32(x);
 }
-
-static ALWAYS_INLINE uint16_t endian_fix16(uint16_t x) {
-    return (x << 8) | (x >> 8);
+static ALWAYS_INLINE uint16_t endian_fix16( uint16_t x )
+{
+    return (x<<8)|(x>>8);
 }
-
 #endif
 
 /* For values with 4 bits or less. */
-static int ALWAYS_INLINE x264_ctz_4bit(uint32_t x) {
-    static uint8_t lut[16] = {4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0};
+static int ALWAYS_INLINE x264_ctz_4bit( uint32_t x )
+{
+    static uint8_t lut[16] = {4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0};
     return lut[x];
 }
 
@@ -370,7 +363,7 @@ static ALWAYS_INLINE void x264_prefetch( void *p )
 }
 /* We require that prefetch not fault on invalid reads, so we only enable it on
  * known architectures. */
-#elif defined(__GNUC__) && (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 1) && \
+#elif defined(__GNUC__) && (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 1) &&\
       (ARCH_X86 || ARCH_X86_64 || ARCH_ARM || ARCH_PPC)
 #define x264_prefetch(x) __builtin_prefetch(x)
 #else
@@ -402,18 +395,20 @@ static ALWAYS_INLINE void x264_prefetch( void *p )
 #define x264_lower_thread_priority(p)
 #endif
 
-static inline int x264_is_regular_file(FILE *filehandle) {
+static inline int x264_is_regular_file( FILE *filehandle )
+{
     x264_struct_stat file_stat;
-    if (x264_fstat(fileno(filehandle), &file_stat))
+    if( x264_fstat( fileno( filehandle ), &file_stat ) )
         return 1;
-    return S_ISREG(file_stat.st_mode);
+    return S_ISREG( file_stat.st_mode );
 }
 
-static inline int x264_is_regular_file_path(const char *filename) {
+static inline int x264_is_regular_file_path( const char *filename )
+{
     x264_struct_stat file_stat;
-    if (x264_stat(filename, &file_stat))
-        return !x264_is_pipe(filename);
-    return S_ISREG(file_stat.st_mode);
+    if( x264_stat( filename, &file_stat ) )
+        return !x264_is_pipe( filename );
+    return S_ISREG( file_stat.st_mode );
 }
 
 #endif /* X264_OSDEP_H */

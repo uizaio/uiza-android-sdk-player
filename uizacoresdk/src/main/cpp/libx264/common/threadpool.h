@@ -35,9 +35,9 @@ void  x264_threadpool_run( x264_threadpool_t *pool, void *(*func)(void *), void 
 void *x264_threadpool_wait( x264_threadpool_t *pool, void *arg );
 void  x264_threadpool_delete( x264_threadpool_t *pool );
 #else
-#define x264_threadpool_init(p, t, f, a) -1
-#define x264_threadpool_run(p, f, a)
-#define x264_threadpool_wait(p, a)     NULL
+#define x264_threadpool_init(p,t,f,a) -1
+#define x264_threadpool_run(p,f,a)
+#define x264_threadpool_wait(p,a)     NULL
 #define x264_threadpool_delete(p)
 #endif
 
