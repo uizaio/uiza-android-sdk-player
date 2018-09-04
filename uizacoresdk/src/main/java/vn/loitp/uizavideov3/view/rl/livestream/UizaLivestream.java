@@ -475,7 +475,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 mainStreamUrl = mainUrl;
                 LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
                 //TODO remove harcode
-                mainStreamUrl = "rtmp://14.161.0.68/live-origin/testapp";
+                //mainStreamUrl = "rtmp://14.161.0.68/live-origin/testapp";
+                mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only/suzuki-no-transcode?token=b9b9684f2be521fde1263ab8a62b8894";
+                //mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp-transcode?token=3968e51d19bc7eaaff759b6792fe9630";
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
