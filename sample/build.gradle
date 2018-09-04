@@ -8,12 +8,6 @@ android {
             storeFile file('C:/Users/LENOVO/Desktop/demouiza/key.jks')
             storePassword '04021993'
         }*/
-        config {
-            keyAlias 'loi'
-            keyPassword '04021993'
-            storeFile file('C:/Users/LENOVO/Desktop/demouiza/key.jks')
-            storePassword '04021993'
-        }
     }
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -35,7 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            //signingConfig signingConfigs.config
         }
     }
     productFlavors {
