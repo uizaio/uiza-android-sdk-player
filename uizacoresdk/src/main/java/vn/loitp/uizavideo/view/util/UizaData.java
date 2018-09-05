@@ -31,13 +31,13 @@ public class UizaData {
     private UizaData() {
     }
 
-    private String currentPlayerId = Constants.PLAYER_ID_SKIN_0;
+    private int currentPlayerId = Constants.PLAYER_ID_SKIN_0;
 
-    public String getCurrentPlayerId() {
+    public int getCurrentPlayerId() {
         return currentPlayerId;
     }
 
-    public void setCurrentPlayerId(String currentPlayerId) {
+    public void setCurrentPlayerId(int currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
     }
 
@@ -142,7 +142,7 @@ public class UizaData {
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
         //player_id
-        uizaTracking.setPlayerId(currentPlayerId);
+        uizaTracking.setPlayerId(currentPlayerId + "");
         //TODO player_name
         uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version
