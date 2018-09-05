@@ -60,6 +60,9 @@ public class UizaUtil {
     private final static String TAG = UizaUtil.class.getSimpleName();
 
     public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
+        if (imageButton == null) {
+            return;
+        }
         if (isFullScreen) {
             imageButton.setImageResource(loitp.core.R.drawable.baseline_fullscreen_exit_white_48);
         } else {

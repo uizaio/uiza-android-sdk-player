@@ -1387,7 +1387,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         }
         if (isLivestream) {
-            exoPlaylistRelation.setVisibility(GONE);
+            if (exoPlaylistRelation != null) {
+                exoPlaylistRelation.setVisibility(GONE);
+            }
             if (exoCc != null) {
                 exoCc.setVisibility(GONE);
             }
@@ -1407,7 +1409,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
         } else {
             //TODO exoPlaylistRelation works fine, but QC wanne hide it
-            exoPlaylistRelation.setVisibility(GONE);
+            if (exoPlaylistRelation != null) {
+                exoPlaylistRelation.setVisibility(GONE);
+            }
             if (exoCc != null) {
                 exoCc.setVisibility(VISIBLE);
             }
@@ -2144,7 +2148,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.pauseVideo();
             uizaPlayerManagerV3.setVolume(0f);
             rlChromeCast.setVisibility(VISIBLE);
-            exoSetting.setVisibility(GONE);
+            if (exoSetting != null) {
+                exoSetting.setVisibility(GONE);
+            }
             if (exoCc != null) {
                 exoCc.setVisibility(GONE);
             }
@@ -2175,7 +2181,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.resumeVideo();
             uizaPlayerManagerV3.setVolume(0.99f);
             rlChromeCast.setVisibility(GONE);
-            exoSetting.setVisibility(VISIBLE);
+            if (exoSetting != null) {
+                exoSetting.setVisibility(VISIBLE);
+            }
             if (exoCc != null) {
                 exoCc.setVisibility(VISIBLE);
             }
@@ -2395,7 +2403,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
-        exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
+        if (exoPlaylistFolder != null) {
+            exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
+        }
         if (exoSkipNext != null) {
             exoSkipNext.setVisibility(visibilityOfPlaylistFolderController);
         }
@@ -2441,7 +2451,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleClickBackScreen() {
         hideController();
         if (isLandscape) {
-            exoFullscreenIcon.performClick();
+            if (exoFullscreenIcon != null) {
+                exoFullscreenIcon.performClick();
+            }
         } else {
             if (uizaCallback != null) {
                 uizaCallback.onClickBack();
