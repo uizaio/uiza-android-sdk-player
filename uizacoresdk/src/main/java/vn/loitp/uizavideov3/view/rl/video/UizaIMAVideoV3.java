@@ -627,7 +627,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //setup chromecast
         mediaRouteButton = new MediaRouteButton(activity);
-        llTop.addView(mediaRouteButton);
+        if (llTop != null) {
+            llTop.addView(mediaRouteButton);
+        }
         setUpMediaRouteButton();
         addChromecastLayer();
     }
