@@ -163,6 +163,13 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onDisconnectRtmp() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(GONE);
+                rtmpCamera1.stopStream();
+            }
+        });
         if (callback != null) {
             callback.onDisconnectRtmp();
         }
@@ -474,9 +481,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                 String mainUrl = streamUrl + "/" + streamKey;
                 mainStreamUrl = mainUrl;
                 LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
-                //TODO remove harcode
                 //mainStreamUrl = "rtmp://14.161.0.68/live-origin/testapp";
-                mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only/suzuki-no-transcode?token=b9b9684f2be521fde1263ab8a62b8894";
+                //mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only/suzuki-no-transcode?token=b9b9684f2be521fde1263ab8a62b8894";
                 //mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp-transcode?token=3968e51d19bc7eaaff759b6792fe9630";
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
@@ -514,14 +520,14 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                         } else {
                             LLog.d(TAG, "Start live 400 but last process START || INIT -> can livestream");
                             if (callback != null) {
-                                callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                                callback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
                             }
                         }
                     }
                 } else {
                     if (callback != null) {
                         LLog.d(TAG, "onGetDataSuccess");
-                        callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                        callback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
                     }
                 }
                 LUIUtil.hideProgressBar(progressBar);

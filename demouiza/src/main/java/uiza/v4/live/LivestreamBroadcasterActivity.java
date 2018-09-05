@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -318,7 +317,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
-        LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
+        LLog.d(TAG, "onGetDataSuccess mainUrl: " + mainUrl);
         bStartStop.setVisibility(View.VISIBLE);
         bStartStopStore.setVisibility(View.VISIBLE);
         btSwitchCamera.setVisibility(View.VISIBLE);
@@ -348,19 +347,16 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
             @Override
             public void run() {
                 LToast.show(activity, "Disconnected");
+                LLog.d(TAG, "onDisconnectRtmp isStreaming: " + uizaLivestream.isStreaming());
+                //uizaLivestream.stopStream();
+                bStartStop.setText(R.string.start_button);
+                bStartStopStore.setText("Start - save");
+                bStartStop.setVisibility(View.VISIBLE);
+                bStartStopStore.setVisibility(View.VISIBLE);
+                btSwitchCamera.setVisibility(View.VISIBLE);
+                btFilter.setVisibility(View.VISIBLE);
             }
         });
-        /*runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                uizaLivestream.stopStream();
-                if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
-                    uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
-                } else {
-                    LToast.show(activity, "Cannot start");
-                }
-            }
-        });*/
     }
 
     @Override
