@@ -574,8 +574,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
-                tvLiveTime.setText("-");
-                tvLiveView.setText("-");
+                if (tvLiveTime != null) {
+                    tvLiveTime.setText("-");
+                }
+                if (tvLiveView != null) {
+                    tvLiveView.setText("-");
+                }
                 updateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
                 updateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
@@ -1370,7 +1374,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoRew, false, 0);
             changeVisibilitiesOfButton(exoFfwd, false, 0);
 
-            rlLiveInfo.setVisibility(VISIBLE);
+            if (rlLiveInfo != null) {
+                rlLiveInfo.setVisibility(VISIBLE);
+            }
         } else {
             //TODO exoPlaylistRelation works fine, but QC wanne hide it
             exoPlaylistRelation.setVisibility(GONE);
@@ -1384,7 +1390,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             changeVisibilitiesOfButton(exoRew, true, R.drawable.baseline_replay_10_white_48);
             changeVisibilitiesOfButton(exoFfwd, true, R.drawable.baseline_forward_10_white_48);
 
-            rlLiveInfo.setVisibility(GONE);
+            if (rlLiveInfo != null) {
+                rlLiveInfo.setVisibility(GONE);
+            }
         }
     }
 
@@ -1863,7 +1871,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             }
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
-                                tvLiveView.setText(result.getData().getWatchnow() + "");
+                                if (tvLiveView != null) {
+                                    tvLiveView.setText(result.getData().getWatchnow() + "");
+                                }
                             }
                             updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
@@ -1914,7 +1924,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                 //LLog.d(TAG, "duration " + duration);
                                 String s = LDateUtils.convertMlscondsToHMmSs(duration);
                                 //LLog.d(TAG, "s " + s);
-                                tvLiveTime.setText(s);
+                                if (tvLiveTime != null) {
+                                    tvLiveTime.setText(s);
+                                }
                             }
                             updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
