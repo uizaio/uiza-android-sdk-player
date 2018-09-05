@@ -727,7 +727,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
         exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause_uiza);
         exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);
-        exoPlay.setVisibility(GONE);
+        if (exoPlay != null) {
+            exoPlay.setVisibility(GONE);
+        }
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
@@ -1303,7 +1305,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             }
             exoPlay.setVisibility(GONE);
-            exoPause.setVisibility(VISIBLE);
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
         } else if (v == exoSkipNext) {
             handleClickSkipNext();
         } else if (v == exoSkipPrevious) {
@@ -1419,8 +1423,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     //trick to gone view
-    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize,
-                                            boolean isVisible, int res) {
+    private void changeVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize, boolean isVisible, int res) {
         if (imageButtonWithSize == null) {
             return;
         }
@@ -2139,9 +2142,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoBackScreen != null) {
                 exoBackScreen.setVisibility(GONE);
             }
-
-            exoPlay.setVisibility(GONE);
-            exoPause.setVisibility(VISIBLE);
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
 
             exoVolume.setVisibility(GONE);
 
@@ -2164,10 +2170,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoBackScreen != null) {
                 exoBackScreen.setVisibility(VISIBLE);
             }
-
-            exoPlay.setVisibility(GONE);
-            exoPause.setVisibility(VISIBLE);
-
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
             //TODO iplm volume mute on/off o cast player
             exoVolume.setVisibility(VISIBLE);
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
@@ -2296,20 +2304,32 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         //update UI for skip next and skip previous button
         if (position == 0) {
-            exoSkipPrevious.setEnabled(false);
-            exoSkipNext.setEnabled(true);
-            exoSkipPrevious.setColorFilter(Color.GRAY);
-            exoSkipNext.setColorFilter(Color.WHITE);
+            if (exoSkipPrevious != null) {
+                exoSkipPrevious.setEnabled(false);
+                exoSkipPrevious.setColorFilter(Color.GRAY);
+            }
+            if (exoSkipNext != null) {
+                exoSkipNext.setEnabled(true);
+                exoSkipNext.setColorFilter(Color.WHITE);
+            }
         } else if (position == UizaDataV3.getInstance().getDataList().size() - 1) {
-            exoSkipPrevious.setEnabled(true);
-            exoSkipNext.setEnabled(false);
-            exoSkipPrevious.setColorFilter(Color.WHITE);
-            exoSkipNext.setColorFilter(Color.GRAY);
+            if (exoSkipPrevious != null) {
+                exoSkipPrevious.setEnabled(true);
+                exoSkipPrevious.setColorFilter(Color.WHITE);
+            }
+            if (exoSkipNext != null) {
+                exoSkipNext.setEnabled(false);
+                exoSkipNext.setColorFilter(Color.GRAY);
+            }
         } else {
-            exoSkipPrevious.setEnabled(true);
-            exoSkipNext.setEnabled(true);
-            exoSkipPrevious.setColorFilter(Color.WHITE);
-            exoSkipNext.setColorFilter(Color.WHITE);
+            if (exoSkipPrevious != null) {
+                exoSkipPrevious.setEnabled(true);
+                exoSkipPrevious.setColorFilter(Color.WHITE);
+            }
+            if (exoSkipNext != null) {
+                exoSkipNext.setEnabled(true);
+                exoSkipNext.setColorFilter(Color.WHITE);
+            }
         }
         //end update UI for skip next and skip previous button
 
@@ -2359,8 +2379,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
         exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
-        exoSkipNext.setVisibility(visibilityOfPlaylistFolderController);
-        exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
+        if (exoSkipNext != null) {
+            exoSkipNext.setVisibility(visibilityOfPlaylistFolderController);
+        }
+        if (exoSkipPrevious != null) {
+            exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
+        }
     }
 
     private void handleClickSkipNext() {
