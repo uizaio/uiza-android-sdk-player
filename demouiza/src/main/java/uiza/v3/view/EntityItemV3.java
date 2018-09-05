@@ -77,7 +77,7 @@ public class EntityItemV3 {
         tvName.setText(data.getName());
         LUIUtil.setTextShadow(tvName);
 
-        if (data == null || data.getLastProcess() == null || data.getLastProcess().equals(Data.LAST_PROCRESS_STOP)) {
+        if (data == null || data.getLastProcess() == null || data.getLastProcess().equals(Constants.LAST_PROCESS_STOP)) {
             tvInfoLive.setVisibility(android.view.View.INVISIBLE);
         } else {
             tvInfoLive.setVisibility(android.view.View.VISIBLE);
@@ -108,7 +108,7 @@ public class EntityItemV3 {
                         mCallback.onClick(data, mPosition);
                     }
                 } else {
-                    if (data.getLastProcess().equals(Data.LAST_PROCRESS_START)) {
+                    if (data.getLastProcess().equals(Constants.LAST_PROCESS_START)) {
                         if (mCallback != null) {
                             mCallback.onClick(data, mPosition);
                         }

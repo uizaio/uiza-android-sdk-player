@@ -152,4 +152,8 @@ public class Constants {
 
     public static final String MODE_PULL = "pull";
     public static final String MODE_PUSH = "push";
+
+    public static final String SUCCESS = "success";
+    public static final String NOT_READY = "not-ready";
+    public static final String ERROR = "error";
 }

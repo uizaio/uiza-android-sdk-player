@@ -5,6 +5,7 @@ package uiza.v4.entities;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -50,6 +52,17 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
 
         holder.tvTitle.setText(data.getName());
         LUIUtil.setTextShadow(holder.tvTitle);
+        String stt = data.getPublishToCdn() + "";
+        holder.tvStatus.setText(stt);
+        LUIUtil.setTextShadow(holder.tvStatus);
+        if (stt.equals(Constants.SUCCESS)) {
+            holder.tvStatus.setTextColor(Color.GREEN);
+        } else if (stt.equals(Constants.NOT_READY)) {
+            holder.tvStatus.setTextColor(Color.YELLOW);
+        } else {
+            holder.tvStatus.setTextColor(Color.RED);
+        }
+
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +104,14 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.DataHo
 
     public class DataHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
+        public TextView tvStatus;
         public ImageView ivThumnail;
         public CardView cardView;
 
         public DataHolder(View view) {
             super(view);
             tvTitle = (TextView) view.findViewById(R.id.tv_title);
+            tvStatus = (TextView) view.findViewById(R.id.tv_status);
             ivThumnail = (ImageView) view.findViewById(R.id.iv_thumnail);
             cardView = (CardView) view.findViewById(R.id.card_view);
         }
