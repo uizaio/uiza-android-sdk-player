@@ -429,7 +429,7 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         playerView = findViewById(R.id.player_view);
 
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
-        previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
+        previewTimeBarLayout = playerView.findViewById(R.id.preview_seekbar_layout);
         previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
         previewTimeBar.addOnPreviewChangeListener(this);
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);

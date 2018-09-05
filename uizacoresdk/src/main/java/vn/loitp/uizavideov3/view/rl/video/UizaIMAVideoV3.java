@@ -714,9 +714,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
-        previewTimeBarLayout = playerView.findViewById(R.id.previewSeekBarLayout);
-        previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
-        previewTimeBar.addOnPreviewChangeListener(this);
+        previewTimeBarLayout = playerView.findViewById(R.id.preview_seekbar_layout);
+        if (previewTimeBarLayout != null) {
+            previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
+        }
+        if (previewTimeBar != null) {
+            previewTimeBar.addOnPreviewChangeListener(this);
+        }
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
         exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
@@ -902,9 +906,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
-            previewTimeBarLayout.setEnabled(false);
+            if (previewTimeBarLayout != null) {
+                previewTimeBarLayout.setEnabled(false);
+            }
         } else {
-            previewTimeBarLayout.setEnabled(true);
+            if (previewTimeBarLayout != null) {
+                previewTimeBarLayout.setEnabled(true);
+            }
         }
         if (previewTimeBarLayout != null) {
             previewTimeBarLayout.setPreviewLoader(uizaPlayerManagerV3);
@@ -947,8 +955,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext());
         //LLog.d(TAG, "firstBrightness " + firstBrightness);
-        seekbarBirghtness.setMax(255);
-        setProgressSeekbar(seekbarBirghtness, firstBrightness);
+        if (seekbarBirghtness != null) {
+            seekbarBirghtness.setMax(255);
+            setProgressSeekbar(seekbarBirghtness, firstBrightness);
+        }
         isSetProgressSeekbarFirst = false;
         //========================<<<<<end init seekbar
     }
@@ -1335,6 +1345,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void setMarginPreviewTimeBarLayout() {
+        if (previewTimeBarLayout == null) {
+            return;
+        }
         if (isLandscape) {
             LUIUtil.setMarginDimen(previewTimeBarLayout, 24, 0, 24, 0);
         } else {
@@ -1370,7 +1383,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isLivestream) {
             exoPlaylistRelation.setVisibility(GONE);
             exoCc.setVisibility(GONE);
-            rlTimeBar.setVisibility(GONE);
+            if (rlTimeBar != null) {
+                rlTimeBar.setVisibility(GONE);
+            }
 
             //TODO why set gone not work?
             //exoRew.setVisibility(GONE);
@@ -1386,7 +1401,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //TODO exoPlaylistRelation works fine, but QC wanne hide it
             exoPlaylistRelation.setVisibility(GONE);
             exoCc.setVisibility(VISIBLE);
-            rlTimeBar.setVisibility(VISIBLE);
+            if (rlTimeBar != null) {
+                rlTimeBar.setVisibility(VISIBLE);
+            }
 
             //TODO why set visible not work?
             //exoRew.setVisibility(VISIBLE);
@@ -2087,13 +2104,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     //LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
                     uizaPlayerManagerV3.hideProgress();
-                    //UizaDataV3.getInstance().getCasty().setVolume(0.99f);
                     isCastPlayerPlayingFirst = true;
                 }
 
                 if (currentPosition > 0) {
                     uizaPlayerManagerV3.seekTo(currentPosition);
-                    //previewTimeBar.setPosition(currentPosition);
                 }
             }
         }, 1000);

@@ -13,8 +13,8 @@
     <item name="seekbar_volume" type="id" />
     <item name="seekbar_birghtness" type="id" />
     <item name="exo_birghtness_seekbar" type="id" />
-    <item name="previewSeekBarLayout" type="id" />
-    <item name="previewFrameLayout" type="id" />
+    <item name="preview_seekbar_layout" type="id" />
+    <item name="preview_frame_layout" type="id" />
     <item name="image_view_thumnail" type="id" />
     <item name="exo_volume" type="id" />
     <item name="exo_play_uiza" type="id" />

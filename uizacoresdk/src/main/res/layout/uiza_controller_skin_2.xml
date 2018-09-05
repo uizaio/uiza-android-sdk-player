@@ -327,13 +327,13 @@
                 android:layout_height="wrap_content">
 
                 <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout
-                    android:id="@id/previewSeekBarLayout"
+                    android:id="@id/preview_seekbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:id="@id/previewFrameLayout"
+                        android:id="@id/preview_frame_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/video_frame"
@@ -353,7 +353,7 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/previewFrameLayout"
+                        android:layout_below="@id/preview_frame_layout"
                         android:layout_marginTop="@dimen/margin_10"
                         android:max="800"
                         android:progressTint="@color/colorPrimary"

@@ -130,7 +130,7 @@
                 app:seekBarRotation="CW270" />
         </vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBarWrapper>
 
-        <!--<ImageView
+        <ImageView
             android:id="@id/exo_iv_preview"
             android:layout_width="@dimen/w_100"
             android:layout_height="@dimen/w_100"
@@ -139,7 +139,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
-            android:tint="@color/White" />-->
+            android:tint="@color/White" />
 
         <!-- Clock wise - 270 -->
         <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBarWrapper
@@ -178,13 +178,13 @@
                 android:layout_height="wrap_content">
 
                 <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout
-                    android:id="@id/previewSeekBarLayout"
+                    android:id="@id/preview_seekbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:id="@id/previewFrameLayout"
+                        android:id="@id/preview_frame_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/video_frame"
@@ -204,21 +204,13 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/previewFrameLayout"
+                        android:layout_below="@id/preview_frame_layout"
                         android:layout_marginTop="@dimen/margin_10"
                         android:max="800"
                         android:progressTint="@color/colorPrimary"
                         android:thumbTint="@color/colorPrimary" />
 
                 </com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout>
-
-                <!--<com.google.android.exoplayer2.ui.DefaultTimeBar
-                    android:id="@id/exo_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_55"
-                    android:layout_marginRight="@dimen/margin_55" />-->
             </FrameLayout>
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
