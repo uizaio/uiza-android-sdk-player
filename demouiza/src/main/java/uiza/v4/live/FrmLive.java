@@ -77,11 +77,11 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         mAdapter = new LiveAdapter(getActivity(), dataList, new LiveAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                if (data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
+                if (data != null && data.getLastProcess() != null && data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
                     UizaUtil.setClickedPip(getActivity(), false);
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
                 } else {
-                    LToast.show(getActivity(), "This content is not streaming now");
+                    showDialogError("This content is not streaming now");
                 }
             }
 
