@@ -12,17 +12,17 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.libstream.uiza.encoder.input.audio.GetMicrophoneData;
 import vn.loitp.libstream.uiza.encoder.utils.CodecUtil;
 
 /**
- * Created by pedro on 19/01/17.
+ * Created by loitp on 19/01/17.
  * Encode PCM audio data to ACC and return in a callback
  */
 
 public class AudioEncoder implements GetMicrophoneData {
-
-    private String TAG = "AudioEncoder";
+    private final String TAG = getClass().getSimpleName();
     private MediaCodec audioEncoder;
     private GetAacData getAacData;
     private MediaCodec.BufferInfo audioInfo = new MediaCodec.BufferInfo();
@@ -43,16 +43,16 @@ public class AudioEncoder implements GetMicrophoneData {
      * Prepare encoder with custom parameters
      */
     public boolean prepareAudioEncoder(int bitRate, int sampleRate, boolean isStereo) {
+        LLog.d(TAG, "prepareAudioEncoder bitRate: " + bitRate + ", sampleRate: " + sampleRate + ", isStereo " + isStereo);
         this.sampleRate = sampleRate;
         try {
-
             List<MediaCodecInfo> encoders = new ArrayList<>();
             if (force == CodecUtil.Force.HARDWARE) {
                 encoders = CodecUtil.getAllHardwareEncoders(CodecUtil.AAC_MIME);
             } else if (force == CodecUtil.Force.SOFTWARE) {
                 encoders = CodecUtil.getAllSoftwareEncoders(CodecUtil.AAC_MIME);
             }
-
+            LLog.d(TAG, "encoders size: " + encoders.size());
             if (force == CodecUtil.Force.FIRST_COMPATIBLE_FOUND) {
                 audioEncoder = MediaCodec.createEncoderByType(CodecUtil.AAC_MIME);
             } else {
@@ -63,21 +63,31 @@ public class AudioEncoder implements GetMicrophoneData {
                     audioEncoder = MediaCodec.createByCodecName(encoders.get(0).getName());
                 }
             }
+            LLog.d(TAG, "audioEncoder " + audioEncoder.getName() + " - " + audioEncoder.getCodecInfo());
 
             int a = (isStereo) ? 2 : 1;
             MediaFormat audioFormat = MediaFormat.createAudioFormat(CodecUtil.AAC_MIME, sampleRate, a);
             audioFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
-            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
-            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE,
-                    MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);//work
+
+            /*int value = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+            LLog.d(TAG, ">>>>>>>>>>>>>>>>>value " + value);
+            audioFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, value);*/
+
+            audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);//work
+            //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLTP);
+            //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectMain);
+            //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectHE);
+            //audioFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectELD);
             audioEncoder.configure(audioFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             running = false;
+            LLog.d(TAG, "prepareAudioEncoder done");
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException prepareAudioEncoder " + e.toString());
             return false;
         } catch (IllegalStateException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IllegalStateException prepareAudioEncoder " + e.toString());
             return false;
         }
     }
@@ -98,7 +108,7 @@ public class AudioEncoder implements GetMicrophoneData {
             mPresentTimeUs = System.nanoTime() / 1000;
             audioEncoder.start();
             running = true;
-            Log.i(TAG, "AudioEncoder started");
+            LLog.d(TAG, "AudioEncoder started");
         } else {
             Log.e(TAG, "AudioEncoder need be prepared, AudioEncoder not enabled");
         }
@@ -124,6 +134,7 @@ public class AudioEncoder implements GetMicrophoneData {
      */
     @Override
     public void inputPCMData(final byte[] buffer, final int size) {
+        //LLog.d(TAG, "inputPCMData " + size);
         if (Build.VERSION.SDK_INT >= 21) {
             getDataFromEncoderAPI21(buffer, size);
         } else {
@@ -144,13 +155,17 @@ public class AudioEncoder implements GetMicrophoneData {
         for (; ; ) {
             int outBufferIndex = audioEncoder.dequeueOutputBuffer(audioInfo, 0);
             if (outBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                LLog.d(TAG, "if onAudioFormat " + audioEncoder.getOutputFormat());
                 getAacData.onAudioFormat(audioEncoder.getOutputFormat());
             } else if (outBufferIndex >= 0) {
                 //This ByteBuffer is AAC
+                //LLog.d(TAG, "else onAudioFormat " + audioEncoder.getName() + " - " + audioEncoder.getCodecInfo().getName());
+
                 ByteBuffer bb = audioEncoder.getOutputBuffer(outBufferIndex);
                 getAacData.getAacData(bb, audioInfo);
                 audioEncoder.releaseOutputBuffer(outBufferIndex, false);
             } else {
+                //LLog.d(TAG, "else break");
                 break;
             }
         }
@@ -172,6 +187,7 @@ public class AudioEncoder implements GetMicrophoneData {
         for (; ; ) {
             int outBufferIndex = audioEncoder.dequeueOutputBuffer(audioInfo, 0);
             if (outBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                //LLog.d(TAG, "onAudioFormat " + audioEncoder.getOutputFormat());
                 getAacData.onAudioFormat(audioEncoder.getOutputFormat());
             } else if (outBufferIndex >= 0) {
                 //This ByteBuffer is AAC

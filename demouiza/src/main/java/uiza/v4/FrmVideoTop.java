@@ -46,11 +46,15 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UizaCallback {
-    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
     public UizaIMAVideoV3 getUizaIMAVideoV3() {
         return uizaIMAVideoV3;
+    }
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -256,6 +260,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
         uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
+                LLog.d(TAG, "onVisibilityChange isShow " + isShow);
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
                         && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
@@ -275,9 +280,9 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         LLog.d(TAG, "isInitResult " + isInitSuccess);
-        ((HomeV4CanSlideActivity) getActivity()).isInitResult(resultGetLinkPlay, data);
+        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
@@ -319,7 +324,17 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
 
     @Override
     public void onError(Exception e) {
+        if (e == null) {
+            return;
+        }
         LLog.d(TAG, "onError " + e.getMessage());
+        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+            }
+        });
     }
 
     /*@Override
@@ -332,6 +347,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }*/
 
     public void initEntity(String entityId) {
+        LLog.d(TAG, "initEntity " + entityId);
         UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 

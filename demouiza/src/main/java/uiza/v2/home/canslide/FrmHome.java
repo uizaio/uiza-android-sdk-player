@@ -43,10 +43,14 @@ import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawerLayout;
     private List<Datum> datumList = new ArrayList<>();
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

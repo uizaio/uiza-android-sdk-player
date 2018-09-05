@@ -1,7 +1,7 @@
 package vn.loitp.uizavideo.view;
 
 /**
- * Created by LENOVO on 5/4/2018.
+ * Created by loitp on 5/4/2018.
  */
 
 public interface IOnBackPressed {

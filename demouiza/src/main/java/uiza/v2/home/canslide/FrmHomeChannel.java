@@ -37,7 +37,6 @@ import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
  */
 
 public class FrmHomeChannel extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
     private TextView tv;
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
@@ -54,6 +53,11 @@ public class FrmHomeChannel extends BaseFragment {
     private int totalPage = Integer.MAX_VALUE;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

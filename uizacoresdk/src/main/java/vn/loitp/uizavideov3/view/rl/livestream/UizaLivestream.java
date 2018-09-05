@@ -1,10 +1,13 @@
 package vn.loitp.uizavideov3.view.rl.livestream;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -18,12 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import loitp.core.R;
 import retrofit2.HttpException;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
@@ -48,9 +51,11 @@ import vn.loitp.views.LToast;
 /**
  * Created by loitp on 7/26/2017.
  */
-
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
+    //TODO remove gson later
+    private Gson gson = new Gson();
     private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
     private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Uizalivestream");
@@ -113,7 +118,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         rtmpCamera1 = new RtmpCamera1(openGlView, this);
         openGlView.getHolder().addCallback(this);
         //openGlView.getHolder().setFixedSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenWidth() * 16 / 9);
-
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
     }
@@ -132,6 +136,12 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionSuccessRtmp() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(VISIBLE);
+            }
+        });
         if (callback != null) {
             callback.onConnectionSuccessRtmp();
         }
@@ -139,14 +149,27 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(GONE);
+                rtmpCamera1.stopStream();
+            }
+        });
         if (callback != null) {
             callback.onConnectionFailedRtmp(reason);
         }
-        rtmpCamera1.stopStream();
     }
 
     @Override
     public void onDisconnectRtmp() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvLiveStatus.setVisibility(GONE);
+                rtmpCamera1.stopStream();
+            }
+        });
         if (callback != null) {
             callback.onDisconnectRtmp();
         }
@@ -171,7 +194,6 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (callback != null) {
             callback.surfaceCreated();
         }
-        LUIUtil.hideProgressBar(progressBar);
     }
 
     @Override
@@ -202,7 +224,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         if (rtmpCamera1.isRecording()) {
             rtmpCamera1.stopRecord();
-            LToast.show(getContext(), "file " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
+            LToast.show(getContext(), "File " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
             currentDateAndTime = "";
         }
         if (rtmpCamera1.isStreaming()) {
@@ -221,8 +243,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     public void startStream(String streamUrl, boolean isSavedToDevice) {
         rtmpCamera1.startStream(streamUrl);
-        tvLiveStatus.setVisibility(VISIBLE);
-
+        LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
         if (isSavedToDevice) {
             startRecord();
         }
@@ -233,11 +254,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             stopRecord();
         }
         rtmpCamera1.stopStream();
-        tvLiveStatus.setVisibility(GONE);
     }
 
     public boolean prepareAudio() {
-        return prepareAudio(128, 44100, true, false, false);
+        return prepareAudio(512 * 1024, 44100, true, true, true);
     }
 
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
@@ -255,6 +275,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideoHD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         Camera.Size size = getCorrectCameraSize(1280, 720);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -265,6 +289,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideoSD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         Camera.Size size = getCorrectCameraSize(640, 360);
         if (size == null) {
             Log.e(TAG, getContext().getString(R.string.err_dont_support));
@@ -274,6 +302,10 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            return false;
+        }
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
         rtmpCamera1.startPreview(width, height);
         boolean isPrepareVideo = rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
@@ -380,13 +412,13 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         return rtmpCamera1.getCorrectCameraSize(width, height);
     }
 
-    public List<Camera.Size> getListCameraResolutionSupportBack() {
+    /*public List<Camera.Size> getListCameraResolutionSupportBack() {
         return rtmpCamera1.getListCameraResolutionSupportBack();
-    }
+    }*/
 
-    public List<Camera.Size> getListCameraResolutionSupportFront() {
+    /*public List<Camera.Size> getListCameraResolutionSupportFront() {
         return rtmpCamera1.getListCameraResolutionSupportFront();
-    }
+    }*/
 
     public String getMainStreamUrl() {
         return mainStreamUrl;
@@ -396,7 +428,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
-
+        //Chỉ cần gọi start live thôi, ko cần quan tâm đến kết quả của api này start success hay ko
+        //Vẫn tiếp tục gọi detail entity để lấy streamUrl
         startLivestream(entityLiveId);
     }
 
@@ -407,47 +440,50 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                //LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
-                getDetailEntity(entityLiveId);
+                LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
+                getDetailEntity(entityLiveId, false, null);
             }
 
             @Override
             public void onFail(Throwable e) {
-                //Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
+                Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
                 HttpException error = (HttpException) e;
                 String responseBody = null;
                 try {
                     responseBody = error.response().errorBody().string();
-                    Gson gson = new Gson();
                     ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                    Log.e(TAG, "startLivestream onFail " + errorBody);
-                    if (callback != null) {
+                    Log.e(TAG, "startLivestream onFail try " + errorBody);
+                    /*if (callback != null) {
                         callback.onError(errorBody.getMessage());
-                    }
+                    }*/
+                    getDetailEntity(entityLiveId, true, errorBody.getMessage());
                 } catch (IOException e1) {
-                    Log.e(TAG, "startLivestream IOException " + e1.toString());
-                    if (callback != null) {
+                    Log.e(TAG, "startLivestream IOException catch " + e1.toString());
+                    /*if (callback != null) {
                         callback.onError(e1.getMessage());
-                    }
+                    }*/
+                    getDetailEntity(entityLiveId, true, e1.getMessage());
                 }
             }
         });
     }
 
-    private void getDetailEntity(String entityLiveId) {
+    private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         UizaUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UizaUtil.Callback() {
             @Override
             public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + new Gson().toJson(d));
-                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty()) {
+                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
+                if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
                     throw new NullPointerException("Data is null");
                 }
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 String mainUrl = streamUrl + "/" + streamKey;
-                LLog.d(TAG, "mainUrl: " + mainUrl);
-
                 mainStreamUrl = mainUrl;
+                LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
+                //mainStreamUrl = "rtmp://14.161.0.68/live-origin/testapp";
+                //mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push-only/suzuki-no-transcode?token=b9b9684f2be521fde1263ab8a62b8894";
+                //mainStreamUrl = "rtmp://stag-ap-southeast-1-u-01.uiza.io:1935/push2transcode/test-live-loitp-transcode?token=3968e51d19bc7eaaff759b6792fe9630";
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
@@ -467,15 +503,41 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
                     presetLiveStreamingFeed.setS720p(isConnectedFast ? 1500000 : 800000);
                     presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
                 }
-
-                if (callback != null) {
-                    callback.onGetDataSuccess(d, mainUrl, isTranscode, presetLiveStreamingFeed);
+                LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
+                if (isErrorStartLive) {
+                    if (d.getLastProcess() == null) {
+                        if (callback != null) {
+                            LLog.d(TAG, "isErrorStartLive -> onError Last process null");
+                            callback.onError("Error: Last process null");
+                        }
+                    } else {
+                        LLog.d(TAG, "getLastProcess " + d.getLastProcess());
+                        if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
+                            LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
+                            if (callback != null) {
+                                callback.onError(errorMsg);
+                            }
+                        } else {
+                            LLog.d(TAG, "Start live 400 but last process START || INIT -> can livestream");
+                            if (callback != null) {
+                                callback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
+                            }
+                        }
+                    }
+                } else {
+                    if (callback != null) {
+                        LLog.d(TAG, "onGetDataSuccess");
+                        callback.onGetDataSuccess(d, mainStreamUrl, isTranscode, presetLiveStreamingFeed);
+                    }
                 }
+                LUIUtil.hideProgressBar(progressBar);
+                LLog.d(TAG, "===================finish");
             }
 
             @Override
             public void onError(Throwable e) {
                 LLog.e(TAG, "setId onError " + e.toString());
+                LUIUtil.hideProgressBar(progressBar);
                 if (callback != null) {
                     callback.onError(e.getMessage());
                 }

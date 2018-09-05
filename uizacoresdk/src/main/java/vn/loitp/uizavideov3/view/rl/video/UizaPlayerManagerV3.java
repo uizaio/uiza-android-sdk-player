@@ -376,7 +376,9 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
     }
 
     public void pauseVideo() {
-        player.setPlayWhenReady(false);
+        if (player != null) {
+            player.setPlayWhenReady(false);
+        }
     }
 
     public void reset() {

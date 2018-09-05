@@ -45,7 +45,6 @@ import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
  */
 
 public class FrmChannelV2 extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
     private TextView tv;
     private TextView tvMsg;
     private PlaceHolderView placeHolderView;
@@ -62,6 +61,11 @@ public class FrmChannelV2 extends BaseFragment {
     private int totalPage = Integer.MAX_VALUE;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

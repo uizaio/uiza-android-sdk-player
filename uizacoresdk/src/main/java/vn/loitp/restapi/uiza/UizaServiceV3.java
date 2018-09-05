@@ -72,6 +72,10 @@ public interface UizaServiceV3 {
     @GET("/api/public/v3/media/metadata")
     Observable<ResultGetListMetadata> getListMetadata();
 
+    //http://dev-docs.uizadev.io/#get-list-metadata
+    @GET("/api/public/v3/media/metadata")
+    Observable<ResultGetListMetadata> getListMetadata(@Query("limit") int limit, @Query("page") int page);
+
     //http://dev-docs.uizadev.io/#create-metadata
     @POST("/api/public/v3/media/metadata")
     Observable<ResultCreateMetadata> createMetadata(@Body CreateMetadata createMetadata);
@@ -98,7 +102,8 @@ public interface UizaServiceV3 {
                                                   @Query("limit") int limit,
                                                   @Query("page") int page,
                                                   @Query("orderBy") String orderBy,
-                                                  @Query("orderType") String orderType);
+                                                  @Query("orderType") String orderType,
+                                                  @Query("publishToCdn") String publishToCdn);
 
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v3/media/entity")
@@ -142,7 +147,7 @@ public interface UizaServiceV3 {
     @POST("/api/public/v3/live/entity/feed")
     Observable<Object> startALiveEvent(@Body BodyStartALiveFeed bodyStartALiveFeed);
 
-    @GET("/api/private/v3/live/entity/tracking/current-view")
+    @GET("/api/public/v3/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id);
 
     @GET("/api/private/v3/live/entity/tracking/")

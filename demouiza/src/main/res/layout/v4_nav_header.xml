@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_10">
+
+        <ImageView
+            android:layout_width="@dimen/w_80"
+            android:layout_height="@dimen/w_80"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@mipmap/ic_launcher"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bt_login_enable"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_5"
+            android:text="@string/login"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_1"
+            android:layout_marginBottom="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:background="@color/LightGrey" />
+
+        <LinearLayout
+            android:id="@+id/ll_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <ImageView
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_launcher"
+                android:tint="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:paddingTop="@dimen/padding_5"
+                android:singleLine="true"
+                android:text="HOME"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_25" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_1"
+            android:layout_marginBottom="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:background="@color/LightGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <ImageView
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/baseline_play_circle_outline_white_48"
+                android:tint="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:paddingTop="@dimen/padding_5"
+                android:singleLine="true"
+                android:text="VIDEO"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_25" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_entities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/w_60"
+            android:paddingRight="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_5"
+            android:singleLine="true"
+            android:text="Entities"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
+        <TextView
+            android:id="@+id/tv_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/w_60"
+            android:paddingRight="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_5"
+            android:singleLine="true"
+            android:text="Categories"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_1"
+            android:layout_marginBottom="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:background="@color/LightGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <ImageView
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/baseline_live_tv_white_48dp"
+                android:tint="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:paddingTop="@dimen/padding_5"
+                android:singleLine="true"
+                android:text="LIVE"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_25" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_livestream"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingLeft="@dimen/w_60"
+            android:paddingRight="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_5"
+            android:singleLine="true"
+            android:text="Livestreaming"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_18" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_1"
+            android:layout_marginBottom="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:background="@color/LightGrey" />
+
+        <LinearLayout
+            android:id="@+id/ll_browser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <ImageView
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/baseline_language_white_48dp"
+                android:tint="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:paddingTop="@dimen/padding_5"
+                android:singleLine="true"
+                android:text="WEBSITE"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_25" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/w_1"
+            android:layout_marginBottom="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:background="@color/LightGrey" />
+
+        <TextView
+            android:id="@+id/tv_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/padding_5"
+            android:paddingTop="@dimen/padding_5"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="@dimen/txt_14" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

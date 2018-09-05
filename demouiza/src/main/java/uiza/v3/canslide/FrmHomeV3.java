@@ -42,11 +42,15 @@ import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawerLayout;
     private ProgressBar progressBar;
     private List<Data> dataList = new ArrayList<>();
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

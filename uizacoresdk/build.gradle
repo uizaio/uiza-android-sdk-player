@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libx264.libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'

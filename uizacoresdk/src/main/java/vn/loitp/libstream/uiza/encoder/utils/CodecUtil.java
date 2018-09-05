@@ -17,9 +17,13 @@ public class CodecUtil {
 
     public static final String H264_MIME = "video/avc";
     public static final String H265_MIME = "video/hevc";
-    public static final String AAC_MIME = "audio/mp4a-latm";
+    public static final String AAC_MIME = "audio/mp4a-latm";//work
     //public static final String AAC_MIME = "audio/vnd.dlna.adts";
-    private static final String TAG = "CodecUtil";
+    //public static final String AAC_MIME = "audio/mpeg4-generic";
+    //public static final String AAC_MIME = "audio/mp4";
+    //public static final String AAC_MIME = "audio/aac";
+    //public static final String AAC_MIME = "audio/mpeg";
+    private static final String TAG = CodecUtil.class.getSimpleName();
 
     public static List<MediaCodecInfo> getAllCodecs() {
         List<MediaCodecInfo> mediaCodecInfoList = new ArrayList<>();
@@ -64,6 +68,7 @@ public class CodecUtil {
     public static List<MediaCodecInfo> getAllSoftwareEncoders(String mime) {
         List<MediaCodecInfo> mediaCodecInfoList = getAllEncoders(mime);
         List<MediaCodecInfo> mediaCodecInfoSoftware = new ArrayList<>();
+
         for (MediaCodecInfo mediaCodecInfo : mediaCodecInfoList) {
             String name = mediaCodecInfo.getName().toLowerCase();
             if (name.contains("omx.google") || name.contains("sw")) {

@@ -207,9 +207,10 @@ public class OptionActivity extends BaseActivity {
 
     private void setupEnvironment() {
         //default
-        radioEnvironmentDev.setChecked(true);
-        currentApiEndPoint = Constants.URL_DEV_UIZA_VERSION_2;
-        currentApiTrackingEndPoint = Constants.URL_TRACKING_DEV;
+        radioEnvironmentAPIV3.setChecked(true);
+        //currentApiEndPoint = Constants.URL_DEV_UIZA_VERSION_2_DEMO;
+        currentApiTrackingEndPoint = Constants.URL_TRACKING_PROD;
+        radioCannotSlide.setVisibility(View.GONE);
 
         radioEnvironment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

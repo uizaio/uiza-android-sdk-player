@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/White"
-                    android:text="API V3 (android.uizadev.io)"
+                    android:text="API V3"
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_15"
                     android:textStyle="bold" />

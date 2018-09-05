@@ -14,12 +14,12 @@ import android.view.Surface;
 import vn.loitp.libstream.uiza.encoder.utils.gl.GlUtil;
 
 /**
- * Created by pedro on 9/09/17.
+ * Created by loitp on 9/09/17.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class SurfaceManager {
-
+    private final String TAG = getClass().getSimpleName();
     private static final int EGL_RECORDABLE_ANDROID = 0x3142;
 
     private EGLContext eglContext = null;
@@ -122,8 +122,7 @@ public class SurfaceManager {
         };
 
         if (eglSharedContext == null) {
-            eglContext =
-                    EGL14.eglCreateContext(eglDisplay, configs[0], EGL14.EGL_NO_CONTEXT, attrib_list, 0);
+            eglContext = EGL14.eglCreateContext(eglDisplay, configs[0], EGL14.EGL_NO_CONTEXT, attrib_list, 0);
         } else {
             eglContext = EGL14.eglCreateContext(eglDisplay, configs[0], eglSharedContext, attrib_list, 0);
         }

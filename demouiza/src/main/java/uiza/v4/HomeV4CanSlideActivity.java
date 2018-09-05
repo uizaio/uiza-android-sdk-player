@@ -2,20 +2,39 @@ package uiza.v4;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import uiza.R;
+import uiza.v4.categories.FrmCategories;
+import uiza.v4.entities.FrmEntities;
+import uiza.v4.home.FrmHome;
+import uiza.v4.live.FrmLive;
+import uiza.v4.login.FrmLogin;
+import uiza.v4.search.FrmSearch;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.utils.util.AppUtils;
+import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -29,10 +48,102 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         return draggablePanel;
     }
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
+    private FloatingActionButton btMenu;
+    public RelativeLayout llActionBar;
+    private TextView tvTitle;
+    private TextView tvEntities;
+    private TextView tvCategories;
+    private TextView tvLivestream;
+    private FloatingActionButton btSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
         super.onCreate(savedInstanceState);
+
+        llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView = (NavigationView) findViewById(R.id.nv);
+
+        navigationView.findViewById(R.id.ll_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new FrmHome());
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+        navigationView.findViewById(R.id.ll_browser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LSocialUtil.openUrlInBrowser(activity, "https://uiza.io/");
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+
+        TextView tvCopyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
+        tvCopyright.setText("© 2018 Uiza. All rights reserved.\nVersion " + AppUtils.getAppVersionCode() + "\nContact: Loitp@uiza.io");
+        TextView tvLogin = (TextView) navigationView.findViewById(R.id.tv_login);
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+                setVisibilityBtSearch(View.INVISIBLE);
+                replaceFragment(new FrmLogin());
+            }
+        });
+        tvEntities = (TextView) navigationView.findViewById(R.id.tv_entities);
+        tvEntities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new FrmEntities());
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+        tvCategories = (TextView) navigationView.findViewById(R.id.tv_categories);
+        tvCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new FrmCategories());
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+        tvLivestream = (TextView) navigationView.findViewById(R.id.tv_livestream);
+        tvLivestream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new FrmLive());
+                drawerLayout.closeDrawer(Gravity.START, true);
+            }
+        });
+
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        btMenu = (FloatingActionButton) findViewById(R.id.bt_menu);
+        btMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerVisible(Gravity.START)) {
+                    drawerLayout.closeDrawer(Gravity.START, true);
+                } else {
+                    drawerLayout.openDrawer(Gravity.START, true);
+                }
+            }
+        });
+        btSearch = (FloatingActionButton) findViewById(R.id.bt_search);
+        btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llActionBar.setVisibility(View.GONE);
+                replaceFragment(new FrmSearch());
+            }
+        });
+
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -64,15 +175,18 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             }
         });
         initializeDraggablePanel();
-        replaceFragment(new FrmHome());
+        replaceFragment(new FrmEntities());
     }
 
+    private boolean doubleBackToExitPressedOnce = false;
+
     public void replaceFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmHome) {
+        if (baseFragment instanceof FrmEntities) {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
         } else {
             LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
         }
+        tvTitle.setText(baseFragment.TAG);
     }
 
     @Override
@@ -132,7 +246,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                draggablePanel.setEnableSlide(true);
+                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    draggablePanel.setEnableSlide(true);
+                }
             }
         }
     }
@@ -147,10 +263,59 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START, true);
+            return;
+        }
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        //LLog.d(TAG, "onBackPressed before " + fragment.getClass().getSimpleName());
+        if (fragment instanceof FrmEntities) {
+            if (draggablePanel.getVisibility() == View.VISIBLE) {
+                if (draggablePanel.isMaximized()) {
+                    if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    } else {
+                        draggablePanel.minimize();
+                    }
+                    //draggablePanel.minimize();
+                    return;
+                }
+            }
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            LToast.show(activity, "Please click BACK again to exit");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+            return;
+        }
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            super.onBackPressed();
+            boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
+            if (isLandscapeScreen) {
+                LActivityUtil.toggleScreenOritation(activity);
+            } else {
+                if (draggablePanel.getVisibility() == View.VISIBLE) {
+                    if (draggablePanel.isMaximized()) {
+                        if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                        } else {
+                            draggablePanel.minimize();
+                        }
+                        //draggablePanel.minimize();
+                        return;
+                    }
+                }
+                super.onBackPressed();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
+                //LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
+                if (currentFragment instanceof BaseFragment) {
+                    tvTitle.setText(((BaseFragment) currentFragment).TAG);
+                }
+            }
         }
     }
 
@@ -171,6 +336,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         }
         if (frmVideoTop != null) {
             frmVideoTop.initEntity(entityId);
+        }
+        if (frmVideoBottom != null) {
+            frmVideoBottom.clearUI();
         }
     }
 
@@ -195,10 +363,22 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     }
 
     //this method will be called when entity is ready to play
-    public void isInitResult(ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
-        if (frmVideoBottom != null) {
+        if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void setVisibilityBtSearch(int visibilityBtSearch) {
+        btSearch.setVisibility(visibilityBtSearch);
     }
 }

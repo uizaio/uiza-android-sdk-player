@@ -18,12 +18,16 @@ import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
     private EditText etId;
     private EditText etPw;
     private TextView tvForgotPw;
     private TextView tvDontHaveAcc;
     private TextView tvLogin;
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

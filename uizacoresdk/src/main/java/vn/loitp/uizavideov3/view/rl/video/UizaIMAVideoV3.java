@@ -212,6 +212,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isHasError;
 
     private void handleError(Exception e) {
+        if (e == null) {
+            return;
+        }
         if (isHasError) {
             LLog.e(TAG, "handleError isHasError=true -> return");
             return;
@@ -221,6 +224,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaCallback != null) {
             uizaCallback.onError(e);
         }
+        UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
     /**
@@ -251,6 +255,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             UizaDataV3.getInstance().clearDataForEntity();
         }
+        if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+            setVisibilityOfPlaylistFolderController(View.VISIBLE);
+        } else {
+            setVisibilityOfPlaylistFolderController(View.GONE);
+        }
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
@@ -271,6 +280,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 public void onError(Throwable e) {
                     LLog.e(TAG, "init onError " + e.toString());
                     LToast.show(activity, "init onError: " + e.getMessage());
+                    UizaDataV3.getInstance().setSettingPlayer(false);
                 }
             });
         } else {
@@ -331,6 +341,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             UizaDataV3.getInstance().clearDataForPlaylistFolder();
         }
+        isHasError = false;
         getListAllEntity(metadataId);
     }
 
@@ -351,6 +362,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
                 }
             });
+            UizaDataV3.getInstance().setSettingPlayer(false);
             return;
         }
 
@@ -446,7 +458,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.e(TAG, "handleErrorNoData onClick1");
                 if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    uizaCallback.isInitResult(false, null, null);
+                    uizaCallback.isInitResult(false, false, null, null);
 
                     //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
@@ -457,7 +469,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.e(TAG, "handleErrorNoData onCancel");
                 if (uizaCallback != null) {
                     UizaDataV3.getInstance().setSettingPlayer(false);
-                    uizaCallback.isInitResult(false, null, null);
+                    uizaCallback.isInitResult(false, false, null, null);
                     //uizaCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
@@ -521,6 +533,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
                 initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                if (uizaCallback != null) {
+                    uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
+                }
                 initUizaPlayerManagerV3();
             } else {
                 //LLog.d(TAG, "checkToSetUp else");
@@ -995,14 +1010,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst");
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
             uizaPlayerManagerV3.getPlayer().setPlayWhenReady(true);
         }
         if (uizaCallback != null) {
             //LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
-            uizaCallback.isInitResult(true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
+            uizaCallback.isInitResult(true, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -1023,8 +1038,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar,
-                                   final int progressSeekbar) {
+    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
         verticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
@@ -1190,19 +1204,25 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                }
             }
         } else if (v == exoRew) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                }
             }
         } else if (v == exoPause) {
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().pause();
             } else {
-                uizaPlayerManagerV3.pauseVideo();
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.pauseVideo();
+                }
             }
             exoPause.setVisibility(GONE);
             exoPlay.setVisibility(VISIBLE);
@@ -1210,7 +1230,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (isCastingChromecast) {
                 UizaDataV3.getInstance().getCasty().getPlayer().play();
             } else {
-                uizaPlayerManagerV3.resumeVideo();
+                if (uizaPlayerManagerV3 != null) {
+                    uizaPlayerManagerV3.resumeVideo();
+                }
             }
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -1729,7 +1751,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void hideController() {
-        playerView.hideController();
+        if (isCastingChromecast) {
+            //dont hide if is casting chromecast
+        } else {
+            playerView.hideController();
+        }
     }
 
     protected void hideControllerOnTouch(boolean isHide) {
@@ -1997,6 +2023,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 == null || rlChromeCast == null) {
             return;
         }
+        LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
         if (isCastingChromecast) {
             uizaPlayerManagerV3.pauseVideo();
             uizaPlayerManagerV3.setVolume(0f);
@@ -2004,6 +2031,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
+            exoBackScreen.setVisibility(GONE);
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -2024,6 +2052,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
+            exoBackScreen.setVisibility(VISIBLE);
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -2055,6 +2084,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int pfTotalPage = Integer.MAX_VALUE;
     private final String pfOrderBy = "createdAt";
     private final String pfOrderType = "DESC";
+    private final String publishToCdn = "success";
 
     private void getListAllEntity(String metadataId) {
         if (uizaPlayerManagerV3 != null) {
@@ -2063,7 +2093,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (UizaDataV3.getInstance().getDataList() == null) {
             LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() == null -> call api lấy data list");
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-            activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType), new ApiSubscriber<ResultListEntity>() {
+            activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (Constants.IS_DEBUG) {
@@ -2071,6 +2101,19 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                     LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
+                        if (uizaCallback != null) {
+                            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
+                                @Override
+                                public void onClick1() {
+                                    handleError(new Exception(activity.getString(R.string.no_data)));
+                                }
+
+                                @Override
+                                public void onCancel() {
+                                    handleError(new Exception(activity.getString(R.string.no_data)));
+                                }
+                            });
+                        }
                         return;
                     }
                     if (pfTotalPage == Integer.MAX_VALUE) {
@@ -2101,7 +2144,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
 
                     //show controller for playlist folder
-                    setVisibilityOfPlaylistFolderController(VISIBLE);
+                    //setVisibilityOfPlaylistFolderController(VISIBLE);
                 }
 
                 @Override
@@ -2123,7 +2166,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.hideProgress();
             }
             //show controller for playlist folder
-            setVisibilityOfPlaylistFolderController(VISIBLE);
+            //setVisibilityOfPlaylistFolderController(VISIBLE);
         }
     }
 
@@ -2242,6 +2285,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleClickBackScreen() {
+        hideController();
         if (isLandscape) {
             exoFullscreenIcon.performClick();
         } else {

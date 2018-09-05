@@ -46,11 +46,15 @@ import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UizaCallback {
-    private final String TAG = getClass().getSimpleName();
     private UizaIMAVideoV3 uizaIMAVideoV3;
 
     public UizaIMAVideoV3 getUizaIMAVideoV3() {
         return uizaIMAVideoV3;
+    }
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -275,9 +279,9 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         LLog.d(TAG, "isInitResult " + isInitSuccess);
-        ((HomeV4CanSlideActivity) getActivity()).isInitResult(resultGetLinkPlay, data);
+        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();

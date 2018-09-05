@@ -392,7 +392,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();

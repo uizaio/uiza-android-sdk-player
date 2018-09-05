@@ -6,7 +6,7 @@ import android.os.Build;
 import android.support.annotation.IntDef;
 
 /**
- * Created by pedro on 7/10/17.
+ * Created by loitp on 7/10/17.
  */
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

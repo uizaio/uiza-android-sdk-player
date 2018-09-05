@@ -1,7 +1,7 @@
 package vn.loitp.libstream.uiza.encoder.input.audio;
 
 /**
- * Created by pedro on 19/01/17.
+ * Created by loitp on 19/01/17.
  */
 
 public interface GetMicrophoneData {

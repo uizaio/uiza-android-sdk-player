@@ -12,9 +12,6 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.LastPushI
 
 public class Data {
 
-    public static final String LAST_PROCRESS_START = "start";
-    public static final String LAST_PROCRESS_STOP = "stop";
-
     @SerializedName("entityId")
     @Expose
     private String entityId;
@@ -171,6 +168,9 @@ public class Data {
     @Expose
     private String updatedAt;
 
+    @SerializedName("publishToCdn")
+    @Expose
+    private String publishToCdn;
 
     public String getName() {
         return name;
@@ -269,7 +269,7 @@ public class Data {
     }
 
     public String getThumbnail() {
-        if (thumbnail == null) {
+        if (thumbnail == null || thumbnail.isEmpty()) {
             return Constants.URL_IMG_THUMBNAIL;
         }
         return thumbnail;
@@ -485,5 +485,13 @@ public class Data {
 
     public void setPushInfo(String pushInfo) {
         this.pushInfo = pushInfo;
+    }
+
+    public String getPublishToCdn() {
+        return publishToCdn;
+    }
+
+    public void setPublishToCdn(String publishToCdn) {
+        this.publishToCdn = publishToCdn;
     }
 }

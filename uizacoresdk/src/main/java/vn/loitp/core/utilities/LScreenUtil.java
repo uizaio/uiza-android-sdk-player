@@ -335,6 +335,7 @@ public class LScreenUtil {
         FragmentTransaction transaction = baseFragment.getChildFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
         transaction.replace(containerFrameLayoutIdRes, fragment);
+        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }
@@ -343,12 +344,27 @@ public class LScreenUtil {
 
     public static void replaceFragment(Activity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
         FragmentTransaction transaction = ((BaseActivity) activity).getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
+        //transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
         transaction.replace(containerFrameLayoutIdRes, fragment);
+        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }
         transaction.commit();
+    }
+
+    public void loadFragment(Activity activity, int containerFrameLayoutIdRes, final Fragment fragment) {
+        final FragmentTransaction transaction = ((BaseActivity) activity).getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        transaction.addToBackStack(fragment.getClass().getName());
+        transaction.commit();
+    }
+
+    public void backToFragment(Activity activity, final Fragment fragment) {
+        ((BaseActivity) activity).getSupportFragmentManager().popBackStackImmediate(fragment.getClass().getName(), 0);
+        // use 0 or the below constant as flag parameter
+        // FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
     }
 
     public static void addFragment(Activity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {

@@ -3,7 +3,7 @@ package vn.loitp.libstream.uiza.encoder.input.video;
 import android.hardware.Camera;
 
 /**
- * Created by pedro on 20/02/17.
+ * Created by loitp on 20/02/17.
  */
 
 public class FpsController {

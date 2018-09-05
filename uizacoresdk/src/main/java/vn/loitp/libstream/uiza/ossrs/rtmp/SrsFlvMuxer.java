@@ -45,8 +45,7 @@ import vn.loitp.libstream.uiza.faucamp.simplertmp.DefaultRtmpPublisher;
  * muxer.release();
  */
 public class SrsFlvMuxer {
-
-    private static final String TAG = "SrsFlvMuxer";
+    private static final String TAG = SrsFlvMuxer.class.getSimpleName();
 
     private static final int VIDEO_ALLOC_SIZE = 128 * 1024;
     private static final int AUDIO_ALLOC_SIZE = 4 * 1024;
@@ -61,7 +60,8 @@ public class SrsFlvMuxer {
     private SrsAllocator mAudioAllocator = new SrsAllocator(AUDIO_ALLOC_SIZE);
     private BlockingQueue<SrsFlvFrame> mFlvTagCache = new LinkedBlockingQueue<>(30);
     private ConnectCheckerRtmp connectCheckerRtmp;
-    private int sampleRate = 44100;
+    //private int sampleRate = 44100;
+    private int sampleRate = 0;
     private boolean isPpsSpsSend = false;
     private byte profileIop = ProfileIop.BASELINE;
 
@@ -142,9 +142,7 @@ public class SrsFlvMuxer {
 
         if (frame.is_video()) {
             if (frame.is_keyframe()) {
-                Log.i(TAG,
-                        String.format("worker: send frame type=%d, dts=%d, size=%dB", frame.type, frame.dts,
-                                frame.flvTag.array().length));
+                Log.i(TAG, String.format("worker: send frame type=%d, dts=%d, size=%dB", frame.type, frame.dts, frame.flvTag.array().length));
             }
             publisher.publishVideoData(frame.flvTag.array(), frame.flvTag.size(), frame.dts);
             mVideoAllocator.release(frame.flvTag);
@@ -290,6 +288,7 @@ public class SrsFlvMuxer {
      */
     private class SrsAacObjectType {
         public final static int AacLC = 2;
+        //public final static int AacLC = 5;
     }
 
     /**
@@ -427,8 +426,7 @@ public class SrsFlvMuxer {
             return nalu_header;
         }
 
-        public void muxSequenceHeader(ByteBuffer sps, ByteBuffer pps,
-                                      ArrayList<SrsFlvFrameBytes> frames) {
+        public void muxSequenceHeader(ByteBuffer sps, ByteBuffer pps, ArrayList<SrsFlvFrameBytes> frames) {
             // 5bytes sps/pps header:
             //      configurationVersion, AVCProfileIndication, profile_compatibility,
             //      AVCLevelIndication, lengthSizeMinusOne
@@ -515,8 +513,7 @@ public class SrsFlvMuxer {
             frames.add(pps_bb);
         }
 
-        public SrsAllocator.Allocation muxFlvTag(ArrayList<SrsFlvFrameBytes> frames, int frame_type,
-                                                 int avc_packet_type) {
+        public SrsAllocator.Allocation muxFlvTag(ArrayList<SrsFlvFrameBytes> frames, int frame_type, int avc_packet_type) {
             // for h264 in RTMP video payload, there is 5bytes header:
             //      1bytes, FrameType | CodecID
             //      1bytes, AVCPacketType
@@ -635,6 +632,7 @@ public class SrsFlvMuxer {
         private ByteBuffer Pps;
         private boolean aac_specific_config_got;
         private int achannel = 2;
+        //private int achannel = 0;
 
         public SrsFlv() {
             reset();
@@ -661,7 +659,9 @@ public class SrsFlvMuxer {
                 // AudioSpecificConfig (), page 33
                 // 1.6.2.1 AudioSpecificConfig
                 // audioObjectType; 5 bslbf
-                byte ch = (byte) (bb.get(0) & 0xf8);
+
+                //byte ch = (byte) (bb.get(0) & 0xf8);
+                byte ch = (byte) ((bb.get(0) & 0xf8) / 2);
                 // 3bits left.
 
                 // samplingFrequencyIndex; 4 bslbf
@@ -745,6 +745,7 @@ public class SrsFlvMuxer {
             frame[offset + 1] |= 1;
             // profile: audio_object_type - 1 (2-bit)
             frame[offset + 2] = (SrsAacObjectType.AacLC - 1) << 6;
+            //frame[offset + 2] = (byte) ((SrsAacObjectType.AacLC - 1) << 6);
             // sampling frequency index: 4 (4-bit)
             frame[offset + 2] |= (4 & 0xf) << 2;
             // channel configuration (3-bit)
@@ -771,7 +772,6 @@ public class SrsFlvMuxer {
 
         public void writeVideoSample(final ByteBuffer bb, MediaCodec.BufferInfo bi) {
             if (bi.size < 4) return;
-
             int pts = (int) (bi.presentationTimeUs / 1000);
             int type = SrsCodecVideoAVCFrame.InterFrame;
             SrsFlvFrameBytes frame = avc.demuxAnnexb(bb, bi.size, true);
@@ -852,8 +852,7 @@ public class SrsFlvMuxer {
             writeRtmpPacket(SrsCodecFlvTag.Video, dts, frame_type, SrsCodecVideoAVCType.NALU, video_tag);
         }
 
-        private void writeRtmpPacket(int type, int dts, int frame_type, int avc_aac_type,
-                                     SrsAllocator.Allocation tag) {
+        private void writeRtmpPacket(int type, int dts, int frame_type, int avc_aac_type, SrsAllocator.Allocation tag) {
             SrsFlvFrame frame = new SrsFlvFrame();
             frame.flvTag = tag;
             frame.type = type;

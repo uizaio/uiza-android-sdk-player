@@ -17,13 +17,17 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoBottom extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
     private TextView tvJsonData;
     private TextView tvJsonLinkplay;
 
     @Override
     protected int setLayoutResourceId() {
         return R.layout.v4_frm_bottom;
+    }
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
     }
 
     @Override

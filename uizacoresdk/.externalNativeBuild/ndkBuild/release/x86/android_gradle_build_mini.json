@@ -1,0 +1,23 @@
+{
+  "buildFiles": [
+    "C:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk",
+    "C:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-18 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib clean"
+  ],
+  "libraries": {
+    "enc-release-x86": {
+      "artifactName": "enc",
+      "buildCommand": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-18 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib C:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj/local/x86/libenc.so",
+      "abi": "x86",
+      "output": "C:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\obj\\local\\x86\\libenc.so"
+    },
+    "yuv-release-x86": {
+      "artifactName": "yuv",
+      "buildCommand": "C:\\Users\\LENOVO\\AppData\\Local\\Android\\sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Android.mk NDK_APPLICATION_MK\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\src\\main\\cpp\\Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-18 NDK_OUT\u003dC:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\lib C:/Loitp/uizasdk/uizacoresdk/build/intermediates/ndkBuild/release/obj/local/x86/libyuv.so",
+      "abi": "x86",
+      "output": "C:\\Loitp\\uizasdk\\uizacoresdk\\build\\intermediates\\ndkBuild\\release\\obj\\local\\x86\\libyuv.so"
+    }
+  }
+}

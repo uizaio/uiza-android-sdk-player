@@ -8,7 +8,9 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public interface UizaCallback {
     //when video init done with result
-    public void isInitResult(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
+    //isInitSuccess onStateReadyFirst
+    //isGetDataSuccess da co data ResultGetLinkPlay va Data
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
     //user click an item in entity relation
     public void onClickListEntityRelation(Item item, int position);

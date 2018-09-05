@@ -509,6 +509,8 @@ public class UizaUtil {
             //check if play entity
             UizaUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
+                LLog.d(TAG, "initEntity entityId: " + entityId);
+                //setEntityId(activity, entityId);
                 play(uizaIMAVideoV3, entityId);
             }
         }
@@ -530,6 +532,7 @@ public class UizaUtil {
         } else {
             //check if play entity
             UizaUtil.stopServicePiPIfRunningV3(activity);
+            //setMetadataId(activity, metadataId);
             playPlaylist(uizaIMAVideoV3, metadataId);
         }
     }
@@ -561,9 +564,11 @@ public class UizaUtil {
     }*/
 
     private static void play(final UizaIMAVideoV3 uizaIMAVideoV3, final String entityId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
+        /*if (UizaDataV3.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "isSettingPlayer");
             return;
-        }
+        }*/
+        UizaDataV3.getInstance().setSettingPlayer(false);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
@@ -573,9 +578,11 @@ public class UizaUtil {
     }
 
     private static void playPlaylist(final UizaIMAVideoV3 uizaIMAVideoV3, final String metadataId) {
-        if (UizaDataV3.getInstance().isSettingPlayer()) {
+        /*if (UizaDataV3.getInstance().isSettingPlayer()) {
+            LLog.d(TAG, "isSettingPlayer");
             return;
-        }
+        }*/
+        UizaDataV3.getInstance().setSettingPlayer(false);
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
@@ -606,6 +613,8 @@ public class UizaUtil {
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
     private final static String V3UIZATOKEN = "V3UIZATOKEN";
     private final static String V3DATA = "V3DATA";
+    //private final static String ENTITY_ID = "ENTITY_ID";
+    //private final static String METADATA_ID = "METADATA_ID";
     //end for api v3
 
     //object
@@ -675,6 +684,28 @@ public class UizaUtil {
         editor.putString(CLASS_NAME_OF_PLAYER, value);
         editor.apply();
     }
+
+    /*public static String getEntityId(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(ENTITY_ID, null);
+    }
+
+    public static void setEntityId(Context context, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(ENTITY_ID, value);
+        editor.apply();
+    }
+
+    public static String getMetadataId(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return pref.getString(METADATA_ID, null);
+    }
+
+    public static void setMetadataId(Context context, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putString(METADATA_ID, value);
+        editor.apply();
+    }*/
     /////////////////////////////////BOOLEAN
 
     public static Boolean getCheckAppReady(Context context) {

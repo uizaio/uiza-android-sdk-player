@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 
 import uiza.R;
 import uiza.option.OptionActivity;
+import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -24,7 +25,7 @@ import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class SplashActivityV3 extends BaseActivity {
-    private String currentPlayerId;
+    private String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
     //workspace loitp
     /*private final String DF_DOMAIN_API = "android-api.uiza.co";
@@ -43,6 +44,12 @@ public class SplashActivityV3 extends BaseActivity {
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
     private int environment = Constants.ENVIRONMENT_PROD;
+
+    //workspace stag
+    /*private final String DF_DOMAIN_API = "stagyann007.uiza.co";
+    private final String DF_TOKEN = "uap-91d64fe24bf5435f9ff4ad74a5195f4c-c055d414";
+    private final String DF_APP_ID = "91d64fe24bf5435f9ff4ad74a5195f4c";
+    private int environment = Constants.ENVIRONMENT_STAG;*/
 
     private EditText etApiDomain;
     private EditText etKey;
@@ -151,8 +158,8 @@ public class SplashActivityV3 extends BaseActivity {
                 UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
 
-                final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
-                //final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
+                //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
+                final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
                 if (intent != null) {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override

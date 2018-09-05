@@ -11,7 +11,7 @@ import vn.loitp.libstream.uiza.encoder.utils.gl.ImageStreamObject;
 import vn.loitp.libstream.uiza.encoder.utils.gl.TextStreamObject;
 
 /**
- * Created by pedro on 9/10/17.
+ * Created by loitp on 9/10/17.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)

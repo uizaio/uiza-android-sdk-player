@@ -3,7 +3,7 @@ package vn.loitp.libstream.uiza.encoder.input.video;
 import android.graphics.ImageFormat;
 
 /**
- * Created by pedro on 17/02/18.
+ * Created by loitp on 17/02/18.
  */
 
 public class Frame {

@@ -20,14 +20,15 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 
 /**
- * Created by khanh on 7/31/16.
+ * Created by loitp on 7/31/16.
  */
 public abstract class BaseFragment extends Fragment {
     protected Context context;
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
-    protected final String BASE_TAG = BaseFragment.class.getSimpleName();
-
+    public String TAG = setTag();
     protected View frmRootView;
+
+    protected abstract String setTag();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -50,9 +51,10 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         LDialogUtil.clearAll();
         super.onDestroyView();
-        if (!compositeSubscription.isUnsubscribed()) {
+        //TODO loitp, what the fucking case =="
+        /*if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
-        }
+        }*/
     }
 
     @SuppressWarnings("unchecked")

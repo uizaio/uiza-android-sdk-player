@@ -11,12 +11,11 @@ import java.nio.ByteBuffer;
 import vn.loitp.libstream.uiza.encoder.input.audio.GetMicrophoneData;
 
 /**
- * Created by pedro on 20/06/17.
+ * Created by loitp on 20/06/17.
  */
 public class AudioDecoder {
-
+    private final String TAG = AudioDecoder.class.getSimpleName();
     private static boolean loopMode = false;
-    private final String TAG = "AudioDecoder";
     private AudioDecoderInterface audioDecoderInterface;
     private LoopFileInterface loopFileInterface;
     private MediaExtractor audioExtractor;
@@ -36,8 +35,7 @@ public class AudioDecoder {
     private volatile long seekTime = 0;
     private volatile long startMs = 0;
 
-    public AudioDecoder(GetMicrophoneData getMicrophoneData,
-                        AudioDecoderInterface audioDecoderInterface, LoopFileInterface loopFileInterface) {
+    public AudioDecoder(GetMicrophoneData getMicrophoneData, AudioDecoderInterface audioDecoderInterface, LoopFileInterface loopFileInterface) {
         this.getMicrophoneData = getMicrophoneData;
         this.audioDecoderInterface = audioDecoderInterface;
         this.loopFileInterface = loopFileInterface;

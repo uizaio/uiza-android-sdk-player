@@ -66,6 +66,7 @@ public class Constants {
     public final static String URL_IMG_POSTER_MOMO = "https://kenh14cdn.com/2018/4/27/photo-15-15248224863571678048157.jpg";
     public final static String URL_IMG_POSTER = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
     public final static String URL_IMG_THUMBNAIL = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
+    public final static String URL_IMG_THUMBNAIL_2 = "https://static.uiza.io/2017/11/27/uiza-logo-1511755911349_1511755913189.png";
 
     public final static String PREFIX = "http://";
     public final static String PREFIXS = "https://";
@@ -144,4 +145,15 @@ public class Constants {
 
     public static final int RATIO_LAND_MOBILE = 18;
     public static final int RATIO_PORTRAIT_MOBILE = 12;
+
+    public static final String LAST_PROCESS_START = "start";
+    public static final String LAST_PROCESS_STOP = "stop";
+    public static final String LAST_PROCESS_INIT = "init";
+
+    public static final String MODE_PULL = "pull";
+    public static final String MODE_PUSH = "push";
+
+    public static final String SUCCESS = "success";
+    public static final String NOT_READY = "not-ready";
+    public static final String ERROR = "error";
 }

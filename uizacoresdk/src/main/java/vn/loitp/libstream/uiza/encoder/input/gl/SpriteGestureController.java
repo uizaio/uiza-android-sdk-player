@@ -5,8 +5,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-public class SpriteGestureController
-        implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
+public class SpriteGestureController implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 
     private ScaleGestureDetector gestureScale;
     private Sprite sprite;

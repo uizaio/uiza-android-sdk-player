@@ -10,12 +10,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * Created by pedro on 20/06/17.
+ * Created by loitp on 20/06/17.
  */
 public class VideoDecoder {
-
+    private final String TAG = VideoDecoder.class.getSimpleName();
     private static boolean loopMode = false;
-    private final String TAG = "VideoDecoder";
     private VideoDecoderInterface videoDecoderInterface;
     private LoopFileInterface loopFileInterface;
     private MediaExtractor videoExtractor;

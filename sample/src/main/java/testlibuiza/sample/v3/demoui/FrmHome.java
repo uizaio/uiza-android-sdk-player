@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -21,10 +22,14 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-    private final String TAG = getClass().getSimpleName();
 
-    private final String entityId = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    private final String metadataId = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
+    private final String entityId = LSApplication.entityIdDefaultVOD;
+    private final String metadataId = LSApplication.metadataDefault0;
+
+    @Override
+    protected String setTag() {
+        return getClass().getSimpleName();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
