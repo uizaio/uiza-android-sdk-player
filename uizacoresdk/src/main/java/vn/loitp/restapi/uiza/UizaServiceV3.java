@@ -72,6 +72,10 @@ public interface UizaServiceV3 {
     @GET("/api/public/v3/media/metadata")
     Observable<ResultGetListMetadata> getListMetadata();
 
+    //http://dev-docs.uizadev.io/#get-list-metadata
+    @GET("/api/public/v3/media/metadata")
+    Observable<ResultGetListMetadata> getListMetadata(@Query("limit") int limit, @Query("page") int page);
+
     //http://dev-docs.uizadev.io/#create-metadata
     @POST("/api/public/v3/media/metadata")
     Observable<ResultCreateMetadata> createMetadata(@Body CreateMetadata createMetadata);

@@ -29,6 +29,7 @@ import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.views.LToast;
 
 public class FrmCategories extends BaseFragment implements IOnBackPressed {
     private RecyclerView recyclerView;
@@ -36,6 +37,9 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     private ProgressBar pb;
     private CategoriesAdapter mAdapter;
     private List<Data> dataList = new ArrayList<>();
+    private int currentPage = 1;
+    private int totalPage = Integer.MAX_VALUE;
+    private final int limit = 50;
 
     @Override
     protected int setLayoutResourceId() {
@@ -80,6 +84,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
 
             @Override
             public void onLoadMore() {
+                loadMore();
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -90,18 +95,33 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     }
 
     private void getListMetadata() {
-        LLog.d(TAG, "getListMetadata");
+        if (currentPage > totalPage) {
+            LLog.d(TAG, "getListMetadata This is the last page");
+            LToast.show(getActivity(), "This is the last page");
+            return;
+        }
+        LLog.d(TAG, "getListMetadata " + currentPage + "/" + totalPage);
         tvMsg.setVisibility(View.GONE);
+        LUIUtil.showProgressBar(pb);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+        subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-                if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty()) {
+                if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty() || resultGetListMetadata.getMetadata() == null) {
                     tvMsg.setText("Error ResultGetListMetadata is null or empty");
                     LUIUtil.hideProgressBar(pb);
                     return;
                 }
                 LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
+
+                int total = (int) resultGetListMetadata.getMetadata().getTotal();
+                if (total / limit == 0) {
+                    totalPage = total / limit;
+                } else {
+                    totalPage = total / limit + 1;
+                }
+                LLog.d(TAG, "totalPage " + totalPage);
+
                 dataList.addAll(resultGetListMetadata.getData());
                 mAdapter.notifyDataSetChanged();
                 LUIUtil.hideProgressBar(pb);
@@ -114,5 +134,11 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
                 LUIUtil.hideProgressBar(pb);
             }
         });
+    }
+
+    private void loadMore() {
+        LLog.d(TAG, "loadMore");
+        currentPage++;
+        getListMetadata();
     }
 }
