@@ -15,7 +15,6 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
@@ -55,45 +54,7 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         //set uizaIMAVideoV3 hide all controller
-        uizaIMAVideoV3.setUseController(true);
-
-        uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
-            @Override
-            public void onSingleTapConfirmed() {
-                LLog.d(TAG, "onSingleTapConfirmed");
-            }
-
-            @Override
-            public void onLongPress() {
-                LLog.d(TAG, "onLongPress");
-            }
-
-            @Override
-            public void onDoubleTap() {
-                LLog.d(TAG, "onDoubleTap");
-                uizaIMAVideoV3.setDisplayPortrait(!uizaIMAVideoV3.isDisplayPortrait());
-            }
-
-            @Override
-            public void onSwipeRight() {
-                LLog.d(TAG, "onSwipeRight");
-            }
-
-            @Override
-            public void onSwipeLeft() {
-                LLog.d(TAG, "onSwipeLeft");
-            }
-
-            @Override
-            public void onSwipeBottom() {
-                LLog.d(TAG, "onSwipeBottom");
-            }
-
-            @Override
-            public void onSwipeTop() {
-                LLog.d(TAG, "onSwipeTop");
-            }
-        });
+        uizaIMAVideoV3.setUseController(false);
     }
 
     @Override
