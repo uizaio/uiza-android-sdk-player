@@ -46,6 +46,7 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UizaDataV3.getInstance().setCasty(Casty.create(this));
+        UizaDataV3.getInstance().setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
@@ -54,7 +55,7 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         //set uizaIMAVideoV3 hide all controller
-        uizaIMAVideoV3.setUseController(false);
+        uizaIMAVideoV3.setUseController(true);
     }
 
     @Override

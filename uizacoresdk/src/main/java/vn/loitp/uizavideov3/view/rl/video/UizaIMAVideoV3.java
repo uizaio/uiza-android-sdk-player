@@ -653,7 +653,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
             default:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(UizaDataV3.getInstance().getCurrentPlayerId(), null);
                 break;
         }
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
