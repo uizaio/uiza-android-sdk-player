@@ -952,7 +952,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             seekbarVolume.setMax(100);
             setProgressSeekbar(seekbarVolume, 99);
         }
-        exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+        if (exoVolume != null) {
+            exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+        }
 
         //set bightness max in first play
         firstBrightness = LScreenUtil.getCurrentBrightness(getContext());
@@ -1386,7 +1388,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (isLivestream) {
             exoPlaylistRelation.setVisibility(GONE);
-            exoCc.setVisibility(GONE);
+            if (exoCc != null) {
+                exoCc.setVisibility(GONE);
+            }
             if (rlTimeBar != null) {
                 rlTimeBar.setVisibility(GONE);
             }
@@ -1404,7 +1408,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             //TODO exoPlaylistRelation works fine, but QC wanne hide it
             exoPlaylistRelation.setVisibility(GONE);
-            exoCc.setVisibility(VISIBLE);
+            if (exoCc != null) {
+                exoCc.setVisibility(VISIBLE);
+            }
             if (rlTimeBar != null) {
                 rlTimeBar.setVisibility(VISIBLE);
             }
@@ -1496,9 +1502,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
             if (progress == 0) {
-                exoVolume.setImageResource(R.drawable.baseline_volume_off_white_48);
+                if (exoVolume != null) {
+                    exoVolume.setImageResource(R.drawable.baseline_volume_off_white_48);
+                }
             } else {
-                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+                if (exoVolume != null) {
+                    exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+                }
             }
             uizaPlayerManagerV3.setVolume(((float) progress / 100));
             if (isExoVolumeClicked) {
@@ -2135,7 +2145,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.setVolume(0f);
             rlChromeCast.setVisibility(VISIBLE);
             exoSetting.setVisibility(GONE);
-            exoCc.setVisibility(GONE);
+            if (exoCc != null) {
+                exoCc.setVisibility(GONE);
+            }
             if (llMid != null) {
                 llMid.setVisibility(GONE);
             }
@@ -2148,8 +2160,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoPause != null) {
                 exoPause.setVisibility(VISIBLE);
             }
-
-            exoVolume.setVisibility(GONE);
+            if (exoVolume != null) {
+                exoVolume.setVisibility(GONE);
+            }
 
             //casting player luôn play first với volume not mute
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
@@ -2163,7 +2176,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.setVolume(0.99f);
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
-            exoCc.setVisibility(VISIBLE);
+            if (exoCc != null) {
+                exoCc.setVisibility(VISIBLE);
+            }
             if (llMid != null) {
                 llMid.setVisibility(VISIBLE);
             }
@@ -2177,7 +2192,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 exoPause.setVisibility(VISIBLE);
             }
             //TODO iplm volume mute on/off o cast player
-            exoVolume.setVisibility(VISIBLE);
+            if (exoVolume != null) {
+                exoVolume.setVisibility(VISIBLE);
+            }
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //exoVolume.setImageResource(R.drawable.ic_volume_up_black_48dp);
             //uizaPlayerManagerV3.setVolume(0.99f);
@@ -2405,10 +2422,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (isCastingChromecast) {
             //LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
             boolean isMute = UizaDataV3.getInstance().getCasty().toggleMuteVolume();
-            if (isMute) {
-                exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
-            } else {
-                exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+            if (exoVolume != null) {
+                if (isMute) {
+                    exoVolume.setImageResource(R.drawable.ic_volume_off_black_48dp);
+                } else {
+                    exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
+                }
             }
         } else {
             //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
