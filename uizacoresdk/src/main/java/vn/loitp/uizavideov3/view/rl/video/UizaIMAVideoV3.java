@@ -938,8 +938,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //========================>>>>>start init seekbar
         isSetProgressSeekbarFirst = true;
         //set volume max in first play
-        seekbarVolume.setMax(100);
-        setProgressSeekbar(seekbarVolume, 99);
+        if (seekbarVolume != null) {
+            seekbarVolume.setMax(100);
+            setProgressSeekbar(seekbarVolume, 99);
+        }
         exoVolume.setImageResource(R.drawable.baseline_volume_up_white_48);
 
         //set bightness max in first play
@@ -1090,6 +1092,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
+        if (verticalSeekBar == null) {
+            return;
+        }
         verticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
@@ -2101,7 +2106,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             rlChromeCast.setVisibility(VISIBLE);
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
-            llMid.setVisibility(GONE);
+            if (llMid != null) {
+                llMid.setVisibility(GONE);
+            }
             if (exoBackScreen != null) {
                 exoBackScreen.setVisibility(GONE);
             }
@@ -2124,7 +2131,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             rlChromeCast.setVisibility(GONE);
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
-            llMid.setVisibility(VISIBLE);
+            if (llMid != null) {
+                llMid.setVisibility(VISIBLE);
+            }
             if (exoBackScreen != null) {
                 exoBackScreen.setVisibility(VISIBLE);
             }

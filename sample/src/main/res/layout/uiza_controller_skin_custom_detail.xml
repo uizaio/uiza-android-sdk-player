@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_top"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
             android:id="@id/tv_live"

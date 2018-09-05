@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
@@ -50,8 +51,8 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
 
-        //String entityId = LSApplication.entityIdDefaultVOD;
-        String entityId = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
+        String entityId = LSApplication.entityIdDefaultVOD;
+        //String entityId = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         //set uizaIMAVideoV3 hide all controller
