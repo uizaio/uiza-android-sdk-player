@@ -21,6 +21,7 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
+import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.restclient.RestClientV3;
@@ -97,7 +98,9 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     private void getListMetadata() {
         if (currentPage > totalPage) {
             LLog.d(TAG, "getListMetadata This is the last page");
-            LToast.show(getActivity(), "This is the last page");
+            if (Constants.IS_DEBUG) {
+                LToast.show(getActivity(), "This is the last page");
+            }
             LUIUtil.hideProgressBar(pb);
             return;
         }
