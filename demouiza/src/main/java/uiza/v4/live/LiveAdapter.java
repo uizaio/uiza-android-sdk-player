@@ -57,6 +57,8 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
                 holder.tvLastProcess.setVisibility(View.GONE);
                 //holder.ivLivestream.setVisibility(View.VISIBLE);
             }
+        } else {
+            holder.tvLastProcess.setVisibility(View.GONE);
         }
 
         holder.tvTitle.setText(data.getName());
