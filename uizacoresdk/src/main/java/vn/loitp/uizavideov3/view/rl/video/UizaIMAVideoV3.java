@@ -212,6 +212,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isHasError;
 
     private void handleError(Exception e) {
+        if (e == null) {
+            return;
+        }
         if (isHasError) {
             LLog.e(TAG, "handleError isHasError=true -> return");
             return;
@@ -2098,8 +2101,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uizaCallback != null) {
-                            LToast.show(activity, activity.getString(R.string.no_data));
-                            uizaCallback.onError(new NullPointerException("Data is empty"));
+                            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
+                                @Override
+                                public void onClick1() {
+                                    handleError(new Exception(activity.getString(R.string.no_data)));
+                                }
+
+                                @Override
+                                public void onCancel() {
+                                    handleError(new Exception(activity.getString(R.string.no_data)));
+                                }
+                            });
                         }
                         return;
                     }

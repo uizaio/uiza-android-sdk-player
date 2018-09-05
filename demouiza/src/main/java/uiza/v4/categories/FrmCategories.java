@@ -40,7 +40,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     private List<Data> dataList = new ArrayList<>();
     private int currentPage = 1;
     private int totalPage = Integer.MAX_VALUE;
-    private final int limit = 50;
+    private final int limit = 100;
 
     @Override
     protected int setLayoutResourceId() {
