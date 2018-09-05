@@ -1460,14 +1460,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (seekBar == seekbarVolume) {
             if (isSetProgressSeekbarFirst || isExoVolumeClicked) {
-                exoIvPreview.setVisibility(INVISIBLE);
+                if (exoIvPreview != null) {
+                    exoIvPreview.setVisibility(INVISIBLE);
+                }
             } else {
-                if (progress >= 66) {
-                    exoIvPreview.setImageResource(R.drawable.baseline_volume_up_white_48);
-                } else if (progress >= 33) {
-                    exoIvPreview.setImageResource(R.drawable.baseline_volume_down_white_48);
-                } else {
-                    exoIvPreview.setImageResource(R.drawable.baseline_volume_mute_white_48);
+                if (exoIvPreview != null) {
+                    if (progress >= 66) {
+                        exoIvPreview.setImageResource(R.drawable.baseline_volume_up_white_48);
+                    } else if (progress >= 33) {
+                        exoIvPreview.setImageResource(R.drawable.baseline_volume_down_white_48);
+                    } else {
+                        exoIvPreview.setImageResource(R.drawable.baseline_volume_mute_white_48);
+                    }
                 }
             }
             //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
@@ -1483,22 +1487,26 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else if (seekBar == seekbarBirghtness) {
             //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
             if (isSetProgressSeekbarFirst) {
-                exoIvPreview.setVisibility(INVISIBLE);
+                if (exoIvPreview != null) {
+                    exoIvPreview.setVisibility(INVISIBLE);
+                }
             } else {
-                if (progress >= 210) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
-                } else if (progress >= 175) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
-                } else if (progress >= 140) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
-                } else if (progress >= 105) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
-                } else if (progress >= 70) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
-                } else if (progress >= 35) {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
-                } else {
-                    exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
+                if (exoIvPreview != null) {
+                    if (progress >= 210) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
+                    } else if (progress >= 175) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
+                    } else if (progress >= 140) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
+                    } else if (progress >= 105) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
+                    } else if (progress >= 70) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
+                    } else if (progress >= 35) {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
+                    } else {
+                        exoIvPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
+                    }
                 }
             }
             LLog.d(TAG, "onProgressChanged setBrightness " + progress);
@@ -1513,7 +1521,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         LUIUtil.setTintSeekbar(seekBar, Color.WHITE);
-        exoIvPreview.setVisibility(VISIBLE);
+        if (exoIvPreview != null) {
+            exoIvPreview.setVisibility(VISIBLE);
+        }
         if (llMidSub != null) {
             llMidSub.setVisibility(INVISIBLE);
         }
@@ -1526,7 +1536,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         LUIUtil.setTintSeekbar(seekBar, Color.TRANSPARENT);
-        exoIvPreview.setVisibility(INVISIBLE);
+        if (exoIvPreview != null) {
+            exoIvPreview.setVisibility(INVISIBLE);
+        }
         if (llMidSub != null) {
             llMidSub.setVisibility(VISIBLE);
         }

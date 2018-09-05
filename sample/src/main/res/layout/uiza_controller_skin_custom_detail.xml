@@ -130,7 +130,7 @@
                 app:seekBarRotation="CW270" />
         </vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBarWrapper>
 
-        <ImageView
+        <!--<ImageView
             android:id="@id/exo_iv_preview"
             android:layout_width="@dimen/w_100"
             android:layout_height="@dimen/w_100"
@@ -139,7 +139,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
-            android:tint="@color/White" />
+            android:tint="@color/White" />-->
 
         <!-- Clock wise - 270 -->
         <vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBarWrapper
