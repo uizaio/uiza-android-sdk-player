@@ -428,7 +428,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
 
             //if entity is livestreaming, dont try to next link play
-            //LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
+            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.initWithoutReset();
                 uizaPlayerManagerV3.setRunnable();
