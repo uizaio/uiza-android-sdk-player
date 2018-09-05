@@ -656,6 +656,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(UizaDataV3.getInstance().getCurrentPlayerId(), null);
                 break;
         }
+
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -677,6 +678,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void updatePositionOfProgressBar() {
         //LLog.d(TAG, "updatePositionOfProgressBar set progressBar center in parent");
+        if (playerView == null || progressBar == null) {
+            return;
+        }
         playerView.post(new Runnable() {
             @Override
             public void run() {
@@ -727,7 +731,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
 
         //TODO exoHearing works fine, but QC dont want to show it, fuck QC team
-        exoHearing.setVisibility(GONE);
+        if (exoHearing != null) {
+            exoHearing.setVisibility(GONE);
+        }
 
         exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
         exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
@@ -755,30 +761,70 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         tvLiveView = (TextView) playerView.findViewById(R.id.tv_live_view);
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
 
-        //onclick
-        exoFullscreenIcon.setOnClickListener(this);
-        exoBackScreen.setOnClickListener(this);
-        exoVolume.setOnClickListener(this);
-        exoSetting.setOnClickListener(this);
-        exoCc.setOnClickListener(this);
-        exoPlaylistRelation.setOnClickListener(this);
-        exoPlaylistFolder.setOnClickListener(this);
-        exoHearing.setOnClickListener(this);
-        exoPictureInPicture.setOnClickListener(this);
-        exoShare.setOnClickListener(this);
-        exoFfwd.setOnClickListener(this);
-        exoRew.setOnClickListener(this);
-        exoPlay.setOnClickListener(this);
-        exoPause.setOnClickListener(this);
-        exoSkipNext.setOnClickListener(this);
-        exoSkipPrevious.setOnClickListener(this);
-
-        //seekbar change
-        seekbarVolume.setOnSeekBarChangeListener(this);
-        seekbarBirghtness.setOnSeekBarChangeListener(this);
+        setEventForView();
 
         //set visinility first
         setVisibilityOfPlaylistFolderController(GONE);
+    }
+
+    private void setEventForView() {
+        //onclick
+        if (exoFullscreenIcon != null) {
+            exoFullscreenIcon.setOnClickListener(this);
+        }
+        if (exoBackScreen != null) {
+            exoBackScreen.setOnClickListener(this);
+        }
+        if (exoVolume != null) {
+            exoVolume.setOnClickListener(this);
+        }
+        if (exoSetting != null) {
+            exoSetting.setOnClickListener(this);
+        }
+        if (exoCc != null) {
+            exoCc.setOnClickListener(this);
+        }
+        if (exoPlaylistRelation != null) {
+            exoPlaylistRelation.setOnClickListener(this);
+        }
+        if (exoPlaylistFolder != null) {
+            exoPlaylistFolder.setOnClickListener(this);
+        }
+        if (exoHearing != null) {
+            exoHearing.setOnClickListener(this);
+        }
+        if (exoPictureInPicture != null) {
+            exoPictureInPicture.setOnClickListener(this);
+        }
+        if (exoShare != null) {
+            exoShare.setOnClickListener(this);
+        }
+        if (exoFfwd != null) {
+            exoFfwd.setOnClickListener(this);
+        }
+        if (exoRew != null) {
+            exoRew.setOnClickListener(this);
+        }
+        if (exoPlay != null) {
+            exoPlay.setOnClickListener(this);
+        }
+        if (exoPause != null) {
+            exoPause.setOnClickListener(this);
+        }
+        if (exoSkipNext != null) {
+            exoSkipNext.setOnClickListener(this);
+        }
+        if (exoSkipPrevious != null) {
+            exoSkipPrevious.setOnClickListener(this);
+        }
+
+        //seekbar change
+        if (seekbarVolume != null) {
+            seekbarVolume.setOnSeekBarChangeListener(this);
+        }
+        if (seekbarVolume != null) {
+            seekbarBirghtness.setOnSeekBarChangeListener(this);
+        }
     }
 
     //tự tạo layout chromecast và background đen
@@ -1292,7 +1338,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void setTitle() {
-        tvTitle.setText(UizaDataV3.getInstance().getEntityName());
+        if (tvTitle != null) {
+            tvTitle.setText(UizaDataV3.getInstance().getEntityName());
+        }
     }
 
     private void updateUI() {
@@ -2034,7 +2082,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(GONE);
             exoCc.setVisibility(GONE);
             llMid.setVisibility(GONE);
-            exoBackScreen.setVisibility(GONE);
+            if (exoBackScreen != null) {
+                exoBackScreen.setVisibility(GONE);
+            }
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
@@ -2055,7 +2105,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoSetting.setVisibility(VISIBLE);
             exoCc.setVisibility(VISIBLE);
             llMid.setVisibility(VISIBLE);
-            exoBackScreen.setVisibility(VISIBLE);
+            if (exoBackScreen != null) {
+                exoBackScreen.setVisibility(VISIBLE);
+            }
 
             exoPlay.setVisibility(GONE);
             exoPause.setVisibility(VISIBLE);
