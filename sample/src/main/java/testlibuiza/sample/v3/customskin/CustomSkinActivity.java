@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.TextView;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -11,6 +13,7 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
+import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -57,6 +60,16 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
         //set uizaIMAVideoV3 hide all controller
         uizaIMAVideoV3.setUseController(true);
+
+        TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
+        tvSample.setText("This is a view from custom skin.\nTry to tap me.");
+        LUIUtil.setTextShadow(tvSample);
+        tvSample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LToast.show(activity, "Click!");
+            }
+        });
     }
 
     @Override
