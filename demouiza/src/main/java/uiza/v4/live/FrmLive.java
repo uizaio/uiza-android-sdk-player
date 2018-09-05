@@ -38,7 +38,6 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmLive extends BaseFragment implements IOnBackPressed {
-
     private final int limit = 20;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
@@ -47,13 +46,13 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     private LiveAdapter mAdapter;
     private TextView tvMsg;
     private List<Data> dataList = new ArrayList<>();
-    private int page = 0;
+    private int page = 1;
     private int totalPage = Integer.MAX_VALUE;
     private ProgressBar pb;
 
     @Override
     protected String setTag() {
-        return "Entities";
+        return "Livestreaming";
     }
 
     @Override
@@ -126,8 +125,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     }
 
     private void getListAllEntities() {
-        page++;
-        if (page >= totalPage) {
+        if (page > totalPage) {
             if (Constants.IS_DEBUG) {
                 LToast.show(getActivity(), getString(R.string.this_is_last_page));
             }
@@ -178,6 +176,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
 
     private void loadMore() {
         LLog.d(TAG, "loadMore");
+        page++;
         getListAllEntities();
     }
 }
