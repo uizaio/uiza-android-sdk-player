@@ -80,13 +80,13 @@
                     android:padding="@dimen/padding_5"
                     android:text="Test UizaSDK V3" />
 
-                <!--<Button
-                    android:id="@+id/bt_uiza_demo_ui_slide"
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="Uiza Video Slide UI"
-                    android:visibility="visible" />-->
+                    android:text="Custom skin"
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout

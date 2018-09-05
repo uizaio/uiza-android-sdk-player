@@ -12,6 +12,7 @@ import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.V3TestAPIActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinActivity;
 import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
@@ -83,6 +84,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, LivestreamBroadcasterActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_uiza_custom_skin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
