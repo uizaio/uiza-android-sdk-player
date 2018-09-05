@@ -341,6 +341,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             UizaDataV3.getInstance().clearDataForPlaylistFolder();
         }
+        isHasError = false;
         getListAllEntity(metadataId);
     }
 
