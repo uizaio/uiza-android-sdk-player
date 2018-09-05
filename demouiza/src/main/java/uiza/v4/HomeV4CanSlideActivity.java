@@ -160,13 +160,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
