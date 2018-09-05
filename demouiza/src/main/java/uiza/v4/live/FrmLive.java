@@ -38,7 +38,7 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmLive extends BaseFragment implements IOnBackPressed {
-    private final int limit = 20;
+    private final int limit = 50;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
     private final String publishToCdn = "success";
@@ -77,9 +77,6 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         mAdapter = new LiveAdapter(getActivity(), dataList, new LiveAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                if (data == null || data.getLastProcess() == null) {
-                    return;
-                }
                 if (data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
                     UizaUtil.setClickedPip(getActivity(), false);
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());

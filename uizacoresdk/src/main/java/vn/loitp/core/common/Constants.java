@@ -149,4 +149,7 @@ public class Constants {
     public static final String LAST_PROCESS_START = "start";
     public static final String LAST_PROCESS_STOP = "stop";
     public static final String LAST_PROCESS_INIT = "init";
+
+    public static final String MODE_PULL = "pull";
+    public static final String MODE_PUSH = "push";
 }

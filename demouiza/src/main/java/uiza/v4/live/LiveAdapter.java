@@ -64,6 +64,15 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.DataHolder> {
         holder.tvTitle.setText(data.getName());
         LUIUtil.setTextShadow(holder.tvTitle);
         LImageUtil.load(context, data.getThumbnail(), holder.ivThumnail);
+        if (data.getMode() == null) {
+            holder.ivLivestream.setVisibility(View.GONE);
+        } else {
+            if (data.getMode().equals(Constants.MODE_PULL)) {
+                holder.ivLivestream.setVisibility(View.GONE);
+            } else if (data.getMode().equals(Constants.MODE_PUSH)) {
+                holder.ivLivestream.setVisibility(View.VISIBLE);
+            }
+        }
         holder.ivLivestream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
