@@ -1055,6 +1055,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onDestroy() {
+        //ivVideoCover.setImageResource(R.drawable.uiza);
+        //ivVideoCover.setVisibility(VISIBLE);
         if (firstBrightness != Constants.NOT_FOUND) {
             //LLog.d(TAG, "onDestroy setBrightness " + firstBrightness);
             LScreenUtil.setBrightness(getContext(), firstBrightness);
