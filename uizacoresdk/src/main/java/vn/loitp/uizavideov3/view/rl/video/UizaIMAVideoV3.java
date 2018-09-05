@@ -1304,14 +1304,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 isLandscape = true;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
                 if (isTablet) {
-                    exoPictureInPicture.setVisibility(GONE);
+                    if (exoPictureInPicture != null) {
+                        exoPictureInPicture.setVisibility(GONE);
+                    }
                 }
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
                 if (isTablet && !isCastingChromecast()) {
-                    exoPictureInPicture.setVisibility(VISIBLE);
+                    if (exoPictureInPicture != null) {
+                        exoPictureInPicture.setVisibility(VISIBLE);
+                    }
                 }
             }
         }
@@ -1346,9 +1350,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void updateUI() {
         //LLog.d(TAG, "updateUI isTablet " + isTablet);
         if (isTablet && !isCastingChromecast()) {
-            exoPictureInPicture.setVisibility(VISIBLE);
+            if (exoPictureInPicture != null) {
+                exoPictureInPicture.setVisibility(VISIBLE);
+            }
         } else {
-            exoPictureInPicture.setVisibility(GONE);
+            if (exoPictureInPicture != null) {
+                exoPictureInPicture.setVisibility(GONE);
+            }
         }
         if (isLivestream) {
             exoPlaylistRelation.setVisibility(GONE);
