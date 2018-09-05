@@ -98,6 +98,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         if (currentPage > totalPage) {
             LLog.d(TAG, "getListMetadata This is the last page");
             LToast.show(getActivity(), "This is the last page");
+            LUIUtil.hideProgressBar(pb);
             return;
         }
         LLog.d(TAG, "getListMetadata " + currentPage + "/" + totalPage);
