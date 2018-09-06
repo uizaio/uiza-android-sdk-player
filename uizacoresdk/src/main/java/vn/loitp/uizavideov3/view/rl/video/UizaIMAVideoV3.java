@@ -1127,6 +1127,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     public void onDestroy() {
+        LLog.d(TAG, "onDestroy");
         //ivVideoCover.setImageResource(R.drawable.uiza);
         //ivVideoCover.setVisibility(VISIBLE);
         if (firstBrightness != Constants.NOT_FOUND) {
@@ -1137,6 +1138,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaPlayerManagerV3.release();
         }
         UizaDataV3.getInstance().setSettingPlayer(false);
+        UizaDataV3.getInstance().clearUizaInputList();
         //UizaDataV3.getInstance().clearDataForPlaylistFolder();
         //UizaDataV3.getInstance().clearDataForEntity();
         LDialogUtil.clearAll();
@@ -1151,15 +1153,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
-
         LLog.d(TAG, "onResume " + UizaDataV3.getInstance().getUizaInputV3List().size());
         activityIsPausing = false;
         if (isExoShareClicked) {
+            //LLog.d(TAG, "onResume if");
             isExoShareClicked = false;
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.resumeVideo();
             }
         } else {
+            //LLog.d(TAG, "onResume else");
             initUizaPlayerManagerV3();
         }
     }
