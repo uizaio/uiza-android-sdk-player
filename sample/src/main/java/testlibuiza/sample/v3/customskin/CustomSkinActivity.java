@@ -61,13 +61,43 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         //String entityId = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
-        //set uizaIMAVideoV3 hide all controller
-        uizaIMAVideoV3.setUseController(true);
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
+                }
+            }
+        });
+        findViewById(R.id.bt_change_skin_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_default);
+                }
+            }
+        });
+        findViewById(R.id.bt_change_skin_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uizaIMAVideoV3 != null) {
                     uizaIMAVideoV3.changeSkin(R.layout.player_skin_1);
+                }
+            }
+        });
+        findViewById(R.id.bt_change_skin_2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_2);
+                }
+            }
+        });
+        findViewById(R.id.bt_change_skin_3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_3);
                 }
             }
         });

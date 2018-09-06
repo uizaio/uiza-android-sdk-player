@@ -673,11 +673,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      * changeSkin(R.layout.player_skin_1);
      */
     //TODO improve this func
+    private boolean isRefreshFromChangeSkin;
+    private long currentPositionBeforeChangeSkin;
+
     public void changeSkin(int skinId) {
         LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null) {
             return;
         }
+        isRefreshFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
         playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(skinId, null);
@@ -699,6 +703,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setUpMediaRouteButton();
         addChromecastLayer();
+        //uizaPlayerManagerV3.pauseVideo();
+        LLog.d(TAG, "changeSkin getCurrentPosition " + uizaPlayerManagerV3.getCurrentPosition());
+        currentPositionBeforeChangeSkin = uizaPlayerManagerV3.getCurrentPosition();
         UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
 
         if (uizaCallback != null) {
@@ -1139,6 +1146,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
                 }
             });
+        }
+        if (isRefreshFromChangeSkin) {
+            uizaPlayerManagerV3.seekTo(currentPositionBeforeChangeSkin);
+            isRefreshFromChangeSkin = false;
+            currentPositionBeforeChangeSkin = 0;
         }
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
