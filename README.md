@@ -23,10 +23,12 @@ Uiza is the complete toolkit for building a powerful video streaming application
       compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
+Get lasted relea number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-player).
+
 # Init SDK
 
 1. appId : get in email at registration
-2. token : generate via https://docs.uiza.io/#get-api-key
+2. token : generate [HERE](https://docs.uiza.io/#get-api-key).
 3. api : get in email at registration
 -
 
