@@ -69,7 +69,7 @@ public class RestClientV3 {
 
     public static <S> S createService(Class<S> serviceClass) {
         if (retrofit == null) {
-            throw new IllegalStateException("Must call init() before use");
+            throw new IllegalStateException("Must call init() before using");
         }
         return retrofit.create(serviceClass);
     }
