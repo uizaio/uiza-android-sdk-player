@@ -1155,27 +1155,33 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         LLog.d(TAG, "onResume " + UizaDataV3.getInstance().getUizaInputV3List().size());
         activityIsPausing = false;
-        if (isExoShareClicked) {
-            //LLog.d(TAG, "onResume if");
+        /*if (isExoShareClicked) {
+            LLog.d(TAG, "onResume if");
             isExoShareClicked = false;
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.resumeVideo();
             }
         } else {
-            //LLog.d(TAG, "onResume else");
-            initUizaPlayerManagerV3();
+            LLog.d(TAG, "onResume else initUizaPlayerManagerV3");
+            //initUizaPlayerManagerV3();
+        }*/
+        if (uizaPlayerManagerV3 != null) {
+            LLog.d(TAG, "uizaPlayerManagerV3 != null -> resumeVideo");
+            uizaPlayerManagerV3.resumeVideo();
+        } else {
+            LLog.d(TAG, "uizaPlayerManagerV3 == null -> do nothing");
         }
     }
 
     private void initUizaPlayerManagerV3() {
         if (uizaPlayerManagerV3 != null) {
-            //LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
+            LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
             uizaPlayerManagerV3.init();
             if (UizaUtil.getClickedPip(activity) && !UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
                 uizaPlayerManagerV3.getPlayer().setPlayWhenReady(false);
             } else {
-                //LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
+                LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
             }
             if (isCalledFromConnectionEventBus) {
                 uizaPlayerManagerV3.setRunnable();
@@ -1193,7 +1199,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void onPause() {
         //LLog.d(TAG, "onPause " + isExoShareClicked);
         activityIsPausing = true;
-        if (isExoShareClicked) {
+        /*if (isExoShareClicked) {
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.pauseVideo();
             }
@@ -1201,6 +1207,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.reset();
             }
+        }*/
+        if (uizaPlayerManagerV3 != null) {
+            uizaPlayerManagerV3.pauseVideo();
         }
     }
 
@@ -1231,7 +1240,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private boolean isExoShareClicked;
+    //private boolean isExoShareClicked;
     private boolean isExoVolumeClicked;
 
     protected void toggleScreenOritation() {
@@ -2515,7 +2524,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void handleClickShare() {
         LSocialUtil.share(activity, isLandscape);
-        isExoShareClicked = true;
+        //isExoShareClicked = true;
     }
 
     /*
