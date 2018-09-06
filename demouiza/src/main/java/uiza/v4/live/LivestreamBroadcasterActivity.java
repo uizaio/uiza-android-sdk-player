@@ -83,7 +83,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         super.onCreate(savedInstanceState);
         //LActivityUtil.changeScreenLandscape(activity);
-
         uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
         uizaLivestream.setCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);

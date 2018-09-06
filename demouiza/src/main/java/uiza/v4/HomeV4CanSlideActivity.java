@@ -413,4 +413,20 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     public void setVisibilityBtSearch(int visibilityBtSearch) {
         btSearch.setVisibility(visibilityBtSearch);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (draggablePanel != null && draggablePanel.getVisibility() == View.VISIBLE && draggablePanel.isMinimized()) {
+            draggablePanel.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (draggablePanel != null && draggablePanel.getVisibility() == View.INVISIBLE && draggablePanel.isMinimized()) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
+    }
 }
