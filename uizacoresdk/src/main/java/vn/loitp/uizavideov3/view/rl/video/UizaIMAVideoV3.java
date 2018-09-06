@@ -423,7 +423,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     protected void tryNextLinkPlay() {
         if (isLivestream) {
             //try to play 3 times
-            if (countTryLinkPlayError >= 3) {
+            if (countTryLinkPlayError >= 5) {
                 showTvMsg(activity.getString(R.string.err_live_is_stopped));
             }
 

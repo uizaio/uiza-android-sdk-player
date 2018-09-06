@@ -138,6 +138,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionSuccessRtmp() {
+        LLog.d(TAG, "onConnectionSuccessRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -153,6 +154,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
+        LLog.d(TAG, "onConnectionFailedRtmp " + reason);
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -169,6 +171,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onDisconnectRtmp() {
+        LLog.d(TAG, "onDisconnectRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -185,6 +188,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onAuthErrorRtmp() {
+        LLog.d(TAG, "onAuthErrorRtmp");
         if (callback != null) {
             callback.onAuthErrorRtmp();
             //LDialogUtil.show(progressBar);
@@ -193,6 +197,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
 
     @Override
     public void onAuthSuccessRtmp() {
+        LLog.d(TAG, "onAuthSuccessRtmp");
         if (callback != null) {
             callback.onAuthSuccessRtmp();
             LDialogUtil.hide(progressBar);
@@ -264,7 +269,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
         if (isRecording()) {
             stopRecord();
         }
-        rtmpCamera1.stopStream();
+        if (rtmpCamera1.isStreaming()) {
+            rtmpCamera1.stopStream();
+        }
     }
 
     public boolean prepareAudio() {
