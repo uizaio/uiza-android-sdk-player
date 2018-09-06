@@ -18,7 +18,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
-import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -141,7 +141,7 @@ public class UizaDialogListEntityRelationV3 extends Dialog {
             playListAdapterV3 = new PlayListAdapterV3(activity, itemList, new PlayListCallbackV3() {
                 @Override
                 public void onClickItem(Item item, int position) {
-                    if (UizaData.getInstance().isSettingPlayer()) {
+                    if (UizaDataV3.getInstance().isSettingPlayer()) {
                         return;
                     }
                     dismiss();

@@ -15,7 +15,7 @@ import loitp.core.R;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.util.UizaData;
+import vn.loitp.uizavideov3.util.UizaDataV3;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -75,7 +75,7 @@ public class UizaDialogPlaylistFolder extends Dialog {
             @Override
             public void onClickItem(Data data, int position) {
                 LLog.d(TAG, "onClickItem position: " + position);
-                if (UizaData.getInstance().isSettingPlayer()) {
+                if (UizaDataV3.getInstance().isSettingPlayer()) {
                     return;
                 }
                 dismiss();

@@ -662,11 +662,48 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(UizaDataV3.getInstance().getCurrentPlayerId(), null);
                 break;
         }
-
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
         rootView.addView(playerView);
+    }
+
+    /*
+     **Change skin via skin id resouces
+     * changeSkin(R.layout.player_skin_1);
+     */
+    //TODO improve this func
+    public void changeSkin(int skinId) {
+        LLog.d(TAG, "changeSkin skinId " + skinId);
+        if (activity == null) {
+            return;
+        }
+        rootView.removeView(playerView);
+        rootView.requestLayout();
+        playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(skinId, null);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        playerView.setLayoutParams(lp);
+        rootView.addView(playerView);
+        rootView.requestLayout();
+
+        findViews();
+        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+        updateUIEachSkin();
+        setMarginPreviewTimeBarLayout();
+        setMarginRlLiveInfo();
+        //setup chromecast
+        mediaRouteButton = new MediaRouteButton(activity);
+        if (llTop != null) {
+            llTop.addView(mediaRouteButton);
+        }
+        setUpMediaRouteButton();
+        addChromecastLayer();
+        UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
+
+        if (uizaCallback != null) {
+            uizaCallback.onSkinChange();
+        }
     }
 
     private void updateUIEachSkin() {
@@ -763,8 +800,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            //TODO revert to VISIBILE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }

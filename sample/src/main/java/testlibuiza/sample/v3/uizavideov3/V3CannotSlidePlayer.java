@@ -422,6 +422,11 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     }
 
     @Override
+    public void onSkinChange() {
+
+    }
+
+    @Override
     public void onError(Exception e) {
         LLog.d(TAG, "onError " + e.getMessage());
     }

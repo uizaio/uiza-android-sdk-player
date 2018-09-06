@@ -17,7 +17,7 @@ import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 /**
- * Created by LENOVO on 4/28/2018.
+ * Created by loitp on 4/28/2018.
  */
 
 public class UizaData {

@@ -24,6 +24,9 @@ public interface UizaCallback {
     //when pip video is inited success
     public void onClickPipVideoInitSuccess(boolean isInitSuccess);
 
+    //when skin is changed
+    public void onSkinChange();
+
     //when uiimavideo had an error
     public void onError(Exception e);
 

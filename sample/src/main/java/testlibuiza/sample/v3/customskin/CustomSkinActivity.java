@@ -7,10 +7,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -54,22 +57,22 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
 
-        String entityId = LSApplication.entityIdDefaultVOD;
+        final String entityId = LSApplication.entityIdDefaultVOD;
         //String entityId = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         //set uizaIMAVideoV3 hide all controller
         uizaIMAVideoV3.setUseController(true);
-
-        TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
-        tvSample.setText("This is a view from custom skin.\nTry to tap me.");
-        LUIUtil.setTextShadow(tvSample);
-        tvSample.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LToast.show(activity, "Click!");
+                if (uizaIMAVideoV3 != null) {
+                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_1);
+                }
             }
         });
+
+        handleClickSampeText();
     }
 
     @Override
@@ -145,6 +148,11 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
     }
 
     @Override
+    public void onSkinChange() {
+        handleClickSampeText();
+    }
+
+    @Override
     public void onError(Exception e) {
         LLog.d(TAG, "onError " + e.getMessage());
     }
@@ -155,6 +163,21 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
             uizaIMAVideoV3.toggleFullscreen();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void handleClickSampeText() {
+        TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
+        if (tvSample != null) {
+            tvSample.setText("This is a view from custom skin.\nTry to tap me.");
+            LUIUtil.setTextShadow(tvSample);
+            tvSample.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LAnimationUtil.play(v, Techniques.Pulse);
+                    LToast.show(activity, "Click!");
+                }
+            });
         }
     }
 }
