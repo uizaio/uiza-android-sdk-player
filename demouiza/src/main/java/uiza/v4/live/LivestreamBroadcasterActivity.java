@@ -13,6 +13,7 @@ import android.widget.TextView;
 import uiza.R;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LPopupMenu;
 import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
@@ -250,7 +251,15 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
                         uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
                     } else {
-                        LToast.show(activity, getString(R.string.err_dont_support));
+                        LDialogUtil.showDialog1(activity, getString(R.string.err_dont_support), new LDialogUtil.Callback1() {
+                            @Override
+                            public void onClick1() {
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
                     }
                 } else {
                     bStartStop.setText(R.string.start_button);
@@ -309,8 +318,17 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LToast.show(activity, reason);
-                onBackPressed();
+                LDialogUtil.showDialog1(activity, reason + "", new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        onBackPressed();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        onBackPressed();
+                    }
+                });
             }
         });
     }
@@ -377,5 +395,13 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
         startPreview.onSizeStartPreview(1280, 720);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (uizaLivestream != null) {
+            uizaLivestream.stopStream();
+        }
+        super.onDestroy();
     }
 }

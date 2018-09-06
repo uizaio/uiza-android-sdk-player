@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -158,5 +159,17 @@ public class LAnimationUtil {
             }
         });
         mAnimationSet.start();
+    }
+
+    public static void blinking(View view) {
+        if (view == null) {
+            return;
+        }
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(1000);
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        view.startAnimation(anim);
     }
 }

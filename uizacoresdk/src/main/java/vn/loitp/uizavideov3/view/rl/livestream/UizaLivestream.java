@@ -27,7 +27,9 @@ import loitp.core.R;
 import retrofit2.HttpException;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
+import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
@@ -140,6 +142,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void run() {
                 tvLiveStatus.setVisibility(VISIBLE);
+                LAnimationUtil.blinking(tvLiveStatus);
+                LDialogUtil.hide(progressBar);
             }
         });
         if (callback != null) {
@@ -153,6 +157,8 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void run() {
                 tvLiveStatus.setVisibility(GONE);
+                tvLiveStatus.clearAnimation();
+                //LDialogUtil.show(progressBar);
                 rtmpCamera1.stopStream();
             }
         });
@@ -167,7 +173,9 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
             @Override
             public void run() {
                 tvLiveStatus.setVisibility(GONE);
+                tvLiveStatus.clearAnimation();
                 rtmpCamera1.stopStream();
+                //LDialogUtil.show(progressBar);
             }
         });
         if (callback != null) {
@@ -179,6 +187,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void onAuthErrorRtmp() {
         if (callback != null) {
             callback.onAuthErrorRtmp();
+            //LDialogUtil.show(progressBar);
         }
     }
 
@@ -186,6 +195,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     public void onAuthSuccessRtmp() {
         if (callback != null) {
             callback.onAuthSuccessRtmp();
+            LDialogUtil.hide(progressBar);
         }
     }
 
@@ -242,6 +252,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     public void startStream(String streamUrl, boolean isSavedToDevice) {
+        LDialogUtil.show(progressBar);
         rtmpCamera1.startStream(streamUrl);
         LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
         if (isSavedToDevice) {
@@ -434,6 +445,7 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     }
 
     private void startLivestream(final String entityLiveId) {
+        LDialogUtil.show(progressBar);
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);

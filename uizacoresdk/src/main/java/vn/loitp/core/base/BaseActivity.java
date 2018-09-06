@@ -37,14 +37,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (setFullScreen()) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
             //LActivityUtil.hideSystemUI(getWindow().getDecorView());
         }
         setCustomStatusBar(ContextCompat.getColor(activity, R.color.colorPrimary), ContextCompat.getColor(activity, R.color.colorPrimary));
         super.onCreate(savedInstanceState);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         setContentView(setLayoutResourceId());
 
         /*View view = activity.findViewById(R.id.scroll_view);
