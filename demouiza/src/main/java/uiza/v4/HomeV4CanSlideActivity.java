@@ -196,7 +196,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -274,9 +274,12 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 if (draggablePanel.isMaximized()) {
                     if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
                     } else {
-                        draggablePanel.minimize();
+                        if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
+                            frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                        } else {
+                            draggablePanel.minimize();
+                        }
                     }
-                    //draggablePanel.minimize();
                     return;
                 }
             }
@@ -303,15 +306,18 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                     if (draggablePanel.isMaximized()) {
                         if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
                         } else {
-                            draggablePanel.minimize();
+                            if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
+                                frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                            } else {
+                                draggablePanel.minimize();
+                            }
                         }
-                        //draggablePanel.minimize();
                         return;
                     }
                 }
                 super.onBackPressed();
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-                //LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
+                LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
                 if (currentFragment instanceof BaseFragment) {
                     tvTitle.setText(((BaseFragment) currentFragment).TAG);
                 }

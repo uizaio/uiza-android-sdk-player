@@ -1333,6 +1333,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //current screen is landscape or portrait
     private boolean isLandscape;
 
+    public boolean isLandscape() {
+        return isLandscape;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
