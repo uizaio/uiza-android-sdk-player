@@ -1148,15 +1148,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void onResume() {
         if (isCastingChromecast) {
-            //LLog.d(TAG, "onResume isCastingChromecast true => return");
+            LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
 
-        //LLog.d(TAG, "onResume");
+        LLog.d(TAG, "onResume " + UizaDataV3.getInstance().getUizaInputV3List().size());
         activityIsPausing = false;
         if (isExoShareClicked) {
             isExoShareClicked = false;
-
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.resumeVideo();
             }

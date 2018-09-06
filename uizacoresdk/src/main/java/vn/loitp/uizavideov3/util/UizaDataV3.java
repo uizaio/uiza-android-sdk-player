@@ -250,7 +250,7 @@ public class UizaDataV3 {
         }
     }*/
 
-    public void clear() {
+    public void clearUizaInputList() {
         uizaInputV3 = null;
         uizaInputV3List.clear();
     }
