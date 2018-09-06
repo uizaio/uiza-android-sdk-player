@@ -3,6 +3,7 @@ package uiza.v4;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -176,6 +177,31 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         });
         initializeDraggablePanel();
         replaceFragment(new FrmEntities());
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                if (draggablePanel != null) {
+                    if (draggablePanel.getVisibility() == View.VISIBLE) {
+                        if (draggablePanel.isMaximized()) {
+                            draggablePanel.minimize();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
     }
 
     private boolean doubleBackToExitPressedOnce = false;
