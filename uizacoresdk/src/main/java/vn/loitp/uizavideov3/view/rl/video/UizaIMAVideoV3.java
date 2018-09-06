@@ -706,7 +706,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //uizaPlayerManagerV3.pauseVideo();
         LLog.d(TAG, "changeSkin getCurrentPosition " + uizaPlayerManagerV3.getCurrentPosition());
         currentPositionBeforeChangeSkin = uizaPlayerManagerV3.getCurrentPosition();
-        UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
+
+        //UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
+        //init(UizaDataV3.getInstance().getEntityId());
+        uizaPlayerManagerV3.release();
+        checkToSetUp();
 
         if (uizaCallback != null) {
             uizaCallback.onSkinChange();
@@ -1147,11 +1151,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
         }
-        if (isRefreshFromChangeSkin) {
-            uizaPlayerManagerV3.seekTo(currentPositionBeforeChangeSkin);
-            isRefreshFromChangeSkin = false;
-            currentPositionBeforeChangeSkin = 0;
-        }
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
@@ -1230,6 +1229,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 uizaPlayerManagerV3.getPlayer().setPlayWhenReady(false);
             } else {
                 LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
+                if (isRefreshFromChangeSkin) {
+                    uizaPlayerManagerV3.seekTo(currentPositionBeforeChangeSkin);
+                    isRefreshFromChangeSkin = false;
+                    currentPositionBeforeChangeSkin = 0;
+                }
             }
             if (isCalledFromConnectionEventBus) {
                 uizaPlayerManagerV3.setRunnable();

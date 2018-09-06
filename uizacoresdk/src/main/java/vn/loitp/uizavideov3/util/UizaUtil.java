@@ -507,14 +507,14 @@ public class UizaUtil {
         }
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            play(uizaIMAVideoV3, null);
+            UizaUtil.play(uizaIMAVideoV3, null);
         } else {
             //check if play entity
             UizaUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
                 LLog.d(TAG, "initEntity entityId: " + entityId);
                 //setEntityId(activity, entityId);
-                play(uizaIMAVideoV3, entityId);
+                UizaUtil.play(uizaIMAVideoV3, entityId);
             }
         }
     }
