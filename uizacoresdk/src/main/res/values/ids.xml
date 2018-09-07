@@ -19,6 +19,7 @@
     <item name="exo_volume" type="id" />
     <item name="exo_play_uiza" type="id" />
     <item name="exo_pause_uiza" type="id" />
+    <item name="exo_replay_uiza" type="id" />
     <item name="exo_skip_next" type="id" />
     <item name="exo_skip_previous" type="id" />
     <item name="exo_cc" type="id" />

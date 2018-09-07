@@ -130,6 +130,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private TextView tvTitle;
     private ImageButtonWithSize exoPause;
     private ImageButtonWithSize exoPlay;
+    private ImageButtonWithSize exoReplayUiza;
     private ImageButtonWithSize exoRew;
     private ImageButtonWithSize exoFfwd;
     private ImageButtonWithSize exoBackScreen;
@@ -778,6 +779,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);
         if (exoPlay != null) {
             exoPlay.setVisibility(GONE);
+        }
+        exoReplayUiza = (ImageButtonWithSize) playerView.findViewById(R.id.exo_replay_uiza);
+        if (exoReplayUiza != null) {
+            exoReplayUiza.setVisibility(GONE);
         }
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
@@ -2438,9 +2443,19 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onPlayerEnded() {
-        LLog.d(TAG, "onPlayerEnded -> show replay");
+        LLog.d(TAG, "onPlayerEnded");
         if (isPlayPlaylistFolder()) {
             autoSwitchNextVideo();
+        } else {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(GONE);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setVisibility(VISIBLE);
+            }
         }
     }
 
@@ -2479,6 +2494,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (exoSkipPrevious != null) {
             exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
+        }
+        //Có play kiểu gì đi nữa thì cũng phải exoPlay GONE và exoPause VISIBLE
+        if (exoPlay != null) {
+            exoPlay.setVisibility(GONE);
+        }
+        if (exoPause != null) {
+            exoPause.setVisibility(VISIBLE);
         }
     }
 
