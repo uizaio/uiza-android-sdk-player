@@ -23,7 +23,7 @@ Uiza is the complete toolkit for building a powerful video streaming application
       compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
-Get lasted relea number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-player).
+Get lasted release number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-player).
 
 # Init SDK
 
