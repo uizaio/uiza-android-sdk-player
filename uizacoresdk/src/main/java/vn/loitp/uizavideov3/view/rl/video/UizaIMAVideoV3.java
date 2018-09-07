@@ -1250,18 +1250,31 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     @Override
     public void onStartPreview(PreviewView previewView) {
-        //LLog.d(TAG, "onStartPreview");
+        //LLog.d(TAG, "PreviewView onStartPreview");
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
     }
 
     @Override
     public void onStopPreview(PreviewView previewView) {
-        //LLog.d(TAG, "onStopPreview");
+        //LLog.d(TAG, "PreviewView onStopPreview");
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
+        if (isOnPlayerEnded) {
+            setVisibilityOfPlayPauseReplay(false);
+            isOnPlayerEnded = false;
+        }
         uizaPlayerManagerV3.resumeVideo();
     }
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "onPreview progress " + progress);
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress);
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
         if (isCastingChromecast) {
             UizaDataV3.getInstance().getCasty().getPlayer().seek(progress);
         }
@@ -2416,20 +2429,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, null, false, false);
     }
 
+    private boolean isOnPlayerEnded;
+
     protected void onPlayerEnded() {
         LLog.d(TAG, "onPlayerEnded");
+        isOnPlayerEnded = true;
         if (isPlayPlaylistFolder()) {
             autoSwitchNextVideo();
         } else {
-            if (exoPlay != null) {
-                exoPlay.setVisibility(GONE);
-            }
-            if (exoPause != null) {
-                exoPause.setVisibility(GONE);
-            }
-            if (exoReplayUiza != null) {
-                exoReplayUiza.setVisibility(VISIBLE);
-            }
+            setVisibilityOfPlayPauseReplay(true);
         }
     }
 
@@ -2459,6 +2467,30 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
     }
 
+    private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
+        if (isShowReplay) {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(GONE);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setVisibility(VISIBLE);
+            }
+        } else {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setVisibility(GONE);
+            }
+        }
+    }
+
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
         if (exoPlaylistFolder != null) {
             exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
@@ -2469,16 +2501,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (exoSkipPrevious != null) {
             exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
         }
-        //Có play kiểu gì đi nữa thì cũng phải exoPlay GONE và exoPause VISIBLE
-        if (exoPlay != null) {
-            exoPlay.setVisibility(GONE);
-        }
-        if (exoPause != null) {
-            exoPause.setVisibility(VISIBLE);
-        }
-        if (exoReplayUiza != null) {
-            exoReplayUiza.setVisibility(GONE);
-        }
+        //Có play kiểu gì đi nữa thì cũng phải exoPlay GONE và exoPause VISIBLE và exoReplayUiza GONE
+        setVisibilityOfPlayPauseReplay(false);
     }
 
     private void handleClickSkipNext() {
@@ -2504,6 +2528,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setDefautValueForFlagIsTracked();
         boolean result = uizaPlayerManagerV3.seekTo(0);
         if (result) {
+            isOnPlayerEnded = false;
             setVisibilityOfPlaylistFolderController(View.GONE);
             trackUizaEventVideoStarts();
             trackUizaEventDisplay();
