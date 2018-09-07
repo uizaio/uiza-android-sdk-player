@@ -46,6 +46,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.utils.util.Utils;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -397,20 +398,20 @@ public class UizaUtil {
     }
 
     //=============================================================================START FOR UIZA V3
-    public static void initUizaWorkspace(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
+    /*public static void initUizaWorkspace(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
         if (uizaWorkspaceInfo == null || uizaWorkspaceInfo.getUsername() == null || uizaWorkspaceInfo.getPassword() == null || uizaWorkspaceInfo.getUrlApi() == null) {
             throw new NullPointerException("UizaWorkspaceInfo cannot be null or empty!");
         }
         setUizaWorkspaceInfo(context, uizaWorkspaceInfo);
         RestClientV3.init(Constants.PREFIXS + uizaWorkspaceInfo.getUrlApi());
-    }
+    }*/
 
-    public static UizaWorkspaceInfo getUizaWorkspace(Context context) {
+    /*public static UizaWorkspaceInfo getUizaWorkspace(Context context) {
         if (context == null) {
             return null;
         }
         return getUizaWorkspaceInfo(context);
-    }
+    }*/
 
     /*public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
         setResultGetToken(context, resultGetToken);
@@ -592,6 +593,32 @@ public class UizaUtil {
                 uizaIMAVideoV3.initPlaylistFolder(metadataId);
             }
         });
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
+        if (context == null) {
+            throw new NullPointerException("Error: Context cannot be null");
+        }
+        if (domainApi == null || domainApi.isEmpty()) {
+            throw new NullPointerException("Domain api cannot be null or empty");
+        }
+        if (token == null || token.isEmpty()) {
+            throw new NullPointerException("Token cannot be null or empty");
+        }
+        if (appId == null || appId.isEmpty()) {
+            throw new NullPointerException("App id be null or empty");
+        }
+        Utils.init(context.getApplicationContext());
+        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaDataV3.getInstance().initSDK(domainApi, token, appId, env);
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId) {
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, Constants.PLAYER_ID_SKIN_1);
     }
 
     //=============================================================================END FOR UIZA V3

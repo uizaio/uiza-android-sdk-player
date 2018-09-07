@@ -8,8 +8,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.utils.util.Utils;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -59,7 +58,7 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        Utils.init(this);
+        //Utils.init(this);
         //config activity transition default
         //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
@@ -67,7 +66,9 @@ public class LSApplication extends MultiDexApplication {
         RestClientTracking.init(Constants.URL_TRACKING_STAG);
         Constants.setDebugMode(true);
 
-        initWorkspace();
+        //initWorkspace();
+        //UizaUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
+        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {
@@ -80,10 +81,5 @@ public class LSApplication extends MultiDexApplication {
 
     public static Context getContext() {
         return instance.getApplicationContext();
-    }
-
-    private void initWorkspace() {
-        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env);
     }
 }
