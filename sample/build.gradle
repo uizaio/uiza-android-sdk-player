@@ -13,7 +13,7 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.uiza.module.sample"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
