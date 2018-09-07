@@ -1331,6 +1331,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                    if (isOnPlayerEnded) {
+                        setVisibilityOfPlayPauseReplay(false);
+                        isOnPlayerEnded = false;
+                    }
                 }
             }
         } else if (v == exoRew) {
@@ -1339,6 +1343,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                    if (isOnPlayerEnded) {
+                        setVisibilityOfPlayPauseReplay(false);
+                        isOnPlayerEnded = false;
+                    }
                 }
             }
         } else if (v == exoPause) {
