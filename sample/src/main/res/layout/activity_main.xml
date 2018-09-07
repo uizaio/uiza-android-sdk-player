@@ -63,7 +63,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="API V2 (Recommended)"
+                    android:text="Uiza V2 (Recommended)"
                     android:textSize="@dimen/txt_30" />
 
                 <Button

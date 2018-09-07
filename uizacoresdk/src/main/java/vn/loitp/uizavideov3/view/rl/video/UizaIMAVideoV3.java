@@ -480,7 +480,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
         if (isResultGetLinkPlayDone) {
             if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
-                LLog.d(TAG, "checkToSetUp if");
+                //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
@@ -538,7 +538,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
                 initUizaPlayerManagerV3();
             } else {
-                LLog.d(TAG, "checkToSetUp else");
+                //LLog.d(TAG, "checkToSetUp else");
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -617,7 +617,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
-        LLog.d(TAG, "onCreate isTablet " + isTablet);
+        //LLog.d(TAG, "onCreate isTablet " + isTablet);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
@@ -1202,7 +1202,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
-        LLog.d(TAG, "onResume " + UizaDataV3.getInstance().getUizaInputV3List().size());
+        //LLog.d(TAG, "onResume getUizaInputV3List().size " + UizaDataV3.getInstance().getUizaInputV3List().size());
         activityIsPausing = false;
         /*if (isExoShareClicked) {
             LLog.d(TAG, "onResume if");
@@ -1215,10 +1215,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //initUizaPlayerManagerV3();
         }*/
         if (uizaPlayerManagerV3 != null) {
-            LLog.d(TAG, "uizaPlayerManagerV3 != null -> resumeVideo");
+            //LLog.d(TAG, "onResume uizaPlayerManagerV3 != null -> resumeVideo");
             uizaPlayerManagerV3.resumeVideo();
         } else {
-            LLog.d(TAG, "uizaPlayerManagerV3 == null -> do nothing");
+            //LLog.d(TAG, "onResume uizaPlayerManagerV3 == null -> do nothing");
         }
     }
 
@@ -2442,6 +2442,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     protected void onPlayerEnded() {
+        LLog.d(TAG, "onPlayerEnded -> show replay");
         if (isPlayPlaylistFolder()) {
             autoSwitchNextVideo();
         }
