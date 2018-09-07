@@ -392,28 +392,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
 
         //track event eventype display
-        if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
-                }
-            });
-        }
-
+        trackUizaEventDisplay();
         //track event plays_requested
-        if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);
-                }
-            });
-        }
+        trackUizaEventPlaysRequested();
     }
 
     private int countTryLinkPlayError = 0;
@@ -1145,16 +1126,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             handleConnectedChromecast();
             showController();
         }
-        if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
-                }
-            });
-        }
+        trackUizaEventVideoStarts();
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
@@ -2528,9 +2500,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 == null) {
             return false;
         }
+        //TODO Chỗ này đáng lẽ chỉ clear value của tracking khi đảm bảo rằng seekTo(0) true
+        setDefautValueForFlagIsTracked();
         boolean result = uizaPlayerManagerV3.seekTo(0);
         if (result) {
             setVisibilityOfPlaylistFolderController(View.GONE);
+            trackUizaEventVideoStarts();
+            trackUizaEventDisplay();
+            trackUizaEventPlaysRequested();
         }
         return result;
     }
@@ -2781,6 +2758,45 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void skipPreviousVideo() {
         if (exoSkipPrevious != null) {
             exoSkipPrevious.performClick();
+        }
+    }
+
+    private void trackUizaEventVideoStarts() {
+        if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
+                }
+            });
+        }
+    }
+
+    private void trackUizaEventDisplay() {
+        if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
+                }
+            });
+        }
+    }
+
+    private void trackUizaEventPlaysRequested() {
+        if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);
+                }
+            });
         }
     }
 }
