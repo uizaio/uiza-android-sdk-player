@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDeviceUtil;
+import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.utils.util.ConvertUtils;
 
@@ -139,7 +140,7 @@ public class ImageButtonWithSize extends ImageButton {
 
     private void updateSizePortrait() {
         size = screenWPortrait / ratioPort;
-        //LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
+        LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
 
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
@@ -148,7 +149,7 @@ public class ImageButtonWithSize extends ImageButton {
 
     private void updateSizeLandscape() {
         size = screenWLandscape / ratioLand;
-        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
+        LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
 
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;

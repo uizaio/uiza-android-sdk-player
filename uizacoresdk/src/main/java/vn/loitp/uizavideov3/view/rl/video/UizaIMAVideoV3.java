@@ -681,6 +681,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (activity == null) {
             return;
         }
+        UizaDataV3.getInstance().setCurrentPlayerId(skinId);
         isRefreshFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
@@ -718,15 +719,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUIEachSkin() {
-        //LLog.d(TAG, "updateUIEachSkin");
-        switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
-            case Constants.PLAYER_ID_SKIN_2:
-            case Constants.PLAYER_ID_SKIN_3:
-                exoPlay.setRatioLand(7);
-                exoPlay.setRatioPort(5);
-                exoPause.setRatioLand(7);
-                exoPause.setRatioPort(5);
-                break;
+        //LLog.d(TAG, "updateUIEachSkin " + UizaDataV3.getInstance().getCurrentPlayerId());
+        int currentPlayerId = UizaDataV3.getInstance().getCurrentPlayerId();
+        if (currentPlayerId == R.layout.player_skin_2 || currentPlayerId == R.layout.player_skin_3) {
+            //LLog.d(TAG, "updateUIEachSkin player_skin_2 || player_skin_3 -> edit size of exoPlay exoPause");
+            exoPlay.setRatioLand(7);
+            exoPlay.setRatioPort(5);
+            exoPause.setRatioLand(7);
+            exoPause.setRatioPort(5);
+        } else {
+            //LLog.d(TAG, "updateUIEachSkin !player_skin_2 || !player_skin_3");
         }
     }
 
