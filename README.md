@@ -354,9 +354,22 @@ Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://g
 - Please note: Dont change any id's view if you are using it.
 
 **Step 3:**'
-On function onStart() of Activity, put this code:
+On function onCreate() of Activity, put this code:
 
-    UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+    UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+
+Ex:
+
+    @Override  
+    protected void onCreate(@Nullable Bundle savedInstanceState) {  
+        UizaUtil.setCasty(this);  
+        UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+        super.onCreate(savedInstanceState);
+    }
+
+Ex: findView from your custom layout:
+
+    TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
 
 That's enough! This code above will change the player's skin quickly. You can build and run your app now.
 
