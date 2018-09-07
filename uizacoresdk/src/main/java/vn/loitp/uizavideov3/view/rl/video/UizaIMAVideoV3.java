@@ -793,7 +793,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -2486,6 +2487,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoReplayUiza != null) {
                 exoReplayUiza.setVisibility(VISIBLE);
             }
+            if (exoFfwd != null) {
+                exoFfwd.setEnabled(false);
+                exoFfwd.setColorFilter(Color.GRAY);
+            }
         } else {
             if (exoPlay != null) {
                 exoPlay.setVisibility(GONE);
@@ -2495,6 +2500,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             if (exoReplayUiza != null) {
                 exoReplayUiza.setVisibility(GONE);
+            }
+            if (exoFfwd != null) {
+                exoFfwd.setEnabled(true);
+                exoFfwd.setColorFilter(Color.WHITE);
             }
         }
     }

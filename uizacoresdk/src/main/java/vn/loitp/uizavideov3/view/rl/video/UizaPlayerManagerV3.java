@@ -714,7 +714,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
     //forward  10000mls
     public void seekToForward(long forward) {
         if (player.getCurrentPosition() + forward > player.getDuration()) {
-            player.seekTo(player.getDuration());
+            player.seekTo(player.getDuration() - 100);
         } else {
             player.seekTo(player.getCurrentPosition() + forward);
         }
