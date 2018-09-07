@@ -70,10 +70,6 @@ public class UizaDataV3 {
         return casty;
     }
 
-    public void initSDK(String domainAPI, String token, String appId) {
-        initSDK(domainAPI, token, appId, Constants.ENVIRONMENT_PROD);
-    }
-
     public void initSDK(String domainAPI, String token, String appId, int environment) {
         mDomainAPI = domainAPI;
         mToken = token;

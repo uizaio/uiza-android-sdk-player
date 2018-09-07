@@ -7,8 +7,7 @@ import com.google.gson.Gson;
 
 import vn.loitp.core.common.Constants;
 import vn.loitp.data.ActivityData;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.utils.util.Utils;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();
@@ -26,7 +25,7 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        Utils.init(this);
+        //Utils.init(this);
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         /*if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -36,7 +35,8 @@ public class LSApplication extends MultiDexApplication {
         }
         LeakCanary.install(this);*/
 
-        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
+        //UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
+        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
     }
 
     public Gson getGson() {
