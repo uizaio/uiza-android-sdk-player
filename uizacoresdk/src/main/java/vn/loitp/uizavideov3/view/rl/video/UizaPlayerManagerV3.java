@@ -701,12 +701,14 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         return 0;
     }
 
-    public void seekTo(long positionMs) {
+    public boolean seekTo(long positionMs) {
         //LLog.d(TAG, "seekTo positionMs: " + positionMs);
         if (player != null) {
             player.seekTo(positionMs);
             //LLog.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>seekTo positionMs done");
+            return true;
         }
+        return false;
     }
 
     //forward  10000mls

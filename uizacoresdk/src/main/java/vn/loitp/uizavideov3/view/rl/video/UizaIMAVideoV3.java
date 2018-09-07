@@ -781,9 +781,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             exoPlay.setVisibility(GONE);
         }
         exoReplayUiza = (ImageButtonWithSize) playerView.findViewById(R.id.exo_replay_uiza);
-        if (exoReplayUiza != null) {
-            exoReplayUiza.setVisibility(GONE);
-        }
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
@@ -873,6 +870,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (exoPause != null) {
             exoPause.setOnClickListener(this);
+        }
+        if (exoReplayUiza != null) {
+            exoReplayUiza.setOnClickListener(this);
         }
         if (exoSkipNext != null) {
             exoSkipNext.setOnClickListener(this);
@@ -1378,6 +1378,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoPause != null) {
                 exoPause.setVisibility(VISIBLE);
             }
+        } else if (v == exoReplayUiza) {
+            replay();
         } else if (v == exoSkipNext) {
             handleClickSkipNext();
         } else if (v == exoSkipPrevious) {
@@ -2502,6 +2504,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (exoPause != null) {
             exoPause.setVisibility(VISIBLE);
         }
+        if (exoReplayUiza != null) {
+            exoReplayUiza.setVisibility(GONE);
+        }
     }
 
     private void handleClickSkipNext() {
@@ -2512,6 +2517,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleClickSkipPrevious() {
         //LLog.d(TAG, "handleClickSkipPrevious");
         autoSwitchPreviousLinkVideo();
+    }
+
+    /*
+     **replay this current content
+     * return true if replay successed
+     * return fail if replay failed
+     */
+    public boolean replay() {
+        if (uizaPlayerManagerV3 == null) {
+            return false;
+        }
+        boolean result = uizaPlayerManagerV3.seekTo(0);
+        if (result) {
+            setVisibilityOfPlaylistFolderController(View.GONE);
+        }
+        return result;
     }
 
     //===================================================================END FOR PLAYLIST/FOLDER
