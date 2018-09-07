@@ -13,14 +13,12 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LAnimationUtil;
-import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
@@ -50,15 +48,13 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //UizaDataV3.getInstance().setCasty(Casty.create(this));
         UizaUtil.setCasty(this);
-        UizaDataV3.getInstance().setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
-        //String entityId = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
         UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
@@ -166,12 +162,10 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
     @Override
     public void onClickPip(Intent intent) {
-        LLog.d(TAG, "onClickPip");
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -184,7 +178,6 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
     @Override
     public void onError(Exception e) {
-        LLog.d(TAG, "onError " + e.getMessage());
     }
 
     @Override

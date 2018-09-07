@@ -338,6 +338,38 @@ Listener touch event
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
+# How to customize your skin?:
+Only 3 steps, you can customize everything about player skin.
+
+**Step 1:**
+Create layout uiza_***controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
+
+**Step 2:**
+Create layout uiza_***uiza_controller_skin_custom_detail*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+- In this xml file, you can mod anything you like: position, color, drawable resouces...
+- You can add more view (TextView, Button, ImageView...).
+- You can remove any component which you dont like.
+- Please note: Dont change any id's view if you are using it.
+
+**Step 3:**'
+On function onStart() of Activity, put this code:
+
+    UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+
+That's enough! This code above will change the player's skin quickly. You can build and run your app now.
+
+But if you wanna change the player's skin when the player is playing, please you this function:
+
+    uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
+
+This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/v3/customskin)
+
+***Note:***
+- You should not change the id of the view.
+Ex: android:id="@id/player_view"
+Dont change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
+
 # How to livestream with UizaSDK?:
 It's very easy, plz follow these step below:
 XML:
@@ -398,3 +430,4 @@ Please feel free to contact me anytime: loitp@uiza.io
 ## License
 
 UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
+

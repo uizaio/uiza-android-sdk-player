@@ -629,6 +629,10 @@ public class UizaUtil {
         UizaDataV3.getInstance().setCasty(Casty.create(activity));
     }
 
+    public static void setCurrentPlayerId(int resLayoutMain){
+        UizaDataV3.getInstance().setCurrentPlayerId(resLayoutMain);
+    }
+
     //=============================================================================END FOR UIZA V3
 
     //=============================================================================START PREF
