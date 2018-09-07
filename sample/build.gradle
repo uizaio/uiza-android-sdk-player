@@ -33,6 +33,6 @@ android {
 }
 
 dependencies {
-    implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.2.0'
+    //implementation project(':uizacoresdk')
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.2.1'
 }
