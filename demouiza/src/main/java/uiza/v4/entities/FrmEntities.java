@@ -36,7 +36,7 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
-    private final int limit = 20;
+    private final int limit = 50;
     private final String orderBy = "createdAt";
     private RecyclerView recyclerView;
     private EntitiesAdapter mAdapter;
@@ -57,7 +57,6 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LLog.d(TAG, "onViewCreated");
         if (UizaUtil.getClickedPip(getActivity())) {
             if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");

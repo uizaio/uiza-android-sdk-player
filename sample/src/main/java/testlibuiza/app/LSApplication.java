@@ -8,8 +8,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.utils.util.Utils;
+import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -36,12 +35,12 @@ public class LSApplication extends MultiDexApplication {
     private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private final int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
     public static String entityIdDefaultVOD = "cbea2bfd-1ab7-4df1-92a0-6916c5875146";
     public static String entityIdDefaultLIVE = "b61e21bf-ceaf-4176-8e88-c13243284bea";
     public static String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
-    public static String entityIdDefaultLIVE_TRANSCODE = "b61e21bf-ceaf-4176-8e88-c13243284bea";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "9925fcbd-0fbe-41c5-8b16-1b250642a7e9";
+    public static String entityIdDefaultLIVE_TRANSCODE = "04db355b-80d5-456e-aedb-aff1f8579e03";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "52128efd-59a7-4a3c-a2ec-988d031ccbe4";
     private final int env = Constants.ENVIRONMENT_PROD;
 
     /*private final String DF_DOMAIN_API = "vingroup-api.uiza.co";
@@ -59,7 +58,7 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        Utils.init(this);
+        //Utils.init(this);
         //config activity transition default
         //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
@@ -67,7 +66,9 @@ public class LSApplication extends MultiDexApplication {
         RestClientTracking.init(Constants.URL_TRACKING_STAG);
         Constants.setDebugMode(true);
 
-        initWorkspace();
+        //initWorkspace();
+        //UizaUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
+        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {
@@ -80,10 +81,5 @@ public class LSApplication extends MultiDexApplication {
 
     public static Context getContext() {
         return instance.getApplicationContext();
-    }
-
-    private void initWorkspace() {
-        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-        UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env);
     }
 }

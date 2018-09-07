@@ -30,9 +30,9 @@ import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaTrackingUtil;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class FloatUizaIMAVideoV3 extends RelativeLayout {
@@ -352,8 +352,13 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         if (ivVideoCover.getVisibility() != VISIBLE) {
             ivVideoCover.setVisibility(VISIBLE);
         }
-        LImageUtil.load(getContext(), UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL :
-                UizaDataV3.getInstance().getUizaInputV3().getData().getName(), ivVideoCover, R.drawable.uiza);
+        String urlImg = "";
+        if (UizaDataV3.getInstance().getUizaInputV3() == null || UizaDataV3.getInstance().getUizaInputV3().getData() == null || UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail() == null) {
+            urlImg = Constants.URL_IMG_THUMBNAIL;
+        } else {
+            urlImg = UizaDataV3.getInstance().getUizaInputV3().getData().getThumbnail();
+        }
+        LImageUtil.load(getContext(), urlImg, ivVideoCover, R.drawable.uiza);
     }
 
     protected void removeVideoCover() {

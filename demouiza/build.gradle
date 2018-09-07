@@ -13,7 +13,7 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 3
         versionName "1.0.3"
@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.1.7'
+    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.2.1'
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

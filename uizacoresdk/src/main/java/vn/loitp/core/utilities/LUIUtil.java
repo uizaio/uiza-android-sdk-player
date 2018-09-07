@@ -592,12 +592,18 @@ public class LUIUtil {
     }
 
     public static void setMarginDimen(View view, int dpL, int dpT, int dpR, int dpB) {
+        if (view == null) {
+            return;
+        }
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         mlp.setMargins(ConvertUtils.dp2px(dpL), ConvertUtils.dp2px(dpT), ConvertUtils.dp2px(dpR), ConvertUtils.dp2px(dpB));
         view.requestLayout();
     }
 
     public static void setMarginPx(View view, int l, int t, int r, int b) {
+        if (view == null) {
+            return;
+        }
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         mlp.setMargins(l, t, r, b);
         view.requestLayout();

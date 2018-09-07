@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    android:orientation="vertical">
+
+    <vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3
+        android:id="@id/uiza_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bt_change_skin_custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change skin custom" />
+
+    <Button
+        android:id="@+id/bt_change_skin_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change skin 0" />
+
+    <Button
+        android:id="@+id/bt_change_skin_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change skin 1" />
+
+    <Button
+        android:id="@+id/bt_change_skin_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change skin 2" />
+
+    <Button
+        android:id="@+id/bt_change_skin_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change skin 3" />
+</LinearLayout>

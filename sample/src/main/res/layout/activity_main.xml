@@ -23,14 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@color/LightPink"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="API V2 (Deprecated)"
+                    android:text="Uiza V1 (Deprecated)"
                     android:textSize="@dimen/txt_30" />
 
                 <Button
@@ -56,14 +56,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@color/LightGreen"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="API V3 (Recommended)"
+                    android:text="API V2 (Recommended)"
                     android:textSize="@dimen/txt_30" />
 
                 <Button
@@ -76,24 +76,23 @@
                     android:id="@+id/bt_sdk_v3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/Green"
                     android:padding="@dimen/padding_5"
                     android:text="Test UizaSDK V3" />
 
-                <!--<Button
-                    android:id="@+id/bt_uiza_demo_ui_slide"
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="Uiza Video Slide UI"
-                    android:visibility="visible" />-->
+                    android:text="Custom skin"
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@color/LightGreen"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -114,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/White"
+                android:background="@color/LightGreen"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 

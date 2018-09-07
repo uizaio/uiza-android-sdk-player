@@ -21,11 +21,10 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
 
 public class SplashActivityV3 extends BaseActivity {
-    private String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
     //workspace loitp
     /*private final String DF_DOMAIN_API = "android-api.uiza.co";
@@ -67,7 +66,7 @@ public class SplashActivityV3 extends BaseActivity {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
         //init skin
-        currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
+        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, Constants.PLAYER_ID_SKIN_0);
 
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
@@ -155,8 +154,9 @@ public class SplashActivityV3 extends BaseActivity {
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
 
-                UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
+                //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+                //UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
+                UizaUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
 
                 //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);

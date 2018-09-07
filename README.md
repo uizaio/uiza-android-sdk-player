@@ -23,10 +23,12 @@ Uiza is the complete toolkit for building a powerful video streaming application
       compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
+Get lasted release number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-player).
+
 # Init SDK
 
 1. appId : get in email at registration
-2. token : generate via https://docs.uiza.io/#get-api-key
+2. token : generate [HERE](https://docs.uiza.io/#get-api-key).
 3. api : get in email at registration
 -
 
@@ -35,11 +37,7 @@ Uiza is the complete toolkit for building a powerful video streaming application
             @Override
             public void onCreate() {
                 super.onCreate();
-                Utils.init(this);
-                String api = "api";
-                String token = "token";
-                String appId = "appId";
-                UizaDataV3.getInstance().initSDK(api, token, appId);
+                UizaUtil.initWorkspace(this, api, token, appId);
             }
         }
 
@@ -47,7 +45,7 @@ Uiza is the complete toolkit for building a powerful video streaming application
 
 
     <application
-      android:name=".App "  <!-- important this line -->
+      android:name=".App "  <!-- important -->
       ........
       >
 
@@ -65,7 +63,7 @@ or
 
 **make sure add this line below**
 
-    UizaDataV3.getInstance().setCasty(Casty.create(this));
+    UizaUtil.setCasty(this);
 
 before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 
@@ -75,12 +73,10 @@ before super.onCreate(savedInstanceState);  in onCreate() of your activity.
     subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
       public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-            LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
         }
 
         @Override
       public void onFail(Throwable e) {
-            LLog.e(TAG, "checkToken onFail " + e.getMessage());
         }
     });
   Other API can be used with the same function above.
@@ -109,6 +105,7 @@ Create java file MainActivity:
        public void onClickBack();
        public void onClickPip();
        public void onClickPipVideoInitSuccess();
+       public void onSkinChange();
        public void onError();
     }
 Manifest
@@ -124,11 +121,11 @@ Play with entity:
 
     uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
     uizaIMAVideoV3.setUizaCallback(this);
-    UizaUtil.initEntity(activity, uizaIMAVideoV3, "put entity id here");
+    UizaUtil.initEntity(activity, uizaIMAVideoV3, "put the entity id here");
 
 Play with playlist/folder:
 
-    UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, "put playlist/folder id here");
+    UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, "put the playlist/folder id here");
 
 
 
@@ -195,142 +192,115 @@ All listener  (If you want to listen all events)
         uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                //LLog.d(TAG, "onTimelineChanged");
             }
         });
         uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioEnabled");
             }
 
             @Override
             public void onAudioSessionId(int audioSessionId) {
-                //LLog.d(TAG, "onAudioSessionId");
             }
 
             @Override
             public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onAudioDecoderInitialized");
             }
 
             @Override
             public void onAudioInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onAudioInputFormatChanged");
             }
 
             @Override
             public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                //LLog.d(TAG, "onAudioSinkUnderrun");
             }
 
             @Override
           public void onAudioDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioDisabled");
            }
         });
         uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
             @Override
            public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
            }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
         uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
            public void onVideoEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoEnabled");
            }
 
             @Override
            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onVideoDecoderInitialized");
            }
 
             @Override
            public void onVideoInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onVideoInputFormatChanged");
            }
 
             @Override
            public void onDroppedFrames(int count, long elapsedMs) {
-                //LLog.d(TAG, "onDroppedFrames");
            }
 
             @Override
            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                //LLog.d(TAG, "onAudioDisabled");
            }
 
             @Override
            public void onRenderedFirstFrame(Surface surface) {
-                //LLog.d(TAG, "onRenderedFirstFrame");
            }
 
             @Override
           public void onVideoDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoDisabled");
            }
         });
         uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
            public void onMetadata(Metadata metadata) {
-                //LLog.d(TAG, "onMetadata");
            }
         });
         uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
             @Override
            public void onCues(List<Cue> cues) {
-                //LLog.d(TAG, "onCues");
            }
         });
     }
@@ -339,41 +309,80 @@ Listener touch event
     uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
         @Override
         public void onSingleTapConfirmed() {
-            LLog.d(TAG, "onSingleTapConfirmed");
         }
 
         @Override
         public void onLongPress() {
-            LLog.d(TAG, "onLongPress");
         }
 
         @Override
         public void onDoubleTap() {
-            LLog.d(TAG, "onDoubleTap");
         }
 
         @Override
         public void onSwipeRight() {
-            LLog.d(TAG, "onSwipeRight");
         }
 
         @Override
         public void onSwipeLeft() {
-            LLog.d(TAG, "onSwipeLeft");
         }
 
         @Override
         public void onSwipeBottom() {
-            LLog.d(TAG, "onSwipeBottom");
         }
 
         @Override
         public void onSwipeTop() {
-            LLog.d(TAG, "onSwipeTop");
         }
     });
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
+
+# How to customize your skin?:
+Only 3 steps, you can customize everything about player skin.
+
+**Step 1:**
+Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+
+Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
+
+**Step 2:**
+Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+- In this xml file, you can edit anything you like: position, color, drawable resouces...
+- You can add more view (TextView, Button, ImageView...).
+- You can remove any component which you dont like.
+- Please note: Dont change any id's view if you are using it.
+
+**Step 3:**'
+On function onCreate() of Activity, put this code:
+
+    UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+
+Ex:
+
+    @Override  
+    protected void onCreate(@Nullable Bundle savedInstanceState) {  
+        UizaUtil.setCasty(this);  
+        UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+        super.onCreate(savedInstanceState);
+    }
+
+Ex: findView from your custom layout:
+
+    TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
+
+That's enough! This code above will change the player's skin quickly. You can build and run your app now.
+
+But if you wanna change the player's skin when the player is playing, please you this function:
+
+    uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
+
+This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/v3/customskin)
+
+***Note:***
+- You should not change the id of the view.
+Ex: android:id="@id/player_view"
+Dont change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
 
 # How to livestream with UizaSDK?:
 It's very easy, plz follow these step below:
@@ -435,3 +444,4 @@ Please feel free to contact me anytime: loitp@uiza.io
 ## License
 
 UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
+

@@ -1,29 +1,25 @@
 apply plugin: 'com.android.application'
 
 android {
-    /*signingConfigs {
-        config {
+    signingConfigs {
+        /*config {
             keyAlias 'loi'
             keyPassword '04021993'
             storeFile file('C:/Users/LENOVO/Desktop/demouiza/key.jks')
             storePassword '04021993'
-        }
-    }*/
+        }*/
+    }
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.uiza.module.sample"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptSupportModeEnabled true
-        //signingConfig signingConfigs.config
-        /*ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
-        }*/
     }
     buildTypes {
         release {
@@ -38,5 +34,5 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.1.7'
+    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.2.1'
 }

@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -46,6 +47,7 @@ import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.utils.util.Utils;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -60,6 +62,9 @@ public class UizaUtil {
     private final static String TAG = UizaUtil.class.getSimpleName();
 
     public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
+        if (imageButton == null) {
+            return;
+        }
         if (isFullScreen) {
             imageButton.setImageResource(loitp.core.R.drawable.baseline_fullscreen_exit_white_48);
         } else {
@@ -116,7 +121,7 @@ public class UizaUtil {
         }
 
         //edit size of imageview thumnail
-        FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.previewFrameLayout);
+        FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.preview_frame_layout);
         //LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
@@ -394,20 +399,20 @@ public class UizaUtil {
     }
 
     //=============================================================================START FOR UIZA V3
-    public static void initUizaWorkspace(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
+    /*public static void initUizaWorkspace(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
         if (uizaWorkspaceInfo == null || uizaWorkspaceInfo.getUsername() == null || uizaWorkspaceInfo.getPassword() == null || uizaWorkspaceInfo.getUrlApi() == null) {
             throw new NullPointerException("UizaWorkspaceInfo cannot be null or empty!");
         }
         setUizaWorkspaceInfo(context, uizaWorkspaceInfo);
         RestClientV3.init(Constants.PREFIXS + uizaWorkspaceInfo.getUrlApi());
-    }
+    }*/
 
-    public static UizaWorkspaceInfo getUizaWorkspace(Context context) {
+    /*public static UizaWorkspaceInfo getUizaWorkspace(Context context) {
         if (context == null) {
             return null;
         }
         return getUizaWorkspaceInfo(context);
-    }
+    }*/
 
     /*public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
         setResultGetToken(context, resultGetToken);
@@ -504,14 +509,14 @@ public class UizaUtil {
         }
         if (UizaUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            play(uizaIMAVideoV3, null);
+            UizaUtil.play(uizaIMAVideoV3, null);
         } else {
             //check if play entity
             UizaUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
                 LLog.d(TAG, "initEntity entityId: " + entityId);
                 //setEntityId(activity, entityId);
-                play(uizaIMAVideoV3, entityId);
+                UizaUtil.play(uizaIMAVideoV3, entityId);
             }
         }
     }
@@ -589,6 +594,43 @@ public class UizaUtil {
                 uizaIMAVideoV3.initPlaylistFolder(metadataId);
             }
         });
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
+        if (context == null) {
+            throw new NullPointerException("Error: Context cannot be null");
+        }
+        if (domainApi == null || domainApi.isEmpty()) {
+            throw new NullPointerException("Domain api cannot be null or empty");
+        }
+        if (token == null || token.isEmpty()) {
+            throw new NullPointerException("Token cannot be null or empty");
+        }
+        if (appId == null || appId.isEmpty()) {
+            throw new NullPointerException("App id be null or empty");
+        }
+        Utils.init(context.getApplicationContext());
+        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaDataV3.getInstance().initSDK(domainApi, token, appId, env);
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
+    }
+
+    public static void initWorkspace(Context context, String domainApi, String token, String appId) {
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, Constants.PLAYER_ID_SKIN_1);
+    }
+
+    public static void setCasty(Activity activity) {
+        if (activity == null) {
+            throw new NullPointerException("Error: Activity cannot be null");
+        }
+        UizaDataV3.getInstance().setCasty(Casty.create(activity));
+    }
+
+    public static void setCurrentPlayerId(int resLayoutMain){
+        UizaDataV3.getInstance().setCurrentPlayerId(resLayoutMain);
     }
 
     //=============================================================================END FOR UIZA V3

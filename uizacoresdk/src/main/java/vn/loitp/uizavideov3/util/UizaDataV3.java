@@ -35,13 +35,13 @@ public class UizaDataV3 {
     private UizaDataV3() {
     }
 
-    private String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
 
-    public String getCurrentPlayerId() {
+    public int getCurrentPlayerId() {
         return currentPlayerId;
     }
 
-    public void setCurrentPlayerId(String currentPlayerId) {
+    public void setCurrentPlayerId(int currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
         UizaUtil.setSlideUizaVideoEnabled(Utils.getContext(), true);
     }
@@ -68,10 +68,6 @@ public class UizaDataV3 {
             throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UizaDataV3.getInstance().setCasty(Casty.create(this));' to your onStart() or onCreate()");
         }
         return casty;
-    }
-
-    public void initSDK(String domainAPI, String token, String appId) {
-        initSDK(domainAPI, token, appId, Constants.ENVIRONMENT_PROD);
     }
 
     public void initSDK(String domainAPI, String token, String appId, int environment) {
@@ -250,7 +246,7 @@ public class UizaDataV3 {
         }
     }*/
 
-    public void clear() {
+    public void clearUizaInputList() {
         uizaInputV3 = null;
         uizaInputV3List.clear();
     }
@@ -278,7 +274,7 @@ public class UizaDataV3 {
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
         //player_id
-        uizaTracking.setPlayerId(currentPlayerId);
+        uizaTracking.setPlayerId(currentPlayerId + "");
         //TODO player_name
         uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version

@@ -5,15 +5,15 @@ package uiza.option;
  */
 
 public class SkinObject {
-    private String skinId;
+    private int skinId;
     private String skinName;
     private int resId;
 
-    public String getSkinId() {
+    public int getSkinId() {
         return skinId;
     }
 
-    public void setSkinId(String skinId) {
+    public void setSkinId(int skinId) {
         this.skinId = skinId;
     }
 

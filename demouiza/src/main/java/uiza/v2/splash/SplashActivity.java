@@ -29,7 +29,7 @@ import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.views.LToast;
 
 public class SplashActivity extends BaseActivity {
-    private String currentPlayerId;
+    private int currentPlayerId;
     private boolean canSlide;
     private String currentApiEndPoint;
     private String currentApiTrackingEndPoint;
@@ -41,7 +41,7 @@ public class SplashActivity extends BaseActivity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
-        currentPlayerId = getIntent().getStringExtra(OptionActivity.KEY_SKIN);
+        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, Constants.PLAYER_ID_SKIN_0);
         canSlide = getIntent().getBooleanExtra(OptionActivity.KEY_CAN_SLIDE, false);
         UizaUtil.setSlideUizaVideoEnabled(activity, canSlide);
         currentApiEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_END_POINT);

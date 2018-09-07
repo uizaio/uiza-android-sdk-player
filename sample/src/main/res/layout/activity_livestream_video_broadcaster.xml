@@ -9,19 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/tv_main_url"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/black_65"
-        android:textColor="@color/White"
-        android:textSize="@dimen/txt_12" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -48,5 +39,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Filter" />
+
+        <TextView
+            android:id="@+id/tv_main_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black_65"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_12" />
     </LinearLayout>
 </RelativeLayout>

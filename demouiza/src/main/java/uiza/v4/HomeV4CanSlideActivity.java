@@ -3,6 +3,7 @@ package uiza.v4;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,6 @@ import uiza.v4.home.FrmHome;
 import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
-import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LActivityUtil;
@@ -32,7 +32,7 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.utils.util.AppUtils;
 import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
@@ -61,7 +61,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UizaDataV3.getInstance().setCasty(Casty.create(this));
+        //UizaDataV3.getInstance().setCasty(Casty.create(this));
+        UizaUtil.setCasty(this);
         super.onCreate(savedInstanceState);
 
         llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
@@ -160,13 +161,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmVideoTop.getUizaIMAVideoV3().pauseVideo();
+                frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
@@ -176,6 +177,31 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         });
         initializeDraggablePanel();
         replaceFragment(new FrmEntities());
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                if (draggablePanel != null) {
+                    if (draggablePanel.getVisibility() == View.VISIBLE) {
+                        if (draggablePanel.isMaximized()) {
+                            draggablePanel.minimize();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
     }
 
     private boolean doubleBackToExitPressedOnce = false;
@@ -196,7 +222,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -274,9 +300,12 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 if (draggablePanel.isMaximized()) {
                     if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
                     } else {
-                        draggablePanel.minimize();
+                        if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
+                            frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                        } else {
+                            draggablePanel.minimize();
+                        }
                     }
-                    //draggablePanel.minimize();
                     return;
                 }
             }
@@ -303,15 +332,18 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                     if (draggablePanel.isMaximized()) {
                         if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
                         } else {
-                            draggablePanel.minimize();
+                            if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
+                                frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                            } else {
+                                draggablePanel.minimize();
+                            }
                         }
-                        //draggablePanel.minimize();
                         return;
                     }
                 }
                 super.onBackPressed();
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
-                //LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
+                LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
                 if (currentFragment instanceof BaseFragment) {
                     tvTitle.setText(((BaseFragment) currentFragment).TAG);
                 }
@@ -380,5 +412,21 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     public void setVisibilityBtSearch(int visibilityBtSearch) {
         btSearch.setVisibility(visibilityBtSearch);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (draggablePanel != null && draggablePanel.getVisibility() == View.VISIBLE && draggablePanel.isMinimized()) {
+            draggablePanel.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (draggablePanel != null && draggablePanel.getVisibility() == View.INVISIBLE && draggablePanel.isMinimized()) {
+            draggablePanel.setVisibility(View.VISIBLE);
+        }
     }
 }

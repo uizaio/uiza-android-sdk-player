@@ -307,7 +307,6 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     @Override
     public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
         LLog.d(TAG, "onGetDataSuccess " + LSApplication.getInstance().getGson().toJson(presetLiveStreamingFeed));
-
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);
@@ -325,6 +324,15 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void onDisconnectRtmp() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bStartStop.setEnabled(true);
+                bStartStopStore.setEnabled(true);
+                btSwitchCamera.setEnabled(true);
+                btFilter.setEnabled(true);
+            }
+        });
     }
 
     @Override
