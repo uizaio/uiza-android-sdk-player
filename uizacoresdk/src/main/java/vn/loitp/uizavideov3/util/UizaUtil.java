@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
+import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
@@ -619,6 +620,13 @@ public class UizaUtil {
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId) {
         initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, Constants.PLAYER_ID_SKIN_1);
+    }
+
+    public static void setCasty(Activity activity) {
+        if (activity == null) {
+            throw new NullPointerException("Error: Activity cannot be null");
+        }
+        UizaDataV3.getInstance().setCasty(Casty.create(activity));
     }
 
     //=============================================================================END FOR UIZA V3

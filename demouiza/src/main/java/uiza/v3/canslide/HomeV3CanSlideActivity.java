@@ -7,7 +7,6 @@ import android.view.View;
 
 import uiza.R;
 import uiza.v3.data.HomeDataV3;
-import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LConnectivityUtil;
@@ -30,7 +29,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UizaDataV3.getInstance().setCasty(Casty.create(this));
+        //UizaDataV3.getInstance().setCasty(Casty.create(this));
+        UizaUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
 

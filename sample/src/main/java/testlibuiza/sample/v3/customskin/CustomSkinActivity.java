@@ -11,7 +11,6 @@ import com.daimajia.androidanimations.library.Techniques;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LLog;
@@ -51,7 +50,8 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UizaDataV3.getInstance().setCasty(Casty.create(this));
+        //UizaDataV3.getInstance().setCasty(Casty.create(this));
+        UizaUtil.setCasty(this);
         UizaDataV3.getInstance().setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
