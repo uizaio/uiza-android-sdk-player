@@ -37,11 +37,7 @@ Get lasted relea number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-playe
             @Override
             public void onCreate() {
                 super.onCreate();
-                Utils.init(this);
-                String api = "api";
-                String token = "token";
-                String appId = "appId";
-                UizaDataV3.getInstance().initSDK(api, token, appId);
+                UizaUtil.initWorkspace(this, api , token, appId);
             }
         }
 
@@ -49,7 +45,7 @@ Get lasted relea number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-playe
 
 
     <application
-      android:name=".App "  <!-- important this line -->
+      android:name=".App "  <!-- important -->
       ........
       >
 
@@ -67,7 +63,7 @@ or
 
 **make sure add this line below**
 
-    UizaDataV3.getInstance().setCasty(Casty.create(this));
+    UizaUtil.setCasty(this);
 
 before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 
@@ -77,12 +73,10 @@ before super.onCreate(savedInstanceState);  in onCreate() of your activity.
     subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
       public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
-            LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
         }
 
         @Override
       public void onFail(Throwable e) {
-            LLog.e(TAG, "checkToken onFail " + e.getMessage());
         }
     });
   Other API can be used with the same function above.
@@ -111,6 +105,7 @@ Create java file MainActivity:
        public void onClickBack();
        public void onClickPip();
        public void onClickPipVideoInitSuccess();
+       public void onSkinChange();
        public void onError();
     }
 Manifest
@@ -126,11 +121,11 @@ Play with entity:
 
     uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
     uizaIMAVideoV3.setUizaCallback(this);
-    UizaUtil.initEntity(activity, uizaIMAVideoV3, "put entity id here");
+    UizaUtil.initEntity(activity, uizaIMAVideoV3, "put the entity id here");
 
 Play with playlist/folder:
 
-    UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, "put playlist/folder id here");
+    UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, "put the playlist/folder id here");
 
 
 
@@ -197,142 +192,115 @@ All listener  (If you want to listen all events)
         uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                //LLog.d(TAG, "onTimelineChanged");
             }
         });
         uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioEnabled");
             }
 
             @Override
             public void onAudioSessionId(int audioSessionId) {
-                //LLog.d(TAG, "onAudioSessionId");
             }
 
             @Override
             public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onAudioDecoderInitialized");
             }
 
             @Override
             public void onAudioInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onAudioInputFormatChanged");
             }
 
             @Override
             public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                //LLog.d(TAG, "onAudioSinkUnderrun");
             }
 
             @Override
           public void onAudioDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioDisabled");
            }
         });
         uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
             @Override
            public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
            }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
         uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
            public void onVideoEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoEnabled");
            }
 
             @Override
            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onVideoDecoderInitialized");
            }
 
             @Override
            public void onVideoInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onVideoInputFormatChanged");
            }
 
             @Override
            public void onDroppedFrames(int count, long elapsedMs) {
-                //LLog.d(TAG, "onDroppedFrames");
            }
 
             @Override
            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                //LLog.d(TAG, "onAudioDisabled");
            }
 
             @Override
            public void onRenderedFirstFrame(Surface surface) {
-                //LLog.d(TAG, "onRenderedFirstFrame");
            }
 
             @Override
           public void onVideoDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoDisabled");
            }
         });
         uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
            public void onMetadata(Metadata metadata) {
-                //LLog.d(TAG, "onMetadata");
            }
         });
         uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
             @Override
            public void onCues(List<Cue> cues) {
-                //LLog.d(TAG, "onCues");
            }
         });
     }
@@ -341,37 +309,30 @@ Listener touch event
     uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
         @Override
         public void onSingleTapConfirmed() {
-            LLog.d(TAG, "onSingleTapConfirmed");
         }
 
         @Override
         public void onLongPress() {
-            LLog.d(TAG, "onLongPress");
         }
 
         @Override
         public void onDoubleTap() {
-            LLog.d(TAG, "onDoubleTap");
         }
 
         @Override
         public void onSwipeRight() {
-            LLog.d(TAG, "onSwipeRight");
         }
 
         @Override
         public void onSwipeLeft() {
-            LLog.d(TAG, "onSwipeLeft");
         }
 
         @Override
         public void onSwipeBottom() {
-            LLog.d(TAG, "onSwipeBottom");
         }
 
         @Override
         public void onSwipeTop() {
-            LLog.d(TAG, "onSwipeTop");
         }
     });
 
