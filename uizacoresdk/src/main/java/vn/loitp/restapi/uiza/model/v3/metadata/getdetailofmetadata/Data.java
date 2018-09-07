@@ -114,7 +114,7 @@ public class Data {
 
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private int status;
 
     @SerializedName("id")
     @Expose
@@ -134,7 +134,7 @@ public class Data {
 
     @SerializedName("view")
     @Expose
-    private Integer view;
+    private long view;
 
     @SerializedName("poster")
     @Expose
@@ -171,6 +171,18 @@ public class Data {
     @SerializedName("publishToCdn")
     @Expose
     private String publishToCdn;
+
+    @SerializedName("inputType")
+    @Expose
+    private String inputType;
+
+    @SerializedName("url")
+    @Expose
+    private String url;
+
+    @SerializedName("readyToPublish")
+    @Expose
+    private String readyToPublish;
 
     public String getName() {
         return name;
@@ -220,11 +232,11 @@ public class Data {
         this.icon = icon;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -252,11 +264,11 @@ public class Data {
         this.shortDescription = shortDescription;
     }
 
-    public Integer getView() {
+    public long getView() {
         return view;
     }
 
-    public void setView(Integer view) {
+    public void setView(long view) {
         this.view = view;
     }
 

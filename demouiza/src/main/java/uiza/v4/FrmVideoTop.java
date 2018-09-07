@@ -323,6 +323,11 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }
 
     @Override
+    public void onSkinChange() {
+
+    }
+
+    @Override
     public void onError(Exception e) {
         if (e == null) {
             return;
