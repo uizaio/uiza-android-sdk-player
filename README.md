@@ -37,7 +37,7 @@ Get lasted relea number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-playe
             @Override
             public void onCreate() {
                 super.onCreate();
-                UizaUtil.initWorkspace(this, api , token, appId);
+                UizaUtil.initWorkspace(this, api, token, appId);
             }
         }
 
