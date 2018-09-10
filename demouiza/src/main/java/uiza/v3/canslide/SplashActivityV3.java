@@ -50,6 +50,11 @@ public class SplashActivityV3 extends BaseActivity {
     private final String DF_APP_ID = "91d64fe24bf5435f9ff4ad74a5195f4c";
     private int environment = Constants.ENVIRONMENT_STAG;*/
 
+    /*private final String DF_DOMAIN_API = "http://chivas69.uizadev.io/";
+    private final String DF_TOKEN = "uap-152a5e7cca9a41948c88dbb96e705aaf-929e125e";
+    private final String DF_APP_ID = "152a5e7cca9a41948c88dbb96e705aaf";
+    private int environment = Constants.ENVIRONMENT_DEV;*/
+
     private EditText etApiDomain;
     private EditText etKey;
     private EditText etAppId;

@@ -61,7 +61,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //UizaDataV3.getInstance().setCasty(Casty.create(this));
         UizaUtil.setCasty(this);
         super.onCreate(savedInstanceState);
 
@@ -149,30 +148,25 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
             public void onMaximized() {
-                //LLog.d(TAG, "onMaximized");
             }
 
             @Override
             public void onMinimized() {
-                //LLog.d(TAG, "onMinimized");
                 frmVideoTop.getUizaIMAVideoV3().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
-                //LLog.d(TAG, "onClosedToLeft");
                 frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                //LLog.d(TAG, "onClosedToRight");
                 frmVideoTop.getUizaIMAVideoV3().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
-                //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
             }
         });
         initializeDraggablePanel();

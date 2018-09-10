@@ -130,6 +130,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private TextView tvTitle;
     private ImageButtonWithSize exoPause;
     private ImageButtonWithSize exoPlay;
+    private ImageButtonWithSize exoReplayUiza;
     private ImageButtonWithSize exoRew;
     private ImageButtonWithSize exoFfwd;
     private ImageButtonWithSize exoBackScreen;
@@ -238,10 +239,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      * init player with entity id, ad, seekbar thumnail
      */
     protected void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
-        LLog.d(TAG, "=======================================================");
-        LLog.d(TAG, "=======================================================");
-        LLog.d(TAG, "=======================================================");
-        LLog.d(TAG, "======================NEW SESSION======================");
+        LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         if (isClearDataPlaylistFolder) {
             //LLog.d(TAG, "xxxxxxxxxxxxxx clearDataForPlaylistFolder");
@@ -394,28 +392,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
 
         //track event eventype display
-        if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
-                }
-            });
-        }
-
+        trackUizaEventDisplay();
         //track event plays_requested
-        if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);
-                }
-            });
-        }
+        trackUizaEventPlaysRequested();
     }
 
     private int countTryLinkPlayError = 0;
@@ -480,7 +459,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
         if (isResultGetLinkPlayDone) {
             if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
-                LLog.d(TAG, "checkToSetUp if");
+                //LLog.d(TAG, "checkToSetUp if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
@@ -538,7 +517,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
                 initUizaPlayerManagerV3();
             } else {
-                LLog.d(TAG, "checkToSetUp else");
+                //LLog.d(TAG, "checkToSetUp else");
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -571,7 +550,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            LLog.d(TAG, "--------removeVideoCover isFromHandleError: " + isFromHandleError);
+            LLog.d(TAG, "`removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
                 if (tvLiveTime != null) {
@@ -617,7 +596,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
-        LLog.d(TAG, "onCreate isTablet " + isTablet);
+        //LLog.d(TAG, "onCreate isTablet " + isTablet);
         addPlayerView();
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
@@ -782,6 +761,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (exoPlay != null) {
             exoPlay.setVisibility(GONE);
         }
+        exoReplayUiza = (ImageButtonWithSize) playerView.findViewById(R.id.exo_replay_uiza);
         exoRew = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
         exoFfwd = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
         exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
@@ -813,7 +793,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -871,6 +852,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (exoPause != null) {
             exoPause.setOnClickListener(this);
+        }
+        if (exoReplayUiza != null) {
+            exoReplayUiza.setOnClickListener(this);
         }
         if (exoSkipNext != null) {
             exoSkipNext.setOnClickListener(this);
@@ -1143,16 +1127,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             handleConnectedChromecast();
             showController();
         }
-        if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
-                }
-            });
-        }
+        trackUizaEventVideoStarts();
         UizaDataV3.getInstance().setSettingPlayer(false);
     }
 
@@ -1202,7 +1177,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
-        LLog.d(TAG, "onResume " + UizaDataV3.getInstance().getUizaInputV3List().size());
+        //LLog.d(TAG, "onResume getUizaInputV3List().size " + UizaDataV3.getInstance().getUizaInputV3List().size());
         activityIsPausing = false;
         /*if (isExoShareClicked) {
             LLog.d(TAG, "onResume if");
@@ -1215,16 +1190,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //initUizaPlayerManagerV3();
         }*/
         if (uizaPlayerManagerV3 != null) {
-            LLog.d(TAG, "uizaPlayerManagerV3 != null -> resumeVideo");
+            //LLog.d(TAG, "onResume uizaPlayerManagerV3 != null -> resumeVideo");
             uizaPlayerManagerV3.resumeVideo();
         } else {
-            LLog.d(TAG, "uizaPlayerManagerV3 == null -> do nothing");
+            //LLog.d(TAG, "onResume uizaPlayerManagerV3 == null -> do nothing");
         }
     }
 
     private void initUizaPlayerManagerV3() {
         if (uizaPlayerManagerV3 != null) {
-            LLog.d(TAG, "onResume uizaPlayerManagerV3 init");
             uizaPlayerManagerV3.init();
             if (UizaUtil.getClickedPip(activity) && !UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
@@ -1277,18 +1251,31 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     @Override
     public void onStartPreview(PreviewView previewView) {
-        //LLog.d(TAG, "onStartPreview");
+        //LLog.d(TAG, "PreviewView onStartPreview");
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
     }
 
     @Override
     public void onStopPreview(PreviewView previewView) {
-        //LLog.d(TAG, "onStopPreview");
+        //LLog.d(TAG, "PreviewView onStopPreview");
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
+        if (isOnPlayerEnded) {
+            setVisibilityOfPlayPauseReplay(false);
+            isOnPlayerEnded = false;
+        }
         uizaPlayerManagerV3.resumeVideo();
     }
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "onPreview progress " + progress);
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress);
+        /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
+        }*/
         if (isCastingChromecast) {
             UizaDataV3.getInstance().getCasty().getPlayer().seek(progress);
         }
@@ -1345,6 +1332,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                    if (isOnPlayerEnded) {
+                        setVisibilityOfPlayPauseReplay(false);
+                        isOnPlayerEnded = false;
+                    }
                 }
             }
         } else if (v == exoRew) {
@@ -1353,6 +1344,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                    if (isOnPlayerEnded) {
+                        setVisibilityOfPlayPauseReplay(false);
+                        isOnPlayerEnded = false;
+                    }
                 }
             }
         } else if (v == exoPause) {
@@ -1377,6 +1372,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (exoPause != null) {
                 exoPause.setVisibility(VISIBLE);
             }
+        } else if (v == exoReplayUiza) {
+            replay();
         } else if (v == exoSkipNext) {
             handleClickSkipNext();
         } else if (v == exoSkipPrevious) {
@@ -1844,7 +1841,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -2441,9 +2438,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, null, false, false);
     }
 
+    private boolean isOnPlayerEnded;
+
     protected void onPlayerEnded() {
+        LLog.d(TAG, "onPlayerEnded");
+        isOnPlayerEnded = true;
         if (isPlayPlaylistFolder()) {
             autoSwitchNextVideo();
+        } else {
+            setVisibilityOfPlayPauseReplay(true);
         }
     }
 
@@ -2473,6 +2476,38 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaUtil.showUizaDialog(activity, uizaDialogPlaylistFolder);
     }
 
+    private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
+        if (isShowReplay) {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(GONE);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setVisibility(VISIBLE);
+            }
+            if (exoFfwd != null) {
+                exoFfwd.setEnabled(false);
+                exoFfwd.setColorFilter(Color.GRAY);
+            }
+        } else {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setVisibility(GONE);
+            }
+            if (exoFfwd != null) {
+                exoFfwd.setEnabled(true);
+                exoFfwd.setColorFilter(Color.WHITE);
+            }
+        }
+    }
+
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
         if (exoPlaylistFolder != null) {
             exoPlaylistFolder.setVisibility(visibilityOfPlaylistFolderController);
@@ -2483,6 +2518,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (exoSkipPrevious != null) {
             exoSkipPrevious.setVisibility(visibilityOfPlaylistFolderController);
         }
+        //Có play kiểu gì đi nữa thì cũng phải exoPlay GONE và exoPause VISIBLE và exoReplayUiza GONE
+        setVisibilityOfPlayPauseReplay(false);
     }
 
     private void handleClickSkipNext() {
@@ -2493,6 +2530,28 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleClickSkipPrevious() {
         //LLog.d(TAG, "handleClickSkipPrevious");
         autoSwitchPreviousLinkVideo();
+    }
+
+    /*
+     **replay this current content
+     * return true if replay successed
+     * return fail if replay failed
+     */
+    public boolean replay() {
+        if (uizaPlayerManagerV3 == null) {
+            return false;
+        }
+        //TODO Chỗ này đáng lẽ chỉ clear value của tracking khi đảm bảo rằng seekTo(0) true
+        setDefautValueForFlagIsTracked();
+        boolean result = uizaPlayerManagerV3.seekTo(0);
+        if (result) {
+            isOnPlayerEnded = false;
+            setVisibilityOfPlaylistFolderController(View.GONE);
+            trackUizaEventVideoStarts();
+            trackUizaEventDisplay();
+            trackUizaEventPlaysRequested();
+        }
+        return result;
     }
 
     //===================================================================END FOR PLAYLIST/FOLDER
@@ -2741,6 +2800,45 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void skipPreviousVideo() {
         if (exoSkipPrevious != null) {
             exoSkipPrevious.performClick();
+        }
+    }
+
+    private void trackUizaEventVideoStarts() {
+        if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
+                }
+            });
+        }
+    }
+
+    private void trackUizaEventDisplay() {
+        if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
+                }
+            });
+        }
+    }
+
+    private void trackUizaEventPlaysRequested() {
+        if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
+            //da track roi ko can track nua
+        } else {
+            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
+                @Override
+                public void onTrackingSuccess() {
+                    UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);
+                }
+            });
         }
     }
 }
