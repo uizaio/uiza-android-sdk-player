@@ -41,7 +41,6 @@
         </receiver>
         <!-- end for v2 -->
 
-
         <!-- for v3 -->
         <activity
             android:name=".sample.v3.api.V3TestAPIActivity"
@@ -57,8 +56,6 @@
             android:name=".sample.v3.demoui.HomeV4CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".sample.guidecallapi.TestAPI" />
-
-        <!--<service android:name=".sample.livestream.derecated.LiveVideoBroadcasterActivity" />-->
 
         <!--for livestream-->
         <activity
