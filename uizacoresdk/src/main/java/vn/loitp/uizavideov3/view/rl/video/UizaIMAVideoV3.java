@@ -2301,7 +2301,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     //===================================================================START FOR PLAYLIST/FOLDER
-    private final int pfLimit = 50;
+    private final int pfLimit = 100;
     private int pfPage = 0;
     private int pfTotalPage = Integer.MAX_VALUE;
     private final String pfOrderBy = "createdAt";
@@ -2349,11 +2349,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             pfTotalPage = (int) ratio;
                         }
                     }
-                    //TODO wait api from duyqt
-                    LLog.d(TAG, "<<<getListAllEntity: " + pfPage + "/" + pfTotalPage);
+                    LLog.d(TAG, "<<<getListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage);
                     UizaDataV3.getInstance().setDataList(result.getData());
                     if (UizaDataV3.getInstance().getDataList() == null || UizaDataV3.getInstance().getDataList().isEmpty()) {
-                        LLog.e(TAG, "getListAllEntity success but noda");
+                        LLog.e(TAG, "getListAllEntity success but no data");
                         if (uizaCallback != null) {
                             uizaCallback.onError(new Exception("getListAllEntity success but no data"));
                         }
@@ -2364,9 +2363,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     if (uizaPlayerManagerV3 != null) {
                         uizaPlayerManagerV3.hideProgress();
                     }
-
-                    //show controller for playlist folder
-                    //setVisibilityOfPlaylistFolderController(VISIBLE);
                 }
 
                 @Override
@@ -2387,8 +2383,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (uizaPlayerManagerV3 != null) {
                 uizaPlayerManagerV3.hideProgress();
             }
-            //show controller for playlist folder
-            //setVisibilityOfPlaylistFolderController(VISIBLE);
         }
     }
 

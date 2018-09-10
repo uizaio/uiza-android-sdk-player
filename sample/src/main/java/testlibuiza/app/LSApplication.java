@@ -51,6 +51,17 @@ public class LSApplication extends MultiDexApplication {
     public static final String entityIdDefaultLIVE = "";
     public static final String metadataDefault0 = "";*/
 
+    /*private final String DF_DOMAIN_API = "dev-api.uizadev.io";
+    private final String DF_TOKEN = "5e1e1afb4bf71936f26ec0ee6832b44f9ae0176f2a0334a0eadf09d4fa6da1f2e0a595baa46d20983c62f30d274724ca5bad4beaf0f4251db32f9651075ecc3b";
+    private final String DF_APP_ID = "152a5e7cca9a41948c88dbb96e705aaf";
+    private final int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
+    public static String entityIdDefaultLIVE = "";
+    public static String metadataDefault0 = "";
+    public static String entityIdDefaultLIVE_TRANSCODE = "";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "";
+    private final int env = Constants.ENVIRONMENT_DEV;*/
+
     @Override
     public void onCreate() {
         super.onCreate();
