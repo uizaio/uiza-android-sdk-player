@@ -690,6 +690,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
         //init(UizaDataV3.getInstance().getEntityId());
         uizaPlayerManagerV3.release();
+        updateUI();
+        setTitle();
         checkToSetUp();
 
         if (uizaCallback != null) {
