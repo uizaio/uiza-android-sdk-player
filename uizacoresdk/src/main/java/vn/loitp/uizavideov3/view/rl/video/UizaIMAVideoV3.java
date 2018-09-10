@@ -690,6 +690,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //UizaUtil.initEntity(activity, this, UizaDataV3.getInstance().getEntityId());
         //init(UizaDataV3.getInstance().getEntityId());
         uizaPlayerManagerV3.release();
+        updateUI();
+        setTitle();
         checkToSetUp();
 
         if (uizaCallback != null) {
@@ -702,10 +704,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         int currentPlayerId = UizaDataV3.getInstance().getCurrentPlayerId();
         if (currentPlayerId == R.layout.player_skin_2 || currentPlayerId == R.layout.player_skin_3) {
             //LLog.d(TAG, "updateUIEachSkin player_skin_2 || player_skin_3 -> edit size of exoPlay exoPause");
-            exoPlay.setRatioLand(7);
-            exoPlay.setRatioPort(5);
-            exoPause.setRatioLand(7);
-            exoPause.setRatioPort(5);
+            if (exoPlay != null) {
+                exoPlay.setRatioLand(7);
+                exoPlay.setRatioPort(5);
+            }
+            if (exoPause != null) {
+                exoPause.setRatioLand(7);
+                exoPause.setRatioPort(5);
+            }
+            if (exoReplayUiza != null) {
+                exoReplayUiza.setRatioLand(7);
+                exoReplayUiza.setRatioPort(5);
+            }
         } else {
             //LLog.d(TAG, "updateUIEachSkin !player_skin_2 || !player_skin_3");
         }

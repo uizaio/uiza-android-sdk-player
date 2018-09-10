@@ -291,6 +291,16 @@
                 android:tint="@color/White" />
 
             <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+                android:id="@id/exo_replay_uiza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_replay_white_48"
+                android:tint="@color/White" />
+
+            <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
                 android:id="@id/exo_ffwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

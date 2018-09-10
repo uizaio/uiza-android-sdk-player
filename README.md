@@ -342,12 +342,12 @@ This sample help you know how to use all Uiza SDK, please refer to  [THIS](https
 Only 3 steps, you can customize everything about player skin.
 
 **Step 1:**
-Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
 
 Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
 
 **Step 2:**
-Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
 - In this xml file, you can edit anything you like: position, color, drawable resouces...
 - You can add more view (TextView, Button, ImageView...).
 - You can remove any component which you dont like.
@@ -377,7 +377,7 @@ But if you wanna change the player's skin when the player is playing, please you
 
     uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
 
-This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/v3/customskin)
+This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample/src/main/java/testlibuiza/sample/v3/customskin)
 
 ***Note:***
 - You should not change the id of the view.
