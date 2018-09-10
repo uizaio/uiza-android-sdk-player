@@ -1478,7 +1478,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //TODO why set gone not work?
             //exoRew.setVisibility(GONE);
             //exoFfwd.setVisibility(GONE);
-
             changeVisibilitiesOfButton(exoRew, false, 0);
             changeVisibilitiesOfButton(exoFfwd, false, 0);
 
@@ -1500,7 +1499,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //TODO why set visible not work?
             //exoRew.setVisibility(VISIBLE);
             //exoFfwd.setVisibility(VISIBLE);
-
             changeVisibilitiesOfButton(exoRew, true, R.drawable.baseline_replay_10_white_48);
             changeVisibilitiesOfButton(exoFfwd, true, R.drawable.baseline_forward_10_white_48);
 
