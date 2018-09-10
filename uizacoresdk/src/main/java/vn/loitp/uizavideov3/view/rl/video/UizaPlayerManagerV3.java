@@ -107,7 +107,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_READY && playWhenReady) {
-                LLog.d(TAG, "onPlayerStateChanged STATE_READY");
+                //LLog.d(TAG, "onPlayerStateChanged STATE_READY");
                 if (uizaIMAVideoV3 != null) {
                     uizaIMAVideoV3.hideLLMsg();
                     uizaIMAVideoV3.resetCountTryLinkPlayError();
@@ -213,8 +213,6 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             }
         };
         handler.postDelayed(runnable, 0);
-
-        //playerView.setControllerAutoShow(false);
         uizaIMAVideoV3.getPlayerView().setControllerShowTimeoutMs(0);
     }
 
@@ -272,7 +270,6 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         seekTo(contentPosition);
 
         LLog.d(TAG, "last progress volume " + uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
-        //uizaIMAVideoV3.setProgressVolumeSeekbar(uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
         setVolume(uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
 
         if (debugCallback != null) {
@@ -416,8 +413,6 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             adsLoader.release();
         }
     }
-
-    // AdsMediaSource.MediaSourceFactory implementation.
 
     @Override
     public MediaSource createMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {

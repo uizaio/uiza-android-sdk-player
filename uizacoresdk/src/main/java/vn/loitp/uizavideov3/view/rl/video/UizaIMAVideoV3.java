@@ -511,6 +511,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
+                String urlIMAAd = "";
+
                 initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 if (uizaCallback != null) {
                     uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
@@ -1211,10 +1213,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.init();
             if (UizaUtil.getClickedPip(activity) && !UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
+                //LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
                 uizaPlayerManagerV3.getPlayer().setPlayWhenReady(false);
             } else {
-                LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
+                //LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
                 if (isRefreshFromChangeSkin) {
                     uizaPlayerManagerV3.seekTo(currentPositionBeforeChangeSkin);
                     isRefreshFromChangeSkin = false;
