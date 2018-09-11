@@ -161,6 +161,11 @@ public class UizaDataV3 {
 
         int existAt = Constants.NOT_FOUND;
         for (int i = 0; i < uizaInputV3List.size(); i++) {
+            if (uizaInputV3 == null || uizaInputV3.getData() == null || uizaInputV3.getData().getId() == null ||
+                    uizaInputV3List.get(i) == null || uizaInputV3List.get(i).getData() == null || uizaInputV3List.get(i).getData().getId() == null
+                    ) {
+                continue;
+            }
             if (uizaInputV3.getData().getId().equals(uizaInputV3List.get(i).getData().getId())) {
                 existAt = i;
                 break;
@@ -174,13 +179,15 @@ public class UizaDataV3 {
         if (uizaInputV3List.size() > 2) {
             uizaInputV3List.remove(0);
         }
-        if (Constants.IS_DEBUG) {
+        /*if (Constants.IS_DEBUG) {
             String x = "";
             for (UizaInputV3 u : uizaInputV3List) {
-                x += " > " + u.getData().getEntityName();
+                if (u != null && u.getData() != null && u.getData().getEntityName() != null) {
+                    x += " > " + u.getData().getEntityName();
+                }
             }
-            //LLog.d(TAG, "setUizaInput " + x);
-        }
+            LLog.d(TAG, "setUizaInput " + x);
+        }*/
     }
 
     public boolean isLivestream() {

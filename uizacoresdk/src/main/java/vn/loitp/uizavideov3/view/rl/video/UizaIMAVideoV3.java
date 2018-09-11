@@ -160,7 +160,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private ResultGetLinkPlay mResultGetLinkPlay;
     //private Data mData;//information of video (VOD or LIVE)
-    private boolean isResultGetLinkPlayDone;
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
@@ -263,6 +262,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
+        isCalledApiGetDetailEntity = false;
+        isCalledAPIGetUrlIMAAdTag = false;
+        isCalledAPIGetTokenStreaming = false;
         this.entityId = entityId;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
         UizaDataV3.getInstance().setSettingPlayer(true);
@@ -283,7 +285,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void callAPIGetDetailEntity() {
         //Nếu đã tồn tại Data rồi thì nó được gọi từ pip, mình ko cần phải call api lấy detail entity làm gì nữa
         if (UizaDataV3.getInstance().getData() == null) {
-            LLog.d(TAG, "init UizaDataV3.getInstance().getData() == null -> call api lấy detail entity if");
+            //LLog.d(TAG, "init UizaDataV3.getInstance().getData() == null -> call api lấy detail entity if");
             UizaUtil.getDetailEntity((BaseActivity) activity, entityId, new UizaUtil.Callback() {
                 @Override
                 public void onSuccess(Data d) {
@@ -292,9 +294,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UizaDataV3.getInstance().setData(d);
-                    if (!UizaUtil.getClickedPip(activity)) {
-                        setVideoCover();
-                    }
                     handleDataCallAPI();
                 }
 
@@ -321,8 +320,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "callAPIGetUrlIMAAdTag success");
                 isCalledAPIGetUrlIMAAdTag = true;
                 //TODO remove hard code, call api
-                urlIMAAd = null;
-                //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                //urlIMAAd = null;
+                urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
                 handleDataCallAPI();
             }
         });
@@ -415,7 +414,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     }
                     LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
                     mResultGetLinkPlay = result;
-                    isResultGetLinkPlayDone = true;
                     checkToSetUpResouce();
                 }
 
@@ -458,7 +456,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess");
                     mResultGetLinkPlay = result;
-                    isResultGetLinkPlayDone = true;
                     checkToSetUpResouce();
                 }
 
@@ -487,7 +484,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleDataCallAPI() {
-        LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
+        //LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
         if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
             LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
             UizaInputV3 uizaInputV3 = new UizaInputV3();
@@ -499,12 +496,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
             uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
             UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+            if (!UizaUtil.getClickedPip(activity)) {
+                setVideoCover();
+            }
             checkData();
         }
     }
 
     private void checkData() {
-        LLog.d(TAG, "-> checkData -> callAPIGetTokenStreaming -> callAPIGetLinkPlay");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaDataV3.getInstance().getEntityId() == null || UizaDataV3.getInstance().getEntityId().isEmpty()) {
@@ -538,7 +537,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uizaPlayerManagerV3.release();
             mResultGetLinkPlay = null;
-            isResultGetLinkPlayDone = false;
             resetCountTryLinkPlayError();
         }
         updateUI();
@@ -651,80 +649,78 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void checkToSetUpResouce() {
-        LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
-        if (isResultGetLinkPlayDone) {
-            if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
-                //LLog.d(TAG, "checkToSetUpResouce if");
-                List<String> listLinkPlay = new ArrayList<>();
-                List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
+        LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
+        if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
+            //LLog.d(TAG, "checkToSetUpResouce if");
+            List<String> listLinkPlay = new ArrayList<>();
+            List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
-                for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("mpd")) {
-                        listLinkPlay.add(url.getUrl());
-                    }
+            for (Url url : urlList) {
+                if (url.getSupport().toLowerCase().equals("mpd")) {
+                    listLinkPlay.add(url.getUrl());
                 }
-                for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("m3u8")) {
-                        listLinkPlay.add(url.getUrl());
-                    }
-                }
-
-                //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
-                //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
-                //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
-                //listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
-
-                //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
-                if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    LLog.e(TAG, "checkToSetUpResouce listLinkPlay == null || listLinkPlay.isEmpty()");
-                    handleErrorNoData();
-                    return;
-                }
-                if (countTryLinkPlayError >= listLinkPlay.size()) {
-                    if (LConnectivityUtil.isConnected(activity)) {
-                        LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
-                            @Override
-                            public void onClick1() {
-                                handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                            }
-                        });
-                    } else {
-                        //LLog.d(TAG, "checkToSetUpResouce else err_no_internet");
-                        showTvMsg(activity.getString(R.string.err_no_internet));
-                    }
-                    return;
-                }
-                String linkPlay = listLinkPlay.get(countTryLinkPlayError);
-
-                List<Subtitle> subtitleList = null;
-                //TODO iplm v3 chua co subtitle
-                //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
-                //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
-
-                initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
-                if (uizaCallback != null) {
-                    uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
-                }
-                initUizaPlayerManagerV3();
-            } else {
-                //LLog.d(TAG, "checkToSetUpResouce else");
-                LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(activity.getString(R.string.err_setup)));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(activity.getString(R.string.err_setup)));
-                    }
-                });
             }
+            for (Url url : urlList) {
+                if (url.getSupport().toLowerCase().equals("m3u8")) {
+                    listLinkPlay.add(url.getUrl());
+                }
+            }
+
+            //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
+            //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
+            //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
+            //listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+
+            //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+            if (listLinkPlay == null || listLinkPlay.isEmpty()) {
+                LLog.e(TAG, "checkToSetUpResouce listLinkPlay == null || listLinkPlay.isEmpty()");
+                handleErrorNoData();
+                return;
+            }
+            if (countTryLinkPlayError >= listLinkPlay.size()) {
+                if (LConnectivityUtil.isConnected(activity)) {
+                    LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
+                        }
+                    });
+                } else {
+                    //LLog.d(TAG, "checkToSetUpResouce else err_no_internet");
+                    showTvMsg(activity.getString(R.string.err_no_internet));
+                }
+                return;
+            }
+            String linkPlay = listLinkPlay.get(countTryLinkPlayError);
+
+            List<Subtitle> subtitleList = null;
+            //TODO iplm v3 chua co subtitle
+            //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
+            //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
+
+            initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            if (uizaCallback != null) {
+                uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
+            }
+            initUizaPlayerManagerV3();
+        } else {
+            //LLog.d(TAG, "checkToSetUpResouce else");
+            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    handleError(new Exception(activity.getString(R.string.err_setup)));
+                }
+
+                @Override
+                public void onCancel() {
+                    handleError(new Exception(activity.getString(R.string.err_setup)));
+                }
+            });
         }
     }
 
@@ -745,7 +741,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            LLog.d(TAG, "`removeVideoCover isFromHandleError: " + isFromHandleError);
+            LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
                 if (tvLiveTime != null) {
@@ -1356,8 +1352,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public void onDestroy() {
         LLog.d(TAG, "onDestroy");
-        //ivVideoCover.setImageResource(R.drawable.uiza);
-        //ivVideoCover.setVisibility(VISIBLE);
         if (firstBrightness != Constants.NOT_FOUND) {
             //LLog.d(TAG, "onDestroy setBrightness " + firstBrightness);
             LScreenUtil.setBrightness(getContext(), firstBrightness);
