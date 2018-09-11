@@ -213,6 +213,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isHasError;
 
     private void handleError(Exception e) {
+        //TODO if has error, should clear all variable, flag to default?
         if (e == null) {
             return;
         }
@@ -271,11 +272,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         //called api paralle here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
+        callAPIGetTokenStreaming();
     }
 
     //TODO reset these flags
     private boolean isCalledApiGetDetailEntity;
     private boolean isCalledAPIGetUrlIMAAdTag;
+    private boolean isCalledAPIGetTokenStreaming;
 
     private void callAPIGetDetailEntity() {
         //Nếu đã tồn tại Data rồi thì nó được gọi từ pip, mình ko cần phải call api lấy detail entity làm gì nữa
@@ -289,6 +292,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UizaDataV3.getInstance().setData(d);
+                    if (!UizaUtil.getClickedPip(activity)) {
+                        setVideoCover();
+                    }
                     handleDataCallAPI();
                 }
 
@@ -306,25 +312,183 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    //TODO call api
     private String urlIMAAd = null;
 
     private void callAPIGetUrlIMAAdTag() {
-        LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
+        LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 LLog.d(TAG, "callAPIGetUrlIMAAdTag success");
                 isCalledAPIGetUrlIMAAdTag = true;
-                //TODO remove hard code
-                urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                //TODO remove hard code, call api
+                urlIMAAd = null;
+                //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
                 handleDataCallAPI();
             }
         });
     }
 
+    private String tokenStreaming;
+
+    private void callAPIGetTokenStreaming() {
+        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
+        sendGetTokenStreaming.setEntityId(entityId);
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
+                if (Constants.IS_DEBUG) {
+                    LToast.show(activity, "callAPIGetTokenStreaming onSuccess");
+                }
+                if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
+                    LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                        }
+                    });
+                    return;
+                }
+                tokenStreaming = result.getData().getToken();
+                LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + tokenStreaming);
+                isCalledAPIGetTokenStreaming = true;
+                handleDataCallAPI();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "callAPIGetTokenStreaming onFail " + e.getMessage());
+                final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_token_streaming) + "\n" + e.getMessage() : activity.getString(R.string.no_token_streaming);
+                LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
+                    @Override
+                    public void onClick1() {
+                        handleError(new Exception(msg));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        handleError(new Exception(msg));
+                    }
+                });
+            }
+        });
+    }
+
+    private void callAPIGetLinkPlay() {
+        //LLog.d(TAG, "callAPIGetLinkPlay isLivestream " + isLivestream);
+        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
+            LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
+                @Override
+                public void onClick1() {
+                    handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                }
+
+                @Override
+                public void onCancel() {
+                    handleError(new Exception(activity.getString(R.string.no_token_streaming)));
+                }
+            });
+            return;
+        }
+        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
+        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        if (isLivestream) {
+            String appId = UizaDataV3.getInstance().getAppId();
+            String channelName = UizaDataV3.getInstance().getChannelName();
+            //LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "========name: " + channelName);
+            //LLog.d(TAG, "========appId: " + appId);
+            //LLog.d(TAG, "===================================");
+            activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
+                @Override
+                public void onSuccess(ResultGetLinkPlay result) {
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "callAPIGetLinkPlay isLivestream onSuccess");
+                    }
+                    LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
+                    mResultGetLinkPlay = result;
+                    isResultGetLinkPlayDone = true;
+                    checkToSetUpResouce();
+                }
+
+                @Override
+                public void onFail(Throwable e) {
+                    if (e == null) {
+                        LLog.e(TAG, "callAPIGetLinkPlay LIVE onFail");
+                        return;
+                    }
+                    LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
+                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
+                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(msg));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(msg));
+                        }
+                    });
+                }
+            });
+        } else {
+            String appId = UizaDataV3.getInstance().getAppId();
+            String entityId = UizaDataV3.getInstance().getEntityId();
+            String typeContent = SendGetTokenStreaming.STREAM;
+            //LLog.d(TAG, "===================================");
+            //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
+            //LLog.d(TAG, "========appId: " + appId);
+            //LLog.d(TAG, "========entityId: " + entityId);
+            //LLog.d(TAG, "===================================");
+            activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+                @Override
+                public void onSuccess(ResultGetLinkPlay result) {
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "callAPIGetLinkPlay !isLivestream onSuccess");
+                    }
+                    //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
+                    //LLog.d(TAG, "getLinkPlayVOD onSuccess");
+                    mResultGetLinkPlay = result;
+                    isResultGetLinkPlayDone = true;
+                    checkToSetUpResouce();
+                }
+
+                @Override
+                public void onFail(Throwable e) {
+                    if (e == null) {
+                        LLog.e(TAG, "callAPIGetLinkPlay VOD onFail");
+                        return;
+                    }
+                    LLog.e(TAG, "callAPIGetLinkPlay VOD onFail " + e.getMessage());
+                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
+                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            handleError(new Exception(msg));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            handleError(new Exception(msg));
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     private void handleDataCallAPI() {
-        LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag);
-        if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag) {
+        LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
+        if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
             LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
             UizaInputV3 uizaInputV3 = new UizaInputV3();
             uizaInputV3.setData(UizaDataV3.getInstance().getData());
@@ -379,13 +543,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         updateUI();
         setTitle();
-        if (!UizaUtil.getClickedPip(activity)) {
-            setVideoCover();
-        }
-        callAPIGetTokenStreaming();
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
+
+        callAPIGetLinkPlay();
 
         //track event eventype display
         trackUizaEventDisplay();
@@ -454,7 +616,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
         uizaPlayerManagerV3.release();
-        checkToSetUp();
+        checkToSetUpResouce();
     }
 
     //khi call api callAPIGetLinkPlay nhung json tra ve ko co data
@@ -488,11 +650,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });
     }
 
-    private void checkToSetUp() {
-        LLog.d(TAG, "checkToSetUp isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
+    private void checkToSetUpResouce() {
+        LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone: " + isResultGetLinkPlayDone);
         if (isResultGetLinkPlayDone) {
             if (mResultGetLinkPlay != null && UizaDataV3.getInstance().getData() != null) {
-                //LLog.d(TAG, "checkToSetUp if");
+                //LLog.d(TAG, "checkToSetUpResouce if");
                 List<String> listLinkPlay = new ArrayList<>();
                 List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
@@ -514,7 +676,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
                 if (listLinkPlay == null || listLinkPlay.isEmpty()) {
-                    LLog.e(TAG, "checkToSetUp listLinkPlay == null || listLinkPlay.isEmpty()");
+                    LLog.e(TAG, "checkToSetUpResouce listLinkPlay == null || listLinkPlay.isEmpty()");
                     handleErrorNoData();
                     return;
                 }
@@ -532,7 +694,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             }
                         });
                     } else {
-                        //LLog.d(TAG, "checkToSetUp else err_no_internet");
+                        //LLog.d(TAG, "checkToSetUpResouce else err_no_internet");
                         showTvMsg(activity.getString(R.string.err_no_internet));
                     }
                     return;
@@ -550,7 +712,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
                 initUizaPlayerManagerV3();
             } else {
-                //LLog.d(TAG, "checkToSetUp else");
+                //LLog.d(TAG, "checkToSetUpResouce else");
                 LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
                     @Override
                     public void onClick1() {
@@ -572,12 +734,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private void setVideoCover() {
         if (ivVideoCover.getVisibility() != VISIBLE) {
-            LLog.d(TAG, "setVideoCover");
             resetCountTryLinkPlayError();
-
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            LImageUtil.load(activity, UizaDataV3.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getThumbnail(), ivVideoCover, R.drawable.uiza);
+            String urlCover = UizaDataV3.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getThumbnail();
+            LLog.d(TAG, "setVideoCover urlCover " + urlCover);
+            LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.uiza);
         }
     }
 
@@ -678,6 +840,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
         rootView.addView(playerView);
+        setControllerAutoShow(false);
     }
 
     /*
@@ -723,7 +886,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         uizaPlayerManagerV3.release();
         updateUI();
         setTitle();
-        checkToSetUp();
+        checkToSetUpResouce();
 
         if (uizaCallback != null) {
             uizaCallback.onSkinChange();
@@ -1729,147 +1892,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return null;
         }
         return uizaPlayerManagerV3.getPlayer();
-    }
-
-    private void callAPIGetTokenStreaming() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
-        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
-        sendGetTokenStreaming.setEntityId(UizaDataV3.getInstance().getEntityId());
-        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
-            @Override
-            public void onSuccess(ResultGetTokenStreaming result) {
-                //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
-                if (Constants.IS_DEBUG) {
-                    LToast.show(activity, "callAPIGetTokenStreaming onSuccess");
-                }
-                if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
-                    LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                        }
-                    });
-                    return;
-                }
-                String tokenStreaming = result.getData().getToken();
-                LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + tokenStreaming);
-                callAPIGetLinkPlay(tokenStreaming);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "callAPIGetTokenStreaming onFail " + e.getMessage());
-                final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_token_streaming) + "\n" + e.getMessage() : activity.getString(R.string.no_token_streaming);
-                LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(msg));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(msg));
-                    }
-                });
-            }
-        });
-    }
-
-    private void callAPIGetLinkPlay(String tokenStreaming) {
-        //LLog.d(TAG, "callAPIGetLinkPlay isLivestream " + isLivestream);
-        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
-        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        if (isLivestream) {
-            String appId = UizaDataV3.getInstance().getAppId();
-            String channelName = UizaDataV3.getInstance().getChannelName();
-            //LLog.d(TAG, "===================================");
-            //LLog.d(TAG, "========name: " + channelName);
-            //LLog.d(TAG, "========appId: " + appId);
-            //LLog.d(TAG, "===================================");
-            activity.subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
-                @Override
-                public void onSuccess(ResultGetLinkPlay result) {
-                    if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "callAPIGetLinkPlay isLivestream onSuccess");
-                    }
-                    LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
-                    mResultGetLinkPlay = result;
-                    isResultGetLinkPlayDone = true;
-                    checkToSetUp();
-                }
-
-                @Override
-                public void onFail(Throwable e) {
-                    if (e == null) {
-                        LLog.e(TAG, "callAPIGetLinkPlay LIVE onFail");
-                        return;
-                    }
-                    LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
-                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
-                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(msg));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(msg));
-                        }
-                    });
-                }
-            });
-        } else {
-            String appId = UizaDataV3.getInstance().getAppId();
-            String entityId = UizaDataV3.getInstance().getEntityId();
-            String typeContent = SendGetTokenStreaming.STREAM;
-            //LLog.d(TAG, "===================================");
-            //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
-            //LLog.d(TAG, "========appId: " + appId);
-            //LLog.d(TAG, "========entityId: " + entityId);
-            //LLog.d(TAG, "===================================");
-            activity.subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
-                @Override
-                public void onSuccess(ResultGetLinkPlay result) {
-                    if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "callAPIGetLinkPlay !isLivestream onSuccess");
-                    }
-                    //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
-                    //LLog.d(TAG, "getLinkPlayVOD onSuccess");
-                    mResultGetLinkPlay = result;
-                    isResultGetLinkPlayDone = true;
-                    checkToSetUp();
-                }
-
-                @Override
-                public void onFail(Throwable e) {
-                    if (e == null) {
-                        LLog.e(TAG, "callAPIGetLinkPlay VOD onFail");
-                        return;
-                    }
-                    LLog.e(TAG, "callAPIGetLinkPlay VOD onFail " + e.getMessage());
-                    final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
-                    LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(msg));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(msg));
-                        }
-                    });
-                }
-            });
-        }
     }
 
     private UizaCallback uizaCallback;

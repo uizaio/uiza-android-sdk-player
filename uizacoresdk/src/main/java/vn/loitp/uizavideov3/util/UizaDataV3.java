@@ -205,7 +205,10 @@ public class UizaDataV3 {
     }
 
     public String getThumbnail() {
-        if (uizaInputV3 == null || uizaInputV3.getData() == null) {
+        if (uizaInputV3 == null) {
+            if (getData() != null && getData().getThumbnail() != null) {
+                return getData().getThumbnail();
+            }
             return null;
         }
         return uizaInputV3.getData().getThumbnail();
