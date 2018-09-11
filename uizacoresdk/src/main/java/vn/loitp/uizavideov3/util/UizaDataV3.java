@@ -218,12 +218,12 @@ public class UizaDataV3 {
         return uizaInputV3.getData().getChannelName();
     }
 
-    /*public String getUrlIMAAd() {
+    public String getUrlIMAAd() {
         if (uizaInputV3 == null) {
             return null;
         }
         return uizaInputV3.getUrlIMAAd();
-    }*/
+    }
 
     public String getUrlThumnailsPreviewSeekbar() {
         if (uizaInputV3 == null) {
