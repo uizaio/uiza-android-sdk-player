@@ -238,7 +238,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    protected void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
+    protected void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         if (isClearDataPlaylistFolder) {
@@ -271,7 +271,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     LLog.d(TAG, "init getDetailEntity onSuccess");
                     //save current data
                     UizaDataV3.getInstance().setData(d);
-                    handleGetDetailEntityDone(urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                    handleGetDetailEntityDone(urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
                 }
 
                 @Override
@@ -284,15 +284,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         } else {
             //init player khi user click vào fullscreen của floating view (pic)
             LLog.d(TAG, "init UizaDataV3.getInstance().getData() != null");
-            handleGetDetailEntityDone(urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+            handleGetDetailEntityDone(urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
         }
     }
 
-    private void handleGetDetailEntityDone(String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    private void handleGetDetailEntityDone(String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         UizaInputV3 uizaInputV3 = new UizaInputV3();
         uizaInputV3.setData(UizaDataV3.getInstance().getData());
         //TODO correct ad logic here
-        uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
+        //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
         //uizaInputV3.setUrlIMAAd(urlIMAAd);
         //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
         uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
@@ -303,22 +303,22 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
+    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        init(entityId, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
     }
 
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    public void init(@NonNull String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar) {
-        init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, false, true);
+    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar) {
+        init(entityId, urlThumnailsPreviewSeekbar, false, true);
     }
 
     /**
      * init player with entity id
      */
     public void init(@NonNull String entityId) {
-        init(entityId, null, null, false, true);
+        init(entityId, null, false, true);
     }
 
     /**
@@ -512,9 +512,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
                 //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-                String urlIMAAd = "";
+                //TODO get correct url ima here
+                String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
 
-                initDataSource(linkPlay, UizaDataV3.getInstance().getUrlIMAAd(), UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                initDataSource(linkPlay, urlIMAAd, UizaDataV3.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
                 if (uizaCallback != null) {
                     uizaCallback.isInitResult(false, true, mResultGetLinkPlay, UizaDataV3.getInstance().getData());
                 }
@@ -2453,7 +2454,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         LLog.d(TAG, "-----------------------> playPlaylistPosition " + position);
-        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, null, false, false);
+        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, false, false);
     }
 
     private boolean isOnPlayerEnded;

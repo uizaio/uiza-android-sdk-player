@@ -293,7 +293,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
             } else {
                 boolean isPlayPrev = UizaDataV3.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
                 if (isPlayPrev) {
-                    setupVideo(UizaDataV3.getInstance().getEntityId(), prevUizaInput.getUrlIMAAd(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                    setupVideo(UizaDataV3.getInstance().getEntityId(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
                     ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                     LUIUtil.setDelay(250, new LUIUtil.DelayCallback() {
@@ -342,14 +342,14 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
         ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
     }
 
-    public void setupVideo(final String entityId, final String urlIMAAd, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    public void setupVideo(final String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         if (UizaDataV3.getInstance().isSettingPlayer()) {
             return;
         }
         uizaIMAVideoV3.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(entityId, urlIMAAd, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                uizaIMAVideoV3.init(entityId, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
                 uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
             }
         });
