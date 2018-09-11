@@ -212,13 +212,17 @@ public class UizaDataV3 {
     }
 
     public String getThumbnail() {
-        if (uizaInputV3 == null) {
-            if (getData() != null && getData().getThumbnail() != null) {
+        /*if (uizaInputV3 == null) {
+            if (data != null && getData().getThumbnail() != null) {
                 return getData().getThumbnail();
             }
             return null;
         }
-        return uizaInputV3.getData().getThumbnail();
+        return uizaInputV3.getData().getThumbnail();*/
+        if (data == null || data.getThumbnail() == null) {
+            return null;
+        }
+        return data.getThumbnail();
     }
 
     public String getChannelName() {

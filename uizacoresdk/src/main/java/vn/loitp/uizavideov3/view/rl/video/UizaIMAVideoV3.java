@@ -294,6 +294,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UizaDataV3.getInstance().setData(d);
+                    if (!UizaUtil.getClickedPip(activity)) {
+                        setVideoCover();
+                    }
                     handleDataCallAPI();
                 }
 
@@ -496,9 +499,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
             uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
             UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-            if (!UizaUtil.getClickedPip(activity)) {
+            /*if (!UizaUtil.getClickedPip(activity)) {
                 setVideoCover();
-            }
+            }*/
             checkData();
         }
     }
@@ -735,7 +738,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             ivVideoCover.invalidate();
             String urlCover = UizaDataV3.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UizaDataV3.getInstance().getThumbnail();
             LLog.d(TAG, "setVideoCover urlCover " + urlCover);
-            LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.uiza);
+            LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.background_black);
         }
     }
 
