@@ -236,6 +236,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
+    //TODO remove urlThumnailsPreviewSeekbar
     protected void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
@@ -259,6 +260,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
+        callAPIGetDetailEntity(entityId, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+    }
+
+    private void callAPIGetDetailEntity(String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         //Nếu đã tồn tại Data rồi thì nó được gọi từ pip, mình ko cần phải call api lấy detail entity làm gì nữa
         if (UizaDataV3.getInstance().getData() == null) {
             LLog.d(TAG, "init UizaDataV3.getInstance().getData() == null -> call api lấy detail entity if");
@@ -266,7 +271,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
-                    LLog.d(TAG, "init getDetailEntity onSuccess");
+                    LLog.d(TAG, "callAPIGetDetailEntity getDetailEntity onSuccess -> handleGetDetailEntityDone");
                     //save current data
                     UizaDataV3.getInstance().setData(d);
                     handleGetDetailEntityDone(urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
@@ -339,11 +344,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             UizaDataV3.getInstance().clearDataForPlaylistFolder();
         }
         isHasError = false;
-        getListAllEntity(metadataId);
+        callAPIGetListAllEntity(metadataId);
     }
 
     private void checkData() {
-        LLog.d(TAG, "checkData -> getTokenStreaming -> getLinkPlay");
+        LLog.d(TAG, "-> checkData -> callAPIGetTokenStreaming -> callAPIGetLinkPlay");
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         if (UizaDataV3.getInstance().getEntityId() == null || UizaDataV3.getInstance().getEntityId().isEmpty()) {
@@ -385,7 +390,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (!UizaUtil.getClickedPip(activity)) {
             setVideoCover();
         }
-        getTokenStreaming();
+        callAPIGetTokenStreaming();
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
@@ -423,7 +428,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         checkToSetUp();
     }
 
-    //khi call api getLinkPlay nhung json tra ve ko co data
+    //khi call api callAPIGetLinkPlay nhung json tra ve ko co data
     //se co gang choi video da play gan nhat
     //neu co thi se play
     //khong co thi bao loi
@@ -561,8 +566,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 if (tvLiveView != null) {
                     tvLiveView.setText("-");
                 }
-                updateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
-                updateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+                callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+                callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
             if (!isFromHandleError) {
                 onStateReadyFirst();
@@ -1035,7 +1040,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (UizaTrackingUtil.isTrackedEventTypeView(activity)) {
                 //da track roi ko can track nua
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW), new UizaTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypeView(activity, true);
@@ -1063,7 +1068,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(activity, true);
@@ -1079,7 +1084,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(activity, true);
@@ -1095,7 +1100,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(activity, true);
@@ -1111,7 +1116,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
-                trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UizaTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UizaTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(activity, true);
@@ -1700,7 +1705,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return uizaPlayerManagerV3.getPlayer();
     }
 
-    private void getTokenStreaming() {
+    private void callAPIGetTokenStreaming() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
@@ -1709,9 +1714,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
-                //LLog.d(TAG, "getTokenStreaming onSuccess: " + gson.toJson(result));
+                //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
                 if (Constants.IS_DEBUG) {
-                    LToast.show(activity, "getTokenStreaming onSuccess");
+                    LToast.show(activity, "callAPIGetTokenStreaming onSuccess");
                 }
                 if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
                     LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
@@ -1728,13 +1733,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     return;
                 }
                 String tokenStreaming = result.getData().getToken();
-                LLog.d(TAG, "getTokenStreaming onSuccess: " + tokenStreaming);
-                getLinkPlay(tokenStreaming);
+                LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + tokenStreaming);
+                callAPIGetLinkPlay(tokenStreaming);
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "getTokenStreaming onFail " + e.getMessage());
+                LLog.e(TAG, "callAPIGetTokenStreaming onFail " + e.getMessage());
                 final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_token_streaming) + "\n" + e.getMessage() : activity.getString(R.string.no_token_streaming);
                 LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                     @Override
@@ -1751,8 +1756,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         });
     }
 
-    private void getLinkPlay(String tokenStreaming) {
-        //LLog.d(TAG, "getLinkPlay isLivestream " + isLivestream);
+    private void callAPIGetLinkPlay(String tokenStreaming) {
+        //LLog.d(TAG, "callAPIGetLinkPlay isLivestream " + isLivestream);
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
         if (isLivestream) {
@@ -1766,7 +1771,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
                     if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "getLinkPlay isLivestream onSuccess");
+                        LToast.show(activity, "callAPIGetLinkPlay isLivestream onSuccess");
                     }
                     LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
                     mResultGetLinkPlay = result;
@@ -1777,7 +1782,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onFail(Throwable e) {
                     if (e == null) {
-                        LLog.e(TAG, "getLinkPlay LIVE onFail");
+                        LLog.e(TAG, "callAPIGetLinkPlay LIVE onFail");
                         return;
                     }
                     LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
@@ -1808,7 +1813,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
                     if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "getLinkPlay !isLivestream onSuccess");
+                        LToast.show(activity, "callAPIGetLinkPlay !isLivestream onSuccess");
                     }
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess");
@@ -1820,10 +1825,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 @Override
                 public void onFail(Throwable e) {
                     if (e == null) {
-                        LLog.e(TAG, "getLinkPlay VOD onFail");
+                        LLog.e(TAG, "callAPIGetLinkPlay VOD onFail");
                         return;
                     }
-                    LLog.e(TAG, "getLinkPlay VOD onFail " + e.getMessage());
+                    LLog.e(TAG, "callAPIGetLinkPlay VOD onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
                     LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
                         @Override
@@ -1843,13 +1848,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     private UizaCallback uizaCallback;
 
-    private void trackUiza(final UizaTracking uizaTracking, final UizaTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
-        //LLog.d(TAG, "------------------------>trackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+    private void callAPITrackUiza(final UizaTracking uizaTracking, final UizaTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
+        //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
         UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -1861,7 +1866,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             @Override
             public void onFail(Throwable e) {
                 //TODO iplm if track fail
-                LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+                LLog.e(TAG, "callAPITrackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
     }
@@ -1988,26 +1993,26 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void updateLiveInfoCurrentView(final int durationDelay) {
+    private void callAPIUpdateLiveInfoCurrentView(final int durationDelay) {
         if (!isLivestream) {
             return;
         }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                //LLog.d(TAG, "updateLiveInfoCurrentView " + System.currentTimeMillis());
+                //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView " + System.currentTimeMillis());
                 if (!isLivestream) {
                     return;
                 }
                 if (uizaPlayerManagerV3 != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    //LLog.d(TAG, "updateLiveInfoCurrentView isShowing");
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing");
                     UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
                     String id = UizaDataV3.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
                             if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "updateLiveInfoCurrentView onSuccess");
+                                LToast.show(activity, "callAPIUpdateLiveInfoCurrentView onSuccess");
                             }
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
@@ -2015,24 +2020,24 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                     tvLiveView.setText(result.getData().getWatchnow() + "");
                                 }
                             }
-                            updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
+                            callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
 
                         @Override
                         public void onFail(Throwable e) {
                             LLog.e(TAG, "getViewALiveFeed onFail " + e.getMessage());
-                            updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
+                            callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
                     });
                 } else {
-                    //LLog.d(TAG, "updateLiveInfoCurrentView !isShowing");
-                    updateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView !isShowing");
+                    callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                 }
             }
         });
     }
 
-    private void updateLiveInfoTimeStartLive(final int durationDelay) {
+    private void callAPIUpdateLiveInfoTimeStartLive(final int durationDelay) {
         if (!isLivestream) {
             return;
         }
@@ -2051,7 +2056,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                         @Override
                         public void onSuccess(ResultTimeStartLive result) {
                             if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "updateLiveInfoTimeStartLive onSuccess");
+                                LToast.show(activity, "callAPIUpdateLiveInfoTimeStartLive onSuccess");
                             }
                             //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
@@ -2068,17 +2073,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                                     tvLiveTime.setText(s);
                                 }
                             }
-                            updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
 
                         @Override
                         public void onFail(Throwable e) {
                             LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
-                            updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                         }
                     });
                 } else {
-                    updateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                    callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                 }
             }
         });
@@ -2319,20 +2324,20 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final String pfOrderType = "DESC";
     private final String publishToCdn = "success";
 
-    private void getListAllEntity(String metadataId) {
+    private void callAPIGetListAllEntity(String metadataId) {
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
         if (UizaDataV3.getInstance().getDataList() == null) {
-            LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() == null -> call api lấy data list");
+            LLog.d(TAG, "callAPIGetListAllEntity UizaDataV3.getInstance().getDataList() == null -> call api lấy data list");
             UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
             activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "getListAllEntity onSuccess");
+                        LToast.show(activity, "callAPIGetListAllEntity onSuccess");
                     }
-                    LLog.d(TAG, "getListAllEntity onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "callAPIGetListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uizaCallback != null) {
                             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
@@ -2360,12 +2365,12 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                             pfTotalPage = (int) ratio;
                         }
                     }
-                    LLog.d(TAG, "<<<getListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage);
+                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage);
                     UizaDataV3.getInstance().setDataList(result.getData());
                     if (UizaDataV3.getInstance().getDataList() == null || UizaDataV3.getInstance().getDataList().isEmpty()) {
-                        LLog.e(TAG, "getListAllEntity success but no data");
+                        LLog.e(TAG, "callAPIGetListAllEntity success but no data");
                         if (uizaCallback != null) {
-                            uizaCallback.onError(new Exception("getListAllEntity success but no data"));
+                            uizaCallback.onError(new Exception("callAPIGetListAllEntity success but no data"));
                         }
                         return;
                     }
@@ -2378,9 +2383,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
                 @Override
                 public void onFail(Throwable e) {
-                    LLog.e(TAG, "getListAllEntity onFail " + e.getMessage());
+                    LLog.e(TAG, "callAPIGetListAllEntity onFail " + e.getMessage());
                     if (uizaCallback != null) {
-                        uizaCallback.onError(new Exception("getListAllEntity failed: " + e.toString()));
+                        uizaCallback.onError(new Exception("callAPIGetListAllEntity failed: " + e.toString()));
                     }
                     if (uizaPlayerManagerV3 != null) {
                         uizaPlayerManagerV3.hideProgress();
@@ -2388,7 +2393,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             });
         } else {
-            LLog.d(TAG, "getListAllEntity UizaDataV3.getInstance().getDataList() != null -> không cần call api lấy data list nữa mà lấy dữ liệu có sẵn play luôn");
+            LLog.d(TAG, "callAPIGetListAllEntity UizaDataV3.getInstance().getDataList() != null -> không cần call api lấy data list nữa mà lấy dữ liệu có sẵn play luôn");
             //LLog.d(TAG, "list size: " + UizaDataV3.getInstance().getDataList().size());
             playPlaylistPosition(UizaDataV3.getInstance().getCurrentPositionOfDataList());
             if (uizaPlayerManagerV3 != null) {
@@ -2822,7 +2827,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (UizaTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UizaTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UizaTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
@@ -2835,7 +2840,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (UizaTrackingUtil.isTrackedEventTypeDisplay(activity)) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UizaTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UizaTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
@@ -2848,7 +2853,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (UizaTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UizaDataV3.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UizaTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UizaTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);
