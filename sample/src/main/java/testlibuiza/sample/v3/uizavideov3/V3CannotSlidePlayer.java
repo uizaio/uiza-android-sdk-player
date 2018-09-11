@@ -84,42 +84,38 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
         //set uizaIMAVideoV3 hide all controller
         uizaIMAVideoV3.setUseController(true);
+        uizaIMAVideoV3.setControllerAutoShow(true);
+        uizaIMAVideoV3.setControllerShowTimeoutMs(5000);
+        uizaIMAVideoV3.hideControllerOnTouch(true);
 
         uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed() {
-                LLog.d(TAG, "onSingleTapConfirmed");
             }
 
             @Override
             public void onLongPress() {
-                LLog.d(TAG, "onLongPress");
             }
 
             @Override
             public void onDoubleTap() {
-                LLog.d(TAG, "onDoubleTap");
                 uizaIMAVideoV3.setDisplayPortrait(!uizaIMAVideoV3.isDisplayPortrait());
             }
 
             @Override
             public void onSwipeRight() {
-                LLog.d(TAG, "onSwipeRight");
             }
 
             @Override
             public void onSwipeLeft() {
-                LLog.d(TAG, "onSwipeLeft");
             }
 
             @Override
             public void onSwipeBottom() {
-                LLog.d(TAG, "onSwipeBottom");
             }
 
             @Override
             public void onSwipeTop() {
-                LLog.d(TAG, "onSwipeTop");
             }
         });
 

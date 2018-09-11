@@ -1943,19 +1943,32 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    //disable timeout controller
+    public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
+        playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
+    }
+
+    public void setControllerAutoShow(boolean isAutoShow) {
+        playerView.setControllerAutoShow(isAutoShow);
+    }
+
     public void showController() {
-        playerView.showController();
+        if (playerView != null) {
+            playerView.showController();
+        }
     }
 
     public void hideController() {
         if (isCastingChromecast) {
             //dont hide if is casting chromecast
         } else {
-            playerView.hideController();
+            if (playerView != null) {
+                playerView.hideController();
+            }
         }
     }
 
-    protected void hideControllerOnTouch(boolean isHide) {
+    public void hideControllerOnTouch(boolean isHide) {
         playerView.setControllerHideOnTouch(isHide);
     }
 
