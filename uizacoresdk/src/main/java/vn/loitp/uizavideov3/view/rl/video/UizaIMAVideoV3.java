@@ -291,9 +291,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void handleGetDetailEntityDone(String urlIMAAd, String urlThumnailsPreviewSeekbar, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         UizaInputV3 uizaInputV3 = new UizaInputV3();
         uizaInputV3.setData(UizaDataV3.getInstance().getData());
-        //TODO revert
-        uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
-        //uizaInputV3.setUrlIMAAd(urlIMAAd);
+        //TODO correct ad logic here
+        //uizaInputV3.setUrlIMAAd(activity.getString(loitp.core.R.string.ad_tag_url));
+        uizaInputV3.setUrlIMAAd(urlIMAAd);
         //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
         uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
         UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
