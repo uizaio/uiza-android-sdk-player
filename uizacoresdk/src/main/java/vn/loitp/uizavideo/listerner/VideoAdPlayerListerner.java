@@ -5,7 +5,7 @@ import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import vn.loitp.core.utilities.LLog;
 
 /**
- * Created by LENOVO on 4/12/2018.
+ * Created by loitp on 4/12/2018.
  */
 
 public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
