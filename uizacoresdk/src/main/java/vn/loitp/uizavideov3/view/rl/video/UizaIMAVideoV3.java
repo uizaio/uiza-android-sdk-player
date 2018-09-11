@@ -240,10 +240,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
      */
     //TODO remove urlThumnailsPreviewSeekbar
     private String entityId;
-    private String urlThumnailsPreviewSeekbar;
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
 
-    protected void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
+    protected void init(@NonNull String entityId, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         if (isClearDataPlaylistFolder) {
@@ -264,7 +263,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
         this.entityId = entityId;
-        this.urlThumnailsPreviewSeekbar = urlThumnailsPreviewSeekbar;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
@@ -331,55 +329,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             UizaInputV3 uizaInputV3 = new UizaInputV3();
             uizaInputV3.setData(UizaDataV3.getInstance().getData());
             uizaInputV3.setUrlIMAAd(urlIMAAd);
+
+            //TODO correct url thumnail, null till now
             //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
-            uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+            //uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+            uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
             UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
         }
-    }
-
-    /**
-     * init player with entity id, ad, seekbar thumnail
-     */
-    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        init(entityId, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
-    }
-
-    /**
-     * init player with entity id, ad, seekbar thumnail
-     */
-    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar) {
-        init(entityId, urlThumnailsPreviewSeekbar, false, true);
-    }
-
-    /**
-     * init player with entity id
-     */
-    public void init(@NonNull String entityId) {
-        init(entityId, null, false, true);
-    }
-
-    /**
-     * TODO init player with any link play
-     */
-    /*public void initLinkPlay(String anyLinkPlay){
-
-    }*/
-
-    /**
-     * init player with metadatId (playlist/folder)
-     */
-
-    public void initPlaylistFolder(String metadataId) {
-        LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
-        if (metadataId == null) {
-            //Được gọi initPlaylistFolder nếu click fullscreen từ pip
-            //do pass metadataId null
-        } else {
-            UizaDataV3.getInstance().clearDataForPlaylistFolder();
-        }
-        isHasError = false;
-        callAPIGetListAllEntity(metadataId);
     }
 
     private void checkData() {
@@ -434,6 +391,43 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         trackUizaEventDisplay();
         //track event plays_requested
         trackUizaEventPlaysRequested();
+    }
+
+    /**
+     * init player with entity id, ad, seekbar thumnail
+     */
+    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+        init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
+    }
+
+    /**
+     * init player with entity id, ad, seekbar thumnail
+     */
+    public void init(@NonNull String entityId) {
+        init(entityId, false, true);
+    }
+
+    /**
+     * TODO init player with any link play
+     */
+    /*public void initLinkPlay(String anyLinkPlay){
+
+    }*/
+
+    /**
+     * init player with metadatId (playlist/folder)
+     */
+
+    public void initPlaylistFolder(String metadataId) {
+        LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
+        if (metadataId == null) {
+            //Được gọi initPlaylistFolder nếu click fullscreen từ pip
+            //do pass metadataId null
+        } else {
+            UizaDataV3.getInstance().clearDataForPlaylistFolder();
+        }
+        isHasError = false;
+        callAPIGetListAllEntity(metadataId);
     }
 
     private int countTryLinkPlayError = 0;
@@ -2478,16 +2472,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         //end update UI for skip next and skip previous button
 
-        //currentPositionOfDataList = position;
         UizaDataV3.getInstance().setCurrentPositionOfDataList(position);
-        //Data data = dataList.get(currentPositionOfDataList);
         Data data = UizaDataV3.getInstance().getDataWithPositionOfDataList(position);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
             LLog.e(TAG, "playPlaylistPosition error: data null or cannot get id");
             return;
         }
         LLog.d(TAG, "-----------------------> playPlaylistPosition " + position);
-        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), null, false, false);
+        init(UizaDataV3.getInstance().getDataWithPositionOfDataList(position).getId(), false, false);
     }
 
     private boolean isOnPlayerEnded;
