@@ -394,6 +394,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
             uizaIMAVideoV3.setControllerShowTimeoutMs(0);
+            //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
         }
     }
 

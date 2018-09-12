@@ -151,8 +151,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private ImageView ivPreview;
 
     private RelativeLayout rlLiveInfo;
+    private TextView tvLiveStatus;
     private TextView tvLiveView;
     private TextView tvLiveTime;
+    private ImageButtonWithSize ivLiveTime;
+    private ImageButtonWithSize ivLiveView;
 
     private LinearLayout debugLayout;
     private LinearLayout debugRootView;
@@ -1007,8 +1010,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
 
         rlLiveInfo = (RelativeLayout) playerView.findViewById(R.id.rl_live_info);
+        tvLiveStatus = (TextView) playerView.findViewById(R.id.tv_live);
         tvLiveView = (TextView) playerView.findViewById(R.id.tv_live_view);
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
+        ivLiveView = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_view);
+        ivLiveTime = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_time);
 
         setEventForView();
 
@@ -2999,6 +3005,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (ibFullscreenIcon != null) {
             ibFullscreenIcon.setColorFilter(colorAllViewsEnable);
         }
+        if (tvLiveStatus != null) {
+            tvLiveStatus.setBackgroundColor(colorAllViewsEnable);
+        }
+        if (tvLiveTime != null) {
+            tvLiveTime.setTextColor(colorAllViewsEnable);
+        }
+        if (tvLiveView != null) {
+            tvLiveView.setTextColor(colorAllViewsEnable);
+        }
+        if (ivLiveTime != null) {
+            ivLiveTime.setColorFilter(colorAllViewsEnable);
+        }
+        if (ivLiveView != null) {
+            ivLiveView.setColorFilter(colorAllViewsEnable);
+        }
     }
 
     /**
@@ -3176,5 +3197,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public TextViewWithSize getTvDuration() {
         return tvDuration;
+    }
+
+    public TextView getTvLiveStatus() {
+        return tvLiveStatus;
+    }
+
+    public ImageButtonWithSize getIvLiveTime() {
+        return ivLiveTime;
+    }
+
+    public ImageButtonWithSize getIvLiveView() {
+        return ivLiveView;
     }
 }
