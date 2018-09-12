@@ -811,6 +811,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
+        setColorAllViewsEnable(Color.WHITE);
     }
 
     private UizaPlayerView playerView;
@@ -1120,7 +1121,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         ibsCast.setRatioPort(5);
         ibsCast.setRatioLand(5);
         ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ibsCast.setColorFilter(Color.WHITE);
+        ibsCast.setColorFilter(colorAllViewsEnable);
         rlChromeCast.addView(ibsCast);
         rlChromeCast.setOnClickListener(this);
 
@@ -2457,29 +2458,29 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (position == 0) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(false);
-                ibSkipPreviousIcon.setColorFilter(Color.GRAY);
+                ibSkipPreviousIcon.setColorFilter(colorAllViewsDisable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
-                ibSkipNextIcon.setColorFilter(Color.WHITE);
+                ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         } else if (position == UizaDataV3.getInstance().getDataList().size() - 1) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
-                ibSkipPreviousIcon.setColorFilter(Color.WHITE);
+                ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(false);
-                ibSkipNextIcon.setColorFilter(Color.GRAY);
+                ibSkipNextIcon.setColorFilter(colorAllViewsDisable);
             }
         } else {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
-                ibSkipPreviousIcon.setColorFilter(Color.WHITE);
+                ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
-                ibSkipNextIcon.setColorFilter(Color.WHITE);
+                ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         }
         //end update UI for skip next and skip previous button
@@ -2571,7 +2572,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             if (ibFfwdIcon != null) {
                 ibFfwdIcon.setEnabled(false);
-                ibFfwdIcon.setColorFilter(Color.GRAY);
+                ibFfwdIcon.setColorFilter(colorAllViewsDisable);
             }
         } else {
             updateUIButtonPlayPauseDependOnIsAutoStart();
@@ -2580,7 +2581,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             }
             if (ibFfwdIcon != null) {
                 ibFfwdIcon.setEnabled(true);
-                ibFfwdIcon.setColorFilter(Color.WHITE);
+                ibFfwdIcon.setColorFilter(colorAllViewsEnable);
             }
         }
     }
@@ -2918,32 +2919,85 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void setColorAllView(final int color) {
+    private int colorAllViewsEnable = Color.WHITE;
+    private int colorAllViewsDisable = Color.GRAY;
+
+    public void setColorAllViewsEnable(int colorAllViewsEnable) {
+        this.colorAllViewsEnable = colorAllViewsEnable;
+        updateUIColorAllView();
+    }
+
+    public void updateUIColorAllView() {
         if (progressBar != null) {
-            LUIUtil.setColorProgressBar(progressBar, color);
+            LUIUtil.setColorProgressBar(progressBar, colorAllViewsEnable);
         }
         if (ibBackScreenIcon != null) {
-            ibBackScreenIcon.setColorFilter(color);
+            ibBackScreenIcon.setColorFilter(colorAllViewsEnable);
         }
         if (tvTitle != null) {
-            tvTitle.setTextColor(color);
+            tvTitle.setTextColor(colorAllViewsEnable);
         }
         if (ibsCast != null) {
-            ibsCast.setColorFilter(color);
+            ibsCast.setColorFilter(colorAllViewsEnable);
         }
         if (uizaMediaRouteButton != null) {
             uizaMediaRouteButton.post(new Runnable() {
                 @Override
                 public void run() {
-                    uizaMediaRouteButton.applyTint(color);
+                    uizaMediaRouteButton.applyTint(colorAllViewsEnable);
                 }
             });
         }
         if (tvDuration != null) {
-            tvDuration.setTextColor(color);
+            tvDuration.setTextColor(colorAllViewsEnable);
         }
         if (tvPosition != null) {
-            tvPosition.setTextColor(color);
+            tvPosition.setTextColor(colorAllViewsEnable);
+        }
+        if (ibSkipPreviousIcon != null) {
+            ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibRewIcon != null) {
+            ibRewIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibPlayIcon != null) {
+            ibPlayIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibPauseIcon != null) {
+            ibPauseIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibReplayIcon != null) {
+            ibReplayIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibFfwdIcon != null) {
+            ibFfwdIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibSkipNextIcon != null) {
+            ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibVolumeIcon != null) {
+            ibVolumeIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibCcIcon != null) {
+            ibCcIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibPlaylistRelationIcon != null) {
+            ibPlaylistRelationIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibPlaylistFolderIcon != null) {
+            ibPlaylistFolderIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibHearingIcon != null) {
+            ibHearingIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibSettingIcon != null) {
+            ibSettingIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibShareIcon != null) {
+            ibShareIcon.setColorFilter(colorAllViewsEnable);
+        }
+        if (ibFullscreenIcon != null) {
+            ibFullscreenIcon.setColorFilter(colorAllViewsEnable);
         }
     }
 
