@@ -890,7 +890,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         updateUIDependOnLivstream();
         setTitle();
         checkToSetUpResouce();
-
+        setColorAllViewsEnable(colorAllViewsEnable);
         if (uizaCallback != null) {
             uizaCallback.onSkinChange();
         }
@@ -3007,6 +3007,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         if (tvLiveStatus != null) {
             tvLiveStatus.setBackgroundColor(colorAllViewsEnable);
+            tvLiveStatus.setTextColor(Color.WHITE);
         }
         if (tvLiveTime != null) {
             tvLiveTime.setTextColor(colorAllViewsEnable);
