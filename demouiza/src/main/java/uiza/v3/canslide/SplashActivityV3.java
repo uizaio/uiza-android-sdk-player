@@ -72,6 +72,15 @@ public class SplashActivityV3 extends BaseActivity {
 
         //init skin
         currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, Constants.PLAYER_ID_SKIN_0);
+        if (currentPlayerId == Constants.PLAYER_ID_SKIN_0) {
+            currentPlayerId = R.layout.player_skin_default;
+        } else if (currentPlayerId == Constants.PLAYER_ID_SKIN_1) {
+            currentPlayerId = R.layout.player_skin_1;
+        } else if (currentPlayerId == Constants.PLAYER_ID_SKIN_2) {
+            currentPlayerId = R.layout.player_skin_2;
+        } else if (currentPlayerId == Constants.PLAYER_ID_SKIN_3) {
+            currentPlayerId = R.layout.player_skin_3;
+        }
 
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);

@@ -610,7 +610,8 @@ public class UizaUtil {
             throw new NullPointerException("App id be null or empty");
         }
         Utils.init(context.getApplicationContext());
-        UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaUtil.setCurrentPlayerId(currentPlayerId);
+        //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
         UizaDataV3.getInstance().initSDK(domainApi, token, appId, env);
     }
 
