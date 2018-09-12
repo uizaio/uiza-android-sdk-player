@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,7 +163,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
     //chromecast https://github.com/DroidsOnRoids/Casty
-    private MediaRouteButton mediaRouteButton;
+    private UizaMediaRouteButton uizaMediaRouteButton;
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
 
@@ -803,9 +802,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginRlLiveInfo();
 
         //setup chromecast
-        mediaRouteButton = new MediaRouteButton(activity);
+        uizaMediaRouteButton = new UizaMediaRouteButton(activity);
         if (llTop != null) {
-            llTop.addView(mediaRouteButton);
+            llTop.addView(uizaMediaRouteButton);
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
@@ -870,9 +869,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setMarginPreviewTimeBarLayout();
         setMarginRlLiveInfo();
         //setup chromecast
-        mediaRouteButton = new MediaRouteButton(activity);
+        uizaMediaRouteButton = new UizaMediaRouteButton(activity);
         if (llTop != null) {
-            llTop.addView(mediaRouteButton);
+            llTop.addView(uizaMediaRouteButton);
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
@@ -1079,21 +1078,21 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         CastContext castContext = CastContext.getSharedInstance(activity);
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-            mediaRouteButton.setVisibility(View.GONE);
+            uizaMediaRouteButton.setVisibility(View.GONE);
         } else {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-            mediaRouteButton.setVisibility(View.VISIBLE);
+            uizaMediaRouteButton.setVisibility(View.VISIBLE);
         }
         castContext.addCastStateListener(new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
                 if (state == CastState.NO_DEVICES_AVAILABLE) {
                     //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-                    mediaRouteButton.setVisibility(View.GONE);
+                    uizaMediaRouteButton.setVisibility(View.GONE);
                 } else {
-                    if (mediaRouteButton.getVisibility() != View.VISIBLE) {
+                    if (uizaMediaRouteButton.getVisibility() != View.VISIBLE) {
                         //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-                        mediaRouteButton.setVisibility(View.VISIBLE);
+                        uizaMediaRouteButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -2144,7 +2143,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*START CHROMECAST*/
     @UiThread
     private void setUpMediaRouteButton() {
-        UizaDataV3.getInstance().getCasty().setUpMediaRouteButton(mediaRouteButton);
+        UizaDataV3.getInstance().getCasty().setUpMediaRouteButton(uizaMediaRouteButton);
         UizaDataV3.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
@@ -3058,8 +3057,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return tvLiveTime;
     }
 
-    public MediaRouteButton getMediaRouteButton() {
-        return mediaRouteButton;
+    public UizaMediaRouteButton getUizaMediaRouteButton() {
+        return uizaMediaRouteButton;
     }
 
     public RelativeLayout getRlChromeCast() {
@@ -3080,5 +3079,28 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public String getTokenStreaming() {
         return tokenStreaming;
+    }
+
+    public void setColorAllView(final int color) {
+        if (progressBar != null) {
+            LUIUtil.setColorProgressBar(progressBar, color);
+        }
+        if (ibBackScreenIcon != null) {
+            ibBackScreenIcon.setColorFilter(color);
+        }
+        if (tvTitle != null) {
+            tvTitle.setTextColor(color);
+        }
+        if (ibsCast != null) {
+            ibsCast.setColorFilter(color);
+        }
+        if (uizaMediaRouteButton != null) {
+            uizaMediaRouteButton.post(new Runnable() {
+                @Override
+                public void run() {
+                    uizaMediaRouteButton.applyTint(color);
+                }
+            });
+        }
     }
 }

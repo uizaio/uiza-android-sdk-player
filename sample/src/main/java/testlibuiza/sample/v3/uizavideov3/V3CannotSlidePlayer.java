@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
@@ -84,11 +85,12 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         //set uizaIMAVideoV3 hide all controller
         //uizaIMAVideoV3.setUseController(true);
         //uizaIMAVideoV3.setControllerAutoShow(true);
-        //uizaIMAVideoV3.setControllerShowTimeoutMs(5000);
+        uizaIMAVideoV3.setControllerShowTimeoutMs(0);
         //uizaIMAVideoV3.hideControllerOnTouch(true);
         //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
+        uizaIMAVideoV3.setColorAllView(ContextCompat.getColor(activity, R.color.Red));
 
         uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
             @Override
