@@ -94,6 +94,7 @@ import vn.loitp.uizavideov3.view.dlg.playlistfolder.UizaDialogPlaylistFolder;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
+import vn.loitp.views.autosize.textviewwithsize.TextViewWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 /**
@@ -119,6 +120,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private PreviewTimeBarLayout previewTimeBarLayout;
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
+    private TextViewWithSize tvPosition;
+    private TextViewWithSize tvDuration;
 
     private RelativeLayout rlTimeBar;
     private RelativeLayout rlMsg;
@@ -953,6 +956,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             previewTimeBar.addOnPreviewChangeListener(this);
         }
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
+
+        tvPosition = (TextViewWithSize) playerView.findViewById(R.id.exo_position);
+        tvDuration = (TextViewWithSize) playerView.findViewById(R.id.exo_duration);
 
         ibFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
@@ -2912,6 +2918,35 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
+    public void setColorAllView(final int color) {
+        if (progressBar != null) {
+            LUIUtil.setColorProgressBar(progressBar, color);
+        }
+        if (ibBackScreenIcon != null) {
+            ibBackScreenIcon.setColorFilter(color);
+        }
+        if (tvTitle != null) {
+            tvTitle.setTextColor(color);
+        }
+        if (ibsCast != null) {
+            ibsCast.setColorFilter(color);
+        }
+        if (uizaMediaRouteButton != null) {
+            uizaMediaRouteButton.post(new Runnable() {
+                @Override
+                public void run() {
+                    uizaMediaRouteButton.applyTint(color);
+                }
+            });
+        }
+        if (tvDuration != null) {
+            tvDuration.setTextColor(color);
+        }
+        if (tvPosition != null) {
+            tvPosition.setTextColor(color);
+        }
+    }
+
     /**
      * return player view
      */
@@ -3081,26 +3116,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return tokenStreaming;
     }
 
-    public void setColorAllView(final int color) {
-        if (progressBar != null) {
-            LUIUtil.setColorProgressBar(progressBar, color);
-        }
-        if (ibBackScreenIcon != null) {
-            ibBackScreenIcon.setColorFilter(color);
-        }
-        if (tvTitle != null) {
-            tvTitle.setTextColor(color);
-        }
-        if (ibsCast != null) {
-            ibsCast.setColorFilter(color);
-        }
-        if (uizaMediaRouteButton != null) {
-            uizaMediaRouteButton.post(new Runnable() {
-                @Override
-                public void run() {
-                    uizaMediaRouteButton.applyTint(color);
-                }
-            });
-        }
+    public TextViewWithSize getTvPosition() {
+        return tvPosition;
+    }
+
+    public TextViewWithSize getTvDuration() {
+        return tvDuration;
     }
 }
