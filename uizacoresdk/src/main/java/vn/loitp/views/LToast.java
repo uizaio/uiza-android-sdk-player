@@ -32,6 +32,9 @@ public class LToast {
 
     @SuppressLint("InflateParams")
     public static void show(Context context, String msg, int length) {
+        if (context == null) {
+            return;
+        }
         clear();
         try {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

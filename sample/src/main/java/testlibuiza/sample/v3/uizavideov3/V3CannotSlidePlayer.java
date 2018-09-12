@@ -87,8 +87,8 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         //uizaIMAVideoV3.setControllerShowTimeoutMs(5000);
         //uizaIMAVideoV3.hideControllerOnTouch(true);
         //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getSettingIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getSettingIcon().setImageResource(R.mipmap.ic_launcher);
+        //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
+        //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
 
         uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
             @Override
