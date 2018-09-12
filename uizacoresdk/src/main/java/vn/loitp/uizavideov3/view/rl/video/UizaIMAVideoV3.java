@@ -3008,6 +3008,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (tvLiveStatus != null) {
             tvLiveStatus.setBackgroundColor(colorAllViewsEnable);
             tvLiveStatus.setTextColor(Color.WHITE);
+            LUIUtil.setTextShadow(tvLiveStatus, Color.BLACK);
         }
         if (tvLiveTime != null) {
             tvLiveTime.setTextColor(colorAllViewsEnable);
