@@ -814,7 +814,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
-        setColorAllViewsEnable(Color.WHITE);
+        setColorAllViewsEnable(colorAllViewsEnable);
     }
 
     private UizaPlayerView playerView;
@@ -3006,7 +3006,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             ibFullscreenIcon.setColorFilter(colorAllViewsEnable);
         }
         if (tvLiveStatus != null) {
-            tvLiveStatus.setBackgroundColor(colorAllViewsEnable);
+            tvLiveStatus.setBackgroundResource(R.drawable.background_live);
             tvLiveStatus.setTextColor(Color.WHITE);
             LUIUtil.setTextShadow(tvLiveStatus, Color.BLACK);
         }
