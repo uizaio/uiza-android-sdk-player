@@ -265,7 +265,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             adsLoader.addCallback(videoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
-        player.setPlayWhenReady(true);
+        player.setPlayWhenReady(uizaIMAVideoV3.isAutoStart());
         seekTo(contentPosition);
 
         LLog.d(TAG, "last progress volume " + uizaIMAVideoV3.getCurrentProgressSeekbarVolume());

@@ -66,7 +66,6 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //UizaDataV3.getInstance().setCasty(Casty.create(this));
         UizaUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);

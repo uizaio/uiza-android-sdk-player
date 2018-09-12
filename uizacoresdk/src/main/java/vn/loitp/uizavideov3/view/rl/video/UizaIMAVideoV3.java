@@ -159,7 +159,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private int firstBrightness = Constants.NOT_FOUND;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
-    //private Data mData;//information of video (VOD or LIVE)
 
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
@@ -169,7 +168,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private RelativeLayout rlChromeCast;
     private ImageButtonWithSize ibsCast;
 
-    private boolean isDisplayPortrait;
+    private boolean isDisplayPortrait;//display with 9:16 ratio(portrait screen like YUP)
 
     public boolean isDisplayPortrait() {
         return isDisplayPortrait;
@@ -178,6 +177,42 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     public void setDisplayPortrait(boolean isDisplayPortrait) {
         this.isDisplayPortrait = isDisplayPortrait;
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+    }
+
+    private boolean isAutoStart = true;
+
+    /*
+     **set video auto start
+     * true auto start
+     * false stop before
+     */
+    public void setAutoStart(boolean isAutoStart) {
+        this.isAutoStart = isAutoStart;
+        updateUIButtonPlayPauseDependOnIsAutoStart();
+    }
+
+    private void updateUIButtonPlayPauseDependOnIsAutoStart() {
+        //If auto start true, show button play and gone button pause
+        //if not, gone button play and show button pause
+        if (isAutoStart) {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(GONE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(VISIBLE);
+            }
+        } else {
+            if (exoPlay != null) {
+                exoPlay.setVisibility(VISIBLE);
+            }
+            if (exoPause != null) {
+                exoPause.setVisibility(GONE);
+            }
+        }
+    }
+
+    public boolean isAutoStart() {
+        return isAutoStart;
     }
 
     /**
@@ -547,17 +582,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
         }
-        updateUI();
+        updateUIDependOnLivstream();
         setTitle();
         if (uizaPlayerManagerV3 != null) {
             uizaPlayerManagerV3.showProgress();
         }
-
         callAPIGetLinkPlay();
-
-        //track event eventype display
         trackUizaEventDisplay();
-        //track event plays_requested
         trackUizaEventPlaysRequested();
     }
 
@@ -888,7 +919,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         currentPositionBeforeChangeSkin = uizaPlayerManagerV3.getCurrentPosition();
 
         uizaPlayerManagerV3.release();
-        updateUI();
+        updateUIDependOnLivstream();
         setTitle();
         checkToSetUpResouce();
 
@@ -965,7 +996,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
         exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause_uiza);
-        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);
+        exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);//If auto start true, show button play and gone button pause
         if (exoPlay != null) {
             exoPlay.setVisibility(GONE);
         }
@@ -1649,8 +1680,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    private void updateUI() {
-        //LLog.d(TAG, "updateUI isTablet " + isTablet);
+    private void updateUIDependOnLivstream() {
+        //LLog.d(TAG, "updateUIDependOnLivstream isTablet " + isTablet);
         if (isTablet && !isCastingChromecast()) {
             if (exoPictureInPicture != null) {
                 exoPictureInPicture.setVisibility(VISIBLE);
@@ -2586,12 +2617,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 exoFfwd.setColorFilter(Color.GRAY);
             }
         } else {
-            if (exoPlay != null) {
-                exoPlay.setVisibility(GONE);
-            }
-            if (exoPause != null) {
-                exoPause.setVisibility(VISIBLE);
-            }
+            updateUIButtonPlayPauseDependOnIsAutoStart();
             if (exoReplayUiza != null) {
                 exoReplayUiza.setVisibility(GONE);
             }
