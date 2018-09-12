@@ -2507,11 +2507,34 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private boolean isOnPlayerEnded;
+    //private TextView tvWaitingNextEntity;
 
     protected void onPlayerEnded() {
         LLog.d(TAG, "onPlayerEnded");
         isOnPlayerEnded = true;
         if (isPlayPlaylistFolder()) {
+            hideController();
+
+            //This code belows works fine, it show a text view WAITING FOR NEXT VIDEO in 10s
+            /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            tvWaitingNextEntity = new TextView(activity);
+            tvWaitingNextEntity.setText("WAITING");
+            tvWaitingNextEntity.setGravity(Gravity.CENTER);
+            tvWaitingNextEntity.setTextColor(Color.RED);
+            LUIUtil.setTextShadow(tvWaitingNextEntity);
+            tvWaitingNextEntity.setTextSize(20);//20sp
+            tvWaitingNextEntity.setLayoutParams(params);
+            playerView.addView(tvWaitingNextEntity);
+            LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    if (playerView != null && tvWaitingNextEntity != null) {
+                        playerView.removeView(tvWaitingNextEntity);
+                        tvWaitingNextEntity = null;
+                    }
+                    autoSwitchNextVideo();
+                }
+            });*/
             autoSwitchNextVideo();
         } else {
             setVisibilityOfPlayPauseReplay(true);
