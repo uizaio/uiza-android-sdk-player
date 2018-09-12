@@ -213,8 +213,6 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             }
         };
         handler.postDelayed(runnable, 0);
-        //uizaIMAVideoV3.setControllerAutoShow(false);
-        //uizaIMAVideoV3.getPlayerView().setControllerShowTimeoutMs(0);
     }
 
     private float mls;

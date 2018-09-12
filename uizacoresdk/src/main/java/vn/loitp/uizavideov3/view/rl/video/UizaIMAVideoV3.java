@@ -241,6 +241,11 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     //TODO remove urlThumnailsPreviewSeekbar
     private String entityId;
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+    private int valuePlayerControllerTimeout = 8000;
+
+    public void setValuePlayerControllerTimeout(int valuePlayerControllerTimeout) {
+        this.valuePlayerControllerTimeout = valuePlayerControllerTimeout;
+    }
 
     protected void init(@NonNull String entityId, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
@@ -270,7 +275,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLLMsg();
-
+        setControllerShowTimeoutMs(valuePlayerControllerTimeout);
         //called api paralle here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
@@ -323,8 +328,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 LLog.d(TAG, "callAPIGetUrlIMAAdTag success");
                 isCalledAPIGetUrlIMAAdTag = true;
                 //TODO remove hard code, call api
-                //urlIMAAd = null;
-                urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                urlIMAAd = null;
+                //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
                 handleDataCallAPI();
             }
         });
@@ -2510,6 +2515,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             autoSwitchNextVideo();
         } else {
             setVisibilityOfPlayPauseReplay(true);
+            //when player ended, we show player controller
+            showController();
+            setControllerShowTimeoutMs(0);
         }
     }
 
