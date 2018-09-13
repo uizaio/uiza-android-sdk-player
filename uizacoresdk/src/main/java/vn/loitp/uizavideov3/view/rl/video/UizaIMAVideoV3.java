@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.base.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
@@ -52,6 +53,7 @@ import vn.loitp.chromecast.Casty;
 import vn.loitp.core.base.BaseActivity;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
+import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LDeviceUtil;
@@ -289,7 +291,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
         UizaDataV3.getInstance().setSettingPlayer(true);
         isHasError = false;
-        hideLLMsg();
+        hideLayoutMsg();
         setControllerShowTimeoutMs(valuePlayerControllerTimeout);
         //called api paralle here
         callAPIGetDetailEntity();
@@ -1486,8 +1488,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     @Override
     public void onClick(View v) {
         if (v == rlMsg) {
-            //do nothing
-            //LLog.d(TAG, "onClick llMsg");
+            LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
             toggleScreenOritation();
         } else if (v == ibBackScreenIcon) {
@@ -1926,7 +1927,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                     LDialogUtil.clearAll();
                     if (uizaPlayerManagerV3.getExoPlaybackException() == null) {
                         //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
-                        hideLLMsg();
+                        hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uizaPlayerManagerV3.setResumeIfConnectionError();
@@ -2009,19 +2010,18 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void showTvMsg(String msg) {
-        //LLog.d(TAG, "showTvMsg " + msg);
         tvMsg.setText(msg);
-        showLLMsg();
+        showLayoutMsg();
     }
 
-    protected void showLLMsg() {
+    protected void showLayoutMsg() {
         if (rlMsg.getVisibility() != VISIBLE) {
             rlMsg.setVisibility(VISIBLE);
         }
         hideController();
     }
 
-    protected void hideLLMsg() {
+    protected void hideLayoutMsg() {
         if (rlMsg.getVisibility() != GONE) {
             rlMsg.setVisibility(GONE);
         }
@@ -2512,10 +2512,17 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             });*/
             autoSwitchNextVideo();
         } else {
+            if (ivVideoCover != null) {
+                ivVideoCover.setVisibility(VISIBLE);
+            }
+            if (rlMsg != null && tvMsg != null) {
+                showLayoutMsg();
+                tvMsg.setText("This is endscreen");
+            }
             setVisibilityOfPlayPauseReplay(true);
             //when player ended, we show player controller
-            showController();
-            setControllerShowTimeoutMs(0);
+            //showController();
+            //setControllerShowTimeoutMs(0);
         }
     }
 

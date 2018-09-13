@@ -109,7 +109,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             if (playbackState == Player.STATE_READY && playWhenReady) {
                 //LLog.d(TAG, "onPlayerStateChanged STATE_READY");
                 if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.hideLLMsg();
+                    uizaIMAVideoV3.hideLayoutMsg();
                     uizaIMAVideoV3.resetCountTryLinkPlayError();
                 }
                 if (previewTimeBarLayout != null) {
