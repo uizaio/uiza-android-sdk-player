@@ -2515,14 +2515,10 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             if (ivVideoCover != null) {
                 ivVideoCover.setVisibility(VISIBLE);
             }
-            if (rlMsg != null && tvMsg != null) {
-                showLayoutMsg();
-                tvMsg.setText("This is endscreen");
-            }
             setVisibilityOfPlayPauseReplay(true);
             //when player ended, we show player controller
-            //showController();
-            //setControllerShowTimeoutMs(0);
+            showController();
+            setControllerShowTimeoutMs(0);
         }
     }
 
