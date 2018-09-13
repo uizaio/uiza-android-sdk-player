@@ -102,10 +102,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         if (!UizaUtil.getClickedPip(activity)) {
             UizaUtil.stopServicePiPIfRunningV3(activity);
         }
-        //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
-        String urlThumnailsPreviewSeekbar = null;
-
-        frmVideoTop.setupVideo(entityId, urlThumnailsPreviewSeekbar, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        frmVideoTop.setupVideo(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
 
     private void intFrmBottom(Data data) {

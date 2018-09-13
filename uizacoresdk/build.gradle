@@ -83,6 +83,8 @@ dependencies {
     //https://github.com/rubensousa/PreviewSeekBar
     compile 'com.github.rubensousa:previewseekbar:1.2'
     compile 'com.github.rubensousa:previewseekbar-exoplayer:2.6.0'
+    /*implementation 'com.github.rubensousa:previewseekbar:2.0.0'
+    implementation 'com.github.rubensousa:previewseekbar-exoplayer:2.8.1.0'*/
 
     //for livestream
     //https://github.com/tplloi/rtmp-rtsp-stream-client-java

@@ -249,7 +249,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    //TODO remove urlThumnailsPreviewSeekbar
     private String entityId;
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
     private int valuePlayerControllerTimeout = 8000;
@@ -520,9 +519,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             //uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
             uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
             UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-            /*if (!UizaUtil.getClickedPip(activity)) {
-                setVideoCover();
-            }*/
             checkData();
         }
     }
@@ -576,7 +572,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /**
      * init player with entity id, ad, seekbar thumnail
      */
-    public void init(@NonNull String entityId, final String urlThumnailsPreviewSeekbar, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
+    public void init(@NonNull String entityId, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
         init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, true);
     }
 
@@ -823,23 +819,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         playerView = null;
         //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UizaDataV3.getInstance().getCurrentPlayerId());
         int resLayout = UizaDataV3.getInstance().getCurrentPlayerId();
-        /*switch (resLayout) {
-            case Constants.PLAYER_ID_SKIN_1:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
-                break;
-            case Constants.PLAYER_ID_SKIN_2:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
-                break;
-            case Constants.PLAYER_ID_SKIN_3:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
-                break;
-            case Constants.PLAYER_ID_SKIN_0:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
-                break;
-            default:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(UizaDataV3.getInstance().getCurrentPlayerId(), null);
-                break;
-        }*/
         playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -956,7 +935,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
         previewTimeBarLayout = playerView.findViewById(R.id.preview_seekbar_layout);
         if (previewTimeBarLayout != null) {
-            previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
+            previewTimeBarLayout.setTintColorResource(R.color.Red);
         }
         if (previewTimeBar != null) {
             previewTimeBar.addOnPreviewChangeListener(this);
