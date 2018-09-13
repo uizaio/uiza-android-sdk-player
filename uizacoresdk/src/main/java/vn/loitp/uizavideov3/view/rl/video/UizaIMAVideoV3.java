@@ -839,10 +839,14 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private boolean isRefreshFromChangeSkin;
     private long currentPositionBeforeChangeSkin;
 
-    public void changeSkin(int skinId) {
+    /*
+    **change skin of player
+    * return true if success
+     */
+    public boolean changeSkin(int skinId) {
         LLog.d(TAG, "changeSkin skinId " + skinId);
-        if (activity == null) {
-            return;
+        if (activity == null || uizaPlayerManagerV3 == null) {
+            return false;
         }
         UizaDataV3.getInstance().setCurrentPlayerId(skinId);
         isRefreshFromChangeSkin = true;
@@ -879,6 +883,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (uizaCallback != null) {
             uizaCallback.onSkinChange();
         }
+        return true;
     }
 
     private void updateUIEachSkin() {
@@ -2659,7 +2664,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void handleClickBackScreen() {
-        hideController();
+        if (!isOnPlayerEnded) {
+            hideController();
+        }
         if (isLandscape) {
             if (ibFullscreenIcon != null) {
                 ibFullscreenIcon.performClick();
