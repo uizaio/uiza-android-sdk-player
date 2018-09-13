@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
@@ -88,7 +89,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
-        //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
+        uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
         uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
             @Override
@@ -393,7 +394,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         if (isInitSuccess) {
             setListener();
             uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
-            uizaIMAVideoV3.setControllerShowTimeoutMs(0);
+            //uizaIMAVideoV3.setControllerShowTimeoutMs(0);
             //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
         }
     }

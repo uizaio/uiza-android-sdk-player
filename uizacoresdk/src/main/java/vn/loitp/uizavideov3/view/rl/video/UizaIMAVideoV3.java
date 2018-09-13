@@ -810,7 +810,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
-        setColorAllViewsEnable(colorAllViewsEnable);
+        //setColorAllViewsEnable(colorAllViewsEnable);
     }
 
     private UizaPlayerView playerView;
