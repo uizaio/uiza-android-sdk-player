@@ -19,9 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.rubensousa.previewseekbar.base.PreviewView;
+import com.github.rubensousa.previewseekbar.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -90,7 +89,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private RelativeLayout llMid;
     private View llMidSub;
 
-    private PreviewTimeBarLayout previewTimeBarLayout;
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
 
@@ -130,10 +128,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public ProgressBar getProgressBar() {
         return progressBar;
-    }
-
-    public PreviewTimeBarLayout getPreviewTimeBarLayout() {
-        return previewTimeBarLayout;
     }
 
     public ImageView getIvThumbnail() {
@@ -428,8 +422,6 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
         playerView = findViewById(R.id.player_view);
 
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
-        previewTimeBarLayout = playerView.findViewById(R.id.preview_seekbar_layout);
-        previewTimeBarLayout.setTintColorResource(R.color.colorPrimary);
         previewTimeBar.addOnPreviewChangeListener(this);
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
@@ -488,13 +480,11 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         uizaPlayerManager = new UizaPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
-            previewTimeBarLayout.setEnabled(false);
+            previewTimeBar.setEnabled(false);
         } else {
-            previewTimeBarLayout.setEnabled(true);
+            previewTimeBar.setEnabled(true);
         }
-        if (previewTimeBarLayout != null) {
-            previewTimeBarLayout.setPreviewLoader(uizaPlayerManager);
-        }
+        previewTimeBar.setPreviewLoader(uizaPlayerManager);
         uizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
@@ -639,12 +629,12 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     @Override
-    public void onStartPreview(PreviewView previewView) {
+    public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "onStartPreview");
     }
 
     @Override
-    public void onStopPreview(PreviewView previewView) {
+    public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "onStopPreview");
         uizaPlayerManager.resumeVideo();
     }
@@ -748,9 +738,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     private void setMarginPreviewTimeBarLayout(boolean isLandscape) {
         if (isLandscape) {
-            LUIUtil.setMarginDimen(previewTimeBarLayout, 24, 0, 24, 0);
+            LUIUtil.setMarginDimen(previewTimeBar, 24, 0, 24, 0);
         } else {
-            LUIUtil.setMarginDimen(previewTimeBarLayout, 15, 0, 15, 0);
+            LUIUtil.setMarginDimen(previewTimeBar, 15, 0, 15, 0);
         }
     }
 
@@ -1164,5 +1154,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
 
     public void hideControllerOnTouch(boolean isHide) {
         playerView.setControllerHideOnTouch(isHide);
+    }
+
+    public PreviewTimeBar getPreviewTimeBar() {
+        return previewTimeBar;
     }
 }

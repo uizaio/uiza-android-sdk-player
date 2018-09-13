@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,9 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
-import com.github.rubensousa.previewseekbar.base.PreviewView;
+import com.github.rubensousa.previewseekbar.PreviewView;
 import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -119,13 +119,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private RelativeLayout llMid;
     private View llMidSub;
 
-    private PreviewTimeBarLayout previewTimeBarLayout;
+    private FrameLayout previewFrameLayout;
     private PreviewTimeBar previewTimeBar;
     private ImageView ivThumbnail;
     private TextViewWithSize tvPosition;
     private TextViewWithSize tvDuration;
 
-    private RelativeLayout rlTimeBar;
+    private ViewGroup rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
 
@@ -520,9 +520,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             uizaInputV3.setUrlIMAAd(urlIMAAd);
 
             //TODO correct url thumnail, null till now
-            //uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
+            uizaInputV3.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
             //uizaInputV3.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-            uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
+            //uizaInputV3.setUrlThumnailsPreviewSeekbar(null);
             UizaDataV3.getInstance().setUizaInput(uizaInputV3, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
         }
@@ -805,7 +805,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
-        setMarginPreviewTimeBarLayout();
+        setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
 
         //setup chromecast
@@ -815,6 +815,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
+        updateUISizeThumnail();
     }
 
     private UizaPlayerView playerView;
@@ -840,8 +841,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private long currentPositionBeforeChangeSkin;
 
     /*
-    **change skin of player
-    * return true if success
+     **change skin of player
+     * return true if success
      */
     public boolean changeSkin(int skinId) {
         LLog.d(TAG, "changeSkin skinId " + skinId);
@@ -862,7 +863,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         findViews();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
-        setMarginPreviewTimeBarLayout();
+        setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         //setup chromecast
         uizaMediaRouteButton = new UizaMediaRouteButton(activity);
@@ -880,6 +881,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         setTitle();
         checkToSetUpResouce();
         setColorAllViewsEnable(colorAllViewsEnable);
+        updateUISizeThumnail();
         if (uizaCallback != null) {
             uizaCallback.onSkinChange();
         }
@@ -944,10 +946,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
         rlTimeBar = playerView.findViewById(R.id.rl_time_bar);
         previewTimeBar = playerView.findViewById(R.id.exo_progress);
-        previewTimeBarLayout = playerView.findViewById(R.id.preview_seekbar_layout);
-        if (previewTimeBarLayout != null) {
-            previewTimeBarLayout.setTintColorResource(R.color.Red);
-        }
+        previewFrameLayout = playerView.findViewById(R.id.previewFrameLayout);
         if (previewTimeBar != null) {
             previewTimeBar.addOnPreviewChangeListener(this);
         }
@@ -1158,16 +1157,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uizaPlayerManagerV3 = new UizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
-            if (previewTimeBarLayout != null) {
-                previewTimeBarLayout.setEnabled(false);
+            if (previewTimeBar != null) {
+                previewTimeBar.setPreviewEnabled(false);
             }
         } else {
-            if (previewTimeBarLayout != null) {
-                previewTimeBarLayout.setEnabled(true);
+            if (previewTimeBar != null) {
+                previewTimeBar.setPreviewEnabled(true);
             }
         }
-        if (previewTimeBarLayout != null) {
-            previewTimeBarLayout.setPreviewLoader(uizaPlayerManagerV3);
+        if (previewTimeBar != null) {
+            previewTimeBar.setPreviewLoader(uizaPlayerManagerV3);
         }
         uizaPlayerManagerV3.setProgressCallback(new ProgressCallback() {
             @Override
@@ -1463,7 +1462,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     @Override
-    public void onStartPreview(PreviewView previewView) {
+    public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
         /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
@@ -1471,14 +1470,15 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     @Override
-    public void onStopPreview(PreviewView previewView) {
-        //LLog.d(TAG, "PreviewView onStopPreview");
+    public void onStopPreview(PreviewView previewView, int progress) {
+        LLog.d(TAG, "PreviewView onStopPreview");
         /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
         }*/
+        uizaPlayerManagerV3.seekTo(progress);
+        uizaPlayerManagerV3.resumeVideo();
         isOnPlayerEnded = false;
         updateUIEndScreen();
-        uizaPlayerManagerV3.resumeVideo();
     }
 
     @Override
@@ -1618,20 +1618,33 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
                 }
             }
         }
-        setMarginPreviewTimeBarLayout();
+        setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
+        updateUISizeThumnail();
         UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIPositionOfProgressBar();
     }
 
-    private void setMarginPreviewTimeBarLayout() {
-        if (previewTimeBarLayout == null) {
+    private void updateUISizeThumnail() {
+        int screenWidth = LScreenUtil.getScreenWidth();
+        int widthIv = isLandscape ? screenWidth / 4 : screenWidth / 5;
+        if (previewFrameLayout != null) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.width = widthIv;
+            layoutParams.height = widthIv * 9 / 16;
+            previewFrameLayout.setLayoutParams(layoutParams);
+            previewFrameLayout.requestLayout();
+        }
+    }
+
+    private void setMarginPreviewTimeBar() {
+        if (previewTimeBar == null) {
             return;
         }
         if (isLandscape) {
-            LUIUtil.setMarginDimen(previewTimeBarLayout, 24, 0, 24, 0);
+            LUIUtil.setMarginDimen(previewTimeBar, 24, 0, 24, 0);
         } else {
-            LUIUtil.setMarginDimen(previewTimeBarLayout, 15, 0, 15, 0);
+            LUIUtil.setMarginDimen(previewTimeBar, 0, 0, 0, 0);
         }
     }
 
@@ -2008,6 +2021,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (playerView != null) {
             playerView.showController();
         }
+    }
+
+    public boolean isPlayerControllerShowing() {
+        if (playerView != null) {
+            return playerView.isControllerVisible();
+        }
+        return false;
     }
 
     public void hideController() {
@@ -2511,6 +2531,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     }
 
     private void updateUIEndScreen() {
+        //LLog.d(TAG, "updateUIEndScreen isOnPlayerEnded " + isOnPlayerEnded);
         if (isOnPlayerEnded) {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
                 rlEndScreen.setVisibility(VISIBLE);
@@ -3048,10 +3069,6 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         return progressBar;
     }
 
-    protected PreviewTimeBarLayout getPreviewTimeBarLayout() {
-        return previewTimeBarLayout;
-    }
-
     /**
      * return thumnail imageview
      */
@@ -3225,5 +3242,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public TextView getTvEndScreenMsg() {
         return tvEndScreenMsg;
+    }
+
+    public PreviewTimeBar getPreviewTimeBar() {
+        return previewTimeBar;
     }
 }

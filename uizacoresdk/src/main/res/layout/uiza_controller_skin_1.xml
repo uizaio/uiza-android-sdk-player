@@ -12,7 +12,6 @@
         android:id="@id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -93,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_top"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
             android:id="@id/tv_live"
@@ -104,7 +103,8 @@
             android:gravity="center"
             android:paddingLeft="@dimen/padding_5"
             android:paddingRight="@dimen/padding_5"
-            android:text="@string/live" />
+            android:text="@string/live"
+            android:textColor="@color/White" />
 
         <vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize
             android:id="@id/iv_live_time"
@@ -150,74 +150,47 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@id/rl_time_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/margin_5">
+            android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@id/fl_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:id="@id/previewFrameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/video_frame"
+                android:padding="@dimen/video_frame_width">
 
-                <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout
-                    android:id="@id/preview_seekbar_layout"
+                <ImageView
+                    android:id="@id/image_view_thumnail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:id="@id/preview_frame_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/video_frame"
-                        android:padding="@dimen/video_frame_width">
-
-                        <ImageView
-                            android:id="@id/image_view_thumnail"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </FrameLayout>
-
-                    <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
-                        android:id="@id/exo_progress"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/preview_frame_layout"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:progressTint="@color/colorPrimary"
-                        android:thumbTint="@color/colorPrimary" />
-                </com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout>
-                <!--<com.google.android.exoplayer2.ui.DefaultTimeBar
-                    android:id="@id/exo_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_55"
-                    android:layout_marginRight="@dimen/margin_55" />-->
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
             </FrameLayout>
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/fl_bar"
+                android:layout_below="@id/previewFrameLayout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textStyle="bold" />
+
+            <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
+                android:id="@id/exo_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/previewFrameLayout"
+                android:layout_toLeftOf="@id/exo_duration"
+                android:layout_toRightOf="@+id/exo_position"
+                app:previewFrameLayout="@id/previewFrameLayout" />
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/fl_bar"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="bottom"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/previewFrameLayout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textStyle="bold" />

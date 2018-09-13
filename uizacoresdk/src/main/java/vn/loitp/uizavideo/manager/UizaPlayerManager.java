@@ -24,8 +24,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
-import com.github.rubensousa.previewseekbar.base.PreviewLoader;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
+import com.github.rubensousa.previewseekbar.PreviewLoader;
+import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -114,15 +114,15 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
     private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
 
-    private PreviewTimeBarLayout previewTimeBarLayout;
+    private PreviewTimeBar previewTimeBar;
     private String thumbnailsUrl;
     private ImageView imageView;
     private Player.EventListener eventListener = new Player.DefaultEventListener() {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_READY && playWhenReady) {
-                if (previewTimeBarLayout != null) {
-                    previewTimeBarLayout.hidePreview();
+                if (previewTimeBar != null) {
+                    previewTimeBar.hidePreview();
                 }
             }
         }
@@ -176,7 +176,7 @@ import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
 
         //SETUP ORTHER
         this.imageView = uizaIMAVideo.getIvThumbnail();
-        this.previewTimeBarLayout = uizaIMAVideo.getPreviewTimeBarLayout();
+        this.previewTimeBar = uizaIMAVideo.getPreviewTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         setRunnable();

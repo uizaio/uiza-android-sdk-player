@@ -304,7 +304,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/margin_5">
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:id="@id/fl_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -343,20 +343,38 @@
 
                 </com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout>
 
-                <!--<com.google.android.exoplayer2.ui.DefaultTimeBar
+                &lt;!&ndash;<com.google.android.exoplayer2.ui.DefaultTimeBar
                     android:id="@id/exo_progress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_55"
-                    android:layout_marginRight="@dimen/margin_55" />-->
+                    android:layout_marginRight="@dimen/margin_55" />&ndash;&gt;
+            </FrameLayout>-->
+            <FrameLayout
+                android:id="@id/previewFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/video_frame">
+
+                <ImageView
+                    android:id="@id/image_view_thumnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </FrameLayout>
+
+            <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
+                android:id="@id/exo_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:previewFrameLayout="@id/previewFrameLayout" />
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/fl_bar"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textStyle="bold" />
@@ -365,7 +383,6 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/fl_bar"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"

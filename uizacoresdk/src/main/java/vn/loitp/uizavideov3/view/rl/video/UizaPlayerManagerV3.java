@@ -9,8 +9,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
-import com.github.rubensousa.previewseekbar.base.PreviewLoader;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout;
+import com.github.rubensousa.previewseekbar.PreviewLoader;
+import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -100,7 +100,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
 
     private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
 
-    private PreviewTimeBarLayout previewTimeBarLayout;
+    private PreviewTimeBar previewTimeBar;
     private String thumbnailsUrl;
     private ImageView imageView;
     private Player.EventListener eventListener = new Player.DefaultEventListener() {
@@ -112,8 +112,8 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
                     uizaIMAVideoV3.hideLayoutMsg();
                     uizaIMAVideoV3.resetCountTryLinkPlayError();
                 }
-                if (previewTimeBarLayout != null) {
-                    previewTimeBarLayout.hidePreview();
+                if (previewTimeBar != null) {
+                    previewTimeBar.hidePreview();
                 }
             }
         }
@@ -167,7 +167,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
 
         //SETUP ORTHER
         this.imageView = uizaIMAVideoV3.getIvThumbnail();
-        this.previewTimeBarLayout = uizaIMAVideoV3.getPreviewTimeBarLayout();
+        this.previewTimeBar = uizaIMAVideoV3.getPreviewTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         setRunnable();
@@ -505,7 +505,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
-                    LLog.d(TAG, "onPlayerStateChanged STATE_ENDED");
+                    LLog.d(TAG, "TAGUizaIMAVideoV3 onPlayerStateChanged STATE_ENDED");
                     if (uizaIMAVideoV3 != null) {
                         uizaIMAVideoV3.onPlayerEnded();
                     }
