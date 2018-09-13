@@ -163,6 +163,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private LinearLayout debugRootView;
     private TextView debugTextView;
 
+    private RelativeLayout rlEndScreen;
+    private TextView tvEndScreenMsg;
+
     private int firstBrightness = Constants.NOT_FOUND;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
@@ -921,7 +924,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
-        LUIUtil.setTextShadow(tvMsg);
+        if (tvMsg != null) {
+            LUIUtil.setTextShadow(tvMsg, Color.BLACK);
+        }
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
@@ -997,6 +1002,16 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
         ivLiveView = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_view);
         ivLiveTime = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_time);
+
+        rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
+        if (rlEndScreen != null) {
+            rlEndScreen.setVisibility(GONE);
+        }
+        tvEndScreenMsg = (TextView) playerView.findViewById(R.id.tv_end_screen_msg);
+        if (tvEndScreenMsg != null) {
+            LUIUtil.setTextShadow(tvEndScreenMsg, Color.BLACK);
+            tvEndScreenMsg.setOnClickListener(this);
+        }
 
         setEventForView();
 
@@ -1456,10 +1471,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         /*if (uizaPlayerManagerV3 != null && uizaPlayerManagerV3.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uizaPlayerManagerV3.getPlayer().getPlaybackState());
         }*/
-        if (isOnPlayerEnded) {
-            setVisibilityOfPlayPauseReplay(false);
-            isOnPlayerEnded = false;
-        }
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
         uizaPlayerManagerV3.resumeVideo();
     }
 
@@ -1523,10 +1536,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    if (isOnPlayerEnded) {
-                        setVisibilityOfPlayPauseReplay(false);
-                        isOnPlayerEnded = false;
-                    }
+
                 }
             }
         } else if (v == ibRewIcon) {
@@ -1535,10 +1545,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             } else {
                 if (uizaPlayerManagerV3 != null) {
                     uizaPlayerManagerV3.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    if (isOnPlayerEnded) {
-                        setVisibilityOfPlayPauseReplay(false);
-                        isOnPlayerEnded = false;
-                    }
+                    isOnPlayerEnded = false;
+                    updateUIEndScreen();
                 }
             }
         } else if (v == ibPauseIcon) {
@@ -1569,6 +1577,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             handleClickSkipNext();
         } else if (v == ibSkipPreviousIcon) {
             handleClickSkipPrevious();
+        } else if (v == tvEndScreenMsg) {
+            LAnimationUtil.play(v, Techniques.Pulse);
         }
     }
 
@@ -1980,7 +1990,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    //disable timeout controller
+    //set timeout controller
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
     }
@@ -2489,36 +2499,38 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isOnPlayerEnded = true;
         if (isPlayPlaylistFolder()) {
             hideController();
-
-            //This code belows works fine, it show a text view WAITING FOR NEXT VIDEO in 10s
-            /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            tvWaitingNextEntity = new TextView(activity);
-            tvWaitingNextEntity.setText("WAITING");
-            tvWaitingNextEntity.setGravity(Gravity.CENTER);
-            tvWaitingNextEntity.setTextColor(Color.RED);
-            LUIUtil.setTextShadow(tvWaitingNextEntity);
-            tvWaitingNextEntity.setTextSize(20);//20sp
-            tvWaitingNextEntity.setLayoutParams(params);
-            playerView.addView(tvWaitingNextEntity);
-            LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    if (playerView != null && tvWaitingNextEntity != null) {
-                        playerView.removeView(tvWaitingNextEntity);
-                        tvWaitingNextEntity = null;
-                    }
-                    autoSwitchNextVideo();
-                }
-            });*/
             autoSwitchNextVideo();
         } else {
-            if (ivVideoCover != null) {
-                ivVideoCover.setVisibility(VISIBLE);
+            updateUIEndScreen();
+        }
+    }
+
+    private void updateUIEndScreen() {
+        if (isOnPlayerEnded) {
+            if (rlEndScreen != null && tvEndScreenMsg != null) {
+                rlEndScreen.setVisibility(VISIBLE);
+                //TODO call api skin config to correct this text
+                setTextEndscreen("This is end screen");
             }
             setVisibilityOfPlayPauseReplay(true);
-            //when player ended, we show player controller
             showController();
             setControllerShowTimeoutMs(0);
+            hideControllerOnTouch(false);
+        } else {
+            if (rlEndScreen != null && tvEndScreenMsg != null) {
+                rlEndScreen.setVisibility(GONE);
+                setTextEndscreen("");
+            }
+            setVisibilityOfPlayPauseReplay(false);
+            //hideController();
+            setControllerShowTimeoutMs(valuePlayerControllerTimeout);
+            hideControllerOnTouch(true);
+        }
+    }
+
+    public void setTextEndscreen(String msg) {
+        if (tvEndScreenMsg != null) {
+            tvEndScreenMsg.setText(msg);
         }
     }
 
@@ -2613,6 +2625,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         boolean result = uizaPlayerManagerV3.seekTo(0);
         if (result) {
             isOnPlayerEnded = false;
+            updateUIEndScreen();
             setVisibilityOfPlaylistFolderController(View.GONE);
             trackUizaEventVideoStarts();
             trackUizaEventDisplay();
@@ -3005,6 +3018,9 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         if (ivLiveView != null) {
             ivLiveView.setColorFilter(colorAllViewsEnable);
         }
+        if (tvEndScreenMsg != null) {
+            tvEndScreenMsg.setTextColor(colorAllViewsEnable);
+        }
     }
 
     /**
@@ -3194,5 +3210,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
 
     public ImageButtonWithSize getIvLiveView() {
         return ivLiveView;
+    }
+
+    public RelativeLayout getRlEndScreen() {
+        return rlEndScreen;
+    }
+
+    public TextView getTvEndScreenMsg() {
+        return tvEndScreenMsg;
     }
 }
