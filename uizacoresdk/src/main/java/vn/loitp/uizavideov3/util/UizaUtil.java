@@ -620,7 +620,7 @@ public class UizaUtil {
     }
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId) {
-        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, Constants.PLAYER_ID_SKIN_1);
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.player_skin_1);
     }
 
     public static void setCasty(Activity activity) {
@@ -630,7 +630,7 @@ public class UizaUtil {
         UizaDataV3.getInstance().setCasty(Casty.create(activity));
     }
 
-    public static void setCurrentPlayerId(int resLayoutMain){
+    public static void setCurrentPlayerId(int resLayoutMain) {
         UizaDataV3.getInstance().setCurrentPlayerId(resLayoutMain);
     }
 

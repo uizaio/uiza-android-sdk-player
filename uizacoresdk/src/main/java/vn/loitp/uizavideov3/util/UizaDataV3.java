@@ -9,6 +9,7 @@ import com.google.android.gms.cast.MediaTrack;
 import java.util.ArrayList;
 import java.util.List;
 
+import loitp.core.R;
 import vn.loitp.chromecast.Casty;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
@@ -35,7 +36,7 @@ public class UizaDataV3 {
     private UizaDataV3() {
     }
 
-    private int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private int currentPlayerId = R.layout.player_skin_1;
 
     public int getCurrentPlayerId() {
         return currentPlayerId;

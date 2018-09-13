@@ -822,7 +822,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     private void addPlayerView() {
         playerView = null;
         //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UizaDataV3.getInstance().getCurrentPlayerId());
-        switch (UizaDataV3.getInstance().getCurrentPlayerId()) {
+        int resLayout = UizaDataV3.getInstance().getCurrentPlayerId();
+        /*switch (resLayout) {
             case Constants.PLAYER_ID_SKIN_1:
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
                 break;
@@ -838,7 +839,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             default:
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(UizaDataV3.getInstance().getCurrentPlayerId(), null);
                 break;
-        }
+        }*/
+        playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);

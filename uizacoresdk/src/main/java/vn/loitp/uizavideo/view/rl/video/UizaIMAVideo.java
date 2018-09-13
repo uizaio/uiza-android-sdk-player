@@ -381,9 +381,9 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     private void addPlayerView() {
         //PlayerView playerView = null;
         UizaPlayerView playerView = null;
-
-        //LLog.d(TAG, "addPlayerView getPlayerId " + UizaData.getInstance().getPlayerId());
-        switch (UizaData.getInstance().getCurrentPlayerId()) {
+        int resLayout = UizaData.getInstance().getCurrentPlayerId();
+        //LLog.d(TAG, "addPlayerView resLayout " + resLayout);
+        /*switch (resLayout) {
             case Constants.PLAYER_ID_SKIN_1:
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
                 break;
@@ -399,7 +399,8 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
             default:
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
                 break;
-        }
+        }*/
+        playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -407,16 +408,14 @@ public class UizaIMAVideo extends RelativeLayout implements PreviewView.OnPrevie
     }
 
     private void updateUIEachSkin() {
-        switch (UizaData.getInstance().getCurrentPlayerId()) {
-            case Constants.PLAYER_ID_SKIN_2:
-            case Constants.PLAYER_ID_SKIN_3:
-                ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
-                exoPlay.setRatioLand(7);
-                exoPlay.setRatioPort(5);
-                ImageButtonWithSize exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
-                exoPause.setRatioLand(7);
-                exoPause.setRatioPort(5);
-                break;
+        int resLayout = UizaData.getInstance().getCurrentPlayerId();
+        if (resLayout == R.layout.player_skin_2 || resLayout == R.layout.player_skin_3) {
+            ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+            exoPlay.setRatioLand(7);
+            exoPlay.setRatioPort(5);
+            ImageButtonWithSize exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
+            exoPause.setRatioLand(7);
+            exoPause.setRatioPort(5);
         }
     }
 

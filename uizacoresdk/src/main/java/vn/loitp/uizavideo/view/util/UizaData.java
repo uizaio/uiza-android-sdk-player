@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDateUtils;
 import vn.loitp.core.utilities.LLog;
@@ -31,7 +32,7 @@ public class UizaData {
     private UizaData() {
     }
 
-    private int currentPlayerId = Constants.PLAYER_ID_SKIN_0;
+    private int currentPlayerId = R.layout.player_skin_1;
 
     public int getCurrentPlayerId() {
         return currentPlayerId;

@@ -31,7 +31,6 @@ import java.util.List;
 
 import testlibuiza.R;
 import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -276,7 +275,7 @@ public class FrmTop extends BaseFragment implements UizaIMAVideo.Callback {
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
+        UizaData.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
         setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 

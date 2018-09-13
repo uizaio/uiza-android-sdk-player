@@ -45,7 +45,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
         super.onCreate(savedInstanceState);
         uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
 
-        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
+        UizaData.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
         String entityId = null;
         String entityTitle = null;
         String videoCoverUrl = null;
@@ -291,7 +291,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UizaIMAVideo.
         String urlIMAAd = null;
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        UizaData.getInstance().setCurrentPlayerId(Constants.PLAYER_ID_SKIN_0);
+        UizaData.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
         setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
