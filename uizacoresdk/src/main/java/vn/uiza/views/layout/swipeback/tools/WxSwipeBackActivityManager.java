@@ -36,14 +36,7 @@ public class WxSwipeBackActivityManager extends ActivityLifecycleCallbacksAdapte
         mActivityStack.remove(activity);
     }
 
-    /**
-     * 获取倒数第二个Activity
-     *
-     * @return
-     */
     public Activity getPenultimateActivity() {
         return mActivityStack.size() >= 2 ? mActivityStack.get(mActivityStack.size() - 2) : null;
     }
-
-
 }

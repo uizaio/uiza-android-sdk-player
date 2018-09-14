@@ -48,21 +48,6 @@ public class LSocialUtil {
         LActivityUtil.tranIn(activity);
     }
 
-    public static void shareApp(Activity activity) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
-            String sAux = "\nỨng dụng này rất bổ ích, thân mời bạn tải về cài đặt để trải nghiệm\n\n";
-            sAux = sAux + "https://play.google.com/store/apps/details?id=" + activity.getPackageName();
-            intent.putExtra(Intent.EXTRA_TEXT, sAux);
-            activity.startActivity(Intent.createChooser(intent, "Vui lòng chọn"));
-            LActivityUtil.tranIn(activity);
-        } catch (Exception e) {
-            LLog.d(TAG, "shareApp: " + e.toString());
-        }
-    }
-
     public static void share(Activity activity, boolean isLandscape, String msg) {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND);

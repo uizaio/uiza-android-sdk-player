@@ -401,8 +401,8 @@ public class UZData {
     private int currentPositionOfDataList = 0;
 
     /*
-     **Trả về true nếu playlist folder
-     * Trả về flase nếu play entity
+     **true neu playlist folder
+     * tra ve flase neu play entity
      */
     public boolean isPlayWithPlaylistFolder() {
         if (dataList == null) {

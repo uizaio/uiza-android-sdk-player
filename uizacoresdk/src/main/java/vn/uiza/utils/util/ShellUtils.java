@@ -5,85 +5,31 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/08/07
- *     desc  : Shell相关工具类
- * </pre>
- */
 public final class ShellUtils {
 
     private ShellUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param command 命令
-     * @param isRoot  是否需要root权限执行
-     * @return CommandResult
-     */
     public static CommandResult execCmd(String command, boolean isRoot) {
         return execCmd(new String[]{command}, isRoot, true);
     }
 
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param commands 多条命令链表
-     * @param isRoot   是否需要root权限执行
-     * @return CommandResult
-     */
     public static CommandResult execCmd(List<String> commands, boolean isRoot) {
         return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRoot, true);
     }
-
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param commands 多条命令数组
-     * @param isRoot   是否需要root权限执行
-     * @return CommandResult
-     */
     public static CommandResult execCmd(String[] commands, boolean isRoot) {
         return execCmd(commands, isRoot, true);
     }
 
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param command         命令
-     * @param isRoot          是否需要root权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
-     */
     public static CommandResult execCmd(String command, boolean isRoot, boolean isNeedResultMsg) {
         return execCmd(new String[]{command}, isRoot, isNeedResultMsg);
     }
 
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param commands        命令链表
-     * @param isRoot          是否需要root权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
-     */
     public static CommandResult execCmd(List<String> commands, boolean isRoot, boolean isNeedResultMsg) {
         return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRoot, isNeedResultMsg);
     }
 
-    /**
-     * 是否是在root下执行命令
-     *
-     * @param commands        命令数组
-     * @param isRoot          是否需要root权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
-     */
     public static CommandResult execCmd(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
         int result = -1;
         if (commands == null || commands.length == 0) {
@@ -135,21 +81,9 @@ public final class ShellUtils {
         );
     }
 
-    /**
-     * 返回的命令结果
-     */
     public static class CommandResult {
-        /**
-         * 结果码
-         **/
         public int    result;
-        /**
-         * 成功信息
-         **/
         public String successMsg;
-        /**
-         * 错误信息
-         **/
         public String errorMsg;
 
         public CommandResult(int result, String successMsg, String errorMsg) {

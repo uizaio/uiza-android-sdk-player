@@ -73,8 +73,8 @@ public class UZUtil {
     }
 
     /*
-     ** isDisplayPortrait true thì để portrait display như YUP
-     ** isDisplayPortrait false thì sẽ bóp về 16/9 video
+     ** isDisplayPortrait true -> portrait display như YUP
+     ** isDisplayPortrait false thi se bop ve 16/9 video
      */
     public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait) {
         //LLog.d(TAG, "resizeLayout");
