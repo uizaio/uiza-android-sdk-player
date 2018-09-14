@@ -30,6 +30,7 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_weight="1"
             android:singleLine="true"
+            android:textColor="@color/White"
             android:textStyle="bold" />
 
         <vn.uiza.views.autosize.UZImageButton
@@ -122,7 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_5"
-            android:layout_toLeftOf="@id/iv_live_view" />
+            android:layout_toLeftOf="@id/iv_live_view"
+            android:textColor="@color/White" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_view"
@@ -139,7 +141,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:textColor="@color/White" />
     </RelativeLayout>
 
     <LinearLayout
@@ -174,6 +177,7 @@
                 android:layout_below="@id/previewFrameLayout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
+                android:textColor="@color/White"
                 android:textStyle="bold" />
 
             <vn.uiza.uzv3.view.rl.timebar.UZTimebar
@@ -199,6 +203,7 @@
                 android:layout_below="@id/previewFrameLayout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
+                android:textColor="@color/White"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -348,6 +353,7 @@
             android:id="@id/tv_end_screen_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:textColor="@color/White" />
     </RelativeLayout>
 </RelativeLayout>
