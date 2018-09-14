@@ -199,8 +199,11 @@ public class UZData {
     }
 
     public String getEntityId() {
-        if (UZInput == null || UZInput.getData() == null) {
-            return null;
+        if (UZInput == null) {
+            if (data == null) {
+                return null;
+            }
+            return data.getId();
         }
         return UZInput.getData().getId();
     }

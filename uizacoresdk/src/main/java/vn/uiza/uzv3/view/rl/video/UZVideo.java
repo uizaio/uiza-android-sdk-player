@@ -276,7 +276,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (entityId == null) {
             //do nothing
-            //Case này được gọi từ pip
+            LLog.d(TAG, "THIS CASE IS CALLED FROM PIP");
         } else {
             UZData.getInstance().clearDataForEntity();
         }
@@ -335,6 +335,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             //init player khi user click vào fullscreen của floating view (pic)
             LLog.d(TAG, "init UZData.getInstance().getData() != null else");
+            isCalledApiGetDetailEntity = true;
             handleDataCallAPI();
         }
     }
@@ -361,8 +362,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
-        sendGetTokenStreaming.setEntityId(entityId);
+        String id = entityId == null ? UZData.getInstance().getEntityId() : entityId;
+        sendGetTokenStreaming.setEntityId(id);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        //LLog.d(TAG, ">>>callAPIGetTokenStreaming " + gson.toJson(sendGetTokenStreaming));
         activity.subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
