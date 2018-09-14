@@ -37,7 +37,7 @@ Get lasted release number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-pla
             @Override
             public void onCreate() {
                 super.onCreate();
-                UizaUtil.initWorkspace(this, api, token, appId);
+                UZUtil.initWorkspace(this, api, token, appId);
             }
         }
 
@@ -63,13 +63,13 @@ or
 
 **make sure add this line below**
 
-    UizaUtil.setCasty(this);
+    UZUtil.setCasty(this);
 
 before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 
 **Step 2: Call api by using this function**
 
-    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+    UZService service = UZRestClient.createService(UZService.class);
     subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
       public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
@@ -90,7 +90,7 @@ This class help you know how to use all Uiza API, please refer to
 # How to play the video?:
 **XML**
 
-    <vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3
+    <vn.uiza.uzv3.view.rl.video.UZVideo
       android:id="@id/uiza_video"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
@@ -99,14 +99,14 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements UizaCallback{
-       public void isInitResult();
-       public void onClickListEntityRelation();
-       public void onClickBack();
-       public void onClickPip();
-       public void onClickPipVideoInitSuccess();
-       public void onSkinChange();
-       public void onError();
+    public class MainActivity extends BaseActivity implements UZCallback{
+       public void isInitResult(...);
+       public void onClickListEntityRelation(...);
+       public void onClickBack(...);
+       public void onClickPip(...);
+       public void onClickPipVideoInitSuccess(...);
+       public void onSkinChange(...);
+       public void onError(...);
     }
 Manifest
 
@@ -119,13 +119,13 @@ Manifest
 In onCreate()
 Play with entity:
 
-    uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-    uizaIMAVideoV3.setUizaCallback(this);
-    UizaUtil.initEntity(activity, uizaIMAVideoV3, "put the entity id here");
+    uzVideo= (UZVideo) findViewById(R.id.uiza_video);
+    uzVideo.setUizaCallback(this);
+    UizaUtil.initEntity(activity, uzVideo, "put the entity id here");
 
 Play with playlist/folder:
 
-    UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, "put the playlist/folder id here");
+    UizaUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
 
 
 
@@ -134,38 +134,38 @@ Dont forget to add in activity life cycle event:
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uizaIMAVideoV3.onDestroy();
+        uzVideo.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uizaIMAVideoV3.onResume();
+        uzVideo.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uizaIMAVideoV3.onPause();
+        uzVideo.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideoV3.onStart();
+        uzVideo.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideoV3.onStop();
+        uzVideo.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                uizaIMAVideoV3.initializePiP();
+                uzVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
             }
@@ -179,17 +179,17 @@ Then put
     @Override
     public void isInitResult(boolean b, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
         if (b) {
-            uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
+            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 
 All listener  (If you want to listen all events)
 
     private void setListener() {
-        if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
+        if (uzVideo== null || uzVideo.getPlayer() == null) {
             return;
         }
-        uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
+        uzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
             }
@@ -230,7 +230,7 @@ All listener  (If you want to listen all events)
             public void onSeekProcessed() {
             }
         });
-        uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
             }
@@ -255,7 +255,7 @@ All listener  (If you want to listen all events)
           public void onAudioDisabled(DecoderCounters counters) {
            }
         });
-        uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
+        uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
            public void onAdProgress(float currentMls, int s, float duration, int percent) {
            }
@@ -264,7 +264,7 @@ All listener  (If you want to listen all events)
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
             }
         });
-        uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
            public void onVideoEnabled(DecoderCounters counters) {
            }
@@ -293,12 +293,12 @@ All listener  (If you want to listen all events)
           public void onVideoDisabled(DecoderCounters counters) {
            }
         });
-        uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
+        uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
            public void onMetadata(Metadata metadata) {
            }
         });
-        uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
+        uzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
            public void onCues(List<Cue> cues) {
            }
@@ -306,7 +306,7 @@ All listener  (If you want to listen all events)
     }
 Listener touch event
 
-    uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
+    uzVideo.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
         @Override
         public void onSingleTapConfirmed() {
         }
@@ -342,12 +342,12 @@ This sample help you know how to use all Uiza SDK, please refer to  [THIS](https
 Only 3 steps, you can customize everything about player skin.
 
 **Step 1:**
-Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
 
 Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
 
 **Step 2:**
-Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
 - In this xml file, you can edit anything you like: position, color, drawable resouces...
 - You can add more view (TextView, Button, ImageView...).
 - You can remove any component which you dont like.
@@ -356,28 +356,28 @@ Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://g
 **Step 3:**'
 On function onCreate() of Activity, put this code:
 
-    UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
+    UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
 
 Ex:
 
     @Override  
     protected void onCreate(@Nullable Bundle savedInstanceState) {  
-        UizaUtil.setCasty(this);  
-        UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+        UZUtil.setCasty(this);  
+        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
         super.onCreate(savedInstanceState);
     }
 
 Ex: findView from your custom layout:
 
-    TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
+    TextView tvSample = uzVideo.getPlayerView().findViewById(R.id.tv_sample);
 
 That's enough! This code above will change the player's skin quickly. You can build and run your app now.
 
 But if you wanna change the player's skin when the player is playing, please you this function:
 
-    uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
+    uzVideo.changeSkin(R.layout.uiza_controller_skin_custom_main);
 
-This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample/src/main/java/testlibuiza/sample/v3/customskin)
+This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/v3/customskin)
 
 ***Note:***
 - You should not change the id of the view.
@@ -388,14 +388,14 @@ Dont change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
 It's very easy, plz follow these step below:
 XML:
 
-    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream  
+    <vn.uiza.uzv3.view.rl.livestream.UZLivestream  
       android:id="@+id/uiza_livestream"  
       android:layout_width="match_parent"  
       android:layout_height="match_parent" />
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements  UizaLivestream.Callback {
+    public class LivestreamBroadcasterActivity extends BaseActivity implements  UZLivestream.Callback {
     ...
     }
 
@@ -403,33 +403,33 @@ func onCreate():
 
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-    uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);  
-    uizaLivestream.setCallback(this);
-    uizaLivestream.setId("Put the entity id for livestream here");
+    uzLivestream= (UZLivestream) findViewById(R.id.uiza_livestream);  
+    uzLivestream.setCallback(this);
+    uzLivestream.setId("Put the entity id for livestream here");
 
-Then put this line on surfaceChanged(UizaLivestream.StartPreview startPreview);
+Then put this line on surfaceChanged(UZLivestream.StartPreview startPreview);
 
     startPreview.onSizeStartPreview(1280, 720);
 
 Start a livestream:
 
-    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {  
-        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {  
+        uzLivestream.startStream(uzLivestream.getMainStreamUrl());  
     }
 
 Start a livestream and save to mp4 file:
 
-    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {  
-        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {  
+        uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
 Stop streaming (It auto save mp4 file in your gallery if you start a livestream with option save local file)
 
-    uizaLivestream.stopStream();
+    uzLivestream.stopStream();
 
 Switch camera:
 
-    uizaLivestream.switchCamera();
+    uzLivestream.switchCamera();
 
 This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/livestream)
 
