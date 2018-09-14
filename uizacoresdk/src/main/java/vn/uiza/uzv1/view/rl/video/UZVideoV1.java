@@ -70,7 +70,7 @@ import vn.uiza.uzv1.view.util.UizaDataV1;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
-import vn.uiza.views.seekbar.verticalseekbar.VerticalSeekBar;
+import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -103,8 +103,8 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
     private UZImageButton exoHearing;
     private UZImageButton exoPictureInPicture;
     private UZImageButton exoShare;
-    private VerticalSeekBar seekbarVolume;
-    private VerticalSeekBar seekbarBirghtness;
+    private UZVerticalSeekBar seekbarVolume;
+    private UZVerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
 
     private LinearLayout debugLayout;
@@ -438,8 +438,8 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         exoShare = (UZImageButton) playerView.findViewById(R.id.exo_share);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
-        seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
-        seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
+        seekbarVolume = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
+        seekbarBirghtness = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
         LUIUtil.setColorSeekBar(seekbarVolume, Color.TRANSPARENT);
         LUIUtil.setColorSeekBar(seekbarBirghtness, Color.TRANSPARENT);
         //ivVolumeSeekbar = (ImageView) playerView.findViewById(R.id.exo_volume_seekbar);
@@ -565,8 +565,8 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         UizaDataV1.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
-        verticalSeekBar.setProgress(progressSeekbar);
+    public void setProgressSeekbar(final UZVerticalSeekBar UZVerticalSeekBar, final int progressSeekbar) {
+        UZVerticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
 

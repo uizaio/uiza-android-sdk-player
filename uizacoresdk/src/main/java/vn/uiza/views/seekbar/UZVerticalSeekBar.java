@@ -33,7 +33,7 @@
  */
 /*============================================================================*/
 
-package vn.uiza.views.seekbar.verticalseekbar;
+package vn.uiza.views.seekbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -54,7 +54,7 @@ import java.lang.reflect.Method;
 
 import loitp.core.R;
 
-public class VerticalSeekBar extends AppCompatSeekBar {
+public class UZVerticalSeekBar extends AppCompatSeekBar {
     public static final int ROTATION_ANGLE_CW_90 = 90;
     public static final int ROTATION_ANGLE_CW_270 = 270;
 
@@ -63,17 +63,17 @@ public class VerticalSeekBar extends AppCompatSeekBar {
     private Method mMethodSetProgressFromUser;
     private int mRotationAngle = ROTATION_ANGLE_CW_90;
 
-    public VerticalSeekBar(Context context) {
+    public UZVerticalSeekBar(Context context) {
         super(context);
         initialize(context, null, 0, 0);
     }
 
-    public VerticalSeekBar(Context context, AttributeSet attrs) {
+    public UZVerticalSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context, attrs, 0, 0);
     }
 
-    public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
+    public UZVerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initialize(context, attrs, defStyle, 0);
     }
@@ -82,8 +82,8 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
 
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalSeekBar, defStyleAttr, defStyleRes);
-            final int rotationAngle = a.getInteger(R.styleable.VerticalSeekBar_seekBarRotation, 0);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UZVerticalSeekBar, defStyleAttr, defStyleRes);
+            final int rotationAngle = a.getInteger(R.styleable.UZVerticalSeekBar_seekBarRotation, 0);
             if (isValidRotationAngle(rotationAngle)) {
                 mRotationAngle = rotationAngle;
             }
@@ -370,7 +370,7 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         mRotationAngle = angle;
 
         if (useViewRotation()) {
-            VerticalSeekBarWrapper wrapper = getWrapper();
+            UZVerticalSeekBarWrapper wrapper = getWrapper();
             if (wrapper != null) {
                 wrapper.applyViewRotation();
             }
@@ -390,11 +390,11 @@ public class VerticalSeekBar extends AppCompatSeekBar {
         return isSupportedApiLevel && !inEditMode;
     }
 
-    private VerticalSeekBarWrapper getWrapper() {
+    private UZVerticalSeekBarWrapper getWrapper() {
         final ViewParent parent = getParent();
 
-        if (parent instanceof VerticalSeekBarWrapper) {
-            return (VerticalSeekBarWrapper) parent;
+        if (parent instanceof UZVerticalSeekBarWrapper) {
+            return (UZVerticalSeekBarWrapper) parent;
         } else {
             return null;
         }

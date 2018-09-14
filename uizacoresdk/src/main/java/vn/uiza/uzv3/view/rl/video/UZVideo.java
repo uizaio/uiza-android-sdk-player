@@ -97,7 +97,7 @@ import vn.uiza.uzv3.view.rl.timebar.UZTimebar;
 import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.autosize.UZTextView;
-import vn.uiza.views.seekbar.verticalseekbar.VerticalSeekBar;
+import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -148,8 +148,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZImageButton ibShareIcon;
     private UZImageButton ibSkipPreviousIcon;
     private UZImageButton ibSkipNextIcon;
-    private VerticalSeekBar seekbarVolume;
-    private VerticalSeekBar seekbarBirghtness;
+    private UZVerticalSeekBar seekbarVolume;
+    private UZVerticalSeekBar seekbarBirghtness;
     private ImageView ivPreview;
 
     private RelativeLayout rlLiveInfo;
@@ -987,8 +987,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibSkipPreviousIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_previous);
 
         ivPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
-        seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
-        seekbarBirghtness = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
+        seekbarVolume = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
+        seekbarBirghtness = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_birghtness);
         LUIUtil.setColorSeekBar(seekbarVolume, Color.TRANSPARENT);
         LUIUtil.setColorSeekBar(seekbarBirghtness, Color.TRANSPARENT);
 
@@ -1348,11 +1348,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final VerticalSeekBar verticalSeekBar, final int progressSeekbar) {
-        if (verticalSeekBar == null) {
+    public void setProgressSeekbar(final UZVerticalSeekBar UZVerticalSeekBar, final int progressSeekbar) {
+        if (UZVerticalSeekBar == null) {
             return;
         }
-        verticalSeekBar.setProgress(progressSeekbar);
+        UZVerticalSeekBar.setProgress(progressSeekbar);
         //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
 
@@ -3179,11 +3179,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return ibSkipNextIcon;
     }
 
-    public VerticalSeekBar getSeekbarVolume() {
+    public UZVerticalSeekBar getSeekbarVolume() {
         return seekbarVolume;
     }
 
-    public VerticalSeekBar getSeekbarBirghtness() {
+    public UZVerticalSeekBar getSeekbarBirghtness() {
         return seekbarBirghtness;
     }
 

@@ -515,7 +515,7 @@
             <enum name="bottom" value="8" />
         </attr>
     </declare-styleable>
-    <declare-styleable name="VerticalSeekBar">
+    <declare-styleable name="UZVerticalSeekBar">
         <attr name="seekBarRotation">
             <!-- Clock wise - 90 deg; top = min, bottom = max -->
             <enum name="CW90" value="90" />

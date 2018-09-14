@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package vn.uiza.views.seekbar.verticalseekbar;
+package vn.uiza.views.seekbar;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -24,16 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-public class VerticalSeekBarWrapper extends FrameLayout {
-    public VerticalSeekBarWrapper(Context context) {
+public class UZVerticalSeekBarWrapper extends FrameLayout {
+    public UZVerticalSeekBarWrapper(Context context) {
         this(context, null, 0);
     }
 
-    public VerticalSeekBarWrapper(Context context, AttributeSet attrs) {
+    public UZVerticalSeekBarWrapper(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public VerticalSeekBarWrapper(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZVerticalSeekBarWrapper(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -47,7 +47,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
     }
 
     private void onSizeChangedTraditionalRotation(int w, int h, int oldw, int oldh) {
-        final VerticalSeekBar seekBar = getChildSeekBar();
+        final UZVerticalSeekBar seekBar = getChildSeekBar();
 
         if (seekBar != null) {
             final int hPadding = getPaddingLeft() + getPaddingRight();
@@ -74,7 +74,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
     }
 
     private void onSizeChangedUseViewRotation(int w, int h, int oldw, int oldh) {
-        final VerticalSeekBar seekBar = getChildSeekBar();
+        final UZVerticalSeekBar seekBar = getChildSeekBar();
 
         if (seekBar != null) {
             final int hPadding = getPaddingLeft() + getPaddingRight();
@@ -90,7 +90,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final VerticalSeekBar seekBar = getChildSeekBar();
+        final UZVerticalSeekBar seekBar = getChildSeekBar();
         final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -128,7 +128,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
     }
 
     private void applyViewRotation(int w, int h) {
-        final VerticalSeekBar seekBar = getChildSeekBar();
+        final UZVerticalSeekBar seekBar = getChildSeekBar();
 
         if (seekBar != null) {
             final boolean isLTR = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR;
@@ -149,7 +149,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
             ViewCompat.setPivotY(seekBar, 0);
 
             switch (rotationAngle) {
-                case VerticalSeekBar.ROTATION_ANGLE_CW_90:
+                case UZVerticalSeekBar.ROTATION_ANGLE_CW_90:
                     ViewCompat.setRotation(seekBar, 90);
                     if (isLTR) {
                         ViewCompat.setTranslationX(seekBar, seekBarMeasuredHeight + hOffset);
@@ -159,7 +159,7 @@ public class VerticalSeekBarWrapper extends FrameLayout {
                         ViewCompat.setTranslationY(seekBar, seekBarMeasuredWidth);
                     }
                     break;
-                case VerticalSeekBar.ROTATION_ANGLE_CW_270:
+                case UZVerticalSeekBar.ROTATION_ANGLE_CW_270:
                     ViewCompat.setRotation(seekBar, 270);
                     if (isLTR) {
                         ViewCompat.setTranslationX(seekBar, hOffset);
@@ -173,13 +173,13 @@ public class VerticalSeekBarWrapper extends FrameLayout {
         }
     }
 
-    private VerticalSeekBar getChildSeekBar() {
+    private UZVerticalSeekBar getChildSeekBar() {
         final View child = (getChildCount() > 0) ? getChildAt(0) : null;
-        return (child instanceof VerticalSeekBar) ? (VerticalSeekBar) child : null;
+        return (child instanceof UZVerticalSeekBar) ? (UZVerticalSeekBar) child : null;
     }
 
     private boolean useViewRotation() {
-        final VerticalSeekBar seekBar = getChildSeekBar();
+        final UZVerticalSeekBar seekBar = getChildSeekBar();
         if (seekBar != null) {
             return seekBar.useViewRotation();
         } else {
