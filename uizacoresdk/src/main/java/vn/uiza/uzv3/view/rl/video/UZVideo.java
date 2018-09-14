@@ -2343,6 +2343,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //double volumeOfExoPlayer = UZPlayerManager.getVolume();
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UZData.getInstance().getCasty().setVolume(volumeOfExoPlayer);
+
+            setControllerShowTimeoutMs(0);
         } else {
             UZPlayerManager.resumeVideo();
             UZPlayerManager.setVolume(0.99f);
@@ -2376,6 +2378,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             /*double volumeOfCastPlayer = UZData.getInstance().getCasty().getVolume();
             LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
             UZPlayerManager.setVolume((float) volumeOfCastPlayer);*/
+
+            setControllerShowTimeoutMs(valuePlayerControllerTimeout);
         }
     }
 
