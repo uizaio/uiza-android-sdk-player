@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/WhiteSmoke">
 
-    <vn.loitp.uzv1.view.rl.video.UZVideoV1
+    <vn.uiza.uzv1.view.rl.video.UZVideoV1
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

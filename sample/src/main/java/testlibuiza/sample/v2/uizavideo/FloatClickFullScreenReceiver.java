@@ -6,9 +6,9 @@ import android.content.Intent;
 
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.uzv3.util.UZUtil;
 
 /**
  * Created by LENOVO on 5/8/2018.

@@ -14,16 +14,16 @@ import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.V3TestAPIActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinActivity;
 import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.model.v2.auth.Auth;
+import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class MainActivity extends BaseActivity {
 

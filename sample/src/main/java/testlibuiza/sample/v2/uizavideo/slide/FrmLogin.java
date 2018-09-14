@@ -10,8 +10,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.uzv1.view.IOnBackPressed;
 
 public class FrmLogin extends BaseFragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();

@@ -30,17 +30,17 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uzv1.listerner.ProgressCallback;
-import vn.loitp.uzv1.view.rl.video.UZVideoV1;
-import vn.loitp.uzv1.view.util.UizaDataV1;
-import vn.loitp.uzv1.view.util.UizaInputV1;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.uiza.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.uzv1.listerner.ProgressCallback;
+import vn.uiza.uzv1.view.rl.video.UZVideoV1;
+import vn.uiza.uzv1.view.util.UizaDataV1;
+import vn.uiza.uzv1.view.util.UizaInputV1;
+import vn.uiza.views.LToast;
 
 public class FrmTop extends BaseFragment implements UZVideoV1.Callback {
     private UZVideoV1 UZVideoV1;

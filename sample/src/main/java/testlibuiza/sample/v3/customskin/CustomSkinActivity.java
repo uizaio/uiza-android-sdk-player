@@ -11,18 +11,18 @@ import com.daimajia.androidanimations.library.Techniques;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.utilities.LAnimationUtil;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uzv1.view.rl.video.UZVideoV1;
-import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.uzv3.view.rl.video.UZCallback;
-import vn.loitp.uzv3.view.rl.video.UZVideo;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.uzv1.view.rl.video.UZVideoV1;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.uzv3.view.rl.video.UZCallback;
+import vn.uiza.uzv3.view.rl.video.UZVideo;
+import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.

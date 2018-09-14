@@ -11,12 +11,12 @@ import android.widget.EditText;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class V3SetEntityIdActivity extends BaseActivity {
     //for entity id

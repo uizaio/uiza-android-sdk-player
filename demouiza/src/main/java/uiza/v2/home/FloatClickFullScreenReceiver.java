@@ -6,8 +6,8 @@ import android.content.Intent;
 
 import uiza.v2.home.cannotslide.UizaPlayerActivityV2;
 import uiza.v2.home.canslide.HomeV2CanSlideActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.uzv3.util.UZUtil;
 
 /**
  * Created by loitp on 5/8/2018.

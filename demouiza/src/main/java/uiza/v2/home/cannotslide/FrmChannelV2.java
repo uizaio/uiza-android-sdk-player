@@ -19,26 +19,26 @@ import uiza.v2.data.HomeDataV2;
 import uiza.v2.home.view.BlankView;
 import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.LoadingView;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uzv1.view.util.UizaDataV1;
-import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
+import vn.uiza.restapi.uiza.model.v2.listallentity.ListAllEntity;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.util.UizaDataV1;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_COVER;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_ID;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.

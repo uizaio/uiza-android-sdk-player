@@ -10,10 +10,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import uiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uzv3.view.rl.videoinfo.UZVideoInfo;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.uzv3.view.rl.videoinfo.UZVideoInfo;
 
 public class FrmVideoBottom extends BaseFragment {
     private UZVideoInfo uizaIMAVideoInfo;

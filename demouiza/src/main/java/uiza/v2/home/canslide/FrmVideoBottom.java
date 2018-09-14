@@ -10,11 +10,11 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import uiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
-import vn.loitp.uzv1.view.rl.videoinfo.UZVideoInfoV1;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.uzv1.view.rl.videoinfo.ItemAdapterV1;
+import vn.uiza.uzv1.view.rl.videoinfo.UZVideoInfoV1;
 
 public class FrmVideoBottom extends BaseFragment implements ItemAdapterV1.Callback {
     private UZVideoInfoV1 UZVideoInfoV1;

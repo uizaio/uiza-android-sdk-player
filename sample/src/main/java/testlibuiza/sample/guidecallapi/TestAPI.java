@@ -13,12 +13,12 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.loitp.core.base.NoConnectionException;
-import vn.loitp.core.utilities.LConnectivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.rxandroid.ApiSubscriber;
+import vn.uiza.core.base.NoConnectionException;
+import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.rxandroid.ApiSubscriber;
 
 public class TestAPI extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();

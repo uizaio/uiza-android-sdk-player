@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         tools:ignore="UselessParent">
 
-        <vn.loitp.uzv1.view.floatview.FUZVideoV1
+        <vn.uiza.uzv1.view.floatview.FUZVideoV1
             android:id="@+id/uiza_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

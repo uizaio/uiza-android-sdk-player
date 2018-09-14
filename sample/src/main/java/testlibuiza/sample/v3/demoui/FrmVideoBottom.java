@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmVideoBottom extends BaseFragment {
     private TextView tvJsonData;

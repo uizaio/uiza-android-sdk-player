@@ -5,10 +5,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
 
-import vn.loitp.core.common.Constants;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.restapi.restclient.RestClientTracking;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;

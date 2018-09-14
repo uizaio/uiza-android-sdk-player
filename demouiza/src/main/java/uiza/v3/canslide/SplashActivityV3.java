@@ -16,12 +16,12 @@ import android.widget.RadioGroup;
 import uiza.R;
 import uiza.option.OptionActivity;
 import uiza.v4.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uzv3.util.UZUtil;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class SplashActivityV3 extends BaseActivity {
     private int currentPlayerId = R.layout.player_skin_1;

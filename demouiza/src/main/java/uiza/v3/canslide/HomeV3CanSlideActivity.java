@@ -7,22 +7,22 @@ import android.view.View;
 
 import uiza.R;
 import uiza.v3.data.HomeDataV3;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LConnectivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uzv1.view.IOnBackPressed;
-import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
-import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
-import vn.loitp.uzv3.util.UZData;
-import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.views.draggablepanel.DraggableListener;
-import vn.loitp.views.draggablepanel.DraggablePanel;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.uiza.uzv1.view.rl.videoinfo.ItemAdapterV1;
+import vn.uiza.uzv3.util.UZData;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.draggablepanel.DraggableListener;
+import vn.uiza.views.draggablepanel.DraggablePanel;
 
 public class HomeV3CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
