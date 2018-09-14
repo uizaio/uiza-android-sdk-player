@@ -46,7 +46,7 @@ public class UZDlgShare extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_share);
+        setContentView(R.layout.dlg_share);
 
         ll = (FlowLayout) findViewById(R.id.ll);
         ll.setChildSpacing(FlowLayout.SPACING_AUTO);

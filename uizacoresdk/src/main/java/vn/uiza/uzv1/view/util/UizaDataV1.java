@@ -32,7 +32,7 @@ public class UizaDataV1 {
     private UizaDataV1() {
     }
 
-    private int currentPlayerId = R.layout.player_skin_1;
+    private int currentPlayerId = R.layout.uz_player_skin_1;
 
     public int getCurrentPlayerId() {
         return currentPlayerId;

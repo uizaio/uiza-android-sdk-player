@@ -38,7 +38,7 @@ public class LToast {
         clear();
         try {
             LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inf.inflate(R.layout.l_toast, null);
+            View layout = inf.inflate(R.layout.view_l_toast, null);
             TextView textView = (TextView) layout.findViewById(R.id.tv_loading);
             textView.setText(msg);
             Toast toast = new Toast(context);

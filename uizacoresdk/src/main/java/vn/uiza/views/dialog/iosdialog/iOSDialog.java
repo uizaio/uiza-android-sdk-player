@@ -31,7 +31,7 @@ public class iOSDialog {
 
     public iOSDialog(Context context) {
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.alerts_two_buttons);
+        dialog.setContentView(R.layout.dlg_alerts_two_buttons);
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

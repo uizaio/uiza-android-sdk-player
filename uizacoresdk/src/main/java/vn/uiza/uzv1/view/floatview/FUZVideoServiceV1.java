@@ -102,7 +102,7 @@ public class FUZVideoServiceV1 extends Service implements FUZVideoV1.Callback {
         EventBus.getDefault().register(this);
 
         //Inflate the floating view layout we created
-        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
+        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video_v1, null);
         findViews();
 
         //Add the view to the window.

@@ -523,9 +523,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZInput.setUrlIMAAd(urlIMAAd);
 
             //TODO correct url thumnail, null till now
-            UZInput.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
+            //UZInput.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
             //UZInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-            //UZInput.setUrlThumnailsPreviewSeekbar(null);
+            UZInput.setUrlThumnailsPreviewSeekbar(null);
             UZData.getInstance().setUizaInput(UZInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
         }
@@ -837,7 +837,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     /*
      **Change skin via skin id resouces
-     * changeSkin(R.layout.player_skin_1);
+     * changeSkin(R.layout.uz_player_skin_1);
      */
     //TODO improve this func
     private boolean isRefreshFromChangeSkin;
@@ -894,8 +894,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void updateUIEachSkin() {
         //LLog.d(TAG, "updateUIEachSkin " + UZData.getInstance().getCurrentPlayerId());
         int currentPlayerId = UZData.getInstance().getCurrentPlayerId();
-        if (currentPlayerId == R.layout.player_skin_2 || currentPlayerId == R.layout.player_skin_3) {
-            //LLog.d(TAG, "updateUIEachSkin player_skin_2 || player_skin_3 -> edit size of ibPlayIcon ibPauseIcon");
+        if (currentPlayerId == R.layout.uz_player_skin_2 || currentPlayerId == R.layout.uz_player_skin_3) {
+            //LLog.d(TAG, "updateUIEachSkin uz_player_skin_2 || uz_player_skin_3 -> edit size of ibPlayIcon ibPauseIcon");
             if (ibPlayIcon != null) {
                 ibPlayIcon.setRatioLand(7);
                 ibPlayIcon.setRatioPort(5);
@@ -909,7 +909,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibReplayIcon.setRatioPort(5);
             }
         } else {
-            //LLog.d(TAG, "updateUIEachSkin !player_skin_2 || !player_skin_3");
+            //LLog.d(TAG, "updateUIEachSkin !uz_player_skin_2 || !uz_player_skin_3");
         }
     }
 

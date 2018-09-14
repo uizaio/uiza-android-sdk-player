@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     android:keepScreenOn="true"
     app:auto_show="false"
-    app:controller_layout_id="@layout/uiza_controller_skin_default"
+    app:controller_layout_id="@layout/uz_controller_skin_2"
     app:fastforward_increment="10000"
     app:hide_on_touch="true"
     app:rewind_increment="10000"

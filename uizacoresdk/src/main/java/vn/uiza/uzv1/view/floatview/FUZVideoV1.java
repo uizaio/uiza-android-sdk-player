@@ -119,7 +119,7 @@ public class FUZVideoV1 extends RelativeLayout {
 
     private void onCreate() {
         //LLog.d(TAG, "onCreate");
-        inflate(getContext(), R.layout.uiza_float_ima_video_core_rl, this);
+        inflate(getContext(), R.layout.v1_uiza_float_ima_video, this);
         findViews();
     }
 

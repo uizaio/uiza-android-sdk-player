@@ -45,7 +45,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UZVideoV1.Cal
         super.onCreate(savedInstanceState);
         UZVideoV1 = (UZVideoV1) findViewById(R.id.uiza_video);
 
-        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
+        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.uz_player_skin_1);
         String entityId = null;
         String entityTitle = null;
         String videoCoverUrl = null;
@@ -291,7 +291,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UZVideoV1.Cal
         String urlIMAAd = null;
         String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         //String urlThumnailsPreviewSeekbar = null;
-        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
+        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.uz_player_skin_1);
         setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 

@@ -620,7 +620,7 @@ public class UZUtil {
     }
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId) {
-        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.player_skin_1);
+        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
     }
 
     public static void setCasty(Activity activity) {

@@ -24,7 +24,7 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.uzv3.util.UZUtil;
 
 public class SplashActivityV3 extends BaseActivity {
-    private int currentPlayerId = R.layout.player_skin_1;
+    private int currentPlayerId = R.layout.uz_player_skin_1;
 
     //workspace loitp
     /*private final String DF_DOMAIN_API = "android-api.uiza.co";
@@ -71,7 +71,7 @@ public class SplashActivityV3 extends BaseActivity {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
         //init skin
-        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.player_skin_1);
+        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
 
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);

@@ -60,25 +60,25 @@ public class OptionActivity extends BaseActivity {
         SkinObject s1 = new SkinObject();
         s1.setSkinName("Uiza Skin 1");
         s1.setResId(R.drawable.skin_1);
-        s1.setSkinId(R.layout.player_skin_1);
+        s1.setSkinId(R.layout.uz_player_skin_1);
         skinObjectList.add(s1);
 
         SkinObject s2 = new SkinObject();
         s2.setSkinName("Uiza Skin 2");
         s2.setResId(R.drawable.skin_2);
-        s2.setSkinId(R.layout.player_skin_2);
+        s2.setSkinId(R.layout.uz_player_skin_2);
         skinObjectList.add(s2);
 
         SkinObject s3 = new SkinObject();
         s3.setSkinName("Uiza Skin 3");
         s3.setResId(R.drawable.skin_3);
-        s3.setSkinId(R.layout.player_skin_3);
+        s3.setSkinId(R.layout.uz_player_skin_3);
         skinObjectList.add(s3);
 
         SkinObject sDf = new SkinObject();
         sDf.setSkinName("Uiza Skin Default");
         sDf.setResId(R.drawable.skin_df);
-        sDf.setSkinId(R.layout.player_skin_default);
+        sDf.setSkinId(R.layout.uz_player_skin_0);
         skinObjectList.add(sDf);
     }
 

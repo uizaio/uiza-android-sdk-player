@@ -363,7 +363,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
     private void onCreate() {
         activity = ((BaseActivity) getContext());
-        inflate(getContext(), R.layout.uiza_ima_video_core_rl, this);
+        inflate(getContext(), R.layout.v1_uiza_video, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
         findViews();
@@ -379,19 +379,19 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         //LLog.d(TAG, "addPlayerView resLayout " + resLayout);
         /*switch (resLayout) {
             case Constants.PLAYER_ID_SKIN_1:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_1, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_1, null);
                 break;
             case Constants.PLAYER_ID_SKIN_2:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_2, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_2, null);
                 break;
             case Constants.PLAYER_ID_SKIN_3:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_3, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_3, null);
                 break;
             case Constants.PLAYER_ID_SKIN_0:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_0, null);
                 break;
             default:
-                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.player_skin_default, null);
+                playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_0, null);
                 break;
         }*/
         playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(resLayout, null);
@@ -403,7 +403,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
     private void updateUIEachSkin() {
         int resLayout = UizaDataV1.getInstance().getCurrentPlayerId();
-        if (resLayout == R.layout.player_skin_2 || resLayout == R.layout.player_skin_3) {
+        if (resLayout == R.layout.uz_player_skin_2 || resLayout == R.layout.uz_player_skin_3) {
             UZImageButton exoPlay = (UZImageButton) playerView.findViewById(R.id.exo_play);
             exoPlay.setRatioLand(7);
             exoPlay.setRatioPort(5);

@@ -69,7 +69,7 @@ public class CustomSkinActivity extends BaseActivity implements UZCallback {
             @Override
             public void onClick(View v) {
                 if (UZVideo != null) {
-                    UZVideo.changeSkin(R.layout.player_skin_default);
+                    UZVideo.changeSkin(R.layout.uz_player_skin_0);
                 }
             }
         });
@@ -77,7 +77,7 @@ public class CustomSkinActivity extends BaseActivity implements UZCallback {
             @Override
             public void onClick(View v) {
                 if (UZVideo != null) {
-                    UZVideo.changeSkin(R.layout.player_skin_1);
+                    UZVideo.changeSkin(R.layout.uz_player_skin_1);
                 }
             }
         });
@@ -85,7 +85,7 @@ public class CustomSkinActivity extends BaseActivity implements UZCallback {
             @Override
             public void onClick(View v) {
                 if (UZVideo != null) {
-                    UZVideo.changeSkin(R.layout.player_skin_2);
+                    UZVideo.changeSkin(R.layout.uz_player_skin_2);
                 }
             }
         });
@@ -93,7 +93,7 @@ public class CustomSkinActivity extends BaseActivity implements UZCallback {
             @Override
             public void onClick(View v) {
                 if (UZVideo != null) {
-                    UZVideo.changeSkin(R.layout.player_skin_3);
+                    UZVideo.changeSkin(R.layout.uz_player_skin_3);
                 }
             }
         });

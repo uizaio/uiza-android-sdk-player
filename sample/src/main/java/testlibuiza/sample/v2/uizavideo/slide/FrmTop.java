@@ -275,7 +275,7 @@ public class FrmTop extends BaseFragment implements UZVideoV1.Callback {
         String urlIMAAd = null;
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.player_skin_1);
+        UizaDataV1.getInstance().setCurrentPlayerId(R.layout.uz_player_skin_1);
         setupVideo(entityId, entityTitle, videoCoverUrl, urlIMAAd, urlThumnailsPreviewSeekbar);
     }
 
