@@ -69,7 +69,6 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        //Utils.init(this);
         //config activity transition default
         //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
