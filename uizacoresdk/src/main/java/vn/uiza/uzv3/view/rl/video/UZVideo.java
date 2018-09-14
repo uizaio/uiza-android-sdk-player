@@ -308,7 +308,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isCalledAPIGetTokenStreaming;
 
     private void callAPIGetDetailEntity() {
-        //Nếu đã tồn tại Data rồi thì nó được gọi từ pip, mình ko cần phải call api lấy detail entity làm gì nữa
+        //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call aou lay detail entity lam gi nua
         if (UZData.getInstance().getData() == null) {
             //LLog.d(TAG, "init UZData.getInstance().getData() == null -> call api lấy detail entity if");
             UZUtil.getDetailEntity((BaseActivity) activity, entityId, new UZUtil.Callback() {
@@ -597,7 +597,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void initPlaylistFolder(String metadataId) {
         LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
         if (metadataId == null) {
-            //Được gọi initPlaylistFolder nếu click fullscreen từ pip
+            //Duoc goi initPlaylistFolder neu click fullscreen tu pip
             //do pass metadataId null
         } else {
             UZData.getInstance().clearDataForPlaylistFolder();
@@ -1994,16 +1994,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         //when pip float view init success
         if (UZCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
-            //Hàm này được gọi khi player ở FUZVideoService đã init xong (nó đang play ở vị trí 0)
-            //Nhiệm vụ là mình sẽ gửi vị trí hiện tại sang cho FUZVideoService nó biết
+            //Ham nay duoc goi khi player o FUZVideoService da init xong (no dang play o vi tri 0)
+            //Nhiem vu la minh se gui vi tri hien tai sang cho FUZVideoService no biet
             //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(UZPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
             UZCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
-            //FUZVideoServiceV1 trước khi hủy đã gửi position của pip tới đây
-            //Nhận được vị trí từ FUZVideoService rồi seek tới vị trí này
+            //FUZVideoServiceV1 truoc khi huy da gui position cua pip toi day
+            //Nhan duoc vi tru tu FUZVideoService roi seek toi vi tri nay
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             if (UZPlayerManager != null) {
                 UZPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
@@ -2161,8 +2161,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         });
     }
 
-    /*Kiểm tra xem nếu activity được tạo thành công nếu user click vào pip thì sẽ bắn 1 eventbus báo rằng đã init success
-     * receiver FUZVideoService để truyền current position */
+    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
+    //receiver FUZVideoService de truyen current position
     public void setEventBusMsgFromActivityIsInitSuccess() {
         if (UZUtil.getClickedPip(activity)) {
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
@@ -2783,9 +2783,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     **Cho phép sử dụng controller hay không
-     * Mặc định: true
-     * Nếu truyền false sẽ ẩn tất cả các component
+     **Cho phep su dung controller hay khong
+     * Default: true
+     * Neu truyen false se an tat ca cac component
      */
     public void setUseController(boolean isUseController) {
         if (playerView != null) {
@@ -2794,7 +2794,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     ** Bắt các event của player như click, long click...
+     ** Bat cac event cua player nhu click, long click
      */
     public void setOnTouchEvent(UZPlayerView.OnTouchEvent onTouchEvent) {
         if (playerView != null) {
@@ -2803,14 +2803,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     ** Đổi thời gian seek mặc định
+     ** Doi thoi gian seek mac dinh
      */
     public void setDefaultValueBackwardForward(int mls) {
         DEFAULT_VALUE_BACKWARD_FORWARD = mls;
     }
 
     /*
-     ** Seek từ vị trí hiện tại cộng thêm bao nhiêu mls
+     ** Seek tu vi tri hien tai cong them bao nhieu mls
      */
     public void seekToForward(int mls) {
         setDefaultValueBackwardForward(mls);
@@ -2820,7 +2820,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     ** Seek từ vị trí hiện tại trừ đi bao nhiêu mls
+     ** Seek tu vi tri hien tai tru di bao nhieu mls
      */
     public void seekToBackward(int mls) {
         setDefaultValueBackwardForward(mls);
@@ -2900,7 +2900,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     ** Bỏ video hiện tại và chơi video tiếp theo trong playlist/folder
+     ** Bo video hien tai va choi tiep theo 1 video trong playlist/folder
      */
     public void skipNextVideo() {
         if (ibSkipNextIcon != null) {
@@ -2909,7 +2909,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     ** Bỏ video hiện tại và chơi lùi lại 1 video trong playlist/folder
+     * Bo video hien tai va choi lui lai 1 video trong playlist/folder
      */
     public void skipPreviousVideo() {
         if (ibSkipPreviousIcon != null) {

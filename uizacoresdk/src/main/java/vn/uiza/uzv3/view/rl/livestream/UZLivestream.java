@@ -446,8 +446,8 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         if (entityLiveId == null || entityLiveId.isEmpty()) {
             throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
         }
-        //Chỉ cần gọi start live thôi, ko cần quan tâm đến kết quả của api này start success hay ko
-        //Vẫn tiếp tục gọi detail entity để lấy streamUrl
+        //Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
+        //Van tiep tuc goi detail entity de lay streamUrl
         startLivestream(entityLiveId);
     }
 

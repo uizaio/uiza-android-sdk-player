@@ -50,7 +50,6 @@ import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv1.view.ComunicateMng;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZUtil;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -507,14 +506,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             //TODO iplm this
-            LLog.d(TAG, "Đang play ở chế độ playlist folder -> auto switch next data");
-            if (Constants.IS_DEBUG) {
-                LToast.show(getApplicationContext(), "TODO iplm Đang play ở chế độ playlist folder -> auto switch next data");
-            }
+            LLog.d(TAG, "Dang play o che do playlist folder -> auto switch next data");
         } else {
-            LLog.d(TAG, "Đang play ở chế độ entity -> do nothing");
+            LLog.d(TAG, "Dang play o che do entity -> do nothing");
         }
-        //Hiện tại khi play xong cho nó ẩn luôn
         stopSelf();
     }
 
