@@ -16,7 +16,7 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uzv1.view.IOnBackPressed;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
 

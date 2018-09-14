@@ -44,10 +44,10 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieve
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.utils.util.Utils;
+import vn.loitp.uzv1.view.floatview.FUZVideoServiceV1;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -368,17 +368,17 @@ public class UizaUtil {
         }
     }
 
-    //stop service pip FloatingUizaVideoService
+    //stop service pip FUZVideoServiceV1
     public static void stopServicePiPIfRunning(Activity activity) {
         if (activity == null) {
             return;
         }
         //LLog.d(TAG, "stopServicePiPIfRunning");
-        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FloatingUizaVideoService.class.getName());
+        boolean isSvPipRunning = UizaUtil.checkServiceRunning(activity, FUZVideoServiceV1.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
-            Intent intent = new Intent(activity, FloatingUizaVideoService.class);
+            Intent intent = new Intent(activity, FUZVideoServiceV1.class);
             activity.stopService(intent);
         }
     }

@@ -27,8 +27,8 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.util.UizaDataV1;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -243,11 +243,11 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
     }
 
     private void onClickVideo(Item item, int position) {
-        if (UizaData.getInstance().isSettingPlayer()) {
+        if (UizaDataV1.getInstance().isSettingPlayer()) {
             return;
         }
 
-        UizaData.getInstance().clear();
+        UizaDataV1.getInstance().clear();
 
         UizaUtil.setClickedPip(activity, false);
         Intent intent = new Intent(activity, UizaPlayerActivityV2.class);

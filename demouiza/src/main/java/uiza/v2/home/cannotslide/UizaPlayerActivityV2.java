@@ -29,25 +29,25 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.ComunicateMng;
-import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
-import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideo.view.util.UizaInput;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.view.ComunicateMng;
+import vn.loitp.uzv1.view.rl.video.UZVideoV1;
+import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
+import vn.loitp.uzv1.view.rl.videoinfo.UZVideoInfoV1;
+import vn.loitp.uzv1.view.util.UizaDataV1;
+import vn.loitp.uzv1.view.util.UizaInputV1;
 import vn.loitp.views.LToast;
 
-public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.Callback, ItemAdapterV2.Callback {
-    private UizaIMAVideo uizaIMAVideo;
-    private UizaIMAVideoInfo uizaIMAVideoInfo;
+public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Callback, ItemAdapterV1.Callback {
+    private UZVideoV1 UZVideoV1;
+    private UZVideoInfoV1 UZVideoInfoV1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uizaIMAVideo = (UizaIMAVideo) findViewById(R.id.uiza_video);
-        uizaIMAVideoInfo = (UizaIMAVideoInfo) findViewById(R.id.uiza_video_info);
+        UZVideoV1 = (UZVideoV1) findViewById(R.id.uiza_video);
+        UZVideoInfoV1 = (UZVideoInfoV1) findViewById(R.id.uiza_video_info);
 
         String entityId = null;
         String entityCover = null;
@@ -102,39 +102,39 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
 
     @Override
     protected void onDestroy() {
-        uizaIMAVideo.onDestroy();
+        UZVideoV1.onDestroy();
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        uizaIMAVideo.onResume();
+        UZVideoV1.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        uizaIMAVideo.onPause();
+        UZVideoV1.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideo.onStart();
+        UZVideoV1.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideo.onStop();
+        UZVideoV1.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == RESULT_OK) {
-                uizaIMAVideo.initializePiP();
+                UZVideoV1.initializePiP();
             } else {
                 LToast.show(activity, getString(R.string.cannot_draw));
             }
@@ -144,10 +144,10 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
     }
 
     private void setListener() {
-        if (uizaIMAVideo == null || uizaIMAVideo.getPlayer() == null) {
+        if (UZVideoV1 == null || UZVideoV1.getPlayer() == null) {
             return;
         }
-        uizaIMAVideo.getPlayer().addListener(new Player.EventListener() {
+        UZVideoV1.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -198,7 +198,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
                 //LLog.d(TAG, "onTimelineChanged");
             }
         });
-        uizaIMAVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        UZVideoV1.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -229,7 +229,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uizaIMAVideo.setProgressCallback(new ProgressCallback() {
+        UZVideoV1.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
@@ -240,7 +240,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
                 //LLog.d(TAG, TAG + " video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
             }
         });
-        uizaIMAVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        UZVideoV1.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -276,13 +276,13 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        uizaIMAVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        UZVideoV1.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        uizaIMAVideo.getPlayer().addTextOutput(new TextOutput() {
+        UZVideoV1.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
@@ -299,20 +299,20 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
             }
             setListener();
-            if (uizaIMAVideoInfo != null) {
-                uizaIMAVideoInfo.setup(getDetailEntity);
+            if (UZVideoInfoV1 != null) {
+                UZVideoInfoV1.setup(getDetailEntity);
             }
         } else {
-            UizaInput prevUizaInput = UizaData.getInstance().getUizaInputPrev();
-            if (prevUizaInput == null) {
+            UizaInputV1 prevUizaInputV1 = UizaDataV1.getInstance().getUizaInputPrev();
+            if (prevUizaInputV1 == null) {
                 if (activity != null) {
                     activity.onBackPressed();
                 }
             } else {
-                boolean isPlayPrev = UizaData.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
+                boolean isPlayPrev = UizaDataV1.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
                 if (isPlayPrev) {
                     UizaUtil.setClickedPip(activity, false);
-                    setupVideo(prevUizaInput.getEntityId(), prevUizaInput.getEntityName(), prevUizaInput.getUrlThumnailsPreviewSeekbar(), false);
+                    setupVideo(prevUizaInputV1.getEntityId(), prevUizaInputV1.getEntityName(), prevUizaInputV1.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
                     activity.onBackPressed();
                 }
@@ -381,23 +381,23 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UizaIMAVideo.C
             });
             return;
         }
-        UizaInput uizaInput = new UizaInput();
+        UizaInputV1 uizaInputV1 = new UizaInputV1();
 
-        uizaInput.setEntityId(entityId);
-        uizaInput.setEntityName(entityTitle);
-        uizaInput.setEntityCover(entityCover);
+        uizaInputV1.setEntityId(entityId);
+        uizaInputV1.setEntityName(entityTitle);
+        uizaInputV1.setEntityCover(entityCover);
 
         //String urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
         String urlIMAAd = null;
-        uizaInput.setUrlIMAAd(urlIMAAd);
+        uizaInputV1.setUrlIMAAd(urlIMAAd);
 
         //String urlThumnailsPreviewSeekbar = activity.getString(loitp.core.R.string.url_thumbnails);
         String urlThumnailsPreviewSeekbar = null;
-        uizaInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+        uizaInputV1.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
 
-        UizaData.getInstance().setUizaInput(uizaInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+        UizaDataV1.getInstance().setUizaInput(uizaInputV1, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
 
-        uizaIMAVideo.init(this);
-        uizaIMAVideoInfo.init(this);
+        UZVideoV1.init(this);
+        UZVideoInfoV1.init(this);
     }
 }

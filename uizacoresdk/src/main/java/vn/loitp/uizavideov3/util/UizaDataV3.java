@@ -121,7 +121,7 @@ public class UizaDataV3 {
         return uizaInputV3List;
     }
 
-    /*public void setUizaInputList(List<UizaInput> uizaInputV3List) {
+    /*public void setUizaInputList(List<UizaInputV1> uizaInputV3List) {
         this.uizaInputV3List = uizaInputV3List;
     }*/
 

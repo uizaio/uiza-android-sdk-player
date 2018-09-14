@@ -36,8 +36,8 @@ import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 

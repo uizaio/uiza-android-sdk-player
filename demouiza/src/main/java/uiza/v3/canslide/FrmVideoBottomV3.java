@@ -13,10 +13,10 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
+import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
 
-public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Callback {
+public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV1.Callback {
     private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
 
     @Override
@@ -48,7 +48,7 @@ public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV2.Call
     public void onLoadMore() {
     }
 
-    public void init(ItemAdapterV2.Callback callback) {
+    public void init(ItemAdapterV1.Callback callback) {
         uizaIMAVideoInfo.init(callback);
     }
 

@@ -13,9 +13,9 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideo.view.ComunicateMng;
-import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.ComunicateMng;
+import vn.loitp.uzv1.view.IOnBackPressed;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -39,25 +39,25 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmTop.getUZVideoV1().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmTop.getUZVideoV1().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmTop.getUZVideoV1().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmTop.getUZVideoV1().getPlayerView().hideController();
             }
         });
         replaceFragment(new FrmHome());
@@ -175,7 +175,7 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
-                frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmTop.getUZVideoV1().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         if (draggablePanel != null && !isLandscape) {

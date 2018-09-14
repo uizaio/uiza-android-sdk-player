@@ -70,10 +70,9 @@ import java.util.List;
 import loitp.core.R;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.loitp.uizavideo.TrackSelectionHelper;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
-import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
+import vn.loitp.uzv1.TrackSelectionHelper;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -109,10 +108,10 @@ import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
         this.context = uizaIMAVideo.getContext();
         this.floatUizaIMAVideoV3 = uizaIMAVideo;
         this.linkPlay = linkPlay;
-        //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
+        //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            //LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
+            //LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -122,7 +121,7 @@ import vn.loitp.uizavideov3.view.floatview.FloatUizaIMAVideoV3;
                 context,
                 userAgent,
                 new DefaultBandwidthMeter());
-        //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
+        //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
             @Override

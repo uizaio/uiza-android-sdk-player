@@ -14,7 +14,7 @@ import android.widget.TextView;
 import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.loitp.uzv1.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnBackPressed {

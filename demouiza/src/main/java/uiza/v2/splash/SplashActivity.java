@@ -24,8 +24,8 @@ import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.util.UizaDataV1;
 import vn.loitp.views.LToast;
 
 public class SplashActivity extends BaseActivity {
@@ -178,7 +178,7 @@ public class SplashActivity extends BaseActivity {
             });
             return;
         }
-        UizaData.getInstance().setCurrentPlayerId(currentPlayerId);
+        UizaDataV1.getInstance().setCurrentPlayerId(currentPlayerId);
         RestClientV2.addAuthorization(token);
         UizaUtil.setToken(activity, token);
         if (canSlide) {

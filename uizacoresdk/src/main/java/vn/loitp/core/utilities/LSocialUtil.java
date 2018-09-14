@@ -13,8 +13,8 @@ import android.net.Uri;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.uizavideo.view.dlg.share.UizaDialogShare;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.dlg.share.UZDlgShare;
 import vn.loitp.views.LToast;
 
 
@@ -77,8 +77,8 @@ public class LSocialUtil {
     }
 
     public static void share(Activity activity, boolean isLandscape) {
-        UizaDialogShare uizaDialogShare = new UizaDialogShare(activity, isLandscape);
-        UizaUtil.showUizaDialog(activity, uizaDialogShare);
+        UZDlgShare UZDlgShare = new UZDlgShare(activity, isLandscape);
+        UizaUtil.showUizaDialog(activity, UZDlgShare);
     }
 
     public static void sharingToSocialMedia(Activity activity, String application, String subject, String message) {
@@ -111,8 +111,8 @@ public class LSocialUtil {
     public static void shareViaFb(final Activity activity) {
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, UizaDialogShare.SUBJECT);
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, UizaDialogShare.MESSAGE);
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, UZDlgShare.SUBJECT);
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, UZDlgShare.MESSAGE);
         PackageManager pm = activity.getPackageManager();
         List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
         for (final ResolveInfo app : activityList) {

@@ -46,7 +46,7 @@
         </receiver>
 
         <service
-            android:name="vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService"
+            android:name="vn.loitp.uzv1.view.floatview.FUZVideoServiceV1"
             android:enabled="true"
             android:exported="false" />
         <service

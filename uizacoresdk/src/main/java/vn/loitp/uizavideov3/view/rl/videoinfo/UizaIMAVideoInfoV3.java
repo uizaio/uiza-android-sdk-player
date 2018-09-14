@@ -26,9 +26,8 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -54,10 +53,10 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
 
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ItemAdapterV2 mAdapter;
-    private ItemAdapterV2.Callback callback;
+    private ItemAdapterV1 mAdapter;
+    private ItemAdapterV1.Callback callback;
 
-    public void init(ItemAdapterV2.Callback callback) {
+    public void init(ItemAdapterV1.Callback callback) {
         this.callback = callback;
         clearAllViews();
     }
@@ -121,7 +120,7 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
 
         int sizeW = LDisplayUtils.getScreenW(activity) / 2;
         int sizeH = sizeW * 9 / 16;
-        mAdapter = new ItemAdapterV2(activity, itemList, sizeW, sizeH, new ItemAdapterV2.Callback() {
+        mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
             @Override
             public void onClickItemBottom(Item item, int position) {
                 if (UizaDataV3.getInstance().isSettingPlayer()) {
@@ -203,10 +202,10 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
     private void getListAllEntityRelation() {
         //TODO
         /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
+        //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getUizaInputV3().getEntityId());
+        jsonBodyListAllEntityRelation.setId(UizaDataV1.getInstance().getUizaInputV3().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override

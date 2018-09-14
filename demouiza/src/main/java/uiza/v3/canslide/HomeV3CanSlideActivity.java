@@ -16,11 +16,11 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
-import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -210,7 +210,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoBottom.setFragmentCallback(new BaseFragment.FragmentCallback() {
             @Override
             public void onViewCreated() {
-                frmVideoBottom.init(new ItemAdapterV2.Callback() {
+                frmVideoBottom.init(new ItemAdapterV1.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
                         UizaUtil.setClickedPip(activity, false);
@@ -244,7 +244,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {
@@ -325,7 +325,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
                 frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {

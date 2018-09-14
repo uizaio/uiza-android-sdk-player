@@ -20,12 +20,12 @@
         app:realtimeBlurRadius="@dimen/round_55"
         app:realtimeOverlayColor="@color/black_65" />
 
-    <vn.loitp.uizavideo.view.rl.video.UizaIMAVideo
+    <vn.loitp.uzv1.view.rl.video.UZVideoV1
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo
+    <vn.loitp.uzv1.view.rl.videoinfo.UZVideoInfoV1
         android:id="@+id/uiza_video_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

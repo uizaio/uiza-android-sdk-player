@@ -37,12 +37,12 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UizaCallback {
@@ -101,7 +101,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uizaIMAVideoV3.initializePiP();
             } else {
@@ -257,7 +257,7 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
                 //LLog.d(TAG, "onCues");
             }
         });
-        uizaIMAVideoV3.setControllerStateCallback(new UizaPlayerView.ControllerStateCallback() {
+        uizaIMAVideoV3.setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 LLog.d(TAG, "onVisibilityChange isShow " + isShow);

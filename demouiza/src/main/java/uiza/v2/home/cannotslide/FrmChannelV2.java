@@ -31,8 +31,8 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.view.util.UizaDataV1;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -219,7 +219,7 @@ public class FrmChannelV2 extends BaseFragment {
     }
 
     private void onClickVideo(Item item, int position) {
-        if (UizaData.getInstance().isSettingPlayer()) {
+        if (UizaDataV1.getInstance().isSettingPlayer()) {
             return;
         }
         UizaUtil.setClickedPip(getActivity(), false);

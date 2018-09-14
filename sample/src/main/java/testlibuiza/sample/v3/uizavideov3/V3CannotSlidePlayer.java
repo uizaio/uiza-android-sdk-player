@@ -34,12 +34,12 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.rl.video.UizaIMAVideo;
-import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
 import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.views.LToast;
 
 /**
@@ -91,7 +91,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
         uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
-        uizaIMAVideoV3.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
+        uizaIMAVideoV3.setOnTouchEvent(new UZPlayerViewV1.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed() {
             }
@@ -228,7 +228,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uizaIMAVideoV3.initializePiP();
             } else {

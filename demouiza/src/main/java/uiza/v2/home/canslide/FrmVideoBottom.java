@@ -13,11 +13,11 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideo.view.rl.videoinfo.ItemAdapterV2;
-import vn.loitp.uizavideo.view.rl.videoinfo.UizaIMAVideoInfo;
+import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
+import vn.loitp.uzv1.view.rl.videoinfo.UZVideoInfoV1;
 
-public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callback {
-    private UizaIMAVideoInfo uizaIMAVideoInfo;
+public class FrmVideoBottom extends BaseFragment implements ItemAdapterV1.Callback {
+    private UZVideoInfoV1 UZVideoInfoV1;
 
     @Override
     protected String setTag() {
@@ -26,7 +26,7 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        uizaIMAVideoInfo = (UizaIMAVideoInfo) view.findViewById(R.id.uiza_video_info);
+        UZVideoInfoV1 = (UZVideoInfoV1) view.findViewById(R.id.uiza_video_info);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -36,7 +36,7 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
     }
 
     public void setup(GetDetailEntity getDetailEntity) {
-        uizaIMAVideoInfo.setup(getDetailEntity);
+        UZVideoInfoV1.setup(getDetailEntity);
     }
 
     @Override
@@ -48,13 +48,13 @@ public class FrmVideoBottom extends BaseFragment implements ItemAdapterV2.Callba
     public void onLoadMore() {
     }
 
-    public void init(ItemAdapterV2.Callback callback) {
-        uizaIMAVideoInfo.init(callback);
+    public void init(ItemAdapterV1.Callback callback) {
+        UZVideoInfoV1.init(callback);
     }
 
     public void clearAllViews() {
-        if (uizaIMAVideoInfo != null) {
-            uizaIMAVideoInfo.clearAllViews();
+        if (UZVideoInfoV1 != null) {
+            UZVideoInfoV1.clearAllViews();
         }
     }
 }

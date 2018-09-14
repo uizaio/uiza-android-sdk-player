@@ -46,10 +46,10 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.ComunicateMng;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.view.ComunicateMng;
 import vn.loitp.views.LToast;
 
 /**

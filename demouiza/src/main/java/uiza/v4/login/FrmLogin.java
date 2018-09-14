@@ -18,8 +18,8 @@ import uiza.v4.HomeV4CanSlideActivity;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideo.view.IOnBackPressed;
 import vn.loitp.utils.util.KeyboardUtils;
+import vn.loitp.uzv1.view.IOnBackPressed;
 import vn.loitp.views.LToast;
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnBackPressed {

@@ -63,12 +63,12 @@ import vn.loitp.core.utilities.LConnectivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.loitp.uizavideo.TrackSelectionHelper;
-import vn.loitp.uizavideo.glide.GlideApp;
-import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
 import vn.loitp.uizavideov3.view.rl.timebar.UZTimebar;
+import vn.loitp.uzv1.TrackSelectionHelper;
+import vn.loitp.uzv1.glide.GlideApp;
+import vn.loitp.uzv1.glide.GlideThumbnailTransformationPB;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -133,10 +133,10 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         this.context = uizaIMAVideoV3.getContext();
         this.uizaIMAVideoV3 = uizaIMAVideoV3;
         this.linkPlay = linkPlay;
-        //LLog.d(TAG, "UizaPlayerManager linkPlay " + linkPlay);
+        //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            // LLog.d(TAG, "UizaPlayerManager urlIMAAd == null || urlIMAAd.isEmpty()");
+            // LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -169,7 +169,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         this.imageView = uizaIMAVideoV3.getIvThumbnail();
         this.uzTimebar = uizaIMAVideoV3.getUZTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
-        //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
+        //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         setRunnable();
     }
 

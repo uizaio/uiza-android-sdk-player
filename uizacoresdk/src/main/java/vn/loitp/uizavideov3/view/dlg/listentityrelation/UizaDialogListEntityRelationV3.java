@@ -72,10 +72,10 @@ public class UizaDialogListEntityRelationV3 extends Dialog {
         //TODO iplm
         LUIUtil.showProgressBar(progressBar);
         /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        //LLog.d(TAG, "entityId: " + UizaData.getInstance().getEntityId());
+        //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaData.getInstance().getUizaInputV3().getEntityId());
+        jsonBodyListAllEntityRelation.setId(UizaDataV1.getInstance().getUizaInputV3().getEntityId());
 
         ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
             @Override

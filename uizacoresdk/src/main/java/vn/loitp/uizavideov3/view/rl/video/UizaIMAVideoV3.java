@@ -80,10 +80,6 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetVi
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
-import vn.loitp.uizavideo.view.ComunicateMng;
-import vn.loitp.uizavideo.view.dlg.info.UizaDialogInfo;
-import vn.loitp.uizavideo.view.rl.video.UizaPlayerView;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaInputV3;
 import vn.loitp.uizavideov3.util.UizaTrackingUtil;
@@ -94,6 +90,10 @@ import vn.loitp.uizavideov3.view.dlg.playlistfolder.CallbackPlaylistFolder;
 import vn.loitp.uizavideov3.view.dlg.playlistfolder.UizaDialogPlaylistFolder;
 import vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3;
 import vn.loitp.uizavideov3.view.rl.timebar.UZTimebar;
+import vn.loitp.uzv1.listerner.ProgressCallback;
+import vn.loitp.uzv1.view.ComunicateMng;
+import vn.loitp.uzv1.view.dlg.info.UZDlgInfoV1;
+import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.autosize.textviewwithsize.TextViewWithSize;
@@ -818,13 +818,13 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         updateUISizeThumnail();
     }
 
-    private UizaPlayerView playerView;
+    private UZPlayerViewV1 playerView;
 
     private void addPlayerView() {
         playerView = null;
         //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UizaDataV3.getInstance().getCurrentPlayerId());
         int resLayout = UizaDataV3.getInstance().getCurrentPlayerId();
-        playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
+        playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -853,7 +853,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         isRefreshFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
-        playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(skinId, null);
+        playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(skinId, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -1999,7 +1999,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             ComunicateMng.postFromActivity(msgFromActivityPosition);
             uizaCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
-            //FloatingUizaVideoService trước khi hủy đã gửi position của pip tới đây
+            //FUZVideoServiceV1 trước khi hủy đã gửi position của pip tới đây
             //Nhận được vị trí từ FloatingUizaVideoServiceV3 rồi seek tới vị trí này
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             if (uizaPlayerManagerV3 != null) {
@@ -2730,8 +2730,8 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
             return;
         }
         if (uizaPlayerManagerV3.getSubtitleList() == null || uizaPlayerManagerV3.getSubtitleList().isEmpty()) {
-            UizaDialogInfo uizaDialogInfo = new UizaDialogInfo(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
-            UizaUtil.showUizaDialog(activity, uizaDialogInfo);
+            UZDlgInfoV1 UZDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
+            UizaUtil.showUizaDialog(activity, UZDlgInfoV1);
         } else {
             View view = UizaUtil.getBtText(debugRootView);
             if (view != null) {
@@ -2769,7 +2769,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
         }
     }
 
-    public void setControllerStateCallback(UizaPlayerView.ControllerStateCallback controllerStateCallback) {
+    public void setControllerStateCallback(UZPlayerViewV1.ControllerStateCallback controllerStateCallback) {
         if (playerView != null) {
             playerView.setControllerStateCallback(controllerStateCallback);
         }
@@ -2789,7 +2789,7 @@ public class UizaIMAVideoV3 extends RelativeLayout implements PreviewView.OnPrev
     /*
      ** Bắt các event của player như click, long click...
      */
-    public void setOnTouchEvent(UizaPlayerView.OnTouchEvent onTouchEvent) {
+    public void setOnTouchEvent(UZPlayerViewV1.OnTouchEvent onTouchEvent) {
         if (playerView != null) {
             playerView.setOnTouchEvent(onTouchEvent);
         }

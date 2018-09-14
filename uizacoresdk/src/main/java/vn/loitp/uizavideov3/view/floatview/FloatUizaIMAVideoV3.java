@@ -29,10 +29,10 @@ import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideov3.util.UizaDataV3;
 import vn.loitp.uizavideov3.util.UizaTrackingUtil;
 import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.views.LToast;
 
 public class FloatUizaIMAVideoV3 extends RelativeLayout {
