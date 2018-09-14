@@ -83,7 +83,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv1.view.ComunicateMng;
 import vn.uiza.uzv1.view.dlg.info.UZDlgInfoV1;
-import vn.uiza.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.uiza.uzv1.view.rl.video.UZPlayerView;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZInput;
 import vn.uiza.uzv3.util.UZTrackingUtil;
@@ -821,13 +821,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUISizeThumnail();
     }
 
-    private UZPlayerViewV1 playerView;
+    private UZPlayerView playerView;
 
     private void addPlayerView() {
         playerView = null;
         //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UZData.getInstance().getCurrentPlayerId());
         int resLayout = UZData.getInstance().getCurrentPlayerId();
-        playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(resLayout, null);
+        playerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -856,7 +856,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isRefreshFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
-        playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(skinId, null);
+        playerView = (UZPlayerView) activity.getLayoutInflater().inflate(skinId, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);
@@ -2776,7 +2776,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void setControllerStateCallback(UZPlayerViewV1.ControllerStateCallback controllerStateCallback) {
+    public void setControllerStateCallback(UZPlayerView.ControllerStateCallback controllerStateCallback) {
         if (playerView != null) {
             playerView.setControllerStateCallback(controllerStateCallback);
         }
@@ -2796,7 +2796,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*
      ** Bắt các event của player như click, long click...
      */
-    public void setOnTouchEvent(UZPlayerViewV1.OnTouchEvent onTouchEvent) {
+    public void setOnTouchEvent(UZPlayerView.OnTouchEvent onTouchEvent) {
         if (playerView != null) {
             playerView.setOnTouchEvent(onTouchEvent);
         }

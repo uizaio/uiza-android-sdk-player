@@ -374,7 +374,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
     private void addPlayerView() {
         //PlayerView playerView = null;
-        UZPlayerViewV1 playerView = null;
+        UZPlayerView playerView = null;
         int resLayout = UizaDataV1.getInstance().getCurrentPlayerId();
         //LLog.d(TAG, "addPlayerView resLayout " + resLayout);
         /*switch (resLayout) {
@@ -394,7 +394,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
                 playerView = (UizaPlayerView) activity.getLayoutInflater().inflate(R.layout.uz_player_skin_0, null);
                 break;
         }*/
-        playerView = (UZPlayerViewV1) activity.getLayoutInflater().inflate(resLayout, null);
+        playerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         playerView.setLayoutParams(lp);

@@ -17,7 +17,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.uiza.uzv1.view.rl.video.UZPlayerView;
 import vn.uiza.uzv1.view.rl.videoinfo.ItemAdapterV1;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZUtil;
@@ -244,7 +244,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 frmVideoTop.getUZVideo().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
+                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {
@@ -325,7 +325,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
                 frmVideoTop.getUZVideo().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
+                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {

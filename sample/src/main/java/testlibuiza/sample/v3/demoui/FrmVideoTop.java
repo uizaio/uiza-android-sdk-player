@@ -38,7 +38,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.uiza.uzv1.view.rl.video.UZPlayerView;
 import vn.uiza.uzv1.view.rl.video.UZVideoV1;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
@@ -257,7 +257,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onCues");
             }
         });
-        UZVideo.setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
+        UZVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null

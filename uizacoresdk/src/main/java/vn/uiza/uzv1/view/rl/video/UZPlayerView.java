@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 //https://github.com/google/ExoPlayer/issues/4031
 //I want to to show playback controls only when onTouch event is fired. How to prevent control buttons being showed up when on long pressing, dragging etc.?
 
-public final class UZPlayerViewV1 extends PlayerView implements PlayerControlView.VisibilityListener {
+public final class UZPlayerView extends PlayerView implements PlayerControlView.VisibilityListener {
     private final String TAG = getClass().getSimpleName();
     private static final float DRAG_THRESHOLD = 10;//original 10
     private static final long LONG_PRESS_THRESHOLD_MS = 500;//original 500
@@ -26,11 +26,11 @@ public final class UZPlayerViewV1 extends PlayerView implements PlayerControlVie
     private float tapPositionX;
     private float tapPositionY;
 
-    public UZPlayerViewV1(Context context) {
+    public UZPlayerView(Context context) {
         this(context, null);
     }
 
-    public UZPlayerViewV1(Context context, AttributeSet attrs) {
+    public UZPlayerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -38,7 +38,7 @@ public final class UZPlayerViewV1 extends PlayerView implements PlayerControlVie
 
     private OnTouchEvent onTouchEvent;
 
-    public UZPlayerViewV1(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setControllerVisibilityListener(this);
         mDetector = new GestureDetector(context, new UizaGestureListener());

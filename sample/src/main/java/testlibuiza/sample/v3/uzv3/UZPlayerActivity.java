@@ -35,7 +35,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv1.view.rl.video.UZPlayerViewV1;
+import vn.uiza.uzv1.view.rl.video.UZPlayerView;
 import vn.uiza.uzv1.view.rl.video.UZVideoV1;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
@@ -91,7 +91,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
         uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
-        uzVideo.setOnTouchEvent(new UZPlayerViewV1.OnTouchEvent() {
+        uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed() {
             }
