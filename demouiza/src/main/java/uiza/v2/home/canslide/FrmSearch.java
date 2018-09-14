@@ -29,7 +29,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.uiza.restapi.uiza.model.v2.search.Search;
@@ -173,7 +173,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
         }
         LToast.show(getActivity(), getString(R.string.load_page) + page);
 
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
 
         JsonBodySearch jsonBodySearch = new JsonBodySearch();
         jsonBodySearch.setKeyword(keyword);

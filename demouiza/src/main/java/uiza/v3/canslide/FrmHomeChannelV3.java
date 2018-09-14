@@ -22,8 +22,8 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
@@ -233,7 +233,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         //check if is livestream true -> get data by using api retrieveALiveEvent
         //else call getListAllEntity
         if (isLivestream) {
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            UZService service = UZRestClient.createService(UZService.class);
             subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
                 @Override
                 public void onSuccess(ResultRetrieveALiveEvent result) {
@@ -298,7 +298,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         } else {
             //LLog.d(TAG, "getData metadataId: " + metadataId);
 
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            UZService service = UZRestClient.createService(UZService.class);
             subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {

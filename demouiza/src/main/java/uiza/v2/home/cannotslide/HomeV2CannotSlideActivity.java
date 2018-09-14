@@ -24,7 +24,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.uiza.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
 import vn.uiza.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
@@ -163,7 +163,7 @@ public class HomeV2CannotSlideActivity extends BaseActivity {
     private void getListAllMetadata() {
         LLog.d(TAG, "getListAllMetadata");
         genHomeMenu();
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";

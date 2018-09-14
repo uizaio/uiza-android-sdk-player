@@ -34,8 +34,8 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -404,7 +404,7 @@ public class UZUtil {
             throw new NullPointerException("UizaWorkspaceInfo cannot be null or empty!");
         }
         setUizaWorkspaceInfo(context, uizaWorkspaceInfo);
-        RestClientV3.init(Constants.PREFIXS + uizaWorkspaceInfo.getUrlApi());
+        UZRestClient.init(Constants.PREFIXS + uizaWorkspaceInfo.getUrlApi());
     }*/
 
     /*public static UizaWorkspaceInfo getUizaWorkspace(Context context) {
@@ -451,7 +451,7 @@ public class UZUtil {
     }
 
     public static void getDetailEntity(final BaseActivity activity, final String entityId, final Callback callback) {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         activity.subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
@@ -475,7 +475,7 @@ public class UZUtil {
     }
 
     public static void getDataFromEntityIdLIVE(final BaseActivity activity, String entityId, final Callback callback) {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         activity.subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override
             public void onSuccess(ResultRetrieveALive result) {

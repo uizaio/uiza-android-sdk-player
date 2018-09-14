@@ -31,7 +31,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallmetadata.Datum;
 import vn.uiza.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
@@ -179,7 +179,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
 
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";

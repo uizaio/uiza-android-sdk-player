@@ -18,7 +18,7 @@ import loitp.core.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
 import vn.uiza.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
@@ -75,7 +75,7 @@ public class UZDlgListEntityRelation extends Dialog {
 
     private void getListAllEntityRelation() {
         LUIUtil.showProgressBar(progressBar);
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();

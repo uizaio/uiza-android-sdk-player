@@ -15,8 +15,8 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.restclient.RestClientV3GetLinkPlay;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.utils.util.Utils;
@@ -76,17 +76,17 @@ public class UZData {
         mToken = token;
         mAppId = appId;
 
-        RestClientV3.init(Constants.PREFIXS + domainAPI, token);
+        UZRestClient.init(Constants.PREFIXS + domainAPI, token);
         UZUtil.setToken(Utils.getContext(), token);
 
         if (environment == Constants.ENVIRONMENT_DEV) {
-            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
+            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
             initTracking(Constants.URL_TRACKING_DEV);
         } else if (environment == Constants.ENVIRONMENT_STAG) {
-            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
             initTracking(Constants.URL_TRACKING_STAG);
         } else if (environment == Constants.ENVIRONMENT_PROD) {
-            RestClientV3GetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
+            UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
             initTracking(Constants.URL_TRACKING_PROD);
         } else {
             throw new IllegalArgumentException("Please init correct environment.");

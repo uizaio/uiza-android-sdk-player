@@ -20,7 +20,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -85,7 +85,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void auth() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         String accessKeyId = null;
         String secretKeyId = null;
         switch (currentApiEndPoint) {
@@ -200,7 +200,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void checkToken(String token) {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth a) {

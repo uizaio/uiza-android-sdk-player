@@ -27,8 +27,8 @@ import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -173,7 +173,7 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
         LToast.show(getActivity(), getString(R.string.load_page) + page);
 
 
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {

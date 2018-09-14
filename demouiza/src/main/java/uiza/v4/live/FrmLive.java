@@ -27,8 +27,8 @@ import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -134,7 +134,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         LLog.d(TAG, "getListAllEntities " + page + "/" + totalPage);
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {

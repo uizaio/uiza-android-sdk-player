@@ -25,7 +25,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -326,7 +326,7 @@ public class FUZVideo extends RelativeLayout {
             }
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
-        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {

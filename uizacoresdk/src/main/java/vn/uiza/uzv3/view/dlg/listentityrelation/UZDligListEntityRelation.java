@@ -71,7 +71,7 @@ public class UZDligListEntityRelation extends Dialog {
     private void getListAllEntityRelation() {
         //TODO iplm
         LUIUtil.showProgressBar(progressBar);
-        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        /*UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();

@@ -201,7 +201,7 @@ public class UZVideoInfo extends RelativeLayout {
 
     private void getListAllEntityRelation() {
         //TODO
-        /*UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        /*UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
 
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();

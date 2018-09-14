@@ -64,10 +64,10 @@ import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.data.EventBusData;
 import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.restclient.RestClientV3GetLinkPlay;
-import vn.uiza.restapi.uiza.UizaServiceV2;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -359,7 +359,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private String tokenStreaming;
 
     private void callAPIGetTokenStreaming() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         String id = entityId == null ? UZData.getInstance().getEntityId() : entityId;
@@ -428,8 +428,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             });
             return;
         }
-        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
-        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        UZRestClientGetLinkPlay.addAuthorization(tokenStreaming);
+        UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
         if (isLivestream) {
             String appId = UZData.getInstance().getAppId();
             String channelName = UZData.getInstance().getChannelName();
@@ -1916,7 +1916,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
-        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -2078,7 +2078,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
                 if (UZPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing");
-                    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+                    UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
@@ -2121,7 +2121,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     return;
                 }
                 if (UZPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+                    UZService service = UZRestClient.createService(UZService.class);
                     String entityId = UZData.getInstance().getEntityId();
                     String feedId = UZData.getInstance().getLastFeedId();
                     activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
@@ -2397,7 +2397,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (UZData.getInstance().getDataList() == null) {
             LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() == null -> call api lấy data list");
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            UZService service = UZRestClient.createService(UZService.class);
             activity.subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {

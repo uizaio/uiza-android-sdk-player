@@ -14,11 +14,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.DateTypeDeserializer;
 
-public class RestClientV3GetLinkPlay {
-    private static final String TAG = RestClientV3GetLinkPlay.class.getSimpleName();
+public class UZRestClient {
+    private static final String TAG = UZRestClient.class.getSimpleName();
     private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";
@@ -30,7 +29,7 @@ public class RestClientV3GetLinkPlay {
     }
 
     public static void init(String baseApiUrl, String token) {
-        LLog.d(TAG, "init " + baseApiUrl + " - " + token);
+        //LLog.d(TAG, "init " + baseApiUrl + " - " + token);
         if (TextUtils.isEmpty(baseApiUrl)) {
             throw new InvalidParameterException("baseApiUrl cannot null or empty");
         }
@@ -70,7 +69,7 @@ public class RestClientV3GetLinkPlay {
 
     public static <S> S createService(Class<S> serviceClass) {
         if (retrofit == null) {
-            throw new IllegalStateException("Must call init() before use");
+            throw new IllegalStateException("Must call init() before using");
         }
         return retrofit.create(serviceClass);
     }
@@ -83,7 +82,6 @@ public class RestClientV3GetLinkPlay {
     }
 
     public static void addAuthorization(String token) {
-        //addHeader(AUTHORIZATION, "Token token=" + token);
         addHeader(AUTHORIZATION, token);
         //LLog.d(TAG, "Add token: " + token);
     }

@@ -26,7 +26,7 @@ import vn.uiza.restapi.uiza.model.v2.search.Search;
  * @author loitp
  */
 
-public interface UizaServiceV2 {
+public interface UZServiceV1 {
     //=====================================================Sample
     /*@GET("v1/app/poster")
     Observable<GetPoster[]> getPoster(@Query("number") int number);

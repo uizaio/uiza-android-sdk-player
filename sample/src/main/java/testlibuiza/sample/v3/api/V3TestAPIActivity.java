@@ -9,9 +9,9 @@ import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.restclient.RestClientV3GetLinkPlay;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
@@ -164,7 +164,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void createAnUser() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         CreateUser createUser = new CreateUser();
         createUser.setStatus(1);
         createUser.setUsername("username " + System.currentTimeMillis());
@@ -189,7 +189,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void retrieveAnUser() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.retrieveAnUser("9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
@@ -206,7 +206,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listAllUser() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
@@ -223,7 +223,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void updateAnUser() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         CreateUser user = new CreateUser();
         user.setId("489260ed-c306-4e31-ad4b-ebde50d5bec4");
         user.setStatus(1);
@@ -249,7 +249,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void deleteAnUser() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         CreateUser user = new CreateUser();
         user.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
         subscribe(service.deleteAnUser(user), new ApiSubscriber<Object>() {
@@ -268,7 +268,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void updatePassword() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         UpdatePassword updatePassword = new UpdatePassword();
         updatePassword.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
         updatePassword.setOldPassword("oldpassword");
@@ -289,7 +289,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getListMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
@@ -306,7 +306,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void createMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         CreateMetadata createMetadata = new CreateMetadata();
         createMetadata.setName("Loitp " + System.currentTimeMillis());
         createMetadata.setType(CreateMetadata.TYPE_FOLDER);
@@ -329,7 +329,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getDetailOfMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
         subscribe(service.getDetailOfMetadata(metadataId), new ApiSubscriber<ResultGetDetailOfMetadata>() {
             @Override
@@ -347,7 +347,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void updateMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         CreateMetadata createMetadata = new CreateMetadata();
         createMetadata.setId("ce1a4735-99f4-4968-bf2a-3ba8063441f4");
         createMetadata.setName("@@@Loitp Suzuki GSX S1000");
@@ -371,7 +371,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void deleteAnMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String deleteMetadataId = "37b865b3-cf75-4faa-8507-180a9436d95d";
         subscribe(service.deleteAnMetadata(deleteMetadataId), new ApiSubscriber<ResultDeleteAnMetadata>() {
             @Override
@@ -390,7 +390,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
 
 
     private void listAllEntity() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "";
         int limit = 50;
         int page = 0;
@@ -412,7 +412,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listAllEntityMetadata() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "74cac724-968c-4e6d-a6e1-6c2365e41d9d";
         int limit = 50;
         int page = 0;
@@ -434,7 +434,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void retrieveAnEntity() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
         subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
@@ -452,7 +452,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void searchAnEntity() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String keyword = "a";
         subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
@@ -470,7 +470,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getTokenStreaming() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultVOD);
@@ -498,8 +498,8 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             LToast.show(activity, "Token streaming not found, pls call getTokenStreaming before.");
             return;
         }
-        RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
-        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        UZRestClientGetLinkPlay.addAuthorization(tokenStreaming);
+        UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
         String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
         subscribe(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
@@ -518,7 +518,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void retrieveALiveEvent() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         int limit = 50;
         int page = 0;
         String orderBy = "createdAt";
@@ -541,7 +541,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private String tokenStreamingLive;//value received from api getTokenStreamingLive
 
     private void getTokenStreamingLive() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultLIVE);
@@ -567,8 +567,8 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
             LToast.show(activity, "Token streaming not found, pls call getTokenStreamingLive before.");
             return;
         }
-        RestClientV3GetLinkPlay.addAuthorization(tokenStreamingLive);
-        UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
+        UZRestClientGetLinkPlay.addAuthorization(tokenStreamingLive);
+        UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
         String appId = UZData.getInstance().getAppId();
         String streamName = "ffdfdfdfd";
         subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<ResultGetLinkPlay>() {
@@ -587,7 +587,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getViewALiveFeed() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
             @Override
@@ -605,7 +605,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getTimeStartLive() {
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
 
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";

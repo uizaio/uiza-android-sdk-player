@@ -19,7 +19,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UizaServiceV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
 
     private void authV2() {
         LLog.d(TAG, "authV2");
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         /*String accessKeyId = Constants.A_K_DEV;
         String secretKeyId = Constants.S_K_DEV;*/
         String accessKeyId = Constants.A_K_UQC;

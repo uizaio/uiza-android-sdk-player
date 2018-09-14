@@ -33,7 +33,7 @@ import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetriev
  * @author loitp
  */
 
-public interface UizaServiceV3 {
+public interface UZService {
     //http://dev-docs.uizadev.io/#get-token
     @POST("/api/public/v3/admin/user/auth")
     Observable<ResultGetToken> getToken(@Body UizaWorkspaceInfo uizaWorkspaceInfo);

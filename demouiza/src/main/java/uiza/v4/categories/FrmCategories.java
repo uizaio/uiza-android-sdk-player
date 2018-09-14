@@ -24,8 +24,8 @@ import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.uiza.rxandroid.ApiSubscriber;
@@ -107,7 +107,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         LLog.d(TAG, "getListMetadata " + currentPage + "/" + totalPage);
         tvMsg.setVisibility(View.GONE);
         LUIUtil.showProgressBar(pb);
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {

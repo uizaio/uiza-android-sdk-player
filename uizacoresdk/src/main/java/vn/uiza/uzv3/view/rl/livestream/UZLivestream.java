@@ -41,8 +41,8 @@ import vn.uiza.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.uiza.libstream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
 import vn.uiza.libstream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import vn.uiza.libstream.uiza.rtplibrary.view.OpenGlView;
-import vn.uiza.restapi.restclient.RestClientV3;
-import vn.uiza.restapi.uiza.UizaServiceV3;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -453,7 +453,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     private void startLivestream(final String entityLiveId) {
         LDialogUtil.show(progressBar);
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
         ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
