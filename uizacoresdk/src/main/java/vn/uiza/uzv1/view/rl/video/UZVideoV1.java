@@ -68,6 +68,7 @@ import vn.uiza.uzv1.view.dlg.listentityrelation.UZDlgListEntityRelation;
 import vn.uiza.uzv1.view.floatview.FUZVideoServiceV1;
 import vn.uiza.uzv1.view.util.UizaDataV1;
 import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.uzv3.view.UZPlayerView;
 import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;

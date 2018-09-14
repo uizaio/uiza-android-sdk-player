@@ -17,10 +17,10 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv1.view.rl.video.UZPlayerView;
 import vn.uiza.uzv1.view.rl.videoinfo.ItemAdapterV1;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.uzv3.view.UZPlayerView;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 

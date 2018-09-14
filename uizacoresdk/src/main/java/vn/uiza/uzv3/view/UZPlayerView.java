@@ -1,4 +1,4 @@
-package vn.uiza.uzv1.view.rl.video;
+package vn.uiza.uzv3.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
