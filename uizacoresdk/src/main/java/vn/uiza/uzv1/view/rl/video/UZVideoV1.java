@@ -69,7 +69,7 @@ import vn.uiza.uzv1.view.floatview.FUZVideoServiceV1;
 import vn.uiza.uzv1.view.util.UizaDataV1;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
-import vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
+import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 /**
@@ -93,16 +93,16 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
     private ImageView ivThumbnail;
 
     private ImageView ivVideoCover;
-    private ImageButtonWithSize exoFullscreenIcon;
+    private UZImageButton exoFullscreenIcon;
     private TextView tvTitle;
-    private ImageButtonWithSize exoBackScreen;
-    private ImageButtonWithSize exoVolume;
-    private ImageButtonWithSize exoSetting;
-    private ImageButtonWithSize exoCc;
-    private ImageButtonWithSize exoPlaylist;
-    private ImageButtonWithSize exoHearing;
-    private ImageButtonWithSize exoPictureInPicture;
-    private ImageButtonWithSize exoShare;
+    private UZImageButton exoBackScreen;
+    private UZImageButton exoVolume;
+    private UZImageButton exoSetting;
+    private UZImageButton exoCc;
+    private UZImageButton exoPlaylist;
+    private UZImageButton exoHearing;
+    private UZImageButton exoPictureInPicture;
+    private UZImageButton exoShare;
     private VerticalSeekBar seekbarVolume;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView exoIvPreview;
@@ -404,10 +404,10 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
     private void updateUIEachSkin() {
         int resLayout = UizaDataV1.getInstance().getCurrentPlayerId();
         if (resLayout == R.layout.player_skin_2 || resLayout == R.layout.player_skin_3) {
-            ImageButtonWithSize exoPlay = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play);
+            UZImageButton exoPlay = (UZImageButton) playerView.findViewById(R.id.exo_play);
             exoPlay.setRatioLand(7);
             exoPlay.setRatioPort(5);
-            ImageButtonWithSize exoPause = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause);
+            UZImageButton exoPause = (UZImageButton) playerView.findViewById(R.id.exo_pause);
             exoPause.setRatioLand(7);
             exoPause.setRatioPort(5);
         }
@@ -425,17 +425,17 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         previewTimeBar.addOnPreviewChangeListener(this);
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
-        exoFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
+        exoFullscreenIcon = (UZImageButton) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
-        exoBackScreen = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
-        exoVolume = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
-        exoSetting = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
-        exoCc = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
-        exoPlaylist = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
-        exoHearing = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
+        exoBackScreen = (UZImageButton) playerView.findViewById(R.id.exo_back_screen);
+        exoVolume = (UZImageButton) playerView.findViewById(R.id.exo_volume);
+        exoSetting = (UZImageButton) playerView.findViewById(R.id.exo_setting);
+        exoCc = (UZImageButton) playerView.findViewById(R.id.exo_cc);
+        exoPlaylist = (UZImageButton) playerView.findViewById(R.id.exo_playlist_relation);
+        exoHearing = (UZImageButton) playerView.findViewById(R.id.exo_hearing);
 
-        exoPictureInPicture = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
-        exoShare = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
+        exoPictureInPicture = (UZImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
+        exoShare = (UZImageButton) playerView.findViewById(R.id.exo_share);
 
         exoIvPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);

@@ -1,4 +1,4 @@
-package vn.uiza.views.autosize.textviewwithsize;
+package vn.uiza.views.autosize;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -13,28 +13,28 @@ import vn.uiza.core.utilities.LUIUtil;
  * Created by LENOVO on 4/19/2018.
  */
 
-public class TextViewWithSize extends TextView {
+public class UZTextView extends TextView {
     private final String TAG = getClass().getSimpleName();
 
-    public TextViewWithSize(Context context) {
+    public UZTextView(Context context) {
         super(context);
         //initSizeScreenW();
         init();
     }
 
-    public TextViewWithSize(Context context, AttributeSet attrs) {
+    public UZTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //initSizeScreenW();
         init();
     }
 
-    public TextViewWithSize(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         //initSizeScreenW();
         init();
     }
 
-    public TextViewWithSize(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public UZTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         //initSizeScreenW();
         init();

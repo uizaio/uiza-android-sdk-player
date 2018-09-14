@@ -95,8 +95,8 @@ import vn.uiza.uzv3.view.dlg.playlistfolder.UZDlgPlaylistFolder;
 import vn.uiza.uzv3.view.floatview.FUZVideoService;
 import vn.uiza.uzv3.view.rl.timebar.UZTimebar;
 import vn.uiza.views.LToast;
-import vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
-import vn.uiza.views.autosize.textviewwithsize.TextViewWithSize;
+import vn.uiza.views.autosize.UZImageButton;
+import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.verticalseekbar.VerticalSeekBar;
 
 /**
@@ -122,32 +122,32 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private FrameLayout previewFrameLayout;
     private UZTimebar uzTimebar;
     private ImageView ivThumbnail;
-    private TextViewWithSize tvPosition;
-    private TextViewWithSize tvDuration;
+    private UZTextView tvPosition;
+    private UZTextView tvDuration;
 
     private ViewGroup rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
 
     private ImageView ivVideoCover;
-    private ImageButtonWithSize ibFullscreenIcon;
+    private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
-    private ImageButtonWithSize ibPauseIcon;
-    private ImageButtonWithSize ibPlayIcon;
-    private ImageButtonWithSize ibReplayIcon;
-    private ImageButtonWithSize ibRewIcon;
-    private ImageButtonWithSize ibFfwdIcon;
-    private ImageButtonWithSize ibBackScreenIcon;
-    private ImageButtonWithSize ibVolumeIcon;
-    private ImageButtonWithSize ibSettingIcon;
-    private ImageButtonWithSize ibCcIcon;
-    private ImageButtonWithSize ibPlaylistRelationIcon;//danh sach video co lien quan
-    private ImageButtonWithSize ibPlaylistFolderIcon;//danh sach playlist folder
-    private ImageButtonWithSize ibHearingIcon;
-    private ImageButtonWithSize ibPictureInPictureIcon;
-    private ImageButtonWithSize ibShareIcon;
-    private ImageButtonWithSize ibSkipPreviousIcon;
-    private ImageButtonWithSize ibSkipNextIcon;
+    private UZImageButton ibPauseIcon;
+    private UZImageButton ibPlayIcon;
+    private UZImageButton ibReplayIcon;
+    private UZImageButton ibRewIcon;
+    private UZImageButton ibFfwdIcon;
+    private UZImageButton ibBackScreenIcon;
+    private UZImageButton ibVolumeIcon;
+    private UZImageButton ibSettingIcon;
+    private UZImageButton ibCcIcon;
+    private UZImageButton ibPlaylistRelationIcon;//danh sach video co lien quan
+    private UZImageButton ibPlaylistFolderIcon;//danh sach playlist folder
+    private UZImageButton ibHearingIcon;
+    private UZImageButton ibPictureInPictureIcon;
+    private UZImageButton ibShareIcon;
+    private UZImageButton ibSkipPreviousIcon;
+    private UZImageButton ibSkipNextIcon;
     private VerticalSeekBar seekbarVolume;
     private VerticalSeekBar seekbarBirghtness;
     private ImageView ivPreview;
@@ -156,8 +156,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private TextView tvLiveStatus;
     private TextView tvLiveView;
     private TextView tvLiveTime;
-    private ImageButtonWithSize ivLiveTime;
-    private ImageButtonWithSize ivLiveView;
+    private UZImageButton ivLiveTime;
+    private UZImageButton ivLiveView;
 
     private LinearLayout debugLayout;
     private LinearLayout debugRootView;
@@ -176,7 +176,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton UZMediaRouteButton;
     private RelativeLayout rlChromeCast;
-    private ImageButtonWithSize ibsCast;
+    private UZImageButton ibsCast;
 
     private boolean isDisplayPortrait;//display with 9:16 ratio(portrait screen like YUP)
 
@@ -955,36 +955,36 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
-        tvPosition = (TextViewWithSize) playerView.findViewById(R.id.exo_position);
-        tvDuration = (TextViewWithSize) playerView.findViewById(R.id.exo_duration);
+        tvPosition = (UZTextView) playerView.findViewById(R.id.exo_position);
+        tvDuration = (UZTextView) playerView.findViewById(R.id.exo_duration);
 
-        ibFullscreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
+        ibFullscreenIcon = (UZImageButton) playerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) playerView.findViewById(R.id.tv_title);
-        ibPauseIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_pause_uiza);
-        ibPlayIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_play_uiza);//If auto start true, show button play and gone button pause
+        ibPauseIcon = (UZImageButton) playerView.findViewById(R.id.exo_pause_uiza);
+        ibPlayIcon = (UZImageButton) playerView.findViewById(R.id.exo_play_uiza);//If auto start true, show button play and gone button pause
         if (ibPlayIcon != null) {
             ibPlayIcon.setVisibility(GONE);
         }
-        ibReplayIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_replay_uiza);
-        ibRewIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_rew);
-        ibFfwdIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_ffwd);
-        ibBackScreenIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_back_screen);
-        ibVolumeIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_volume);
-        ibSettingIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_setting);
-        ibCcIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_cc);
-        ibPlaylistRelationIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_relation);
-        ibPlaylistFolderIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_playlist_folder);
-        ibHearingIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_hearing);
+        ibReplayIcon = (UZImageButton) playerView.findViewById(R.id.exo_replay_uiza);
+        ibRewIcon = (UZImageButton) playerView.findViewById(R.id.exo_rew);
+        ibFfwdIcon = (UZImageButton) playerView.findViewById(R.id.exo_ffwd);
+        ibBackScreenIcon = (UZImageButton) playerView.findViewById(R.id.exo_back_screen);
+        ibVolumeIcon = (UZImageButton) playerView.findViewById(R.id.exo_volume);
+        ibSettingIcon = (UZImageButton) playerView.findViewById(R.id.exo_setting);
+        ibCcIcon = (UZImageButton) playerView.findViewById(R.id.exo_cc);
+        ibPlaylistRelationIcon = (UZImageButton) playerView.findViewById(R.id.exo_playlist_relation);
+        ibPlaylistFolderIcon = (UZImageButton) playerView.findViewById(R.id.exo_playlist_folder);
+        ibHearingIcon = (UZImageButton) playerView.findViewById(R.id.exo_hearing);
 
         //TODO ibHearingIcon works fine, but QC dont want to show it, fuck QC team
         if (ibHearingIcon != null) {
             ibHearingIcon.setVisibility(GONE);
         }
 
-        ibPictureInPictureIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_picture_in_picture);
-        ibShareIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_share);
-        ibSkipNextIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_skip_next);
-        ibSkipPreviousIcon = (ImageButtonWithSize) playerView.findViewById(R.id.exo_skip_previous);
+        ibPictureInPictureIcon = (UZImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
+        ibShareIcon = (UZImageButton) playerView.findViewById(R.id.exo_share);
+        ibSkipNextIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_next);
+        ibSkipPreviousIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_previous);
 
         ivPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (VerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -1007,8 +1007,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveStatus = (TextView) playerView.findViewById(R.id.tv_live);
         tvLiveView = (TextView) playerView.findViewById(R.id.tv_live_view);
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
-        ivLiveView = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_view);
-        ivLiveTime = (ImageButtonWithSize) playerView.findViewById(R.id.iv_live_time);
+        ivLiveView = (UZImageButton) playerView.findViewById(R.id.iv_live_view);
+        ivLiveTime = (UZImageButton) playerView.findViewById(R.id.iv_live_time);
 
         rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
@@ -1122,7 +1122,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.black_65));
         rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
 
-        ibsCast = new ImageButtonWithSize(activity);
+        ibsCast = new UZImageButton(activity);
         ibsCast.setBackgroundColor(Color.TRANSPARENT);
         ibsCast.setImageResource(R.drawable.cast);
         RelativeLayout.LayoutParams ibsCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1721,12 +1721,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //trick to gone view
-    private void changeUIVisibilitiesOfButton(ImageButtonWithSize imageButtonWithSize, boolean isVisible, int res) {
-        if (imageButtonWithSize == null) {
+    private void changeUIVisibilitiesOfButton(UZImageButton UZImageButton, boolean isVisible, int res) {
+        if (UZImageButton == null) {
             return;
         }
-        imageButtonWithSize.setClickable(isVisible);
-        imageButtonWithSize.setImageResource(res);
+        UZImageButton.setClickable(isVisible);
+        UZImageButton.setImageResource(res);
     }
 
     protected void updateUIButtonVisibilities() {
@@ -3107,7 +3107,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return ivVideoCover;
     }
 
-    public ImageButtonWithSize getIbFullscreenIcon() {
+    public UZImageButton getIbFullscreenIcon() {
         return ibFullscreenIcon;
     }
 
@@ -3115,67 +3115,67 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvTitle;
     }
 
-    public ImageButtonWithSize getIbPauseIcon() {
+    public UZImageButton getIbPauseIcon() {
         return ibPauseIcon;
     }
 
-    public ImageButtonWithSize getIbPlayIcon() {
+    public UZImageButton getIbPlayIcon() {
         return ibPlayIcon;
     }
 
-    public ImageButtonWithSize getIbReplayIcon() {
+    public UZImageButton getIbReplayIcon() {
         return ibReplayIcon;
     }
 
-    public ImageButtonWithSize getIbRewIcon() {
+    public UZImageButton getIbRewIcon() {
         return ibRewIcon;
     }
 
-    public ImageButtonWithSize getIbFfwdIcon() {
+    public UZImageButton getIbFfwdIcon() {
         return ibFfwdIcon;
     }
 
-    public ImageButtonWithSize getIbBackScreenIcon() {
+    public UZImageButton getIbBackScreenIcon() {
         return ibBackScreenIcon;
     }
 
-    public ImageButtonWithSize getIbVolumeIcon() {
+    public UZImageButton getIbVolumeIcon() {
         return ibVolumeIcon;
     }
 
-    public ImageButtonWithSize getIbSettingIcon() {
+    public UZImageButton getIbSettingIcon() {
         return ibSettingIcon;
     }
 
-    public ImageButtonWithSize getIbCcIcon() {
+    public UZImageButton getIbCcIcon() {
         return ibCcIcon;
     }
 
-    public ImageButtonWithSize getIbPlaylistRelationIcon() {
+    public UZImageButton getIbPlaylistRelationIcon() {
         return ibPlaylistRelationIcon;
     }
 
-    public ImageButtonWithSize getIbPlaylistFolderIcon() {
+    public UZImageButton getIbPlaylistFolderIcon() {
         return ibPlaylistFolderIcon;
     }
 
-    public ImageButtonWithSize getIbHearingIcon() {
+    public UZImageButton getIbHearingIcon() {
         return ibHearingIcon;
     }
 
-    public ImageButtonWithSize getIbPictureInPictureIcon() {
+    public UZImageButton getIbPictureInPictureIcon() {
         return ibPictureInPictureIcon;
     }
 
-    public ImageButtonWithSize getIbShareIcon() {
+    public UZImageButton getIbShareIcon() {
         return ibShareIcon;
     }
 
-    public ImageButtonWithSize getIbSkipPreviousIcon() {
+    public UZImageButton getIbSkipPreviousIcon() {
         return ibSkipPreviousIcon;
     }
 
-    public ImageButtonWithSize getIbSkipNextIcon() {
+    public UZImageButton getIbSkipNextIcon() {
         return ibSkipNextIcon;
     }
 
@@ -3211,7 +3211,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return rlChromeCast;
     }
 
-    public ImageButtonWithSize getIbsCast() {
+    public UZImageButton getIbsCast() {
         return ibsCast;
     }
 
@@ -3227,11 +3227,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tokenStreaming;
     }
 
-    public TextViewWithSize getTvPosition() {
+    public UZTextView getTvPosition() {
         return tvPosition;
     }
 
-    public TextViewWithSize getTvDuration() {
+    public UZTextView getTvDuration() {
         return tvDuration;
     }
 
@@ -3239,11 +3239,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvLiveStatus;
     }
 
-    public ImageButtonWithSize getIvLiveTime() {
+    public UZImageButton getIvLiveTime() {
         return ivLiveTime;
     }
 
-    public ImageButtonWithSize getIvLiveView() {
+    public UZImageButton getIvLiveView() {
         return ivLiveView;
     }
 

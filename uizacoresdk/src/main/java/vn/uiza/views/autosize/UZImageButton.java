@@ -1,4 +1,4 @@
-package vn.uiza.views.autosize.imagebuttonwithsize;
+package vn.uiza.views.autosize;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,25 +15,25 @@ import vn.uiza.utils.util.ConvertUtils;
  * Created by loitp on 4/19/2018.
  */
 
-public class ImageButtonWithSize extends ImageButton {
+public class UZImageButton extends ImageButton {
     private final String TAG = getClass().getSimpleName();
 
-    public ImageButtonWithSize(Context context) {
+    public UZImageButton(Context context) {
         super(context);
         initSizeScreenW();
     }
 
-    public ImageButtonWithSize(Context context, AttributeSet attrs) {
+    public UZImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         initSizeScreenW();
     }
 
-    public ImageButtonWithSize(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initSizeScreenW();
     }
 
-    public ImageButtonWithSize(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initSizeScreenW();
     }

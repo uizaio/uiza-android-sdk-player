@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+        <vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_back_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/baseline_keyboard_arrow_left_white_48" />
 
-        <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+        <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:singleLine="true"
             android:textStyle="bold" />
 
-        <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+        <vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_picture_in_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_below="@id/ll_top"
         android:visibility="visible">
 
-        <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+        <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_live"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             android:text="@string/live"
             android:textColor="@color/White" />
 
-        <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+        <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_time"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
@@ -116,7 +116,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/baseline_timer_white_48" />
 
-        <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+        <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_live_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
             android:layout_marginRight="@dimen/margin_5"
             android:layout_toLeftOf="@id/iv_live_view" />
 
-        <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+        <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_view"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
@@ -134,7 +134,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/baseline_visibility_white_48" />
 
-        <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+        <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_live_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                     android:scaleType="centerCrop" />
             </FrameLayout>
 
-            <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+            <vn.uiza.views.autosize.UZTextView
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,14 +184,14 @@
                 android:layout_toLeftOf="@id/exo_duration"
                 android:layout_toRightOf="@+id/exo_position"
                 app:ad_marker_color="@color/White"
-                app:buffered_color="@color/Green"
+                app:buffered_color="@color/Gray"
                 app:played_ad_marker_color="@color/White"
-                app:played_color="@color/Red"
+                app:played_color="@color/White"
                 app:previewFrameLayout="@id/previewFrameLayout"
-                app:scrubber_color="@color/Blue"
-                app:unplayed_color="@color/DeepPink" />
+                app:scrubber_color="@color/White"
+                app:unplayed_color="@color/Gray" />
 
-            <vn.uiza.views.autosize.textviewwithsize.TextViewWithSize
+            <vn.uiza.views.autosize.UZTextView
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_5">
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_play_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_play_circle_outline_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_pause_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_pause_circle_outline_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_replay_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_replay_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_skip_previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_skip_previous_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_skip_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_rew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_replay_10_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_ffwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -272,7 +272,7 @@
                 android:src="@drawable/baseline_forward_10_white_48"
                 android:tint="@color/White" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_volume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -280,7 +280,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_volume_up_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_cc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_closed_caption_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_playlist_relation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_subscriptions_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_playlist_folder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -304,7 +304,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_playlist_play_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_hearing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -312,7 +312,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_audiotrack_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_high_quality_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -328,7 +328,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_share_white_48" />
 
-            <vn.uiza.views.autosize.imagebuttonwithsize.ImageButtonWithSize
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_fullscreen_toggle_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
