@@ -306,7 +306,7 @@ All listener  (If you want to listen all events)
     }
 Listener touch event
 
-    uzVideo.setOnTouchEvent(new UizaPlayerView.OnTouchEvent() {
+    uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
         @Override
         public void onSingleTapConfirmed() {
         }
@@ -395,7 +395,7 @@ XML:
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements  UZLivestream.Callback {
+    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestream.Callback {
     ...
     }
 
@@ -403,7 +403,7 @@ func onCreate():
 
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-    uzLivestream= (UZLivestream) findViewById(R.id.uiza_livestream);  
+    uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);  
     uzLivestream.setCallback(this);
     uzLivestream.setId("Put the entity id for livestream here");
 
