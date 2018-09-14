@@ -11,9 +11,9 @@ import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import testlibuiza.sample.v3.api.V3TestAPIActivity;
+import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinActivity;
-import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
+import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, V3TestAPIActivity.class);
+                Intent intent = new Intent(activity, UZTestAPIActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_sdk_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, V3SetEntityIdActivity.class);
+                Intent intent = new Intent(activity, SetEntityIdActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

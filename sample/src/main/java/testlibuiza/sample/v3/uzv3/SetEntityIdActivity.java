@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.uizavideov3;
+package testlibuiza.sample.v3.uzv3;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.uzv3.util.UZUtil;
 
-public class V3SetEntityIdActivity extends BaseActivity {
+public class SetEntityIdActivity extends BaseActivity {
     //for entity id
     private EditText etInputEntityId;
     private Button btStart;
@@ -100,7 +100,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
             public void onClick(View v) {
                 UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
-                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
@@ -156,7 +156,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
             public void onClick(View v) {
                 UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
-                final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
+                final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);
                 intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);
                 startActivity(intent);

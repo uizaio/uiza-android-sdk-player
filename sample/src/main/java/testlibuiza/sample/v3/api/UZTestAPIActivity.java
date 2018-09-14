@@ -32,7 +32,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.views.LToast;
 
-public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {
+public class UZTestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
 
     private final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
