@@ -168,46 +168,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/margin_5">
 
-            <!--<FrameLayout
-                android:id="@id/fl_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout
-                    android:id="@id/preview_seekbar_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:id="@id/preview_frame_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/video_frame"
-                        android:padding="@dimen/video_frame_width">
-
-                        <ImageView
-                            android:id="@id/image_view_thumnail"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </FrameLayout>
-
-                    <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
-                        android:id="@id/exo_progress"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/preview_frame_layout"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:max="800"
-                        android:progressTint="@color/colorPrimary"
-                        android:thumbTint="@color/colorPrimary" />
-
-                </com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBarLayout>
-            </FrameLayout>-->
             <FrameLayout
                 android:id="@id/previewFrameLayout"
                 android:layout_width="match_parent"
@@ -221,17 +181,26 @@
 
             </FrameLayout>
 
-            <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
+            <vn.loitp.uizavideov3.view.rl.timebar.UZTimebar
                 android:id="@id/exo_progress"
-                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:previewFrameLayout="@id/previewFrameLayout" />
+                android:layout_below="@id/previewFrameLayout"
+                android:layout_toLeftOf="@id/exo_duration"
+                android:layout_toRightOf="@+id/exo_position"
+                app:ad_marker_color="@color/White"
+                app:buffered_color="@color/Green"
+                app:played_ad_marker_color="@color/White"
+                app:played_color="@color/Red"
+                app:previewFrameLayout="@id/previewFrameLayout"
+                app:scrubber_color="@color/Blue"
+                app:unplayed_color="@color/DeepPink" />
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/previewFrameLayout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textStyle="bold" />
@@ -241,6 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_below="@id/previewFrameLayout"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"

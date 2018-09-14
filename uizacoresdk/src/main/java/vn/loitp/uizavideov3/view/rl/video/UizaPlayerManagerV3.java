@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -69,6 +68,7 @@ import vn.loitp.uizavideo.glide.GlideApp;
 import vn.loitp.uizavideo.glide.GlideThumbnailTransformationPB;
 import vn.loitp.uizavideo.listerner.ProgressCallback;
 import vn.loitp.uizavideo.listerner.VideoAdPlayerListerner;
+import vn.loitp.uizavideov3.view.rl.timebar.UZTimebar;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -100,7 +100,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
 
     private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
 
-    private PreviewTimeBar previewTimeBar;
+    private UZTimebar uzTimebar;
     private String thumbnailsUrl;
     private ImageView imageView;
     private Player.EventListener eventListener = new Player.DefaultEventListener() {
@@ -112,8 +112,8 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
                     uizaIMAVideoV3.hideLayoutMsg();
                     uizaIMAVideoV3.resetCountTryLinkPlayError();
                 }
-                if (previewTimeBar != null) {
-                    previewTimeBar.hidePreview();
+                if (uzTimebar != null) {
+                    uzTimebar.hidePreview();
                 }
             }
         }
@@ -167,7 +167,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
 
         //SETUP ORTHER
         this.imageView = uizaIMAVideoV3.getIvThumbnail();
-        this.previewTimeBar = uizaIMAVideoV3.getPreviewTimeBar();
+        this.uzTimebar = uizaIMAVideoV3.getUZTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UizaPlayerManager thumbnailsUrl " + thumbnailsUrl);
         setRunnable();

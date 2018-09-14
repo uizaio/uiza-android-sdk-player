@@ -176,14 +176,20 @@
                 android:padding="@dimen/padding_5"
                 android:textStyle="bold" />
 
-            <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
+            <vn.loitp.uizavideov3.view.rl.timebar.UZTimebar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/previewFrameLayout"
                 android:layout_toLeftOf="@id/exo_duration"
                 android:layout_toRightOf="@+id/exo_position"
-                app:previewFrameLayout="@id/previewFrameLayout" />
+                app:ad_marker_color="@color/White"
+                app:buffered_color="@color/Green"
+                app:played_ad_marker_color="@color/White"
+                app:played_color="@color/Red"
+                app:previewFrameLayout="@id/previewFrameLayout"
+                app:scrubber_color="@color/Blue"
+                app:unplayed_color="@color/DeepPink" />
 
             <vn.loitp.views.autosize.textviewwithsize.TextViewWithSize
                 android:id="@id/exo_duration"
