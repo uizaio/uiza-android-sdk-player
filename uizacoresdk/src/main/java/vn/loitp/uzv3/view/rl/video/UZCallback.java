@@ -6,7 +6,7 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public interface UizaCallback {
+public interface UZCallback {
     //when video init done with result
     //isInitSuccess onStateReadyFirst
     //isGetDataSuccess da co data ResultGetLinkPlay va Data

@@ -6,19 +6,19 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.MediaRouteButton;
 import android.util.AttributeSet;
 
-public class UizaMediaRouteButton extends MediaRouteButton {
+public class UZMediaRouteButton extends MediaRouteButton {
 
     protected Drawable mRemoteIndicatorDrawable;
 
-    public UizaMediaRouteButton(Context context) {
+    public UZMediaRouteButton(Context context) {
         super(context);
     }
 
-    public UizaMediaRouteButton(Context context, AttributeSet attrs) {
+    public UZMediaRouteButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public UizaMediaRouteButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZMediaRouteButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

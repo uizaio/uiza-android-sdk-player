@@ -54,7 +54,7 @@ import vn.loitp.views.LToast;
  * Created by loitp on 7/26/2017.
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
+public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     //TODO remove gson later
     private Gson gson = new Gson();
@@ -68,22 +68,22 @@ public class UizaLivestream extends RelativeLayout implements ConnectCheckerRtmp
     private Callback callback;
     private String mainStreamUrl;
 
-    public UizaLivestream(Context context) {
+    public UZLivestream(Context context) {
         super(context);
         onCreate();
     }
 
-    public UizaLivestream(Context context, AttributeSet attrs) {
+    public UZLivestream(Context context, AttributeSet attrs) {
         super(context, attrs);
         onCreate();
     }
 
-    public UizaLivestream(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         onCreate();
     }
 
-    public UizaLivestream(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
     }

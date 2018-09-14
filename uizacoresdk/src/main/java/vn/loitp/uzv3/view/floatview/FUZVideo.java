@@ -35,10 +35,10 @@ import vn.loitp.uzv3.util.UZTrackingUtil;
 import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
-public class FloatUizaIMAVideoV3 extends RelativeLayout {
+public class FUZVideo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private PlayerView playerView;
-    private FloatUizaPlayerManagerV3 floatUizaPlayerManager;
+    private FUZPlayerManager floatUizaPlayerManager;
     private ProgressBar progressBar;
     private RelativeLayout rootView;
     private ImageView ivVideoCover;
@@ -108,23 +108,23 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
         onResume();
     }
 
-    public FloatUizaIMAVideoV3(Context context) {
+    public FUZVideo(Context context) {
         super(context);
         onCreate();
     }
 
-    public FloatUizaIMAVideoV3(Context context, AttributeSet attrs) {
+    public FUZVideo(Context context, AttributeSet attrs) {
         super(context, attrs);
         onCreate();
     }
 
-    public FloatUizaIMAVideoV3(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FUZVideo(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         onCreate();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public FloatUizaIMAVideoV3(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public FUZVideo(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
     }
@@ -150,7 +150,7 @@ public class FloatUizaIMAVideoV3 extends RelativeLayout {
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         //LLog.d(TAG, "initData linkPlay " + linkPlay);
-        floatUizaPlayerManager = new FloatUizaPlayerManagerV3(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        floatUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         floatUizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {

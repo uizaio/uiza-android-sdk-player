@@ -77,11 +77,11 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-/* package */ public final class FloatUizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFactory {
+/* package */ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
     private Context context;
 
-    private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
+    private FUZVideo FUZVideo;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
@@ -104,9 +104,9 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
         this.progressCallback = progressCallback;
     }
 
-    public FloatUizaPlayerManagerV3(final FloatUizaIMAVideoV3 uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public FUZPlayerManager(final FUZVideo uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = uizaIMAVideo.getContext();
-        this.floatUizaIMAVideoV3 = uizaIMAVideo;
+        this.FUZVideo = uizaIMAVideo;
         this.linkPlay = linkPlay;
         //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
@@ -185,7 +185,7 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        floatUizaIMAVideoV3.getPlayerView().setPlayer(player);
+        FUZVideo.getPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -268,7 +268,7 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
                 mediaSource,
                 this,
                 adsLoader,
-                floatUizaIMAVideoV3.getPlayerView().getOverlayFrameLayout(),
+                FUZVideo.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -371,11 +371,11 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
     }
 
     private void hideProgress() {
-        LUIUtil.hideProgressBar(floatUizaIMAVideoV3.getProgressBar());
+        LUIUtil.hideProgressBar(FUZVideo.getProgressBar());
     }
 
     private void showProgress() {
-        LUIUtil.showProgressBar(floatUizaIMAVideoV3.getProgressBar());
+        LUIUtil.showProgressBar(FUZVideo.getProgressBar());
     }
 
     public class PlayerEventListener implements Player.EventListener {
@@ -403,8 +403,8 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
-                    if (floatUizaIMAVideoV3 != null) {
-                        floatUizaIMAVideoV3.onPlayerStateEnded();
+                    if (FUZVideo != null) {
+                        FUZVideo.onPlayerStateEnded();
                     }
                     hideProgress();
                     break;
@@ -511,7 +511,7 @@ import vn.loitp.uzv1.listerner.VideoAdPlayerListerner;
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
-            floatUizaIMAVideoV3.onStateReadyFirst();
+            FUZVideo.onStateReadyFirst();
         }
 
         @Override

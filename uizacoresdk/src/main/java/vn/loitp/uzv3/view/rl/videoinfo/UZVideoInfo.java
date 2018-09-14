@@ -33,7 +33,7 @@ import vn.loitp.uzv3.util.UZData;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UizaIMAVideoInfoV3 extends RelativeLayout {
+public class UZVideoInfo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     //TODO remove
@@ -76,22 +76,22 @@ public class UizaIMAVideoInfoV3 extends RelativeLayout {
         tvVideoGenres.setText(s);
     }
 
-    public UizaIMAVideoInfoV3(Context context) {
+    public UZVideoInfo(Context context) {
         super(context);
         onCreate();
     }
 
-    public UizaIMAVideoInfoV3(Context context, AttributeSet attrs) {
+    public UZVideoInfo(Context context, AttributeSet attrs) {
         super(context, attrs);
         onCreate();
     }
 
-    public UizaIMAVideoInfoV3(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UZVideoInfo(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         onCreate();
     }
 
-    public UizaIMAVideoInfoV3(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public UZVideoInfo(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
     }

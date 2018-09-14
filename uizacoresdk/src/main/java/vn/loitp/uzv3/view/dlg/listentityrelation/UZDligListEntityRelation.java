@@ -24,7 +24,7 @@ import vn.loitp.uzv3.util.UZData;
  * Created by loitp on 5/2/2018.
  */
 
-public class UizaDialogListEntityRelationV3 extends Dialog {
+public class UZDligListEntityRelation extends Dialog {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private AlertDialog dialog;
@@ -35,15 +35,15 @@ public class UizaDialogListEntityRelationV3 extends Dialog {
     private TextView tvMsg;
     private List<Item> itemList;
     private RecyclerView recyclerView;
-    private PlayListAdapterV3 playListAdapterV3;
+    private AdapterPlayList adapterPlayList;
 
-    private PlayListCallbackV3 playListCallbackV3;
+    private CallbackPlayList callbackPlayList;
 
-    public UizaDialogListEntityRelationV3(Activity activity, boolean isLandscape, PlayListCallbackV3 playListCallbackV3) {
+    public UZDligListEntityRelation(Activity activity, boolean isLandscape, CallbackPlayList callbackPlayList) {
         super(activity);
         this.activity = activity;
         this.isLandscape = isLandscape;
-        this.playListCallbackV3 = playListCallbackV3;
+        this.callbackPlayList = callbackPlayList;
     }
 
     @Override
@@ -138,26 +138,26 @@ public class UizaDialogListEntityRelationV3 extends Dialog {
 
             //recyclerView.setItemAnimator(new DefaultItemAnimator());
             //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
-            playListAdapterV3 = new PlayListAdapterV3(activity, itemList, new PlayListCallbackV3() {
+            adapterPlayList = new AdapterPlayList(activity, itemList, new CallbackPlayList() {
                 @Override
                 public void onClickItem(Item item, int position) {
                     if (UZData.getInstance().isSettingPlayer()) {
                         return;
                     }
                     dismiss();
-                    if (playListCallbackV3 != null) {
-                        playListCallbackV3.onClickItem(item, position);
+                    if (callbackPlayList != null) {
+                        callbackPlayList.onClickItem(item, position);
                     }
                 }
 
                 @Override
                 public void onDismiss() {
-                    if (playListCallbackV3 != null) {
-                        playListCallbackV3.onDismiss();
+                    if (callbackPlayList != null) {
+                        callbackPlayList.onDismiss();
                     }
                 }
             });
-            recyclerView.setAdapter(playListAdapterV3);
+            recyclerView.setAdapter(adapterPlayList);
             LUIUtil.setPullLikeIOSHorizontal(recyclerView);
         }
         LUIUtil.hideProgressBar(progressBar);

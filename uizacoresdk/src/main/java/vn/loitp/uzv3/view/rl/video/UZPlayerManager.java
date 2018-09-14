@@ -73,11 +73,11 @@ import vn.loitp.uzv3.view.rl.timebar.UZTimebar;
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
+public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
     private final String TAG = getClass().getSimpleName();
     private Context context;
 
-    private UizaIMAVideoV3 uizaIMAVideoV3;
+    private UZVideo UZVideo;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
@@ -108,9 +108,9 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_READY && playWhenReady) {
                 //LLog.d(TAG, "onPlayerStateChanged STATE_READY");
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.hideLayoutMsg();
-                    uizaIMAVideoV3.resetCountTryLinkPlayError();
+                if (UZVideo != null) {
+                    UZVideo.hideLayoutMsg();
+                    UZVideo.resetCountTryLinkPlayError();
                 }
                 if (uzTimebar != null) {
                     uzTimebar.hidePreview();
@@ -128,10 +128,10 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         this.progressCallback = progressCallback;
     }
 
-    public UizaPlayerManagerV3(final UizaIMAVideoV3 uizaIMAVideoV3, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public UZPlayerManager(final UZVideo UZVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.mls = 0;
-        this.context = uizaIMAVideoV3.getContext();
-        this.uizaIMAVideoV3 = uizaIMAVideoV3;
+        this.context = UZVideo.getContext();
+        this.UZVideo = UZVideo;
         this.linkPlay = linkPlay;
         //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
@@ -166,8 +166,8 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         );
 
         //SETUP ORTHER
-        this.imageView = uizaIMAVideoV3.getIvThumbnail();
-        this.uzTimebar = uizaIMAVideoV3.getUZTimeBar();
+        this.imageView = UZVideo.getIvThumbnail();
+        this.uzTimebar = UZVideo.getUZTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
         //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         setRunnable();
@@ -180,7 +180,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             @Override
             public void run() {
                 //LLog.d(TAG, "runnable run");
-                if (uizaIMAVideoV3.getPlayerView() != null) {
+                if (UZVideo.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
@@ -239,7 +239,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        uizaIMAVideoV3.getPlayerView().setPlayer(player);
+        UZVideo.getPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -265,18 +265,18 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             adsLoader.addCallback(videoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
-        player.setPlayWhenReady(uizaIMAVideoV3.isAutoStart());
+        player.setPlayWhenReady(UZVideo.isAutoStart());
         seekTo(contentPosition);
 
-        LLog.d(TAG, "last progress volume " + uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
-        setVolume(uizaIMAVideoV3.getCurrentProgressSeekbarVolume());
+        LLog.d(TAG, "last progress volume " + UZVideo.getCurrentProgressSeekbarVolume());
+        setVolume(UZVideo.getCurrentProgressSeekbarVolume());
 
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
 
-        if (uizaIMAVideoV3.getDebugTextView() != null) {
-            debugTextViewHelper = new DebugTextViewHelper(player, uizaIMAVideoV3.getDebugTextView());
+        if (UZVideo.getDebugTextView() != null) {
+            debugTextViewHelper = new DebugTextViewHelper(player, UZVideo.getDebugTextView());
             debugTextViewHelper.start();
         }
     }
@@ -359,7 +359,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
                 mediaSource,
                 this,
                 adsLoader,
-                uizaIMAVideoV3.getPlayerView().getOverlayFrameLayout(),
+                UZVideo.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -461,14 +461,14 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
     }
 
     public void hideProgress() {
-        if (uizaIMAVideoV3.isCastingChromecast()) {
+        if (UZVideo.isCastingChromecast()) {
             return;
         }
-        LUIUtil.hideProgressBar(uizaIMAVideoV3.getProgressBar());
+        LUIUtil.hideProgressBar(UZVideo.getProgressBar());
     }
 
     public void showProgress() {
-        LUIUtil.showProgressBar(uizaIMAVideoV3.getProgressBar());
+        LUIUtil.showProgressBar(UZVideo.getProgressBar());
     }
 
     private ExoPlaybackException exoPlaybackException;
@@ -506,8 +506,8 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
                     break;
                 case Player.STATE_ENDED:
                     LLog.d(TAG, "TAGUizaIMAVideoV3 onPlayerStateChanged STATE_ENDED");
-                    if (uizaIMAVideoV3 != null) {
-                        uizaIMAVideoV3.onPlayerEnded();
+                    if (UZVideo != null) {
+                        UZVideo.onPlayerEnded();
                     }
                     hideProgress();
                     break;
@@ -543,11 +543,11 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
-            if (uizaIMAVideoV3 == null) {
+            if (UZVideo == null) {
                 return;
             }
             if (LConnectivityUtil.isConnected(context)) {
-                uizaIMAVideoV3.tryNextLinkPlay();
+                UZVideo.tryNextLinkPlay();
             }
         }
 
@@ -631,7 +631,7 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
-            uizaIMAVideoV3.removeVideoCover(false);
+            UZVideo.removeVideoCover(false);
         }
 
         @Override
@@ -666,11 +666,11 @@ public final class UizaPlayerManagerV3 implements AdsMediaSource.MediaSourceFact
         }
         if (player.getVolume() == 0f) {
             //LLog.d(TAG, "toggleVolumeMute off -> on");
-            uizaIMAVideoV3.setProgressVolumeSeekbar((int) (currentVolume * 100));
+            UZVideo.setProgressVolumeSeekbar((int) (currentVolume * 100));
         } else {
             //LLog.d(TAG, "toggleVolumeMute on -> off");
             currentVolume = player.getVolume();
-            uizaIMAVideoV3.setProgressVolumeSeekbar(0);
+            UZVideo.setProgressVolumeSeekbar(0);
         }
         //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
         //LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());

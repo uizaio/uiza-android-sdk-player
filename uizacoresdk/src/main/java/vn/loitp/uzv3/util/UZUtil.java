@@ -46,8 +46,8 @@ import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrie
 import vn.loitp.rxandroid.ApiSubscriber;
 import vn.loitp.utils.util.Utils;
 import vn.loitp.uzv1.view.floatview.FUZVideoServiceV1;
-import vn.loitp.uzv3.view.floatview.FloatingUizaVideoServiceV3;
-import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv3.view.floatview.FUZVideoService;
+import vn.loitp.uzv3.view.rl.video.UZVideo;
 import vn.loitp.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -331,7 +331,7 @@ public class UZUtil {
     public static boolean checkServiceRunning(Context context, String serviceName) {
         ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            //LLog.d(TAG, "checkServiceRunning: " + FloatingUizaVideoServiceV3.class.getName());
+            //LLog.d(TAG, "checkServiceRunning: " + FUZVideoService.class.getName());
             //LLog.d(TAG, "checkServiceRunning: " + service.service.getClassName());
             if (serviceName.equals(service.service.getClassName())) {
                 return true;
@@ -383,17 +383,17 @@ public class UZUtil {
         }
     }
 
-    //stop service pip FloatingUizaVideoServiceV3
+    //stop service pip FUZVideoService
     public static void stopServicePiPIfRunningV3(Activity activity) {
         if (activity == null) {
             return;
         }
         //LLog.d(TAG, "stopServicePiPIfRunningV3");
-        boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FloatingUizaVideoServiceV3.class.getName());
+        boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
-            Intent intent = new Intent(activity, FloatingUizaVideoServiceV3.class);
+            Intent intent = new Intent(activity, FUZVideoService.class);
             activity.stopService(intent);
         }
     }
@@ -500,45 +500,45 @@ public class UZUtil {
         });
     }
 
-    public static void initEntity(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String entityId) {
+    public static void initEntity(Activity activity, UZVideo UZVideo, String entityId) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
-        if (uizaIMAVideoV3 == null) {
+        if (UZVideo == null) {
             throw new NullPointerException("UizaIMAVideoV3 cannot be null");
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            UZUtil.play(uizaIMAVideoV3, null);
+            UZUtil.play(UZVideo, null);
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
                 LLog.d(TAG, "initEntity entityId: " + entityId);
                 //setEntityId(activity, entityId);
-                UZUtil.play(uizaIMAVideoV3, entityId);
+                UZUtil.play(UZVideo, entityId);
             }
         }
     }
 
-    public static void initPlaylistFolder(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String metadataId) {
+    public static void initPlaylistFolder(Activity activity, UZVideo UZVideo, String metadataId) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
-        if (uizaIMAVideoV3 == null) {
+        if (UZVideo == null) {
             throw new NullPointerException("UizaIMAVideoV3 cannot be null");
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
-                playPlaylist(uizaIMAVideoV3, null);
+                playPlaylist(UZVideo, null);
             }
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunningV3(activity);
             //setMetadataId(activity, metadataId);
-            playPlaylist(uizaIMAVideoV3, metadataId);
+            playPlaylist(UZVideo, metadataId);
         }
     }
     /*public static void initEntityOrPlaylistFolder(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String entityId, String metadataId) {
@@ -568,30 +568,30 @@ public class UZUtil {
         }
     }*/
 
-    private static void play(final UizaIMAVideoV3 uizaIMAVideoV3, final String entityId) {
+    private static void play(final UZVideo UZVideo, final String entityId) {
         /*if (UZData.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer");
             return;
         }*/
         UZData.getInstance().setSettingPlayer(false);
-        uizaIMAVideoV3.post(new Runnable() {
+        UZVideo.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(entityId);
+                UZVideo.init(entityId);
             }
         });
     }
 
-    private static void playPlaylist(final UizaIMAVideoV3 uizaIMAVideoV3, final String metadataId) {
+    private static void playPlaylist(final UZVideo UZVideo, final String metadataId) {
         /*if (UZData.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer");
             return;
         }*/
         UZData.getInstance().setSettingPlayer(false);
-        uizaIMAVideoV3.post(new Runnable() {
+        UZVideo.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.initPlaylistFolder(metadataId);
+                UZVideo.initPlaylistFolder(metadataId);
             }
         });
     }

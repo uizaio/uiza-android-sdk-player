@@ -41,15 +41,15 @@ import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.uzv3.util.UZData;
 import vn.loitp.uzv3.util.UZInput;
 import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.uzv3.view.rl.video.UizaCallback;
-import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv3.view.rl.video.UZCallback;
+import vn.loitp.uzv3.view.rl.video.UZVideo;
 import vn.loitp.views.LToast;
 
-public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
-    private UizaIMAVideoV3 uizaIMAVideoV3;
+public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
+    private UZVideo UZVideo;
 
-    public UizaIMAVideoV3 getUizaIMAVideoV3() {
-        return uizaIMAVideoV3;
+    public UZVideo getUZVideo() {
+        return UZVideo;
     }
 
     public interface FrmTopCallback {
@@ -71,7 +71,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        uizaIMAVideoV3 = (UizaIMAVideoV3) view.findViewById(R.id.uiza_video);
+        UZVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -83,7 +83,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uizaIMAVideoV3.onDestroy();
+        UZVideo.onDestroy();
     }
 
     @Override
@@ -92,32 +92,32 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
         if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtLeft() || ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtRight()) {
             return;
         }
-        uizaIMAVideoV3.onResume();
+        UZVideo.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uizaIMAVideoV3.onPause();
+        UZVideo.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideoV3.onStart();
+        UZVideo.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideoV3.onStop();
+        UZVideo.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                uizaIMAVideoV3.initializePiP();
+                UZVideo.initializePiP();
             } else {
                 LToast.show(getActivity(), "Draw over other app permission not available");
             }
@@ -127,10 +127,10 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
     }
 
     private void setListener() {
-        if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
+        if (UZVideo == null || UZVideo.getPlayer() == null) {
             return;
         }
-        uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
+        UZVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -181,7 +181,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
                 //LLog.d(TAG, "onTimelineChanged");
             }
         });
-        uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        UZVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -212,7 +212,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
+        UZVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -223,7 +223,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        UZVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -259,13 +259,13 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
+        UZVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
+        UZVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
@@ -346,11 +346,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
         if (UZData.getInstance().isSettingPlayer()) {
             return;
         }
-        uizaIMAVideoV3.post(new Runnable() {
+        UZVideo.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-                uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
+                UZVideo.init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                UZVideo.setUZCallback(FrmVideoTopV3.this);
             }
         });
     }
@@ -368,11 +368,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UizaCallback {
         if (!UZUtil.getClickedPip(getActivity())) {
             UZUtil.stopServicePiPIfRunningV3(getActivity());
         }
-        uizaIMAVideoV3.post(new Runnable() {
+        UZVideo.post(new Runnable() {
             @Override
             public void run() {
-                uizaIMAVideoV3.initPlaylistFolder(metadataId);
-                uizaIMAVideoV3.setUizaCallback(FrmVideoTopV3.this);
+                UZVideo.initPlaylistFolder(metadataId);
+                UZVideo.setUZCallback(FrmVideoTopV3.this);
             }
         });
     }

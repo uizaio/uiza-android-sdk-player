@@ -40,7 +40,7 @@ public class LoadingView {
 
     }*/
 
-    /*public interface UizaCallback {
+    /*public interface UZCallback {
         public void onClick(Item item, int position);
     }*/
 }

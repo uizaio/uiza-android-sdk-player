@@ -56,7 +56,7 @@ import vn.loitp.views.LToast;
  * Created by loitp on 3/27/2018.
  */
 
-public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAVideoV3.Callback {
+public class FUZVideoService extends Service implements FUZVideo.Callback {
     private final String TAG = getClass().getSimpleName();
     private final int CLICK_ACTION_THRESHHOLD = 200;
     private WindowManager mWindowManager;
@@ -67,7 +67,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private ImageButton btFullScreen;
     private ImageButton btPlayPause;
     private TextView tvMsg;
-    private FloatUizaIMAVideoV3 floatUizaIMAVideoV3;
+    private FUZVideo FUZVideo;
     private WindowManager.LayoutParams params;
 
     //private Data data;
@@ -77,7 +77,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
     private boolean isLivestream;
     private int widthScreen;
 
-    public FloatingUizaVideoServiceV3() {
+    public FUZVideoService() {
     }
 
     @Override
@@ -167,7 +167,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         params.x = LScreenUtil.getScreenWidth() - getWidth();
         params.y = LScreenUtil.getScreenHeight() - getHeight();
 
-        floatUizaIMAVideoV3 = (FloatUizaIMAVideoV3) mFloatingView.findViewById(R.id.uiza_video);
+        FUZVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
 
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -193,8 +193,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 rlControl.setVisibility(View.GONE);
 
                 //stop video
-                floatUizaIMAVideoV3.getPlayer().setPlayWhenReady(false);
-                LUIUtil.showProgressBar(floatUizaIMAVideoV3.getProgressBar());
+                FUZVideo.getPlayer().setPlayWhenReady(false);
+                LUIUtil.showProgressBar(FUZVideo.getProgressBar());
                 moveView.setOnTouchListener(null);//disabled move view
 
                 //bắn cho FloatClickFullScreenReceiverV3
@@ -209,10 +209,10 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (floatUizaIMAVideoV3 == null) {
+                if (FUZVideo == null) {
                     return;
                 }
-                boolean isToggleResume = floatUizaIMAVideoV3.togglePauseResume();
+                boolean isToggleResume = FUZVideo.togglePauseResume();
                 if (isToggleResume) {
                     btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
                 } else {
@@ -316,8 +316,8 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         if (mFloatingView != null) {
             mWindowManager.removeView(mFloatingView);
         }
-        if (floatUizaIMAVideoV3 != null) {
-            floatUizaIMAVideoV3.onDestroy();
+        if (FUZVideo != null) {
+            FUZVideo.onDestroy();
         }
         super.onDestroy();
     }
@@ -332,10 +332,10 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
     private void setListener() {
         //LLog.d(TAG, TAG + " addListener");
-        if (floatUizaIMAVideoV3 == null || floatUizaIMAVideoV3.getPlayer() == null) {
+        if (FUZVideo == null || FUZVideo.getPlayer() == null) {
             return;
         }
-        floatUizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
+        FUZVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -371,7 +371,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 LLog.e(TAG, "onPlayerError " + error.getMessage());
-                lastCurrentPosition = floatUizaIMAVideoV3.getPlayer().getCurrentPosition();
+                lastCurrentPosition = FUZVideo.getPlayer().getCurrentPosition();
                 LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
                 setupVideo();
             }
@@ -391,7 +391,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 //LLog.d(TAG, "onSeekProcessed");
             }
         });
-        floatUizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        FUZVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -422,7 +422,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        floatUizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
+        FUZVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -433,7 +433,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        floatUizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        FUZVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -469,13 +469,13 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        floatUizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
+        FUZVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        floatUizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
+        FUZVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 // LLog.d(TAG, "onCues");
@@ -485,11 +485,11 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        if (isInitSuccess && floatUizaIMAVideoV3 != null) {
+        if (isInitSuccess && FUZVideo != null) {
             LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
             setListener();
             if (lastCurrentPosition > 0) {
-                floatUizaIMAVideoV3.getPlayer().seekTo(lastCurrentPosition);
+                FUZVideo.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
@@ -527,7 +527,7 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         }
         LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            floatUizaIMAVideoV3.init(linkPlay, isLivestream, this);
+            FUZVideo.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
@@ -573,17 +573,17 @@ public class FloatingUizaVideoServiceV3 extends Service implements FloatUizaIMAV
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhận được vị trí từ UizaIMAVideoV3, tiến hành seek tới vị trí này
             //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            if (floatUizaIMAVideoV3 != null) {
-                floatUizaIMAVideoV3.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            if (FUZVideo != null) {
+                FUZVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UizaIMAVideoV3 đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
-            if (floatUizaIMAVideoV3 != null) {
+            if (FUZVideo != null) {
                 //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
                 //lấy vị trí của pip hiện tại để bắn cho UizaIMAVideoV3
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
-                msgFromServicePosition.setPosition(floatUizaIMAVideoV3.getCurrentPosition());
+                msgFromServicePosition.setPosition(FUZVideo.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);
                 stopSelf();
             }

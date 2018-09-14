@@ -25,11 +25,11 @@ import vn.loitp.core.utilities.LImageUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.uzv3.util.UZUtil;
 
-public class PlayListAdapterV3 extends RecyclerView.Adapter<PlayListAdapterV3.PlayListHolder> {
+public class AdapterPlayList extends RecyclerView.Adapter<AdapterPlayList.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
     private List<Item> itemList;
     private Context context;
-    private PlayListCallbackV3 playListCallbackV3;
+    private CallbackPlayList callbackPlayList;
 
     public class PlayListHolder extends RecyclerView.ViewHolder {
         private TextView tvDuration;
@@ -54,9 +54,9 @@ public class PlayListAdapterV3 extends RecyclerView.Adapter<PlayListAdapterV3.Pl
         }
     }
 
-    public PlayListAdapterV3(Context context, List<Item> itemList, PlayListCallbackV3 playListCallbackV3) {
+    public AdapterPlayList(Context context, List<Item> itemList, CallbackPlayList callbackPlayList) {
         this.itemList = itemList;
-        this.playListCallbackV3 = playListCallbackV3;
+        this.callbackPlayList = callbackPlayList;
         this.context = context;
     }
 
@@ -120,8 +120,8 @@ public class PlayListAdapterV3 extends RecyclerView.Adapter<PlayListAdapterV3.Pl
 
                     @Override
                     public void onEnd() {
-                        if (playListCallbackV3 != null) {
-                            playListCallbackV3.onClickItem(item, position);
+                        if (callbackPlayList != null) {
+                            callbackPlayList.onClickItem(item, position);
                         }
                     }
 

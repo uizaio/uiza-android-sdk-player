@@ -52,11 +52,11 @@ import vn.loitp.libstream.uiza.encoder.input.gl.render.filters.ZebraFilterRender
 import vn.loitp.libstream.uiza.encoder.utils.gl.TranslateTo;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uzv3.view.rl.livestream.PresetLiveStreamingFeed;
-import vn.loitp.uzv3.view.rl.livestream.UizaLivestream;
+import vn.loitp.uzv3.view.rl.livestream.UZLivestream;
 import vn.loitp.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UizaLivestream.Callback {
-    private UizaLivestream uizaLivestream;
+public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
+    private UZLivestream UZLivestream;
     private TextView bStartStop;
     private TextView bStartStopStore;
     private FloatingActionButton btSwitchCamera;
@@ -83,8 +83,8 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         super.onCreate(savedInstanceState);
         //LActivityUtil.changeScreenLandscape(activity);
-        uizaLivestream = (UizaLivestream) findViewById(R.id.uiza_livestream);
-        uizaLivestream.setCallback(this);
+        UZLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
+        UZLivestream.setCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
@@ -101,7 +101,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         btFilter.setOnClickListener(this);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        uizaLivestream.setId(entityId);
+        UZLivestream.setId(entityId);
 
         /*String x = "";
         List<MediaCodecInfo> mediaCodecInfos = CodecUtil.getAllCodecs();
@@ -114,130 +114,130 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private void handleFilterClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.e_d_fxaa:
-                uizaLivestream.enableAA(!uizaLivestream.isAAEnabled());
+                UZLivestream.enableAA(!UZLivestream.isAAEnabled());
                 break;
             case R.id.no_filter:
-                uizaLivestream.setFilter(new NoFilterRender());
+                UZLivestream.setFilter(new NoFilterRender());
                 break;
             case R.id.android_view:
                 AndroidViewFilterRender androidViewFilterRender = new AndroidViewFilterRender();
                 androidViewFilterRender.setView(findViewById(R.id.activity_example_rtmp));
-                uizaLivestream.setFilter(androidViewFilterRender);
+                UZLivestream.setFilter(androidViewFilterRender);
                 break;
             case R.id.basic_deformation:
-                uizaLivestream.setFilter(new BasicDeformationFilterRender());
+                UZLivestream.setFilter(new BasicDeformationFilterRender());
                 break;
             case R.id.beauty:
-                uizaLivestream.setFilter(new BeautyFilterRender());
+                UZLivestream.setFilter(new BeautyFilterRender());
                 break;
             case R.id.blur:
-                uizaLivestream.setFilter(new BlurFilterRender());
+                UZLivestream.setFilter(new BlurFilterRender());
                 break;
             case R.id.brightness:
-                uizaLivestream.setFilter(new BrightnessFilterRender());
+                UZLivestream.setFilter(new BrightnessFilterRender());
                 break;
             case R.id.cartoon:
-                uizaLivestream.setFilter(new CartoonFilterRender());
+                UZLivestream.setFilter(new CartoonFilterRender());
                 break;
             case R.id.color:
-                uizaLivestream.setFilter(new ColorFilterRender());
+                UZLivestream.setFilter(new ColorFilterRender());
                 break;
             case R.id.contrast:
-                uizaLivestream.setFilter(new ContrastFilterRender());
+                UZLivestream.setFilter(new ContrastFilterRender());
                 break;
             case R.id.duotone:
-                uizaLivestream.setFilter(new DuotoneFilterRender());
+                UZLivestream.setFilter(new DuotoneFilterRender());
                 break;
             case R.id.early_bird:
-                uizaLivestream.setFilter(new EarlyBirdFilterRender());
+                UZLivestream.setFilter(new EarlyBirdFilterRender());
                 break;
             case R.id.edge_detection:
-                uizaLivestream.setFilter(new EdgeDetectionFilterRender());
+                UZLivestream.setFilter(new EdgeDetectionFilterRender());
                 break;
             case R.id.exposure:
-                uizaLivestream.setFilter(new ExposureFilterRender());
+                UZLivestream.setFilter(new ExposureFilterRender());
                 break;
             case R.id.fire:
-                uizaLivestream.setFilter(new FireFilterRender());
+                UZLivestream.setFilter(new FireFilterRender());
                 break;
             case R.id.gamma:
-                uizaLivestream.setFilter(new GammaFilterRender());
+                UZLivestream.setFilter(new GammaFilterRender());
                 break;
             case R.id.gif:
-                uizaLivestream.setGifToStream(R.raw.banana, TranslateTo.BOTTOM);
+                UZLivestream.setGifToStream(R.raw.banana, TranslateTo.BOTTOM);
                 break;
             case R.id.grey_scale:
-                uizaLivestream.setFilter(new GreyScaleFilterRender());
+                UZLivestream.setFilter(new GreyScaleFilterRender());
                 break;
             case R.id.halftone_lines:
-                uizaLivestream.setFilter(new HalftoneLinesFilterRender());
+                UZLivestream.setFilter(new HalftoneLinesFilterRender());
                 break;
             case R.id.image:
-                uizaLivestream.setImageToStream(R.mipmap.ic_launcher, TranslateTo.RIGHT);
+                UZLivestream.setImageToStream(R.mipmap.ic_launcher, TranslateTo.RIGHT);
                 break;
             case R.id.image_70s:
-                uizaLivestream.setFilter(new Image70sFilterRender());
+                UZLivestream.setFilter(new Image70sFilterRender());
                 break;
             case R.id.lamoish:
-                uizaLivestream.setFilter(new LamoishFilterRender());
+                UZLivestream.setFilter(new LamoishFilterRender());
                 break;
             case R.id.money:
-                uizaLivestream.setFilter(new MoneyFilterRender());
+                UZLivestream.setFilter(new MoneyFilterRender());
                 break;
             case R.id.negative:
-                uizaLivestream.setFilter(new NegativeFilterRender());
+                UZLivestream.setFilter(new NegativeFilterRender());
                 break;
             case R.id.pixelated:
-                uizaLivestream.setFilter(new PixelatedFilterRender());
+                UZLivestream.setFilter(new PixelatedFilterRender());
                 break;
             case R.id.polygonization:
-                uizaLivestream.setFilter(new PolygonizationFilterRender());
+                UZLivestream.setFilter(new PolygonizationFilterRender());
                 break;
             case R.id.rainbow:
-                uizaLivestream.setFilter(new RainbowFilterRender());
+                UZLivestream.setFilter(new RainbowFilterRender());
                 break;
             case R.id.rgb_saturate:
                 RGBSaturationFilterRender rgbSaturationFilterRender = new RGBSaturationFilterRender();
-                uizaLivestream.setFilter(rgbSaturationFilterRender);
+                UZLivestream.setFilter(rgbSaturationFilterRender);
                 //Reduce green and blue colors 20%. Red will predominate.
                 rgbSaturationFilterRender.setRGBSaturation(1f, 0.8f, 0.8f);
                 break;
             case R.id.ripple:
-                uizaLivestream.setFilter(new RippleFilterRender());
+                UZLivestream.setFilter(new RippleFilterRender());
                 break;
             case R.id.rotation:
                 RotationFilterRender rotationFilterRender = new RotationFilterRender();
-                uizaLivestream.setFilter(rotationFilterRender);
+                UZLivestream.setFilter(rotationFilterRender);
                 rotationFilterRender.setRotation(90);
                 break;
             case R.id.saturation:
-                uizaLivestream.setFilter(new SaturationFilterRender());
+                UZLivestream.setFilter(new SaturationFilterRender());
                 break;
             case R.id.sepia:
-                uizaLivestream.setFilter(new SepiaFilterRender());
+                UZLivestream.setFilter(new SepiaFilterRender());
                 break;
             case R.id.sharpness:
-                uizaLivestream.setFilter(new SharpnessFilterRender());
+                UZLivestream.setFilter(new SharpnessFilterRender());
                 break;
             case R.id.surface_filter:
                 //You can render this btFilter with other api that draw in a surface. for example you can use VLC
                 SurfaceFilterRender surfaceFilterRender = new SurfaceFilterRender();
-                uizaLivestream.setFilter(surfaceFilterRender);
+                UZLivestream.setFilter(surfaceFilterRender);
                 MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.big_bunny_240p);
                 mediaPlayer.setSurface(surfaceFilterRender.getSurface());
                 mediaPlayer.start();
                 //Video is 360x240 so select a percent to keep aspect ratio (50% x 33.3% screen)
                 surfaceFilterRender.setScale(50f, 33.3f);
-                surfaceFilterRender.setListeners(uizaLivestream.getOpenGlView()); //Optional
+                surfaceFilterRender.setListeners(UZLivestream.getOpenGlView()); //Optional
                 break;
             case R.id.temperature:
-                uizaLivestream.setFilter(new TemperatureFilterRender());
+                UZLivestream.setFilter(new TemperatureFilterRender());
                 break;
             case R.id.text:
-                uizaLivestream.setTextToStream("Hello Uiza", 40, Color.RED, TranslateTo.CENTER);
+                UZLivestream.setTextToStream("Hello Uiza", 40, Color.RED, TranslateTo.CENTER);
                 break;
             case R.id.zebra:
-                uizaLivestream.setFilter(new ZebraFilterRender());
+                UZLivestream.setFilter(new ZebraFilterRender());
                 break;
         }
     }
@@ -246,9 +246,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b_start_stop:
-                if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
-                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl());
+                if (!UZLivestream.isStreaming()) {
+                    if (UZLivestream.prepareAudio() && UZLivestream.prepareVideoHD(false)) {
+                        UZLivestream.startStream(UZLivestream.getMainStreamUrl());
                     } else {
                         LDialogUtil.showDialog1(activity, getString(R.string.err_dont_support), new LDialogUtil.Callback1() {
                             @Override
@@ -262,9 +262,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                     }
                 } else {
                     bStartStop.setText(R.string.start_button);
-                    uizaLivestream.stopStream();
+                    UZLivestream.stopStream();
                 }
-                if (uizaLivestream.isStreaming()) {
+                if (UZLivestream.isStreaming()) {
                     bStartStop.setText("Stop");
                     bStartStop.setVisibility(View.VISIBLE);
                     bStartStopStore.setVisibility(View.INVISIBLE);
@@ -275,17 +275,17 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 }
                 break;
             case R.id.b_start_stop_store:
-                if (!uizaLivestream.isStreaming()) {
-                    if (uizaLivestream.prepareAudio() && uizaLivestream.prepareVideoHD(false)) {
-                        uizaLivestream.startStream(uizaLivestream.getMainStreamUrl(), true);
+                if (!UZLivestream.isStreaming()) {
+                    if (UZLivestream.prepareAudio() && UZLivestream.prepareVideoHD(false)) {
+                        UZLivestream.startStream(UZLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
                     }
                 } else {
                     bStartStopStore.setText(R.string.start_button);
-                    uizaLivestream.stopStream();
+                    UZLivestream.stopStream();
                 }
-                if (uizaLivestream.isStreaming()) {
+                if (UZLivestream.isStreaming()) {
                     bStartStopStore.setText("Stop - save");
                     bStartStop.setVisibility(View.INVISIBLE);
                     bStartStopStore.setVisibility(View.VISIBLE);
@@ -296,7 +296,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 }
                 break;
             case R.id.b_switch_camera:
-                uizaLivestream.switchCamera();
+                UZLivestream.switchCamera();
                 break;
             case R.id.b_filter:
                 LPopupMenu.show(activity, btFilter, R.menu.gl_menu, new LPopupMenu.CallBack() {
@@ -364,7 +364,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
             @Override
             public void run() {
                 LToast.show(activity, "Disconnected");
-                LLog.d(TAG, "onDisconnectRtmp isStreaming: " + uizaLivestream.isStreaming());
+                LLog.d(TAG, "onDisconnectRtmp isStreaming: " + UZLivestream.isStreaming());
                 //uizaLivestream.stopStream();
                 bStartStop.setText(R.string.start_button);
                 bStartStopStore.setText("Start - save");
@@ -392,14 +392,14 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     }
 
     @Override
-    public void surfaceChanged(UizaLivestream.StartPreview startPreview) {
+    public void surfaceChanged(UZLivestream.StartPreview startPreview) {
         startPreview.onSizeStartPreview(1280, 720);
     }
 
     @Override
     protected void onDestroy() {
-        if (uizaLivestream != null) {
-            uizaLivestream.stopStream();
+        if (UZLivestream != null) {
+            UZLivestream.stopStream();
         }
         super.onDestroy();
     }

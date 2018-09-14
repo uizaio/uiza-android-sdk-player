@@ -42,19 +42,19 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onMinimized() {
-                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
-                    frmVideoTop.getUizaIMAVideoV3().hideController();
+                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
+                    frmVideoTop.getUZVideo().hideController();
                 }
             }
 
             @Override
             public void onClosedToLeft() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
@@ -243,8 +243,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         frmVideoTop.setFrmTopCallback(new FrmVideoTopV3.FrmTopCallback() {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
+                frmVideoTop.getUZVideo().setEventBusMsgFromActivityIsInitSuccess();
+                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {
@@ -324,8 +324,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             @Override
             public void initDone(boolean isInitSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
                 LLog.d(TAG, "initializeDraggablePanelPlaylistFolder initDone " + isInitSuccess);
-                frmVideoTop.getUizaIMAVideoV3().setEventBusMsgFromActivityIsInitSuccess();
-                frmVideoTop.getUizaIMAVideoV3().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
+                frmVideoTop.getUZVideo().setEventBusMsgFromActivityIsInitSuccess();
+                frmVideoTop.getUZVideo().setControllerStateCallback(new UZPlayerViewV1.ControllerStateCallback() {
                     @Override
                     public void onVisibilityChange(boolean isShow) {
                         if (draggablePanel != null && !isLandscape) {

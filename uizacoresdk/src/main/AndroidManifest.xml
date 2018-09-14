@@ -50,7 +50,7 @@
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="vn.loitp.uzv3.view.floatview.FloatingUizaVideoServiceV3"
+            android:name="vn.loitp.uzv3.view.floatview.FUZVideoService"
             android:enabled="true"
             android:exported="false" />
 

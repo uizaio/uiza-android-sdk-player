@@ -20,16 +20,16 @@ import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.uzv3.view.rl.video.UizaCallback;
-import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv3.view.rl.video.UZCallback;
+import vn.loitp.uzv3.view.rl.video.UZVideo;
 import vn.loitp.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinActivity extends BaseActivity implements UizaCallback {
-    private UizaIMAVideoV3 uizaIMAVideoV3;
+public class CustomSkinActivity extends BaseActivity implements UZCallback {
+    private UZVideo UZVideo;
 
     @Override
     protected boolean setFullScreen() {
@@ -51,49 +51,49 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
         UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
-        uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
-        uizaIMAVideoV3.setUizaCallback(this);
+        UZVideo = (UZVideo) findViewById(R.id.uiza_video);
+        UZVideo.setUZCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
-        UZUtil.initEntity(activity, uizaIMAVideoV3, entityId);
+        UZUtil.initEntity(activity, UZVideo, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.changeSkin(R.layout.uiza_controller_skin_custom_main);
+                if (UZVideo != null) {
+                    UZVideo.changeSkin(R.layout.uiza_controller_skin_custom_main);
                 }
             }
         });
         findViewById(R.id.bt_change_skin_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_default);
+                if (UZVideo != null) {
+                    UZVideo.changeSkin(R.layout.player_skin_default);
                 }
             }
         });
         findViewById(R.id.bt_change_skin_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_1);
+                if (UZVideo != null) {
+                    UZVideo.changeSkin(R.layout.player_skin_1);
                 }
             }
         });
         findViewById(R.id.bt_change_skin_2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_2);
+                if (UZVideo != null) {
+                    UZVideo.changeSkin(R.layout.player_skin_2);
                 }
             }
         });
         findViewById(R.id.bt_change_skin_3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uizaIMAVideoV3 != null) {
-                    uizaIMAVideoV3.changeSkin(R.layout.player_skin_3);
+                if (UZVideo != null) {
+                    UZVideo.changeSkin(R.layout.player_skin_3);
                 }
             }
         });
@@ -104,38 +104,38 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uizaIMAVideoV3.onDestroy();
+        UZVideo.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uizaIMAVideoV3.onResume();
+        UZVideo.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uizaIMAVideoV3.onPause();
+        UZVideo.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideoV3.onStart();
+        UZVideo.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideoV3.onStop();
+        UZVideo.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                uizaIMAVideoV3.initializePiP();
+                UZVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
             }
@@ -147,7 +147,7 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
+            UZVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 
@@ -183,14 +183,14 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
     @Override
     public void onBackPressed() {
         if (LScreenUtil.isFullScreen(activity)) {
-            uizaIMAVideoV3.toggleFullscreen();
+            UZVideo.toggleFullscreen();
         } else {
             super.onBackPressed();
         }
     }
 
     private void handleClickSampeText() {
-        TextView tvSample = uizaIMAVideoV3.getPlayerView().findViewById(R.id.tv_sample);
+        TextView tvSample = UZVideo.getPlayerView().findViewById(R.id.tv_sample);
         if (tvSample != null) {
             tvSample.setText("This is a view from custom skin.\nTry to tap me.");
             LUIUtil.setTextShadow(tvSample);

@@ -14,10 +14,10 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
-import vn.loitp.uzv3.view.rl.videoinfo.UizaIMAVideoInfoV3;
+import vn.loitp.uzv3.view.rl.videoinfo.UZVideoInfo;
 
 public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV1.Callback {
-    private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
+    private UZVideoInfo uizaIMAVideoInfo;
 
     @Override
     protected String setTag() {
@@ -26,7 +26,7 @@ public class FrmVideoBottomV3 extends BaseFragment implements ItemAdapterV1.Call
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        uizaIMAVideoInfo = (UizaIMAVideoInfoV3) view.findViewById(R.id.uiza_video_info);
+        uizaIMAVideoInfo = (UZVideoInfo) view.findViewById(R.id.uiza_video_info);
         super.onViewCreated(view, savedInstanceState);
     }
 

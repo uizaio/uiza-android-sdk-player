@@ -152,17 +152,17 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
             @Override
             public void onMinimized() {
-                frmVideoTop.getUizaIMAVideoV3().hideController();
+                frmVideoTop.getUZVideo().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
@@ -266,7 +266,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
                     draggablePanel.setEnableSlide(true);
                 }
             }
@@ -292,10 +292,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
                     } else {
-                        if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
-                            frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                        if (frmVideoTop.getUZVideo().isLandscape()) {
+                            frmVideoTop.getUZVideo().toggleFullscreen();
                         } else {
                             draggablePanel.minimize();
                         }
@@ -324,10 +324,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                        if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
                         } else {
-                            if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
-                                frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                            if (frmVideoTop.getUZVideo().isLandscape()) {
+                                frmVideoTop.getUZVideo().toggleFullscreen();
                             } else {
                                 draggablePanel.minimize();
                             }

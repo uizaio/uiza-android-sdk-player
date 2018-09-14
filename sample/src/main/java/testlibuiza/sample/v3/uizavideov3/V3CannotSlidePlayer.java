@@ -38,16 +38,16 @@ import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.uzv3.util.UZUtil;
-import vn.loitp.uzv3.view.rl.video.UizaCallback;
-import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
+import vn.loitp.uzv3.view.rl.video.UZCallback;
+import vn.loitp.uzv3.view.rl.video.UZVideo;
 import vn.loitp.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
  */
 
-public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
-    private UizaIMAVideoV3 uizaIMAVideoV3;
+public class V3CannotSlidePlayer extends BaseActivity implements UZCallback {
+    private UZVideo UZVideo;
     private Button btProgress;
 
     @Override
@@ -69,17 +69,17 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
-        uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
+        UZVideo = (UZVideo) findViewById(R.id.uiza_video);
         btProgress = (Button) findViewById(R.id.bt_progress);
-        uizaIMAVideoV3.setUizaCallback(this);
+        UZVideo.setUZCallback(this);
 
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
         if (isInitWithPlaylistFolder) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-            UZUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
+            UZUtil.initPlaylistFolder(activity, UZVideo, metadataId);
         } else {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-            UZUtil.initEntity(activity, uizaIMAVideoV3, entityId);
+            UZUtil.initEntity(activity, UZVideo, entityId);
         }
 
         //set uizaIMAVideoV3 hide all controller
@@ -89,9 +89,9 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
         //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
-        uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
+        UZVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
-        uizaIMAVideoV3.setOnTouchEvent(new UZPlayerViewV1.OnTouchEvent() {
+        UZVideo.setOnTouchEvent(new UZPlayerViewV1.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed() {
             }
@@ -102,7 +102,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
             @Override
             public void onDoubleTap() {
-                uizaIMAVideoV3.setDisplayPortrait(!uizaIMAVideoV3.isDisplayPortrait());
+                UZVideo.setDisplayPortrait(!UZVideo.isDisplayPortrait());
             }
 
             @Override
@@ -125,73 +125,73 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.resumeVideo();
+                UZVideo.resumeVideo();
             }
         });
         findViewById(R.id.bt_pause).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.pauseVideo();
+                UZVideo.pauseVideo();
             }
         });
         findViewById(R.id.bt_next_10).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.seekToForward(10000);
+                UZVideo.seekToForward(10000);
             }
         });
         findViewById(R.id.bt_prev_10).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.seekToBackward(10000);
+                UZVideo.seekToBackward(10000);
             }
         });
         findViewById(R.id.bt_volume_on_off).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.toggleVolume();
+                UZVideo.toggleVolume();
             }
         });
         findViewById(R.id.bt_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.toggleFullscreen();
+                UZVideo.toggleFullscreen();
             }
         });
         findViewById(R.id.bt_cc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.showCCPopup();
+                UZVideo.showCCPopup();
             }
         });
         findViewById(R.id.bt_hq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.showHQPopup();
+                UZVideo.showHQPopup();
             }
         });
         findViewById(R.id.bt_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.showSharePopup();
+                UZVideo.showSharePopup();
             }
         });
         findViewById(R.id.bt_picture_in_picture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.showPip();
+                UZVideo.showPip();
             }
         });
         findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.skipNextVideo();
+                UZVideo.skipNextVideo();
             }
         });
         findViewById(R.id.bt_prev_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uizaIMAVideoV3.skipPreviousVideo();
+                UZVideo.skipPreviousVideo();
             }
         });
     }
@@ -199,38 +199,38 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uizaIMAVideoV3.onDestroy();
+        UZVideo.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uizaIMAVideoV3.onResume();
+        UZVideo.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uizaIMAVideoV3.onPause();
+        UZVideo.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        uizaIMAVideoV3.onStart();
+        UZVideo.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        uizaIMAVideoV3.onStop();
+        UZVideo.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                uizaIMAVideoV3.initializePiP();
+                UZVideo.initializePiP();
             } else {
                 LToast.show(activity, "Draw over other app permission not available");
             }
@@ -240,10 +240,10 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     }
 
     private void setListener() {
-        if (uizaIMAVideoV3 == null || uizaIMAVideoV3.getPlayer() == null) {
+        if (UZVideo == null || UZVideo.getPlayer() == null) {
             return;
         }
-        uizaIMAVideoV3.getPlayer().addListener(new Player.EventListener() {
+        UZVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -294,7 +294,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 //LLog.d(TAG, "onTimelineChanged");
             }
         });
-        uizaIMAVideoV3.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        UZVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -325,7 +325,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uizaIMAVideoV3.setProgressCallback(new ProgressCallback() {
+        UZVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -339,7 +339,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 ;
             }
         });
-        uizaIMAVideoV3.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        UZVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -375,13 +375,13 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        uizaIMAVideoV3.getPlayer().addMetadataOutput(new MetadataOutput() {
+        UZVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        uizaIMAVideoV3.getPlayer().addTextOutput(new TextOutput() {
+        UZVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
@@ -393,7 +393,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
-            uizaIMAVideoV3.setEventBusMsgFromActivityIsInitSuccess();
+            UZVideo.setEventBusMsgFromActivityIsInitSuccess();
             //uizaIMAVideoV3.setControllerShowTimeoutMs(0);
             //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
         }
@@ -434,7 +434,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
     @Override
     public void onBackPressed() {
         if (LScreenUtil.isFullScreen(activity)) {
-            uizaIMAVideoV3.toggleFullscreen();
+            UZVideo.toggleFullscreen();
         } else {
             super.onBackPressed();
         }

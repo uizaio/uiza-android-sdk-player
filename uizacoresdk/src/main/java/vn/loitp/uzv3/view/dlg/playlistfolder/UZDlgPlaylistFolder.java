@@ -21,7 +21,7 @@ import vn.loitp.uzv3.util.UZData;
  * Created by loitp on 5/2/2018.
  */
 
-public class UizaDialogPlaylistFolder extends Dialog {
+public class UZDlgPlaylistFolder extends Dialog {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private AlertDialog dialog;
@@ -37,7 +37,7 @@ public class UizaDialogPlaylistFolder extends Dialog {
 
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
-    public UizaDialogPlaylistFolder(Activity activity, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+    public UZDlgPlaylistFolder(Activity activity, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
         super(activity);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.activity = activity;

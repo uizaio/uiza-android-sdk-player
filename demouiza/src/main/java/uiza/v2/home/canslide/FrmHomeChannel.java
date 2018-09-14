@@ -128,7 +128,7 @@ public class FrmHomeChannel extends BaseFragment {
     private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
         /*//poster
         List<Item> itemListPoster = getSubList(itemList, 0, 5);
-        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.UizaCallback() {
+        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -140,7 +140,7 @@ public class FrmHomeChannel extends BaseFragment {
         channelObjectTopMovies.setChannelName("Top Movies");
         List<Item> itemListTopMovies = getSubList(itemList, 6, 15);
         channelObjectTopMovies.setItemList(itemListTopMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -152,7 +152,7 @@ public class FrmHomeChannel extends BaseFragment {
         channelObjectNewestMovies.setChannelName("Newest Movies");
         List<Item> itemListNewestMovies = getSubList(itemList, 16, itemList.size() - 1);
         channelObjectNewestMovies.setItemList(itemListNewestMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -163,7 +163,7 @@ public class FrmHomeChannel extends BaseFragment {
         ChannelObject channelObjectAllMovies = new ChannelObject();
         channelObjectAllMovies.setChannelName("All Movies");
         channelObjectAllMovies.setItemList(itemList);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
