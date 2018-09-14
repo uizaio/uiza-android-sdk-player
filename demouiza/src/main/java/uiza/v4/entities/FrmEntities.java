@@ -30,9 +30,9 @@ import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv3.util.UZData;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 public class FrmEntities extends BaseFragment implements IOnBackPressed {
@@ -57,8 +57,8 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (UizaUtil.getClickedPip(getActivity())) {
-            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+        if (UZUtil.getClickedPip(getActivity())) {
+            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
@@ -75,7 +75,7 @@ public class FrmEntities extends BaseFragment implements IOnBackPressed {
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                UizaUtil.setClickedPip(getActivity(), false);
+                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
             }
 

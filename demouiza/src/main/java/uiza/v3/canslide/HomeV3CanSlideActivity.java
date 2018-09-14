@@ -16,11 +16,11 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.IOnBackPressed;
 import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
 import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
+import vn.loitp.uzv3.util.UZData;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -29,10 +29,10 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //UizaDataV3.getInstance().setCasty(Casty.create(this));
-        UizaUtil.setCasty(this);
+        //UZData.getInstance().setCasty(Casty.create(this));
+        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
-        UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
+        UZUtil.setAcitivityCanSlideIsRunning(activity, true);
 
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
@@ -62,7 +62,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
             }
         });
         replaceFragment(new FrmHomeV3());
-        if (UizaUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(activity)) {
             //TODO
             play(null);
         }
@@ -99,8 +99,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
     private FrmVideoBottomV3 frmVideoBottom;
 
     private void initFrmTop(String entityId, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        if (!UizaUtil.getClickedPip(activity)) {
-            UizaUtil.stopServicePiPIfRunningV3(activity);
+        if (!UZUtil.getClickedPip(activity)) {
+            UZUtil.stopServicePiPIfRunningV3(activity);
         }
         frmVideoTop.setupVideo(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
     }
@@ -115,8 +115,8 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     public void play(Data data) {
         if (data == null) {
-            //data = UizaUtil.getData(activity, LSApplication.getInstance().getGson());
-            data = UizaDataV3.getInstance().getData();
+            //data = UZUtil.getData(activity, LSApplication.getInstance().getGson());
+            data = UZData.getInstance().getData();
             if (data == null) {
                 LLog.e(TAG, "play error data null");
                 return;
@@ -165,7 +165,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
+        UZUtil.setAcitivityCanSlideIsRunning(activity, false);
         HomeDataV3.getInstance().clearAll();
         super.onDestroy();
     }
@@ -213,7 +213,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
                 frmVideoBottom.init(new ItemAdapterV1.Callback() {
                     @Override
                     public void onClickItemBottom(Item item, int position) {
-                        UizaUtil.setClickedPip(activity, false);
+                        UZUtil.setClickedPip(activity, false);
                         clearUIFrmBottom();
                         initFrmTop(data.getId(), true);
                     }
@@ -265,7 +265,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
 
             @Override
             public void onClickListEntityRelation(Item item, int position) {
-                UizaUtil.setClickedPip(activity, false);
+                UZUtil.setClickedPip(activity, false);
                 clearUIFrmBottom();
                 initFrmTop(data.getId(), true);
             }

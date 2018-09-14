@@ -59,7 +59,6 @@ import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.manager.UZPlayerManagerV1;
 import vn.loitp.uzv1.view.ComunicateMng;
@@ -68,6 +67,7 @@ import vn.loitp.uzv1.view.dlg.listentityrelation.PlayListCallback;
 import vn.loitp.uzv1.view.dlg.listentityrelation.UZDlgListEntityRelation;
 import vn.loitp.uzv1.view.floatview.FUZVideoServiceV1;
 import vn.loitp.uzv1.view.util.UizaDataV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.autosize.imagebuttonwithsize.ImageButtonWithSize;
 import vn.loitp.views.seekbar.verticalseekbar.VerticalSeekBar;
@@ -166,7 +166,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
             return;
         }
 
-        //UizaUtil.stopServicePiPIfRunning(activity);
+        //UZUtil.stopServicePiPIfRunning(activity);
 
         this.callback = callback;
         if (UZPlayerManagerV1 != null) {
@@ -186,7 +186,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         LUIUtil.showProgressBar(progressBar);
 
         //ko track neu play tu clicked pip
-        if (!UizaUtil.getClickedPip(activity)) {
+        if (!UZUtil.getClickedPip(activity)) {
             //cannot delete delay below, only works after 500mls
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -367,7 +367,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         addPlayerView();
         findViews();
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
+        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
         updateUIEachSkin();
         setMarginPreviewTimeBarLayout(false);
     }
@@ -558,7 +558,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
             callback.isInitResult(true, mGetLinkPlay, mGetDetailEntity);
         }
         //ko track neu play tu clicked pip
-        if (!UizaUtil.getClickedPip(activity)) {
+        if (!UZUtil.getClickedPip(activity)) {
             //track event video_starts
             trackUiza(UizaDataV1.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS));
         }
@@ -663,18 +663,18 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
                 UZPlayerManagerV1.toggleVolumeMute(exoVolume);
             }
         } else if (v == exoSetting) {
-            View view = UizaUtil.getBtVideo(debugRootView);
+            View view = UZUtil.getBtVideo(debugRootView);
             if (view != null) {
-                UizaUtil.getBtVideo(debugRootView).performClick();
+                UZUtil.getBtVideo(debugRootView).performClick();
             }
         } else if (v == exoCc) {
             if (UZPlayerManagerV1.getSubtitleList() == null || UZPlayerManagerV1.getSubtitleList().isEmpty()) {
                 UZDlgInfoV1 UZDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
-                UizaUtil.showUizaDialog(activity, UZDlgInfoV1);
+                UZUtil.showUizaDialog(activity, UZDlgInfoV1);
             } else {
-                View view = UizaUtil.getBtText(debugRootView);
+                View view = UZUtil.getBtText(debugRootView);
                 if (view != null) {
-                    UizaUtil.getBtText(debugRootView).performClick();
+                    UZUtil.getBtText(debugRootView).performClick();
                 }
             }
         } else if (v == exoPlaylist) {
@@ -692,11 +692,11 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
                     //do nothing
                 }
             });
-            UizaUtil.showUizaDialog(activity, UZDlgListEntityRelation);
+            UZUtil.showUizaDialog(activity, UZDlgListEntityRelation);
         } else if (v == exoHearing) {
-            View view = UizaUtil.getBtAudio(debugRootView);
+            View view = UZUtil.getBtAudio(debugRootView);
             if (view != null) {
-                UizaUtil.getBtAudio(debugRootView).performClick();
+                UZUtil.getBtAudio(debugRootView).performClick();
             }
         } else if (v == exoPictureInPicture) {
             clickPiP();
@@ -721,19 +721,19 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 setExoPictureInPictureVisibility(GONE);
-                UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
+                UZUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, true);
 
                 setMarginPreviewTimeBarLayout(true);
             } else {
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 setExoPictureInPictureVisibility(VISIBLE);
-                UizaUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
+                UZUtil.setUIFullScreenIcon(getContext(), exoFullscreenIcon, false);
 
                 setMarginPreviewTimeBarLayout(false);
             }
         }
-        UizaUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
+        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
     }
 
     private void setMarginPreviewTimeBarLayout(boolean isLandscape) {
@@ -899,9 +899,9 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
     private void getLinkPlay() {
         //LLog.d(TAG, "getLinkPlay");
-        UizaUtil.setupRestClientV2(activity);
+        UZUtil.setupRestClientV2(activity);
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
-        Auth auth = UizaUtil.getAuth(activity, gson);
+        Auth auth = UZUtil.getAuth(activity, gson);
         if (auth == null || auth.getData().getAppId() == null) {
             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.auth_or_app_id_is_null_or_empty), new LDialogUtil.Callback1() {
                 @Override
@@ -947,7 +947,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
     private void getDetailEntity() {
         //LLog.d(TAG, "getDetailEntity");
-        UizaUtil.setupRestClientV2(activity);
+        UZUtil.setupRestClientV2(activity);
         UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
         final JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId(UizaDataV1.getInstance().getUizaInputV1().getEntityId());

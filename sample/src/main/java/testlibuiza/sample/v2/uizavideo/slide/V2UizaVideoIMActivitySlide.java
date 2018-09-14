@@ -13,9 +13,9 @@ import vn.loitp.core.base.BaseFragment;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.ComunicateMng;
 import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -62,7 +62,7 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
         });
         replaceFragment(new FrmHome());
 
-        if (UizaUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(activity)) {
             //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
@@ -170,7 +170,7 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
             @Override
             public void initDone() {
                 LLog.d(TAG, "initDone");
-                if (UizaUtil.getClickedPip(activity)) {
+                if (UZUtil.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

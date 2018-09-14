@@ -31,9 +31,9 @@ import vn.loitp.core.utilities.LSocialUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.utils.util.AppUtils;
 import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
@@ -61,7 +61,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UizaUtil.setCasty(this);
+        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
 
         llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);

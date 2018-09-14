@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <vn.loitp.uizavideov3.view.rl.livestream.UizaLivestream
+    <vn.loitp.uzv3.view.rl.livestream.UizaLivestream
         android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

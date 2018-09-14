@@ -24,8 +24,8 @@ import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.util.UizaDataV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 public class SplashActivity extends BaseActivity {
@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity {
 
         currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.player_skin_1);
         canSlide = getIntent().getBooleanExtra(OptionActivity.KEY_CAN_SLIDE, false);
-        UizaUtil.setSlideUizaVideoEnabled(activity, canSlide);
+        UZUtil.setSlideUizaVideoEnabled(activity, canSlide);
         currentApiEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_END_POINT);
         currentApiTrackingEndPoint = getIntent().getStringExtra(OptionActivity.KEY_API_TRACKING_END_POINT);
 
@@ -55,10 +55,10 @@ public class SplashActivity extends BaseActivity {
         RestClientV2.init(currentApiEndPoint);
         RestClientTracking.init(currentApiTrackingEndPoint);
 
-        UizaUtil.setApiEndPoint(activity, currentApiEndPoint);
-        UizaUtil.setApiTrackEndPoint(activity, currentApiTrackingEndPoint);
+        UZUtil.setApiEndPoint(activity, currentApiEndPoint);
+        UZUtil.setApiTrackEndPoint(activity, currentApiTrackingEndPoint);
 
-        Auth auth = UizaUtil.getAuth(activity, LSApplication.getInstance().getGson());
+        Auth auth = UZUtil.getAuth(activity, LSApplication.getInstance().getGson());
         LLog.d(TAG, "auth: " + LSApplication.getInstance().getGson().toJson(auth));
         if (auth == null) {
             auth();
@@ -129,7 +129,7 @@ public class SplashActivity extends BaseActivity {
         subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
-                UizaUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
+                UZUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
 
                 token = auth.getData().getToken();
                 goToHome();
@@ -180,7 +180,7 @@ public class SplashActivity extends BaseActivity {
         }
         UizaDataV1.getInstance().setCurrentPlayerId(currentPlayerId);
         RestClientV2.addAuthorization(token);
-        UizaUtil.setToken(activity, token);
+        UZUtil.setToken(activity, token);
         if (canSlide) {
             intent = new Intent(activity, HomeV2CanSlideActivity.class);
         } else {
@@ -190,7 +190,7 @@ public class SplashActivity extends BaseActivity {
             LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
-                    UizaUtil.setClickedPip(activity, false);
+                    UZUtil.setClickedPip(activity, false);
                     startActivity(intent);
                     LActivityUtil.tranIn(activity);
                     finish();

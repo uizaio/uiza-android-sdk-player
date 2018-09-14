@@ -36,8 +36,8 @@ import vn.loitp.restapi.uiza.UizaServiceV3;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -269,7 +269,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Data data, int position) {
-        UizaUtil.setClickedPip(getActivity(), false);
+        UZUtil.setClickedPip(getActivity(), false);
         ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 

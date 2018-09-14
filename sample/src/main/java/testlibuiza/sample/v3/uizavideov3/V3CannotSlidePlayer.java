@@ -34,12 +34,12 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
-import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
+import vn.loitp.uzv3.util.UZUtil;
+import vn.loitp.uzv3.view.rl.video.UizaCallback;
+import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 /**
@@ -67,7 +67,7 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UizaUtil.setCasty(this);
+        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         btProgress = (Button) findViewById(R.id.bt_progress);
@@ -76,10 +76,10 @@ public class V3CannotSlidePlayer extends BaseActivity implements UizaCallback {
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
         if (isInitWithPlaylistFolder) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
-            UizaUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
+            UZUtil.initPlaylistFolder(activity, uizaIMAVideoV3, metadataId);
         } else {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-            UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
+            UZUtil.initEntity(activity, uizaIMAVideoV3, entityId);
         }
 
         //set uizaIMAVideoV3 hide all controller

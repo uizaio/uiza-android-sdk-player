@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import vn.loitp.core.common.Constants;
 import vn.loitp.restapi.restclient.RestClientTracking;
 import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv3.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -78,8 +78,8 @@ public class LSApplication extends MultiDexApplication {
         Constants.setDebugMode(true);
 
         //initWorkspace();
-        //UizaUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
-        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        //UZUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
+        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {

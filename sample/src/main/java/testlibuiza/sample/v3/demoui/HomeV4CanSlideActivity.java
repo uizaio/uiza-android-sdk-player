@@ -13,8 +13,8 @@ import vn.loitp.core.utilities.LScreenUtil;
 import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.IOnBackPressed;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.draggablepanel.DraggableListener;
 import vn.loitp.views.draggablepanel.DraggablePanel;
 
@@ -28,7 +28,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //UizaDataV3.getInstance().setCasty(Casty.create(this));
-        UizaUtil.setCasty(this);
+        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {

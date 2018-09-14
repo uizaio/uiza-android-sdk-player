@@ -29,7 +29,7 @@ import vn.loitp.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePasswo
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uzv3.util.UZData;
 import vn.loitp.views.LToast;
 
 public class V3TestAPIActivity extends BaseActivity implements View.OnClickListener {
@@ -472,7 +472,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void getTokenStreaming() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
+        sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultVOD);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
@@ -500,7 +500,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         }
         RestClientV3GetLinkPlay.addAuthorization(tokenStreaming);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        String appId = UizaDataV3.getInstance().getAppId();
+        String appId = UZData.getInstance().getAppId();
         String typeContent = SendGetTokenStreaming.STREAM;
         subscribe(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
@@ -543,7 +543,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
     private void getTokenStreamingLive() {
         UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
         SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
-        sendGetTokenStreaming.setAppId(UizaDataV3.getInstance().getAppId());
+        sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultLIVE);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
         subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
@@ -569,7 +569,7 @@ public class V3TestAPIActivity extends BaseActivity implements View.OnClickListe
         }
         RestClientV3GetLinkPlay.addAuthorization(tokenStreamingLive);
         UizaServiceV3 service = RestClientV3GetLinkPlay.createService(UizaServiceV3.class);
-        String appId = UizaDataV3.getInstance().getAppId();
+        String appId = UZData.getInstance().getAppId();
         String streamName = "ffdfdfdfd";
         subscribe(service.getLinkPlayLive(appId, streamName), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override

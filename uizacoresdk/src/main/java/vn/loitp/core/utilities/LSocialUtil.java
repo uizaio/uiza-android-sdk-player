@@ -13,8 +13,8 @@ import android.net.Uri;
 import java.util.List;
 
 import loitp.core.R;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.dlg.share.UZDlgShare;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 
@@ -78,7 +78,7 @@ public class LSocialUtil {
 
     public static void share(Activity activity, boolean isLandscape) {
         UZDlgShare UZDlgShare = new UZDlgShare(activity, isLandscape);
-        UizaUtil.showUizaDialog(activity, UZDlgShare);
+        UZUtil.showUizaDialog(activity, UZDlgShare);
     }
 
     public static void sharingToSocialMedia(Activity activity, String application, String subject, String message) {

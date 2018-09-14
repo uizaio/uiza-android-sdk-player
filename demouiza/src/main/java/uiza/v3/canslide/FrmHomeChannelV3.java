@@ -28,7 +28,7 @@ import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRet
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaDataV3;
+import vn.loitp.uzv3.util.UZData;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -140,7 +140,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
             @Override
             public void onClick(View view) {
                 LLog.d(TAG, "onClick btPlayPlaylistFolder " + metadataId);
-                if (UizaDataV3.getInstance().isSettingPlayer()) {
+                if (UZData.getInstance().isSettingPlayer()) {
                     LLog.d(TAG, "isSettingPlayer return");
                     return;
                 }

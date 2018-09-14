@@ -29,12 +29,12 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.ComunicateMng;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
 import vn.loitp.uzv1.view.util.UizaDataV1;
 import vn.loitp.uzv1.view.util.UizaInputV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 public class V2UizaVideoIMActivity extends BaseActivity implements UZVideoV1.Callback {
@@ -273,7 +273,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UZVideoV1.Cal
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            if (UizaUtil.getClickedPip(activity)) {
+            if (UZUtil.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

@@ -27,8 +27,8 @@ import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
 import vn.loitp.restapi.uiza.model.v2.search.Search;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.util.UizaDataV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
@@ -249,7 +249,7 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
 
         UizaDataV1.getInstance().clear();
 
-        UizaUtil.setClickedPip(activity, false);
+        UZUtil.setClickedPip(activity, false);
         Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());

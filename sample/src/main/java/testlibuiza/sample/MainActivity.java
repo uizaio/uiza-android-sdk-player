@@ -23,7 +23,7 @@ import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.v2.auth.Auth;
 import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv3.util.UZUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -45,14 +45,14 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_uiza_video_cannot_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
+                UZUtil.setAcitivityCanSlideIsRunning(activity, false);
                 callUizaVideoCannotSlideV2();
             }
         });
         findViewById(R.id.bt_uiza_video_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
+                UZUtil.setAcitivityCanSlideIsRunning(activity, true);
                 callUizaVideoSlideV2();
             }
         });
@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(Auth auth) {
                 LLog.d(TAG, "authV2 onSuccess");
-                UizaUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
+                UZUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
                 RestClientV2.addAuthorization(auth.getData().getToken());
             }
 
@@ -142,14 +142,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void callUizaVideoCannotSlideV2() {
-        UizaUtil.setSlideUizaVideoEnabled(activity, false);
+        UZUtil.setSlideUizaVideoEnabled(activity, false);
         Intent intent = new Intent(activity, V2UizaVideoIMActivity.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
 
     private void callUizaVideoSlideV2() {
-        UizaUtil.setSlideUizaVideoEnabled(activity, true);
+        UZUtil.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);

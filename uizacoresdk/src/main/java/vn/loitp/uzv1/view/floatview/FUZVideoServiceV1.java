@@ -41,9 +41,9 @@ import loitp.core.R;
 import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.ComunicateMng;
+import vn.loitp.uzv3.util.UZUtil;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -148,7 +148,7 @@ public class FUZVideoServiceV1 extends Service implements FUZVideoV1.Callback {
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setClickedPip(getApplicationContext(), true);
+                UZUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 LLog.d(TAG, "btFullScreen getPackageName: " + getPackageName());
                 //intent.putExtra(Constants.FLOAT_CURRENT_POSITION, floatUizaIMAVideo.getCurrentPosition());

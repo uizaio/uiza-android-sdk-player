@@ -37,12 +37,12 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
-import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.rl.video.UZPlayerViewV1;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
+import vn.loitp.uzv3.util.UZUtil;
+import vn.loitp.uzv3.view.rl.video.UizaCallback;
+import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UizaCallback {
@@ -341,10 +341,10 @@ public class FrmVideoTop extends BaseFragment implements UizaCallback {
     }*/
 
     public void initEntity(String entityId) {
-        UizaUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
+        UZUtil.initEntity(getActivity(), uizaIMAVideoV3, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        UizaUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
+        UZUtil.initPlaylistFolder(getActivity(), uizaIMAVideoV3, metadataId);
     }
 }

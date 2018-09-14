@@ -21,7 +21,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LLog;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv3.util.UZUtil;
 
 public class SplashActivityV3 extends BaseActivity {
     private int currentPlayerId = R.layout.player_skin_1;
@@ -161,7 +161,7 @@ public class SplashActivityV3 extends BaseActivity {
 
                 //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 //UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
-                UizaUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
+                UZUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
 
                 //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
@@ -169,7 +169,7 @@ public class SplashActivityV3 extends BaseActivity {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
-                            UizaUtil.setClickedPip(activity, false);
+                            UZUtil.setClickedPip(activity, false);
                             startActivity(intent);
                             LActivityUtil.tranIn(activity);
                             finish();

@@ -50,12 +50,12 @@
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3"
+            android:name="vn.loitp.uzv3.view.floatview.FloatingUizaVideoServiceV3"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="vn.loitp.uizavideov3.FloatClickFullScreenReceiverV3"
+            android:name="vn.loitp.uzv3.FloatClickFullScreenReceiverV3"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

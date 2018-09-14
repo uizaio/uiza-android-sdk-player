@@ -18,10 +18,10 @@ import vn.loitp.core.utilities.LUIUtil;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.uizavideov3.view.rl.video.UizaCallback;
-import vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
+import vn.loitp.uzv3.util.UZUtil;
+import vn.loitp.uzv3.view.rl.video.UizaCallback;
+import vn.loitp.uzv3.view.rl.video.UizaIMAVideoV3;
 import vn.loitp.views.LToast;
 
 /**
@@ -48,14 +48,14 @@ public class CustomSkinActivity extends BaseActivity implements UizaCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UizaUtil.setCasty(this);
-        UizaUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uizaIMAVideoV3 = (UizaIMAVideoV3) findViewById(R.id.uiza_video);
         uizaIMAVideoV3.setUizaCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
-        UizaUtil.initEntity(activity, uizaIMAVideoV3, entityId);
+        UZUtil.initEntity(activity, uizaIMAVideoV3, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
             @Override

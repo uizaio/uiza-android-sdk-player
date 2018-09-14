@@ -165,7 +165,7 @@
 
             </FrameLayout>
 
-            <vn.loitp.uizavideov3.view.rl.timebar.UZTimebar
+            <vn.loitp.uzv3.view.rl.timebar.UZTimebar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

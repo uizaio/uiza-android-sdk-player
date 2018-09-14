@@ -16,7 +16,7 @@ import vn.loitp.core.common.Constants;
 import vn.loitp.core.utilities.LActivityUtil;
 import vn.loitp.core.utilities.LDialogUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.loitp.uzv3.util.UZUtil;
 
 public class V3SetEntityIdActivity extends BaseActivity {
     //for entity id
@@ -98,7 +98,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setClickedPip(activity, false);
+                UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
@@ -154,7 +154,7 @@ public class V3SetEntityIdActivity extends BaseActivity {
         btStartPf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setClickedPip(activity, false);
+                UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, V3CannotSlidePlayer.class);
                 intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);

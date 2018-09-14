@@ -29,7 +29,6 @@ import vn.loitp.core.utilities.LLog;
 import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.view.ComunicateMng;
 import vn.loitp.uzv1.view.rl.video.UZVideoV1;
@@ -37,6 +36,7 @@ import vn.loitp.uzv1.view.rl.videoinfo.ItemAdapterV1;
 import vn.loitp.uzv1.view.rl.videoinfo.UZVideoInfoV1;
 import vn.loitp.uzv1.view.util.UizaDataV1;
 import vn.loitp.uzv1.view.util.UizaInputV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Callback, ItemAdapterV1.Callback {
@@ -52,13 +52,13 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
         String entityId = null;
         String entityCover = null;
         String entityTitle = null;
-        if (UizaUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(activity)) {
             //activity is called from PiP Service
             entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_COVER);
         } else {
-            UizaUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             entityTitle = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_TITLE);
             entityCover = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_COVER);
@@ -293,7 +293,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
     @Override
     public void isInitResult(boolean isInitSuccess, GetLinkPlay getLinkPlay, GetDetailEntity getDetailEntity) {
         if (isInitSuccess) {
-            if (UizaUtil.getClickedPip(activity)) {
+            if (UZUtil.getClickedPip(activity)) {
                 ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                 msgFromActivityIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
@@ -311,7 +311,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
             } else {
                 boolean isPlayPrev = UizaDataV1.getInstance().isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed();
                 if (isPlayPrev) {
-                    UizaUtil.setClickedPip(activity, false);
+                    UZUtil.setClickedPip(activity, false);
                     setupVideo(prevUizaInputV1.getEntityId(), prevUizaInputV1.getEntityName(), prevUizaInputV1.getUrlThumnailsPreviewSeekbar(), false);
                 } else {
                     activity.onBackPressed();
@@ -322,7 +322,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-        UizaUtil.setClickedPip(activity, false);
+        UZUtil.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 
@@ -354,7 +354,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
 
     @Override
     public void onClickItemBottom(Item item, int position) {
-        UizaUtil.setClickedPip(activity, false);
+        UZUtil.setClickedPip(activity, false);
         setupVideo(item.getId(), item.getName(), item.getThumbnail(), true);
     }
 

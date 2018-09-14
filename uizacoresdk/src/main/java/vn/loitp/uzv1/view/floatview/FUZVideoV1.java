@@ -29,10 +29,10 @@ import vn.loitp.restapi.uiza.UizaServiceV2;
 import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
 import vn.loitp.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.listerner.ProgressCallback;
 import vn.loitp.uzv1.manager.FUZPlayerManagerV1;
 import vn.loitp.uzv1.view.util.UizaDataV1;
+import vn.loitp.uzv3.util.UZUtil;
 import vn.loitp.views.LToast;
 
 /**
@@ -228,7 +228,7 @@ public class FUZVideoV1 extends RelativeLayout {
     private void trackUiza(final UizaTracking uizaTracking) {
         //LLog.d(TAG, "<<<trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
         if (RestClientTracking.getRetrofit() == null) {
-            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint(getContext());
+            String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getContext());
             //LLog.d(TAG, "trackUiza currentApiTrackingEndPoint: " + currentApiTrackingEndPoint);
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");

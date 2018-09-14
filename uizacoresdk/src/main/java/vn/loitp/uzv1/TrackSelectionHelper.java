@@ -46,8 +46,8 @@ import java.util.Arrays;
 import loitp.core.R;
 import vn.loitp.core.utilities.LAnimationUtil;
 import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
 import vn.loitp.uzv1.view.util.DemoUtilV1;
+import vn.loitp.uzv3.util.UZUtil;
 
 /**
  * Helper class for displaying track selection dialogs.
@@ -117,7 +117,7 @@ import vn.loitp.uzv1.view.util.DemoUtilV1;
         //.setNegativeButton(Html.fromHtml("<font color='#000000'>" + "Cancel" + "</font>"), null);
 
         dialog = builder.create();
-        UizaUtil.showUizaDialog(activity, dialog);
+        UZUtil.showUizaDialog(activity, dialog);
     }
 
     private AlertDialog dialog;

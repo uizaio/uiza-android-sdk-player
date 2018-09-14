@@ -13,7 +13,7 @@ import uiza.R;
 import vn.loitp.core.base.BaseFragment;
 import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
+import vn.loitp.uzv3.view.rl.videoinfo.UizaIMAVideoInfoV3;
 
 public class FrmVideoBottom extends BaseFragment {
     private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
