@@ -21,26 +21,26 @@ import uiza.v2.home.view.UizaActionBar;
 import uiza.v2.home.view.UizaDrawerBottom;
 import uiza.v2.home.view.UizaDrawerHeader;
 import uiza.v2.home.view.UizaDrawerMenuItemV2;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.RestClientTracking;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.Datum;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
     private PlaceHolderView mDrawerView;
@@ -166,9 +166,9 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         genHomeMenu();
 
         if (RestClientV2.getRetrofit() == null) {
-            String apiEndPoint = UizaUtil.getApiEndPoint(getActivity());
-            String currentApiTrackingEndPoint = UizaUtil.getApiTrackEndPoint(getActivity());
-            String token = UizaUtil.getToken(getActivity());
+            String apiEndPoint = UZUtil.getApiEndPoint(getActivity());
+            String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getActivity());
+            String token = UZUtil.getToken(getActivity());
 
             LLog.d(TAG, "getRetrofit apiEndPoint " + apiEndPoint);
             LLog.d(TAG, "getRetrofit currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
@@ -179,7 +179,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
 
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";
@@ -284,7 +284,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Item item, int position) {
-        UizaUtil.setClickedPip(getActivity(), false);
+        UZUtil.setClickedPip(getActivity(), false);
         ((HomeV2CanSlideActivity) getActivity()).play(item.getId(), item.getName(), item.getThumbnail());
     }
 

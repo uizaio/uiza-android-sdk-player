@@ -15,26 +15,26 @@ import java.util.List;
 import uiza.R;
 import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.LoadingView;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LKeyBoardUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
-import vn.loitp.restapi.uiza.model.v2.search.Search;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LKeyBoardUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v2.search.JsonBodySearch;
+import vn.uiza.restapi.uiza.model.v2.search.Search;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.util.UizaDataV1;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_COVER;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_ID;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 public class SearchV2Activity extends BaseActivity implements View.OnClickListener {
     private ImageView ivBack;
@@ -180,7 +180,7 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
 
         LToast.show(activity, getString(R.string.load_page) + page);
 
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
 
         JsonBodySearch jsonBodySearch = new JsonBodySearch();
         jsonBodySearch.setKeyword(keyword);
@@ -243,13 +243,13 @@ public class SearchV2Activity extends BaseActivity implements View.OnClickListen
     }
 
     private void onClickVideo(Item item, int position) {
-        if (UizaData.getInstance().isSettingPlayer()) {
+        if (UizaDataV1.getInstance().isSettingPlayer()) {
             return;
         }
 
-        UizaData.getInstance().clear();
+        UizaDataV1.getInstance().clear();
 
-        UizaUtil.setClickedPip(activity, false);
+        UZUtil.setClickedPip(activity, false);
         Intent intent = new Intent(activity, UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());

@@ -16,10 +16,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
-import vn.loitp.core.utilities.LImageUtil;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.DataHolder> {
     private int lastPosition = -1;

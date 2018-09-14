@@ -10,17 +10,17 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 
 import uiza.R;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LAnimationUtil;
-import vn.loitp.core.utilities.LImageUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Position;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Click;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.NonReusable;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Position;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Resolve;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.View;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.

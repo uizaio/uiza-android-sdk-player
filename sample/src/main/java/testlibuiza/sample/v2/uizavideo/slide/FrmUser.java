@@ -5,8 +5,8 @@ package testlibuiza.sample.v2.uizavideo.slide;
  */
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.uizavideo.view.IOnBackPressed;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.uzv1.view.IOnBackPressed;
 
 public class FrmUser extends BaseFragment implements IOnBackPressed {
     @Override

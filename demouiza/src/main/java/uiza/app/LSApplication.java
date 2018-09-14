@@ -5,9 +5,9 @@ import android.support.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
 
-import vn.loitp.core.common.Constants;
-import vn.loitp.data.ActivityData;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.data.ActivityData;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();
@@ -36,7 +36,7 @@ public class LSApplication extends MultiDexApplication {
         LeakCanary.install(this);*/
 
         //UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
-        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
+        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
     }
 
     public Gson getGson() {

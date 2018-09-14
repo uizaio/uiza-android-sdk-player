@@ -19,15 +19,15 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v2.splash.SplashActivity;
 import uiza.v3.canslide.SplashActivityV3;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.Mode;
-import vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.Mode;
+import vn.uiza.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";
@@ -60,25 +60,25 @@ public class OptionActivity extends BaseActivity {
         SkinObject s1 = new SkinObject();
         s1.setSkinName("Uiza Skin 1");
         s1.setResId(R.drawable.skin_1);
-        s1.setSkinId(Constants.PLAYER_ID_SKIN_1);
+        s1.setSkinId(R.layout.uz_player_skin_1);
         skinObjectList.add(s1);
 
         SkinObject s2 = new SkinObject();
         s2.setSkinName("Uiza Skin 2");
         s2.setResId(R.drawable.skin_2);
-        s2.setSkinId(Constants.PLAYER_ID_SKIN_2);
+        s2.setSkinId(R.layout.uz_player_skin_2);
         skinObjectList.add(s2);
 
         SkinObject s3 = new SkinObject();
         s3.setSkinName("Uiza Skin 3");
         s3.setResId(R.drawable.skin_3);
-        s3.setSkinId(Constants.PLAYER_ID_SKIN_3);
+        s3.setSkinId(R.layout.uz_player_skin_3);
         skinObjectList.add(s3);
 
         SkinObject sDf = new SkinObject();
         sDf.setSkinName("Uiza Skin Default");
         sDf.setResId(R.drawable.skin_df);
-        sDf.setSkinId(Constants.PLAYER_ID_SKIN_0);
+        sDf.setSkinId(R.layout.uz_player_skin_0);
         skinObjectList.add(sDf);
     }
 
@@ -96,7 +96,7 @@ public class OptionActivity extends BaseActivity {
         });
 
         //set auth null every run this app
-        UizaUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
+        UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
 
         findViews();
         setupSkin();
@@ -234,7 +234,7 @@ public class OptionActivity extends BaseActivity {
                         radioCanSlide.setChecked(true);
                         break;
                 }
-                UizaUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
+                UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
             }
         });
     }

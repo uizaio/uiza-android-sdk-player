@@ -1,9 +1,9 @@
 package uiza.v2.home.view;
 
 import uiza.R;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.NonReusable;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Resolve;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.
@@ -32,7 +32,7 @@ public class BlankView {
 
     }*/
 
-    /*public interface UizaCallback {
+    /*public interface UZCallback {
         public void onClick(Item item, int position);
     }*/
 }

@@ -14,7 +14,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/uiza_logo_512" />
 
-    <vn.loitp.views.realtimeblurview.RealtimeBlurView
+    <vn.uiza.views.realtimeblurview.RealtimeBlurView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:realtimeBlurRadius="@dimen/round_55"

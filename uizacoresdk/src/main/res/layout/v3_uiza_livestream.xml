@@ -5,7 +5,7 @@
     android:animateLayoutChanges="true"
     android:background="@color/Black">
 
-    <vn.loitp.uizavideov3.view.rl.livestream.CameraPreview
+    <vn.uiza.uzv3.view.rl.livestream.CameraPreview
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -23,19 +23,19 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.utils.util.KeyboardUtils;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.utils.util.KeyboardUtils;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
 
 public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {
     private ImageView ivBack;
@@ -74,7 +74,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                UizaUtil.setClickedPip(getActivity(), false);
+                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
             }
 
@@ -151,7 +151,7 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
             LToast.show(getActivity(), getString(R.string.load_page) + page);
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {

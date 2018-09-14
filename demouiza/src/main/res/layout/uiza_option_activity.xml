@@ -14,7 +14,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/uiza_logo_512" />
 
-    <vn.loitp.views.realtimeblurview.RealtimeBlurView
+    <vn.uiza.views.realtimeblurview.RealtimeBlurView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:realtimeBlurRadius="@dimen/round_55"
@@ -41,7 +41,7 @@
                 android:textSize="@dimen/txt_15"
                 android:textStyle="bold" />
 
-            <vn.loitp.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager
+            <vn.uiza.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

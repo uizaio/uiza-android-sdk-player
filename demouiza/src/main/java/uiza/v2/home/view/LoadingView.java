@@ -4,11 +4,11 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ProgressBar;
 
 import uiza.R;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.NonReusable;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.NonReusable;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Resolve;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.View;
 
 /**
  * Created by www.muathu@gmail.com on 9/16/2017.
@@ -40,7 +40,7 @@ public class LoadingView {
 
     }*/
 
-    /*public interface UizaCallback {
+    /*public interface UZCallback {
         public void onClick(Item item, int position);
     }*/
 }

@@ -6,9 +6,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import uiza.R;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.views.LToast;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private EditText etId;

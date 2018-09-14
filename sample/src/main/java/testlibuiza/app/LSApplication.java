@@ -5,10 +5,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
 
-import vn.loitp.core.common.Constants;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.restapi.restclient.RestClientTracking;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -35,9 +35,9 @@ public class LSApplication extends MultiDexApplication {
     private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private final int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private final int currentPlayerId = loitp.core.R.layout.uz_player_skin_1;
     public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
-    public static String entityIdDefaultLIVE = "b61e21bf-ceaf-4176-8e88-c13243284bea";
+    public static String entityIdDefaultLIVE = "6e736441-750b-4351-b7b0-561982c6554f";
     public static String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
     public static String entityIdDefaultLIVE_TRANSCODE = "04db355b-80d5-456e-aedb-aff1f8579e03";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "52128efd-59a7-4a3c-a2ec-988d031ccbe4";
@@ -51,6 +51,17 @@ public class LSApplication extends MultiDexApplication {
     public static final String entityIdDefaultLIVE = "";
     public static final String metadataDefault0 = "";*/
 
+    /*private final String DF_DOMAIN_API = "dev-api.uizadev.io";
+    private final String DF_TOKEN = "5e1e1afb4bf71936f26ec0ee6832b44f9ae0176f2a0334a0eadf09d4fa6da1f2e0a595baa46d20983c62f30d274724ca5bad4beaf0f4251db32f9651075ecc3b";
+    private final String DF_APP_ID = "152a5e7cca9a41948c88dbb96e705aaf";
+    private final int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
+    public static String entityIdDefaultLIVE = "";
+    public static String metadataDefault0 = "";
+    public static String entityIdDefaultLIVE_TRANSCODE = "";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "";
+    private final int env = Constants.ENVIRONMENT_DEV;*/
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,7 +69,6 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        //Utils.init(this);
         //config activity transition default
         //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
@@ -67,8 +77,8 @@ public class LSApplication extends MultiDexApplication {
         Constants.setDebugMode(true);
 
         //initWorkspace();
-        //UizaUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
-        UizaUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        //UZUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
+        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {

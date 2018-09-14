@@ -17,20 +17,20 @@ import uiza.v2.home.view.BlankView;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.data.HomeDataV3;
 import uiza.v3.view.EntityItemV3;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv3.util.UZData;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -140,7 +140,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
             @Override
             public void onClick(View view) {
                 LLog.d(TAG, "onClick btPlayPlaylistFolder " + metadataId);
-                if (UizaDataV3.getInstance().isSettingPlayer()) {
+                if (UZData.getInstance().isSettingPlayer()) {
                     LLog.d(TAG, "isSettingPlayer return");
                     return;
                 }
@@ -233,7 +233,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         //check if is livestream true -> get data by using api retrieveALiveEvent
         //else call getListAllEntity
         if (isLivestream) {
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            UZService service = UZRestClient.createService(UZService.class);
             subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
                 @Override
                 public void onSuccess(ResultRetrieveALiveEvent result) {
@@ -298,7 +298,7 @@ public class FrmHomeChannelV3 extends BaseFragment {
         } else {
             //LLog.d(TAG, "getData metadataId: " + metadataId);
 
-            UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+            UZService service = UZRestClient.createService(UZService.class);
             subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {

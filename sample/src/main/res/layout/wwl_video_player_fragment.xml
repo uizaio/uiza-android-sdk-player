@@ -10,7 +10,7 @@
         android:background="@color/Green"
         android:scaleType="centerInside"
         android:src="@drawable/err" />-->
-    <vn.loitp.uizavideov3.view.rl.video.UizaIMAVideoV3
+    <vn.uiza.uzv3.view.rl.video.UZVideo
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="250dp" />

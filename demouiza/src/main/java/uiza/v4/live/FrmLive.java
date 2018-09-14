@@ -21,21 +21,21 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZData;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
 
 public class FrmLive extends BaseFragment implements IOnBackPressed {
     private final int limit = 50;
@@ -59,8 +59,8 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LLog.d(TAG, "onViewCreated");
-        if (UizaUtil.getClickedPip(getActivity())) {
-            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+        if (UZUtil.getClickedPip(getActivity())) {
+            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
@@ -78,7 +78,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
             @Override
             public void onClick(Data data, int position) {
                 if (data != null && data.getLastProcess() != null && data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
-                    UizaUtil.setClickedPip(getActivity(), false);
+                    UZUtil.setClickedPip(getActivity(), false);
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
                 } else {
                     showDialogError("This content is not streaming now");
@@ -134,7 +134,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         LLog.d(TAG, "getListAllEntities " + page + "/" + totalPage);
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {

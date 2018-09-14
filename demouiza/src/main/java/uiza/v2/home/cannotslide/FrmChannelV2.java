@@ -19,26 +19,26 @@ import uiza.v2.data.HomeDataV2;
 import uiza.v2.home.view.BlankView;
 import uiza.v2.home.view.EntityItemV2;
 import uiza.v2.home.view.LoadingView;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.listallentity.Item;
-import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.util.UizaData;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
+import vn.uiza.restapi.uiza.model.v2.listallentity.ListAllEntity;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.util.UizaDataV1;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_COVER;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_ID;
-import static vn.loitp.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_COVER;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_ID;
+import static vn.uiza.core.common.Constants.KEY_UIZA_ENTITY_TITLE;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -136,7 +136,7 @@ public class FrmChannelV2 extends BaseFragment {
     private void setupData(List<Item> itemList, boolean isCallFromLoadMore) {
         /*//poster
         List<Item> itemListPoster = getSubList(itemList, 0, 5);
-        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.UizaCallback() {
+        placeHolderView.addView(new PosterView(getActivity(), itemListPoster, new PosterView.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -148,7 +148,7 @@ public class FrmChannelV2 extends BaseFragment {
         channelObjectTopMovies.setChannelName("Top Movies");
         List<Item> itemListTopMovies = getSubList(itemList, 6, 15);
         channelObjectTopMovies.setItemList(itemListTopMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectTopMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -160,7 +160,7 @@ public class FrmChannelV2 extends BaseFragment {
         channelObjectNewestMovies.setChannelName("Newest Movies");
         List<Item> itemListNewestMovies = getSubList(itemList, 16, itemList.size() - 1);
         channelObjectNewestMovies.setItemList(itemListNewestMovies);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectNewestMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -171,7 +171,7 @@ public class FrmChannelV2 extends BaseFragment {
         ChannelObject channelObjectAllMovies = new ChannelObject();
         channelObjectAllMovies.setChannelName("All Movies");
         channelObjectAllMovies.setItemList(itemList);
-        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.UizaCallback() {
+        placeHolderView.addView(new ChannelList(getActivity(), channelObjectAllMovies, new ChannelItem.UZCallback() {
             @Override
             public void onClick(Item item, int position) {
                 onClickVideo(item, position);
@@ -219,10 +219,10 @@ public class FrmChannelV2 extends BaseFragment {
     }
 
     private void onClickVideo(Item item, int position) {
-        if (UizaData.getInstance().isSettingPlayer()) {
+        if (UizaDataV1.getInstance().isSettingPlayer()) {
             return;
         }
-        UizaUtil.setClickedPip(getActivity(), false);
+        UZUtil.setClickedPip(getActivity(), false);
         Intent intent = new Intent(getActivity(), UizaPlayerActivityV2.class);
         intent.putExtra(KEY_UIZA_ENTITY_ID, item.getId());
         intent.putExtra(KEY_UIZA_ENTITY_COVER, item.getThumbnail());
@@ -257,7 +257,7 @@ public class FrmChannelV2 extends BaseFragment {
         if (tvMsg.getVisibility() != View.GONE) {
             tvMsg.setVisibility(View.GONE);
         }
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
 
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         if (HomeDataV2.getInstance().getDatum().getId().equals(String.valueOf(Constants.NOT_FOUND))) {

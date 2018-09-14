@@ -20,22 +20,22 @@ import java.util.List;
 import uiza.R;
 import uiza.v2.home.view.LoadingView;
 import uiza.v3.view.EntityItemV3;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDisplayUtils;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.utils.util.KeyboardUtils;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.utils.util.KeyboardUtils;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, IOnBackPressed {
     private ImageView ivBack;
@@ -173,7 +173,7 @@ public class FrmSearchV3 extends BaseFragment implements View.OnClickListener, I
         LToast.show(getActivity(), getString(R.string.load_page) + page);
 
 
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {

@@ -11,15 +11,15 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaDataV3;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZData;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
 
@@ -37,14 +37,14 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setClickedPip(getActivity(), false);
+                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
             }
         });
         frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setClickedPip(getActivity(), false);
+                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });
@@ -55,8 +55,8 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             }
         });
 
-        if (UizaUtil.getClickedPip(getActivity())) {
-            if (UizaDataV3.getInstance().isPlayWithPlaylistFolder()) {
+        if (UZUtil.getClickedPip(getActivity())) {
+            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 //frmRootView.findViewById(R.id.bt_playlist_folder).performClick();
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);

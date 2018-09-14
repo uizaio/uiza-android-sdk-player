@@ -1,6 +1,6 @@
 package uiza.v2.data;
 
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.Datum;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.Datum;
 
 /**
  * Created by www.muathu@gmail.com on 11/14/2017.

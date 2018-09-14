@@ -1,6 +1,6 @@
 package uiza.v3.data;
 
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
  * Created by www.muathu@gmail.com on 11/14/2017.

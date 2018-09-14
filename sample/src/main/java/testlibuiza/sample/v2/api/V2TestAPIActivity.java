@@ -10,30 +10,30 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientTracking;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.tracking.UizaTracking;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
-import vn.loitp.restapi.uiza.model.v2.getlinkdownload.Mpd;
-import vn.loitp.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
-import vn.loitp.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentity.ListAllEntity;
-import vn.loitp.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
-import vn.loitp.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
-import vn.loitp.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
-import vn.loitp.restapi.uiza.model.v2.search.JsonBodySearch;
-import vn.loitp.restapi.uiza.model.v2.search.Search;
-import vn.loitp.rxandroid.ApiSubscriber;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.RestClientTracking;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.uiza.model.v2.auth.Auth;
+import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
+import vn.uiza.restapi.uiza.model.v2.getdetailentity.JsonBodyGetDetailEntity;
+import vn.uiza.restapi.uiza.model.v2.getlinkdownload.Mpd;
+import vn.uiza.restapi.uiza.model.v2.getlinkplay.GetLinkPlay;
+import vn.uiza.restapi.uiza.model.v2.listallentity.JsonBodyListAllEntity;
+import vn.uiza.restapi.uiza.model.v2.listallentity.ListAllEntity;
+import vn.uiza.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
+import vn.uiza.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.JsonBodyMetadataList;
+import vn.uiza.restapi.uiza.model.v2.listallmetadata.ListAllMetadata;
+import vn.uiza.restapi.uiza.model.v2.search.JsonBodySearch;
+import vn.uiza.restapi.uiza.model.v2.search.Search;
+import vn.uiza.rxandroid.ApiSubscriber;
 
 public class V2TestAPIActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv;
@@ -170,7 +170,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     private String appId;
 
     private void auth() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         /*String accessKeyId = Constants.A_K_DEV;
         String secretKeyId = Constants.S_K_DEV;*/
         String accessKeyId = Constants.A_K_UQC;
@@ -198,7 +198,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void checkToken() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         subscribe(service.checkToken(), new ApiSubscriber<Auth>() {
             @Override
             public void onSuccess(Auth auth) {
@@ -232,7 +232,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listMetadata() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         int limit = 999;
         String orderBy = "name";
         String orderType = "ASC";
@@ -255,7 +255,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void search() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         JsonBodySearch jsonBodySearch = new JsonBodySearch();
         jsonBodySearch.setKeyword("lol");
         jsonBodySearch.setLimit(50);
@@ -275,7 +275,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void listEntity() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         JsonBodyListAllEntity jsonBodyListAllEntity = new JsonBodyListAllEntity();
         //jsonBodyListAllEntity.setMetadataId(metadataId);
         jsonBodyListAllEntity.setLimit(50);
@@ -296,7 +296,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getDetailEntity() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         JsonBodyGetDetailEntity jsonBodyGetDetailEntity = new JsonBodyGetDetailEntity();
         jsonBodyGetDetailEntity.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
         subscribe(service.getDetailEntityV2(jsonBodyGetDetailEntity), new ApiSubscriber<GetDetailEntity>() {
@@ -313,7 +313,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getListAllEntityRelation() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
         jsonBodyListAllEntityRelation.setId("5bd11904-07b8-4859-bdc8-9fee0b2199b2");
         subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
@@ -330,7 +330,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getLinkPlay() {
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         subscribe(service.getLinkPlayV2("e01c8c6c-c372-4fee-9f31-cb6d5b7fefe7", appId), new ApiSubscriber<GetLinkPlay>() {
             @Override
             public void onSuccess(GetLinkPlay getLinkPlay) {
@@ -362,7 +362,7 @@ public class V2TestAPIActivity extends BaseActivity implements View.OnClickListe
     public void init(final UizaTracking uizaTracking) {
         RestClientTracking.init(Constants.URL_TRACKING_DEV);
         s = LSApplication.getInstance().getGson().toJson(uizaTracking);
-        UizaServiceV2 service = RestClientTracking.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
         subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {

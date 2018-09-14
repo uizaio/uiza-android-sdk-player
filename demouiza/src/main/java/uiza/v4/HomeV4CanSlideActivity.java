@@ -22,21 +22,21 @@ import uiza.v4.home.FrmHome;
 import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LSocialUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.utils.util.AppUtils;
-import vn.loitp.views.LToast;
-import vn.loitp.views.draggablepanel.DraggableListener;
-import vn.loitp.views.draggablepanel.DraggablePanel;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LSocialUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.utils.util.AppUtils;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.draggablepanel.DraggableListener;
+import vn.uiza.views.draggablepanel.DraggablePanel;
 
 public class HomeV4CanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
@@ -61,7 +61,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UizaUtil.setCasty(this);
+        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
 
         llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
@@ -152,17 +152,17 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
             @Override
             public void onMinimized() {
-                frmVideoTop.getUizaIMAVideoV3().hideController();
+                frmVideoTop.getUZVideo().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
-                frmVideoTop.getUizaIMAVideoV3().onDestroy();
+                frmVideoTop.getUZVideo().onDestroy();
             }
 
             @Override
@@ -266,7 +266,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (!frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
                     draggablePanel.setEnableSlide(true);
                 }
             }
@@ -292,10 +292,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                    if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
                     } else {
-                        if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
-                            frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                        if (frmVideoTop.getUZVideo().isLandscape()) {
+                            frmVideoTop.getUZVideo().toggleFullscreen();
                         } else {
                             draggablePanel.minimize();
                         }
@@ -324,10 +324,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUizaIMAVideoV3() != null && frmVideoTop.getUizaIMAVideoV3().isCastingChromecast()) {
+                        if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
                         } else {
-                            if (frmVideoTop.getUizaIMAVideoV3().isLandscape()) {
-                                frmVideoTop.getUizaIMAVideoV3().toggleFullscreen();
+                            if (frmVideoTop.getUZVideo().isLandscape()) {
+                                frmVideoTop.getUZVideo().toggleFullscreen();
                             } else {
                                 draggablePanel.minimize();
                             }

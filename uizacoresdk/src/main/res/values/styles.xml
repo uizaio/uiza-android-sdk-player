@@ -26,6 +26,14 @@
 
         <!--chromecas color-->
         <item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
+
+        <!--set color of preview seekbar-->
+        <!--<item name="played_color">@color/White</item>
+        <item name="scrubber_color">@color/White</item>-->
+        <!--<item name="buffered_color">@color/DeepPink</item>
+        <item name="unplayed_color">@color/Blue</item>
+        <item name="ad_marker_color">@color/White</item>
+        <item name="played_ad_marker_color">@color/Gray</item>-->
     </style>
 
     <style name="Theme.Swipe.Back.NoActionBar" parent="AppTheme">

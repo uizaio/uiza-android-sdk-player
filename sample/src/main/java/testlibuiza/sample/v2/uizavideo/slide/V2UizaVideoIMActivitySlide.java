@@ -8,16 +8,16 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.uizavideo.view.ComunicateMng;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.draggablepanel.DraggableListener;
-import vn.loitp.views.draggablepanel.DraggablePanel;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.uzv1.view.ComunicateMng;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.draggablepanel.DraggableListener;
+import vn.uiza.views.draggablepanel.DraggablePanel;
 
 public class V2UizaVideoIMActivitySlide extends BaseActivity {
     private DraggablePanel draggablePanel;
@@ -39,30 +39,30 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmTop.getUZVideoV1().getPlayerView().hideController();
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmTop.getUZVideoV1().onDestroy();
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmTop.getUizaIMAVideo().onDestroy();
+                frmTop.getUZVideoV1().onDestroy();
             }
 
             @Override
             public void onDrag(int left, int top, int dx, int dy) {
                 //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-                frmTop.getUizaIMAVideo().getPlayerView().hideController();
+                frmTop.getUZVideoV1().getPlayerView().hideController();
             }
         });
         replaceFragment(new FrmHome());
 
-        if (UizaUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(activity)) {
             //called from PiP Service
             String entityId = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_ID);
             String entityTitle = getIntent().getStringExtra(Constants.FLOAT_LINK_ENTITY_TITLE);
@@ -170,12 +170,12 @@ public class V2UizaVideoIMActivitySlide extends BaseActivity {
             @Override
             public void initDone() {
                 LLog.d(TAG, "initDone");
-                if (UizaUtil.getClickedPip(activity)) {
+                if (UZUtil.getClickedPip(activity)) {
                     ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
                     msgFromActivityIsInitSuccess.setInitSuccess(true);
                     ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
                 }
-                frmTop.getUizaIMAVideo().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+                frmTop.getUZVideoV1().getPlayerView().setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
                     @Override
                     public void onVisibilityChange(int visibility) {
                         if (draggablePanel != null && !isLandscape) {

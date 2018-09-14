@@ -39,23 +39,23 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
-        <receiver android:name="vn.loitp.core.utilities.LConectifyBroadcast">
+        <receiver android:name="vn.uiza.core.utilities.LConectifyBroadcast">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="vn.loitp.uizavideo.view.floatview.FloatingUizaVideoService"
+            android:name="vn.uiza.uzv1.view.floatview.FUZVideoServiceV1"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="vn.loitp.uizavideov3.view.floatview.FloatingUizaVideoServiceV3"
+            android:name="vn.uiza.uzv3.view.floatview.FUZVideoService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="vn.loitp.uizavideov3.FloatClickFullScreenReceiverV3"
+            android:name="vn.uiza.uzv3.FloatClickFullScreenReceiverV3"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -66,9 +66,9 @@
         <!--START CHROMECAST-->
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="vn.loitp.chromecast.CastOptionsProvider" />
+            android:value="vn.uiza.chromecast.CastOptionsProvider" />
         <activity
-            android:name="vn.loitp.chromecast.ExpandedControlsActivity"
+            android:name="vn.uiza.chromecast.ExpandedControlsActivity"
             android:theme="@style/Theme.CastVideosDark" />
         <!--STOP CHROMECAST-->
     </application>

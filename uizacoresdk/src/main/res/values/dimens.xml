@@ -26,6 +26,7 @@
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_30">30dp</dimen>
     <dimen name="w_40">40dp</dimen>
+    <dimen name="w_45">45dp</dimen>
     <dimen name="w_2">2dp</dimen>
     <dimen name="w_1">1dp</dimen>
     <dimen name="w_3">3dp</dimen>

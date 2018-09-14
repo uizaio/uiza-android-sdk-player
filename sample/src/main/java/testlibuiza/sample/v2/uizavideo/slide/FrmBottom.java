@@ -5,7 +5,7 @@ package testlibuiza.sample.v2.uizavideo.slide;
  */
 
 import testlibuiza.R;
-import vn.loitp.core.base.BaseFragment;
+import vn.uiza.core.base.BaseFragment;
 
 public class FrmBottom extends BaseFragment {
 

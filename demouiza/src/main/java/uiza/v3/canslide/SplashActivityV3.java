@@ -16,15 +16,15 @@ import android.widget.RadioGroup;
 import uiza.R;
 import uiza.option.OptionActivity;
 import uiza.v4.HomeV4CanSlideActivity;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class SplashActivityV3 extends BaseActivity {
-    private int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
+    private int currentPlayerId = R.layout.uz_player_skin_1;
 
     //workspace loitp
     /*private final String DF_DOMAIN_API = "android-api.uiza.co";
@@ -71,7 +71,7 @@ public class SplashActivityV3 extends BaseActivity {
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
 
         //init skin
-        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, Constants.PLAYER_ID_SKIN_0);
+        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
 
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
@@ -161,7 +161,7 @@ public class SplashActivityV3 extends BaseActivity {
 
                 //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 //UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
-                UizaUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
+                UZUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
 
                 //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
@@ -169,7 +169,7 @@ public class SplashActivityV3 extends BaseActivity {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
-                            UizaUtil.setClickedPip(activity, false);
+                            UZUtil.setClickedPip(activity, false);
                             startActivity(intent);
                             LActivityUtil.tranIn(activity);
                             finish();

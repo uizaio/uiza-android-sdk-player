@@ -23,23 +23,23 @@ import uiza.v2.home.view.UizaDrawerHeader;
 import uiza.v3.data.HomeDataV3;
 import uiza.v3.view.EntityItemV3;
 import uiza.v3.view.UizaDrawerMenuItemV3;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LDialogUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.core.utilities.LScreenUtil;
-import vn.loitp.core.utilities.LUIUtil;
-import vn.loitp.restapi.restclient.RestClientV3;
-import vn.loitp.restapi.uiza.UizaServiceV3;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideo.view.IOnBackPressed;
-import vn.loitp.uizavideov3.util.UizaUtil;
-import vn.loitp.views.LToast;
-import vn.loitp.views.placeholderview.lib.placeholderview.PlaceHolderView;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv1.view.IOnBackPressed;
+import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.views.LToast;
+import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 
 public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     private PlaceHolderView mDrawerView;
@@ -166,7 +166,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     private void getListAllMetadata() {
         genHomeMenu();
 
-        UizaServiceV3 service = RestClientV3.createService(UizaServiceV3.class);
+        UZService service = UZRestClient.createService(UZService.class);
         subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
@@ -269,7 +269,7 @@ public class FrmHomeV3 extends BaseFragment implements IOnBackPressed {
     }
 
     private void onClickVideo(Data data, int position) {
-        UizaUtil.setClickedPip(getActivity(), false);
+        UZUtil.setClickedPip(getActivity(), false);
         ((HomeV3CanSlideActivity) getActivity()).play(data);
     }
 

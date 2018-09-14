@@ -11,19 +11,19 @@ import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
-import testlibuiza.sample.v3.api.V3TestAPIActivity;
+import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinActivity;
-import testlibuiza.sample.v3.uizavideov3.V3SetEntityIdActivity;
-import vn.loitp.core.base.BaseActivity;
-import vn.loitp.core.common.Constants;
-import vn.loitp.core.utilities.LActivityUtil;
-import vn.loitp.core.utilities.LLog;
-import vn.loitp.restapi.restclient.RestClientV2;
-import vn.loitp.restapi.uiza.UizaServiceV2;
-import vn.loitp.restapi.uiza.model.v2.auth.Auth;
-import vn.loitp.restapi.uiza.model.v2.auth.JsonBodyAuth;
-import vn.loitp.rxandroid.ApiSubscriber;
-import vn.loitp.uizavideov3.util.UizaUtil;
+import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.restclient.RestClientV2;
+import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.model.v2.auth.Auth;
+import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
+import vn.uiza.rxandroid.ApiSubscriber;
+import vn.uiza.uzv3.util.UZUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -45,21 +45,21 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_uiza_video_cannot_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, false);
+                UZUtil.setAcitivityCanSlideIsRunning(activity, false);
                 callUizaVideoCannotSlideV2();
             }
         });
         findViewById(R.id.bt_uiza_video_slide_v2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UizaUtil.setAcitivityCanSlideIsRunning(activity, true);
+                UZUtil.setAcitivityCanSlideIsRunning(activity, true);
                 callUizaVideoSlideV2();
             }
         });
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, V3TestAPIActivity.class);
+                Intent intent = new Intent(activity, UZTestAPIActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.bt_sdk_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, V3SetEntityIdActivity.class);
+                Intent intent = new Intent(activity, SetEntityIdActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
 
     private void authV2() {
         LLog.d(TAG, "authV2");
-        UizaServiceV2 service = RestClientV2.createService(UizaServiceV2.class);
+        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
         /*String accessKeyId = Constants.A_K_DEV;
         String secretKeyId = Constants.S_K_DEV;*/
         String accessKeyId = Constants.A_K_UQC;
@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(Auth auth) {
                 LLog.d(TAG, "authV2 onSuccess");
-                UizaUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
+                UZUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
                 RestClientV2.addAuthorization(auth.getData().getToken());
             }
 
@@ -142,14 +142,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void callUizaVideoCannotSlideV2() {
-        UizaUtil.setSlideUizaVideoEnabled(activity, false);
+        UZUtil.setSlideUizaVideoEnabled(activity, false);
         Intent intent = new Intent(activity, V2UizaVideoIMActivity.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);
     }
 
     private void callUizaVideoSlideV2() {
-        UizaUtil.setSlideUizaVideoEnabled(activity, true);
+        UZUtil.setSlideUizaVideoEnabled(activity, true);
         Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide.class);
         startActivity(intent);
         LActivityUtil.tranIn(activity);

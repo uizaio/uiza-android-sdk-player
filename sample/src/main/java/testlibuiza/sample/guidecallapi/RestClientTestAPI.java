@@ -14,8 +14,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.loitp.restapi.DateTypeDeserializer;
-import vn.loitp.restapi.restclient.RestRequestInterceptor;
+import vn.uiza.restapi.DateTypeDeserializer;
+import vn.uiza.restapi.restclient.RestRequestInterceptor;
 
 public class RestClientTestAPI {
     private static final String TAG = RestClientTestAPI.class.getSimpleName();

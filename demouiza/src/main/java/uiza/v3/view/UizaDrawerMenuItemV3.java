@@ -11,11 +11,11 @@ import java.util.List;
 
 import uiza.R;
 import uiza.v3.data.HomeDataV3;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Click;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Layout;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.Resolve;
-import vn.loitp.views.placeholderview.lib.placeholderview.annotations.View;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Click;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Resolve;
+import vn.uiza.views.placeholderview.lib.placeholderview.annotations.View;
 
 /**
  * Created by janisharali on 19/08/16.

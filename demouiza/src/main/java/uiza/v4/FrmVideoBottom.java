@@ -10,13 +10,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import uiza.R;
-import vn.loitp.core.base.BaseFragment;
-import vn.loitp.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.loitp.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.loitp.uizavideov3.view.rl.videoinfo.UizaIMAVideoInfoV3;
+import vn.uiza.core.base.BaseFragment;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.uzv3.view.rl.videoinfo.UZVideoInfo;
 
 public class FrmVideoBottom extends BaseFragment {
-    private UizaIMAVideoInfoV3 uizaIMAVideoInfo;
+    private UZVideoInfo uizaIMAVideoInfo;
 
     @Override
     protected String setTag() {
@@ -31,7 +31,7 @@ public class FrmVideoBottom extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uizaIMAVideoInfo = (UizaIMAVideoInfoV3) view.findViewById(R.id.uiza_video_info);
+        uizaIMAVideoInfo = (UZVideoInfo) view.findViewById(R.id.uiza_video_info);
     }
 
     public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {

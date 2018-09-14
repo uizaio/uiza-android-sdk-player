@@ -126,4 +126,7 @@
     <string name="posterize">Posterize</string>
     <string name="text_live">Loitp@uiza.io</string>
     <string name="stop_record">Stop record</string>
+    <string name="per_warning">Thông báo</string>
+    <string name="uz_need_per">Uiza cần bạn cần cấp quyền điều chỉnh độ sáng màn hình</string>
+    <string name="approve">Cấp phép</string>
 </resources>

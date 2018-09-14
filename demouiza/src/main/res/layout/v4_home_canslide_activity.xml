@@ -19,7 +19,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/uiza_logo_512" />
 
-        <vn.loitp.views.realtimeblurview.RealtimeBlurView
+        <vn.uiza.views.realtimeblurview.RealtimeBlurView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="@dimen/round_80"
@@ -78,7 +78,7 @@
             android:layout_below="@+id/ll_action_bar"
             android:paddingTop="@dimen/padding_5" />
 
-        <vn.loitp.views.draggablepanel.DraggablePanel
+        <vn.uiza.views.draggablepanel.DraggablePanel
             android:id="@+id/draggable_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
