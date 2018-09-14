@@ -1645,7 +1645,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (isLandscape) {
-            LUIUtil.setMarginDimen(uzTimebar, 24, 0, 24, 0);
+            LUIUtil.setMarginDimen(uzTimebar, 5, 0, 5, 0);
         } else {
             LUIUtil.setMarginDimen(uzTimebar, 0, 0, 0, 0);
         }
