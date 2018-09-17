@@ -12,7 +12,7 @@
  * the License.
  */
 
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.frm;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +21,9 @@ import android.support.v17.leanback.app.VideoSupportFragmentGlueHost;
 import android.support.v17.leanback.media.MediaPlayerAdapter;
 import android.support.v17.leanback.media.PlaybackTransportControlGlue;
 import android.support.v17.leanback.widget.PlaybackControlsRow;
+
+import testlibuiza.uiza.com.sampletv.activity.DetailsActivity;
+import testlibuiza.uiza.com.sampletv.model.Movie;
 
 /**
  * Handles video playback with media controls.

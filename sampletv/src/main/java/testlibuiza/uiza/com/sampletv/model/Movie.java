@@ -12,7 +12,7 @@
  * the License.
  */
 
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.model;
 
 import java.io.Serializable;
 

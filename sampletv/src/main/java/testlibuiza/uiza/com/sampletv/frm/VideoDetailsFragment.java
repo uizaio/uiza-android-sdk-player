@@ -12,7 +12,7 @@
  * the License.
  */
 
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.frm;
 
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +47,15 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.Collections;
 import java.util.List;
+
+import testlibuiza.uiza.com.sampletv.R;
+import testlibuiza.uiza.com.sampletv.activity.DetailsActivity;
+import testlibuiza.uiza.com.sampletv.activity.MainActivity;
+import testlibuiza.uiza.com.sampletv.activity.PlaybackActivity;
+import testlibuiza.uiza.com.sampletv.model.Movie;
+import testlibuiza.uiza.com.sampletv.model.MovieList;
+import testlibuiza.uiza.com.sampletv.presenter.CardPresenter;
+import testlibuiza.uiza.com.sampletv.presenter.DetailsDescriptionPresenter;
 
 /*
  * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.

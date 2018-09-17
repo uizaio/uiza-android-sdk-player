@@ -12,7 +12,7 @@
  * the License.
  */
 
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.frm;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -50,6 +50,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import testlibuiza.uiza.com.sampletv.R;
+import testlibuiza.uiza.com.sampletv.activity.BrowseErrorActivity;
+import testlibuiza.uiza.com.sampletv.activity.DetailsActivity;
+import testlibuiza.uiza.com.sampletv.model.Movie;
+import testlibuiza.uiza.com.sampletv.model.MovieList;
+import testlibuiza.uiza.com.sampletv.presenter.CardPresenter;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";

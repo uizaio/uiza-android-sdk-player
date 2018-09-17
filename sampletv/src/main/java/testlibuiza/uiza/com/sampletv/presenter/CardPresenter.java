@@ -12,7 +12,7 @@
  * the License.
  */
 
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.presenter;
 
 import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -22,6 +22,9 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+
+import testlibuiza.uiza.com.sampletv.R;
+import testlibuiza.uiza.com.sampletv.model.Movie;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.

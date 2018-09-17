@@ -11,12 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package testlibuiza.uiza.com.sampletv;
+package testlibuiza.uiza.com.sampletv.frm;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+
+import testlibuiza.uiza.com.sampletv.R;
 
 /*
  * This class demonstrates how to extend ErrorFragment
@@ -32,7 +34,7 @@ public class ErrorFragment extends android.support.v17.leanback.app.ErrorFragmen
         setTitle(getResources().getString(R.string.app_name));
     }
 
-    void setErrorContent() {
+    public void setErrorContent() {
         setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.lb_ic_sad_cloud));
         setMessage(getResources().getString(R.string.error_fragment_message));
         setDefaultBackground(TRANSLUCENT);
