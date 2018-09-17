@@ -76,11 +76,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.PlayLi
         //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
         playListHolder.tvName.setText(item.getName());
 
-        //TODO
         playListHolder.tvYear.setText("2018");
         UZUtil.setTextDuration(playListHolder.tvDuration2, item.getDuration());
 
-        //TODO
         playListHolder.tvRate.setText("18+");
         if (item.getShortDescription() == null || item.getShortDescription().isEmpty()) {
             if (item.getDescription() == null || item.getDescription().isEmpty()) {

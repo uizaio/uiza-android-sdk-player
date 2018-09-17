@@ -2,12 +2,13 @@ package vn.uiza.views.autosize;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import loitp.core.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.utils.util.ConvertUtils;
 
@@ -20,30 +21,38 @@ public class UZImageButton extends ImageButton {
 
     public UZImageButton(Context context) {
         super(context);
-        initSizeScreenW();
     }
 
     public UZImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initSizeScreenW();
+        initSizeScreenW(attrs);
     }
 
     public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initSizeScreenW();
+        initSizeScreenW(attrs);
     }
 
     public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initSizeScreenW();
+        initSizeScreenW(attrs);
     }
 
     private int screenWPortrait;
     private int screenWLandscape;
 
     private boolean isTablet;
+    private boolean isUseDefault;
 
-    private void initSizeScreenW() {
+    private void initSizeScreenW(AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZImageButton);
+        isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
+        //LLog.d(TAG, "initSizeScreenW isUseDefault " + isUseDefault);
+        if (!isUseDefault) {
+            //LLog.d(TAG, "initSizeScreenW -> return");
+            a.recycle();
+            return;
+        }
         isTablet = LDeviceUtil.isTablet(getContext());
         if (isTablet) {
             ratioLand = Constants.RATIO_LAND_TABLET;
@@ -73,6 +82,7 @@ public class UZImageButton extends ImageButton {
                 }
             }
         });
+        a.recycle();
     }
 
     /*private boolean isFullScreen;
@@ -107,8 +117,8 @@ public class UZImageButton extends ImageButton {
         isSetSize = true;
     }*/
 
-    private int ratioLand;
-    private int ratioPort;
+    private int ratioLand = 7;
+    private int ratioPort = 5;
 
     public int getRatioLand() {
         return ratioLand;
@@ -139,8 +149,12 @@ public class UZImageButton extends ImageButton {
     private int size;
 
     private void updateSizePortrait() {
+        if (!isUseDefault) {
+            //LLog.d(TAG, "updateSizePortrait isUseDefault false -> return");
+            return;
+        }
         size = screenWPortrait / ratioPort;
-        LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
+        //LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
 
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
@@ -148,8 +162,12 @@ public class UZImageButton extends ImageButton {
     }
 
     private void updateSizeLandscape() {
+        if (!isUseDefault) {
+            //LLog.d(TAG, "updateSizeLandscape isUseDefault false -> return");
+            return;
+        }
         size = screenWLandscape / ratioLand;
-        LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
+        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
 
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;

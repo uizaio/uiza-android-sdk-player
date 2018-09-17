@@ -2,15 +2,17 @@ package vn.uiza.views.autosize;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
+import loitp.core.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
- * Created by LENOVO on 4/19/2018.
+ * Created by loitp on 4/19/2018.
  */
 
 public class UZTextView extends TextView {
@@ -18,34 +20,39 @@ public class UZTextView extends TextView {
 
     public UZTextView(Context context) {
         super(context);
-        //initSizeScreenW();
-        init();
     }
 
     public UZTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //initSizeScreenW();
-        init();
+        init(attrs);
     }
 
     public UZTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //initSizeScreenW();
-        init();
+        init(attrs);
     }
 
     public UZTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        //initSizeScreenW();
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private boolean isUseDefault;
+
+    private void init(AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZTextView);
+        isUseDefault = a.getBoolean(R.styleable.UZTextView_useDefaultTV, true);
+        //LLog.d(TAG, "init isUseDefault " + isUseDefault);
         LUIUtil.setTextShadow(this);
+        a.recycle();
     }
 
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
+        if (!isUseDefault) {
+            //LLog.d(TAG, "onConfigurationChanged !isUseDefault -> return");
+            return;
+        }
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int textSize = getTextSizeLand();
             //LLog.d(TAG, "textSize " + textSize);

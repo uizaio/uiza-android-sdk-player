@@ -35,7 +35,6 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
         //LLog.d(TAG, "onReceive " + UizaPref.getClassNameOfPlayer(context));
         if (packageNameReceived != null && packageNameReceived.equals(context.getPackageName())) {
             try {
-                //TODO check current app is background or forground
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
                 Intent intent = new Intent(context, classNamePfPlayer);
                 UZUtil.setClassNameOfPlayer(context, null);//clear class name of player

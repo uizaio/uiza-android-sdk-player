@@ -8,7 +8,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by LENOVO on 5/11/2018.
+ * Created by loitp on 5/11/2018.
  */
 
 public class ApiMaster {
@@ -36,7 +36,6 @@ public class ApiMaster {
             subscriber.onError(new NoConnectionException());
             return;
         }*/
-
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

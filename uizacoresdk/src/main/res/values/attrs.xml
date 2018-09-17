@@ -565,4 +565,10 @@
             <enum name="right" value="2" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="UZImageButton">
+        <attr name="useDefaultIB" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="UZTextView">
+        <attr name="useDefaultTV" format="boolean" />
+    </declare-styleable>
 </resources>

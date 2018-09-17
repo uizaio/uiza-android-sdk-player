@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -34,5 +35,5 @@ android {
 
 dependencies {
     implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.2.9'
+    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.0'
 }

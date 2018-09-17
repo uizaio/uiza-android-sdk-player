@@ -248,7 +248,6 @@ public class FUZVideoV1 extends RelativeLayout {
 
             @Override
             public void onFail(Throwable e) {
-                //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });

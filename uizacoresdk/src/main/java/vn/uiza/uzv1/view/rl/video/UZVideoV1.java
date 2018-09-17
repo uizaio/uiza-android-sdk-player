@@ -80,7 +80,6 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
 public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = getClass().getSimpleName();
     private BaseActivity activity;
-    //TODO remove
     private Gson gson = new Gson();
     private RelativeLayout rootView;
     private PlayerView playerView;
@@ -1067,7 +1066,6 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
 
             @Override
             public void onFail(Throwable e) {
-                //TODO iplm if track fail
                 LLog.e(TAG, "trackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
                 //((BaseActivity) getContext()).showDialogError("Cannot track this entity");
             }

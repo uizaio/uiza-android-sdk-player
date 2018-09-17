@@ -97,7 +97,7 @@ public class FrmLoginV3 extends BaseFragment implements View.OnClickListener, IO
     }
 
     private void login() {
-        //TODO login later
+        //You can iplm login logic here
     }
 
     @Override
