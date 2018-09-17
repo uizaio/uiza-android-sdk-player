@@ -34,7 +34,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_keyboard_arrow_left_white_48"
-            app:useDefault="false" />
+            app:useDefaultIB="false" />
 
         <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_title"
@@ -44,7 +44,9 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:textColor="@color/White"
-            android:textStyle="bold" />
+            android:textSize="@dimen/txt_32"
+            android:textStyle="bold"
+            app:useDefaultTV="false" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_picture_in_picture"

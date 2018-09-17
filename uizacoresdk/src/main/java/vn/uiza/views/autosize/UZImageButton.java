@@ -46,10 +46,11 @@ public class UZImageButton extends ImageButton {
 
     private void initSizeScreenW(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZImageButton);
-        isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefault, true);
+        isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
         //LLog.d(TAG, "initSizeScreenW isUseDefault " + isUseDefault);
         if (!isUseDefault) {
             //LLog.d(TAG, "initSizeScreenW -> return");
+            a.recycle();
             return;
         }
         isTablet = LDeviceUtil.isTablet(getContext());
