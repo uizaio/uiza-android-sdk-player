@@ -386,6 +386,7 @@ Dont change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
 
 # How to livestream with UizaSDK?:
 It's very easy, plz follow these step below:
+
 XML:
 
     <vn.uiza.uzv3.view.rl.livestream.UZLivestream  
