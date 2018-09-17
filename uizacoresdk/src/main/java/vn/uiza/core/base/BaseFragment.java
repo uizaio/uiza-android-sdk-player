@@ -51,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         LDialogUtil.clearAll();
         super.onDestroyView();
-        //TODO loitp, what the fucking case =="
+        //TODO some case cmt these codes below will make everything works fine
         /*if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }*/

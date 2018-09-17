@@ -171,9 +171,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
         }
-        //TODO
         tvVideoTime.setText("Dummy Time");
-        //TODO
         tvVideoRate.setText("Dummy 18+");
 
         try {
@@ -182,7 +180,6 @@ public class UZVideoInfoV1 extends RelativeLayout {
             tvVideoDescription.setText(nullS);
         }
 
-        //TODO
         tvVideoStarring.setText("Dummy starring");
 
         if (mItem.getExtendData() == null || mItem.getExtendData().getDirector() == null) {
@@ -191,7 +188,6 @@ public class UZVideoInfoV1 extends RelativeLayout {
             tvVideoDirector.setText(mItem.getExtendData().getDirector());
         }
 
-        //TODO
         tvVideoGenres.setText(emptyS);
 
         //get more like this video

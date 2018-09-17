@@ -315,7 +315,7 @@ public class FrmHomeChannel extends BaseFragment {
         isRefreshing = true;
         placeHolderView.addView(POSITION_OF_LOADING_REFRESH, new LoadingView());
 
-        //TODO refresh
+        //You can iplm refresh func here
         LUIUtil.setDelay(2000, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {

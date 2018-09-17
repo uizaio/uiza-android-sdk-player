@@ -302,7 +302,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         callAPIGetTokenStreaming();
     }
 
-    //TODO reset these flags
     private boolean isCalledApiGetDetailEntity;
     private boolean isCalledAPIGetUrlIMAAdTag;
     private boolean isCalledAPIGetTokenStreaming;

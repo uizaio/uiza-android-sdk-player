@@ -31,7 +31,6 @@ public class UZDlgShare extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private FlowLayout ll;
-    //TODO change this
     public static final String SUBJECT = "Uiza Sharing";
     public static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
     private boolean isLandscape;
@@ -116,7 +115,6 @@ public class UZDlgShare extends Dialog {
         if (pkgName.equals("com.google.android.apps.docs") && label.toLowerCase().contains("clipboard")) {
             LDeviceUtil.setClipboard(activity, MESSAGE);
         } else if (pkgName.equals("com.facebook.katana")) {
-            //TODO fb not work
             LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);
         } else {
             LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);

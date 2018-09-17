@@ -13,8 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +34,6 @@ import vn.uiza.uzv3.util.UZData;
 public class UZVideoInfo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
-    //TODO remove
-    private Gson gson = new Gson();
     private ProgressBar progressBar;
     private TextView tvVideoName;
     private TextView tvVideoTime;

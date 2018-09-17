@@ -459,7 +459,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "startLivestream onSuccess " + new Gson().toJson(result));
+                LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
                 getDetailEntity(entityLiveId, false, null);
             }
 

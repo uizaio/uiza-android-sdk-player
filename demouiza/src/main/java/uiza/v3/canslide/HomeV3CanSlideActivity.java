@@ -63,7 +63,7 @@ public class HomeV3CanSlideActivity extends BaseActivity {
         });
         replaceFragment(new FrmHomeV3());
         if (UZUtil.getClickedPip(activity)) {
-            //TODO
+            //TODO do what? Ive forget what should i do here???
             play(null);
         }
     }
