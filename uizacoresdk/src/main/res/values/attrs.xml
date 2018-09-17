@@ -565,4 +565,7 @@
             <enum name="right" value="2" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="UZImageButton">
+        <attr name="useDefault" format="boolean" />
+    </declare-styleable>
 </resources>
