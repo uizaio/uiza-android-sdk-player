@@ -115,8 +115,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
-    //play controller
-    private RelativeLayout llMid;
+    private RelativeLayout llMid;//play controller
     private View llMidSub;
 
     private FrameLayout previewFrameLayout;
@@ -173,6 +172,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
+    private boolean isTV;//current device is TV or not (smartphone, tablet)
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton uzMediaRouteButton;
     private RelativeLayout rlChromeCast;
@@ -296,7 +296,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(valuePlayerControllerTimeout);
-        //called api paralle here
+        //called api paralel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
@@ -681,6 +681,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
 
+            //listLinkPlay.clear();
             //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
             //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
             //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
@@ -802,7 +803,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
-        //LLog.d(TAG, "onCreate isTablet " + isTablet);
+        isTV = LDeviceUtil.isTV(activity);
         addPlayerView();
         findViews();
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
@@ -811,12 +812,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
 
         //setup chromecast
-        uzMediaRouteButton = new UZMediaRouteButton(activity);
-        if (llTop != null) {
-            llTop.addView(uzMediaRouteButton);
+        if (!isTV) {
+            uzMediaRouteButton = new UZMediaRouteButton(activity);
+            if (llTop != null) {
+                llTop.addView(uzMediaRouteButton);
+            }
+            setUpMediaRouteButton();
+            addUIChromecastLayer();
         }
-        setUpMediaRouteButton();
-        addUIChromecastLayer();
         updateUISizeThumnail();
     }
 
@@ -868,13 +871,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         //setup chromecast
-        uzMediaRouteButton = new UZMediaRouteButton(activity);
-        if (llTop != null) {
-            llTop.addView(uzMediaRouteButton);
+        if (!isTV) {
+            uzMediaRouteButton = new UZMediaRouteButton(activity);
+            if (llTop != null) {
+                llTop.addView(uzMediaRouteButton);
+            }
+            setUpMediaRouteButton();
+            addUIChromecastLayer();
         }
-        setUpMediaRouteButton();
-        addUIChromecastLayer();
-        //UZPlayerManager.pauseVideo();
         LLog.d(TAG, "changeSkin getCurrentPosition " + UZPlayerManager.getCurrentPosition());
         currentPositionBeforeChangeSkin = UZPlayerManager.getCurrentPosition();
 
@@ -1091,9 +1095,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //tự tạo layout chromecast và background đen
     private void addUIChromecastLayer() {
         //listener check state of chromecast
-        boolean isTV = LDeviceUtil.isTV(activity);
-        LLog.d(TAG, "addUIChromecastLayer isTV: " + isTV);
-
         CastContext castContext = CastContext.getSharedInstance(activity);
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
@@ -1116,14 +1117,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         });
-
         rlChromeCast = new RelativeLayout(activity);
         RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlChromeCast.setLayoutParams(rlChromeCastParams);
         rlChromeCast.setVisibility(GONE);
-        //rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.black_65));
         rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
-
         ibsCast = new UZImageButton(activity);
         ibsCast.setBackgroundColor(Color.TRANSPARENT);
         ibsCast.setImageResource(R.drawable.cast);
@@ -1136,7 +1134,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibsCast.setColorFilter(colorAllViewsEnable);
         rlChromeCast.addView(ibsCast);
         rlChromeCast.setOnClickListener(this);
-
         if (llTop != null) {
             if (llTop.getParent() instanceof ViewGroup) {
                 ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
@@ -2176,6 +2173,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*START CHROMECAST*/
     @UiThread
     private void setUpMediaRouteButton() {
+        if (isTV) {
+            return;
+        }
         UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
         UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
@@ -2308,7 +2308,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * thì sẽ pause local player và bắt đầu loading lên cast player
      * khi disconnet thì local player sẽ resume*/
     private void updateUIChromecast() {
-        if (UZPlayerManager == null || rlChromeCast == null) {
+        if (UZPlayerManager == null || rlChromeCast == null || isTV) {
             return;
         }
         LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
