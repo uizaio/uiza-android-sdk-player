@@ -424,7 +424,7 @@ Start a livestream and save to mp4 file:
         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
-Stop streaming (It auto save mp4 file in your gallery if you start a livestream with option save local file)
+Stop streaming (It auto saves mp4 file in your gallery if you start a livestream with option save local file)
 
     uzLivestream.stopStream();
 
