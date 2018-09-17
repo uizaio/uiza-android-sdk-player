@@ -6,9 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:keepScreenOn="true"
-    app:auto_show="false"
     app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"
     app:fastforward_increment="10000"
-    app:hide_on_touch="true"
     app:rewind_increment="10000"
     app:use_controller="true" />

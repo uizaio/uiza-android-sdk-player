@@ -79,6 +79,7 @@ public class LSApplication extends MultiDexApplication {
         //initWorkspace();
         //UZUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     public Gson getGson() {

@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
