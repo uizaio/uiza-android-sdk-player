@@ -664,7 +664,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void checkToSetUpResouce() {
-        LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
+        //LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
         if (mResultGetLinkPlay != null && UZData.getInstance().getData() != null) {
             //LLog.d(TAG, "checkToSetUpResouce if");
             List<String> listLinkPlay = new ArrayList<>();
