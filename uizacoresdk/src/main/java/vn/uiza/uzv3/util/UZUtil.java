@@ -30,6 +30,7 @@ import loitp.core.R;
 import vn.uiza.chromecast.Casty;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.restclient.RestClientTracking;
@@ -626,6 +627,9 @@ public class UZUtil {
     public static void setCasty(Activity activity) {
         if (activity == null) {
             throw new NullPointerException("Error: Activity cannot be null");
+        }
+        if (LDeviceUtil.isTV(activity)) {
+            return;
         }
         UZData.getInstance().setCasty(Casty.create(activity));
     }
