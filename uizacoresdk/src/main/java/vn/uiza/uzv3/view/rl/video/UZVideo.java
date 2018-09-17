@@ -174,7 +174,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
     //chromecast https://github.com/DroidsOnRoids/Casty
-    private UZMediaRouteButton UZMediaRouteButton;
+    private UZMediaRouteButton uzMediaRouteButton;
     private RelativeLayout rlChromeCast;
     private UZImageButton ibsCast;
 
@@ -811,9 +811,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
 
         //setup chromecast
-        UZMediaRouteButton = new UZMediaRouteButton(activity);
+        uzMediaRouteButton = new UZMediaRouteButton(activity);
         if (llTop != null) {
-            llTop.addView(UZMediaRouteButton);
+            llTop.addView(uzMediaRouteButton);
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
@@ -868,9 +868,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         //setup chromecast
-        UZMediaRouteButton = new UZMediaRouteButton(activity);
+        uzMediaRouteButton = new UZMediaRouteButton(activity);
         if (llTop != null) {
-            llTop.addView(UZMediaRouteButton);
+            llTop.addView(uzMediaRouteButton);
         }
         setUpMediaRouteButton();
         addUIChromecastLayer();
@@ -1091,24 +1091,27 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //tự tạo layout chromecast và background đen
     private void addUIChromecastLayer() {
         //listener check state of chromecast
+        boolean isTV = LDeviceUtil.isTV(activity);
+        LLog.d(TAG, "addUIChromecastLayer isTV: " + isTV);
+
         CastContext castContext = CastContext.getSharedInstance(activity);
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-            UZMediaRouteButton.setVisibility(View.GONE);
+            uzMediaRouteButton.setVisibility(View.GONE);
         } else {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-            UZMediaRouteButton.setVisibility(View.VISIBLE);
+            uzMediaRouteButton.setVisibility(View.VISIBLE);
         }
         castContext.addCastStateListener(new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
                 if (state == CastState.NO_DEVICES_AVAILABLE) {
                     //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-                    UZMediaRouteButton.setVisibility(View.GONE);
+                    uzMediaRouteButton.setVisibility(View.GONE);
                 } else {
-                    if (UZMediaRouteButton.getVisibility() != View.VISIBLE) {
+                    if (uzMediaRouteButton.getVisibility() != View.VISIBLE) {
                         //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-                        UZMediaRouteButton.setVisibility(View.VISIBLE);
+                        uzMediaRouteButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -2173,7 +2176,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*START CHROMECAST*/
     @UiThread
     private void setUpMediaRouteButton() {
-        UZData.getInstance().getCasty().setUpMediaRouteButton(UZMediaRouteButton);
+        UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
         UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
@@ -2976,11 +2979,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ibsCast != null) {
             ibsCast.setColorFilter(colorAllViewsEnable);
         }
-        if (UZMediaRouteButton != null) {
-            UZMediaRouteButton.post(new Runnable() {
+        if (uzMediaRouteButton != null) {
+            uzMediaRouteButton.post(new Runnable() {
                 @Override
                 public void run() {
-                    UZMediaRouteButton.applyTint(colorAllViewsEnable);
+                    uzMediaRouteButton.applyTint(colorAllViewsEnable);
                 }
             });
         }
@@ -3202,8 +3205,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvLiveTime;
     }
 
-    public UZMediaRouteButton getUZMediaRouteButton() {
-        return UZMediaRouteButton;
+    public UZMediaRouteButton getUzMediaRouteButton() {
+        return uzMediaRouteButton;
     }
 
     public RelativeLayout getRlChromeCast() {

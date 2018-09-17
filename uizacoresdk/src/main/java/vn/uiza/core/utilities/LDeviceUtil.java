@@ -1,6 +1,7 @@
 package vn.uiza.core.utilities;
 
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,8 @@ import android.view.KeyEvent;
 import java.util.Random;
 
 import vn.uiza.views.LToast;
+
+import static android.content.Context.UI_MODE_SERVICE;
 
 
 /**
@@ -83,5 +86,14 @@ public class LDeviceUtil {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    public static boolean isTV(Context context) {
+        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
+        if (uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
