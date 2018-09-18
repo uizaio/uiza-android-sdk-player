@@ -179,8 +179,8 @@ Dont forget to add in activity life cycle event:
 Then put
 
     @Override
-    public void isInitResult(boolean b, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        if (b) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
