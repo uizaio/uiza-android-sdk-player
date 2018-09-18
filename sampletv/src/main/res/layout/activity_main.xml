@@ -18,13 +18,10 @@
         android:id="@+id/et_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/White"
         android:focusable="true"
         android:gravity="center"
         android:hint="Input the entityId"
         android:singleLine="true"
-        android:textColor="@color/White"
-        android:textColorHint="@color/White"
         android:textSize="@dimen/txt_32" />
 
     <Button
@@ -39,13 +36,23 @@
         android:id="@+id/bt_live"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
         android:focusable="true"
         android:text="LIVE" />
+
+    <Button
+        android:id="@+id/bt_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:focusable="true"
+        android:text="CLEAR" />
 
     <Button
         android:id="@+id/bt_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
         android:focusable="true"
         android:text="START" />
 </LinearLayout>

@@ -8,9 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="testlibuiza.activity.MainActivity"
-            android:windowSoftInputMode="stateHidden">
+        <activity android:name="testlibuiza.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
