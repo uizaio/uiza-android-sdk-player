@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/LightGrey"
+    android:background="@color/pdlg_color_black"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Demo Livestream"
-        android:textSize="@dimen/txt_30" />
+        android:gravity="center"
+        android:text="Demo sample TV"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_80" />
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/White"
+        android:focusable="true"
+        android:gravity="center"
+        android:hint="Input the entityId"
+        android:singleLine="true"
+        android:textColor="@color/White"
+        android:textColorHint="@color/White"
+        android:textSize="@dimen/txt_32" />
 
     <Button
+        android:id="@+id/bt_vod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Livestream" />
-</RelativeLayout>
+        android:layout_marginTop="@dimen/margin_55"
+        android:focusable="true"
+        android:text="VOD" />
+
+    <Button
+        android:id="@+id/bt_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:text="LIVE" />
+
+    <Button
+        android:id="@+id/bt_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:text="START" />
+</LinearLayout>
