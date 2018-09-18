@@ -46,10 +46,10 @@ import vn.uiza.uzv3.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
-    private UZVideo UZVideo;
+    private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
-        return UZVideo;
+        return uzVideo;
     }
 
     public interface FrmTopCallback {
@@ -71,7 +71,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        UZVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -83,7 +83,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        UZVideo.onDestroy();
+        uzVideo.onDestroy();
     }
 
     @Override
@@ -92,32 +92,32 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
         if (((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtLeft() || ((HomeV3CanSlideActivity) getActivity()).getDraggablePanel().isClosedAtRight()) {
             return;
         }
-        UZVideo.onResume();
+        uzVideo.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        UZVideo.onPause();
+        uzVideo.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        UZVideo.onStart();
+        uzVideo.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        UZVideo.onStop();
+        uzVideo.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                UZVideo.initializePiP();
+                uzVideo.initializePiP();
             } else {
                 LToast.show(getActivity(), "Draw over other app permission not available");
             }
@@ -127,10 +127,10 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
     }
 
     private void setListener() {
-        if (UZVideo == null || UZVideo.getPlayer() == null) {
+        if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
-        UZVideo.getPlayer().addListener(new Player.EventListener() {
+        uzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -181,7 +181,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onTimelineChanged");
             }
         });
-        UZVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -212,7 +212,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        UZVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
@@ -223,7 +223,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        UZVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -259,13 +259,13 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        UZVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        UZVideo.getPlayer().addTextOutput(new TextOutput() {
+        uzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
@@ -346,11 +346,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
         if (UZData.getInstance().isSettingPlayer()) {
             return;
         }
-        UZVideo.post(new Runnable() {
+        uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                UZVideo.init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
-                UZVideo.setUZCallback(FrmVideoTopV3.this);
+                uzVideo.init(entityId, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+                uzVideo.setUZCallback(FrmVideoTopV3.this);
             }
         });
     }
@@ -368,11 +368,11 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
         if (!UZUtil.getClickedPip(getActivity())) {
             UZUtil.stopServicePiPIfRunningV3(getActivity());
         }
-        UZVideo.post(new Runnable() {
+        uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                UZVideo.initPlaylistFolder(metadataId);
-                UZVideo.setUZCallback(FrmVideoTopV3.this);
+                uzVideo.initPlaylistFolder(metadataId);
+                uzVideo.setUZCallback(FrmVideoTopV3.this);
             }
         });
     }
