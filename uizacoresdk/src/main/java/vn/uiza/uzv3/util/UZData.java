@@ -66,7 +66,7 @@ public class UZData {
         }*/
         if (casty == null) {
             LLog.e(TAG, "getCasty null");
-            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UZData.getInstance().setCasty(Casty.create(this));' to your onStart() or onCreate()");
+            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UZUtil.setCasty(this);' to your onStart() or onCreate()");
         }
         return casty;
     }

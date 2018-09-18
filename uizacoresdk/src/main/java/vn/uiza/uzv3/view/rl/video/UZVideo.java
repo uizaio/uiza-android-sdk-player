@@ -804,6 +804,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
         isTV = LDeviceUtil.isTV(activity);
+        LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
@@ -1665,14 +1666,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIDependOnLivstream() {
-        //LLog.d(TAG, "updateUIDependOnLivstream isTablet " + isTablet);
-        if (isTablet && !isCastingChromecast()) {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.setVisibility(VISIBLE);
-            }
-        } else {
+        if (isCastingChromecast) {
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.setVisibility(GONE);
+            }
+        } else {
+            if (isTablet) {
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(VISIBLE);
+                }
+            } else if (isTV) {
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(GONE);
+                }
+            } else {
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(GONE);
+                }
             }
         }
         if (isLivestream) {
