@@ -1,5 +1,6 @@
 package testlibuiza.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
@@ -28,6 +31,8 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btLive = (Button) findViewById(R.id.bt_live);
         btClear = (Button) findViewById(R.id.bt_clear);
         btStart = (Button) findViewById(R.id.bt_start);
+
+        etInput.setText(LSApplication.entityIdDefaultVOD);
 
         etInput.setOnFocusChangeListener(this);
         btVod.setOnFocusChangeListener(this);
@@ -101,7 +106,10 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
             if (etInput.getText().toString().isEmpty()) {
                 LToast.show(activity, "Please input the entityId");
             } else {
-                //TODO go to player
+                Intent intent = new Intent(activity, PlayerActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, etInput.getText().toString());
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
             }
         }
     }
