@@ -1729,6 +1729,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlLiveInfo.setVisibility(GONE);
             }
         }
+        if (isTV) {
+            if (ibShareIcon != null) {
+                ibShareIcon.setVisibility(GONE);
+            }
+            if (ibFullscreenIcon != null) {
+                ibFullscreenIcon.setVisibility(GONE);
+            }
+        }
     }
 
     //trick to gone view
