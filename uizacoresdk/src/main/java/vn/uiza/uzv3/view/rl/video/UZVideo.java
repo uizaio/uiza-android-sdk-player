@@ -1672,12 +1672,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             if (isTablet) {
-                if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(VISIBLE);
-                }
-            } else if (isTV) {
-                if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(GONE);
+                if (isTV) {
+                    if (ibPictureInPictureIcon != null) {
+                        ibPictureInPictureIcon.setVisibility(GONE);
+                    }
+                } else {
+                    if (ibPictureInPictureIcon != null) {
+                        ibPictureInPictureIcon.setVisibility(VISIBLE);
+                    }
                 }
             } else {
                 if (ibPictureInPictureIcon != null) {
