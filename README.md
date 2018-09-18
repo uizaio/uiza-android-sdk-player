@@ -20,10 +20,10 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
 **Step 2. Add the dependency**
 
     defaultConfig {
-      multiDexEnabled  true
+          multiDexEnabled  true
     }
     dependencies {
-      compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
+          compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
 Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
