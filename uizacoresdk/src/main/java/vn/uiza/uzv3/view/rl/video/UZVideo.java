@@ -2831,6 +2831,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void toggleShowHideController() {
+        if (playerView != null) {
+            playerView.toggleShowHideController();
+        }
+    }
+
     /*
      **toggle volume on/off
      */

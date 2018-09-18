@@ -3,6 +3,8 @@ package testlibuiza.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
@@ -17,15 +19,24 @@ import vn.uiza.views.LToast;
 
 public class PlayerActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
+    private ViewGroup rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         UZUtil.initEntity(activity, uzVideo, entityId);
         //UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
+
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.toggleShowHideController();
+            }
+        });
     }
 
     @Override
