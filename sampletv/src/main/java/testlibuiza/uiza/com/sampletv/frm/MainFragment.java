@@ -57,7 +57,6 @@ import testlibuiza.uiza.com.sampletv.activity.DetailsActivity;
 import testlibuiza.uiza.com.sampletv.model.Movie;
 import testlibuiza.uiza.com.sampletv.model.MovieList;
 import testlibuiza.uiza.com.sampletv.presenter.CardPresenter;
-import vn.uiza.views.LToast;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";
@@ -158,7 +157,7 @@ public class MainFragment extends BrowseFragment {
 
             @Override
             public void onClick(View view) {
-                LToast.show(getActivity(), "Iplm Search yourself");
+                //LToast.show(getActivity(), "Iplm Search yourself");
             }
         });
 
