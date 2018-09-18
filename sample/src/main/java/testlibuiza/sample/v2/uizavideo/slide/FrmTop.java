@@ -31,6 +31,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -95,7 +96,7 @@ public class FrmTop extends BaseFragment implements UZVideoV1.Callback {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == Activity.RESULT_OK) {
                 UZVideoV1.initializePiP();

@@ -851,8 +851,6 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
     }
     //end on seekbar change
 
-    public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 6969;
-
     private void clickPiP() {
         //LLog.d(TAG, "clickPiP");
         if (activity == null) {
@@ -863,7 +861,7 @@ public class UZVideoV1 extends RelativeLayout implements PreviewView.OnPreviewCh
             //to grant the permission.
             //LLog.d(TAG, "clickPiP if");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
             //LLog.d(TAG, "clickPiP else");
             initializePiP();

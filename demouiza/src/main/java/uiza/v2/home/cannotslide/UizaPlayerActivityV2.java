@@ -132,7 +132,7 @@ public class UizaPlayerActivityV2 extends BaseActivity implements UZVideoV1.Call
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == RESULT_OK) {
                 UZVideoV1.initializePiP();
             } else {

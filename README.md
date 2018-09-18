@@ -122,12 +122,12 @@ In onCreate()
 Play with entity:
 
     uzVideo= (UZVideo) findViewById(R.id.uiza_video);
-    uzVideo.setUizaCallback(this);
-    UizaUtil.initEntity(activity, uzVideo, "put the entity id here");
+    uzVideo.setUZCallback(this);
+    UZUtil.initEntity(activity, uzVideo, "put the entity id here");
 
 Play with playlist/folder:
 
-    UizaUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
+    UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
 
 
 
@@ -165,7 +165,7 @@ Dont forget to add in activity life cycle event:
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
             } else {

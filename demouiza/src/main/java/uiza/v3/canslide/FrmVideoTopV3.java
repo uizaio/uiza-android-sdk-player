@@ -31,13 +31,13 @@ import java.util.List;
 
 import uiza.R;
 import vn.uiza.core.base.BaseFragment;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv1.view.rl.video.UZVideoV1;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZInput;
 import vn.uiza.uzv3.util.UZUtil;
@@ -115,7 +115,7 @@ public class FrmVideoTopV3 extends BaseFragment implements UZCallback {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
             } else {

@@ -111,7 +111,7 @@ public class V2UizaVideoIMActivity extends BaseActivity implements UZVideoV1.Cal
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
                 UZVideoV1.initializePiP();
