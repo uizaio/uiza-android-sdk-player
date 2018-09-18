@@ -57,6 +57,7 @@ import testlibuiza.uiza.com.sampletv.activity.DetailsActivity;
 import testlibuiza.uiza.com.sampletv.model.Movie;
 import testlibuiza.uiza.com.sampletv.model.MovieList;
 import testlibuiza.uiza.com.sampletv.presenter.CardPresenter;
+import vn.uiza.views.LToast;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";
@@ -157,8 +158,7 @@ public class MainFragment extends BrowseFragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Implement your own in-app search", Toast.LENGTH_LONG)
-                        .show();
+                LToast.show(getActivity(), "Iplm Search yourself");
             }
         });
 
