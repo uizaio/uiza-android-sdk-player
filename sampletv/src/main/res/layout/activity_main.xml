@@ -1,58 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pdlg_color_black"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@color/Black">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Demo sample TV"
-        android:textColor="@color/White"
-        android:textSize="@dimen/txt_80" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/uiza_logo_mini" />
 
-    <EditText
-        android:id="@+id/et_input"
+    <vn.uiza.views.realtimeblurview.RealtimeBlurView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="@dimen/round_35"
+        app:realtimeOverlayColor="@color/black_65" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:hint="Input the entityId"
-        android:singleLine="true"
-        android:textSize="@dimen/txt_32" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt_vod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_55"
-        android:focusable="true"
-        android:text="VOD" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Demo sample TV"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_80" />
 
-    <Button
-        android:id="@+id/bt_live"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:focusable="true"
-        android:text="LIVE" />
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:gravity="center"
+            android:hint="Input the entityId"
+            android:singleLine="true"
+            android:textSize="@dimen/txt_32" />
 
-    <Button
-        android:id="@+id/bt_clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:focusable="true"
-        android:text="CLEAR" />
+        <Button
+            android:id="@+id/bt_vod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_55"
+            android:focusable="true"
+            android:text="VOD" />
 
-    <Button
-        android:id="@+id/bt_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:focusable="true"
-        android:text="START" />
-</LinearLayout>
+        <Button
+            android:id="@+id/bt_live"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:focusable="true"
+            android:text="LIVE" />
+
+        <Button
+            android:id="@+id/bt_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:focusable="true"
+            android:text="CLEAR" />
+
+        <Button
+            android:id="@+id/bt_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:focusable="true"
+            android:text="START" />
+    </LinearLayout>
+</RelativeLayout>

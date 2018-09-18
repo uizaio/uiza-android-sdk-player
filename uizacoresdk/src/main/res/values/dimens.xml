@@ -17,6 +17,7 @@
     <dimen name="round_5">5dp</dimen>
     <dimen name="round_2">2dp</dimen>
     <dimen name="round_15">15dp</dimen>
+    <dimen name="round_35">35dp</dimen>
     <dimen name="round_55">55dp</dimen>
     <dimen name="round_80">80dp</dimen>
     <dimen name="txt_18">18dp</dimen>

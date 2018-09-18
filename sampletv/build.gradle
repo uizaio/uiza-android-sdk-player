@@ -9,6 +9,9 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
