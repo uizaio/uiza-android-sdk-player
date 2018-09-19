@@ -12,7 +12,6 @@ import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
@@ -52,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         updateUI(btPlaylistFolder, false);
         updateUI(btClear, false);
         updateUI(btStartEntity, false);
+        updateUI(btStartPlaylistFolder, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     public void onFocusChange(View view, boolean isFocus) {
         updateUI(view, isFocus);
         if (view == etInput) {
-            LLog.d(TAG, "onFocusChange etInput " + isFocus);
+            //LLog.d(TAG, "onFocusChange etInput " + isFocus);
             if (isFocus) {
                 etInput.setTextColor(Color.BLACK);
                 etInput.setHintTextColor(Color.BLACK);
@@ -133,4 +133,88 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
             }
         }
     }
+
+    /*@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        LLog.d(TAG, "onKeyUp " + keyCode);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY_PAUSE");
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                LLog.d(TAG, "onKeyUp KEYCODE_BACK");
+                return true;
+            case KeyEvent.KEYCODE_UNKNOWN:
+                LLog.d(TAG, "onKeyUp KEYCODE_UNKNOWN");
+                return true;
+            case KeyEvent.KEYCODE_BUTTON_1:
+                LLog.d(TAG, "onKeyUp KEYCODE_BUTTON_1");
+                return true;
+            case KeyEvent.KEYCODE_BUTTON_A:
+                LLog.d(TAG, "onKeyUp KEYCODE_BUTTON_A");
+                return true;
+            case KeyEvent.KEYCODE_BUTTON_SELECT:
+                LLog.d(TAG, "onKeyUp KEYCODE_BUTTON_SELECT");
+                return true;
+            case KeyEvent.KEYCODE_BUTTON_START:
+                LLog.d(TAG, "onKeyUp KEYCODE_BUTTON_START");
+                return true;
+            case KeyEvent.KEYCODE_CHANNEL_DOWN:
+                LLog.d(TAG, "onKeyUp KEYCODE_CHANNEL_DOWN");
+                return true;
+            case KeyEvent.KEYCODE_CLEAR:
+                LLog.d(TAG, "onKeyUp KEYCODE_CLEAR");
+                return true;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                LLog.d(TAG, "onKeyUp KEYCODE_DPAD_CENTER");
+                return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                LLog.d(TAG, "onKeyUp KEYCODE_DPAD_DOWN");
+                return true;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                LLog.d(TAG, "onKeyUp KEYCODE_DPAD_LEFT");
+                return true;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                LLog.d(TAG, "onKeyUp KEYCODE_DPAD_RIGHT");
+                return true;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                LLog.d(TAG, "onKeyUp KEYCODE_DPAD_UP");
+                return true;
+            case KeyEvent.KEYCODE_ENTER:
+                LLog.d(TAG, "onKeyUp KEYCODE_ENTER");
+                return true;
+            case KeyEvent.KEYCODE_HOME:
+                LLog.d(TAG, "onKeyUp KEYCODE_HOME");
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY");
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PREVIOUS");
+                return true;
+            case KeyEvent.KEYCODE_MENU:
+                LLog.d(TAG, "onKeyUp KEYCODE_MENU");
+                return true;
+            case KeyEvent.KEYCODE_MUTE:
+                LLog.d(TAG, "onKeyUp KEYCODE_MUTE");
+                return true;
+            case KeyEvent.KEYCODE_NUMPAD_0:
+                LLog.d(TAG, "onKeyUp KEYCODE_NUMPAD_0");
+                return true;
+            case KeyEvent.KEYCODE_PAGE_DOWN:
+                LLog.d(TAG, "onKeyUp KEYCODE_PAGE_DOWN");
+                return true;
+            case KeyEvent.KEYCODE_TV_POWER:
+                LLog.d(TAG, "onKeyUp KEYCODE_TV_POWER");
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                LLog.d(TAG, "onKeyUp KEYCODE_VOLUME_DOWN");
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }*/
 }

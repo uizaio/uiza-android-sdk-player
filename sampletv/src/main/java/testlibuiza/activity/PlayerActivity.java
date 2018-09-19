@@ -3,6 +3,7 @@ package testlibuiza.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +11,7 @@ import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -143,6 +145,24 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        LLog.d(TAG, "onKeyUp " + keyCode);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY_PAUSE");
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                LLog.d(TAG, "onKeyUp KEYCODE_BACK");
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
         }
     }
 }
