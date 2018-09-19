@@ -505,7 +505,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
-                    LLog.d(TAG, "TAGUizaIMAVideoV3 onPlayerStateChanged STATE_ENDED");
+                    //LLog.d(TAG, "onPlayerStateChanged STATE_ENDED");
                     if (uzVideo != null) {
                         uzVideo.onPlayerEnded();
                     }

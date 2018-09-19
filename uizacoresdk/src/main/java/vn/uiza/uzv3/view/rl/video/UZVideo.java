@@ -326,9 +326,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
                 @Override
                 public void onError(Throwable e) {
+                    if (e == null || e.getStackTrace() == null) {
+                        return;
+                    }
                     LLog.e(TAG, "init onError " + e.toString());
-                    LToast.show(activity, "init onError: " + e.getMessage());
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "init onError: " + e.getMessage());
+                    }
                     UZData.getInstance().setSettingPlayer(false);
+                    IllegalAccessException exception = new IllegalAccessException("init onError: " + e.getMessage());
+                    handleError(exception);
                 }
             });
         } else {

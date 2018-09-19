@@ -37,7 +37,7 @@ public class LSApplication extends MultiDexApplication {
     private final int currentPlayerId = loitp.core.R.layout.uz_player_skin_1;
     public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
     public static String entityIdDefaultLIVE = "6e736441-750b-4351-b7b0-561982c6554f";
-    public static String metadataDefault0 = "0e87adaa-49ef-4b6e-a827-6c68a63796b4";
+    public static String metadataDefault0 = "1ae7d4ee-8e4e-402c-af30-e49d53f43ff3";
     public static String entityIdDefaultLIVE_TRANSCODE = "04db355b-80d5-456e-aedb-aff1f8579e03";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "52128efd-59a7-4a3c-a2ec-988d031ccbe4";
     private final int env = Constants.ENVIRONMENT_PROD;

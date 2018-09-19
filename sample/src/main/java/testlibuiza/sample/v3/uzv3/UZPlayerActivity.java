@@ -81,13 +81,13 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             UZUtil.initEntity(activity, uzVideo, entityId);
         }
 
-        //set uizaIMAVideoV3 hide all controller
-        //uizaIMAVideoV3.setUseController(true);
-        //uizaIMAVideoV3.setControllerAutoShow(true);
-        //uizaIMAVideoV3.hideControllerOnTouch(true);
-        //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
+        //set uzVideo hide all controller
+        //uzVideo.setUseController(true);
+        //uzVideo.setControllerAutoShow(true);
+        //uzVideo.hideControllerOnTouch(true);
+        //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
+        //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
+        //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
         uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
@@ -393,8 +393,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         if (isInitSuccess) {
             setListener();
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-            //uizaIMAVideoV3.setControllerShowTimeoutMs(0);
-            //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
+            //uzVideo.setControllerShowTimeoutMs(0);
+            //uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
         }
     }
 

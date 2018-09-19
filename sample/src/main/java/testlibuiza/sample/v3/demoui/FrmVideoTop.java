@@ -331,15 +331,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         LLog.d(TAG, "onError " + e.getMessage());
     }
 
-    /*@Override
-    public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(getActivity())) {
-            uizaIMAVideoV3.toggleScreenOritation();
-        } else {
-            super.onBackPressed();
-        }
-    }*/
-
     public void initEntity(String entityId) {
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }

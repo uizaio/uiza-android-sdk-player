@@ -47,6 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_55"
             android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
             android:text="VOD" />
 
         <Button
@@ -55,7 +57,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
             android:text="LIVE" />
+
+        <Button
+            android:id="@+id/bt_playlist_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
+            android:text="PLAYLIST -  FOLDER" />
 
         <Button
             android:id="@+id/bt_clear"
@@ -63,6 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
             android:text="CLEAR" />
 
         <Button
@@ -71,6 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
             android:text="START" />
     </LinearLayout>
 </RelativeLayout>

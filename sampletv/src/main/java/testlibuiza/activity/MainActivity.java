@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     private EditText etInput;
     private Button btVod;
     private Button btLive;
+    private Button btPlaylistFolder;
     private Button btClear;
     private Button btStart;
 
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         etInput = (EditText) findViewById(R.id.et_input);
         btVod = (Button) findViewById(R.id.bt_vod);
         btLive = (Button) findViewById(R.id.bt_live);
+        btPlaylistFolder = (Button) findViewById(R.id.bt_playlist_folder);
         btClear = (Button) findViewById(R.id.bt_clear);
         btStart = (Button) findViewById(R.id.bt_start);
 
@@ -37,17 +39,20 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         etInput.setOnFocusChangeListener(this);
         btVod.setOnFocusChangeListener(this);
         btLive.setOnFocusChangeListener(this);
+        btPlaylistFolder.setOnFocusChangeListener(this);
         btClear.setOnFocusChangeListener(this);
         btStart.setOnFocusChangeListener(this);
 
         updateUI(etInput, true);
         updateUI(btVod, false);
         updateUI(btLive, false);
+        updateUI(btPlaylistFolder, false);
         updateUI(btClear, false);
         updateUI(btStart, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
+        btPlaylistFolder.setOnClickListener(this);
         btClear.setOnClickListener(this);
         btStart.setOnClickListener(this);
     }
@@ -100,6 +105,8 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
             etInput.setText(LSApplication.entityIdDefaultVOD);
         } else if (view == btLive) {
             etInput.setText(LSApplication.entityIdDefaultLIVE);
+        } else if (view == btPlaylistFolder) {
+            etInput.setText(LSApplication.metadataDefault0);
         } else if (view == btClear) {
             etInput.setText("");
         } else if (view == btStart) {
