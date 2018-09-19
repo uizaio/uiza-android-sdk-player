@@ -30,9 +30,12 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-        UZUtil.initEntity(activity, uzVideo, entityId);
-        //UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
-
+        if (entityId == null) {
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+        } else {
+            UZUtil.initEntity(activity, uzVideo, entityId);
+        }
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

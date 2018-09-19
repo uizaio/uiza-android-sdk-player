@@ -22,7 +22,8 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     private Button btLive;
     private Button btPlaylistFolder;
     private Button btClear;
-    private Button btStart;
+    private Button btStartEntity;
+    private Button btStartPlaylistFolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,8 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btLive = (Button) findViewById(R.id.bt_live);
         btPlaylistFolder = (Button) findViewById(R.id.bt_playlist_folder);
         btClear = (Button) findViewById(R.id.bt_clear);
-        btStart = (Button) findViewById(R.id.bt_start);
+        btStartEntity = (Button) findViewById(R.id.bt_start_entity);
+        btStartPlaylistFolder = (Button) findViewById(R.id.bt_start_playlist_folder);
 
         etInput.setText(LSApplication.entityIdDefaultVOD);
 
@@ -41,20 +43,22 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btLive.setOnFocusChangeListener(this);
         btPlaylistFolder.setOnFocusChangeListener(this);
         btClear.setOnFocusChangeListener(this);
-        btStart.setOnFocusChangeListener(this);
+        btStartEntity.setOnFocusChangeListener(this);
+        btStartPlaylistFolder.setOnFocusChangeListener(this);
 
         updateUI(etInput, true);
         updateUI(btVod, false);
         updateUI(btLive, false);
         updateUI(btPlaylistFolder, false);
         updateUI(btClear, false);
-        updateUI(btStart, false);
+        updateUI(btStartEntity, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
         btPlaylistFolder.setOnClickListener(this);
         btClear.setOnClickListener(this);
-        btStart.setOnClickListener(this);
+        btStartEntity.setOnClickListener(this);
+        btStartPlaylistFolder.setOnClickListener(this);
     }
 
     @Override
@@ -109,12 +113,21 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
             etInput.setText(LSApplication.metadataDefault0);
         } else if (view == btClear) {
             etInput.setText("");
-        } else if (view == btStart) {
+        } else if (view == btStartEntity) {
             if (etInput.getText().toString().isEmpty()) {
-                LToast.show(activity, "Please input the entityId");
+                LToast.show(activity, "Please input the Id");
             } else {
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, etInput.getText().toString());
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        } else if (view == btStartPlaylistFolder) {
+            if (etInput.getText().toString().isEmpty()) {
+                LToast.show(activity, "Please input the Id");
+            } else {
+                Intent intent = new Intent(activity, PlayerActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, etInput.getText().toString());
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

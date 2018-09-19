@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10">
 
         <TextView
             android:layout_width="match_parent"
@@ -37,58 +38,83 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:gravity="center"
-            android:hint="Input the entityId"
+            android:hint="Input ID here"
             android:singleLine="true"
             android:textSize="@dimen/txt_32" />
-
-        <Button
-            android:id="@+id/bt_vod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_55"
-            android:focusable="true"
-            android:paddingLeft="@dimen/padding_30"
-            android:paddingRight="@dimen/padding_30"
-            android:text="VOD" />
-
-        <Button
-            android:id="@+id/bt_live"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:focusable="true"
-            android:paddingLeft="@dimen/padding_30"
-            android:paddingRight="@dimen/padding_30"
-            android:text="LIVE" />
-
-        <Button
-            android:id="@+id/bt_playlist_folder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:focusable="true"
-            android:paddingLeft="@dimen/padding_30"
-            android:paddingRight="@dimen/padding_30"
-            android:text="PLAYLIST -  FOLDER" />
 
         <Button
             android:id="@+id/bt_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_10"
             android:focusable="true"
             android:paddingLeft="@dimen/padding_30"
             android:paddingRight="@dimen/padding_30"
-            android:text="CLEAR" />
+            android:text="CLEAR TEXT" />
 
-        <Button
-            android:id="@+id/bt_start"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:focusable="true"
-            android:paddingLeft="@dimen/padding_30"
-            android:paddingRight="@dimen/padding_30"
-            android:text="START" />
+            android:layout_marginTop="@dimen/margin_55"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_vod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:paddingLeft="@dimen/padding_30"
+                android:paddingRight="@dimen/padding_30"
+                android:text="VOD" />
+
+            <Button
+                android:id="@+id/bt_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:focusable="true"
+                android:paddingLeft="@dimen/padding_30"
+                android:paddingRight="@dimen/padding_30"
+                android:text="LIVE" />
+
+            <Button
+                android:id="@+id/bt_start_entity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:focusable="true"
+                android:paddingLeft="@dimen/padding_30"
+                android:paddingRight="@dimen/padding_30"
+                android:text="START ENTITY" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_55"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_playlist_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:focusable="true"
+                android:paddingLeft="@dimen/padding_30"
+                android:paddingRight="@dimen/padding_30"
+                android:text="PLAYLIST -  FOLDER" />
+
+            <Button
+                android:id="@+id/bt_start_playlist_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:focusable="true"
+                android:paddingLeft="@dimen/padding_30"
+                android:paddingRight="@dimen/padding_30"
+                android:text="START PLAYLIST -  FOLDER" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

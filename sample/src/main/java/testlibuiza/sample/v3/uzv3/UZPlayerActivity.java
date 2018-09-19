@@ -74,7 +74,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
         if (isInitWithPlaylistFolder) {
-            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         } else {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);

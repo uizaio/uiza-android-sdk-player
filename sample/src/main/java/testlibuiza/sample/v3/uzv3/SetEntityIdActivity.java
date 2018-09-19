@@ -158,7 +158,7 @@ public class SetEntityIdActivity extends BaseActivity {
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);
-                intent.putExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID, metadataId);
+                intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
