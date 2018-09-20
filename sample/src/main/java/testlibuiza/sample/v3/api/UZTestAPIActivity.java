@@ -73,6 +73,7 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
 
         findViewById(R.id.bt_list_skin).setOnClickListener(this);
+        findViewById(R.id.bt_skin_config).setOnClickListener(this);
     }
 
     @Override
@@ -162,6 +163,9 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_list_skin:
                 getListSkin();
+                break;
+            case R.id.bt_skin_config:
+                getSkinConfig();
                 break;
         }
     }
@@ -642,6 +646,23 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getListSkin onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getSkinConfig() {
+        UZService service = UZRestClient.createService(UZService.class);
+        subscribe(service.getSkinConfig("645cd2a2-9216-4f5d-a73b-37d3e3034798"), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "getSkinConfig onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getSkinConfig onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

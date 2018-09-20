@@ -250,6 +250,11 @@
                         android:layout_height="wrap_content"
                         android:text="List skin" />
 
+                    <Button
+                        android:id="@+id/bt_skin_config"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Skin config" />
                 </LinearLayout>
             </HorizontalScrollView>
 

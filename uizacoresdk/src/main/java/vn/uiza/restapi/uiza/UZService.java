@@ -156,4 +156,7 @@ public interface UZService {
 
     @GET("/api/private/v3/player/info/")
     Observable<ResultGetListSkin> getListSkin(@Query("platform") String platform);
+
+    @GET("/api/private/v3/player/info/config/")
+    Observable<Object> getSkinConfig(@Query("id") String id);
 }
