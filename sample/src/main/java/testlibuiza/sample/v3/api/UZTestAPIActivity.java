@@ -7,6 +7,7 @@ import android.widget.TextView;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -69,6 +70,8 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.bt_get_link_play_live).setOnClickListener(this);
         findViewById(R.id.bt_get_view_a_live_feed).setOnClickListener(this);
         findViewById(R.id.bt_get_time_start_live).setOnClickListener(this);
+
+        findViewById(R.id.bt_list_skin).setOnClickListener(this);
     }
 
     @Override
@@ -155,6 +158,9 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_get_time_start_live:
                 getTimeStartLive();
+                break;
+            case R.id.bt_list_skin:
+                getListSkin();
                 break;
         }
     }
@@ -606,7 +612,6 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void getTimeStartLive() {
         UZService service = UZRestClient.createService(UZService.class);
-
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
         subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
@@ -619,6 +624,23 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getListSkin() {
+        UZService service = UZRestClient.createService(UZService.class);
+        subscribe(service.getListSkin(Constants.PLATFORM_ANDROID), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "getListSkin onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getListSkin onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });

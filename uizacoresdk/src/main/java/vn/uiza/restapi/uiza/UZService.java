@@ -152,4 +152,7 @@ public interface UZService {
 
     @GET("/api/private/v3/live/entity/tracking/")
     Observable<ResultTimeStartLive> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
+
+    @GET("/api/private/v3/player/info/")
+    Observable<Object> getListSkin(@Query("platform") String platform);
 }

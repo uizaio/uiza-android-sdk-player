@@ -121,7 +121,7 @@ Manifest
 In onCreate()
 Play with entity:
 
-    uzVideo= (UZVideo) findViewById(R.id.uiza_video);
+    uzVideo = (UZVideo) findViewById(R.id.uiza_video);
     uzVideo.setUZCallback(this);
     UZUtil.initEntity(activity, uzVideo, "put the entity id here");
 
@@ -188,7 +188,7 @@ Then put
 All listener  (If you want to listen all events)
 
     private void setListener() {
-        if (uzVideo== null || uzVideo.getPlayer() == null) {
+        if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
         uzVideo.getPlayer().addListener(new Player.EventListener() {
