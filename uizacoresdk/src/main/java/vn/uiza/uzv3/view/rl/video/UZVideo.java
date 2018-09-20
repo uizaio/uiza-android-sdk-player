@@ -269,10 +269,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         if (isClearDataPlaylistFolder) {
-            //LLog.d(TAG, "xxxxxxxxxxxxxx clearDataForPlaylistFolder");
             UZData.getInstance().clearDataForPlaylistFolder();
-        } else {
-            //LLog.d(TAG, "xxxxxxxxxxxxxx !clearDataForPlaylistFolder");
         }
         if (entityId == null) {
             //do nothing
@@ -296,10 +293,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(valuePlayerControllerTimeout);
-        //called api paralel here
+        //called api parallel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
+        //TODO api setting config here
     }
 
     private boolean isCalledApiGetDetailEntity;
@@ -835,7 +833,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void addPlayerView() {
         playerView = null;
-        //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UZData.getInstance().getCurrentPlayerId());
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         playerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -903,7 +900,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIEachSkin() {
-        //LLog.d(TAG, "updateUIEachSkin " + UZData.getInstance().getCurrentPlayerId());
         int currentPlayerId = UZData.getInstance().getCurrentPlayerId();
         if (currentPlayerId == R.layout.uz_player_skin_2 || currentPlayerId == R.layout.uz_player_skin_3) {
             //LLog.d(TAG, "updateUIEachSkin uz_player_skin_2 || uz_player_skin_3 -> edit size of ibPlayIcon ibPauseIcon");
