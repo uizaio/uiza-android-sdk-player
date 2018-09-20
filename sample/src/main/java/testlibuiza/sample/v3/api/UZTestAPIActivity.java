@@ -25,6 +25,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMet
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.uiza.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
@@ -631,9 +632,9 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
 
     private void getListSkin() {
         UZService service = UZRestClient.createService(UZService.class);
-        subscribe(service.getListSkin(Constants.PLATFORM_ANDROID), new ApiSubscriber<Object>() {
+        subscribe(service.getListSkin(Constants.PLATFORM_ANDROID), new ApiSubscriber<ResultGetListSkin>() {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(ResultGetListSkin result) {
                 LLog.d(TAG, "getListSkin onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
                 showTv(result);
             }

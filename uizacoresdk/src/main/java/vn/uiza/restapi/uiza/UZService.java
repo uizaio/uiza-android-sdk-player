@@ -24,6 +24,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.deleteanmetadata.ResultDeleteAnMet
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.ResultGetDetailOfMetadata;
 import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.uiza.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadata;
+import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
@@ -154,5 +155,5 @@ public interface UZService {
     Observable<ResultTimeStartLive> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId);
 
     @GET("/api/private/v3/player/info/")
-    Observable<Object> getListSkin(@Query("platform") String platform);
+    Observable<ResultGetListSkin> getListSkin(@Query("platform") String platform);
 }
