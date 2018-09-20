@@ -12,13 +12,6 @@ import vn.uiza.uzv3.util.UZUtil;
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
-
-    /*chivas69.uizadev.io
-    trunglh@uiza.io / 123456789*/
-
-    /*https://loctbprod01.uiza.co
-    loctb@uiza.io / 123456789*/
-
     /*public static final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
     public static String entityIdDefaultLIVE_TRANSCODE = "ebc8e874-afbb-4fd0-b7cf-9e34d14de4ac";
     private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
