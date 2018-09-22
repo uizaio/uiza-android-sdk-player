@@ -151,7 +151,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_FAST_FORWARD");
-                uzVideo.seekToForward(uzVideo.getd);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY_PAUSE");
