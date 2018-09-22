@@ -1099,7 +1099,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //tự tạo layout chromecast và background đen
     private void addUIChromecastLayer() {
         //listener check state of chromecast
-        CastContext castContext = CastContext.getSharedInstance(activity);
+        CastContext castContext = null;
+        try {
+            castContext = CastContext.getSharedInstance(activity);
+        } catch (Exception e) {
+            LLog.e(TAG, "addUIChromecastLayer error " + e.toString());
+        }
+        if (castContext == null) {
+            uzMediaRouteButton.setVisibility(View.GONE);
+            return;
+        }
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
             uzMediaRouteButton.setVisibility(View.GONE);
@@ -2832,6 +2841,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     public void setDefaultValueBackwardForward(int mls) {
         DEFAULT_VALUE_BACKWARD_FORWARD = mls;
+    }
+
+    public int getDefaultValueBackwardForward() {
+        return DEFAULT_VALUE_BACKWARD_FORWARD;
     }
 
     /*
