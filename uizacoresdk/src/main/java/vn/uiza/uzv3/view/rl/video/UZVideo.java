@@ -2873,6 +2873,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void togglePlayPause() {
+        if (uzPlayerManager == null || getPlayer() == null) {
+            return;
+        }
+        if (getPlayer().getPlayWhenReady()) {
+            getPlayer().setPlayWhenReady(false);
+        } else {
+            getPlayer().setPlayWhenReady(true);
+        }
+    }
+
     /*
      **toggle volume on/off
      */

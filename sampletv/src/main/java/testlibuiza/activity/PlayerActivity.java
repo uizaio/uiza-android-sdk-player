@@ -147,16 +147,19 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
-                uzVideo.seekToBackward(10000);
+                uzVideo.seekToBackward(uzVideo.getDefaultValueBackwardForward());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_FAST_FORWARD");
+                uzVideo.seekToForward(uzVideo.getDefaultValueBackwardForward());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY_PAUSE");
+                uzVideo.togglePlayPause();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_STOP");
+                uzVideo.pauseVideo();
                 return true;
             case KeyEvent.KEYCODE_BACK:
                 LLog.d(TAG, "onKeyUp KEYCODE_BACK");
@@ -164,9 +167,11 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
                 LLog.d(TAG, "onKeyUp KEYCODE_VOLUME_UP");
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 LLog.d(TAG, "onKeyUp KEYCODE_VOLUME_DOWN");
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_MENU:
                 LLog.d(TAG, "onKeyUp KEYCODE_MENU");
@@ -174,20 +179,23 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_UP");
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_LEFT");
-                uzVideo.skipPreviousVideo();
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_RIGHT");
-                uzVideo.skipNextVideo();
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_DOWN");
+                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_CENTER");
+                //TODO
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
