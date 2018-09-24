@@ -1034,12 +1034,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setEventForView() {
-        //onclick
         if (ibFullscreenIcon != null) {
             ibFullscreenIcon.setOnClickListener(this);
         }
         if (ibBackScreenIcon != null) {
             ibBackScreenIcon.setOnClickListener(this);
+            ibBackScreenIcon.setFocusable(true);
             ibBackScreenIcon.setOnFocusChangeListener(this);
         }
         if (ibVolumeIcon != null) {
@@ -1047,18 +1047,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (ibSettingIcon != null) {
             ibSettingIcon.setOnClickListener(this);
+            ibSettingIcon.setFocusable(true);
             ibSettingIcon.setOnFocusChangeListener(this);
         }
         if (ibCcIcon != null) {
             ibCcIcon.setOnClickListener(this);
+            ibCcIcon.setFocusable(true);
             ibCcIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistRelationIcon != null) {
             ibPlaylistRelationIcon.setOnClickListener(this);
+            if (isLivestream) {
+                ibPlaylistRelationIcon.setFocusable(true);
+            }
             ibPlaylistRelationIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistFolderIcon != null) {
             ibPlaylistFolderIcon.setOnClickListener(this);
+            if (isPlayPlaylistFolder()) {
+                ibPlaylistFolderIcon.setFocusable(true);
+            }
             ibPlaylistFolderIcon.setOnFocusChangeListener(this);
         }
         if (ibHearingIcon != null) {
@@ -1072,30 +1080,41 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (ibFfwdIcon != null) {
             ibFfwdIcon.setOnClickListener(this);
+            ibFfwdIcon.setFocusable(true);
             ibFfwdIcon.setOnFocusChangeListener(this);
         }
         if (ibRewIcon != null) {
             ibRewIcon.setOnClickListener(this);
+            ibRewIcon.setFocusable(true);
             ibRewIcon.setOnFocusChangeListener(this);
         }
         if (ibPlayIcon != null) {
             ibPlayIcon.setOnClickListener(this);
+            ibPlayIcon.setFocusable(true);
             ibPlayIcon.setOnFocusChangeListener(this);
         }
         if (ibPauseIcon != null) {
             ibPauseIcon.setOnClickListener(this);
+            ibPauseIcon.setFocusable(true);
             ibPauseIcon.setOnFocusChangeListener(this);
         }
         if (ibReplayIcon != null) {
             ibReplayIcon.setOnClickListener(this);
+            ibReplayIcon.setFocusable(true);
             ibReplayIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipNextIcon != null) {
             ibSkipNextIcon.setOnClickListener(this);
+            if (isPlayPlaylistFolder()) {
+                ibSkipNextIcon.setFocusable(true);
+            }
             ibSkipNextIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setOnClickListener(this);
+            if (isPlayPlaylistFolder()) {
+                ibSkipPreviousIcon.setFocusable(true);
+            }
             ibSkipPreviousIcon.setOnFocusChangeListener(this);
         }
 

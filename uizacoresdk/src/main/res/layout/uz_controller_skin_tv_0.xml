@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:focusable="true"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_keyboard_arrow_left_white_48" />
 
@@ -46,6 +45,7 @@
             android:id="@id/tv_live"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:background="@drawable/background_live"
             android:gravity="center"
             android:paddingLeft="@dimen/padding_5"
@@ -57,6 +57,7 @@
             android:id="@id/iv_live_time"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/tv_live_time"
             android:background="@color/transparent"
             android:scaleType="centerInside"
@@ -66,6 +67,7 @@
             android:id="@id/tv_live_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_5"
             android:layout_toLeftOf="@id/iv_live_view"
             android:textColor="@color/White" />
@@ -74,6 +76,7 @@
             android:id="@id/iv_live_view"
             android:layout_width="@dimen/w_15"
             android:layout_height="@dimen/w_15"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/tv_live_view"
             android:background="@color/transparent"
             android:scaleType="centerInside"
@@ -84,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:textColor="@color/White" />
     </RelativeLayout>
 
@@ -163,7 +167,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_skip_previous_white_48" />
 
@@ -172,7 +175,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_replay_10_white_48" />
 
@@ -181,7 +183,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_play_circle_outline_white_48" />
 
@@ -190,7 +191,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_pause_circle_outline_white_48" />
 
@@ -199,7 +199,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_replay_white_48" />
 
@@ -208,7 +207,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_forward_10_white_48" />
 
@@ -217,7 +215,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_skip_next_white_48" />
 
@@ -226,7 +223,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_closed_caption_white_48" />
 
@@ -235,7 +231,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_subscriptions_white_48" />
 
@@ -244,7 +239,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_playlist_play_white_48" />
 
@@ -253,7 +247,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:focusable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_high_quality_white_48" />
 
