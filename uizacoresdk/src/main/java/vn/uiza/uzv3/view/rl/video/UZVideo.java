@@ -214,10 +214,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
+                ibPauseIcon.requestFocus();
             }
         } else {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(GONE);
