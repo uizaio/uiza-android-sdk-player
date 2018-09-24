@@ -26,6 +26,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
@@ -67,6 +68,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onClickBack() {
+        onBackPressed();
     }
 
     @Override
@@ -195,7 +197,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_CENTER");
-                //TODO
+                uzVideo.showController();
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);

@@ -103,7 +103,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private BaseActivity activity;
@@ -1040,21 +1040,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (ibBackScreenIcon != null) {
             ibBackScreenIcon.setOnClickListener(this);
+            ibBackScreenIcon.setOnFocusChangeListener(this);
         }
         if (ibVolumeIcon != null) {
             ibVolumeIcon.setOnClickListener(this);
         }
         if (ibSettingIcon != null) {
             ibSettingIcon.setOnClickListener(this);
+            ibSettingIcon.setOnFocusChangeListener(this);
         }
         if (ibCcIcon != null) {
             ibCcIcon.setOnClickListener(this);
+            ibCcIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistRelationIcon != null) {
             ibPlaylistRelationIcon.setOnClickListener(this);
+            ibPlaylistRelationIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistFolderIcon != null) {
             ibPlaylistFolderIcon.setOnClickListener(this);
+            ibPlaylistFolderIcon.setOnFocusChangeListener(this);
         }
         if (ibHearingIcon != null) {
             ibHearingIcon.setOnClickListener(this);
@@ -1067,24 +1072,31 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (ibFfwdIcon != null) {
             ibFfwdIcon.setOnClickListener(this);
+            ibFfwdIcon.setOnFocusChangeListener(this);
         }
         if (ibRewIcon != null) {
             ibRewIcon.setOnClickListener(this);
+            ibRewIcon.setOnFocusChangeListener(this);
         }
         if (ibPlayIcon != null) {
             ibPlayIcon.setOnClickListener(this);
+            ibPlayIcon.setOnFocusChangeListener(this);
         }
         if (ibPauseIcon != null) {
             ibPauseIcon.setOnClickListener(this);
+            ibPauseIcon.setOnFocusChangeListener(this);
         }
         if (ibReplayIcon != null) {
             ibReplayIcon.setOnClickListener(this);
+            ibReplayIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipNextIcon != null) {
             ibSkipNextIcon.setOnClickListener(this);
+            ibSkipNextIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setOnClickListener(this);
+            ibSkipPreviousIcon.setOnFocusChangeListener(this);
         }
 
         //seekbar change
@@ -1600,6 +1612,44 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         }
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean isFocus) {
+        if (view == ibBackScreenIcon) {
+            LLog.d(TAG, "ibBackScreenIcon ibSettingIcon");
+        } else if (view == ibSettingIcon) {
+            LLog.d(TAG, "onFocusChange ibSettingIcon");
+        } else if (view == ibCcIcon) {
+            LLog.d(TAG, "onFocusChange ibCcIcon");
+        } else if (view == ibPlaylistRelationIcon) {
+            LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
+        } else if (view == ibRewIcon) {
+            LLog.d(TAG, "onFocusChange ibRewIcon");
+        } else if (view == ibPlayIcon) {
+            LLog.d(TAG, "onFocusChange ibPlayIcon");
+        } else if (view == ibPauseIcon) {
+            LLog.d(TAG, "onFocusChange ibPauseIcon");
+        } else if (view == ibReplayIcon) {
+            LLog.d(TAG, "onFocusChange ibReplayIcon");
+        } else if (view == ibSkipNextIcon) {
+            LLog.d(TAG, "onFocusChange ibSkipNextIcon");
+        } else if (view == ibSkipPreviousIcon) {
+            LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
+        }
+        updateUIFocusChange(view, isFocus);
+    }
+
+    private void updateUIFocusChange(View view, boolean isFocus) {
+        if (view == null) {
+            return;
+        }
+        if (isFocus && view instanceof UZImageButton) {
+            ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
+        } else {
+            ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
+        }
+        UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
     }
 
     //current screen is landscape or portrait

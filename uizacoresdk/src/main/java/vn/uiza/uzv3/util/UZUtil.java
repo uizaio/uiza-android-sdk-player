@@ -612,6 +612,21 @@ public class UZUtil {
         UZData.getInstance().setCurrentPlayerId(resLayoutMain);
     }
 
+    public static void updateUIFocusChange(View view, boolean isFocus) {
+        updateUIFocusChange(view, isFocus, R.drawable.bkg_has_focus, R.drawable.bkg_no_focus);
+    }
+
+    public static void updateUIFocusChange(View view, boolean isFocus, int resHasFocus, int resNoFocus) {
+        if (view == null) {
+            return;
+        }
+        if (isFocus) {
+            view.setBackgroundResource(resHasFocus);
+        } else {
+            view.setBackgroundResource(resNoFocus);
+        }
+    }
+
     //=============================================================================END FOR UIZA V3
 
     //=============================================================================START PREF

@@ -12,7 +12,7 @@ import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.utils.util.KeyboardUtils;
+import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnFocusChangeListener, View.OnClickListener {
@@ -45,13 +45,13 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btStartEntity.setOnFocusChangeListener(this);
         btStartPlaylistFolder.setOnFocusChangeListener(this);
 
-        updateUI(etInput, true);
-        updateUI(btVod, false);
-        updateUI(btLive, false);
-        updateUI(btPlaylistFolder, false);
-        updateUI(btClear, false);
-        updateUI(btStartEntity, false);
-        updateUI(btStartPlaylistFolder, false);
+        UZUtil.updateUIFocusChange(etInput, true);
+        UZUtil.updateUIFocusChange(btVod, false);
+        UZUtil.updateUIFocusChange(btLive, false);
+        UZUtil.updateUIFocusChange(btPlaylistFolder, false);
+        UZUtil.updateUIFocusChange(btClear, false);
+        UZUtil.updateUIFocusChange(btStartEntity, false);
+        UZUtil.updateUIFocusChange(btStartPlaylistFolder, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        updateUI(view, isFocus);
+        UZUtil.updateUIFocusChange(view, isFocus);
         if (view == etInput) {
             //LLog.d(TAG, "onFocusChange etInput " + isFocus);
             if (isFocus) {
@@ -89,17 +89,6 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
                 etInput.setHintTextColor(Color.WHITE);
             }
             //KeyboardUtils.toggleSoftInput();
-        }
-    }
-
-    private void updateUI(View view, boolean isFocus) {
-        if (view == null) {
-            return;
-        }
-        if (isFocus) {
-            view.setBackgroundResource(R.drawable.bkg_has_focus);
-        } else {
-            view.setBackgroundResource(R.drawable.bkg_no_focus);
         }
     }
 
