@@ -58,7 +58,7 @@ public class LSApplication extends MultiDexApplication {
     private final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";
     private final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
     public static String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
-    public static String entityIdDefaultLIVE = "7b664bfb-9e41-41a3-a29c-2a657dd37b86";
+    public static String entityIdDefaultLIVE = "1759f642-e062-4e88-b5f2-e3022bd03b57";
     public static String metadataDefault0 = "1ae7d4ee-8e4e-402c-af30-e49d53f43ff3";
     private final int env = Constants.ENVIRONMENT_PROD;
 

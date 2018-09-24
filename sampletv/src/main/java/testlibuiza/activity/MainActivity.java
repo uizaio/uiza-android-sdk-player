@@ -29,7 +29,6 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         etInput = (EditText) findViewById(R.id.et_input);
-        LUIUtil.setLastCursorEditText(etInput);
         btVod = (Button) findViewById(R.id.bt_vod);
         btLive = (Button) findViewById(R.id.bt_live);
         btPlaylistFolder = (Button) findViewById(R.id.bt_playlist_folder);
@@ -38,6 +37,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btStartPlaylistFolder = (Button) findViewById(R.id.bt_start_playlist_folder);
 
         etInput.setText(LSApplication.entityIdDefaultVOD);
+        LUIUtil.setLastCursorEditText(etInput);
 
         etInput.setOnFocusChangeListener(this);
         btVod.setOnFocusChangeListener(this);
@@ -98,10 +98,13 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     public void onClick(View view) {
         if (view == btVod) {
             etInput.setText(LSApplication.entityIdDefaultVOD);
+            LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btLive) {
             etInput.setText(LSApplication.entityIdDefaultLIVE);
+            LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btPlaylistFolder) {
             etInput.setText(LSApplication.metadataDefault0);
+            LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btClear) {
             etInput.setText("");
         } else if (view == btStartEntity) {
