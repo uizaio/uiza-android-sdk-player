@@ -1031,7 +1031,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
 
         setEventForView();
-        setFocusAble();
 
         //set visinility first
         setVisibilityOfPlaylistFolderController(GONE);
@@ -1041,8 +1040,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isLivestream) {
             ibBackScreenIcon.setFocusable(true);
             ibSettingIcon.setFocusable(true);
-            ibCcIcon.setFocusable(true);
-            ibPlaylistRelationIcon.setFocusable(true);
+            ibCcIcon.setFocusable(false);
+            ibPlaylistRelationIcon.setFocusable(false);
             ibFfwdIcon.setFocusable(false);
             ibRewIcon.setFocusable(false);
             ibPlayIcon.setFocusable(true);
@@ -1655,7 +1654,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        /*if (view == ibBackScreenIcon) {
+        if (view == ibBackScreenIcon) {
             LLog.d(TAG, "ibBackScreenIcon ibSettingIcon");
         } else if (view == ibSettingIcon) {
             LLog.d(TAG, "onFocusChange ibSettingIcon");
@@ -1675,7 +1674,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onFocusChange ibSkipNextIcon");
         } else if (view == ibSkipPreviousIcon) {
             LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
-        }*/
+        }
         updateUIFocusChange(view, isFocus);
     }
 

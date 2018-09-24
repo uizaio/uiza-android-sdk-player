@@ -63,7 +63,7 @@ public class LSApplication extends MultiDexApplication {
         }
         //config activity transition default
         ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
-        Constants.setDebugMode(true);
+        Constants.setDebugMode(false);
         //initWorkspace();
         //UZUtil.initWorkspace(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, env, currentPlayerId);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
