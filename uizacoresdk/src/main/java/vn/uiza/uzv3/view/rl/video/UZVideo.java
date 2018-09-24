@@ -293,9 +293,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(valuePlayerControllerTimeout);
-
-        setFocusAble();
-
         //called api parallel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
@@ -560,6 +557,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         isLivestream = UZData.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
+        setFocusAble();
 
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
@@ -1037,6 +1035,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setFocusAble() {
+        LLog.d(TAG, "setFocusAble " + isLivestream);
         if (isLivestream) {
             ibBackScreenIcon.setFocusable(true);
             ibSettingIcon.setFocusable(true);
@@ -1051,7 +1050,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibSkipNextIcon.setFocusable(false);
             ibSkipPreviousIcon.setFocusable(false);
         } else {
-            ibBackScreenIcon.setFocusable(true);
+            /*ibBackScreenIcon.setFocusable(true);
             ibSettingIcon.setFocusable(true);
             ibCcIcon.setFocusable(true);
             ibPlaylistRelationIcon.setFocusable(true);
@@ -1068,7 +1067,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPlaylistFolderIcon.setFocusable(false);
                 ibSkipNextIcon.setFocusable(false);
                 ibSkipPreviousIcon.setFocusable(false);
-            }
+            }*/
         }
     }
 
@@ -1654,7 +1653,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        if (view == ibBackScreenIcon) {
+        /*if (view == ibBackScreenIcon) {
             LLog.d(TAG, "ibBackScreenIcon ibSettingIcon");
         } else if (view == ibSettingIcon) {
             LLog.d(TAG, "onFocusChange ibSettingIcon");
@@ -1674,7 +1673,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onFocusChange ibSkipNextIcon");
         } else if (view == ibSkipPreviousIcon) {
             LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
-        }
+        }*/
         updateUIFocusChange(view, isFocus);
     }
 
@@ -1684,6 +1683,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (isFocus && view instanceof UZImageButton) {
             ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
+            LAnimationUtil.play(view, Techniques.FlipInX);
         } else {
             ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
         }

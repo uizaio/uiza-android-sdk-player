@@ -12,6 +12,7 @@ import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
 
@@ -28,6 +29,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         etInput = (EditText) findViewById(R.id.et_input);
+        LUIUtil.setLastCursorEditText(etInput);
         btVod = (Button) findViewById(R.id.bt_vod);
         btLive = (Button) findViewById(R.id.bt_live);
         btPlaylistFolder = (Button) findViewById(R.id.bt_playlist_folder);
