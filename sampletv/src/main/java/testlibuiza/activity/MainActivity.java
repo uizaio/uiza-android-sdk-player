@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
                 etInput.setTextColor(Color.WHITE);
                 etInput.setHintTextColor(Color.WHITE);
             }
-            KeyboardUtils.toggleSoftInput();
+            //KeyboardUtils.toggleSoftInput();
         }
     }
 
