@@ -59,7 +59,7 @@ public class LSApplication extends MultiDexApplication {
     private final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
     public static String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
     public static String entityIdDefaultLIVE = "1759f642-e062-4e88-b5f2-e3022bd03b57";
-    public static String metadataDefault0 = "1ae7d4ee-8e4e-402c-af30-e49d53f43ff3";
+    public static String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cb43371943d1";
     private final int env = Constants.ENVIRONMENT_PROD;
 
     @Override
