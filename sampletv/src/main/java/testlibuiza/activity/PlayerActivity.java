@@ -30,6 +30,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzVideo.setUseController(false);
         uzVideo.setUZCallback(this);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
 import vn.uiza.core.base.BaseActivity;
@@ -61,6 +63,10 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btClear.setOnClickListener(this);
         btStartEntity.setOnClickListener(this);
         btStartPlaylistFolder.setOnClickListener(this);
+
+        TextView tvVs = (TextView) findViewById(R.id.tv_vs);
+        LUIUtil.setTextShadow(tvVs);
+        tvVs.setText("Version " + BuildConfig.VERSION_NAME);
     }
 
     @Override
