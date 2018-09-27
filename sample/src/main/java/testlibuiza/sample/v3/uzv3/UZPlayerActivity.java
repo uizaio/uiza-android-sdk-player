@@ -2,6 +2,8 @@ package testlibuiza.sample.v3.uzv3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -72,6 +74,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         sb = (SeekBar) findViewById(R.id.sb);
+        sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        sb.getThumb().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
