@@ -335,7 +335,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
-                ;
             }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
