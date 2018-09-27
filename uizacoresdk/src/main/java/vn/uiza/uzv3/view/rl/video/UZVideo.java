@@ -2590,37 +2590,51 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void playPlaylistPosition(int position) {
-        if (UZData.getInstance().getDataList() == null || position < 0 || position > UZData.getInstance().getDataList().size() - 1) {
+        if (UZData.getInstance().getDataList() == null) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
+            LToast.show(activity, "Datalist is empty");
             return;
         }
-
+        if (position < 0) {
+            LToast.show(activity, "This is the first item");
+            return;
+        }
+        if (position > UZData.getInstance().getDataList().size() - 1) {
+            LToast.show(activity, "This is the last item");
+            return;
+        }
         //update UI for skip next and skip previous button
         if (position == 0) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(false);
+                ibSkipPreviousIcon.setFocusable(false);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsDisable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
+                ibSkipNextIcon.setFocusable(true);
                 ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         } else if (position == UZData.getInstance().getDataList().size() - 1) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
+                ibSkipPreviousIcon.setFocusable(true);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(false);
+                ibSkipNextIcon.setFocusable(false);
                 ibSkipNextIcon.setColorFilter(colorAllViewsDisable);
             }
         } else {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
+                ibSkipPreviousIcon.setFocusable(true);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
+                ibSkipNextIcon.setFocusable(true);
                 ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         }
