@@ -17,7 +17,6 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv3.util.UZData;
@@ -93,13 +92,20 @@ public class UZDlgPlaylistFolder extends Dialog {
         adapterPlaylistFolder = new AdapterPlaylistFolder(activity, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
             @Override
             public void onClickItem(Data data, int position) {
-                LLog.d(TAG, "onClickItem position: " + position);
+                //LLog.d(TAG, "onClickItem position: " + position);
                 if (UZData.getInstance().isSettingPlayer()) {
                     return;
                 }
                 dismiss();
                 if (callbackPlaylistFolder != null) {
                     callbackPlaylistFolder.onClickItem(data, position);
+                }
+            }
+
+            @Override
+            public void onFocusChange(Data data, int position) {
+                if (recyclerView != null) {
+                    recyclerView.scrollToPosition(position);
                 }
             }
 

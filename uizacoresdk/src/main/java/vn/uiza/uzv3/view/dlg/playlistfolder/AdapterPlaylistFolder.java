@@ -149,6 +149,9 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
                 } else {
                     playListHolder.rootView.setBackgroundResource(0);
                 }
+                if (callbackPlaylistFolder != null) {
+                    callbackPlaylistFolder.onFocusChange(data, position);
+                }
             }
         });
     }

@@ -2714,6 +2714,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
+            public void onFocusChange(Data data, int position) {
+            }
+
+            @Override
             public void onDismiss() {
             }
         });
