@@ -103,7 +103,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private BaseActivity activity;
@@ -111,12 +111,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private Gson gson = new Gson();
     private RelativeLayout rootView;
-    private UZPlayerManager UZPlayerManager;
+    private UZPlayerManager uzPlayerManager;
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
-    //play controller
-    private RelativeLayout llMid;
+    private RelativeLayout llMid;//play controller
     private View llMidSub;
 
     private FrameLayout previewFrameLayout;
@@ -173,8 +172,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
 
+    private boolean isTV;//current device is TV or not (smartphone, tablet)
     //chromecast https://github.com/DroidsOnRoids/Casty
-    private UZMediaRouteButton UZMediaRouteButton;
+    private UZMediaRouteButton uzMediaRouteButton;
     private RelativeLayout rlChromeCast;
     private UZImageButton ibsCast;
 
@@ -214,10 +214,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
+                ibPauseIcon.requestFocus();
             }
         } else {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(GONE);
@@ -238,17 +240,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         LLog.e(TAG, "handleError " + e.toString());
         isHasError = true;
-        if (UZCallback != null) {
-            UZCallback.onError(e);
+        if (uzCallback != null) {
+            uzCallback.onError(e);
         }
         UZData.getInstance().setSettingPlayer(false);
     }
 
     /**
-     * set UZCallback for uiza video
+     * set uzCallback for uiza video
      */
-    public void setUZCallback(UZCallback UZCallback) {
-        this.UZCallback = UZCallback;
+    public void setUZCallback(UZCallback uzCallback) {
+        this.uzCallback = uzCallback;
     }
 
     /**
@@ -269,10 +271,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         if (isClearDataPlaylistFolder) {
-            //LLog.d(TAG, "xxxxxxxxxxxxxx clearDataForPlaylistFolder");
             UZData.getInstance().clearDataForPlaylistFolder();
-        } else {
-            //LLog.d(TAG, "xxxxxxxxxxxxxx !clearDataForPlaylistFolder");
         }
         if (entityId == null) {
             //do nothing
@@ -296,10 +295,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(valuePlayerControllerTimeout);
-        //called api paralle here
+        //called api parallel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
+        //TODO api setting config here
     }
 
     private boolean isCalledApiGetDetailEntity;
@@ -326,9 +326,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
                 @Override
                 public void onError(Throwable e) {
+                    if (e == null || e.getStackTrace() == null) {
+                        return;
+                    }
                     LLog.e(TAG, "init onError " + e.toString());
-                    LToast.show(activity, "init onError: " + e.getMessage());
+                    if (Constants.IS_DEBUG) {
+                        LToast.show(activity, "init onError: " + e.getMessage());
+                    }
                     UZData.getInstance().setSettingPlayer(false);
+                    IllegalAccessException exception = new IllegalAccessException("init onError: " + e.getMessage());
+                    handleError(exception);
                 }
             });
         } else {
@@ -552,6 +559,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         isLivestream = UZData.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
+        //setFocusAble();
 
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
@@ -560,16 +568,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "__________trackUiza getClickedPip false -> setDefautValueForFlagIsTracked");
         }
 
-        if (UZPlayerManager != null) {
+        if (uzPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
-            UZPlayerManager.release();
+            uzPlayerManager.release();
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
         }
         updateUIDependOnLivstream();
         setTitle();
-        if (UZPlayerManager != null) {
-            UZPlayerManager.showProgress();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.showProgress();
         }
         callAPIGetLinkPlay();
         trackUizaEventDisplay();
@@ -616,9 +624,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             //if entity is livestreaming, dont try to next link play
             LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
-            if (UZPlayerManager != null) {
-                UZPlayerManager.initWithoutReset();
-                UZPlayerManager.setRunnable();
+            if (uzPlayerManager != null) {
+                uzPlayerManager.initWithoutReset();
+                uzPlayerManager.setRunnable();
             }
             countTryLinkPlayError++;
             return;
@@ -628,7 +636,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
         }
         //LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
-        UZPlayerManager.release();
+        uzPlayerManager.release();
         checkToSetUpResouce();
     }
 
@@ -643,28 +651,28 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onClick1() {
                 LLog.e(TAG, "handleErrorNoData onClick1");
-                if (UZCallback != null) {
+                if (uzCallback != null) {
                     UZData.getInstance().setSettingPlayer(false);
-                    UZCallback.isInitResult(false, false, null, null);
+                    uzCallback.isInitResult(false, false, null, null);
 
-                    //UZCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
+                    //uzCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
 
             @Override
             public void onCancel() {
                 LLog.e(TAG, "handleErrorNoData onCancel");
-                if (UZCallback != null) {
+                if (uzCallback != null) {
                     UZData.getInstance().setSettingPlayer(false);
-                    UZCallback.isInitResult(false, false, null, null);
-                    //UZCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
+                    uzCallback.isInitResult(false, false, null, null);
+                    //uzCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
         });
     }
 
     private void checkToSetUpResouce() {
-        LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
+        //LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
         if (mResultGetLinkPlay != null && UZData.getInstance().getData() != null) {
             //LLog.d(TAG, "checkToSetUpResouce if");
             List<String> listLinkPlay = new ArrayList<>();
@@ -681,6 +689,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
 
+            //listLinkPlay.clear();
             //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
             //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
             //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
@@ -719,8 +728,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
             initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
-            if (UZCallback != null) {
-                UZCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
+            if (uzCallback != null) {
+                uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
             }
             initUizaPlayerManagerV3();
         } else {
@@ -802,7 +811,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
-        //LLog.d(TAG, "onCreate isTablet " + isTablet);
+        isTV = LDeviceUtil.isTV(activity);
+        LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
@@ -811,12 +821,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
 
         //setup chromecast
-        UZMediaRouteButton = new UZMediaRouteButton(activity);
-        if (llTop != null) {
-            llTop.addView(UZMediaRouteButton);
+        if (!isTV) {
+            uzMediaRouteButton = new UZMediaRouteButton(activity);
+            if (llTop != null) {
+                llTop.addView(uzMediaRouteButton);
+            }
+            setUpMediaRouteButton();
+            addUIChromecastLayer();
         }
-        setUpMediaRouteButton();
-        addUIChromecastLayer();
         updateUISizeThumnail();
     }
 
@@ -824,7 +836,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void addPlayerView() {
         playerView = null;
-        //LLog.d(TAG, "addPlayerView getCurrentPlayerId: " + UZData.getInstance().getCurrentPlayerId());
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         playerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -848,7 +859,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     public boolean changeSkin(int skinId) {
         LLog.d(TAG, "changeSkin skinId " + skinId);
-        if (activity == null || UZPlayerManager == null) {
+        if (activity == null || uzPlayerManager == null) {
             return false;
         }
         UZData.getInstance().setCurrentPlayerId(skinId);
@@ -868,30 +879,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         //setup chromecast
-        UZMediaRouteButton = new UZMediaRouteButton(activity);
-        if (llTop != null) {
-            llTop.addView(UZMediaRouteButton);
+        if (!isTV) {
+            uzMediaRouteButton = new UZMediaRouteButton(activity);
+            if (llTop != null) {
+                llTop.addView(uzMediaRouteButton);
+            }
+            setUpMediaRouteButton();
+            addUIChromecastLayer();
         }
-        setUpMediaRouteButton();
-        addUIChromecastLayer();
-        //UZPlayerManager.pauseVideo();
-        LLog.d(TAG, "changeSkin getCurrentPosition " + UZPlayerManager.getCurrentPosition());
-        currentPositionBeforeChangeSkin = UZPlayerManager.getCurrentPosition();
+        LLog.d(TAG, "changeSkin getCurrentPosition " + uzPlayerManager.getCurrentPosition());
+        currentPositionBeforeChangeSkin = uzPlayerManager.getCurrentPosition();
 
-        UZPlayerManager.release();
+        uzPlayerManager.release();
         updateUIDependOnLivstream();
         setTitle();
         checkToSetUpResouce();
         setColorAllViewsEnable(colorAllViewsEnable);
         updateUISizeThumnail();
-        if (UZCallback != null) {
-            UZCallback.onSkinChange();
+        if (uzCallback != null) {
+            uzCallback.onSkinChange();
         }
         return true;
     }
 
     private void updateUIEachSkin() {
-        //LLog.d(TAG, "updateUIEachSkin " + UZData.getInstance().getCurrentPlayerId());
         int currentPlayerId = UZData.getInstance().getCurrentPlayerId();
         if (currentPlayerId == R.layout.uz_player_skin_2 || currentPlayerId == R.layout.uz_player_skin_3) {
             //LLog.d(TAG, "updateUIEachSkin uz_player_skin_2 || uz_player_skin_3 -> edit size of ibPlayIcon ibPauseIcon");
@@ -951,6 +962,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         previewFrameLayout = playerView.findViewById(R.id.previewFrameLayout);
         if (uzTimebar != null) {
             uzTimebar.addOnPreviewChangeListener(this);
+            uzTimebar.setOnFocusChangeListener(this);
         }
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
@@ -1008,6 +1020,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
         ivLiveView = (UZImageButton) playerView.findViewById(R.id.iv_live_view);
         ivLiveTime = (UZImageButton) playerView.findViewById(R.id.iv_live_time);
+        ivLiveView.setFocusable(false);
+        ivLiveTime.setFocusable(false);
 
         rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
@@ -1026,57 +1040,73 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setEventForView() {
-        //onclick
         if (ibFullscreenIcon != null) {
             ibFullscreenIcon.setOnClickListener(this);
+            ibFullscreenIcon.setOnFocusChangeListener(this);
         }
         if (ibBackScreenIcon != null) {
             ibBackScreenIcon.setOnClickListener(this);
+            ibBackScreenIcon.setOnFocusChangeListener(this);
         }
         if (ibVolumeIcon != null) {
             ibVolumeIcon.setOnClickListener(this);
+            ibVolumeIcon.setOnFocusChangeListener(this);
         }
         if (ibSettingIcon != null) {
             ibSettingIcon.setOnClickListener(this);
+            ibSettingIcon.setOnFocusChangeListener(this);
         }
         if (ibCcIcon != null) {
             ibCcIcon.setOnClickListener(this);
+            ibCcIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistRelationIcon != null) {
             ibPlaylistRelationIcon.setOnClickListener(this);
+            ibPlaylistRelationIcon.setOnFocusChangeListener(this);
         }
         if (ibPlaylistFolderIcon != null) {
             ibPlaylistFolderIcon.setOnClickListener(this);
+            ibPlaylistFolderIcon.setOnFocusChangeListener(this);
         }
         if (ibHearingIcon != null) {
             ibHearingIcon.setOnClickListener(this);
+            ibHearingIcon.setOnFocusChangeListener(this);
         }
         if (ibPictureInPictureIcon != null) {
             ibPictureInPictureIcon.setOnClickListener(this);
+            ibPictureInPictureIcon.setOnFocusChangeListener(this);
         }
         if (ibShareIcon != null) {
             ibShareIcon.setOnClickListener(this);
+            ibShareIcon.setOnFocusChangeListener(this);
         }
         if (ibFfwdIcon != null) {
             ibFfwdIcon.setOnClickListener(this);
+            ibFfwdIcon.setOnFocusChangeListener(this);
         }
         if (ibRewIcon != null) {
             ibRewIcon.setOnClickListener(this);
+            ibRewIcon.setOnFocusChangeListener(this);
         }
         if (ibPlayIcon != null) {
             ibPlayIcon.setOnClickListener(this);
+            ibPlayIcon.setOnFocusChangeListener(this);
         }
         if (ibPauseIcon != null) {
             ibPauseIcon.setOnClickListener(this);
+            ibPauseIcon.setOnFocusChangeListener(this);
         }
         if (ibReplayIcon != null) {
             ibReplayIcon.setOnClickListener(this);
+            ibReplayIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipNextIcon != null) {
             ibSkipNextIcon.setOnClickListener(this);
+            ibSkipNextIcon.setOnFocusChangeListener(this);
         }
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setOnClickListener(this);
+            ibSkipPreviousIcon.setOnFocusChangeListener(this);
         }
 
         //seekbar change
@@ -1091,36 +1121,42 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //tự tạo layout chromecast và background đen
     private void addUIChromecastLayer() {
         //listener check state of chromecast
-        CastContext castContext = CastContext.getSharedInstance(activity);
+        CastContext castContext = null;
+        try {
+            castContext = CastContext.getSharedInstance(activity);
+        } catch (Exception e) {
+            LLog.e(TAG, "addUIChromecastLayer error " + e.toString());
+        }
+        if (castContext == null) {
+            uzMediaRouteButton.setVisibility(View.GONE);
+            return;
+        }
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-            UZMediaRouteButton.setVisibility(View.GONE);
+            uzMediaRouteButton.setVisibility(View.GONE);
         } else {
             //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-            UZMediaRouteButton.setVisibility(View.VISIBLE);
+            uzMediaRouteButton.setVisibility(View.VISIBLE);
         }
         castContext.addCastStateListener(new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
                 if (state == CastState.NO_DEVICES_AVAILABLE) {
                     //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-                    UZMediaRouteButton.setVisibility(View.GONE);
+                    uzMediaRouteButton.setVisibility(View.GONE);
                 } else {
-                    if (UZMediaRouteButton.getVisibility() != View.VISIBLE) {
+                    if (uzMediaRouteButton.getVisibility() != View.VISIBLE) {
                         //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-                        UZMediaRouteButton.setVisibility(View.VISIBLE);
+                        uzMediaRouteButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
         });
-
         rlChromeCast = new RelativeLayout(activity);
         RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlChromeCast.setLayoutParams(rlChromeCastParams);
         rlChromeCast.setVisibility(GONE);
-        //rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.black_65));
         rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
-
         ibsCast = new UZImageButton(activity);
         ibsCast.setBackgroundColor(Color.TRANSPARENT);
         ibsCast.setImageResource(R.drawable.cast);
@@ -1133,7 +1169,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibsCast.setColorFilter(colorAllViewsEnable);
         rlChromeCast.addView(ibsCast);
         rlChromeCast.setOnClickListener(this);
-
         if (llTop != null) {
             if (llTop.getParent() instanceof ViewGroup) {
                 ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
@@ -1157,7 +1192,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
-        UZPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
             if (uzTimebar != null) {
                 uzTimebar.setPreviewEnabled(false);
@@ -1168,9 +1203,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
         if (uzTimebar != null) {
-            uzTimebar.setPreviewLoader(UZPlayerManager);
+            uzTimebar.setPreviewLoader(uzPlayerManager);
         }
-        UZPlayerManager.setProgressCallback(new ProgressCallback() {
+        uzPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
@@ -1188,7 +1223,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         });
-        UZPlayerManager.setDebugCallback(new UZPlayerManager.DebugCallback() {
+        uzPlayerManager.setDebugCallback(new UZPlayerManager.DebugCallback() {
             @Override
             public void onUpdateButtonVisibilities() {
                 //LLog.d(TAG, "onUpdateButtonVisibilities");
@@ -1331,11 +1366,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "onStateReadyFirst");
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
-            UZPlayerManager.getPlayer().setPlayWhenReady(true);
+            uzPlayerManager.getPlayer().setPlayWhenReady(true);
         }
-        if (UZCallback != null) {
+        if (uzCallback != null) {
             //LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
-            UZCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
+            uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -1372,8 +1407,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "onDestroy setBrightness " + firstBrightness);
             LScreenUtil.setBrightness(getContext(), firstBrightness);
         }
-        if (UZPlayerManager != null) {
-            UZPlayerManager.release();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.release();
         }
         UZData.getInstance().setSettingPlayer(false);
         UZData.getInstance().clearUizaInputList();
@@ -1396,37 +1431,37 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*if (isExoShareClicked) {
             LLog.d(TAG, "onResume if");
             isExoShareClicked = false;
-            if (UZPlayerManager != null) {
-                UZPlayerManager.resumeVideo();
+            if (uzPlayerManager != null) {
+                uzPlayerManager.resumeVideo();
             }
         } else {
             LLog.d(TAG, "onResume else initUizaPlayerManagerV3");
             //initUizaPlayerManagerV3();
         }*/
-        if (UZPlayerManager != null) {
-            //LLog.d(TAG, "onResume UZPlayerManager != null -> resumeVideo");
-            UZPlayerManager.resumeVideo();
+        if (uzPlayerManager != null) {
+            //LLog.d(TAG, "onResume uzPlayerManager != null -> resumeVideo");
+            uzPlayerManager.resumeVideo();
         } else {
-            //LLog.d(TAG, "onResume UZPlayerManager == null -> do nothing");
+            //LLog.d(TAG, "onResume uzPlayerManager == null -> do nothing");
         }
     }
 
     private void initUizaPlayerManagerV3() {
-        if (UZPlayerManager != null) {
-            UZPlayerManager.init();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.init();
             if (UZUtil.getClickedPip(activity) && !UZData.getInstance().isPlayWithPlaylistFolder()) {
                 //LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
-                UZPlayerManager.getPlayer().setPlayWhenReady(false);
+                uzPlayerManager.getPlayer().setPlayWhenReady(false);
             } else {
                 //LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
                 if (isRefreshFromChangeSkin) {
-                    UZPlayerManager.seekTo(currentPositionBeforeChangeSkin);
+                    uzPlayerManager.seekTo(currentPositionBeforeChangeSkin);
                     isRefreshFromChangeSkin = false;
                     currentPositionBeforeChangeSkin = 0;
                 }
             }
             if (isCalledFromConnectionEventBus) {
-                UZPlayerManager.setRunnable();
+                uzPlayerManager.setRunnable();
                 isCalledFromConnectionEventBus = false;
             }
         }
@@ -1442,16 +1477,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "onPause " + isExoShareClicked);
         activityIsPausing = true;
         /*if (isExoShareClicked) {
-            if (UZPlayerManager != null) {
-                UZPlayerManager.pauseVideo();
+            if (uzPlayerManager != null) {
+                uzPlayerManager.pauseVideo();
             }
         } else {
-            if (UZPlayerManager != null) {
-                UZPlayerManager.reset();
+            if (uzPlayerManager != null) {
+                uzPlayerManager.reset();
             }
         }*/
-        if (UZPlayerManager != null) {
-            UZPlayerManager.pauseVideo();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.pauseVideo();
         }
     }
 
@@ -1466,19 +1501,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
-        /*if (UZPlayerManager != null && UZPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + UZPlayerManager.getPlayer().getPlaybackState());
+        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
     }
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         LLog.d(TAG, "PreviewView onStopPreview");
-        /*if (UZPlayerManager != null && UZPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + UZPlayerManager.getPlayer().getPlaybackState());
+        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
-        UZPlayerManager.seekTo(progress);
-        UZPlayerManager.resumeVideo();
+        uzPlayerManager.seekTo(progress);
+        uzPlayerManager.resumeVideo();
         isOnPlayerEnded = false;
         updateUIEndScreen();
     }
@@ -1486,8 +1521,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         //LLog.d(TAG, "PreviewView onPreview progress " + progress);
-        /*if (UZPlayerManager != null && UZPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onPreview getPlaybackState() " + UZPlayerManager.getPlayer().getPlaybackState());
+        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
+            LLog.d(TAG, "PreviewView onPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
@@ -1530,9 +1565,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibShareIcon) {
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
-            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = UZPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
-            if (mappedTrackInfo != null && UZPlayerManager.getTrackSelectionHelper() != null) {
-                UZPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+            if (mappedTrackInfo != null && uzPlayerManager.getTrackSelectionHelper() != null) {
+                uzPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
             }
         } else if (v == rlChromeCast) {
             //dangerous to remove
@@ -1541,42 +1576,47 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                if (UZPlayerManager != null) {
-                    UZPlayerManager.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
-
+                if (uzPlayerManager != null) {
+                    uzPlayerManager.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
                 }
             }
         } else if (v == ibRewIcon) {
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
             } else {
-                if (UZPlayerManager != null) {
-                    UZPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    isOnPlayerEnded = false;
-                    updateUIEndScreen();
+                if (uzPlayerManager != null) {
+                    uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                    if (!isPlayPlaylistFolder()) {
+                        isOnPlayerEnded = false;
+                        updateUIEndScreen();
+                    }
                 }
             }
         } else if (v == ibPauseIcon) {
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().pause();
             } else {
-                if (UZPlayerManager != null) {
-                    UZPlayerManager.pauseVideo();
+                if (uzPlayerManager != null) {
+                    uzPlayerManager.pauseVideo();
                 }
             }
             ibPauseIcon.setVisibility(GONE);
-            ibPlayIcon.setVisibility(VISIBLE);
+            if (ibPlayIcon != null) {
+                ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
+            }
         } else if (v == ibPlayIcon) {
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().play();
             } else {
-                if (UZPlayerManager != null) {
-                    UZPlayerManager.resumeVideo();
+                if (uzPlayerManager != null) {
+                    uzPlayerManager.resumeVideo();
                 }
             }
             ibPlayIcon.setVisibility(GONE);
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
+                ibPauseIcon.requestFocus();
             }
         } else if (v == ibReplayIcon) {
             replay();
@@ -1586,6 +1626,58 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleClickSkipPrevious();
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
+        }
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean isFocus) {
+        /*if (isFocus) {
+            if (view == ibBackScreenIcon) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == ibSettingIcon) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == ibCcIcon) {
+                LLog.d(TAG, "onFocusChange ibCcIcon");
+            } else if (view == ibPlaylistRelationIcon) {
+                LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
+            } else if (view == ibRewIcon) {
+                LLog.d(TAG, "onFocusChange ibRewIcon");
+            } else if (view == ibPlayIcon) {
+                LLog.d(TAG, "onFocusChange ibPlayIcon");
+            } else if (view == ibPauseIcon) {
+                LLog.d(TAG, "onFocusChange ibPauseIcon");
+            } else if (view == ibReplayIcon) {
+                LLog.d(TAG, "onFocusChange ibReplayIcon");
+            } else if (view == ibSkipNextIcon) {
+                LLog.d(TAG, "onFocusChange ibSkipNextIcon");
+            } else if (view == ibSkipPreviousIcon) {
+                LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
+            } else if (view == uzTimebar) {
+                LLog.d(TAG, "onFocusChange uzTimebar");
+            }
+        }*/
+        updateUIFocusChange(view, isFocus);
+    }
+
+    private void updateUIFocusChange(View view, boolean isFocus) {
+        if (view == null) {
+            return;
+        }
+        if (isFocus) {
+            if (view instanceof UZImageButton) {
+                ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
+                LAnimationUtil.play(view, Techniques.FlipInX);
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
+            } else {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
+            }
+        } else {
+            if (view instanceof UZImageButton) {
+                ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
+            } else {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
+            }
         }
     }
 
@@ -1665,14 +1757,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIDependOnLivstream() {
-        //LLog.d(TAG, "updateUIDependOnLivstream isTablet " + isTablet);
-        if (isTablet && !isCastingChromecast()) {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.setVisibility(VISIBLE);
-            }
-        } else {
+        if (isCastingChromecast) {
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.setVisibility(GONE);
+            }
+        } else {
+            if (isTablet) {
+                if (isTV) {
+                    if (ibPictureInPictureIcon != null) {
+                        ibPictureInPictureIcon.setVisibility(GONE);
+                    }
+                } else {
+                    if (ibPictureInPictureIcon != null) {
+                        ibPictureInPictureIcon.setVisibility(VISIBLE);
+                    }
+                }
+            } else {
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(GONE);
+                }
             }
         }
         if (isLivestream) {
@@ -1717,6 +1820,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlLiveInfo.setVisibility(GONE);
             }
         }
+        if (isTV) {
+            if (ibShareIcon != null) {
+                ibShareIcon.setVisibility(GONE);
+            }
+            if (ibFullscreenIcon != null) {
+                ibFullscreenIcon.setVisibility(GONE);
+            }
+        }
     }
 
     //trick to gone view
@@ -1725,15 +1836,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         UZImageButton.setClickable(isVisible);
+        UZImageButton.setFocusable(isVisible);
         UZImageButton.setImageResource(res);
     }
 
     protected void updateUIButtonVisibilities() {
         debugRootView.removeAllViews();
-        if (UZPlayerManager.getPlayer() == null) {
+        if (uzPlayerManager.getPlayer() == null) {
             return;
         }
-        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = UZPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
         if (mappedTrackInfo == null) {
             return;
         }
@@ -1742,7 +1854,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (trackGroups.length != 0) {
                 Button button = new Button(activity);
                 int label;
-                switch (UZPlayerManager.getPlayer().getRendererType(i)) {
+                switch (uzPlayerManager.getPlayer().getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
                         label = R.string.audio;
                         break;
@@ -1801,7 +1913,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     ibVolumeIcon.setImageResource(R.drawable.baseline_volume_up_white_48);
                 }
             }
-            UZPlayerManager.setVolume(((float) progress / 100));
+            uzPlayerManager.setVolume(((float) progress / 100));
             if (isExoVolumeClicked) {
                 isExoVolumeClicked = false;
             }
@@ -1896,22 +2008,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         Intent intent = new Intent(activity, FUZVideoService.class);
-        intent.putExtra(Constants.FLOAT_LINK_PLAY, UZPlayerManager.getLinkPlay());
+        intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
-        if (UZCallback != null) {
-            UZCallback.onClickPip(intent);
+        if (uzCallback != null) {
+            uzCallback.onClickPip(intent);
         }
     }
 
     public SimpleExoPlayer getPlayer() {
-        if (UZPlayerManager == null) {
+        if (uzPlayerManager == null) {
             return null;
         }
-        return UZPlayerManager.getPlayer();
+        return uzPlayerManager.getPlayer();
     }
 
-    private UZCallback UZCallback;
+    private UZCallback uzCallback;
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
@@ -1940,9 +2052,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * seekTo position
      */
     public void seekTo(long positionMs) {
-        if (UZPlayerManager != null) {
+        if (uzPlayerManager != null) {
             //LLog.d(TAG, "seekTo positionMs: " + positionMs);
-            UZPlayerManager.seekTo(positionMs);
+            uzPlayerManager.seekTo(positionMs);
         }
     }
 
@@ -1953,19 +2065,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (event != null) {
             //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
-                if (UZPlayerManager != null) {
+                if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
-                    if (UZPlayerManager.getExoPlaybackException() == null) {
+                    if (uzPlayerManager.getExoPlaybackException() == null) {
                         //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
                         hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
-                        UZPlayerManager.setResumeIfConnectionError();
+                        uzPlayerManager.setResumeIfConnectionError();
                         //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
-                            UZPlayerManager.init();
+                            uzPlayerManager.init();
                             if (isCalledFromConnectionEventBus) {
-                                UZPlayerManager.setRunnable();
+                                uzPlayerManager.setRunnable();
                                 isCalledFromConnectionEventBus = false;
                             }
                         } else {
@@ -1973,7 +2085,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         }
                     }
                 } else {
-                    //LLog.d(TAG, "onMessageEventConnectEvent UZPlayerManager == null");
+                    //LLog.d(TAG, "onMessageEventConnectEvent uzPlayerManager == null");
                 }
             } else {
                 showTvMsg(activity.getString(R.string.err_no_internet));
@@ -1992,20 +2104,20 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         //when pip float view init success
-        if (UZCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
+        if (uzCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
             //Ham nay duoc goi khi player o FUZVideoService da init xong (no dang play o vi tri 0)
             //Nhiem vu la minh se gui vi tri hien tai sang cho FUZVideoService no biet
             //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
-            msgFromActivityPosition.setPosition(UZPlayerManager.getCurrentPosition());
+            msgFromActivityPosition.setPosition(uzPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
-            UZCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            uzCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
             //FUZVideoServiceV1 truoc khi huy da gui position cua pip toi day
             //Nhan duoc vi tru tu FUZVideoService roi seek toi vi tri nay
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
-            if (UZPlayerManager != null) {
-                UZPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
+            if (uzPlayerManager != null) {
+                uzPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }
         }
     }
@@ -2075,7 +2187,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (!isLivestream) {
                     return;
                 }
-                if (UZPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
+                if (uzPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing");
                     UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
@@ -2119,7 +2231,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (!isLivestream) {
                     return;
                 }
-                if (UZPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
+                if (uzPlayerManager != null && playerView != null && (playerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
                     UZService service = UZRestClient.createService(UZService.class);
                     String entityId = UZData.getInstance().getEntityId();
                     String feedId = UZData.getInstance().getLastFeedId();
@@ -2173,13 +2285,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*START CHROMECAST*/
     @UiThread
     private void setUpMediaRouteButton() {
-        UZData.getInstance().getCasty().setUpMediaRouteButton(UZMediaRouteButton);
+        if (isTV) {
+            return;
+        }
+        UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
         UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
                 //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
-                if (UZPlayerManager != null) {
-                    lastCurrentPosition = UZPlayerManager.getCurrentPosition();
+                if (uzPlayerManager != null) {
+                    lastCurrentPosition = uzPlayerManager.getCurrentPosition();
                 }
                 handleConnectedChromecast();
             }
@@ -2224,11 +2339,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private long lastCurrentPosition;
 
     private void playChromecast() {
-        if (UZData.getInstance().getData() == null || UZPlayerManager == null || UZPlayerManager.getPlayer() == null) {
+        if (UZData.getInstance().getData() == null || uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
             return;
         }
-        if (UZPlayerManager != null) {
-            UZPlayerManager.showProgress();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.showProgress();
         }
         //LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
@@ -2265,7 +2380,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
 
         MediaInfo mediaInfo = new MediaInfo.Builder(
-                UZPlayerManager.getLinkPlay())
+                uzPlayerManager.getLinkPlay())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
@@ -2285,12 +2400,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     //LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
-                    UZPlayerManager.hideProgress();
+                    uzPlayerManager.hideProgress();
                     isCastPlayerPlayingFirst = true;
                 }
 
                 if (currentPosition > 0) {
-                    UZPlayerManager.seekTo(currentPosition);
+                    uzPlayerManager.seekTo(currentPosition);
                 }
             }
         }, 1000);
@@ -2305,13 +2420,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * thì sẽ pause local player và bắt đầu loading lên cast player
      * khi disconnet thì local player sẽ resume*/
     private void updateUIChromecast() {
-        if (UZPlayerManager == null || rlChromeCast == null) {
+        if (uzPlayerManager == null || rlChromeCast == null || isTV) {
             return;
         }
         LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
         if (isCastingChromecast) {
-            UZPlayerManager.pauseVideo();
-            UZPlayerManager.setVolume(0f);
+            uzPlayerManager.pauseVideo();
+            uzPlayerManager.setVolume(0f);
             rlChromeCast.setVisibility(VISIBLE);
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(GONE);
@@ -2339,14 +2454,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //ibVolumeIcon.setImageResource(R.drawable.ic_volume_up_black_48dp);
             //UZData.getInstance().getCasty().setVolume(0.99);
 
-            //double volumeOfExoPlayer = UZPlayerManager.getVolume();
+            //double volumeOfExoPlayer = uzPlayerManager.getVolume();
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UZData.getInstance().getCasty().setVolume(volumeOfExoPlayer);
 
             setControllerShowTimeoutMs(0);
         } else {
-            UZPlayerManager.resumeVideo();
-            UZPlayerManager.setVolume(0.99f);
+            uzPlayerManager.resumeVideo();
+            uzPlayerManager.setVolume(0.99f);
             rlChromeCast.setVisibility(GONE);
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(VISIBLE);
@@ -2372,11 +2487,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //ibVolumeIcon.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            //UZPlayerManager.setVolume(0.99f);
+            //uzPlayerManager.setVolume(0.99f);
 
             /*double volumeOfCastPlayer = UZData.getInstance().getCasty().getVolume();
             LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
-            UZPlayerManager.setVolume((float) volumeOfCastPlayer);*/
+            uzPlayerManager.setVolume((float) volumeOfCastPlayer);*/
 
             setControllerShowTimeoutMs(valuePlayerControllerTimeout);
         }
@@ -2391,8 +2506,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final String publishToCdn = "success";
 
     private void callAPIGetListAllEntity(String metadataId) {
-        if (UZPlayerManager != null) {
-            UZPlayerManager.showProgress();
+        if (uzPlayerManager != null) {
+            uzPlayerManager.showProgress();
         }
         if (UZData.getInstance().getDataList() == null) {
             LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() == null -> call api lấy data list");
@@ -2405,7 +2520,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     LLog.d(TAG, "callAPIGetListAllEntity onSuccess: " + gson.toJson(result));
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
-                        if (UZCallback != null) {
+                        if (uzCallback != null) {
                             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
                                 @Override
                                 public void onClick1() {
@@ -2435,26 +2550,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     UZData.getInstance().setDataList(result.getData());
                     if (UZData.getInstance().getDataList() == null || UZData.getInstance().getDataList().isEmpty()) {
                         LLog.e(TAG, "callAPIGetListAllEntity success but no data");
-                        if (UZCallback != null) {
-                            UZCallback.onError(new Exception("callAPIGetListAllEntity success but no data"));
+                        if (uzCallback != null) {
+                            uzCallback.onError(new Exception("callAPIGetListAllEntity success but no data"));
                         }
                         return;
                     }
                     //LLog.d(TAG, "list size: " + UZData.getInstance().getDataList().size());
                     playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
-                    if (UZPlayerManager != null) {
-                        UZPlayerManager.hideProgress();
+                    if (uzPlayerManager != null) {
+                        uzPlayerManager.hideProgress();
                     }
                 }
 
                 @Override
                 public void onFail(Throwable e) {
                     LLog.e(TAG, "callAPIGetListAllEntity onFail " + e.getMessage());
-                    if (UZCallback != null) {
-                        UZCallback.onError(new Exception("callAPIGetListAllEntity failed: " + e.toString()));
+                    if (uzCallback != null) {
+                        uzCallback.onError(new Exception("callAPIGetListAllEntity failed: " + e.toString()));
                     }
-                    if (UZPlayerManager != null) {
-                        UZPlayerManager.hideProgress();
+                    if (uzPlayerManager != null) {
+                        uzPlayerManager.hideProgress();
                     }
                 }
             });
@@ -2462,8 +2577,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() != null -> không cần call api lấy data list nữa mà lấy dữ liệu có sẵn play luôn");
             //LLog.d(TAG, "list size: " + UZData.getInstance().getDataList().size());
             playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
-            if (UZPlayerManager != null) {
-                UZPlayerManager.hideProgress();
+            if (uzPlayerManager != null) {
+                uzPlayerManager.hideProgress();
             }
         }
     }
@@ -2476,37 +2591,51 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void playPlaylistPosition(int position) {
-        if (UZData.getInstance().getDataList() == null || position < 0 || position > UZData.getInstance().getDataList().size() - 1) {
+        if (UZData.getInstance().getDataList() == null) {
             LLog.e(TAG, "playPlaylistPosition error: incorrect position");
+            LToast.show(activity, "Datalist is empty");
             return;
         }
-
+        if (position < 0) {
+            LToast.show(activity, "This is the first item");
+            return;
+        }
+        if (position > UZData.getInstance().getDataList().size() - 1) {
+            LToast.show(activity, "This is the last item");
+            return;
+        }
         //update UI for skip next and skip previous button
         if (position == 0) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(false);
+                ibSkipPreviousIcon.setFocusable(false);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsDisable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
+                ibSkipNextIcon.setFocusable(true);
                 ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         } else if (position == UZData.getInstance().getDataList().size() - 1) {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
+                ibSkipPreviousIcon.setFocusable(true);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(false);
+                ibSkipNextIcon.setFocusable(false);
                 ibSkipNextIcon.setColorFilter(colorAllViewsDisable);
             }
         } else {
             if (ibSkipPreviousIcon != null) {
                 ibSkipPreviousIcon.setEnabled(true);
+                ibSkipPreviousIcon.setFocusable(true);
                 ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
             }
             if (ibSkipNextIcon != null) {
                 ibSkipNextIcon.setEnabled(true);
+                ibSkipNextIcon.setFocusable(true);
                 ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
             }
         }
@@ -2542,7 +2671,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (rlEndScreen != null && tvEndScreenMsg != null) {
                 rlEndScreen.setVisibility(VISIBLE);
                 //TODO call api skin config to correct this text
-                setTextEndscreen("This is end screen");
+                setTextEndscreen("Thanks for your watching");
             }
             setVisibilityOfPlayPauseReplay(true);
             showController();
@@ -2554,7 +2683,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 setTextEndscreen("");
             }
             setVisibilityOfPlayPauseReplay(false);
-            //hideController();
             setControllerShowTimeoutMs(valuePlayerControllerTimeout);
             hideControllerOnTouch(true);
         }
@@ -2586,6 +2714,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
+            public void onFocusChange(Data data, int position) {
+            }
+
+            @Override
             public void onDismiss() {
             }
         });
@@ -2602,6 +2734,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
+                ibReplayIcon.requestFocus();
             }
             if (ibFfwdIcon != null) {
                 ibFfwdIcon.setEnabled(false);
@@ -2649,12 +2782,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * return fail if replay failed
      */
     public boolean replay() {
-        if (UZPlayerManager == null) {
+        if (uzPlayerManager == null) {
             return false;
         }
         //TODO Chỗ này đáng lẽ chỉ clear value của tracking khi đảm bảo rằng seekTo(0) true
         setDefautValueForFlagIsTracked();
-        boolean result = UZPlayerManager.seekTo(0);
+        boolean result = uzPlayerManager.seekTo(0);
         if (result) {
             isOnPlayerEnded = false;
             updateUIEndScreen();
@@ -2683,9 +2816,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
-            if (UZPlayerManager != null) {
+            if (uzPlayerManager != null) {
                 isExoVolumeClicked = true;
-                UZPlayerManager.toggleVolumeMute(ibVolumeIcon);
+                uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
             }
         }
     }
@@ -2699,8 +2832,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibFullscreenIcon.performClick();
             }
         } else {
-            if (UZCallback != null) {
-                UZCallback.onClickBack();
+            if (uzCallback != null) {
+                uzCallback.onClickBack();
             }
         }
     }
@@ -2710,8 +2843,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onClickItem(Item item, int position) {
                 //LLog.d(TAG, "onClickItem " + gson.toJson(item));
-                if (UZCallback != null) {
-                    UZCallback.onClickListEntityRelation(item, position);
+                if (uzCallback != null) {
+                    uzCallback.onClickListEntityRelation(item, position);
                 }
             }
 
@@ -2731,11 +2864,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickCC() {
-        if (UZPlayerManager == null) {
-            LLog.e(TAG, "Error handleClickCC UZPlayerManager == null");
+        if (uzPlayerManager == null) {
+            LLog.e(TAG, "Error handleClickCC uzPlayerManager == null");
             return;
         }
-        if (UZPlayerManager.getSubtitleList() == null || UZPlayerManager.getSubtitleList().isEmpty()) {
+        if (uzPlayerManager.getSubtitleList() == null || uzPlayerManager.getSubtitleList().isEmpty()) {
             UZDlgInfoV1 UZDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
             UZUtil.showUizaDialog(activity, UZDlgInfoV1);
         } else {
@@ -2808,6 +2941,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         DEFAULT_VALUE_BACKWARD_FORWARD = mls;
     }
 
+    public int getDefaultValueBackwardForward() {
+        return DEFAULT_VALUE_BACKWARD_FORWARD;
+    }
+
     /*
      ** Seek tu vi tri hien tai cong them bao nhieu mls
      */
@@ -2825,6 +2962,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setDefaultValueBackwardForward(mls);
         if (ibRewIcon != null) {
             ibRewIcon.performClick();
+        }
+    }
+
+    public void toggleShowHideController() {
+        if (playerView != null) {
+            playerView.toggleShowHideController();
+        }
+    }
+
+    public void togglePlayPause() {
+        if (uzPlayerManager == null || getPlayer() == null) {
+            return;
+        }
+        if (getPlayer().getPlayWhenReady()) {
+            getPlayer().setPlayWhenReady(false);
+        } else {
+            getPlayer().setPlayWhenReady(true);
         }
     }
 
@@ -2892,10 +3046,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      **Lấy độ dài video
      */
     public long getDuration() {
-        if (UZPlayerManager == null) {
+        if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
             return Constants.NOT_FOUND;
         }
-        return UZPlayerManager.getPlayer().getDuration();
+        return uzPlayerManager.getPlayer().getDuration();
     }
 
     /*
@@ -2976,11 +3130,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ibsCast != null) {
             ibsCast.setColorFilter(colorAllViewsEnable);
         }
-        if (UZMediaRouteButton != null) {
-            UZMediaRouteButton.post(new Runnable() {
+        if (uzMediaRouteButton != null) {
+            uzMediaRouteButton.post(new Runnable() {
                 @Override
                 public void run() {
-                    UZMediaRouteButton.applyTint(colorAllViewsEnable);
+                    uzMediaRouteButton.applyTint(colorAllViewsEnable);
                 }
             });
         }
@@ -3055,10 +3209,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (tvEndScreenMsg != null) {
             tvEndScreenMsg.setTextColor(colorAllViewsEnable);
         }
-        if (uzTimebar != null) {
-            //uzTimebar.setPreviewColorTint(R.color.Red);
-            //uzTimebar.setPreviewColorResourceTint(R.color.Red);
-        }
+        //TODO
+        /*if (uzTimebar != null) {
+            uzTimebar.setPreviewColorResourceTint(R.color.Red);
+        }*/
     }
 
     /**
@@ -3094,8 +3248,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return isTablet;
     }
 
-    public UZPlayerManager getUZPlayerManager() {
-        return UZPlayerManager;
+    public UZPlayerManager getUzPlayerManager() {
+        return uzPlayerManager;
     }
 
     public TextView getTvMsg() {
@@ -3202,8 +3356,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvLiveTime;
     }
 
-    public UZMediaRouteButton getUZMediaRouteButton() {
-        return UZMediaRouteButton;
+    public UZMediaRouteButton getUzMediaRouteButton() {
+        return uzMediaRouteButton;
     }
 
     public RelativeLayout getRlChromeCast() {

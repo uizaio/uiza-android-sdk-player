@@ -21,15 +21,11 @@
         <!-- for v2 -->
         <activity
             android:name=".sample.v2.uizavideo.rl.V2UizaVideoIMActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".sample.v2.api.V2TestAPIActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity android:name=".sample.v2.api.V2TestAPIActivity" />
         <activity
             android:name=".sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
         <receiver
             android:name=".sample.v2.uizavideo.FloatClickFullScreenReceiver"
@@ -42,9 +38,7 @@
         <!-- end for v2 -->
 
         <!-- for v3 -->
-        <activity
-            android:name=".sample.v3.api.UZTestAPIActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".sample.v3.api.UZTestAPIActivity" />
         <activity
             android:name=".sample.v3.uzv3.SetEntityIdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
@@ -63,8 +57,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".sample.v3.customskin.CustomSkinActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 
 </manifest>

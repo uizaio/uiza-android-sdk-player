@@ -30,6 +30,7 @@ import loitp.core.R;
 import vn.uiza.chromecast.Casty;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.restclient.RestClientTracking;
@@ -505,7 +506,7 @@ public class UZUtil {
             throw new NullPointerException("Activity cannot be null");
         }
         if (UZVideo == null) {
-            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
+            throw new NullPointerException("UZVideo cannot be null");
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
@@ -526,7 +527,7 @@ public class UZUtil {
             throw new NullPointerException("Activity cannot be null");
         }
         if (UZVideo == null) {
-            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
+            throw new NullPointerException("UZVideo cannot be null");
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
@@ -541,32 +542,6 @@ public class UZUtil {
             playPlaylist(UZVideo, metadataId);
         }
     }
-    /*public static void initEntityOrPlaylistFolder(Activity activity, UizaIMAVideoV3 uizaIMAVideoV3, String entityId, String metadataId) {
-        if (activity == null) {
-            throw new NullPointerException("Activity cannot be null");
-        }
-        if (uizaIMAVideoV3 == null) {
-            throw new NullPointerException("UizaIMAVideoV3 cannot be null");
-        }
-        if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
-            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
-                playPlaylist(uizaIMAVideoV3, null);
-            } else {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist entity");
-                play(uizaIMAVideoV3, null);
-            }
-        } else {
-            //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
-            if (entityId != null) {
-                play(uizaIMAVideoV3, entityId);
-            } else {
-                playPlaylist(uizaIMAVideoV3, metadataId);
-            }
-        }
-    }*/
 
     private static void play(final UZVideo UZVideo, final String entityId) {
         /*if (UZData.getInstance().isSettingPlayer()) {
@@ -627,11 +602,29 @@ public class UZUtil {
         if (activity == null) {
             throw new NullPointerException("Error: Activity cannot be null");
         }
+        if (LDeviceUtil.isTV(activity)) {
+            return;
+        }
         UZData.getInstance().setCasty(Casty.create(activity));
     }
 
     public static void setCurrentPlayerId(int resLayoutMain) {
         UZData.getInstance().setCurrentPlayerId(resLayoutMain);
+    }
+
+    public static void updateUIFocusChange(View view, boolean isFocus) {
+        updateUIFocusChange(view, isFocus, R.drawable.bkg_has_focus, R.drawable.bkg_no_focus);
+    }
+
+    public static void updateUIFocusChange(View view, boolean isFocus, int resHasFocus, int resNoFocus) {
+        if (view == null) {
+            return;
+        }
+        if (isFocus) {
+            view.setBackgroundResource(resHasFocus);
+        } else {
+            view.setBackgroundResource(resNoFocus);
+        }
     }
 
     //=============================================================================END FOR UIZA V3

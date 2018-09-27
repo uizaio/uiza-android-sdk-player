@@ -2,12 +2,15 @@ package testlibuiza.sample.v3.uzv3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -35,7 +38,6 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv1.view.rl.video.UZVideoV1;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.UZPlayerView;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
@@ -49,6 +51,7 @@ import vn.uiza.views.LToast;
 public class UZPlayerActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private Button btProgress;
+    private SeekBar sb;
 
     @Override
     protected boolean setFullScreen() {
@@ -70,25 +73,42 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        sb = (SeekBar) findViewById(R.id.sb);
+        sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        sb.getThumb().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                uzVideo.seekTo(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         btProgress = (Button) findViewById(R.id.bt_progress);
         uzVideo.setUZCallback(this);
 
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
         if (isInitWithPlaylistFolder) {
-            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADAT_ENTITY_ID);
+            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         } else {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             UZUtil.initEntity(activity, uzVideo, entityId);
         }
 
-        //set uizaIMAVideoV3 hide all controller
-        //uizaIMAVideoV3.setUseController(true);
-        //uizaIMAVideoV3.setControllerAutoShow(true);
-        //uizaIMAVideoV3.hideControllerOnTouch(true);
-        //uizaIMAVideoV3.getIbFullscreenIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getIbSettingIcon().setVisibility(View.GONE);
-        //uizaIMAVideoV3.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
+        //set uzVideo hide all controller
+        //uzVideo.setUseController(true);
+        //uzVideo.setControllerAutoShow(true);
+        //uzVideo.hideControllerOnTouch(true);
+        //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
+        //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
+        //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
         uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.White));
 
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
@@ -228,7 +248,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UZVideoV1.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
             } else {
@@ -336,7 +356,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
-                ;
+                sb.setProgress((int) currentMls);
             }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
@@ -394,8 +414,9 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         if (isInitSuccess) {
             setListener();
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-            //uizaIMAVideoV3.setControllerShowTimeoutMs(0);
-            //uizaIMAVideoV3.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
+            //uzVideo.setControllerShowTimeoutMs(0);
+            //uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
+            sb.setMax((int) uzVideo.getDuration());
         }
     }
 

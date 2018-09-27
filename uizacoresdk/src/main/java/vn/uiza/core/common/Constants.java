@@ -51,7 +51,7 @@ public class Constants {
     public final static String KEY_UIZA_ENTITY_ID = "KEY_UIZA_ENTITY_ID";
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
-    public final static String KEY_UIZA_METADAT_ENTITY_ID = "KEY_UIZA_METADAT_ENTITY_ID";
+    public final static String KEY_UIZA_METADATA_ENTITY_ID = "KEY_UIZA_METADATA_ENTITY_ID";
 
     public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     public final static String URL_IMG_16x9 = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
@@ -160,4 +160,8 @@ public class Constants {
     public static final String SUCCESS = "success";
     public static final String NOT_READY = "not-ready";
     public static final String ERROR = "error";
+
+    public static final String PLATFORM_ANDROID = "android";
+    public static final String PLATFORM_IOS = "ios";
+    public static final String PLATFORM_WEBSITE = "website";
 }

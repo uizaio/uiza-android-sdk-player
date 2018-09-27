@@ -26,15 +26,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!--<vn.uiza.views.autosize.UZImageButton
-            android:id="@id/exo_back_screen"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@color/DeepPink"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
-            android:src="@drawable/baseline_keyboard_arrow_left_white_48"
-            app:useDefaultIB="false" />-->
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_back_screen"
             android:layout_width="@dimen/w_50"

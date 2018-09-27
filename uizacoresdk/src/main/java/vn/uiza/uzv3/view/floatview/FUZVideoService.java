@@ -492,7 +492,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
-                //bắn cho UizaIMAVideoV3 nhận
+                //bắn cho UZVideo nhận
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -559,24 +559,24 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         return moveView.getLayoutParams().height;
     }
 
-    //listen msg from UizaIMAVideoV3
+    //listen msg from UZVideo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
         if (msg == null) {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            //Nhận được vị trí từ UizaIMAVideoV3, tiến hành seek tới vị trí này
+            //Nhận được vị trí từ UZVideo, tiến hành seek tới vị trí này
             //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (FUZVideo != null) {
                 FUZVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            //lắng nghe UizaIMAVideoV3 đã init success hay chưa
+            //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
             if (FUZVideo != null) {
                 //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
-                //lấy vị trí của pip hiện tại để bắn cho UizaIMAVideoV3
+                //lấy vị trí của pip hiện tại để bắn cho UZVideo
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
                 msgFromServicePosition.setPosition(FUZVideo.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);

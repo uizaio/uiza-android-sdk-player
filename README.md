@@ -1,10 +1,13 @@
 
 
+
 # Welcome to UizaSDK
 
 Simple Streaming at scale.
 
 Uiza is the complete toolkit for building a powerful video streaming application with unlimited scalability. We design Uiza so simple that you only need a few lines of codes to start streaming, but sophisticated enough for you to build complex products on top of it.
+
+Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
 
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**
@@ -17,13 +20,13 @@ Uiza is the complete toolkit for building a powerful video streaming application
 **Step 2. Add the dependency**
 
     defaultConfig {
-      multiDexEnabled  true
+          multiDexEnabled  true
     }
     dependencies {
-      compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
+          compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
     }
 
-Get lasted release number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-player).
+Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
 
 # Init SDK
 
@@ -46,8 +49,7 @@ Get lasted release number [HERE](https://jitpack.io/#uizaio/uiza-android-sdk-pla
 
     <application
       android:name=".App "  <!-- important -->
-      ........
-      >
+    >
 
 
 # How to call API?:
@@ -85,7 +87,7 @@ before super.onCreate(savedInstanceState);  in onCreate() of your activity.
 [APIDOC](https://docs.uiza.io/#introduction)
 
 This class help you know how to use all Uiza API, please refer to
-[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/api/V3TestAPIActivity.java)
+[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
 
 # How to play the video?:
 **XML**
@@ -99,7 +101,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements UZCallback{
+    public class MainActivity extends BaseActivity implements uzCallback{
        public void isInitResult(...);
        public void onClickListEntityRelation(...);
        public void onClickBack(...);
@@ -119,13 +121,13 @@ Manifest
 In onCreate()
 Play with entity:
 
-    uzVideo= (UZVideo) findViewById(R.id.uiza_video);
-    uzVideo.setUizaCallback(this);
-    UizaUtil.initEntity(activity, uzVideo, "put the entity id here");
+    uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+    uzVideo.setUZCallback(this);
+    UZUtil.initEntity(activity, uzVideo, "put the entity id here");
 
 Play with playlist/folder:
 
-    UizaUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
+    UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
 
 
 
@@ -163,7 +165,7 @@ Dont forget to add in activity life cycle event:
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UizaIMAVideo.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
             } else {
@@ -177,8 +179,8 @@ Dont forget to add in activity life cycle event:
 Then put
 
     @Override
-    public void isInitResult(boolean b, ResultGetLinkPlay resultGetLinkPlay, ResultRetrieveAnEntity resultRetrieveAnEntity) {
-        if (b) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
@@ -186,7 +188,7 @@ Then put
 All listener  (If you want to listen all events)
 
     private void setListener() {
-        if (uzVideo== null || uzVideo.getPlayer() == null) {
+        if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
         uzVideo.getPlayer().addListener(new Player.EventListener() {
@@ -382,10 +384,11 @@ This sample help you know how to customize player's skin, please refer to  [THIS
 ***Note:***
 - You should not change the id of the view.
 Ex: android:id="@id/player_view"
-Dont change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
+Do not change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
 
 # How to livestream with UizaSDK?:
-It's very easy, plz follow these step below:
+It's very easy, plz follow these steps below to implement:
+
 XML:
 
     <vn.uiza.uzv3.view.rl.livestream.UZLivestream  
@@ -417,13 +420,13 @@ Start a livestream:
         uzLivestream.startStream(uzLivestream.getMainStreamUrl());  
     }
 
-Start a livestream and save to mp4 file:
+Start a livestream and save to MP4 file:
 
     if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
-Stop streaming (It auto save mp4 file in your gallery if you start a livestream with option save local file)
+Stop streaming (It auto saves mp4 file in your gallery if you start a livestream with option save local file)
 
     uzLivestream.stopStream();
 

@@ -3,8 +3,8 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
 
 import loitp.core.R;
 import vn.uiza.core.common.Constants;
@@ -16,7 +16,7 @@ import vn.uiza.utils.util.ConvertUtils;
  * Created by loitp on 4/19/2018.
  */
 
-public class UZImageButton extends ImageButton {
+public class UZImageButton extends AppCompatImageButton {
     private final String TAG = getClass().getSimpleName();
 
     public UZImageButton(Context context) {
@@ -33,10 +33,10 @@ public class UZImageButton extends ImageButton {
         initSizeScreenW(attrs);
     }
 
-    public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    /*public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initSizeScreenW(attrs);
-    }
+    }*/
 
     private int screenWPortrait;
     private int screenWLandscape;
