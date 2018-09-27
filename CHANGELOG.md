@@ -9,9 +9,9 @@
 - Add attr useDefaultIB for UZImageButton and useDefaultTV  for UZTextView. In xml layout, if you set true, Uiza will calculate size for you. But if you set false, you can customize size as you like.
 
 
-### 2.3.4 (2018-09-27)
+### 2.3.3 (2018-09-27)
 
-    implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.4'
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.3'
 
 **New Features**
 - Support Android TV now (check sample AndroidTV)
