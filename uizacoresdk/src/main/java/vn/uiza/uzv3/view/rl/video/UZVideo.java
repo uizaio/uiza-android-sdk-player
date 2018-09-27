@@ -1578,7 +1578,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzPlayerManager != null) {
                     uzPlayerManager.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
-
                 }
             }
         } else if (v == ibRewIcon) {
@@ -1587,8 +1586,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzPlayerManager != null) {
                     uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    isOnPlayerEnded = false;
-                    updateUIEndScreen();
+                    if (!isPlayPlaylistFolder()) {
+                        isOnPlayerEnded = false;
+                        updateUIEndScreen();
+                    }
                 }
             }
         } else if (v == ibPauseIcon) {
@@ -2670,7 +2671,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (rlEndScreen != null && tvEndScreenMsg != null) {
                 rlEndScreen.setVisibility(VISIBLE);
                 //TODO call api skin config to correct this text
-                setTextEndscreen("This is end screen");
+                setTextEndscreen("Thanks for your watching");
             }
             setVisibilityOfPlayPauseReplay(true);
             showController();
@@ -2682,7 +2683,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 setTextEndscreen("");
             }
             setVisibilityOfPlayPauseReplay(false);
-            //hideController();
             setControllerShowTimeoutMs(valuePlayerControllerTimeout);
             hideControllerOnTouch(true);
         }
@@ -2730,6 +2730,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
+                ibReplayIcon.requestFocus();
             }
             if (ibFfwdIcon != null) {
                 ibFfwdIcon.setEnabled(false);
