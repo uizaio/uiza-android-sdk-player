@@ -68,7 +68,7 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
     }
 
     @Override
-    public void onBindViewHolder(PlayListHolder playListHolder, final int position) {
+    public void onBindViewHolder(final PlayListHolder playListHolder, final int position) {
         final Data data = dataList.get(position);
         //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
 
@@ -136,6 +136,19 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
                         //do nothing
                     }
                 });
+            }
+        });
+
+        playListHolder.rootView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                //LLog.d(TAG, "onFocusChange isFocus: " + isFocus);
+                if (isFocus) {
+                    LAnimationUtil.play(playListHolder.ivCover, Techniques.Pulse);
+                    playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
+                } else {
+                    playListHolder.rootView.setBackgroundResource(0);
+                }
             }
         });
     }

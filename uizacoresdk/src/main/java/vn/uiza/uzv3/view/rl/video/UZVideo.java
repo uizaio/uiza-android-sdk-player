@@ -3205,6 +3205,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (tvEndScreenMsg != null) {
             tvEndScreenMsg.setTextColor(colorAllViewsEnable);
         }
+        //TODO
         if (uzTimebar != null) {
             //uzTimebar.setPreviewColorTint(R.color.Red);
             //uzTimebar.setPreviewColorResourceTint(R.color.Red);

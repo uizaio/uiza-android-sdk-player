@@ -3,15 +3,20 @@ package vn.uiza.uzv3.view.dlg.playlistfolder;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
+
+import com.daimajia.androidanimations.library.Techniques;
 
 import java.util.List;
 
 import loitp.core.R;
+import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -57,10 +62,24 @@ public class UZDlgPlaylistFolder extends Dialog {
 
         //tvMsg = (TextView) findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
+        final ImageButton btExit = (ImageButton) findViewById(R.id.bt_exit);
+        btExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
+            }
+        });
+        btExit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                if (isFocus) {
+                    LAnimationUtil.play(view, Techniques.Pulse);
+                    btExit.setColorFilter(Color.WHITE);
+                    btExit.setBackgroundColor(Color.BLACK);
+                } else {
+                    btExit.setBackgroundColor(Color.TRANSPARENT);
+                    btExit.setColorFilter(Color.BLACK);
+                }
             }
         });
         setupUI();
@@ -94,5 +113,6 @@ public class UZDlgPlaylistFolder extends Dialog {
         recyclerView.setAdapter(adapterPlaylistFolder);
         LUIUtil.setPullLikeIOSHorizontal(recyclerView);
         recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        recyclerView.requestFocus();
     }
 }
