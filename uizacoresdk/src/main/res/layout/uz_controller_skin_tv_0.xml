@@ -21,10 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:nextFocusDown="@id/exo_pause_uiza"
-            android:nextFocusLeft="@id/exo_setting"
-            android:nextFocusRight="@id/exo_pause_uiza"
-            android:nextFocusUp="@id/exo_pause_uiza"
             android:scaleType="centerInside"
             android:src="@drawable/baseline_keyboard_arrow_left_white_48" />
 
@@ -251,9 +247,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:nextFocusDown="@id/exo_back_screen"
-                android:nextFocusRight="@id/exo_back_screen"
-                android:nextFocusUp="@id/exo_back_screen"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_high_quality_white_48" />
 

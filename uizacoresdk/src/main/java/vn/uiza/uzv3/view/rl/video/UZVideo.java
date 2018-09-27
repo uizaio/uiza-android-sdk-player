@@ -962,6 +962,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         previewFrameLayout = playerView.findViewById(R.id.previewFrameLayout);
         if (uzTimebar != null) {
             uzTimebar.addOnPreviewChangeListener(this);
+            uzTimebar.setOnFocusChangeListener(this);
         }
         ivThumbnail = (ImageView) playerView.findViewById(R.id.image_view_thumnail);
 
@@ -1019,6 +1020,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
         ivLiveView = (UZImageButton) playerView.findViewById(R.id.iv_live_view);
         ivLiveTime = (UZImageButton) playerView.findViewById(R.id.iv_live_time);
+        ivLiveView.setFocusable(false);
+        ivLiveTime.setFocusable(false);
 
         rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
@@ -1035,36 +1038,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //set visinility first
         setVisibilityOfPlaylistFolderController(GONE);
     }
-
-    /*private void setFocusAble() {
-        if (isLivestream) {
-            ibBackScreenIcon.setFocusable(true);
-            ibSettingIcon.setFocusable(true);
-            ibCcIcon.setFocusable(false);
-            ibPlaylistRelationIcon.setFocusable(false);
-            ibFfwdIcon.setFocusable(false);
-            ibRewIcon.setFocusable(false);
-            ibPlayIcon.setFocusable(true);
-            ibPauseIcon.setFocusable(true);
-            ibReplayIcon.setFocusable(false);
-            ibPlaylistFolderIcon.setFocusable(false);
-            ibSkipNextIcon.setFocusable(false);
-            ibSkipPreviousIcon.setFocusable(false);
-        } else {
-            ibBackScreenIcon.setFocusable(true);
-            ibSettingIcon.setFocusable(true);
-            ibCcIcon.setFocusable(true);
-            ibPlaylistRelationIcon.setFocusable(true);
-            ibFfwdIcon.setFocusable(true);
-            ibRewIcon.setFocusable(true);
-            ibPlayIcon.setFocusable(true);
-            ibPauseIcon.setFocusable(true);
-            ibReplayIcon.setFocusable(true);
-            ibPlaylistFolderIcon.setFocusable(true);
-            ibSkipNextIcon.setFocusable(true);
-            ibSkipPreviousIcon.setFocusable(true);
-        }
-    }*/
 
     private void setEventForView() {
         if (ibFullscreenIcon != null) {
@@ -1627,7 +1600,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
             ibPauseIcon.setVisibility(GONE);
-            ibPlayIcon.setVisibility(VISIBLE);
+            if (ibPlayIcon != null) {
+                ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
+            }
         } else if (v == ibPlayIcon) {
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().play();
@@ -1639,6 +1615,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibPlayIcon.setVisibility(GONE);
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
+                ibPauseIcon.requestFocus();
             }
         } else if (v == ibReplayIcon) {
             replay();
@@ -1653,26 +1630,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        /*if (view == ibBackScreenIcon) {
-            LLog.d(TAG, "ibBackScreenIcon ibSettingIcon");
-        } else if (view == ibSettingIcon) {
-            LLog.d(TAG, "onFocusChange ibSettingIcon");
-        } else if (view == ibCcIcon) {
-            LLog.d(TAG, "onFocusChange ibCcIcon");
-        } else if (view == ibPlaylistRelationIcon) {
-            LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
-        } else if (view == ibRewIcon) {
-            LLog.d(TAG, "onFocusChange ibRewIcon");
-        } else if (view == ibPlayIcon) {
-            LLog.d(TAG, "onFocusChange ibPlayIcon");
-        } else if (view == ibPauseIcon) {
-            LLog.d(TAG, "onFocusChange ibPauseIcon");
-        } else if (view == ibReplayIcon) {
-            LLog.d(TAG, "onFocusChange ibReplayIcon");
-        } else if (view == ibSkipNextIcon) {
-            LLog.d(TAG, "onFocusChange ibSkipNextIcon");
-        } else if (view == ibSkipPreviousIcon) {
-            LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
+        /*if (isFocus) {
+            if (view == ibBackScreenIcon) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == ibSettingIcon) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == ibCcIcon) {
+                LLog.d(TAG, "onFocusChange ibCcIcon");
+            } else if (view == ibPlaylistRelationIcon) {
+                LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
+            } else if (view == ibRewIcon) {
+                LLog.d(TAG, "onFocusChange ibRewIcon");
+            } else if (view == ibPlayIcon) {
+                LLog.d(TAG, "onFocusChange ibPlayIcon");
+            } else if (view == ibPauseIcon) {
+                LLog.d(TAG, "onFocusChange ibPauseIcon");
+            } else if (view == ibReplayIcon) {
+                LLog.d(TAG, "onFocusChange ibReplayIcon");
+            } else if (view == ibSkipNextIcon) {
+                LLog.d(TAG, "onFocusChange ibSkipNextIcon");
+            } else if (view == ibSkipPreviousIcon) {
+                LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
+            } else if (view == uzTimebar) {
+                LLog.d(TAG, "onFocusChange uzTimebar");
+            }
         }*/
         updateUIFocusChange(view, isFocus);
     }
@@ -1681,13 +1662,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (view == null) {
             return;
         }
-        if (isFocus && view instanceof UZImageButton) {
-            ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
-            LAnimationUtil.play(view, Techniques.FlipInX);
+        if (isFocus) {
+            if (view instanceof UZImageButton) {
+                ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
+                LAnimationUtil.play(view, Techniques.FlipInX);
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
+            } else {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
+            }
         } else {
-            ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
+            if (view instanceof UZImageButton) {
+                ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
+            } else {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
+            }
         }
-        UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
     }
 
     //current screen is landscape or portrait
