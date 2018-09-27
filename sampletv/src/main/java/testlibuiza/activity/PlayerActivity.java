@@ -30,7 +30,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setUseController(false);
+        //uzVideo.setUseController(false);
         uzVideo.setUZCallback(this);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
@@ -186,15 +186,12 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_LEFT");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_RIGHT");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_DOWN");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_CENTER");
