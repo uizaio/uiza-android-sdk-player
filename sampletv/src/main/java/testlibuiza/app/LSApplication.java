@@ -12,54 +12,20 @@ import vn.uiza.uzv3.util.UZUtil;
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
-    /*public static final String metadataDefault0 = "00932b61-1d39-45d2-8c7d-3d99ad9ea95a";
-    public static String entityIdDefaultLIVE_TRANSCODE = "ebc8e874-afbb-4fd0-b7cf-9e34d14de4ac";
-    private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
-    private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-    private final int env = Constants.ENVIRONMENT_STAG;
-    public static final String entityIdDefaultVOD = "b7297b29-c6c4-4bd6-a74f-b60d0118d275";
-    public static final String entityIdDefaultLIVE = "45a908f7-a62e-4eaf-8ce2-dc5699f33406";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "9a6dc8d6-b5ef-443e-81d1-560368b2c197";
-    private final String currentPlayerId = Constants.PLAYER_ID_SKIN_1;
-    private final String DF_DOMAIN_API = "android-api.uiza.co";*/
-
-    //workspace prod
-    /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
-    private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
-    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private final int currentPlayerId = loitp.core.R.layout.uz_player_skin_1;
-    public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
-    public static String entityIdDefaultLIVE = "6e736441-750b-4351-b7b0-561982c6554f";
-    public static String metadataDefault0 = "1ae7d4ee-8e4e-402c-af30-e49d53f43ff3";
-    public static String entityIdDefaultLIVE_TRANSCODE = "04db355b-80d5-456e-aedb-aff1f8579e03";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "52128efd-59a7-4a3c-a2ec-988d031ccbe4";
-    private final int env = Constants.ENVIRONMENT_PROD;*/
-
-    /*private final String DF_DOMAIN_API = "vingroup-api.uiza.co";
-    private final String DF_TOKEN = "uap-a905fa990e5844c2ac92262cc8ee7a3f-4b52b053";
-    private final String DF_APP_ID = "a905fa990e5844c2ac92262cc8ee7a3f";
-    private final int env = Constants.ENVIRONMENT_PROD;
-    public static final String entityIdDefaultVOD = "8bbb46b8-37e0-49a7-8061-5bfeb7e577dd";
-    public static final String entityIdDefaultLIVE = "";
-    public static final String metadataDefault0 = "";*/
-
-    /*private final String DF_DOMAIN_API = "dev-api.uizadev.io";
-    private final String DF_TOKEN = "5e1e1afb4bf71936f26ec0ee6832b44f9ae0176f2a0334a0eadf09d4fa6da1f2e0a595baa46d20983c62f30d274724ca5bad4beaf0f4251db32f9651075ecc3b";
-    private final String DF_APP_ID = "152a5e7cca9a41948c88dbb96e705aaf";
-    private final int currentPlayerId = Constants.PLAYER_ID_SKIN_1;
-    public static String entityIdDefaultVOD = "fe0c0ba1-dc1c-4d1e-96dd-9c5558c104bf";
-    public static String entityIdDefaultLIVE = "";
-    public static String metadataDefault0 = "";
-    public static String entityIdDefaultLIVE_TRANSCODE = "";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "";
-    private final int env = Constants.ENVIRONMENT_DEV;*/
-
-    private final String DF_DOMAIN_API = "teamplayer.uiza.co";
+    /*private final String DF_DOMAIN_API = "teamplayer.uiza.co";
     private final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";
     private final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
-    public static String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
+    public static String entityIdDefaultVOD = "baf65548-e9f6-4ad1-be92-c6a44eb9d16f";
     public static String entityIdDefaultLIVE = "1759f642-e062-4e88-b5f2-e3022bd03b57";
     public static String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cb43371943d1";
+    private final int env = Constants.ENVIRONMENT_PROD;*/
+
+    private final String DF_DOMAIN_API = "veep.uiza.co";
+    private final String DF_TOKEN = "uap-4f892058d35e46dd8a3a660481583b79-6a1319cb";
+    private final String DF_APP_ID = "4f892058d35e46dd8a3a660481583b79";
+    public static String entityIdDefaultVOD = "aa0874b7-16fd-4ede-aa5a-a6b3a4f3ba79";
+    public static String entityIdDefaultLIVE = "64d0665e-9593-491d-b849-a8624ba47c73";
+    public static String metadataDefault0 = "a8d02fcd-d5b8-42f5-b0c4-628533ec8a9c";
     private final int env = Constants.ENVIRONMENT_PROD;
 
     @Override

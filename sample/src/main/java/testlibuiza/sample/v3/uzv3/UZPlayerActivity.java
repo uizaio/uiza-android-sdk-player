@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -48,6 +49,7 @@ import vn.uiza.views.LToast;
 public class UZPlayerActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private Button btProgress;
+    private SeekBar sb;
 
     @Override
     protected boolean setFullScreen() {
@@ -69,6 +71,21 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        sb = (SeekBar) findViewById(R.id.sb);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                uzVideo.seekTo(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         btProgress = (Button) findViewById(R.id.bt_progress);
         uzVideo.setUZCallback(this);
 
@@ -335,6 +352,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+                sb.setProgress((int) currentMls);
             }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
@@ -394,6 +412,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             //uzVideo.setControllerShowTimeoutMs(0);
             //uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
+            sb.setMax((int) uzVideo.getDuration());
         }
     }
 
