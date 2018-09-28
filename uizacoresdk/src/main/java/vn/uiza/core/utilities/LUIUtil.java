@@ -626,4 +626,9 @@ public class LUIUtil {
             view.setBackgroundDrawable(DrawableCompat.unwrap(wrapDrawable));
         }
     }
+
+    public static int getHeightOfView(View view) {
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        return view.getMeasuredHeight();
+    }
 }

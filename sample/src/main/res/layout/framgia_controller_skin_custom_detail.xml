@@ -8,30 +8,35 @@
     android:elevation="4dp"
     android:layoutDirection="ltr">
 
-    <FrameLayout
-        android:id="@id/previewFrameLayout"
+    <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/exo_progress"
-        android:background="@drawable/video_frame">
+        android:layout_alignParentBottom="true">
 
-        <ImageView
-            android:id="@id/image_view_thumnail"
+        <FrameLayout
+            android:id="@id/previewFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/video_frame">
 
-    </FrameLayout>
+            <ImageView
+                android:id="@id/image_view_thumnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
 
-    <vn.uiza.uzv3.view.rl.timebar.UZTimebar
-        android:id="@id/exo_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:ad_marker_color="@color/White"
-        app:buffered_color="@color/Gray"
-        app:played_ad_marker_color="@color/White"
-        app:played_color="@color/White"
-        app:previewFrameLayout="@id/previewFrameLayout"
-        app:scrubber_color="@color/White"
-        app:unplayed_color="@color/Gray" />
+        <vn.uiza.uzv3.view.rl.timebar.UZTimebar
+            android:id="@id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/previewFrameLayout"
+            app:ad_marker_color="@color/White"
+            app:buffered_color="@color/Gray"
+            app:played_ad_marker_color="@color/White"
+            app:played_color="@color/White"
+            app:previewFrameLayout="@id/previewFrameLayout"
+            app:scrubber_color="@color/White"
+            app:unplayed_color="@color/Gray" />
+    </RelativeLayout>
 </RelativeLayout>

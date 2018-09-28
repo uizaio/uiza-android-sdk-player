@@ -34,7 +34,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
             android:src="@drawable/animation"
-            android:tint="@color/White"
+            android:tint="@color/Red"
             app:useDefaultIB="false" />
 
         <vn.uiza.views.autosize.UZTextView

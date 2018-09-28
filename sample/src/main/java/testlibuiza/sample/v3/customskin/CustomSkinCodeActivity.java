@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.RelativeLayout;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -55,6 +58,17 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+
+            final RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+            int hRl = LUIUtil.getHeightOfView(rl);
+            LLog.d(TAG, "hRl " + hRl);
+
+            final int hUZVideo = LUIUtil.getHeightOfView(uzVideo);
+            LLog.d(TAG, "hUZVideo " + hUZVideo);
+
+            int hUZTimebar = LUIUtil.getHeightOfView(uzVideo.getUZTimeBar());
+            LLog.d(TAG, "hUZTimebar " + hUZTimebar);
+            LUIUtil.setMarginPx(rl, 0, hUZVideo - hRl + hUZTimebar / 3, 0, 0);
         }
     }
 

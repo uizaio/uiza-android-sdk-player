@@ -3116,6 +3116,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private int colorAllViewsEnable = Color.WHITE;
     private int colorAllViewsDisable = Color.GRAY;
 
+    public void setColorAllViewsDisable(int colorAllViewsDisable) {
+        this.colorAllViewsDisable = colorAllViewsDisable;
+    }
+
     public void setColorAllViewsEnable(int colorAllViewsEnable) {
         this.colorAllViewsEnable = colorAllViewsEnable;
         updateUIColorAllView();
