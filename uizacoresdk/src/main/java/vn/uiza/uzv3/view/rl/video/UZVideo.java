@@ -1033,7 +1033,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         tvEndScreenMsg = (TextView) playerView.findViewById(R.id.tv_end_screen_msg);
         if (tvEndScreenMsg != null) {
-            LUIUtil.setTextShadow(tvEndScreenMsg, Color.BLACK);
+            LUIUtil.setTextShadow(tvEndScreenMsg, Color.WHITE);
             tvEndScreenMsg.setOnClickListener(this);
         }
 
@@ -1516,10 +1516,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
-        uzPlayerManager.seekTo(progress);
-        uzPlayerManager.resumeVideo();
-        isOnPlayerEnded = false;
-        updateUIEndScreen();
+        onStopPreview(progress);
+    }
+
+    public void onStopPreview(int progress) {
+        if (uzPlayerManager != null) {
+            uzPlayerManager.seekTo(progress);
+            uzPlayerManager.resumeVideo();
+            isOnPlayerEnded = false;
+            updateUIEndScreen();
+        }
     }
 
     @Override

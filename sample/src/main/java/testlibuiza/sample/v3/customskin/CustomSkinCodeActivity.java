@@ -2,6 +2,7 @@ package testlibuiza.sample.v3.customskin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -72,7 +73,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.seekTo(seekBar.getProgress());
+                uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
         uzVideo.setProgressCallback(new ProgressCallback() {
@@ -98,45 +99,47 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             seekBar.setMax((int) uzVideo.getDuration());
-
-            int huzVideo = LUIUtil.getHeightOfView(uzVideo);
-            LLog.d(TAG, "uzVideo " + uzVideo);
-
-            int hSeekbar = LUIUtil.getHeightOfView(seekBar);
-            LLog.d(TAG, "hSeekbar " + hSeekbar);
-
-            LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
+            updateUISeekbarPosition(false);
         }
+    }
+
+    private void updateUISeekbarPosition(final boolean isLandscape) {
+        uzVideo.post(new Runnable() {
+            @Override
+            public void run() {
+                int huzVideo = LUIUtil.getHeightOfView(uzVideo);
+                int hSeekbar = LUIUtil.getHeightOfView(seekBar);
+                if (isLandscape) {
+                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar, 0, 0);
+                } else {
+                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
+                }
+            }
+        });
     }
 
     @Override
     public void onClickListEntityRelation(Item item, int position) {
-
     }
 
     @Override
     public void onClickBack() {
-
     }
 
     @Override
     public void onClickPip(Intent intent) {
-
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-
     }
 
     @Override
     public void onSkinChange() {
-
     }
 
     @Override
     public void onError(Exception e) {
-
     }
 
     @Override
@@ -179,6 +182,16 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            updateUISeekbarPosition(true);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            updateUISeekbarPosition(false);
         }
     }
 }
