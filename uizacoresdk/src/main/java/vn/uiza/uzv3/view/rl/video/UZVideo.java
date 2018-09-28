@@ -1020,8 +1020,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
         ivLiveView = (UZImageButton) playerView.findViewById(R.id.iv_live_view);
         ivLiveTime = (UZImageButton) playerView.findViewById(R.id.iv_live_time);
-        ivLiveView.setFocusable(false);
-        ivLiveTime.setFocusable(false);
+        if (ivLiveView != null) {
+            ivLiveView.setFocusable(false);
+        }
+        if (ivLiveTime != null) {
+            ivLiveTime.setFocusable(false);
+        }
 
         rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
