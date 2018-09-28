@@ -205,6 +205,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return isAutoStart;
     }
 
+    private boolean isAutoSwitchItemPlaylistFolder = true;
+
+    public void setAutoSwitchItemPlaylistFolder(boolean isAutoSwitchItemPlaylistFolder) {
+        this.isAutoSwitchItemPlaylistFolder = isAutoSwitchItemPlaylistFolder;
+    }
+
+    public boolean isAutoSwitchItemPlaylistFolder() {
+        return isAutoSwitchItemPlaylistFolder;
+    }
+
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
         //If auto start true, show button play and gone button pause
         //if not, gone button play and show button pause
@@ -2667,7 +2677,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onPlayerEnded() {
         LLog.d(TAG, "onPlayerEnded");
         isOnPlayerEnded = true;
-        if (isPlayPlaylistFolder()) {
+        if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
             hideController();
             autoSwitchNextVideo();
         } else {
