@@ -14,6 +14,7 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -122,6 +123,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onClickBack() {
+        onBackPressed();
     }
 
     @Override
@@ -188,6 +190,15 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
             updateUISeekbarPosition(true);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             updateUISeekbarPosition(false);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (LScreenUtil.isFullScreen(activity)) {
+            uzVideo.toggleFullscreen();
+        } else {
+            super.onBackPressed();
         }
     }
 }
