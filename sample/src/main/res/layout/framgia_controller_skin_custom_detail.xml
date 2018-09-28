@@ -297,7 +297,8 @@
             android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_marginBottom="@dimen/margin_10"
+            android:paddingBottom="@dimen/padding_10">
 
             <vn.uiza.views.autosize.UZTextView
                 android:id="@id/exo_position"
@@ -312,9 +313,7 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textColor="@color/White"

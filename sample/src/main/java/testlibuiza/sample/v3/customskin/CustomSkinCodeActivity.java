@@ -14,7 +14,6 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -24,7 +23,6 @@ import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.UZPlayerView;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
 import vn.uiza.uzv3.view.rl.video.UZVideo;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -177,8 +175,6 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
