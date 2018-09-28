@@ -22,4 +22,10 @@
             android:text="@string/large_text" />
     </ScrollView>
 
+    <SeekBar
+        android:id="@+id/sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uiza_video" />
+
 </RelativeLayout>

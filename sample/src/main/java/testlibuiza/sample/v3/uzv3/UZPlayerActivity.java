@@ -79,7 +79,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                uzVideo.seekTo(i);
             }
 
             @Override
@@ -88,6 +87,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.seekTo(seekBar.getProgress());
             }
         });
         btProgress = (Button) findViewById(R.id.bt_progress);
