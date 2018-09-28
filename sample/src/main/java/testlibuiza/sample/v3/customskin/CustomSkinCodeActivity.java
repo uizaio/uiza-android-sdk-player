@@ -48,7 +48,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        //uzVideo.hideUzTimebar();
+        uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -59,7 +59,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
 
-            final RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+            /*final RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
             int hRl = LUIUtil.getHeightOfView(rl);
             LLog.d(TAG, "hRl " + hRl);
 
@@ -68,7 +68,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
 
             int hUZTimebar = LUIUtil.getHeightOfView(uzVideo.getUZTimeBar());
             LLog.d(TAG, "hUZTimebar " + hUZTimebar);
-            LUIUtil.setMarginPx(rl, 0, hUZVideo - hRl + hUZTimebar / 3, 0, 0);
+            LUIUtil.setMarginPx(rl, 0, hUZVideo - hRl + hUZTimebar / 3, 0, 0);*/
         }
     }
 
