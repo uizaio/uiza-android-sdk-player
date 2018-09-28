@@ -28,7 +28,7 @@ import vn.uiza.views.LToast;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinActivity extends BaseActivity implements UZCallback {
+public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
 
     @Override
@@ -43,7 +43,7 @@ public class CustomSkinActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin;
+        return R.layout.activity_uiza_custom_skin_xml;
     }
 
     @Override

@@ -80,11 +80,18 @@
                     android:text="Test UizaSDK V3" />
 
                 <Button
-                    android:id="@+id/bt_uiza_custom_skin"
+                    android:id="@+id/bt_uiza_custom_skin_xml"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="Custom skin"
+                    android:text="Custom skin by xml" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="Custom skin by code"
                     android:visibility="visible" />
             </LinearLayout>
 
