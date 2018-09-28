@@ -45,7 +45,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.hideUzTimebar();
+        //uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
