@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.SeekBar;
 
 import testlibuiza.R;
@@ -19,6 +20,7 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.uzv3.view.UZPlayerView;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
 import vn.uiza.uzv3.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
@@ -81,6 +83,12 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 seekBar.setProgress((int) currentMls);
+            }
+        });
+        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+            @Override
+            public void onVisibilityChange(boolean isShow) {
+                seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
             }
         });
     }
