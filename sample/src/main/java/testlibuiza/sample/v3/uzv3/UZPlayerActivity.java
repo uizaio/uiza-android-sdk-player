@@ -87,7 +87,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.seekTo(seekBar.getProgress());
+                uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
         btProgress = (Button) findViewById(R.id.bt_progress);
