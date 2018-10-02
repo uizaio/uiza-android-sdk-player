@@ -1,3 +1,10 @@
+### 2.3.9 (2018-10-02)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.9'
+- Add more API for UZVideo.
+- Improve performance.
+
+
 ### 2.3.6 (2018-09-28)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.6'
