@@ -56,7 +56,10 @@
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinActivity"
+            android:name=".sample.v3.customskin.CustomSkinXMLActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name=".sample.v3.customskin.CustomSkinCodeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 

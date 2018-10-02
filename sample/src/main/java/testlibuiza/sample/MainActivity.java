@@ -12,7 +12,8 @@ import testlibuiza.sample.v2.api.V2TestAPIActivity;
 import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
 import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
-import testlibuiza.sample.v3.customskin.CustomSkinActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -88,15 +89,22 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
-        findViewById(R.id.bt_uiza_custom_skin).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bt_uiza_custom_skin_xml).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, CustomSkinActivity.class);
+                Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
         });
-
+        findViewById(R.id.bt_uiza_custom_skin_code).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
     }
 
     private void authV2() {

@@ -205,6 +205,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return isAutoStart;
     }
 
+    private boolean isAutoSwitchItemPlaylistFolder = true;
+
+    public void setAutoSwitchItemPlaylistFolder(boolean isAutoSwitchItemPlaylistFolder) {
+        this.isAutoSwitchItemPlaylistFolder = isAutoSwitchItemPlaylistFolder;
+    }
+
+    public boolean isAutoSwitchItemPlaylistFolder() {
+        return isAutoSwitchItemPlaylistFolder;
+    }
+
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
         //If auto start true, show button play and gone button pause
         //if not, gone button play and show button pause
@@ -1020,8 +1030,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveTime = (TextView) playerView.findViewById(R.id.tv_live_time);
         ivLiveView = (UZImageButton) playerView.findViewById(R.id.iv_live_view);
         ivLiveTime = (UZImageButton) playerView.findViewById(R.id.iv_live_time);
-        ivLiveView.setFocusable(false);
-        ivLiveTime.setFocusable(false);
+        if (ivLiveView != null) {
+            ivLiveView.setFocusable(false);
+        }
+        if (ivLiveTime != null) {
+            ivLiveTime.setFocusable(false);
+        }
 
         rlEndScreen = (RelativeLayout) playerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
@@ -1029,7 +1043,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         tvEndScreenMsg = (TextView) playerView.findViewById(R.id.tv_end_screen_msg);
         if (tvEndScreenMsg != null) {
-            LUIUtil.setTextShadow(tvEndScreenMsg, Color.BLACK);
+            LUIUtil.setTextShadow(tvEndScreenMsg, Color.WHITE);
             tvEndScreenMsg.setOnClickListener(this);
         }
 
@@ -1512,10 +1526,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
-        uzPlayerManager.seekTo(progress);
-        uzPlayerManager.resumeVideo();
-        isOnPlayerEnded = false;
-        updateUIEndScreen();
+        onStopPreview(progress);
+    }
+
+    public void onStopPreview(int progress) {
+        if (uzPlayerManager != null) {
+            uzPlayerManager.seekTo(progress);
+            uzPlayerManager.resumeVideo();
+            isOnPlayerEnded = false;
+            updateUIEndScreen();
+        }
     }
 
     @Override
@@ -2657,7 +2677,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onPlayerEnded() {
         LLog.d(TAG, "onPlayerEnded");
         isOnPlayerEnded = true;
-        if (isPlayPlaylistFolder()) {
+        if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
             hideController();
             autoSwitchNextVideo();
         } else {
@@ -3112,6 +3132,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private int colorAllViewsEnable = Color.WHITE;
     private int colorAllViewsDisable = Color.GRAY;
 
+    public void setColorAllViewsDisable(int colorAllViewsDisable) {
+        this.colorAllViewsDisable = colorAllViewsDisable;
+    }
+
     public void setColorAllViewsEnable(int colorAllViewsEnable) {
         this.colorAllViewsEnable = colorAllViewsEnable;
         updateUIColorAllView();
@@ -3410,5 +3434,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public UZTimebar getUZTimeBar() {
         return uzTimebar;
+    }
+
+    public void hideUzTimebar() {
+        if (previewFrameLayout != null) {
+            previewFrameLayout.setVisibility(GONE);
+        }
+        if (ivThumbnail != null) {
+            ivThumbnail.setVisibility(GONE);
+        }
+        if (uzTimebar != null) {
+            uzTimebar.setVisibility(GONE);
+        }
     }
 }

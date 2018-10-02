@@ -35,7 +35,6 @@ public class LSApplication extends MultiDexApplication {
         }
         LeakCanary.install(this);*/
 
-        //UizaDataV3.getInstance().initSDK(DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment);
     }
 

@@ -73,13 +73,13 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzVideo.setAutoSwitchItemPlaylistFolder(false);
         sb = (SeekBar) findViewById(R.id.sb);
         sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
         sb.getThumb().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                uzVideo.seekTo(i);
             }
 
             @Override
@@ -88,6 +88,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
         btProgress = (Button) findViewById(R.id.bt_progress);

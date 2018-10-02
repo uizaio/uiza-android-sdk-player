@@ -101,7 +101,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements uzCallback{
+    public class MainActivity extends BaseActivity implements UZCallback{
        public void isInitResult(...);
        public void onClickListEntityRelation(...);
        public void onClickBack(...);

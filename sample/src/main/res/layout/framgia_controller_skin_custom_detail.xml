@@ -164,64 +164,6 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@id/rl_time_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/margin_5">
-
-            <FrameLayout
-                android:id="@id/previewFrameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/video_frame">
-
-                <ImageView
-                    android:id="@id/image_view_thumnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </FrameLayout>
-
-            <vn.uiza.uzv3.view.rl.timebar.UZTimebar
-                android:id="@id/exo_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
-                android:layout_toLeftOf="@id/exo_duration"
-                android:layout_toRightOf="@+id/exo_position"
-                app:ad_marker_color="@color/White"
-                app:buffered_color="@color/Gray"
-                app:played_ad_marker_color="@color/White"
-                app:played_color="@color/White"
-                app:previewFrameLayout="@id/previewFrameLayout"
-                app:scrubber_color="@color/White"
-                app:unplayed_color="@color/Gray" />
-
-            <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
-                android:includeFontPadding="false"
-                android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
-                android:textStyle="bold" />
-
-            <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@id/previewFrameLayout"
-                android:layout_gravity="bottom"
-                android:includeFontPadding="false"
-                android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -350,6 +292,33 @@
                 android:src="@drawable/baseline_fullscreen_white_48" />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:paddingBottom="@dimen/padding_10">
+
+            <vn.uiza.views.autosize.UZTextView
+                android:id="@id/exo_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:padding="@dimen/padding_5"
+                android:textColor="@color/White"
+                android:textStyle="bold" />
+
+            <vn.uiza.views.autosize.UZTextView
+                android:id="@id/exo_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:includeFontPadding="false"
+                android:padding="@dimen/padding_5"
+                android:textColor="@color/White"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
