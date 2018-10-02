@@ -364,7 +364,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             public void doAfter(int mls) {
                 LLog.d(TAG, "callAPIGetUrlIMAAdTag success");
                 isCalledAPIGetUrlIMAAdTag = true;
-                //TODO remove hard code, call api
+                //TODO remove hard code, call api get ima ad here
                 urlIMAAd = null;
                 //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
                 handleDataCallAPI();
@@ -1410,7 +1410,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public int getCurrentProgressSeekbarVolume() {
         if (seekbarVolume == null) {
-            return 0;
+            return Constants.NOT_FOUND;
         }
         return seekbarVolume.getProgress();
     }
