@@ -2142,7 +2142,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    //set timeout controller
+    /**
+     * Sets the playback controls timeout. The playback controls are automatically hidden after this
+     * duration of time has elapsed without user input and with playback or buffering in progress.
+     *
+     * @param controllerShowTimeoutMs The timeout in milliseconds. A non-positive value will cause the
+     *                                controller to remain visible indefinitely.
+     */
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
     }
