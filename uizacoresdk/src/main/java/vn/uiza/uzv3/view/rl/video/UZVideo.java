@@ -106,6 +106,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
 public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
+    private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
@@ -268,14 +269,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     private String entityId;
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
-    private int valuePlayerControllerTimeout = 8000;
-
-    /*
-     **set time out player controller
-     */
-    public void setValuePlayerControllerTimeout(int valuePlayerControllerTimeout) {
-        this.valuePlayerControllerTimeout = valuePlayerControllerTimeout;
-    }
 
     protected void init(@NonNull String entityId, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
@@ -304,7 +297,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(true);
         isHasError = false;
         hideLayoutMsg();
-        setControllerShowTimeoutMs(valuePlayerControllerTimeout);
+        setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         //called api parallel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
@@ -2150,7 +2143,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      *                                controller to remain visible indefinitely.
      */
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
-        playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
+        DEFAULT_VALUE_CONTROLLER_TIMEOUT = controllerShowTimeoutMs;
+        playerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
     }
 
     public void setControllerAutoShow(boolean isAutoShow) {
@@ -2519,7 +2513,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
             uzPlayerManager.setVolume((float) volumeOfCastPlayer);*/
 
-            setControllerShowTimeoutMs(valuePlayerControllerTimeout);
+            setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         }
     }
 
@@ -2709,7 +2703,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 setTextEndscreen("");
             }
             setVisibilityOfPlayPauseReplay(false);
-            setControllerShowTimeoutMs(valuePlayerControllerTimeout);
+            setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
             hideControllerOnTouch(true);
         }
     }
