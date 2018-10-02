@@ -1,6 +1,6 @@
-### 2.4.0 (2018-10-02)
+### 2.4.1 (2018-10-02)
 
-    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.0'
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.1'
 - Fixed mute function.
 
 ### 2.3.9 (2018-10-02)
