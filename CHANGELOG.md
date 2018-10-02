@@ -1,4 +1,4 @@
-### 2.3.7 (2018-09-28)
+### 2.3.6 (2018-09-28)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.3.6'
 - Add sample custom skin via using code.
