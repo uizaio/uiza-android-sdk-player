@@ -697,7 +697,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (player != null) {
             return player.getVolume();
         }
-        return 0;
+        return Constants.NOT_FOUND;
     }
 
     public boolean seekTo(long positionMs) {
