@@ -1,7 +1,8 @@
-### 2.4.1 (2018-10-02)
+### 2.4.2 (2018-10-02)
 
-    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.1'
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.2'
 - Fixed mute function.
+- Fixed issue controller show time out.
 
 ### 2.3.9 (2018-10-02)
 
