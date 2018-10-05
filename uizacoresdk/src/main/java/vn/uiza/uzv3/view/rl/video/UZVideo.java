@@ -1430,7 +1430,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void onResume() {
         if (isCastingChromecast) {
-            LLog.d(TAG, "onResume isCastingChromecast true => return");
+            //LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
         //LLog.d(TAG, "onResume getUZInputList().size " + UZData.getInstance().getUZInputList().size());
@@ -1446,8 +1446,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //initUizaPlayerManagerV3();
         }*/
         if (uzPlayerManager != null) {
-            //LLog.d(TAG, "onResume uzPlayerManager != null -> resumeVideo");
-            uzPlayerManager.resumeVideo();
+            if (ibPlayIcon != null && ibPlayIcon.getVisibility() == VISIBLE) {
+                //LLog.d(TAG, "onResume uzPlayerManager != null - if -> do nothing");
+            } else {
+                //LLog.d(TAG, "onResume uzPlayerManager != null - else -> resumeVideo");
+                uzPlayerManager.resumeVideo();
+            }
         } else {
             //LLog.d(TAG, "onResume uzPlayerManager == null -> do nothing");
         }
