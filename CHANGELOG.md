@@ -1,3 +1,9 @@
+### 2.4.3 (2018-10-05)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.3'
+- Fixed issue controller playback.
+
+
 ### 2.4.2 (2018-10-02)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.2'
