@@ -1862,9 +1862,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzImageButton.setFocusable(isVisible);
         if (drawable == null) {
             uzImageButton.setImageResource(0);
+            /*uzImageButton.getLayoutParams().width = 0;
+            uzImageButton.getLayoutParams().height = 0;
+            uzImageButton.requestLayout();*/
         } else {
             uzImageButton.setImageDrawable(drawable);
+            /*uzImageButton.getLayoutParams().width = 110;
+            uzImageButton.getLayoutParams().height = 110;
+            uzImageButton.requestLayout();*/
         }
+        invalidate();
+        requestLayout();
     }
 
     protected void updateUIButtonVisibilities() {
