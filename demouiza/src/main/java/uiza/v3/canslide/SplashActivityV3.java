@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import uiza.R;
+import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
 import uiza.v4.HomeV4CanSlideActivity;
 import vn.uiza.core.base.BaseActivity;
@@ -25,42 +26,13 @@ import vn.uiza.uzv3.util.UZUtil;
 
 public class SplashActivityV3 extends BaseActivity {
     private int currentPlayerId = R.layout.uz_player_skin_1;
-
-    //workspace loitp
-    /*private final String DF_DOMAIN_API = "android-api.uiza.co";
-    private final String DF_TOKEN = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
-    private final String DF_APP_ID = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
-    private int environment = Constants.ENVIRONMENT_STAG;*/
-
-    //workspace Yan
-    /*private final String DF_DOMAIN_API = "wworkspace-api.uiza.co";
-    private final String DF_TOKEN = "uap-30062fa1ee7f4ce4822c55f00c6dc130-fa14be2b";
-    private final String DF_APP_ID = "30062fa1ee7f4ce4822c55f00c6dc130";
-    private int environment = Constants.ENVIRONMENT_PROD;*/
-
-    //workspace Loc
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
-    private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
-    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private int environment = Constants.ENVIRONMENT_PROD;
-
-    //workspace stag
-    /*private final String DF_DOMAIN_API = "stagyann007.uiza.co";
-    private final String DF_TOKEN = "uap-91d64fe24bf5435f9ff4ad74a5195f4c-c055d414";
-    private final String DF_APP_ID = "91d64fe24bf5435f9ff4ad74a5195f4c";
-    private int environment = Constants.ENVIRONMENT_STAG;*/
-
-    /*private final String DF_DOMAIN_API = "http://chivas69.uizadev.io/";
-    private final String DF_TOKEN = "uap-152a5e7cca9a41948c88dbb96e705aaf-929e125e";
-    private final String DF_APP_ID = "152a5e7cca9a41948c88dbb96e705aaf";
-    private int environment = Constants.ENVIRONMENT_DEV;*/
-
     private EditText etApiDomain;
     private EditText etKey;
     private EditText etAppId;
     private Button btStart;
     private ProgressBar progressBar;
     private LinearLayout llInputInfo;
+    private int environment = Constants.ENVIRONMENT_STAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +48,9 @@ public class SplashActivityV3 extends BaseActivity {
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
         etAppId = (EditText) findViewById(R.id.et_app_id);
-        etApiDomain.setText(DF_DOMAIN_API);
-        etKey.setText(DF_TOKEN);
-        etAppId.setText(DF_APP_ID);
+        etApiDomain.setText(LSApplication.DF_DOMAIN_API);
+        etKey.setText(LSApplication.DF_TOKEN);
+        etAppId.setText(LSApplication.DF_APP_ID);
         LUIUtil.setLastCursorEditText(etApiDomain);
 
         if (environment == Constants.ENVIRONMENT_DEV) {

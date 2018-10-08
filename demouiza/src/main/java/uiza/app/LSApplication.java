@@ -13,9 +13,15 @@ public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();
     private static LSApplication instance;
     private Gson gson;
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+
+    /*private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
     private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
-    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
+    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";*/
+
+    public static final String DF_DOMAIN_API = "byterange01-api.uizadev.io";
+    public static String DF_TOKEN = "uap-50ee0c6a7e104583bc8aa0944a59ab7a-6dede367";
+    public static String DF_APP_ID = "50ee0c6a7e104583bc8aa0944a59ab7a";
+
     private int environment = Constants.ENVIRONMENT_PROD;
 
     @Override
