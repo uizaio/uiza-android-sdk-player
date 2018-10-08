@@ -54,8 +54,8 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
 
-        //final String entityId = LSApplication.entityIdDefaultVOD;
-        final String entityId = LSApplication.entityIdDefaultLIVE;
+        final String entityId = LSApplication.entityIdDefaultVOD;
+        //final String entityId = LSApplication.entityIdDefaultLIVE;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {

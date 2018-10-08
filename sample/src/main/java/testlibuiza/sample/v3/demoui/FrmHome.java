@@ -23,7 +23,8 @@ import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
 
-    private final String entityId = LSApplication.entityIdDefaultVOD;
+    private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
+    private final String entityIdDefaultLIVE = LSApplication.entityIdDefaultLIVE;
     private final String metadataId = LSApplication.metadataDefault0;
 
     @Override
@@ -34,11 +35,18 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frmRootView.findViewById(R.id.bt_entity).setOnClickListener(new View.OnClickListener() {
+        frmRootView.findViewById(R.id.bt_entity_vod).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UZUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
+                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
+            }
+        });
+        frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UZUtil.setClickedPip(getActivity(), false);
+                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityIdDefaultLIVE);
             }
         });
         frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
@@ -58,12 +66,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         if (UZUtil.getClickedPip(getActivity())) {
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
-                //frmRootView.findViewById(R.id.bt_playlist_folder).performClick();
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             } else {
-                //frmRootView.findViewById(R.id.bt_entity).performClick();
                 LLog.d(TAG, "Called if user click pip fullscreen playEntityId");
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityId);
+                ((HomeV4CanSlideActivity) getActivity()).playEntityId(null);
             }
         }
     }
@@ -89,9 +95,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
                         ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                         return true;
-                    } else {
                     }
-                } else {
                 }
             }
             LToast.show(getActivity(), getString(R.string.press_again_to_exit));

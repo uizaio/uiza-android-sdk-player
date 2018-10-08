@@ -27,7 +27,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //UizaDataV3.getInstance().setCasty(Casty.create(this));
+        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
