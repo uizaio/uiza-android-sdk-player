@@ -156,12 +156,16 @@ public class SplashActivityV3 extends BaseActivity {
                 llInputInfo.setVisibility(View.GONE);
 
                 String domainApi = etApiDomain.getText().toString().trim();
+                if (domainApi.contains("http://")) {
+                    domainApi = domainApi.replace("http://", "");
+                }
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
 
                 //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
                 //UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
-                UZUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
+                //UZUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
+                UZUtil.initWorkspace(activity, domainApi, token, appId, environment, currentPlayerId);
 
                 //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);

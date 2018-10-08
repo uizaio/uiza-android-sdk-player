@@ -3,6 +3,7 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 
@@ -37,7 +38,7 @@ public class UZImageButton extends AppCompatImageButton {
         super(context, attrs, defStyleAttr, defStyleRes);
         initSizeScreenW(attrs);
     }*/
-
+    private Drawable drawable;
     private int screenWPortrait;
     private int screenWLandscape;
 
@@ -83,6 +84,7 @@ public class UZImageButton extends AppCompatImageButton {
             }
         });
         a.recycle();
+        drawable = getDrawable();
     }
 
     /*private boolean isFullScreen;
@@ -220,4 +222,16 @@ public class UZImageButton extends AppCompatImageButton {
             this.setBackgroundResource(0);
         }
     }*/
+
+    public void setUIVisible(final boolean isVisible) {
+        setClickable(isVisible);
+        setFocusable(isVisible);
+        if (isVisible) {
+            if (drawable != null) {
+                setImageDrawable(drawable);
+            }
+        } else {
+            setImageResource(0);
+        }
+    }
 }

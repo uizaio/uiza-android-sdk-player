@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -153,9 +152,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZVerticalSeekBar seekbarBirghtness;
     private ImageView ivPreview;
 
-    private Drawable drawableIbRewIcon;
-    private Drawable drawableIbFfwdIcon;
-
     private RelativeLayout rlLiveInfo;
     private TextView tvLiveStatus;
     private TextView tvLiveView;
@@ -286,6 +282,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             UZData.getInstance().clearDataForEntity();
         }
+        LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             setVisibilityOfPlaylistFolderController(View.VISIBLE);
         } else {
@@ -530,7 +527,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void handleDataCallAPI() {
         //LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
         if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
-            LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
+            //LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
             UZInput UZInput = new UZInput();
             UZInput.setData(UZData.getInstance().getData());
             UZInput.setUrlIMAAd(urlIMAAd);
@@ -765,14 +762,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
             String urlCover = UZData.getInstance().getThumbnail() == null ? Constants.URL_IMG_THUMBNAIL : UZData.getInstance().getThumbnail();
-            LLog.d(TAG, "setVideoCover urlCover " + urlCover);
+            //LLog.d(TAG, "setVideoCover urlCover " + urlCover);
             LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.background_black);
         }
     }
 
     protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
+            //LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
                 if (tvLiveTime != null) {
@@ -1092,12 +1089,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibShareIcon.setOnFocusChangeListener(this);
         }
         if (ibFfwdIcon != null) {
-            drawableIbFfwdIcon = ibFfwdIcon.getDrawable();
+            //ibFfwdIcon.setTag(ibFfwdIcon.getDrawable());
             ibFfwdIcon.setOnClickListener(this);
             ibFfwdIcon.setOnFocusChangeListener(this);
         }
         if (ibRewIcon != null) {
-            drawableIbRewIcon = ibRewIcon.getDrawable();
+            //ibRewIcon.setTag(ibRewIcon.getDrawable());
             ibRewIcon.setOnClickListener(this);
             ibRewIcon.setOnFocusChangeListener(this);
         }
@@ -1801,6 +1798,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
+        LLog.d(TAG, "updateUIDependOnLivstream isLivestream " + isLivestream);
         if (isLivestream) {
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
@@ -1813,10 +1811,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             //TODO why set gone not work?
-            //ibRewIcon.setVisibility(GONE);
-            //ibFfwdIcon.setVisibility(GONE);
-            changeUIVisibilitiesOfButton(ibRewIcon, false, null);
-            changeUIVisibilitiesOfButton(ibFfwdIcon, false, null);
+            if (ibRewIcon != null) {
+                //ibRewIcon.setVisibility(GONE);
+                ibRewIcon.setUIVisible(false);
+            }
+            if (ibFfwdIcon != null) {
+                //ibFfwdIcon.setVisibility(GONE);
+                ibFfwdIcon.setUIVisible(false);
+            }
+
+            //changeUIVisibilitiesOfButton(ibRewIcon, false);
+            //changeUIVisibilitiesOfButton(ibFfwdIcon, false);
 
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(VISIBLE);
@@ -1834,10 +1839,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             //TODO why set visible not work?
-            //ibRewIcon.setVisibility(VISIBLE);
-            //ibFfwdIcon.setVisibility(VISIBLE);
-            changeUIVisibilitiesOfButton(ibRewIcon, true, drawableIbRewIcon);
-            changeUIVisibilitiesOfButton(ibFfwdIcon, true, drawableIbFfwdIcon);
+            if (ibRewIcon != null) {
+                //ibRewIcon.setVisibility(VISIBLE);
+                ibRewIcon.setUIVisible(true);
+            }
+            if (ibFfwdIcon != null) {
+                //ibFfwdIcon.setVisibility(VISIBLE);
+                ibFfwdIcon.setUIVisible(true);
+            }
+            ;
+
+            //changeUIVisibilitiesOfButton(ibRewIcon, true);
+            //changeUIVisibilitiesOfButton(ibFfwdIcon, true);
 
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(GONE);
@@ -1854,26 +1867,27 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //trick to gone view
-    private void changeUIVisibilitiesOfButton(UZImageButton uzImageButton, boolean isVisible, Drawable drawable) {
+    /*private void changeUIVisibilitiesOfButton(final UZImageButton uzImageButton, final boolean isVisible) {
         if (uzImageButton == null) {
             return;
         }
-        uzImageButton.setClickable(isVisible);
-        uzImageButton.setFocusable(isVisible);
-        if (drawable == null) {
-            uzImageButton.setImageResource(0);
-            /*uzImageButton.getLayoutParams().width = 0;
-            uzImageButton.getLayoutParams().height = 0;
-            uzImageButton.requestLayout();*/
-        } else {
-            uzImageButton.setImageDrawable(drawable);
-            /*uzImageButton.getLayoutParams().width = 110;
-            uzImageButton.getLayoutParams().height = 110;
-            uzImageButton.requestLayout();*/
-        }
-        invalidate();
-        requestLayout();
-    }
+        uzImageButton.post(new Runnable() {
+            @Override
+            public void run() {
+                uzImageButton.setClickable(isVisible);
+                uzImageButton.setFocusable(isVisible);
+                if (isVisible) {
+                    Drawable drawable = (Drawable) uzImageButton.getTag();
+                    if (drawable != null) {
+                        uzImageButton.setImageDrawable(drawable);
+                    }
+                } else {
+                    uzImageButton.setImageResource(0);
+                }
+                uzImageButton.getParent().requestLayout();
+            }
+        });
+    }*/
 
     protected void updateUIButtonVisibilities() {
         debugRootView.removeAllViews();
