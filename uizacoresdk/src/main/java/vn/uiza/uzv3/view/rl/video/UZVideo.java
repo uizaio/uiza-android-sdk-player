@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -151,6 +152,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZVerticalSeekBar seekbarVolume;
     private UZVerticalSeekBar seekbarBirghtness;
     private ImageView ivPreview;
+
+    private Drawable drawableIbRewIcon;
+    private Drawable drawableIbFfwdIcon;
 
     private RelativeLayout rlLiveInfo;
     private TextView tvLiveStatus;
@@ -1088,10 +1092,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibShareIcon.setOnFocusChangeListener(this);
         }
         if (ibFfwdIcon != null) {
+            drawableIbFfwdIcon = ibFfwdIcon.getDrawable();
             ibFfwdIcon.setOnClickListener(this);
             ibFfwdIcon.setOnFocusChangeListener(this);
         }
         if (ibRewIcon != null) {
+            drawableIbRewIcon = ibRewIcon.getDrawable();
             ibRewIcon.setOnClickListener(this);
             ibRewIcon.setOnFocusChangeListener(this);
         }
@@ -1809,8 +1815,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //TODO why set gone not work?
             //ibRewIcon.setVisibility(GONE);
             //ibFfwdIcon.setVisibility(GONE);
-            changeUIVisibilitiesOfButton(ibRewIcon, false, 0);
-            changeUIVisibilitiesOfButton(ibFfwdIcon, false, 0);
+            changeUIVisibilitiesOfButton(ibRewIcon, false, null);
+            changeUIVisibilitiesOfButton(ibFfwdIcon, false, null);
 
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(VISIBLE);
@@ -1830,8 +1836,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //TODO why set visible not work?
             //ibRewIcon.setVisibility(VISIBLE);
             //ibFfwdIcon.setVisibility(VISIBLE);
-            changeUIVisibilitiesOfButton(ibRewIcon, true, R.drawable.baseline_replay_10_white_48);
-            changeUIVisibilitiesOfButton(ibFfwdIcon, true, R.drawable.baseline_forward_10_white_48);
+            changeUIVisibilitiesOfButton(ibRewIcon, true, drawableIbRewIcon);
+            changeUIVisibilitiesOfButton(ibFfwdIcon, true, drawableIbFfwdIcon);
 
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(GONE);
@@ -1848,13 +1854,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //trick to gone view
-    private void changeUIVisibilitiesOfButton(UZImageButton UZImageButton, boolean isVisible, int res) {
-        if (UZImageButton == null) {
+    private void changeUIVisibilitiesOfButton(UZImageButton uzImageButton, boolean isVisible, Drawable drawable) {
+        if (uzImageButton == null) {
             return;
         }
-        UZImageButton.setClickable(isVisible);
-        UZImageButton.setFocusable(isVisible);
-        UZImageButton.setImageResource(res);
+        uzImageButton.setClickable(isVisible);
+        uzImageButton.setFocusable(isVisible);
+        if (drawable == null) {
+            uzImageButton.setImageResource(0);
+        } else {
+            uzImageButton.setImageDrawable(drawable);
+        }
     }
 
     protected void updateUIButtonVisibilities() {

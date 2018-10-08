@@ -144,8 +144,8 @@
         <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
             android:layout_width="@dimen/w_50"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:minWidth="10dp">
 
             <vn.uiza.views.seekbar.UZVerticalSeekBar
@@ -213,8 +213,8 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@id/previewFrameLayout"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_replay_10_white_48" />
+                android:src="@mipmap/ic_launcher" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_play_uiza"
