@@ -1838,13 +1838,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void updateUIDependOnLivetream() {
         if (isCastingChromecast) {
             if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.setVisibility(INVISIBLE);
+                ibPictureInPictureIcon.setVisibility(GONE);
             }
         } else {
             if (isTablet) {
                 if (isTV) {
                     if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(INVISIBLE);
+                        ibPictureInPictureIcon.setVisibility(GONE);
                     }
                 } else {
                     if (ibPictureInPictureIcon != null) {
@@ -1853,7 +1853,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             } else {
                 if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(INVISIBLE);
+                    ibPictureInPictureIcon.setVisibility(GONE);
                 }
             }
         }
@@ -1863,13 +1863,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlLiveInfo.setVisibility(VISIBLE);
             }
             if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(INVISIBLE);
+                rlTimeBar.setVisibility(GONE);
             }
             if (ibPlaylistRelationIcon != null) {
-                ibPlaylistRelationIcon.setVisibility(INVISIBLE);
+                ibPlaylistRelationIcon.setVisibility(GONE);
             }
             if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(INVISIBLE);
+                ibCcIcon.setVisibility(GONE);
             }
 
             //TODO why set gone not work?
@@ -1883,14 +1883,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(INVISIBLE);
+                rlLiveInfo.setVisibility(GONE);
             }
             if (rlTimeBar != null) {
                 rlTimeBar.setVisibility(VISIBLE);
             }
             //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
             if (ibPlaylistRelationIcon != null) {
-                ibPlaylistRelationIcon.setVisibility(INVISIBLE);
+                ibPlaylistRelationIcon.setVisibility(GONE);
             }
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
@@ -1907,10 +1907,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (isTV) {
             if (ibShareIcon != null) {
-                ibShareIcon.setVisibility(INVISIBLE);
+                ibShareIcon.setVisibility(GONE);
             }
             if (ibFullscreenIcon != null) {
-                ibFullscreenIcon.setVisibility(INVISIBLE);
+                ibFullscreenIcon.setVisibility(GONE);
             }
         }
     }
