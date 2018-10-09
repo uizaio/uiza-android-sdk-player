@@ -237,7 +237,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_skip_previous_white_48" />
+                android:src="@drawable/baseline_skip_previous_white_48"
+                app:srcDisabled="@mipmap/ic_launcher" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_rew"
@@ -285,7 +286,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_skip_next_white_48" />
+                android:src="@drawable/baseline_skip_next_white_48"
+                app:srcDisabled="@mipmap/ic_launcher" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_volume"

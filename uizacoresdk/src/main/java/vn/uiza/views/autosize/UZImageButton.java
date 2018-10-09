@@ -38,16 +38,34 @@ public class UZImageButton extends AppCompatImageButton {
         super(context, attrs, defStyleAttr, defStyleRes);
         initSizeScreenW(attrs);
     }*/
-    private Drawable drawable;
+    private Drawable drawableEnabled;
+    private Drawable drawableDisabled;
     private int screenWPortrait;
     private int screenWLandscape;
 
     private boolean isTablet;
     private boolean isUseDefault;
 
+    public void setSrcDrawableEnabled() {
+        if (drawableEnabled != null) {
+            setClickable(true);
+            setFocusable(true);
+            setImageDrawable(drawableEnabled);
+        }
+    }
+
+    public void setSrcDrawableDisabled() {
+        if (drawableDisabled != null) {
+            setClickable(false);
+            setFocusable(false);
+            setImageDrawable(drawableDisabled);
+        }
+    }
+
     private void initSizeScreenW(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZImageButton);
         isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
+        drawableDisabled = a.getDrawable(R.styleable.UZImageButton_srcDisabled);
         //LLog.d(TAG, "initSizeScreenW isUseDefault " + isUseDefault);
         if (!isUseDefault) {
             //LLog.d(TAG, "initSizeScreenW -> return");
@@ -84,7 +102,7 @@ public class UZImageButton extends AppCompatImageButton {
             }
         });
         a.recycle();
-        drawable = getDrawable();
+        drawableEnabled = getDrawable();
     }
 
     /*private boolean isFullScreen;
@@ -195,7 +213,7 @@ public class UZImageButton extends AppCompatImageButton {
             int maskedAction = event.getActionMasked();
             if (maskedAction == MotionEvent.ACTION_DOWN) {
                 //setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
-                this.setBackgroundResource(R.drawable.circle_effect);
+                this.setBackgroundResource(R.drawableEnabled.circle_effect);
             } else if (maskedAction == MotionEvent.ACTION_UP) {
                 //clearColorTint();
                 this.setBackgroundResource(0);
@@ -217,7 +235,7 @@ public class UZImageButton extends AppCompatImageButton {
     protected void onFocusChanged(boolean gainFocus, int direction, @Nullable Rect previouslyFocusedRect) {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
         if (gainFocus) {
-            this.setBackgroundResource(R.drawable.bt_rate);
+            this.setBackgroundResource(R.drawableEnabled.bt_rate);
         } else {
             this.setBackgroundResource(0);
         }
@@ -227,14 +245,12 @@ public class UZImageButton extends AppCompatImageButton {
         setClickable(isVisible);
         setFocusable(isVisible);
         if (isVisible) {
-            if (drawable != null) {
-                setImageDrawable(drawable);
-                //setBackgroundColor(Color.TRANSPARENT);
+            setSrcDrawableEnabled();
 
-                /*getLayoutParams().width = size;
-                getLayoutParams().height = size;
-                invalidate();*/
-            }
+            //setBackgroundColor(Color.TRANSPARENT);
+            /*getLayoutParams().width = size;
+            getLayoutParams().height = size;
+            invalidate();*/
         } else {
             setImageResource(0);
 

@@ -2681,36 +2681,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //update UI for skip next and skip previous button
         if (position == 0) {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setEnabled(false);
-                ibSkipPreviousIcon.setFocusable(false);
-                ibSkipPreviousIcon.setColorFilter(colorAllViewsDisable);
+                ibSkipPreviousIcon.setSrcDrawableDisabled();
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setEnabled(true);
-                ibSkipNextIcon.setFocusable(true);
-                ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
+                ibSkipNextIcon.setSrcDrawableEnabled();
             }
         } else if (position == UZData.getInstance().getDataList().size() - 1) {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setEnabled(true);
-                ibSkipPreviousIcon.setFocusable(true);
-                ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
+                ibSkipPreviousIcon.setSrcDrawableEnabled();
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setEnabled(false);
-                ibSkipNextIcon.setFocusable(false);
-                ibSkipNextIcon.setColorFilter(colorAllViewsDisable);
+                ibSkipNextIcon.setSrcDrawableDisabled();
             }
         } else {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setEnabled(true);
-                ibSkipPreviousIcon.setFocusable(true);
-                ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
+                ibSkipPreviousIcon.setSrcDrawableEnabled();
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setEnabled(true);
-                ibSkipNextIcon.setFocusable(true);
-                ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
+                ibSkipNextIcon.setSrcDrawableEnabled();
             }
         }
         //end update UI for skip next and skip previous button
