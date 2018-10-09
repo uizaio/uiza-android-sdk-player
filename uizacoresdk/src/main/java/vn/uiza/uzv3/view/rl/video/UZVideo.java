@@ -1847,7 +1847,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //ibFfwdIcon.setVisibility(VISIBLE);
                 ibFfwdIcon.setUIVisible(true);
             }
-            ;
 
             //changeUIVisibilitiesOfButton(ibRewIcon, true);
             //changeUIVisibilitiesOfButton(ibFfwdIcon, true);
