@@ -116,7 +116,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
-    private LinearLayout llController;
+    private LinearLayout llBottom;
     private RelativeLayout llMid;//play controller
     private View llMidSub;
 
@@ -284,6 +284,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZData.getInstance().clearDataForEntity();
         }
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
+        if (llBottom != null) {
+            llBottom.setVisibility(GONE);
+        }
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             setVisibilityOfPlaylistFolderController(View.VISIBLE);
         } else {
@@ -953,7 +956,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LUIUtil.setTextShadow(tvMsg, Color.BLACK);
         }
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
-        llController = (LinearLayout) findViewById(R.id.ll_controller);
+        llBottom = (LinearLayout) findViewById(R.id.ll_bottom);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         llMidSub = (View) findViewById(R.id.ll_mid_sub);
@@ -1783,37 +1786,46 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isCastingChromecast) {
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.setVisibility(GONE);
+                ibPictureInPictureIcon.invalidate();
             }
         } else {
             if (isTablet) {
                 if (isTV) {
                     if (ibPictureInPictureIcon != null) {
                         ibPictureInPictureIcon.setVisibility(GONE);
+                        ibPictureInPictureIcon.invalidate();
                     }
                 } else {
                     if (ibPictureInPictureIcon != null) {
                         ibPictureInPictureIcon.setVisibility(VISIBLE);
+                        ibPictureInPictureIcon.invalidate();
                     }
                 }
             } else {
                 if (ibPictureInPictureIcon != null) {
                     ibPictureInPictureIcon.setVisibility(GONE);
+                    ibPictureInPictureIcon.invalidate();
                 }
             }
         }
         LLog.d(TAG, "updateUIDependOnLivstream isLivestream " + isLivestream);
+        llBottom.setVisibility(VISIBLE);
         if (isLivestream) {
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(VISIBLE);
+                rlLiveInfo.invalidate();
             }
             if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(INVISIBLE);
+                rlTimeBar.setVisibility(GONE);
+                rlTimeBar.invalidate();
             }
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
+                ibPlaylistRelationIcon.invalidate();
             }
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(GONE);
+                ibCcIcon.invalidate();
             }
 
             //TODO why set gone not work?
@@ -1827,34 +1839,42 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(INVISIBLE);
+                rlLiveInfo.setVisibility(GONE);
+                rlLiveInfo.invalidate();
             }
             if (rlTimeBar != null) {
                 rlTimeBar.setVisibility(VISIBLE);
+                rlTimeBar.invalidate();
             }
             //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
+                ibPlaylistRelationIcon.invalidate();
             }
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
+                ibCcIcon.invalidate();
             }
             //TODO why set visible not work?
             if (ibRewIcon != null) {
                 //ibRewIcon.setVisibility(VISIBLE);
+                //ibRewIcon.invalidate();
                 ibRewIcon.setUIVisible(true);
             }
             if (ibFfwdIcon != null) {
                 //ibFfwdIcon.setVisibility(VISIBLE);
+                //ibFfwdIcon.invalidate();
                 ibFfwdIcon.setUIVisible(true);
             }
         }
         if (isTV) {
             if (ibShareIcon != null) {
                 ibShareIcon.setVisibility(GONE);
+                ibShareIcon.invalidate();
             }
             if (ibFullscreenIcon != null) {
                 ibFullscreenIcon.setVisibility(GONE);
+                ibFullscreenIcon.invalidate();
             }
         }
     }
