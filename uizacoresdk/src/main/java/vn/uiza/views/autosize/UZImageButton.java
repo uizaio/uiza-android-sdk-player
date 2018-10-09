@@ -3,6 +3,7 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
@@ -230,12 +231,14 @@ public class UZImageButton extends AppCompatImageButton {
         if (isVisible) {
             if (drawable != null) {
                 setImageDrawable(drawable);
+                setBackgroundColor(Color.TRANSPARENT);
                 /*getLayoutParams().width = size;
                 getLayoutParams().height = size;
                 requestLayout();*/
             }
         } else {
             setImageResource(0);
+            setBackgroundColor(Color.RED);
             /*getLayoutParams().width = 50;
             getLayoutParams().height = 50;
             requestLayout();*/
