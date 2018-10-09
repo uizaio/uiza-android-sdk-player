@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
@@ -110,7 +109,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
         //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
         //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
-        uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
 
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override

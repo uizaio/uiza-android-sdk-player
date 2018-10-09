@@ -44,7 +44,7 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_weight="1"
             android:singleLine="true"
-            android:textColor="@color/White"
+            android:textColor="@color/DeepPink"
             android:textSize="@dimen/txt_32"
             android:textStyle="bold"
             app:useDefaultTV="false" />
@@ -73,7 +73,8 @@
             android:gravity="center"
             android:paddingLeft="@dimen/padding_5"
             android:paddingRight="@dimen/padding_5"
-            android:text="@string/live" />
+            android:text="@string/live"
+            android:textColor="@color/White" />
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/iv_live_time"
@@ -83,7 +84,8 @@
             android:layout_toLeftOf="@id/tv_live_time"
             android:background="@color/transparent"
             android:scaleType="centerInside"
-            android:src="@drawable/baseline_timer_white_48" />
+            android:src="@drawable/baseline_timer_white_48"
+            android:tint="@color/Green" />
 
         <vn.uiza.views.autosize.UZTextView
             android:id="@id/tv_live_time"
@@ -110,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/White" />
+            android:textColor="@color/Red" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -194,12 +196,12 @@
                 android:layout_toLeftOf="@id/exo_duration"
                 android:layout_toRightOf="@+id/exo_position"
                 app:ad_marker_color="@color/White"
-                app:buffered_color="@color/Gray"
-                app:played_ad_marker_color="@color/White"
+                app:buffered_color="@color/Red"
+                app:played_ad_marker_color="@color/LightYellow"
                 app:played_color="@color/White"
                 app:previewFrameLayout="@id/previewFrameLayout"
                 app:scrubber_color="@color/White"
-                app:unplayed_color="@color/Gray" />
+                app:unplayed_color="@color/Blue" />
 
             <vn.uiza.views.autosize.UZTextView
                 android:id="@id/exo_position"
@@ -220,7 +222,7 @@
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
+                android:textColor="@color/Red"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -238,7 +240,7 @@
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_skip_previous_white_48"
-                app:srcDisabled="@mipmap/l_left_green" />
+                app:srcDisabled="@mipmap/ic_disable_1" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_rew"
@@ -246,7 +248,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/baseline_replay_10_white_48"
+                app:srcDisabled="@mipmap/ic_disabled_3" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_play_uiza"
@@ -254,7 +257,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_play_circle_outline_white_48" />
+                android:src="@drawable/baseline_play_circle_outline_white_48"
+                android:tint="@color/Red" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_pause_uiza"
@@ -262,7 +266,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_pause_circle_outline_white_48" />
+                android:src="@drawable/baseline_pause_circle_outline_white_48"
+                android:tint="@color/Green" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_replay_uiza"
@@ -278,7 +283,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_forward_10_white_48" />
+                android:src="@drawable/baseline_forward_10_white_48"
+                app:srcDisabled="@mipmap/ic_disabled_4" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_skip_next"
@@ -287,7 +293,7 @@
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_skip_next_white_48"
-                app:srcDisabled="@mipmap/l_right_green" />
+                app:srcDisabled="@mipmap/ic_disable_2" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_volume"

@@ -179,6 +179,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private RelativeLayout rlChromeCast;
     private UZImageButton ibsCast;
 
+    public void setTintMediaRouteButton(final int color) {
+        if (uzMediaRouteButton != null) {
+            uzMediaRouteButton.post(new Runnable() {
+                @Override
+                public void run() {
+                    uzMediaRouteButton.applyTint(color);
+                }
+            });
+        }
+    }
+
     private boolean isDisplayPortrait;//display with 9:16 ratio(portrait screen like YUP)
 
     public boolean isDisplayPortrait() {
@@ -900,7 +911,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIDependOnLivetream();
         setTitle();
         checkToSetUpResouce();
-        setColorAllViewsEnable(colorAllViewsEnable);
         updateUISizeThumnail();
         if (uzCallback != null) {
             uzCallback.onSkinChange();
@@ -1178,7 +1188,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibsCast.setRatioPort(5);
         ibsCast.setRatioLand(5);
         ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ibsCast.setColorFilter(colorAllViewsEnable);
+        ibsCast.setColorFilter(Color.WHITE);
         rlChromeCast.addView(ibsCast);
         rlChromeCast.setOnClickListener(this);
         if (llTop != null) {
@@ -1687,7 +1697,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (isFocus) {
             if (view instanceof UZImageButton) {
-                ((UZImageButton) view).setColorFilter(colorAllViewsDisable);
                 LAnimationUtil.play(view, Techniques.FlipInX);
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else {
@@ -1695,7 +1704,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             if (view instanceof UZImageButton) {
-                ((UZImageButton) view).setColorFilter(colorAllViewsEnable);
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
@@ -2799,8 +2807,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibReplayIcon.requestFocus();
             }
             if (ibFfwdIcon != null) {
-                ibFfwdIcon.setEnabled(false);
-                ibFfwdIcon.setColorFilter(colorAllViewsDisable);
+                ibFfwdIcon.setSrcDrawableDisabled();
             }
         } else {
             updateUIButtonPlayPauseDependOnIsAutoStart();
@@ -2808,8 +2815,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibReplayIcon.setVisibility(GONE);
             }
             if (ibFfwdIcon != null) {
-                ibFfwdIcon.setEnabled(true);
-                ibFfwdIcon.setColorFilter(colorAllViewsEnable);
+                ibFfwdIcon.setSrcDrawableEnabled();
             }
         }
     }
@@ -3169,116 +3175,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             });
         }
-    }
-
-    private int colorAllViewsEnable = Color.WHITE;
-    private int colorAllViewsDisable = Color.GRAY;
-
-    public void setColorAllViewsDisable(int colorAllViewsDisable) {
-        this.colorAllViewsDisable = colorAllViewsDisable;
-    }
-
-    public void setColorAllViewsEnable(int colorAllViewsEnable) {
-        this.colorAllViewsEnable = colorAllViewsEnable;
-        updateUIColorAllView();
-    }
-
-    public void updateUIColorAllView() {
-        if (progressBar != null) {
-            LUIUtil.setColorProgressBar(progressBar, colorAllViewsEnable);
-        }
-        if (ibBackScreenIcon != null) {
-            ibBackScreenIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (tvTitle != null) {
-            tvTitle.setTextColor(colorAllViewsEnable);
-        }
-        if (ibsCast != null) {
-            ibsCast.setColorFilter(colorAllViewsEnable);
-        }
-        if (uzMediaRouteButton != null) {
-            uzMediaRouteButton.post(new Runnable() {
-                @Override
-                public void run() {
-                    uzMediaRouteButton.applyTint(colorAllViewsEnable);
-                }
-            });
-        }
-        if (tvDuration != null) {
-            tvDuration.setTextColor(colorAllViewsEnable);
-        }
-        if (tvPosition != null) {
-            tvPosition.setTextColor(colorAllViewsEnable);
-        }
-        if (ibSkipPreviousIcon != null) {
-            ibSkipPreviousIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibRewIcon != null) {
-            ibRewIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibPlayIcon != null) {
-            ibPlayIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibReplayIcon != null) {
-            ibReplayIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibFfwdIcon != null) {
-            ibFfwdIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibSkipNextIcon != null) {
-            ibSkipNextIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibVolumeIcon != null) {
-            ibVolumeIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibCcIcon != null) {
-            ibCcIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibPlaylistRelationIcon != null) {
-            ibPlaylistRelationIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibPlaylistFolderIcon != null) {
-            ibPlaylistFolderIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibHearingIcon != null) {
-            ibHearingIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibSettingIcon != null) {
-            ibSettingIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibShareIcon != null) {
-            ibShareIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (ibFullscreenIcon != null) {
-            ibFullscreenIcon.setColorFilter(colorAllViewsEnable);
-        }
-        if (tvLiveStatus != null) {
-            tvLiveStatus.setBackgroundResource(R.drawable.background_live);
-            tvLiveStatus.setTextColor(Color.WHITE);
-            LUIUtil.setTextShadow(tvLiveStatus, Color.BLACK);
-        }
-        if (tvLiveTime != null) {
-            tvLiveTime.setTextColor(colorAllViewsEnable);
-        }
-        if (tvLiveView != null) {
-            tvLiveView.setTextColor(colorAllViewsEnable);
-        }
-        if (ivLiveTime != null) {
-            ivLiveTime.setColorFilter(colorAllViewsEnable);
-        }
-        if (ivLiveView != null) {
-            ivLiveView.setColorFilter(colorAllViewsEnable);
-        }
-        if (tvEndScreenMsg != null) {
-            tvEndScreenMsg.setTextColor(colorAllViewsEnable);
-        }
-        //TODO
-        /*if (uzTimebar != null) {
-            uzTimebar.setPreviewColorResourceTint(R.color.Red);
-        }*/
     }
 
     /**
