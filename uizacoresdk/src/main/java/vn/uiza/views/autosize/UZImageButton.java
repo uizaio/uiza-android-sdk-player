@@ -234,7 +234,7 @@ public class UZImageButton extends AppCompatImageButton {
                 setBackgroundColor(Color.TRANSPARENT);
             }
         } else {
-            //setImageResource(0);
+            setImageResource(0);
             setBackgroundColor(Color.RED);
         }
     }

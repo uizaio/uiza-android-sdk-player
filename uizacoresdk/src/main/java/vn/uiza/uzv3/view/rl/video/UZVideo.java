@@ -282,6 +282,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             UZData.getInstance().clearDataForEntity();
         }
+        setDefaultUIDependOnLivestream();
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             setVisibilityOfPlaylistFolderController(View.VISIBLE);
@@ -578,7 +579,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
         }
-        updateUIDependOnLivstream();
+        updateUIDependOnLivetream();
         setTitle();
         if (uzPlayerManager != null) {
             uzPlayerManager.showProgress();
@@ -895,7 +896,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         currentPositionBeforeChangeSkin = uzPlayerManager.getCurrentPosition();
 
         uzPlayerManager.release();
-        updateUIDependOnLivstream();
+        updateUIDependOnLivetream();
         setTitle();
         checkToSetUpResouce();
         setColorAllViewsEnable(colorAllViewsEnable);
@@ -1777,86 +1778,145 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private void updateUIDependOnLivstream() {
-        if (isCastingChromecast) {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.setVisibility(GONE);
-            }
-        } else {
-            if (isTablet) {
-                if (isTV) {
+    private void setDefaultUIDependOnLivestream() {
+        LLog.d(TAG, "setDefaultUIDependOnLivestream");
+        if (ibPictureInPictureIcon != null) {
+            ibPictureInPictureIcon.setVisibility(VISIBLE);
+            ibPictureInPictureIcon.invalidate();
+        }
+        if (rlLiveInfo != null) {
+            rlLiveInfo.setVisibility(VISIBLE);
+            rlLiveInfo.invalidate();
+        }
+        if (rlTimeBar != null) {
+            rlTimeBar.setVisibility(VISIBLE);
+            rlTimeBar.invalidate();
+        }
+        if (ibPlaylistRelationIcon != null) {
+            ibPlaylistRelationIcon.setVisibility(VISIBLE);
+            ibPlaylistRelationIcon.invalidate();
+        }
+        if (ibCcIcon != null) {
+            ibCcIcon.setVisibility(VISIBLE);
+            ibCcIcon.invalidate();
+        }
+        if (ibRewIcon != null) {
+            ibRewIcon.setVisibility(VISIBLE);
+            ibRewIcon.invalidate();
+        }
+        if (ibFfwdIcon != null) {
+            ibFfwdIcon.setVisibility(VISIBLE);
+            ibFfwdIcon.invalidate();
+        }
+        if (ibShareIcon != null) {
+            ibShareIcon.setVisibility(VISIBLE);
+            ibShareIcon.invalidate();
+        }
+        if (ibFullscreenIcon != null) {
+            ibFullscreenIcon.setVisibility(VISIBLE);
+            ibFullscreenIcon.invalidate();
+        }
+    }
+
+    private void updateUIDependOnLivetream() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isCastingChromecast) {
                     if (ibPictureInPictureIcon != null) {
                         ibPictureInPictureIcon.setVisibility(GONE);
+                        ibPictureInPictureIcon.invalidate();
                     }
                 } else {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(VISIBLE);
+                    if (isTablet) {
+                        if (isTV) {
+                            if (ibPictureInPictureIcon != null) {
+                                ibPictureInPictureIcon.setVisibility(GONE);
+                                ibPictureInPictureIcon.invalidate();
+                            }
+                        } else {
+                            if (ibPictureInPictureIcon != null) {
+                                ibPictureInPictureIcon.setVisibility(VISIBLE);
+                                ibPictureInPictureIcon.invalidate();
+                            }
+                        }
+                    } else {
+                        if (ibPictureInPictureIcon != null) {
+                            ibPictureInPictureIcon.setVisibility(GONE);
+                            ibPictureInPictureIcon.invalidate();
+                        }
                     }
                 }
-            } else {
-                if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(GONE);
+                LLog.d(TAG, "updateUIDependOnLivetream isLivestream " + isLivestream);
+                if (isLivestream) {
+                    if (rlLiveInfo != null) {
+                        rlLiveInfo.setVisibility(VISIBLE);
+                        rlLiveInfo.invalidate();
+                    }
+                    if (rlTimeBar != null) {
+                        rlTimeBar.setVisibility(GONE);
+                        rlTimeBar.invalidate();
+                    }
+                    if (ibPlaylistRelationIcon != null) {
+                        ibPlaylistRelationIcon.setVisibility(GONE);
+                        ibPlaylistRelationIcon.invalidate();
+                    }
+                    if (ibCcIcon != null) {
+                        ibCcIcon.setVisibility(GONE);
+                        ibCcIcon.invalidate();
+                    }
+
+                    //TODO why set gone not work?
+                    if (ibRewIcon != null) {
+                        //ibRewIcon.setVisibility(GONE);
+                        ibRewIcon.setUIVisible(false);
+                    }
+                    if (ibFfwdIcon != null) {
+                        //ibFfwdIcon.setVisibility(GONE);
+                        ibFfwdIcon.setUIVisible(false);
+                    }
+                } else {
+                    if (rlLiveInfo != null) {
+                        rlLiveInfo.setVisibility(GONE);
+                        rlLiveInfo.invalidate();
+                    }
+                    if (rlTimeBar != null) {
+                        rlTimeBar.setVisibility(VISIBLE);
+                        rlTimeBar.invalidate();
+                    }
+                    //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
+                    if (ibPlaylistRelationIcon != null) {
+                        ibPlaylistRelationIcon.setVisibility(GONE);
+                        ibPlaylistRelationIcon.invalidate();
+                    }
+                    if (ibCcIcon != null) {
+                        ibCcIcon.setVisibility(VISIBLE);
+                        ibCcIcon.invalidate();
+                    }
+                    //TODO why set visible not work?
+                    if (ibRewIcon != null) {
+                        //ibRewIcon.setVisibility(VISIBLE);
+                        //ibRewIcon.invalidate();
+                        ibRewIcon.setUIVisible(true);
+                    }
+                    if (ibFfwdIcon != null) {
+                        //ibFfwdIcon.setVisibility(VISIBLE);
+                        //ibFfwdIcon.invalidate();
+                        ibFfwdIcon.setUIVisible(true);
+                    }
+                }
+                if (isTV) {
+                    if (ibShareIcon != null) {
+                        ibShareIcon.setVisibility(GONE);
+                        ibShareIcon.invalidate();
+                    }
+                    if (ibFullscreenIcon != null) {
+                        ibFullscreenIcon.setVisibility(GONE);
+                        ibFullscreenIcon.invalidate();
+                    }
                 }
             }
-        }
-        LLog.d(TAG, "updateUIDependOnLivstream isLivestream " + isLivestream);
-        if (isLivestream) {
-            if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(VISIBLE);
-            }
-            if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(GONE);
-            }
-            if (ibPlaylistRelationIcon != null) {
-                ibPlaylistRelationIcon.setVisibility(GONE);
-            }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(GONE);
-            }
-
-            //TODO why set gone not work?
-            if (ibRewIcon != null) {
-                //ibRewIcon.setVisibility(GONE);
-                ibRewIcon.setUIVisible(false);
-            }
-            if (ibFfwdIcon != null) {
-                //ibFfwdIcon.setVisibility(GONE);
-                ibFfwdIcon.setUIVisible(false);
-            }
-        } else {
-            if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(GONE);
-            }
-            if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(VISIBLE);
-            }
-            //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
-            if (ibPlaylistRelationIcon != null) {
-                ibPlaylistRelationIcon.setVisibility(GONE);
-            }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(VISIBLE);
-            }
-            //TODO why set visible not work?
-            if (ibRewIcon != null) {
-                //ibRewIcon.setVisibility(VISIBLE);
-                //ibRewIcon.invalidate();
-                ibRewIcon.setUIVisible(true);
-            }
-            if (ibFfwdIcon != null) {
-                //ibFfwdIcon.setVisibility(VISIBLE);
-                //ibFfwdIcon.invalidate();
-                ibFfwdIcon.setUIVisible(true);
-            }
-        }
-        if (isTV) {
-            if (ibShareIcon != null) {
-                ibShareIcon.setVisibility(GONE);
-            }
-            if (ibFullscreenIcon != null) {
-                ibFullscreenIcon.setVisibility(GONE);
-            }
-        }
+        });
     }
 
     protected void updateUIButtonVisibilities() {
