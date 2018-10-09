@@ -225,7 +225,6 @@ public class UZImageButton extends AppCompatImageButton {
     }*/
 
     public void setUIVisible(final boolean isVisible) {
-        //TODO
         setClickable(isVisible);
         setFocusable(isVisible);
         if (isVisible) {
@@ -234,14 +233,14 @@ public class UZImageButton extends AppCompatImageButton {
                 setBackgroundColor(Color.TRANSPARENT);
                 /*getLayoutParams().width = size;
                 getLayoutParams().height = size;
-                requestLayout();*/
+                invalidate();*/
             }
         } else {
             setImageResource(0);
             setBackgroundColor(Color.RED);
-            /*getLayoutParams().width = 50;
-            getLayoutParams().height = 50;
-            requestLayout();*/
+            /*getLayoutParams().width = 0;
+            getLayoutParams().height = 0;
+            invalidate();*/
         }
     }
 }
