@@ -116,6 +116,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
+    private LinearLayout llController;
     private RelativeLayout llMid;//play controller
     private View llMidSub;
 
@@ -398,7 +399,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     return;
                 }
                 tokenStreaming = result.getData().getToken();
-                LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + tokenStreaming);
+                LLog.d(TAG, "callAPIGetTokenStreaming onSuccess");
                 isCalledAPIGetTokenStreaming = true;
                 handleDataCallAPI();
             }
@@ -453,7 +454,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (Constants.IS_DEBUG) {
                         LToast.show(activity, "callAPIGetLinkPlay isLivestream onSuccess");
                     }
-                    LLog.d(TAG, "getLinkPlayLive onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "getLinkPlayLive onSuccess");
                     mResultGetLinkPlay = result;
                     checkToSetUpResouce();
                 }
@@ -952,6 +953,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LUIUtil.setTextShadow(tvMsg, Color.BLACK);
         }
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
+        llController = (LinearLayout) findViewById(R.id.ll_controller);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         llMid = (RelativeLayout) findViewById(R.id.ll_mid);
         llMidSub = (View) findViewById(R.id.ll_mid_sub);
@@ -1753,6 +1755,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void setMarginPreviewTimeBar() {
         if (uzTimebar == null) {
+            LLog.e(TAG, "setMarginPreviewTimeBar uzTimebar == null");
             return;
         }
         if (isLandscape) {
@@ -1800,14 +1803,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         LLog.d(TAG, "updateUIDependOnLivstream isLivestream " + isLivestream);
         if (isLivestream) {
+            if (rlLiveInfo != null) {
+                rlLiveInfo.setVisibility(VISIBLE);
+            }
+            if (rlTimeBar != null) {
+                rlTimeBar.setVisibility(INVISIBLE);
+            }
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
             }
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(GONE);
-            }
-            if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(GONE);
             }
 
             //TODO why set gone not work?
@@ -1819,14 +1825,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //ibFfwdIcon.setVisibility(GONE);
                 ibFfwdIcon.setUIVisible(false);
             }
-
-            //changeUIVisibilitiesOfButton(ibRewIcon, false);
-            //changeUIVisibilitiesOfButton(ibFfwdIcon, false);
-
-            if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(VISIBLE);
-            }
         } else {
+            if (rlLiveInfo != null) {
+                rlLiveInfo.setVisibility(INVISIBLE);
+            }
+            if (rlTimeBar != null) {
+                rlTimeBar.setVisibility(VISIBLE);
+            }
             //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
@@ -1834,10 +1839,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
             }
-            if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(VISIBLE);
-            }
-
             //TODO why set visible not work?
             if (ibRewIcon != null) {
                 //ibRewIcon.setVisibility(VISIBLE);
@@ -1846,13 +1847,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibFfwdIcon != null) {
                 //ibFfwdIcon.setVisibility(VISIBLE);
                 ibFfwdIcon.setUIVisible(true);
-            }
-
-            //changeUIVisibilitiesOfButton(ibRewIcon, true);
-            //changeUIVisibilitiesOfButton(ibFfwdIcon, true);
-
-            if (rlLiveInfo != null) {
-                rlLiveInfo.setVisibility(GONE);
             }
         }
         if (isTV) {
@@ -1864,29 +1858,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
     }
-
-    //trick to gone view
-    /*private void changeUIVisibilitiesOfButton(final UZImageButton uzImageButton, final boolean isVisible) {
-        if (uzImageButton == null) {
-            return;
-        }
-        uzImageButton.post(new Runnable() {
-            @Override
-            public void run() {
-                uzImageButton.setClickable(isVisible);
-                uzImageButton.setFocusable(isVisible);
-                if (isVisible) {
-                    Drawable drawable = (Drawable) uzImageButton.getTag();
-                    if (drawable != null) {
-                        uzImageButton.setImageDrawable(drawable);
-                    }
-                } else {
-                    uzImageButton.setImageResource(0);
-                }
-                uzImageButton.getParent().requestLayout();
-            }
-        });
-    }*/
 
     protected void updateUIButtonVisibilities() {
         debugRootView.removeAllViews();
@@ -3475,6 +3446,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (previewFrameLayout != null) {
             previewFrameLayout.setVisibility(GONE);
         }
+        LLog.d(TAG, "hideUzTimebar");
         if (ivThumbnail != null) {
             ivThumbnail.setVisibility(GONE);
         }

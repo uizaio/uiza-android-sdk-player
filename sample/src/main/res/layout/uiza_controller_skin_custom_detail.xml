@@ -223,9 +223,9 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@id/ll_controller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/Red"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_5">
