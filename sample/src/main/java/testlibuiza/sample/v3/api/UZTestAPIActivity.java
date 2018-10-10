@@ -13,6 +13,7 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
@@ -74,6 +75,7 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
 
         findViewById(R.id.bt_list_skin).setOnClickListener(this);
         findViewById(R.id.bt_skin_config).setOnClickListener(this);
+        findViewById(R.id.bt_ad).setOnClickListener(this);
     }
 
     @Override
@@ -166,6 +168,9 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.bt_skin_config:
                 getSkinConfig();
+                break;
+            case R.id.bt_ad:
+                getIMAAd();
                 break;
         }
     }
@@ -663,6 +668,23 @@ public class UZTestAPIActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "getSkinConfig onFail " + e.getMessage());
+                showTv(e.getMessage());
+            }
+        });
+    }
+
+    private void getIMAAd() {
+        UZService service = UZRestClient.createService(UZService.class);
+        subscribe(service.getCuePoint("0e8254fa-afa1-491f-849b-5aa8bc7cce52"), new ApiSubscriber<AdWrapper>() {
+            @Override
+            public void onSuccess(AdWrapper result) {
+                LLog.d(TAG, "getIMAAd onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
+                showTv(result);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "getIMAAd onFail " + e.getMessage());
                 showTv(e.getMessage());
             }
         });
