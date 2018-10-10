@@ -358,11 +358,6 @@
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_fullscreen_white_48" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/w_1"
-                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 
