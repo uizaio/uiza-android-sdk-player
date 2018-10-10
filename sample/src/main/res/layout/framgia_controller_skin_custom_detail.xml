@@ -330,6 +330,9 @@
             android:id="@id/tv_end_screen_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:maxLines="2"
+            android:textColor="@color/Red"
+            android:textSize="@dimen/txt_25" />
     </RelativeLayout>
 </RelativeLayout>
