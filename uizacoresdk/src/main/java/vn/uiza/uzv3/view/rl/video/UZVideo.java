@@ -71,7 +71,6 @@ import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.uiza.model.v3.ad.Ad;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
@@ -373,9 +372,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onSuccess(AdWrapper result) {
                 isCalledAPIGetUrlIMAAdTag = true;
-                //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
                 //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url_uiza);
-                if (result == null || result.getData() == null || result.getData().isEmpty()) {
+                /*if (result == null || result.getData() == null || result.getData().isEmpty()) {
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has no ad");
                     urlIMAAd = null;
                 } else {
@@ -385,7 +384,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (ad != null) {
                         urlIMAAd = ad.getLink();
                     }
-                }
+                }*/
                 handleDataCallAPI();
             }
 
@@ -2199,12 +2198,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void hideControllerOnTouch(boolean isHide) {
-        playerView.setControllerHideOnTouch(isHide);
+        if (playerView != null) {
+            playerView.setControllerHideOnTouch(isHide);
+        }
+    }
+
+    public boolean getControllerHideOnTouch() {
+        if (playerView != null) {
+            return playerView.getControllerHideOnTouch();
+        }
+        return false;
     }
 
     private void showTvMsg(String msg) {
-        tvMsg.setText(msg);
-        showLayoutMsg();
+        if (tvMsg != null) {
+            tvMsg.setText(msg);
+            showLayoutMsg();
+        }
     }
 
     protected void showLayoutMsg() {
