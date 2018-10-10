@@ -71,6 +71,7 @@ import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
@@ -365,14 +366,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private String urlIMAAd = null;
 
     private void callAPIGetUrlIMAAdTag() {
-        LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
+        UZService service = UZRestClient.createService(UZService.class);
+        String id = entityId == null ? UZData.getInstance().getEntityId() : entityId;
+        activity.subscribe(service.getCuePoint(id), new ApiSubscriber<AdWrapper>() {
             @Override
-            public void doAfter(int mls) {
-                LLog.d(TAG, "callAPIGetUrlIMAAdTag success");
+            public void onSuccess(AdWrapper result) {
+                LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess: " + gson.toJson(result));
                 isCalledAPIGetUrlIMAAdTag = true;
                 //urlIMAAd = null;
                 //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
+                urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url_uiza);
                 handleDataCallAPI();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored: " + e.getMessage());
             }
         });
     }
