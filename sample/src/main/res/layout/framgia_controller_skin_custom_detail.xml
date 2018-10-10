@@ -111,13 +111,13 @@
             android:layout_centerVertical="true" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@id/ll_mid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <!-- Clock wise - 270 -->
+        &lt;!&ndash; Clock wise - 270 &ndash;&gt;
         <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
             android:layout_width="@dimen/w_50"
             android:layout_height="match_parent"
@@ -140,7 +140,7 @@
             android:background="@color/transparent"
             android:scaleType="fitCenter" />
 
-        <!-- Clock wise - 270 -->
+        &lt;!&ndash; Clock wise - 270 &ndash;&gt;
         <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
             android:layout_width="@dimen/w_50"
             android:layout_height="match_parent"
@@ -155,7 +155,7 @@
                 android:splitTrack="false"
                 app:seekBarRotation="CW270" />
         </vn.uiza.views.seekbar.UZVerticalSeekBarWrapper>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <LinearLayout
         android:id="@id/ll_bottom"
@@ -259,13 +259,13 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_playlist_play_white_48" />
 
-            <vn.uiza.views.autosize.UZImageButton
+            <!--<vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_hearing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
-                android:src="@drawable/baseline_audiotrack_white_48" />
+                android:src="@drawable/baseline_audiotrack_white_48" />-->
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_setting"
@@ -330,6 +330,9 @@
             android:id="@id/tv_end_screen_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:maxLines="2"
+            android:textColor="@color/Red"
+            android:textSize="@dimen/txt_25" />
     </RelativeLayout>
 </RelativeLayout>

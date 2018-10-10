@@ -23,7 +23,7 @@ import vn.uiza.uzv1.view.util.UizaDataV1;
 import vn.uiza.views.layout.flowlayout.FlowLayout;
 
 /**
- * Created by LENOVO on 5/2/2018.
+ * Created by loitp on 5/2/2018.
  */
 
 public class UZDlgShare extends Dialog {
@@ -31,6 +31,7 @@ public class UZDlgShare extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private FlowLayout ll;
+    //TODO correct this
     public static final String SUBJECT = "Uiza Sharing";
     public static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
     private boolean isLandscape;

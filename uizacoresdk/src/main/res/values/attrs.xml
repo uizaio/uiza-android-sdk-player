@@ -567,6 +567,7 @@
     </declare-styleable>
     <declare-styleable name="UZImageButton">
         <attr name="useDefaultIB" format="boolean" />
+        <attr name="srcDisabled" format="reference" />
     </declare-styleable>
     <declare-styleable name="UZTextView">
         <attr name="useDefaultTV" format="boolean" />

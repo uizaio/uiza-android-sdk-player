@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import loitp.core.R;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -269,7 +270,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         seekTo(contentPosition);
 
         //LLog.d(TAG, "last progress volume " + uzVideo.getCurrentProgressSeekbarVolume());
-        setVolume(uzVideo.getCurrentProgressSeekbarVolume());
+        if (uzVideo.getCurrentProgressSeekbarVolume() == Constants.NOT_FOUND) {
+            setVolume(0.99f);
+        } else {
+            setVolume(uzVideo.getCurrentProgressSeekbarVolume());
+        }
 
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
@@ -692,7 +697,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (player != null) {
             return player.getVolume();
         }
-        return 0;
+        return Constants.NOT_FOUND;
     }
 
     public boolean seekTo(long positionMs) {

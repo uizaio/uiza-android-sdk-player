@@ -16,10 +16,16 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/bt_entity"
+                android:id="@+id/bt_entity_vod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Play entity" />
+                android:text="Play entity VOD" />
+
+            <Button
+                android:id="@+id/bt_entity_live"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play entity LIVE" />
 
             <Button
                 android:id="@+id/bt_playlist_folder"

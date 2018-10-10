@@ -522,51 +522,51 @@ public class UZUtil {
         }
     }
 
-    public static void initPlaylistFolder(Activity activity, UZVideo UZVideo, String metadataId) {
+    public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
-        if (UZVideo == null) {
+        if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
-                playPlaylist(UZVideo, null);
+                playPlaylist(uzVideo, null);
             }
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunningV3(activity);
             //setMetadataId(activity, metadataId);
-            playPlaylist(UZVideo, metadataId);
+            playPlaylist(uzVideo, metadataId);
         }
     }
 
-    private static void play(final UZVideo UZVideo, final String entityId) {
+    private static void play(final UZVideo uzVideo, final String entityId) {
         /*if (UZData.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer");
             return;
         }*/
         UZData.getInstance().setSettingPlayer(false);
-        UZVideo.post(new Runnable() {
+        uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                UZVideo.init(entityId);
+                uzVideo.init(entityId);
             }
         });
     }
 
-    private static void playPlaylist(final UZVideo UZVideo, final String metadataId) {
+    private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
         /*if (UZData.getInstance().isSettingPlayer()) {
             LLog.d(TAG, "isSettingPlayer");
             return;
         }*/
         UZData.getInstance().setSettingPlayer(false);
-        UZVideo.post(new Runnable() {
+        uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                UZVideo.initPlaylistFolder(metadataId);
+                uzVideo.initPlaylistFolder(metadataId);
             }
         });
     }

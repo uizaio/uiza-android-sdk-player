@@ -30,6 +30,7 @@ public class SetEntityIdActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         findViews();
         initUIEntity();
         initUIPlaylistFolder();
