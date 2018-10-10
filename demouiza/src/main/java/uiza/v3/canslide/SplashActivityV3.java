@@ -32,7 +32,7 @@ public class SplashActivityV3 extends BaseActivity {
     private Button btStart;
     private ProgressBar progressBar;
     private LinearLayout llInputInfo;
-    private int environment = Constants.ENVIRONMENT_STAG;
+    private int environment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,11 @@ public class SplashActivityV3 extends BaseActivity {
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
         etAppId = (EditText) findViewById(R.id.et_app_id);
+
         etApiDomain.setText(LSApplication.DF_DOMAIN_API);
         etKey.setText(LSApplication.DF_TOKEN);
         etAppId.setText(LSApplication.DF_APP_ID);
+        environment = LSApplication.ENVIRONMENT;
         LUIUtil.setLastCursorEditText(etApiDomain);
 
         if (environment == Constants.ENVIRONMENT_DEV) {

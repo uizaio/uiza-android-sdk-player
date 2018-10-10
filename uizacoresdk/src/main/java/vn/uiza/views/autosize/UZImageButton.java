@@ -3,6 +3,7 @@ package vn.uiza.views.autosize;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
@@ -52,14 +53,20 @@ public class UZImageButton extends AppCompatImageButton {
             setFocusable(true);
             setImageDrawable(drawableEnabled);
         }
+        clearColorFilter();
+        invalidate();
     }
 
     public void setSrcDrawableDisabled() {
-        if (drawableDisabled != null) {
-            setClickable(false);
-            setFocusable(false);
+        setClickable(false);
+        setFocusable(false);
+        if (drawableDisabled == null) {
+            setColorFilter(Color.GRAY);
+        } else {
             setImageDrawable(drawableDisabled);
+            clearColorFilter();
         }
+        invalidate();
     }
 
     private void initSizeScreenW(AttributeSet attrs) {
