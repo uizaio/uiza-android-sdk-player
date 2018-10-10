@@ -2959,7 +2959,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Default: true
      * Neu truyen false se an tat ca cac component
      */
-    public void setUseController(boolean isUseController) {
+    private boolean isDefaultUseController = true;
+
+    public boolean isDefaultUseController() {
+        return isDefaultUseController;
+    }
+
+    public void setDefaultUseController(boolean isDefaultUseController) {
+        this.isDefaultUseController = isDefaultUseController;
+        setUseController(this.isDefaultUseController);
+    }
+
+    protected void setUseController(boolean isUseController) {
         if (playerView != null) {
             playerView.setUseController(isUseController);
         }

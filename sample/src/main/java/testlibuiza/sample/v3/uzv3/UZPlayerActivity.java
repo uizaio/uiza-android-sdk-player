@@ -103,7 +103,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         }
 
         //set uzVideo hide all controller
-        //uzVideo.setUseController(true);
+        //uzVideo.setDefaultUseController(false);
         //uzVideo.setControllerAutoShow(true);
         //uzVideo.hideControllerOnTouch(true);
         //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
