@@ -590,11 +590,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
         }
-        updateUIDependOnLivetream();
-        setTitle();
         if (uzPlayerManager != null) {
             uzPlayerManager.showProgress();
         }
+        setTitle();
+        updateUIDependOnLivetream();
         callAPIGetLinkPlay();
         trackUizaEventDisplay();
         trackUizaEventPlaysRequested();
@@ -670,8 +670,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzCallback != null) {
                     UZData.getInstance().setSettingPlayer(false);
                     uzCallback.isInitResult(false, false, null, null);
-
-                    //uzCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
 
@@ -681,7 +679,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzCallback != null) {
                     UZData.getInstance().setSettingPlayer(false);
                     uzCallback.isInitResult(false, false, null, null);
-                    //uzCallback.onError(new Exception(activity.getString(R.string.has_no_linkplay)));
                 }
             }
         });
