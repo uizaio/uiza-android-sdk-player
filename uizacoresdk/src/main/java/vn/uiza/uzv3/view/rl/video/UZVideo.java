@@ -575,7 +575,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         isLivestream = UZData.getInstance().isLivestream();
         //LLog.d(TAG, "isLivestream " + isLivestream);
-        //setFocusAble();
 
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
@@ -661,7 +660,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //neu co thi se play
     //khong co thi bao loi
     private void handleErrorNoData() {
-        //LLog.e(TAG, "handleErrorNoData");
+        LLog.e(TAG, "handleErrorNoData");
         removeVideoCover(true);
         LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.has_no_linkplay), new LDialogUtil.Callback1() {
             @Override
@@ -843,7 +842,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             addUIChromecastLayer();
         }
         updateUISizeThumnail();
-        //setDefaultUIDependOnLivestream(View.GONE);
     }
 
     private UZPlayerView playerView;
@@ -1021,8 +1019,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            //TODO revert to VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1781,54 +1778,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             tvTitle.setText(UZData.getInstance().getEntityName());
         }
     }
-
-    /*private void setDefaultUIDependOnLivestream(int visibility) {
-        if (visibility == View.VISIBLE) {
-            LLog.d(TAG, "setDefaultUIDependOnLivestream visibility " + VISIBLE);
-        } else if (visibility == View.GONE) {
-            LLog.d(TAG, "setDefaultUIDependOnLivestream visibility " + GONE);
-        }
-        if (ibPictureInPictureIcon != null) {
-            ibPictureInPictureIcon.setVisibility(visibility);
-            ibPictureInPictureIcon.invalidate();
-        }
-        if (rlLiveInfo != null) {
-            rlLiveInfo.setVisibility(visibility);
-            rlLiveInfo.invalidate();
-        }
-        if (rlTimeBar != null) {
-            rlTimeBar.setVisibility(visibility);
-            rlTimeBar.invalidate();
-        }
-        if (ibPlaylistRelationIcon != null) {
-            ibPlaylistRelationIcon.setVisibility(visibility);
-            ibPlaylistRelationIcon.invalidate();
-        }
-        if (ibCcIcon != null) {
-            ibCcIcon.setVisibility(visibility);
-            ibCcIcon.invalidate();
-        }
-        if (ibRewIcon != null) {
-            ibRewIcon.setVisibility(visibility);
-            ibRewIcon.invalidate();
-        }
-        if (ibFfwdIcon != null) {
-            ibFfwdIcon.setVisibility(visibility);
-            ibFfwdIcon.invalidate();
-        }
-        if (ibShareIcon != null) {
-            ibShareIcon.setVisibility(visibility);
-            ibShareIcon.invalidate();
-        }
-        if (ibFullscreenIcon != null) {
-            ibFullscreenIcon.setVisibility(visibility);
-            ibFullscreenIcon.invalidate();
-        }
-        if (playerView != null) {
-            playerView.invalidate();
-            playerView.requestLayout();
-        }
-    }*/
 
     private void updateUIDependOnLivetream() {
         if (isCastingChromecast) {
