@@ -254,16 +254,15 @@ public class UZImageButton extends AppCompatImageButton {
         if (isVisible) {
             setSrcDrawableEnabled();
 
-            //setBackgroundColor(Color.TRANSPARENT);
-            /*getLayoutParams().width = size;
+            /*setBackgroundColor(Color.TRANSPARENT);
+            getLayoutParams().width = size;
             getLayoutParams().height = size;
             invalidate();*/
         } else {
             setImageResource(0);
 
-            //setBackgroundColor(Color.RED);
-
-            /*getLayoutParams().width = 0;
+            /*setBackgroundColor(Color.RED);
+            getLayoutParams().width = 0;
             getLayoutParams().height = 0;
             invalidate();*/
         }

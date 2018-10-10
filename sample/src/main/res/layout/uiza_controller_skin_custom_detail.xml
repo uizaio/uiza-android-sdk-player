@@ -234,24 +234,6 @@
             android:paddingTop="@dimen/padding_5">
 
             <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_skip_previous"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_skip_previous_white_48"
-                app:srcDisabled="@mipmap/ic_disable_1" />
-
-            <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_rew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_replay_10_white_48"
-                app:srcDisabled="@mipmap/ic_disabled_3" />
-
-            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_play_uiza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -278,6 +260,15 @@
                 android:src="@drawable/baseline_replay_white_48" />
 
             <vn.uiza.views.autosize.UZImageButton
+                android:id="@id/exo_rew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_replay_10_white_48"
+                app:srcDisabled="@mipmap/ic_disabled_3" />
+
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_ffwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -285,6 +276,15 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_forward_10_white_48"
                 app:srcDisabled="@mipmap/ic_disabled_4" />
+
+            <vn.uiza.views.autosize.UZImageButton
+                android:id="@id/exo_skip_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_skip_previous_white_48"
+                app:srcDisabled="@mipmap/ic_disable_1" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_skip_next"
@@ -295,21 +295,10 @@
                 android:src="@drawable/baseline_skip_next_white_48"
                 app:srcDisabled="@mipmap/ic_disable_2" />
 
-            <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_volume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_volume_up_white_48" />
-
-            <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_cc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_closed_caption_white_48" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/w_1"
+                android:layout_weight="1" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_playlist_relation"
@@ -336,6 +325,14 @@
                 android:src="@drawable/baseline_audiotrack_white_48" />
 
             <vn.uiza.views.autosize.UZImageButton
+                android:id="@id/exo_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_closed_caption_white_48" />
+
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -350,6 +347,14 @@
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_share_white_48" />
+
+            <vn.uiza.views.autosize.UZImageButton
+                android:id="@id/exo_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_volume_up_white_48" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_fullscreen_toggle_icon"
