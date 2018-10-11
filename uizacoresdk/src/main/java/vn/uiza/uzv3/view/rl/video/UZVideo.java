@@ -2834,7 +2834,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
-        //LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
+        LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
         if (isShowReplay) {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
@@ -2898,6 +2898,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setDefautValueForFlagIsTracked();
         boolean result = uzPlayerManager.seekTo(0);
         if (result) {
+            isSetFirstRequestFocusDone = false;
             isOnPlayerEnded = false;
             updateUIEndScreen();
             setVisibilityOfPlaylistFolderController(View.GONE);
