@@ -14,7 +14,7 @@ public class Constants {
 
     public static String ASSET_FILE_GIFT = "img/ic_gift.png";
 
-    public static final int NOT_FOUND = -6969;
+    public static final int NOT_FOUND = -404;
     public static final String MENU_HOME_V3 = "Home V3";
     public static final String MENU_LIVESTREAM = "Livestream";
 

@@ -108,7 +108,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
 public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, SeekBar.OnSeekBarChangeListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
-    private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;
+    private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;//8000 mls
     private BaseActivity activity;
     private boolean isLivestream;
     private boolean isTablet;
@@ -2210,6 +2210,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         playerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
     }
 
+    public int getControllerShowTimeoutMs() {
+        if (playerView != null) {
+            return playerView.getControllerShowTimeoutMs();
+        }
+        return Constants.NOT_FOUND;
+    }
+
     public void setControllerAutoShow(boolean isAutoShow) {
         playerView.setControllerAutoShow(isAutoShow);
     }
@@ -2769,6 +2776,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             setVisibilityOfPlayPauseReplay(true);
             showController();
+            LLog.d(TAG, "fuck set tmpValueControllerTimeout");
             setControllerShowTimeoutMs(0);
             hideControllerOnTouch(false);
         } else {
@@ -2779,7 +2787,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             setVisibilityOfPlayPauseReplay(false);
             setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
             hideControllerOnTouch(true);
-            LLog.d(TAG, "fuck DEFAULT_VALUE_CONTROLLER_TIMEOUT " + DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         }
     }
 
