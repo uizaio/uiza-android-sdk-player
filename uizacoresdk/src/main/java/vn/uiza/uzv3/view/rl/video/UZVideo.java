@@ -2559,7 +2559,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
             //UZData.getInstance().getCasty().setVolume(volumeOfExoPlayer);
 
-            setControllerShowTimeoutMs(0);
+            if (playerView != null) {
+                playerView.setControllerShowTimeoutMs(0);
+            }
         } else {
             uzPlayerManager.resumeVideo();
             uzPlayerManager.setVolume(0.99f);
@@ -2594,7 +2596,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
             uzPlayerManager.setVolume((float) volumeOfCastPlayer);*/
 
-            setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+            if (playerView != null) {
+                playerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+            }
         }
     }
 
@@ -2776,8 +2780,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             setVisibilityOfPlayPauseReplay(true);
             showController();
-            LLog.d(TAG, "fuck set tmpValueControllerTimeout");
-            setControllerShowTimeoutMs(0);
+            if (playerView != null) {
+                playerView.setControllerShowTimeoutMs(0);
+            }
             hideControllerOnTouch(false);
         } else {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
@@ -2785,7 +2790,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 setTextEndscreen("");
             }
             setVisibilityOfPlayPauseReplay(false);
-            setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+            if (playerView != null) {
+                playerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+            }
             hideControllerOnTouch(true);
         }
     }
@@ -3225,7 +3232,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /**
      * return player view
      */
-    public PlayerView getPlayerView() {
+    protected PlayerView getPlayerView() {
         return playerView;
     }
 

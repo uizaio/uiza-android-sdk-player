@@ -118,6 +118,15 @@
         </LinearLayout>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_5"
+            android:text="WARNING: PLEASE ENTER A CORRECT ENTITY ID/PLAYLIST ID."
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_25" />
+
+        <TextView
             android:id="@+id/tv_vs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

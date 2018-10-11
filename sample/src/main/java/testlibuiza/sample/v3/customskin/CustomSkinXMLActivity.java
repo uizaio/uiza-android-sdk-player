@@ -190,7 +190,7 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
     }
 
     private void handleClickSampeText() {
-        TextView tvSample = uzVideo.getPlayerView().findViewById(R.id.tv_sample);
+        TextView tvSample = uzVideo.findViewById(R.id.tv_sample);
         if (tvSample != null) {
             tvSample.setText("This is a view from custom skin.\nTry to tap me.");
             LUIUtil.setTextShadow(tvSample);
