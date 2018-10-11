@@ -229,7 +229,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return isAutoSwitchItemPlaylistFolder;
     }
 
+    private boolean isSetFirstRequestFocusDone;
+
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
+        //LLog.d(TAG, "updateUIButtonPlayPauseDependOnIsAutoStart isAutoStart: " + isAutoStart);
         //If auto start true, show button play and gone button pause
         //if not, gone button play and show button pause
         if (isAutoStart) {
@@ -238,12 +241,20 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
-                ibPauseIcon.requestFocus();
+                if (!isSetFirstRequestFocusDone) {
+                    //set first request focus if using player for TV
+                    ibPauseIcon.requestFocus();
+                    isSetFirstRequestFocusDone = true;
+                }
             }
         } else {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(VISIBLE);
-                ibPlayIcon.requestFocus();
+                if (!isSetFirstRequestFocusDone) {
+                    //set first request focus if using player for TV
+                    ibPlayIcon.requestFocus();
+                    isSetFirstRequestFocusDone = true;
+                }
             }
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(GONE);
@@ -1076,7 +1087,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setEventForView();
 
         //set visinility first
-        setVisibilityOfPlaylistFolderController(GONE);
+        //setVisibilityOfPlaylistFolderController(GONE);
     }
 
     private void setEventForView() {
@@ -2796,6 +2807,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
+        //LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
         if (isShowReplay) {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
@@ -2822,6 +2834,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVisibilityOfPlaylistFolderController(int visibilityOfPlaylistFolderController) {
+        //LLog.d(TAG, "setVisibilityOfPlaylistFolderController " + visibilityOfPlaylistFolderController);
         if (ibPlaylistFolderIcon != null) {
             ibPlaylistFolderIcon.setVisibility(visibilityOfPlaylistFolderController);
         }
