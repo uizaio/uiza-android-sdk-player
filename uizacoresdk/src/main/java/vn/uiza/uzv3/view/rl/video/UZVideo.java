@@ -278,6 +278,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /**
+     * set uzTVCallback for uiza video
+     */
+    public void setUZTVCallback(UZTVCallback uztvCallback) {
+        this.uztvCallback = uztvCallback;
+        hanldeFirstViewHasFocus();
+    }
+
+    /**
      * init player with entity id, ad, seekbar thumnail
      */
     private String entityId;
@@ -1671,8 +1679,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private View firstViewHasFocus;
+
+    private void hanldeFirstViewHasFocus() {
+        if (firstViewHasFocus != null && uztvCallback != null) {
+            uztvCallback.onFocusChange(firstViewHasFocus, true);
+            firstViewHasFocus = null;
+        }
+    }
+
     @Override
     public void onFocusChange(View view, boolean isFocus) {
+        //LLog.d(TAG, "onFocusChange isFocus " + isFocus);
         /*if (isFocus) {
             if (view == ibBackScreenIcon) {
                 LLog.d(TAG, "onFocusChange ibSettingIcon");
@@ -1698,24 +1716,33 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 LLog.d(TAG, "onFocusChange uzTimebar");
             }
         }*/
-        updateUIFocusChange(view, isFocus);
+        if (uztvCallback != null) {
+            uztvCallback.onFocusChange(view, isFocus);
+        } else {
+            if (firstViewHasFocus == null) {
+                firstViewHasFocus = view;
+            }
+        }
+        //updateUIFocusChange(view, isFocus);
     }
 
-    private void updateUIFocusChange(View view, boolean isFocus) {
+    public void updateUIFocusChange(View view, boolean isFocus) {
         if (view == null) {
             return;
         }
         if (isFocus) {
             if (view instanceof UZImageButton) {
-                LAnimationUtil.play(view, Techniques.FlipInX);
+                //LAnimationUtil.play(view, Techniques.FlipInX);
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
-            } else {
+                ((UZImageButton) view).setColorFilter(Color.GRAY);
+            } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
         } else {
             if (view instanceof UZImageButton) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
-            } else {
+                ((UZImageButton) view).clearColorFilter();
+            } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
         }
@@ -2061,6 +2088,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private UZCallback uzCallback;
+    private UZTVCallback uztvCallback;
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));

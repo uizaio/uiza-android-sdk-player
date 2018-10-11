@@ -146,8 +146,8 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@id/previewFrameLayout"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
@@ -263,6 +263,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/White" />
+            android:maxLines="2"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_30" />
     </RelativeLayout>
 </RelativeLayout>
