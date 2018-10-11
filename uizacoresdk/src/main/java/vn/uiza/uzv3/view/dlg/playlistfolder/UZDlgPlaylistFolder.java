@@ -9,9 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 
 import com.daimajia.androidanimations.library.Techniques;
+import com.nshmura.snappysmoothscroller.SnapType;
+import com.nshmura.snappysmoothscroller.SnappyLinearLayoutManager;
 
 import java.util.List;
 
@@ -85,7 +88,12 @@ public class UZDlgPlaylistFolder extends Dialog {
     }
 
     private void setupUI() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+
+        SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setSnapType(SnapType.CENTER);
+        layoutManager.setSnapInterpolator(new DecelerateInterpolator());
+        recyclerView.setLayoutManager(layoutManager);
 
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
@@ -105,7 +113,8 @@ public class UZDlgPlaylistFolder extends Dialog {
             @Override
             public void onFocusChange(Data data, int position) {
                 if (recyclerView != null) {
-                    recyclerView.scrollToPosition(position);
+                    //recyclerView.scrollToPosition(position);
+                    recyclerView.smoothScrollToPosition(position);
                 }
             }
 
