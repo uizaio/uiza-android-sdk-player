@@ -2701,24 +2701,36 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //update UI for skip next and skip previous button
         if (position == 0) {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setSrcDrawableDisabled();
+                if (!ibSkipPreviousIcon.isFocused()) {
+                    ibSkipPreviousIcon.setSrcDrawableDisabled();
+                }
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setSrcDrawableEnabled();
+                if (!ibSkipNextIcon.isFocused()) {
+                    ibSkipNextIcon.setSrcDrawableEnabled();
+                }
             }
         } else if (position == UZData.getInstance().getDataList().size() - 1) {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setSrcDrawableEnabled();
+                if (!ibSkipPreviousIcon.isFocused()) {
+                    ibSkipPreviousIcon.setSrcDrawableEnabled();
+                }
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setSrcDrawableDisabled();
+                if (!ibSkipNextIcon.isFocused()) {
+                    ibSkipNextIcon.setSrcDrawableDisabled();
+                }
             }
         } else {
             if (ibSkipPreviousIcon != null) {
-                ibSkipPreviousIcon.setSrcDrawableEnabled();
+                if (!ibSkipPreviousIcon.isFocused()) {
+                    ibSkipPreviousIcon.setSrcDrawableEnabled();
+                }
             }
             if (ibSkipNextIcon != null) {
-                ibSkipNextIcon.setSrcDrawableEnabled();
+                if (!ibSkipNextIcon.isFocused()) {
+                    ibSkipNextIcon.setSrcDrawableEnabled();
+                }
             }
         }
         //end update UI for skip next and skip previous button
