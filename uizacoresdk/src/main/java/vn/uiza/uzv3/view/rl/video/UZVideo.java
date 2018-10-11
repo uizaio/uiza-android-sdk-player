@@ -1086,8 +1086,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         setEventForView();
 
-        //set visinility first
-        //setVisibilityOfPlaylistFolderController(GONE);
+        //set visibility first, so scared if removed
+        setVisibilityOfPlaylistFolderController(GONE);
     }
 
     private void setEventForView() {
@@ -2779,6 +2779,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             setVisibilityOfPlayPauseReplay(false);
             setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
             hideControllerOnTouch(true);
+            LLog.d(TAG, "fuck DEFAULT_VALUE_CONTROLLER_TIMEOUT " + DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         }
     }
 
