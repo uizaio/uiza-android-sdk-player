@@ -1035,7 +1035,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibPlaylistFolderIcon = (UZImageButton) playerView.findViewById(R.id.exo_playlist_folder);
         ibHearingIcon = (UZImageButton) playerView.findViewById(R.id.exo_hearing);
 
-        //TODO ibHearingIcon works fine, but QC dont want to show it, fuck QC team
+        //TODO ibHearingIcon works fine, but QC dont want to show it
         if (ibHearingIcon != null) {
             ibHearingIcon.setVisibility(GONE);
         }
