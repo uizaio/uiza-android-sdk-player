@@ -133,7 +133,6 @@ public class UZDlgPlaylistFolder extends Dialog {
         recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
 
-        //recyclerView.getLayoutManager().scrollToPosition(currentPositionOfDataList);
         recyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
