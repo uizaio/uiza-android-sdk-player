@@ -137,6 +137,9 @@ public class UZDlgPlaylistFolder extends Dialog {
         recyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (recyclerView == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList) == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView == null) {
+                    return;
+                }
                 recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView.requestFocus();
             }
         }, 50);
