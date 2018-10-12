@@ -13,16 +13,17 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 
 import com.daimajia.androidanimations.library.Techniques;
-import com.nshmura.snappysmoothscroller.SnapType;
-import com.nshmura.snappysmoothscroller.SnappyLinearLayoutManager;
 
 import java.util.List;
 
 import loitp.core.R;
 import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv3.util.UZData;
+import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
+import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -127,7 +128,9 @@ public class UZDlgPlaylistFolder extends Dialog {
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
         LUIUtil.setPullLikeIOSHorizontal(recyclerView);
-        recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList);
+        //recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
     }
 }

@@ -3,6 +3,9 @@ package vn.uiza.core.common;
 /**
  * Created by loitp
  */
+
+//https://github.com/nshmura/SnappySmoothScroller
+
 public class Constants {
     public static boolean IS_DEBUG = false;
 
