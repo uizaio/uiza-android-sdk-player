@@ -9,9 +9,8 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="@dimen/w_200"
-        android:layout_height="@dimen/w_113"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/margin_5"
         app:cardBackgroundColor="@color/fbutton_color_wet_asphalt"
         app:cardCornerRadius="@dimen/w_5"

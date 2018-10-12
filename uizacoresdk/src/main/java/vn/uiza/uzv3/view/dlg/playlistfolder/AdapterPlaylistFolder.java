@@ -21,6 +21,7 @@ import java.util.List;
 import loitp.core.R;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv3.util.UZUtil;
 
@@ -30,6 +31,8 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
     private int currentPositionOfDataList;
     private Context context;
     private CallbackPlaylistFolder callbackPlaylistFolder;
+    private int sizeW;
+    //private int sizeH;
 
     public class PlayListHolder extends RecyclerView.ViewHolder {
         private TextView tvDuration;
@@ -59,6 +62,8 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         this.dataList = dataList;
         this.currentPositionOfDataList = currentPositionOfDataList;
         this.callbackPlaylistFolder = callbackPlaylistFolder;
+        sizeW = LScreenUtil.getScreenWidth() / 5;
+        //sizeH = sizeW * 9 / 16;
     }
 
     @Override
@@ -69,6 +74,8 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
     @Override
     public void onBindViewHolder(final PlayListHolder playListHolder, final int position) {
+        updateSizeFocus(playListHolder.rootView, false);
+
         final Data data = dataList.get(position);
         //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
 
@@ -143,11 +150,12 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 //LLog.d(TAG, "onFocusChange isFocus: " + isFocus);
-                if (isFocus) {
+                updateSizeFocus(playListHolder.rootView, isFocus);
+                /*if (isFocus) {
                     playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
                 } else {
                     playListHolder.rootView.setBackgroundResource(0);
-                }
+                }*/
                 if (callbackPlaylistFolder != null) {
                     callbackPlaylistFolder.onFocusChange(data, position);
                 }
@@ -158,5 +166,19 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
     @Override
     public int getItemCount() {
         return dataList == null ? 0 : dataList.size();
+    }
+
+    private void updateSizeFocus(LinearLayout linearLayout, boolean isFocus) {
+        if (linearLayout == null) {
+            return;
+        }
+        if (isFocus) {
+            linearLayout.getLayoutParams().width = sizeW + sizeW / 3;
+            //linearLayout.getLayoutParams().height = sizeH + sizeH / 3;
+        } else {
+            linearLayout.getLayoutParams().width = sizeW;
+            //linearLayout.getLayoutParams().height = sizeH;
+        }
+        linearLayout.requestLayout();
     }
 }
