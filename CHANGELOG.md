@@ -1,6 +1,6 @@
-### 2.xx (2018-10-12)
+### 2.4.5 (2018-10-12)
 
-    implementation 'com.github.uizaio:uiza-android-sdk-player:2.xxx'
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.5'
 - Support IMA Ads.
 - Support [SnappySmoothScroller](https://github.com/nshmura/SnappySmoothScroller
 ).
