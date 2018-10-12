@@ -144,7 +144,6 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
             public void onFocusChange(View view, boolean isFocus) {
                 //LLog.d(TAG, "onFocusChange isFocus: " + isFocus);
                 if (isFocus) {
-                    LAnimationUtil.play(playListHolder.ivCover, Techniques.Pulse);
                     playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
                 } else {
                     playListHolder.rootView.setBackgroundResource(0);
