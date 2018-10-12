@@ -128,9 +128,17 @@ public class UZDlgPlaylistFolder extends Dialog {
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
         LUIUtil.setPullLikeIOSHorizontal(recyclerView);
-        LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList);
+        LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList + "/" + dataList.size());
         //recyclerView.smoothScrollToPosition(currentPositionOfDataList);
         recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
+
+        //recyclerView.getLayoutManager().scrollToPosition(currentPositionOfDataList);
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView.requestFocus();
+            }
+        }, 50);
     }
 }
