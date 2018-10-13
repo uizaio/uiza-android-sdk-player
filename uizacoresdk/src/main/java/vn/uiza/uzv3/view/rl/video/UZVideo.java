@@ -1415,6 +1415,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void onStateReadyFirst() {
         LLog.d(TAG, "onStateReadyFirst");
+
+        //enable from playPlaylistPosition() prvent double click
+        if (ibSkipPreviousIcon != null) {
+            ibSkipPreviousIcon.setClickable(true);
+            ibSkipPreviousIcon.setFocusable(true);
+        }
+        if (ibSkipNextIcon != null) {
+            ibSkipNextIcon.setClickable(true);
+            ibSkipNextIcon.setFocusable(true);
+        }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
             uzPlayerManager.getPlayer().setPlayWhenReady(true);
@@ -2623,7 +2633,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (Constants.IS_DEBUG) {
                         LToast.show(activity, "callAPIGetListAllEntity onSuccess");
                     }
-                    LLog.d(TAG, "callAPIGetListAllEntity onSuccess: " + gson.toJson(result));
+                    LLog.d(TAG, "callAPIGetListAllEntity onSuccess");
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uzCallback != null) {
                             LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
@@ -2744,6 +2754,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
+
+        //set disabled prevent double click, will enable onStateReadyFirst()
+        if (ibSkipPreviousIcon != null) {
+            ibSkipPreviousIcon.setClickable(false);
+            ibSkipPreviousIcon.setFocusable(false);
+        }
+        if (ibSkipNextIcon != null) {
+            ibSkipNextIcon.setClickable(false);
+            ibSkipNextIcon.setFocusable(false);
+        }
+
         //end update UI for skip next and skip previous button
 
         UZData.getInstance().setCurrentPositionOfDataList(position);
@@ -2876,7 +2897,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickSkipNext() {
-        //LLog.d(TAG, "handleClickSkipNext");
+        LLog.d(TAG, "handleClickSkipNext");
         autoSwitchNextVideo();
     }
 
