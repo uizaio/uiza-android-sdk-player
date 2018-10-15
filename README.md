@@ -445,13 +445,26 @@ This sample help you know how to use all Uiza SDK for livestream, please refer t
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
 
+## Supported devices
+
+Support all devices which have ***Android 4.4 (API level 19) above.***
+For a given use case, we aim to support UizaSDK on all Android devices that satisfy the minimum version requirement. 
+
+**Note:** Some Android emulators do not properly implement components of Android’s media stack, and as a result do not support UizaSDK. This is an issue with the emulator, not with UizaSDK. Android’s official emulator (“Virtual Devices” in Android Studio) supports UizaSDK provided the system image has an API level of at least 23. System images with earlier API levels do not support UizaSDK. The level of support provided by third party emulators varies. Issues running UizaSDK on third party emulators should be reported to the developer of the emulator rather than to the UizaSDK team. Where possible, we recommend testing media applications on physical devices rather than emulators.
 
 ## Support
 
 If you've found an error in this sample, please file an [issue ](https://github.com/uizaio/uiza-android-sdk-player/issues)
 
 Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: loitp@uiza.io for more details.
+
+Address: _33 Ubi Avenue 3 #08- 13, Vertex Tower B, Singapore 408868_  
+Cell: _+84 76408 8864_  
+Email: _[loitp@uiza.io](https://www.facebook.com/loitp93)_  
+Website: _[uiza.io](http://uiza.io/)_
+
 ## License
 
 UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
+
 
