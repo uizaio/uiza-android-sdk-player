@@ -94,4 +94,6 @@ dependencies {
     //for livestream
     //https://github.com/tplloi/rtmp-rtsp-stream-client-java
     //compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.1'
+
+    //compile 'com.nshmura:snappysmoothscroller:1.0.0'
 }

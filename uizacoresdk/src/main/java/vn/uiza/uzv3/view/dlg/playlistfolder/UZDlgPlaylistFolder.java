@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -17,9 +18,12 @@ import java.util.List;
 
 import loitp.core.R;
 import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv3.util.UZData;
+import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
+import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -85,7 +89,12 @@ public class UZDlgPlaylistFolder extends Dialog {
     }
 
     private void setupUI() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+
+        SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setSnapType(SnapType.CENTER);
+        layoutManager.setSnapInterpolator(new DecelerateInterpolator());
+        recyclerView.setLayoutManager(layoutManager);
 
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
@@ -105,7 +114,8 @@ public class UZDlgPlaylistFolder extends Dialog {
             @Override
             public void onFocusChange(Data data, int position) {
                 if (recyclerView != null) {
-                    recyclerView.scrollToPosition(position);
+                    //recyclerView.scrollToPosition(position);
+                    recyclerView.smoothScrollToPosition(position);
                 }
             }
 
@@ -118,7 +128,19 @@ public class UZDlgPlaylistFolder extends Dialog {
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
         LUIUtil.setPullLikeIOSHorizontal(recyclerView);
-        recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList + "/" + dataList.size());
+        //recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
+
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (recyclerView == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList) == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView == null) {
+                    return;
+                }
+                recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView.requestFocus();
+            }
+        }, 50);
     }
 }

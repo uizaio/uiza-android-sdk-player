@@ -13,6 +13,7 @@ public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallba
     private final String TAG = VideoAdPlayerListerner.class.getSimpleName();
 
     private boolean isPlayingAd;
+    private boolean isEnded;
 
     @Override
     public void onPlay() {
@@ -41,6 +42,7 @@ public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallba
     public void onEnded() {
         LLog.d(TAG, "onEnded");
         isPlayingAd = false;
+        isEnded = true;
     }
 
     @Override
@@ -51,5 +53,9 @@ public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallba
 
     public boolean isPlayingAd() {
         return isPlayingAd;
+    }
+
+    public boolean isEnded() {
+        return isEnded;
     }
 }

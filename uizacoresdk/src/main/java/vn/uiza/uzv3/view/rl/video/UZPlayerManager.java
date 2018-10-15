@@ -174,6 +174,18 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         setRunnable();
     }
 
+    private boolean isOnAdEnded;
+
+    private void onAdEnded() {
+        if (!isOnAdEnded) {
+            isOnAdEnded = true;
+            if (uzVideo != null) {
+                uzVideo.setDefaultUseController(uzVideo.isDefaultUseController());
+            }
+            LLog.d(TAG, "isOnAdEnded " + isOnAdEnded);
+        }
+    }
+
     public void setRunnable() {
         //LLog.d(TAG, "runnable setRunnable");
         handler = new Handler();
@@ -183,9 +195,15 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 //LLog.d(TAG, "runnable run");
                 if (uzVideo.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
-                    //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
+                    if (videoAdPlayerListerner.isEnded()) {
+                        onAdEnded();
+                    }
+                    //LLog.d(TAG, "isPlayingAd " + isPlayingAd + ", isEnded " + isEnded);
                     if (isPlayingAd) {
                         hideProgress();
+                        if (uzVideo != null) {
+                            uzVideo.setUseController(false);
+                        }
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
                             mls = videoProgressUpdate.getCurrentTime();
@@ -234,6 +252,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private void initSource() {
+        isOnAdEnded = false;
+
         //Exo Player Initialization
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);

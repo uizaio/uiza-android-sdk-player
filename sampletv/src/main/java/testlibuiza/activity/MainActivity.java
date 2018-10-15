@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
 
         TextView tvVs = (TextView) findViewById(R.id.tv_vs);
         LUIUtil.setTextShadow(tvVs);
-        tvVs.setText("Version " + BuildConfig.VERSION_NAME);
+        tvVs.setText("© 2018 Uiza. All rights reserved.\nVersion " + BuildConfig.VERSION_NAME);
     }
 
     @Override

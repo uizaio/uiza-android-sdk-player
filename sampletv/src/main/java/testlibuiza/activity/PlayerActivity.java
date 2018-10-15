@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import testlibuiza.app.R;
@@ -16,22 +17,34 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.rl.video.UZCallback;
+import vn.uiza.uzv3.view.rl.video.UZTVCallback;
 import vn.uiza.uzv3.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
-public class PlayerActivity extends BaseActivity implements UZCallback {
+public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback {
     private UZVideo uzVideo;
     private ViewGroup rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LLog.d(TAG, "onCreate");
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+
+        //init skin
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
+
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        //uzVideo.setUseController(false);
         uzVideo.setUZCallback(this);
+        uzVideo.setUZTVCallback(this);
+
+        //uzVideo.setUseController(false);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -48,7 +61,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -146,7 +159,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        LLog.d(TAG, "onKeyUp " + keyCode);
+        //LLog.d(TAG, "onKeyUp " + keyCode);
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
@@ -170,11 +183,9 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
                 LLog.d(TAG, "onKeyUp KEYCODE_VOLUME_UP");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 LLog.d(TAG, "onKeyUp KEYCODE_VOLUME_DOWN");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_MENU:
                 LLog.d(TAG, "onKeyUp KEYCODE_MENU");
@@ -182,7 +193,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_UP");
-                //TODO
                 return true;
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 LLog.d(TAG, "onKeyUp KEYCODE_DPAD_LEFT");
@@ -200,5 +210,36 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
             default:
                 return super.onKeyUp(keyCode, event);
         }
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean isFocus) {
+        //LLog.d(TAG, "onFocusChange isFocus " + isFocus);
+        /*if (isFocus) {
+            if (view == uzVideo.getIbBackScreenIcon()) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == uzVideo.getIbSettingIcon()) {
+                LLog.d(TAG, "onFocusChange ibSettingIcon");
+            } else if (view == uzVideo.getIbCcIcon()) {
+                LLog.d(TAG, "onFocusChange ibCcIcon");
+            } else if (view == uzVideo.getIbPlaylistRelationIcon()) {
+                LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
+            } else if (view == uzVideo.getIbRewIcon()) {
+                LLog.d(TAG, "onFocusChange ibRewIcon");
+            } else if (view == uzVideo.getIbPlayIcon()) {
+                LLog.d(TAG, "onFocusChange ibPlayIcon");
+            } else if (view == uzVideo.getIbPauseIcon()) {
+                LLog.d(TAG, "onFocusChange ibPauseIcon");
+            } else if (view == uzVideo.getIbReplayIcon()) {
+                LLog.d(TAG, "onFocusChange ibReplayIcon");
+            } else if (view == uzVideo.getIbSkipNextIcon()) {
+                LLog.d(TAG, "onFocusChange ibSkipNextIcon");
+            } else if (view == uzVideo.getIbSkipPreviousIcon()) {
+                LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
+            } else if (view == uzVideo.getUZTimeBar()) {
+                LLog.d(TAG, "onFocusChange uzTimebar");
+            }
+        }*/
+        uzVideo.updateUIFocusChange(view, isFocus);
     }
 }

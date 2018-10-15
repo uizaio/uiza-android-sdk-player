@@ -18,7 +18,7 @@
 
             <solid android:color="@color/transparent" />
 
-            <stroke android:width="@dimen/w_1" android:color="@color/Black" />
+            <stroke android:width="@dimen/w_1" android:color="@color/Gray" />
 
             <corners android:radius="@dimen/round_5" />
 

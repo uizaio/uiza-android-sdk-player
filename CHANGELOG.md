@@ -1,3 +1,19 @@
+### 2.4.6 (2018-10-15)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.6'
+- Customize skin for Android TV.
+- Update module sampletv.
+
+### 2.4.5 (2018-10-12)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.5'
+- Support IMA Ads.
+- Support [SnappySmoothScroller](https://github.com/nshmura/SnappySmoothScroller
+).
+- Fixed bug: onFocusChange if using for Android Box, Android TV.
+- Customize skin for Android TV.
+
+
 ### 2.4.3 (2018-10-05)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.3'
