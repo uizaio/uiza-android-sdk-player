@@ -340,6 +340,12 @@ Listener touch event
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
+**More informations for AndroidTV, AndroidBox:**
+You can use this SDK for AndroidTV, AndroidBox as well but limited some features.
+We alse provide some functions for AndroidTV like:
+
+    uzVideo.setUZTVCallback(this);//listen event onFocusChange of components.
+Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sampletv) for more details.
 # How to customize your skin?:
 Only 3 steps, you can customize everything about player skin.
 
@@ -371,7 +377,7 @@ Ex:
 
 Ex: findView from your custom layout:
 
-    TextView tvSample = uzVideo.getPlayerView().findViewById(R.id.tv_sample);
+    TextView tvSample = uzVideo.findViewById(R.id.tv_sample);
 
 That's enough! This code above will change the player's skin quickly. You can build and run your app now.
 
@@ -442,8 +448,9 @@ This sample help you know how to use all Uiza SDK for livestream, please refer t
 
 ## Support
 
-Please feel free to contact me anytime: loitp@uiza.io
+If you've found an error in this sample, please file an [issue ](https://github.com/uizaio/uiza-android-sdk-player/issues)
 
+Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: loitp@uiza.io for more details.
 ## License
 
 UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
