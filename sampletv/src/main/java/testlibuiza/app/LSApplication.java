@@ -29,7 +29,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         //config activity transition default
-        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT);
+        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
         Constants.setDebugMode(false);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }

@@ -27,8 +27,17 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LLog.d(TAG, "onCreate");
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+
+        //init skin
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
+
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(R.id.root_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
@@ -52,7 +61,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override

@@ -33,30 +33,49 @@
             android:textColor="@color/White"
             android:textSize="@dimen/txt_80" />
 
-        <EditText
-            android:id="@+id/et_input"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:gravity="center"
-            android:hint="Input ID here"
-            android:singleLine="true"
-            android:textSize="@dimen/txt_32" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bt_clear"
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"
+                android:hint="Input ID here"
+                android:singleLine="true"
+                android:textSize="@dimen/txt_32" />
+
+            <Button
+                android:id="@+id/bt_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:focusable="true"
+                android:text="CLEAR" />
+        </LinearLayout>
+
+        <!--<Switch
+            android:id="@+id/sw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:focusable="true"
+            android:layout_marginTop="@dimen/margin_20"
             android:paddingLeft="@dimen/padding_30"
+            android:paddingTop="@dimen/padding_10"
             android:paddingRight="@dimen/padding_30"
-            android:text="CLEAR TEXT" />
+            android:paddingBottom="@dimen/padding_10"
+            android:text="Use custom skin"
+            android:textColor="@color/White"
+            android:textSize="@dimen/txt_20" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
             android:gravity="center"
             android:orientation="horizontal">
 
