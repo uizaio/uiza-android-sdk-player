@@ -341,8 +341,8 @@ Listener touch event
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
 **More informations for AndroidTV, AndroidBox:**
-You can use this SDK for AndroidTV, AndroidBox as well but limited some features.
-We alse provide some functions for AndroidTV like:
+You can use this SDK for AndroidTV, AndroidBox as well, but limited some features.
+We also provide some functions for AndroidTV like:
 
     uzVideo.setUZTVCallback(this);//listen event onFocusChange of components.
 Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sampletv) for more details.

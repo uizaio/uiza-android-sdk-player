@@ -1,3 +1,9 @@
+### 2.4.6 (2018-10-15)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.6'
+- Customize skin for Android TV.
+- Update module sampletv.
+
 ### 2.4.5 (2018-10-12)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.5'
