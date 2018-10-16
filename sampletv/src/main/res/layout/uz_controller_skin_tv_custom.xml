@@ -226,12 +226,13 @@
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_ffwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/w_80"
+                android:layout_height="@dimen/w_80"
                 android:background="@color/transparent"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 android:src="@drawable/baseline_forward_10_white_48"
-                android:tint="@color/Green" />
+                android:tint="@color/Green"
+                app:useDefaultIB="false" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_playlist_folder"

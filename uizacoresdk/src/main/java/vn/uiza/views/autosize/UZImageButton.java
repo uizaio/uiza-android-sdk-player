@@ -77,6 +77,7 @@ public class UZImageButton extends AppCompatImageButton {
         if (!isUseDefault) {
             //LLog.d(TAG, "initSizeScreenW -> return");
             a.recycle();
+            drawableEnabled = getDrawable();
             return;
         }
         isTablet = LDeviceUtil.isTablet(getContext());
