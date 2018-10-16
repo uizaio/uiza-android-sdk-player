@@ -344,7 +344,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isCalledAPIGetTokenStreaming;
 
     private void callAPIGetDetailEntity() {
-        //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call aou lay detail entity lam gi nua
+        //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call api lay detail entity lam gi nua
         if (UZData.getInstance().getData() == null) {
             //LLog.d(TAG, "init UZData.getInstance().getData() == null -> call api lấy detail entity if");
             UZUtil.getDetailEntity((BaseActivity) activity, entityId, new UZUtil.Callback() {
@@ -1697,6 +1697,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleClickSkipPrevious();
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
+        }
+
+        /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này a có thể xử lý khi click vào con trol thì reset count down để ẩn control ko
+        default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn, cái này mình sẽ reset cout và update bản mới.*/
+        if (isDefaultUseController) {
+            showController();
+            //setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         }
     }
 
