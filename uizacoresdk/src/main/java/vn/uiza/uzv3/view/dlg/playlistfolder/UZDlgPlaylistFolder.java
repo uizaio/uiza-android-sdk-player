@@ -26,7 +26,7 @@ import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
 /**
- * Created by loitp on 5/2/2018.
+ * Created by loitp on 16/10/2018.
  */
 
 public class UZDlgPlaylistFolder extends Dialog {
@@ -114,7 +114,6 @@ public class UZDlgPlaylistFolder extends Dialog {
             @Override
             public void onFocusChange(Data data, int position) {
                 if (recyclerView != null) {
-                    //recyclerView.scrollToPosition(position);
                     recyclerView.smoothScrollToPosition(position);
                 }
             }

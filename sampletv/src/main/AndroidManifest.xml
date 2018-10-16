@@ -23,7 +23,9 @@
         </activity>
         <activity
             android:name="testlibuiza.activity.PlayerActivity"
-
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name="testlibuiza.activity.PlayerCustomActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 

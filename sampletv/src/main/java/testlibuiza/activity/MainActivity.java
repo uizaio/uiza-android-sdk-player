@@ -26,6 +26,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     private Button btClear;
     private Button btStartEntity;
     private Button btStartPlaylistFolder;
+    private Button btCustom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btClear = (Button) findViewById(R.id.bt_clear);
         btStartEntity = (Button) findViewById(R.id.bt_start_entity);
         btStartPlaylistFolder = (Button) findViewById(R.id.bt_start_playlist_folder);
+        btCustom = (Button) findViewById(R.id.bt_custom);
 
         etInput.setText(LSApplication.entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInput);
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btClear.setOnFocusChangeListener(this);
         btStartEntity.setOnFocusChangeListener(this);
         btStartPlaylistFolder.setOnFocusChangeListener(this);
+        btCustom.setOnFocusChangeListener(this);
 
         UZUtil.updateUIFocusChange(etInput, true);
         UZUtil.updateUIFocusChange(btVod, false);
@@ -56,6 +59,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         UZUtil.updateUIFocusChange(btClear, false);
         UZUtil.updateUIFocusChange(btStartEntity, false);
         UZUtil.updateUIFocusChange(btStartPlaylistFolder, false);
+        UZUtil.updateUIFocusChange(btCustom, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
@@ -63,6 +67,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btClear.setOnClickListener(this);
         btStartEntity.setOnClickListener(this);
         btStartPlaylistFolder.setOnClickListener(this);
+        btCustom.setOnClickListener(this);
 
         TextView tvVs = (TextView) findViewById(R.id.tv_vs);
         LUIUtil.setTextShadow(tvVs);
@@ -96,7 +101,6 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
                 etInput.setTextColor(Color.WHITE);
                 etInput.setHintTextColor(Color.WHITE);
             }
-            //KeyboardUtils.toggleSoftInput();
         }
     }
 
@@ -131,6 +135,10 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
+        } else if (view == btCustom) {
+            Intent intent = new Intent(activity, PlayerCustomActivity.class);
+            startActivity(intent);
+            LActivityUtil.tranIn(activity);
         }
     }
 
