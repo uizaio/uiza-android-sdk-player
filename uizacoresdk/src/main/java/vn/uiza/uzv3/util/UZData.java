@@ -296,7 +296,7 @@ public class UZData {
         //TODO player_name
         uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version
-        uizaTracking.setPlayerVersion("1.0.3 V3");
+        uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
         //entity_id
         uizaTracking.setEntityId(UZInput == null ? "null" : UZInput.getData().getId());
         //entity_name

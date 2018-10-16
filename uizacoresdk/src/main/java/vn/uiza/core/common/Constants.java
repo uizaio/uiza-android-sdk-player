@@ -8,6 +8,7 @@ package vn.uiza.core.common;
 
 public class Constants {
     public static boolean IS_DEBUG = false;
+    public static final String PLAYER_SDK_VERSION = "2.4.7";
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;
