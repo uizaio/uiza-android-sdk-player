@@ -163,7 +163,7 @@ public class LSocialUtil {
                 activity.startActivity(intent);
                 LActivityUtil.tranIn(activity);
             } catch (Exception e) {
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_unknow), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_cannot_chat_messenger_now), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
             }
         }
     }

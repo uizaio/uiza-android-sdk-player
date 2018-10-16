@@ -130,4 +130,6 @@
     <string name="per_warning">Thông báo</string>
     <string name="uz_need_per">Uiza cần bạn cần cấp quyền điều chỉnh độ sáng màn hình</string>
     <string name="approve">Cấp phép</string>
+    <string name="err_call_api_retrievealiveevent">Error: Cannot get data from api retrieveALiveEvent()</string>
+    <string name="err_cannot_chat_messenger_now">Cannot chat messenger now</string>
 </resources>

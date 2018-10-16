@@ -2113,6 +2113,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(tracking));
+        if (activity == null) {
+            return;
+        }
         UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override

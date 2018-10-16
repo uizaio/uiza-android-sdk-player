@@ -482,7 +482,7 @@ public class UZUtil {
             public void onSuccess(ResultRetrieveALive result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
                     if (callback != null) {
-                        callback.onError(new Exception(activity.getString(R.string.err_unknow)));
+                        callback.onError(new Exception(activity.getString(R.string.err_call_api_retrievealiveevent)));
                     }
                 } else {
                     if (callback != null) {
