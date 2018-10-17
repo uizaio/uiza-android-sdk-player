@@ -737,8 +737,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         } else {
             player.seekTo(player.getCurrentPosition() + forward);
         }
-    }//next 10000mls
+    }
 
+    //next 10000mls
     public void seekToBackward(long backward) {
         if (player.getCurrentPosition() - backward > 0) {
             player.seekTo(player.getCurrentPosition() - backward);

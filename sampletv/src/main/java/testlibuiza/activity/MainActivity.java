@@ -39,6 +39,11 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         btStartEntity = (Button) findViewById(R.id.bt_start_entity);
         btStartPlaylistFolder = (Button) findViewById(R.id.bt_start_playlist_folder);
         btCustom = (Button) findViewById(R.id.bt_custom);
+        if (Constants.IS_DEBUG) {
+            btCustom.setVisibility(View.VISIBLE);
+        } else {
+            btCustom.setVisibility(View.GONE);
+        }
 
         etInput.setText(LSApplication.entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInput);

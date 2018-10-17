@@ -31,8 +31,8 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
         UZUtil.setCasty(this);
 
         //init skin
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);

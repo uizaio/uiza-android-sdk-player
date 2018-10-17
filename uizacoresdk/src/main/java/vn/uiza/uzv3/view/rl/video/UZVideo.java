@@ -1511,6 +1511,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public boolean isPlaying() {
+        if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
+            return false;
+        }
+        return uzPlayerManager.getPlayer().getPlayWhenReady();
+    }
+
     private void initUizaPlayerManagerV3() {
         if (uzPlayerManager != null) {
             uzPlayerManager.init();
@@ -1582,10 +1589,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void onStopPreview(int progress) {
         if (uzPlayerManager != null) {
-            uzPlayerManager.seekTo(progress);
-            uzPlayerManager.resumeVideo();
-            isOnPlayerEnded = false;
-            updateUIEndScreen();
+            if (isPlaying()) {
+                uzPlayerManager.seekTo(progress);
+                uzPlayerManager.resumeVideo();
+                isOnPlayerEnded = false;
+                updateUIEndScreen();
+            }
         }
     }
 
@@ -1658,8 +1667,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzPlayerManager != null) {
                     uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
                     if (!isPlayPlaylistFolder()) {
-                        isOnPlayerEnded = false;
-                        updateUIEndScreen();
+                        if (isPlaying()) {
+                            isOnPlayerEnded = false;
+                            updateUIEndScreen();
+                        }
                     }
                 }
             }
