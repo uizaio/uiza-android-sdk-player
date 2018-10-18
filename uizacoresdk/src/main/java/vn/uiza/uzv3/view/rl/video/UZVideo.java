@@ -3047,7 +3047,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickShare() {
-        LSocialUtil.share(activity, isLandscape);
+        //LSocialUtil.share(activity, isLandscape);
+        LSocialUtil.share(activity, isLandscape, activity.getString(R.string.uiza_introduce));
     }
 
     /*

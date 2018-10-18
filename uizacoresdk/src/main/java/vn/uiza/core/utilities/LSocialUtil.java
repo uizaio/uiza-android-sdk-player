@@ -13,6 +13,7 @@ import android.net.Uri;
 import java.util.List;
 
 import loitp.core.R;
+import vn.uiza.utils.util.AppUtils;
 import vn.uiza.uzv1.view.dlg.share.UZDlgShare;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
@@ -52,7 +53,7 @@ public class LSocialUtil {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
+            intent.putExtra(Intent.EXTRA_SUBJECT, AppUtils.getAppName());
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, "Share via"));
             LActivityUtil.tranIn(activity);
@@ -169,8 +170,8 @@ public class LSocialUtil {
     }
 
     /*
-   * send email support
-   */
+     * send email support
+     */
     /*public void sendEmail() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
