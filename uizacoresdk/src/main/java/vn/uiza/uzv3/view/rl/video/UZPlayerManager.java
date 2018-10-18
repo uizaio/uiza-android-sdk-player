@@ -317,7 +317,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (subtitleList == null || subtitleList.isEmpty()) {
             return mediaSource;
         }
-        //LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
+        //LLog.d(TAG, "createMediaSourceWithSubtitle " + new Gson().toJson(subtitleList));
 
         List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
         for (int i = 0; i < subtitleList.size(); i++) {

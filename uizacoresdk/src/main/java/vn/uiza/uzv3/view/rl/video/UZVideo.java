@@ -17,7 +17,6 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +30,6 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
@@ -49,7 +47,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
@@ -89,7 +86,6 @@ import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv1.view.ComunicateMng;
-import vn.uiza.uzv1.view.dlg.info.UZDlgInfoV1;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZInput;
 import vn.uiza.uzv3.util.UZTrackingUtil;
@@ -778,6 +774,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             List<Subtitle> subtitleList = null;
             //TODO iplm v3 chua co subtitle
+            /*subtitleList = new ArrayList<>();
+            Subtitle subtitle = new Subtitle();
+            subtitle.setLanguage("en");
+            subtitle.setUrl("https://www.iandevlin.com/html5test/webvtt/upc-video-subtitles-en.vtt");
+            subtitleList.add(subtitle);*/
+
             //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
             //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
@@ -1041,9 +1043,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibHearingIcon = (UZImageButton) playerView.findViewById(R.id.exo_hearing);
 
         //TODO ibHearingIcon works fine, but QC dont want to show it
-        if (ibHearingIcon != null) {
+        /*if (ibHearingIcon != null) {
             ibHearingIcon.setVisibility(GONE);
-        }
+        }*/
 
         ibPictureInPictureIcon = (UZImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         ibShareIcon = (UZImageButton) playerView.findViewById(R.id.exo_share);
@@ -1650,11 +1652,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibShareIcon) {
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
-            test(((Button) v));
-            /*MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
-            if (mappedTrackInfo != null && uzPlayerManager.getTrackSelectionHelper() != null) {
-                uzPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
-            }*/
+            showUZTrackSelectionDialog(((Button) v));
         } else if (v == rlChromeCast) {
             //dangerous to remove
             //LLog.d(TAG, "do nothing click rl_chrome_cast");
@@ -3022,11 +3020,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickCC() {
-        if (uzPlayerManager == null) {
-            LLog.e(TAG, "Error handleClickCC uzPlayerManager == null");
-            return;
-        }
-        if (uzPlayerManager.getSubtitleList() == null || uzPlayerManager.getSubtitleList().isEmpty()) {
+        /*if (uzPlayerManager.getSubtitleList() == null || uzPlayerManager.getSubtitleList().isEmpty()) {
             UZDlgInfoV1 UZDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
             UZUtil.showUizaDialog(activity, UZDlgInfoV1);
         } else {
@@ -3034,6 +3028,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (view != null) {
                 UZUtil.getBtText(debugRootView).performClick();
             }
+        }*/
+
+        View view = UZUtil.getBtText(debugRootView);
+        if (view != null) {
+            UZUtil.getBtText(debugRootView).performClick();
+        } else {
+            LLog.e(TAG, "error handleClickCC null");
         }
     }
 
@@ -3488,14 +3489,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private int rendererIndex = 0;
-    private boolean isDisabled;
-    private DefaultTrackSelector.SelectionOverride override;
-    private TrackGroupArray trackGroups;
-
-    private List<CheckedTextView> checkedTextViewList = new ArrayList<>();
-
-    private void test(final View view) {
+    private void showUZTrackSelectionDialog(final View view) {
         MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
         if (mappedTrackInfo != null) {
             CharSequence title = ((Button) view).getText();
@@ -3596,22 +3590,5 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.getTrackSelector().setParameters(parametersBuilder);*//*
             }
         });*/
-    }
-
-    private static int[] getTracksAdding(int[] tracks, int addedTrack) {
-        tracks = Arrays.copyOf(tracks, tracks.length + 1);
-        tracks[tracks.length - 1] = addedTrack;
-        return tracks;
-    }
-
-    private static int[] getTracksRemoving(int[] tracks, int removedTrack) {
-        int[] newTracks = new int[tracks.length - 1];
-        int trackCount = 0;
-        for (int track : tracks) {
-            if (track != removedTrack) {
-                newTracks[trackCount++] = track;
-            }
-        }
-        return newTracks;
     }
 }
