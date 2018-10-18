@@ -63,8 +63,8 @@ public class LSocialUtil {
     }
 
     public static void share(Activity activity, boolean isLandscape) {
-        UZDlgShare UZDlgShare = new UZDlgShare(activity, isLandscape);
-        UZUtil.showUizaDialog(activity, UZDlgShare);
+        UZDlgShare uzDlgShare = new UZDlgShare(activity, isLandscape);
+        UZUtil.showUizaDialog(activity, uzDlgShare);
     }
 
     public static void sharingToSocialMedia(Activity activity, String application, String subject, String message) {

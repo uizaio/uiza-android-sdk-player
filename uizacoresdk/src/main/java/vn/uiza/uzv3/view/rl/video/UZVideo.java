@@ -91,6 +91,7 @@ import vn.uiza.uzv3.util.UZInput;
 import vn.uiza.uzv3.util.UZTrackingUtil;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.uzv3.view.UZPlayerView;
+import vn.uiza.uzv3.view.dlg.UZTrackSelectionView;
 import vn.uiza.uzv3.view.dlg.listentityrelation.CallbackPlayList;
 import vn.uiza.uzv3.view.dlg.listentityrelation.UZDligListEntityRelation;
 import vn.uiza.uzv3.view.dlg.playlistfolder.CallbackPlaylistFolder;
@@ -3512,6 +3513,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             dialogPair.second.setShowDisableOption(false);
             dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
             dialogPair.first.show();
+            //UZUtil.showUizaDialog(activity, dialogPair.first);
         }
 
         /*checkedTextViewList.clear();

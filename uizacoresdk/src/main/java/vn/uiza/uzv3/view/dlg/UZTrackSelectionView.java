@@ -1,4 +1,4 @@
-package vn.uiza.uzv3.view.rl.video;
+package vn.uiza.uzv3.view.dlg;
 
 import android.app.Activity;
 import android.app.AlertDialog;
