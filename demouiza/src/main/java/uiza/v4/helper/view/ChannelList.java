@@ -1,4 +1,4 @@
-package uiza.v2.home.view;
+package uiza.v4.helper.view;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +7,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import uiza.R;
-import uiza.v2.home.model.ChannelObject;
-import uiza.v2.home.model.Item;
+import uiza.v4.helper.model.ChannelObject;
+import uiza.v4.helper.model.Item;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView;
 import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;

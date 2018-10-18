@@ -1,4 +1,4 @@
-package uiza.v3.view;
+package uiza.v4.helper.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,8 +14,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Click;
 import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;
 import vn.uiza.views.placeholderview.lib.placeholderview.annotations.NonReusable;
@@ -30,8 +29,8 @@ import vn.uiza.views.placeholderview.lib.placeholderview.annotations.View;
 //@Animate(Animation.CARD_TOP_IN_DESC)
 //@Animate(Animation.CARD_BOTTOM_IN_ASC)
 @NonReusable
-@Layout(R.layout.v3_uiza_entity_item)
-public class EntityItemV3 {
+@Layout(R.layout.uiza_entity_item)
+public class EntityItemV2 {
 
     @View(R.id.image_view)
     private ImageView imageView;
@@ -39,10 +38,8 @@ public class EntityItemV3 {
     private ProgressBar progressBar;
     @View(R.id.tv_name)
     private TextView tvName;
-    @View(R.id.tv_info_live)
-    private TextView tvInfoLive;
 
-    private Data data;
+    private Item item;
     private Context mContext;
     private Callback mCallback;
 
@@ -52,9 +49,9 @@ public class EntityItemV3 {
     private int mSizeW;
     private int mSizeH;
 
-    public EntityItemV3(Context context, Data data, int sizeW, int sizeH, Callback callback) {
+    public EntityItemV2(Context context, Item item, int sizeW, int sizeH, Callback callback) {
         this.mContext = context;
-        this.data = data;
+        this.item = item;
         this.mSizeW = sizeW;
         this.mSizeH = sizeH;
         this.mCallback = callback;
@@ -68,20 +65,14 @@ public class EntityItemV3 {
 
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(mContext, R.color.White));
 
-        if (data.getThumbnail() == null || data.getThumbnail().isEmpty()) {
+        if (item.getThumbnail() == null || item.getThumbnail().isEmpty()) {
             LImageUtil.load((Activity) mContext, Constants.URL_IMG_16x9, imageView, progressBar);
         } else {
-            LImageUtil.load((Activity) mContext, data.getThumbnail(), imageView, progressBar);
+            LImageUtil.load((Activity) mContext, Constants.PREFIXS + item.getThumbnail(), imageView, progressBar);
         }
 
-        tvName.setText(data.getName());
+        tvName.setText(item.getName());
         LUIUtil.setTextShadow(tvName);
-
-        if (data == null || data.getLastProcess() == null || data.getLastProcess().equals(Constants.LAST_PROCESS_STOP)) {
-            tvInfoLive.setVisibility(android.view.View.INVISIBLE);
-        } else {
-            tvInfoLive.setVisibility(android.view.View.VISIBLE);
-        }
 
         if (mCallback != null) {
             mCallback.onPosition(mPosition);
@@ -103,33 +94,25 @@ public class EntityItemV3 {
 
             @Override
             public void onEnd() {
-                if (data.getLastProcess() == null) {
-                    if (mCallback != null) {
-                        mCallback.onClick(data, mPosition);
-                    }
-                } else {
-                    if (data.getLastProcess().equals(Constants.LAST_PROCESS_START)) {
-                        if (mCallback != null) {
-                            mCallback.onClick(data, mPosition);
-                        }
-                    } else {
-                        LToast.show(mContext, "This content is not streaming now");
-                    }
+                if (mCallback != null) {
+                    mCallback.onClick(item, mPosition);
                 }
             }
 
             @Override
             public void onRepeat() {
+                //do nothing
             }
 
             @Override
             public void onStart() {
+                //do nothing
             }
         });
     }
 
     public interface Callback {
-        public void onClick(Data data, int position);
+        public void onClick(Item item, int position);
 
         public void onPosition(int position);
     }

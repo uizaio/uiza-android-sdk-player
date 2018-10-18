@@ -1,4 +1,4 @@
-package uiza.v2.home.model;
+package uiza.v4.helper.model;
 
 /**
  * Created by www.muathu@gmail.com on 11/15/2017.

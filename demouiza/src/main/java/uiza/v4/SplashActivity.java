@@ -1,4 +1,4 @@
-package uiza.v3.canslide;
+package uiza.v4;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import android.widget.RadioGroup;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
-import uiza.v4.HomeV4CanSlideActivity;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -24,7 +23,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.uzv3.util.UZUtil;
 
-public class SplashActivityV3 extends BaseActivity {
+public class SplashActivity extends BaseActivity {
     private int currentPlayerId = R.layout.uz_player_skin_1;
     private EditText etApiDomain;
     private EditText etKey;

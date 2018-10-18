@@ -1,4 +1,4 @@
-package uiza.v2.home.view;
+package uiza.v4.helper.view;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;

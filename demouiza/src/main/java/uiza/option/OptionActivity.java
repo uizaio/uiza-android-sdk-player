@@ -17,7 +17,7 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v3.canslide.SplashActivityV3;
+import uiza.v4.SplashActivity;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -121,7 +121,7 @@ public class OptionActivity extends BaseActivity {
         LLog.d(TAG, "currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
-        Intent intent = new Intent(activity, SplashActivityV3.class);
+        Intent intent = new Intent(activity, SplashActivity.class);
         intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
         startActivity(intent);
         LActivityUtil.tranIn(activity);

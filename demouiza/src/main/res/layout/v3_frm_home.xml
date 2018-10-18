@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <uiza.v2.home.view.UizaActionBar
+            <uiza.v4.helper.view.UizaActionBar
                 android:id="@+id/uiza_action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize" />

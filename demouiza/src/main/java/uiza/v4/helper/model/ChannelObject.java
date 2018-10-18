@@ -1,4 +1,4 @@
-package uiza.v2.home.model;
+package uiza.v4.helper.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package uiza.v2.home.view;
+package uiza.v4.helper.view;
 
 import uiza.R;
 import vn.uiza.views.placeholderview.lib.placeholderview.annotations.Layout;

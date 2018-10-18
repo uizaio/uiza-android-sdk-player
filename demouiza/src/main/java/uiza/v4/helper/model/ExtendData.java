@@ -1,4 +1,4 @@
-package uiza.v2.home.model;
+package uiza.v4.helper.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

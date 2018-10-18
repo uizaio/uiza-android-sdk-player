@@ -1,4 +1,4 @@
-package uiza.v2.home.view;
+package uiza.v4.helper.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import com.daimajia.androidanimations.library.Techniques;
 
 import uiza.R;
-import uiza.v2.home.model.Item;
+import uiza.v4.helper.model.Item;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LUIUtil;

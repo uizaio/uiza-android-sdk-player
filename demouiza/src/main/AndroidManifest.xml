@@ -22,11 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".v2.home.cannotslide.LoginActivity" />
-        <activity
-            android:name=".v3.canslide.HomeV3CanSlideActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <activity android:name=".v3.canslide.SplashActivityV3" />
+        <activity android:name=".v4.helper.cannotslide.LoginActivity" />
+        <activity android:name=".v4.SplashActivity" />
         <activity
             android:name=".v4.HomeV4CanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
