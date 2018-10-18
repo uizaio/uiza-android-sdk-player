@@ -17,7 +17,6 @@ import java.util.List;
 
 import uiza.R;
 import uiza.app.LSApplication;
-import uiza.v2.splash.SplashActivity;
 import uiza.v3.canslide.SplashActivityV3;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -38,16 +37,6 @@ public class OptionActivity extends BaseActivity {
     private List<SkinObject> skinObjectList = new ArrayList<>();
     private ParallaxViewPager viewPager;
 
-    private RadioGroup radioGroupSlide;
-    private RadioButton radioCanSlide;
-    private RadioButton radioCannotSlide;
-    private boolean canSlide;
-
-    private RadioGroup radioEnvironment;
-    private RadioButton radioEnvironmentAPIV3;
-    private RadioButton radioEnvironmentDev;
-    private RadioButton radioEnvironmentStag;
-    private RadioButton radioEnvironmentProd;
     private int currentEnvironment = Constants.NOT_FOUND;
     String currentApiTrackingEndPoint = null;
     String currentApiEndPoint = null;
@@ -85,23 +74,17 @@ public class OptionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         genListSkin();
-
         findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToSplashScreen();
             }
         });
-
         //set auth null every run this app
         UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
-
         findViews();
         setupSkin();
-        setupSlide();
-        setupEnvironment();
         setupDebugMode();
     }
 
@@ -112,16 +95,6 @@ public class OptionActivity extends BaseActivity {
         viewPager.invalidate();
         viewPager.setMode(Mode.LEFT_OVERLAY);
         LUIUtil.setPullLikeIOSHorizontal(viewPager);
-        //setting slide
-        radioGroupSlide = (RadioGroup) findViewById(R.id.radio_group_slide);
-        radioCanSlide = (RadioButton) findViewById(R.id.radio_can_slide);
-        radioCannotSlide = (RadioButton) findViewById(R.id.radio_cannot_slide);
-        //setting environment
-        radioEnvironment = (RadioGroup) findViewById(R.id.radio_environment);
-        radioEnvironmentAPIV3 = (RadioButton) findViewById(R.id.radio_environment_api_v3);
-        radioEnvironmentDev = (RadioButton) findViewById(R.id.radio_environment_dev);
-        radioEnvironmentStag = (RadioButton) findViewById(R.id.radio_environment_stag);
-        radioEnvironmentProd = (RadioButton) findViewById(R.id.radio_environment_prod);
         //setting debug mode
         radioDebugMode = (RadioGroup) findViewById(R.id.radio_debug_mode);
         radioDebugModeDisable = (RadioButton) findViewById(R.id.radio_debug_mode_disable);
@@ -145,24 +118,13 @@ public class OptionActivity extends BaseActivity {
         }
 
         LLog.d(TAG, "currentPlayerId " + skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
-        LLog.d(TAG, "canSlide " + canSlide);
         LLog.d(TAG, "currentApiEndPoint " + currentApiEndPoint);
         LLog.d(TAG, "currentApiTrackingEndPoint " + currentApiTrackingEndPoint);
 
-        if (radioEnvironmentAPIV3.isChecked()) {
-            Intent intent = new Intent(activity, SplashActivityV3.class);
-            intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
-            startActivity(intent);
-            LActivityUtil.tranIn(activity);
-        } else {
-            Intent intent = new Intent(activity, SplashActivity.class);
-            intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
-            intent.putExtra(KEY_CAN_SLIDE, canSlide);
-            intent.putExtra(KEY_API_END_POINT, currentApiEndPoint);
-            intent.putExtra(KEY_API_TRACKING_END_POINT, currentApiTrackingEndPoint);
-            startActivity(intent);
-            LActivityUtil.tranIn(activity);
-        }
+        Intent intent = new Intent(activity, SplashActivityV3.class);
+        intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
+        startActivity(intent);
+        LActivityUtil.tranIn(activity);
     }
 
     @Override
@@ -182,61 +144,6 @@ public class OptionActivity extends BaseActivity {
 
     private void setupSkin() {
         viewPager.setAdapter(new SlidePagerAdapter());
-    }
-
-    private void setupSlide() {
-        //default can slide
-        radioCanSlide.setChecked(true);
-        canSlide = true;
-
-        radioGroupSlide.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                int selectedId = radioGroupSlide.getCheckedRadioButtonId();
-                switch (selectedId) {
-                    case R.id.radio_can_slide:
-                        canSlide = true;
-                        break;
-                    case R.id.radio_cannot_slide:
-                        canSlide = false;
-                        break;
-                }
-            }
-        });
-    }
-
-    private void setupEnvironment() {
-        //default
-        radioEnvironmentAPIV3.setChecked(true);
-        //currentApiEndPoint = Constants.URL_DEV_UIZA_VERSION_2_DEMO;
-        currentApiTrackingEndPoint = Constants.URL_TRACKING_PROD;
-        radioCannotSlide.setVisibility(View.GONE);
-
-        radioEnvironment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                int selectedId = radioEnvironment.getCheckedRadioButtonId();
-                switch (selectedId) {
-                    case R.id.radio_environment_dev:
-                        currentEnvironment = Constants.ENVIRONMENT_DEV;
-                        radioCannotSlide.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.radio_environment_stag:
-                        currentEnvironment = Constants.ENVIRONMENT_STAG;
-                        radioCannotSlide.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.radio_environment_prod:
-                        currentEnvironment = Constants.ENVIRONMENT_PROD;
-                        radioCannotSlide.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.radio_environment_api_v3:
-                        radioCannotSlide.setVisibility(View.GONE);
-                        radioCanSlide.setChecked(true);
-                        break;
-                }
-                UZUtil.setAuth(activity, null, LSApplication.getInstance().getGson());
-            }
-        });
     }
 
     private void setupDebugMode() {

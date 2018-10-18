@@ -46,7 +46,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.Utils;
-import vn.uiza.uzv1.view.floatview.FUZVideoServiceV1;
 import vn.uiza.uzv3.view.floatview.FUZVideoService;
 import vn.uiza.uzv3.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
@@ -366,21 +365,6 @@ public class UZUtil {
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
-        }
-    }
-
-    //stop service pip FUZVideoServiceV1
-    public static void stopServicePiPIfRunning(Activity activity) {
-        if (activity == null) {
-            return;
-        }
-        //LLog.d(TAG, "stopServicePiPIfRunning");
-        boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoServiceV1.class.getName());
-        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
-        if (isSvPipRunning) {
-            //stop service if running
-            Intent intent = new Intent(activity, FUZVideoServiceV1.class);
-            activity.stopService(intent);
         }
     }
 

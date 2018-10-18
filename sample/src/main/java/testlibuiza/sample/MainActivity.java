@@ -8,9 +8,6 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
-import testlibuiza.sample.v2.api.V2TestAPIActivity;
-import testlibuiza.sample.v2.uizavideo.rl.V2UizaVideoIMActivity;
-import testlibuiza.sample.v2.uizavideo.slide.V2UizaVideoIMActivitySlide;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
@@ -35,28 +32,6 @@ public class MainActivity extends BaseActivity {
         //auth v2
         authV2();
 
-        findViewById(R.id.bt_test_api_v2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, V2TestAPIActivity.class);
-                startActivity(intent);
-                LActivityUtil.tranIn(activity);
-            }
-        });
-        findViewById(R.id.bt_uiza_video_cannot_slide_v2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UZUtil.setAcitivityCanSlideIsRunning(activity, false);
-                callUizaVideoCannotSlideV2();
-            }
-        });
-        findViewById(R.id.bt_uiza_video_slide_v2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UZUtil.setAcitivityCanSlideIsRunning(activity, true);
-                callUizaVideoSlideV2();
-            }
-        });
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,19 +122,5 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int setLayoutResourceId() {
         return R.layout.activity_main;
-    }
-
-    private void callUizaVideoCannotSlideV2() {
-        UZUtil.setSlideUizaVideoEnabled(activity, false);
-        Intent intent = new Intent(activity, V2UizaVideoIMActivity.class);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
-    }
-
-    private void callUizaVideoSlideV2() {
-        UZUtil.setSlideUizaVideoEnabled(activity, true);
-        Intent intent = new Intent(activity, V2UizaVideoIMActivitySlide.class);
-        startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 }
