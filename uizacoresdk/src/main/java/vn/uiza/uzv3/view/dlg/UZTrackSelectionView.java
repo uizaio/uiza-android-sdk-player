@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import java.util.Arrays;
 
 import loitp.core.R;
+import vn.uiza.core.utilities.LLog;
 
 /**
  * A view for making track selections.
@@ -226,6 +227,7 @@ public class UZTrackSelectionView extends LinearLayout {
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
                 trackView.setSoundEffectsEnabled(false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                LLog.d(TAG, "updateViews " + trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 trackView.setText(trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex)
                         == RendererCapabilities.FORMAT_HANDLED) {
