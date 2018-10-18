@@ -1645,10 +1645,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibShareIcon) {
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
-            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+            //TODO
+            LToast.show(activity, "TODO");
+            /*MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null && uzPlayerManager.getTrackSelectionHelper() != null) {
                 uzPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
-            }
+            }*/
         } else if (v == rlChromeCast) {
             //dangerous to remove
             //LLog.d(TAG, "do nothing click rl_chrome_cast");
@@ -2138,7 +2140,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -3197,7 +3199,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     public void showPip() {
         if (isCastingChromecast() || !isTablet) {
-            LLog.d(TAG, "showPip isCastingChromecast || !isTablet -> return");
+            LLog.e(TAG, activity.getString(R.string.err_pip_only_tablet));
         } else {
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.performClick();
