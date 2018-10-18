@@ -3509,11 +3509,20 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             boolean allowAdaptiveSelections = false;
             LLog.d(TAG, "fuck allowAdaptiveSelections " + allowAdaptiveSelections);
             //Pair<AlertDialog, TrackSelectionView> dialogPair = TrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
-            Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
+            final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
             dialogPair.second.setShowDisableOption(false);
             dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
-            dialogPair.first.show();
-            //UZUtil.showUizaDialog(activity, dialogPair.first);
+            dialogPair.second.setCallback(new UZTrackSelectionView.Callback() {
+                @Override
+                public void onClick() {
+                    if (dialogPair == null || dialogPair.first == null) {
+                        return;
+                    }
+                    dialogPair.first.cancel();
+                }
+            });
+            //dialogPair.first.show();
+            UZUtil.showUizaDialog(activity, dialogPair.first);
         }
 
         /*checkedTextViewList.clear();

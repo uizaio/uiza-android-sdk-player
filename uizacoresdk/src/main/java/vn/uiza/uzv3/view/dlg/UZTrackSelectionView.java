@@ -2,9 +2,7 @@ package vn.uiza.uzv3.view.dlg;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.support.annotation.AttrRes;
 import android.support.annotation.Nullable;
@@ -74,19 +72,19 @@ public class UZTrackSelectionView extends LinearLayout {
 
         final UZTrackSelectionView selectionView = dialogView.findViewById(R.id.uz_track_selection_view);
         selectionView.init(trackSelector, rendererIndex);
-        Dialog.OnClickListener okClickListener =
+        /*Dialog.OnClickListener okClickListener =
                 new Dialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selectionView.applySelection();
                     }
-                };
+                };*/
 
         AlertDialog dialog = builder
                 .setTitle(title)
                 .setView(dialogView)
-                .setPositiveButton(android.R.string.ok, okClickListener)
-                .setNegativeButton(android.R.string.cancel, null)
+                //.setPositiveButton(android.R.string.ok, okClickListener)
+                //.setNegativeButton(android.R.string.cancel, null)
                 .create();
         return Pair.create(dialog, selectionView);
     }
@@ -274,6 +272,9 @@ public class UZTrackSelectionView extends LinearLayout {
             onTrackViewClicked(view);
         }
         updateViewStates();
+        if (callback != null) {
+            callback.onClick();
+        }
     }
 
     private void onDisableViewClicked() {
@@ -314,6 +315,7 @@ public class UZTrackSelectionView extends LinearLayout {
                 override = new SelectionOverride(groupIndex, tracks);
             }
         }
+        applySelection();
     }
 
     private static int[] getTracksAdding(int[] tracks, int addedTrack) {
@@ -341,5 +343,15 @@ public class UZTrackSelectionView extends LinearLayout {
         public void onClick(View view) {
             UZTrackSelectionView.this.onClick(view);
         }
+    }
+
+    public interface Callback {
+        public void onClick();
+    }
+
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 }
