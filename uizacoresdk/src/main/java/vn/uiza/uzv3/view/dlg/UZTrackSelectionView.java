@@ -116,6 +116,7 @@ public class UZTrackSelectionView extends LinearLayout {
         disableView.setFocusable(true);
         disableView.setOnClickListener(componentListener);
         disableView.setVisibility(View.GONE);
+        disableView.setSoundEffectsEnabled(false);
         addView(disableView);
         // Divider view.
         addView(inflater.inflate(R.layout.exo_list_divider, this, false));
@@ -126,6 +127,7 @@ public class UZTrackSelectionView extends LinearLayout {
         defaultView.setEnabled(false);
         defaultView.setFocusable(true);
         defaultView.setOnClickListener(componentListener);
+        defaultView.setSoundEffectsEnabled(false);
         addView(defaultView);
     }
 
@@ -221,8 +223,8 @@ public class UZTrackSelectionView extends LinearLayout {
                         enableAdaptiveSelections
                                 ? android.R.layout.simple_list_item_multiple_choice
                                 : android.R.layout.simple_list_item_single_choice;
-                CheckedTextView trackView =
-                        (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
+                CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
+                trackView.setSoundEffectsEnabled(false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 trackView.setText(trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex)
