@@ -3515,10 +3515,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             dialogPair.second.setCallback(new UZTrackSelectionView.Callback() {
                 @Override
                 public void onClick() {
-                    if (dialogPair == null || dialogPair.first == null) {
-                        return;
-                    }
-                    dialogPair.first.cancel();
+                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                        @Override
+                        public void doAfter(int mls) {
+                            if (dialogPair == null || dialogPair.first == null) {
+                                return;
+                            }
+                            dialogPair.first.cancel();
+                        }
+                    });
                 }
             });
             //dialogPair.first.show();

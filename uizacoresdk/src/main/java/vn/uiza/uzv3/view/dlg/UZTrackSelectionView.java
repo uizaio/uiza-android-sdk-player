@@ -240,7 +240,6 @@ public class UZTrackSelectionView extends LinearLayout {
                 addView(trackView);
             }
         }
-
         updateViewStates();
     }
 
@@ -274,6 +273,7 @@ public class UZTrackSelectionView extends LinearLayout {
             onTrackViewClicked(view);
         }
         updateViewStates();
+        applySelection();
         if (callback != null) {
             callback.onClick();
         }
@@ -317,7 +317,7 @@ public class UZTrackSelectionView extends LinearLayout {
                 override = new SelectionOverride(groupIndex, tracks);
             }
         }
-        applySelection();
+        //applySelection();
     }
 
     private static int[] getTracksAdding(int[] tracks, int addedTrack) {
@@ -338,7 +338,6 @@ public class UZTrackSelectionView extends LinearLayout {
     }
 
     // Internal classes.
-
     private class ComponentListener implements OnClickListener {
 
         @Override
