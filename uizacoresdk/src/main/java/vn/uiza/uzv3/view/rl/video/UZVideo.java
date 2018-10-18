@@ -1,5 +1,6 @@
 package vn.uiza.uzv3.view.rl.video;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,9 +13,11 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +31,7 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
@@ -45,6 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import loitp.core.R;
@@ -1645,8 +1650,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibShareIcon) {
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
-            //TODO
-            LToast.show(activity, "TODO");
+            test(((Button) v));
             /*MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null && uzPlayerManager.getTrackSelectionHelper() != null) {
                 uzPlayerManager.getTrackSelectionHelper().showSelectionDialog(activity, ((Button) v).getText(), mappedTrackInfo, (int) v.getTag());
@@ -3482,5 +3486,132 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar != null) {
             uzTimebar.setVisibility(GONE);
         }
+    }
+
+    private int rendererIndex = 0;
+    private boolean isDisabled;
+    private DefaultTrackSelector.SelectionOverride override;
+    private TrackGroupArray trackGroups;
+
+    private List<CheckedTextView> checkedTextViewList = new ArrayList<>();
+
+    private void test(final View view) {
+        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+        if (mappedTrackInfo != null) {
+            CharSequence title = ((Button) view).getText();
+            LLog.d(TAG, "fuck title " + title);
+            int rendererIndex = (int) view.getTag();
+            LLog.d(TAG, "fuck rendererIndex " + rendererIndex);
+            int rendererType = mappedTrackInfo.getRendererType(rendererIndex);
+            LLog.d(TAG, "fuck rendererType " + rendererType);
+            /*boolean allowAdaptiveSelections =
+                    rendererType == C.TRACK_TYPE_VIDEO
+                            || (rendererType == C.TRACK_TYPE_AUDIO
+                            && mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_VIDEO)
+                            == MappingTrackSelector.MappedTrackInfo.RENDERER_SUPPORT_NO_TRACKS);*/
+            boolean allowAdaptiveSelections = false;
+            LLog.d(TAG, "fuck allowAdaptiveSelections " + allowAdaptiveSelections);
+            //Pair<AlertDialog, TrackSelectionView> dialogPair = TrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
+            Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
+            dialogPair.second.setShowDisableOption(false);
+            dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
+            dialogPair.first.show();
+        }
+
+        /*checkedTextViewList.clear();
+        MappingTrackSelector.MappedTrackInfo trackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+
+        for (int i = 0; i < trackInfo.getRendererCount(); i++) {
+            TrackGroupArray trackGroups = trackInfo.getTrackGroups(i);
+            if (trackGroups.length != 0) {
+                switch (getPlayer().getRendererType(i)) {
+                    case C.TRACK_TYPE_VIDEO:
+                        rendererIndex = i;
+                        LLog.d(TAG, "fuck rendererIndex " + rendererIndex);
+                        break;
+                }
+            }
+        }
+
+        trackGroups = trackInfo.getTrackGroups(rendererIndex);
+
+        DefaultTrackSelector.Parameters parameters = uzPlayerManager.getTrackSelector().getParameters();
+        isDisabled = parameters.getRendererDisabled(rendererIndex);
+        override = parameters.getSelectionOverride(rendererIndex, trackGroups);
+        TrackNameProvider trackNameProvider = new DefaultTrackNameProvider(getResources());
+
+        LLog.d(TAG, "fuck s: " + "Auto" + ", isDisabled true");
+        CheckedTextView checkedTextView = new CheckedTextView(activity);
+        checkedTextView.setText("Auto");
+        checkedTextViewList.add(checkedTextView);
+        for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
+            TrackGroup group = trackGroups.get(groupIndex);
+            for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
+                String s = trackNameProvider.getTrackName(group.getFormat(trackIndex));
+                LLog.d(TAG, "fuck s: " + s + ", isDisabled " + isDisabled + ", groupIndex " + groupIndex + ", trackIndex: " + trackIndex);
+                checkedTextView = new CheckedTextView(activity);
+                checkedTextView.setTag(Pair.create(groupIndex, trackIndex));
+                checkedTextView.setText(s);
+                checkedTextViewList.add(checkedTextView);
+            }
+        }
+
+        LUIUtil.setDelay(5000, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                Pair<Integer, Integer> tag = (Pair<Integer, Integer>) checkedTextViewList.get(3).getTag();
+                int groupIndex = tag.first;
+                int trackIndex = tag.second;
+
+                if (override == null || override.groupIndex != groupIndex) {
+                    LLog.d(TAG, "fuck A new override is being started.");
+                    override = new DefaultTrackSelector.SelectionOverride(groupIndex, trackIndex);
+                } else {
+                    //LLog.d(TAG, "fuck An existing override is being modified.");
+                    int overrideLength = override.length;
+                    int[] overrideTracks = override.tracks;
+                    *//*if (overrideLength == 1) {
+                        LLog.d(TAG, "fuck overrideLength == 1 The last track is being removed, so the override becomes empty.");
+                        override = null;
+                        isDisabled = true;
+                    } else {
+                        LLog.d(TAG, "fuck overrideLength != 1");
+                        int[] tracks = getTracksRemoving(overrideTracks, trackIndex);
+                        override = new DefaultTrackSelector.SelectionOverride(groupIndex, tracks);
+                    }*//*
+                    int[] tracks = getTracksRemoving(overrideTracks, trackIndex);
+                    override = new DefaultTrackSelector.SelectionOverride(groupIndex, tracks);
+                }
+                int newIndex = 3;
+                LLog.d(TAG, "fuck setDelay newIndex " + newIndex);
+                uzPlayerManager.getTrackSelector().setSelectionOverride(rendererIndex, trackGroups, override);
+                *//*DefaultTrackSelector.ParametersBuilder parametersBuilder = uzPlayerManager.getTrackSelector().buildUponParameters();
+                parametersBuilder.setRendererDisabled(newIndex, isDisabled);
+                if (override != null) {
+                    LLog.d(TAG, "fuck override != null");
+                    parametersBuilder.setSelectionOverride(newIndex, trackGroups, override);
+                } else {
+                    parametersBuilder.clearSelectionOverrides(newIndex);
+                }
+                uzPlayerManager.getTrackSelector().setParameters(parametersBuilder);*//*
+            }
+        });*/
+    }
+
+    private static int[] getTracksAdding(int[] tracks, int addedTrack) {
+        tracks = Arrays.copyOf(tracks, tracks.length + 1);
+        tracks[tracks.length - 1] = addedTrack;
+        return tracks;
+    }
+
+    private static int[] getTracksRemoving(int[] tracks, int removedTrack) {
+        int[] newTracks = new int[tracks.length - 1];
+        int trackCount = 0;
+        for (int track : tracks) {
+            if (track != removedTrack) {
+                newTracks[trackCount++] = track;
+            }
+        }
+        return newTracks;
     }
 }
