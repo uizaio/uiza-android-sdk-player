@@ -1041,16 +1041,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibPlaylistRelationIcon = (UZImageButton) playerView.findViewById(R.id.exo_playlist_relation);
         ibPlaylistFolderIcon = (UZImageButton) playerView.findViewById(R.id.exo_playlist_folder);
         ibHearingIcon = (UZImageButton) playerView.findViewById(R.id.exo_hearing);
-
-        //TODO ibHearingIcon works fine, but QC dont want to show it
-        /*if (ibHearingIcon != null) {
-            ibHearingIcon.setVisibility(GONE);
-        }*/
-
         ibPictureInPictureIcon = (UZImageButton) playerView.findViewById(R.id.exo_picture_in_picture);
         ibShareIcon = (UZImageButton) playerView.findViewById(R.id.exo_share);
         ibSkipNextIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_next);
         ibSkipPreviousIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_previous);
+
+        //TODO ibHearingIcon works fine, but QC dont want to show it
+        if (ibHearingIcon != null) {
+            ibHearingIcon.setVisibility(GONE);
+        }
+        //TODO show visibile if iplm subtitle
+        if (ibCcIcon != null) {
+            ibCcIcon.setVisibility(GONE);
+        }
+        //TODO ibShareIcon works fine, but QC dont want to show it
+        if (ibShareIcon != null) {
+            ibShareIcon.setVisibility(GONE);
+        }
 
         ivPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -1900,9 +1907,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
             }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(GONE);
-            }
 
             //TODO why set gone not work?
             if (ibRewIcon != null) {
@@ -1923,9 +1927,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //TODO ibPlaylistRelationIcon works fine, but QC wanne hide it
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
-            }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(VISIBLE);
             }
             //TODO why set visible not work?
             if (ibRewIcon != null) {
@@ -2567,9 +2568,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(GONE);
             }
-            if (ibCcIcon != null) {
+            /*if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(GONE);
-            }
+            }*/
             if (llMid != null) {
                 llMid.setVisibility(GONE);
             }
@@ -2604,9 +2605,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(VISIBLE);
             }
-            if (ibCcIcon != null) {
+            /*if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
-            }
+            }*/
             if (llMid != null) {
                 llMid.setVisibility(VISIBLE);
             }
