@@ -3483,7 +3483,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (previewFrameLayout != null) {
             previewFrameLayout.setVisibility(GONE);
         }
-        LLog.d(TAG, "hideUzTimebar");
         if (ivThumbnail != null) {
             ivThumbnail.setVisibility(GONE);
         }
@@ -3496,18 +3495,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
         if (mappedTrackInfo != null) {
             CharSequence title = ((Button) view).getText();
-            LLog.d(TAG, "fuck title " + title);
             int rendererIndex = (int) view.getTag();
-            LLog.d(TAG, "fuck rendererIndex " + rendererIndex);
             int rendererType = mappedTrackInfo.getRendererType(rendererIndex);
-            LLog.d(TAG, "fuck rendererType " + rendererType);
             /*boolean allowAdaptiveSelections =
                     rendererType == C.TRACK_TYPE_VIDEO
                             || (rendererType == C.TRACK_TYPE_AUDIO
                             && mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_VIDEO)
                             == MappingTrackSelector.MappedTrackInfo.RENDERER_SUPPORT_NO_TRACKS);*/
             boolean allowAdaptiveSelections = false;
-            LLog.d(TAG, "fuck allowAdaptiveSelections " + allowAdaptiveSelections);
             //Pair<AlertDialog, TrackSelectionView> dialogPair = TrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
             final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
             dialogPair.second.setShowDisableOption(false);
