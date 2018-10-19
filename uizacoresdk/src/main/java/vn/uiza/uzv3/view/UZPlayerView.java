@@ -162,15 +162,9 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
             if (!controllerVisible) {
                 //LLog.d(TAG, "showController");
                 showController();
-                /*if (controllerStateCallback != null) {
-                    controllerStateCallback.onVisibilityChange(true);
-                }*/
             } else if (getControllerHideOnTouch()) {
                 //LLog.d(TAG, "hideController");
                 hideController();
-                /*if (controllerStateCallback != null) {
-                    controllerStateCallback.onVisibilityChange(false);
-                }*/
             }
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed();

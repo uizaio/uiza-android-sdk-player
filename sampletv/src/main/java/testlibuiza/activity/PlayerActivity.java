@@ -100,7 +100,10 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void onError(Exception e) {
-        e.printStackTrace();
+        if (e == null) {
+            return;
+        }
+        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

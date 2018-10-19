@@ -31,6 +31,7 @@ import java.util.List;
 import testlibuiza.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -448,7 +449,21 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onError(Exception e) {
-        LLog.d(TAG, "onError " + e.getMessage());
+        if (e == null) {
+            return;
+        }
+        LLog.e(TAG, "onError: " + e.toString());
+        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                onBackPressed();
+            }
+
+            @Override
+            public void onCancel() {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
