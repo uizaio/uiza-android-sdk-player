@@ -23,39 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/LightPink"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_5">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Uiza V1 (Deprecated)"
-                    android:textSize="@dimen/txt_30" />
-
-                <Button
-                    android:id="@+id/bt_test_api_v2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Test API V2" />
-
-                <Button
-                    android:id="@+id/bt_uiza_video_cannot_slide_v2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Uiza Video Cannot Slide" />
-
-                <Button
-                    android:id="@+id/bt_uiza_video_slide_v2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Uiza Video Slide" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_10"
                 android:background="@color/LightGreen"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
@@ -63,7 +30,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Uiza V2 (Recommended)"
+                    android:text="Uiza Video"
                     android:textSize="@dimen/txt_30" />
 
                 <Button

@@ -1,3 +1,10 @@
+### 2.4.7 (2018-10-16)
+
+    implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.7'
+- Update logic for Android TV.
+- Fixed bugs cannot touch controller components when replay the video.
+- Update clearly error message.
+
 ### 2.4.6 (2018-10-15)
 
     implementation 'com.github.uizaio:uiza-android-sdk-player:2.4.6'

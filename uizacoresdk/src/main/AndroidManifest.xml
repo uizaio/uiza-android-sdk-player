@@ -46,10 +46,6 @@
         </receiver>
 
         <service
-            android:name="vn.uiza.uzv1.view.floatview.FUZVideoServiceV1"
-            android:enabled="true"
-            android:exported="false" />
-        <service
             android:name="vn.uiza.uzv3.view.floatview.FUZVideoService"
             android:enabled="true"
             android:exported="false" />

@@ -32,9 +32,9 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
         //init skin
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
 
@@ -100,7 +100,10 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void onError(Exception e) {
-        e.printStackTrace();
+        if (e == null) {
+            return;
+        }
+        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

@@ -3,7 +3,6 @@ package vn.uiza.uzv3.view.rl.video;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +27,6 @@ import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -64,7 +62,6 @@ import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.uzv1.TrackSelectionHelper;
 import vn.uiza.uzv1.glide.GlideApp;
 import vn.uiza.uzv1.glide.GlideThumbnailTransformationPB;
 import vn.uiza.uzv1.listerner.ProgressCallback;
@@ -245,12 +242,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return trackSelector;
     }
 
-    private TrackSelectionHelper trackSelectionHelper;
-
-    public TrackSelectionHelper getTrackSelectionHelper() {
-        return trackSelectionHelper;
-    }
-
     private void initSource() {
         isOnAdEnded = false;
 
@@ -258,7 +249,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         uzVideo.getPlayerView().setPlayer(player);
 
@@ -318,7 +308,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private MediaSource createMediaSourceVideo() {
         //Video Source
         //MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkPlay));
-        MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay), null, null);
+        //MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay), null, null);
+        MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }
 
@@ -326,7 +317,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (subtitleList == null || subtitleList.isEmpty()) {
             return mediaSource;
         }
-        //LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
+        //LLog.d(TAG, "createMediaSourceWithSubtitle " + new Gson().toJson(subtitleList));
 
         List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
         for (int i = 0; i < subtitleList.size(); i++) {
@@ -411,7 +402,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             handler = null;
             runnable = null;
 
-            trackSelectionHelper = null;
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -427,7 +417,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             handler = null;
             runnable = null;
 
-            trackSelectionHelper = null;
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -438,9 +427,14 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
-    @Override
+    /*@Override
     public MediaSource createMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
         return buildMediaSource(uri, handler, listener);
+    }*/
+
+    @Override
+    public MediaSource createMediaSource(Uri uri) {
+        return buildMediaSource(uri);
     }
 
     @Override
@@ -449,25 +443,28 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return new int[]{C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER};
     }
 
-    // Internal methods.
-    private MediaSource buildMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
+    private MediaSource buildMediaSource(Uri uri) {
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
             case C.TYPE_DASH:
                 return new DashMediaSource.Factory(
                         new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                         manifestDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(
                         new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }
@@ -737,8 +734,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         } else {
             player.seekTo(player.getCurrentPosition() + forward);
         }
-    }//next 10000mls
+    }
 
+    //next 10000mls
     public void seekToBackward(long backward) {
         if (player.getCurrentPosition() - backward > 0) {
             player.seekTo(player.getCurrentPosition() - backward);

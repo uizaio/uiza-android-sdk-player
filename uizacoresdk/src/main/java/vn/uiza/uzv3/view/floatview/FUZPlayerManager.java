@@ -18,7 +18,6 @@ package vn.uiza.uzv3.view.floatview;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.view.Surface;
 
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
@@ -39,7 +38,6 @@ import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -70,7 +68,6 @@ import java.util.List;
 import loitp.core.R;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.uzv1.TrackSelectionHelper;
 import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
 
@@ -170,12 +167,6 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
         return trackSelector;
     }
 
-    private TrackSelectionHelper trackSelectionHelper;
-
-    public TrackSelectionHelper getTrackSelectionHelper() {
-        return trackSelectionHelper;
-    }
-
     public void init() {
         reset();
 
@@ -183,7 +174,6 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         FUZVideo.getPlayerView().setPlayer(player);
 
@@ -225,7 +215,7 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
     private MediaSource createMediaSourceVideo() {
         //Video Source
         //MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkPlay));
-        MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay), null, null);
+        MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }
 
@@ -306,7 +296,6 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
             handler = null;
             runnable = null;
 
-            trackSelectionHelper = null;
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -322,7 +311,6 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
             handler = null;
             runnable = null;
 
-            trackSelectionHelper = null;
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -335,9 +323,14 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
 
     // AdsMediaSource.MediaSourceFactory implementation.
 
-    @Override
+    /*@Override
     public MediaSource createMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
         return buildMediaSource(uri, handler, listener);
+    }*/
+
+    @Override
+    public MediaSource createMediaSource(Uri uri) {
+        return buildMediaSource(uri);
     }
 
     @Override
@@ -347,24 +340,28 @@ import vn.uiza.uzv1.listerner.VideoAdPlayerListerner;
     }
 
     // Internal methods.
-    private MediaSource buildMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
+    private MediaSource buildMediaSource(Uri uri) {
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
             case C.TYPE_DASH:
                 return new DashMediaSource.Factory(
                         new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                         manifestDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(
                         new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri, handler, listener);
+                        .createMediaSource(uri);
+            //.createMediaSource(uri, handler, listener);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }

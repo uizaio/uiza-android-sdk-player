@@ -19,6 +19,7 @@ public class LConectifyBroadcast extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        LLog.d(TAG, "onReceive");
         if (context == null || intent == null) {
             return;
         }
@@ -27,11 +28,11 @@ public class LConectifyBroadcast extends BroadcastReceiver {
             boolean isConnectedWifi = false;
             boolean isConnectedFast = false;
             if (LConnectivityUtil.isConnectedMobile(context)) {
-                //LLog.d(TAG, "isConnectedMobile");
+                LLog.d(TAG, "isConnectedMobile");
                 isConnectedMobile = true;
             }
             if (LConnectivityUtil.isConnectedWifi(context)) {
-                //LLog.d(TAG, "isConnectedWifi");
+                LLog.d(TAG, "isConnectedWifi");
                 isConnectedWifi = true;
             }
             if (LConnectivityUtil.isConnectedFast(context)) {

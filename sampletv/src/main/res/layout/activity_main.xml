@@ -59,19 +59,6 @@
                 android:text="CLEAR" />
         </LinearLayout>
 
-        <!--<Switch
-            android:id="@+id/sw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
-            android:paddingLeft="@dimen/padding_30"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingRight="@dimen/padding_30"
-            android:paddingBottom="@dimen/padding_10"
-            android:text="Use custom skin"
-            android:textColor="@color/White"
-            android:textSize="@dimen/txt_20" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,5 +141,14 @@
             android:padding="@dimen/padding_5"
             android:textColor="@color/White"
             android:textSize="@dimen/txt_18" />
+
+        <Button
+            android:id="@+id/bt_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:paddingLeft="@dimen/padding_30"
+            android:paddingRight="@dimen/padding_30"
+            android:text="CUSTOM" />
     </LinearLayout>
 </RelativeLayout>

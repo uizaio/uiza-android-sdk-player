@@ -33,6 +33,11 @@ public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallba
     }
 
     @Override
+    public void onLoaded() {
+        LLog.d(TAG, "onLoaded");
+    }
+
+    @Override
     public void onResume() {
         LLog.d(TAG, "onResume");
         isPlayingAd = true;

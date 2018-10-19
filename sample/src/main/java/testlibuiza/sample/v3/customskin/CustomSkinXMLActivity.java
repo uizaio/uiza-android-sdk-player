@@ -14,6 +14,8 @@ import testlibuiza.app.LSApplication;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -52,6 +54,7 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.setUZCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
@@ -178,6 +181,21 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onError(Exception e) {
+        if (e == null) {
+            return;
+        }
+        LLog.e(TAG, "onError: " + e.toString());
+        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+                onBackPressed();
+            }
+
+            @Override
+            public void onCancel() {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

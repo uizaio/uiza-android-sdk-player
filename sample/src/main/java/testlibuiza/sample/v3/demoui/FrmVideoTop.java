@@ -32,6 +32,7 @@ import java.util.List;
 import testlibuiza.R;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
@@ -327,7 +328,19 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void onError(Exception e) {
-        LLog.d(TAG, "onError " + e.getMessage());
+        if (e == null) {
+            return;
+        }
+        LLog.e(TAG, "onError: " + e.toString());
+        LDialogUtil.showDialog1(getActivity(), e.getMessage(), new LDialogUtil.Callback1() {
+            @Override
+            public void onClick1() {
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
     }
 
     public void initEntity(String entityId) {

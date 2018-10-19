@@ -13,6 +13,7 @@ import android.net.Uri;
 import java.util.List;
 
 import loitp.core.R;
+import vn.uiza.utils.util.AppUtils;
 import vn.uiza.uzv1.view.dlg.share.UZDlgShare;
 import vn.uiza.uzv3.util.UZUtil;
 import vn.uiza.views.LToast;
@@ -52,7 +53,7 @@ public class LSocialUtil {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
+            intent.putExtra(Intent.EXTRA_SUBJECT, AppUtils.getAppName());
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, "Share via"));
             LActivityUtil.tranIn(activity);
@@ -62,8 +63,8 @@ public class LSocialUtil {
     }
 
     public static void share(Activity activity, boolean isLandscape) {
-        UZDlgShare UZDlgShare = new UZDlgShare(activity, isLandscape);
-        UZUtil.showUizaDialog(activity, UZDlgShare);
+        UZDlgShare uzDlgShare = new UZDlgShare(activity, isLandscape);
+        UZUtil.showUizaDialog(activity, uzDlgShare);
     }
 
     public static void sharingToSocialMedia(Activity activity, String application, String subject, String message) {
@@ -163,14 +164,14 @@ public class LSocialUtil {
                 activity.startActivity(intent);
                 LActivityUtil.tranIn(activity);
             } catch (Exception e) {
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_unknow), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
+                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_cannot_chat_messenger_now), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
             }
         }
     }
 
     /*
-   * send email support
-   */
+     * send email support
+     */
     /*public void sendEmail() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");

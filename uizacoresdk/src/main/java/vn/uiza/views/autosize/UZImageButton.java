@@ -74,9 +74,14 @@ public class UZImageButton extends AppCompatImageButton {
         isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
         drawableDisabled = a.getDrawable(R.styleable.UZImageButton_srcDisabled);
         //LLog.d(TAG, "initSizeScreenW isUseDefault " + isUseDefault);
+
+        //disable click sound of a particular button in android app
+        setSoundEffectsEnabled(false);
+
         if (!isUseDefault) {
             //LLog.d(TAG, "initSizeScreenW -> return");
             a.recycle();
+            drawableEnabled = getDrawable();
             return;
         }
         isTablet = LDeviceUtil.isTablet(getContext());
