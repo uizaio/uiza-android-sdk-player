@@ -429,60 +429,8 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public interface Callback {
-        public void onSuccess(Data data);
-
-        public void onError(Throwable e);
-    }
-
-    public static void getDetailEntity(final BaseActivity activity, final String entityId, final Callback callback) {
-        UZService service = UZRestClient.createService(UZService.class);
-        activity.subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
-            @Override
-            public void onSuccess(ResultRetrieveAnEntity result) {
-                if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
-                    getDataFromEntityIdLIVE(activity, entityId, callback);
-                } else {
-                    if (callback != null) {
-                        Data d = result.getData();
-                        callback.onSuccess(d);
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                if (callback != null) {
-                    callback.onError(e);
-                }
-            }
-        });
-    }
-
-    public static void getDataFromEntityIdLIVE(final BaseActivity activity, String entityId, final Callback callback) {
-        UZService service = UZRestClient.createService(UZService.class);
-        activity.subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
-            @Override
-            public void onSuccess(ResultRetrieveALive result) {
-                if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
-                    if (callback != null) {
-                        callback.onError(new Exception(activity.getString(R.string.err_call_api_retrievealiveevent)));
-                    }
-                } else {
-                    if (callback != null) {
-                        Data d = result.getData();
-                        callback.onSuccess(d);
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                if (callback != null) {
-                    callback.onError(e);
-                }
-            }
-        });
+    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback){
+        UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
     public static void initEntity(Activity activity, UZVideo UZVideo, String entityId) {

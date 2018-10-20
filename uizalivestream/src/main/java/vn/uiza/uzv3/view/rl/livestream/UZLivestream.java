@@ -47,7 +47,8 @@ import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.startALiveFeed.BodyStartALiveFeed;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.uzv3.util.UZUtil;
+import vn.uiza.uzv3.util.CallbackGetDetailEntity;
+import vn.uiza.uzv3.util.UZUtilBase;
 import vn.uiza.views.LToast;
 
 /**
@@ -488,7 +489,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
-        UZUtil.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new UZUtil.Callback() {
+        UZUtilBase.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));

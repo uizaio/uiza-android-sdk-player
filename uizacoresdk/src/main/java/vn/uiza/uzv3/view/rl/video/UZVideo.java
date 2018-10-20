@@ -87,6 +87,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.uzv1.listerner.ProgressCallback;
 import vn.uiza.uzv1.view.ComunicateMng;
 import vn.uiza.uzv1.view.dlg.info.UZDlgInfoV1;
+import vn.uiza.uzv3.util.CallbackGetDetailEntity;
 import vn.uiza.uzv3.util.UZData;
 import vn.uiza.uzv3.util.UZInput;
 import vn.uiza.uzv3.util.UZTrackingUtil;
@@ -350,7 +351,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call api lay detail entity lam gi nua
         if (UZData.getInstance().getData() == null) {
             //LLog.d(TAG, "init UZData.getInstance().getData() == null -> call api lấy detail entity if");
-            UZUtil.getDetailEntity((BaseActivity) activity, entityId, new UZUtil.Callback() {
+            UZUtil.getDetailEntity((BaseActivity) activity, entityId, new CallbackGetDetailEntity() {
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));

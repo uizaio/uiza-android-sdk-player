@@ -22,11 +22,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
     productFlavors {
     }
 }
 
 dependencies {
     implementation project(':uizacoresdk')
+    implementation project(':uizalivestream')
     //implementation 'com.github.uizaio:uiza-android-sdk-player:2.5.0'
 }
