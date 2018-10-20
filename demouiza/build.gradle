@@ -7,7 +7,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 21
         versionCode 3
         versionName "1.0.3"
@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation project(':uizacoresdk')
+    api project(':uizacoresdk')
     //implementation project(':uizalivestream')
 
     //implementation project(path:':uizacoresdk', configuration: 'default')

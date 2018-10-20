@@ -36,6 +36,6 @@ android {
 }
 
 dependencies {
-    compile project(':uizabase')
+    api project(':uizabase')
     //implementation project(path:':uizabase', configuration: 'default')
 }
