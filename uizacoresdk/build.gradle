@@ -21,16 +21,16 @@ android {
         //https://stackoverflow.com/questions/34417843/how-to-use-vector-drawables-in-android-api-lower-21
         vectorDrawables.useSupportLibrary = true*/
     }
-    /*buildTypes {
+    buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }*/
-    /*dexOptions {
+    }
+    dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
-    }*/
+    }
 }
 
 dependencies {
