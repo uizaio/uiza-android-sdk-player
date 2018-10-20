@@ -39,7 +39,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;

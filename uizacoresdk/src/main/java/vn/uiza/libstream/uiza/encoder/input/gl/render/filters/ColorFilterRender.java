@@ -12,7 +12,7 @@ import java.nio.ByteOrder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.libstream.uiza.encoder.utils.gl.GlUtil;
 
 /**

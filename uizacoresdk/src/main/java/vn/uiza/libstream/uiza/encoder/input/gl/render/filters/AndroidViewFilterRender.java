@@ -18,7 +18,7 @@ import android.view.View;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.libstream.uiza.encoder.utils.gl.GlUtil;
 
 /**

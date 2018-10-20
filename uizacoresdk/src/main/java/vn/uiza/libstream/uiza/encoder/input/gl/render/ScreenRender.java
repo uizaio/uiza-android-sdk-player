@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.libstream.uiza.encoder.utils.gl.GlUtil;
 
 /**

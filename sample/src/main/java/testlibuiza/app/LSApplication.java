@@ -5,6 +5,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.google.gson.Gson;
 
+import testlibuiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
@@ -25,10 +26,10 @@ public class LSApplication extends MultiDexApplication {
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "1b811944-51c0-4592-81d7-73389002164e";
     private final int env = Constants.ENVIRONMENT_PROD;*/
 
-    private final String DF_DOMAIN_API = "loctbprod01.uiza.co";
-    private final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
-    private final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
-    private final int currentPlayerId = loitp.core.R.layout.uz_player_skin_1;
+    public static final String DF_DOMAIN_API = "loctbprod01.uiza.co";
+    public static final String DF_TOKEN = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
+    public static final String DF_APP_ID = "9816792bb84642f09d843af4f93fb748";
+    public static final int currentPlayerId = R.layout.uz_player_skin_1;
     public static String entityIdDefaultVOD = "93d74510-5bf9-4b3c-8686-401db4cb6811";
     public static String entityIdDefaultLIVE = "ae8e7a65-b2f8-4803-a62c-6480e282616a";
     public static String metadataDefault0 = "1ae7d4ee-8e4e-402c-af30-e49d53f43ff3";

@@ -18,7 +18,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LLog;

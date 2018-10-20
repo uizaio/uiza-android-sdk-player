@@ -56,7 +56,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;

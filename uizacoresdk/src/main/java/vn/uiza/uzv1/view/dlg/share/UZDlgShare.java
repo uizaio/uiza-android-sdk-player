@@ -14,7 +14,7 @@ import android.widget.ScrollView;
 
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LSocialUtil;

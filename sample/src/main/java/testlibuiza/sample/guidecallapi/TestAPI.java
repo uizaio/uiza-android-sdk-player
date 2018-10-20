@@ -23,9 +23,8 @@ import vn.uiza.rxandroid.ApiSubscriber;
 public class TestAPI extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private String domainAPI = "https://android-api.uiza.co";
-    private String token = "uap-16f8e65d8e2643ffa3ff5ee9f4f9ba03-a07716a6";
-    private String appId = "16f8e65d8e2643ffa3ff5ee9f4f9ba03";
+    private String domainAPI = "https://loctbprod01.uiza.co";
+    private String token = "uap-9816792bb84642f09d843af4f93fb748-b94fcbd1";
     private TextView tv;
 
     @Override
@@ -77,7 +76,7 @@ public class TestAPI extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(this)) {
-            subscriber.onError(new NoConnectionException(getString(loitp.core.R.string.err_no_internet)));
+            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
         }
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())

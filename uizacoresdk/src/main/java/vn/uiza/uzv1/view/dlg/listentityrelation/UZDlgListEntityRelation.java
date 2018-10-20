@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.RestClientV2;

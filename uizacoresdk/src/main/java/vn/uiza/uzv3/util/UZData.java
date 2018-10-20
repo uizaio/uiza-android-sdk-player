@@ -9,7 +9,7 @@ import com.google.android.gms.cast.MediaTrack;
 import java.util.ArrayList;
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.chromecast.Casty;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;

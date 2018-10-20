@@ -25,7 +25,7 @@ import com.google.android.exoplayer2.util.Assertions;
 
 import java.util.Arrays;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.utilities.LLog;
 
 /**

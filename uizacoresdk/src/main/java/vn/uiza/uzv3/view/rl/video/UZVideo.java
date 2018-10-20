@@ -49,7 +49,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.chromecast.Casty;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -1056,18 +1056,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibSkipNextIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_next);
         ibSkipPreviousIcon = (UZImageButton) playerView.findViewById(R.id.exo_skip_previous);
 
-        //TODO ibHearingIcon works fine, but QC dont want to show it
-        if (ibHearingIcon != null) {
+        /*if (ibHearingIcon != null) {
             ibHearingIcon.setVisibility(GONE);
         }
-        //TODO show visibile if iplm subtitle
         if (ibCcIcon != null) {
             ibCcIcon.setVisibility(GONE);
         }
-        //TODO ibShareIcon works fine, but QC dont want to show it
         if (ibShareIcon != null) {
             ibShareIcon.setVisibility(GONE);
-        }
+        }*/
 
         ivPreview = (ImageView) playerView.findViewById(R.id.exo_iv_preview);
         seekbarVolume = (UZVerticalSeekBar) playerView.findViewById(R.id.seekbar_volume);
@@ -2581,9 +2578,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(GONE);
             }
-            /*if (ibCcIcon != null) {
+            if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(GONE);
-            }*/
+            }
             if (llMid != null) {
                 llMid.setVisibility(GONE);
             }
@@ -2618,9 +2615,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibSettingIcon != null) {
                 ibSettingIcon.setVisibility(VISIBLE);
             }
-            /*if (ibCcIcon != null) {
+            if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
-            }*/
+            }
             if (llMid != null) {
                 llMid.setVisibility(VISIBLE);
             }

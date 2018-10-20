@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.libstream.uiza.encoder.input.gl.Sprite;
 import vn.uiza.libstream.uiza.encoder.input.gl.SpriteGestureController;
 import vn.uiza.libstream.uiza.encoder.input.gl.TextureLoader;

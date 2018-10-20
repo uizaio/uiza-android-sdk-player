@@ -26,7 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Arrays;
 import java.util.List;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.chromecast.Casty;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -66,7 +66,7 @@ public class UZUtil {
             return;
         }
         if (isFullScreen) {
-            imageButton.setImageResource(loitp.core.R.drawable.baseline_fullscreen_exit_white_48);
+            imageButton.setImageResource(R.drawable.baseline_fullscreen_exit_white_48);
         } else {
             imageButton.setImageResource(R.drawable.baseline_fullscreen_white_48);
         }

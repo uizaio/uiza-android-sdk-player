@@ -48,7 +48,7 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
         super.onCreate(savedInstanceState);
         rl = (RelativeLayout) findViewById(R.id.rl);
-        recyclerView = (RecyclerView) findViewById(loitp.core.R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
         uzVideo.setUZTVCallback(this);

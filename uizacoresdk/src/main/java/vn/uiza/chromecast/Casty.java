@@ -30,7 +30,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.IOException;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.utilities.LLog;
 
 /**

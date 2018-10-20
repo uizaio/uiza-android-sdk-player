@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import loitp.core.R;
+import vn.uiza.R;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
