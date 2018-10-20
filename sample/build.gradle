@@ -34,6 +34,9 @@ dependencies {
     implementation project(':uizacoresdk')
     implementation project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.5.2'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.5.2'
+    //implementation project(path:':uizacoresdk', configuration: 'default')
+    //implementation project(path:':uizalivestream', configuration: 'default')
+
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.5.3'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.5.3'
 }
