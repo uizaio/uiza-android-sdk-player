@@ -25,6 +25,7 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
     dependencies {
 		  //for playing video VOD, LIVE
           implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[lasted-release-number]'  
+          
           //for live broadcaster
 		  implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'
     }
