@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 21
-        /*versionCode 1
+        versionCode 1
         versionName "1.0.0"
 
         renderscriptTargetApi 19
@@ -19,7 +19,7 @@ android {
         //https://stackoverflow.com/questions/41098015/how-to-set-vectordrawable-as-an-image-for-imageview-programmatically
         //https://stackoverflow.com/questions/49014416/set-vector-drawable-to-imageview-in-xml
         //https://stackoverflow.com/questions/34417843/how-to-use-vector-drawables-in-android-api-lower-21
-        vectorDrawables.useSupportLibrary = true*/
+        vectorDrawables.useSupportLibrary = true
     }
     /*buildTypes {
         release {

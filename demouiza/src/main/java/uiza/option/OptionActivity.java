@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,6 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.uzv3.util.UZUtil;
-import vn.uiza.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.Mode;
-import vn.uiza.views.viewpager.parrallaxviewpager.lib.parrallaxviewpager.ParallaxViewPager;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";
@@ -35,7 +34,7 @@ public class OptionActivity extends BaseActivity {
     public static final String KEY_API_TRACKING_END_POINT = "KEY_API_TRACKING_END_POINT";
 
     private List<SkinObject> skinObjectList = new ArrayList<>();
-    private ParallaxViewPager viewPager;
+    private ViewPager viewPager;
 
     private int currentEnvironment = Constants.NOT_FOUND;
     String currentApiTrackingEndPoint = null;
@@ -90,10 +89,9 @@ public class OptionActivity extends BaseActivity {
 
     private void findViews() {
         //setting theme
-        viewPager = (ParallaxViewPager) findViewById(R.id.view_pager);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
         viewPager.invalidate();
-        viewPager.setMode(Mode.LEFT_OVERLAY);
         LUIUtil.setPullLikeIOSHorizontal(viewPager);
         //setting debug mode
         radioDebugMode = (RadioGroup) findViewById(R.id.radio_debug_mode);
