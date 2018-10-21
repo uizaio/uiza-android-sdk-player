@@ -19,7 +19,7 @@ import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.utils.util.KeyboardUtils;
-import vn.uiza.uzv1.view.IOnBackPressed;
+import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.views.LToast;
 
 public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnBackPressed {

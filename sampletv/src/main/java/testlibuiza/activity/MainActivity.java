@@ -15,7 +15,7 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnFocusChangeListener, View.OnClickListener {

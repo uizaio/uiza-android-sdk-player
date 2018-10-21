@@ -31,9 +31,9 @@ import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv3.util.UZData;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
+import uizacoresdk.util.UZData;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPressed {

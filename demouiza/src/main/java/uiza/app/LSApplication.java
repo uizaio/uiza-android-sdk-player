@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 
 import vn.uiza.core.common.Constants;
 import vn.uiza.data.ActivityData;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();

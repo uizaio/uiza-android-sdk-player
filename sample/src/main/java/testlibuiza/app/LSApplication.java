@@ -9,7 +9,7 @@ import testlibuiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -21,7 +21,7 @@ public class LSApplication extends MultiDexApplication {
     private final int currentPlayerId = loitp.core.R.layout.uz_player_skin_1;
     public static String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
     public static String entityIdDefaultLIVE = "1759f642-e062-4e88-b5f2-e3022bd03b57";
-    public static String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cb43371943d1";
+    public static String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cbf43371943d1";
     public static String entityIdDefaultLIVE_TRANSCODE = "b8df8cdb-5d1b-40c1-b3e5-2879fb6c9625";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "1b811944-51c0-4592-81d7-73389002164e";
     private final int env = Constants.ENVIRONMENT_PROD;*/

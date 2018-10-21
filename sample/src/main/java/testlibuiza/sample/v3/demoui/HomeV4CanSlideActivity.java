@@ -13,8 +13,8 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 

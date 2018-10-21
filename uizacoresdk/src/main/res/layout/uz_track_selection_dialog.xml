@@ -2,7 +2,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <vn.uiza.uzv3.view.dlg.UZTrackSelectionView
+    <uizacoresdk.view.dlg.UZTrackSelectionView
         android:id="@+id/uz_track_selection_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

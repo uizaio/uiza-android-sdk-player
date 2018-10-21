@@ -12,7 +12,7 @@ import android.view.View;
 import testlibuiza.R;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.uzv1.view.IOnBackPressed;
+import uizacoresdk.view.IOnBackPressed;
 
 public class FrmLogin extends BaseFragment implements IOnBackPressed {
 

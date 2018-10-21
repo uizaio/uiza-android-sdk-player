@@ -25,7 +25,7 @@ import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";

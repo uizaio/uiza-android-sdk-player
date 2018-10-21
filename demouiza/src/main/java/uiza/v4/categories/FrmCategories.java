@@ -29,7 +29,7 @@ import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetadata;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.uzv1.view.IOnBackPressed;
+import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.views.LToast;
 
 public class FrmCategories extends BaseFragment implements IOnBackPressed {

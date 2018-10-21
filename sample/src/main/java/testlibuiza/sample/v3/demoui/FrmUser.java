@@ -7,7 +7,7 @@ package testlibuiza.sample.v3.demoui;
 import testlibuiza.R;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.uzv1.view.IOnBackPressed;
+import uizacoresdk.view.IOnBackPressed;
 
 public class FrmUser extends BaseFragment implements IOnBackPressed {
 

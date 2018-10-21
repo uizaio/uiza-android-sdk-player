@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <vn.uiza.uzv3.view.rl.livestream.UZLivestream
+    <uizalivestream.uiza.UZLivestream
         android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

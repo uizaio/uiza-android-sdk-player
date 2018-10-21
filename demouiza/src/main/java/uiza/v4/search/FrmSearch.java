@@ -33,8 +33,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.KeyboardUtils;
-import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {

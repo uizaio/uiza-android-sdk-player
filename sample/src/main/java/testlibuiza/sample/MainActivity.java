@@ -21,7 +21,7 @@ import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class MainActivity extends BaseActivity {
 

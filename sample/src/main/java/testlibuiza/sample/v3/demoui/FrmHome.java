@@ -16,9 +16,9 @@ import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.uzv1.view.IOnBackPressed;
-import vn.uiza.uzv3.util.UZData;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
+import uizacoresdk.util.UZData;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
