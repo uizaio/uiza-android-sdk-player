@@ -23,7 +23,10 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
           multiDexEnabled  true
     }
     dependencies {
-          compile 'com.github.uizaio:uiza-android-sdk-player:[lasted-release-number]'
+		  //for playing video VOD, LIVE
+          implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[lasted-release-number]'  
+          //for live broadcaster
+		  implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'
     }
 
 Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
@@ -53,7 +56,7 @@ Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-play
 
 
 # How to call API?:
-**Step1: You must extend your activity/fragment like this**
+**Step1: You need to extend your activity/fragment like this**
 
     public class YourActivity extends BaseActivity{
     }
@@ -92,7 +95,7 @@ This class help you know how to use all Uiza API, please refer to
 # How to play the video?:
 **XML**
 
-    <vn.uiza.uzv3.view.rl.video.UZVideo
+    <uizacoresdk.view.rl.video.UZVideo
       android:id="@id/uiza_video"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
@@ -168,9 +171,7 @@ Dont forget to add in activity life cycle event:
         if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
-            }
+            } 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -397,7 +398,7 @@ It's very easy, plz follow these steps below to implement:
 
 XML:
 
-    <vn.uiza.uzv3.view.rl.livestream.UZLivestream  
+    <uizalivestream.uiza.UZLivestream
       android:id="@+id/uiza_livestream"  
       android:layout_width="match_parent"  
       android:layout_height="match_parent" />

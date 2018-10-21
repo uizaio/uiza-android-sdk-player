@@ -21,14 +21,6 @@ android {
 }
 
 dependencies {
-    api project(':uizacoresdk')
-    //implementation project(':uizalivestream')
-
-    //implementation project(path:':uizacoresdk', configuration: 'default')
-    //implementation project(path:':uizalivestream', configuration: 'default')
-
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizabase:2.5.5'
-    //api 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.5.8'
-
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.5.3'
+    //api project(':uizacoresdk')
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.5.9'
 }

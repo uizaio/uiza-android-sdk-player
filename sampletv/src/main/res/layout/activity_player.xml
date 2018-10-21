@@ -6,7 +6,7 @@
     android:background="@color/Black">
 
     <uizacoresdk.view.rl.video.UZVideo
-        android:id="@id/uiza_video"
+        android:id="@+id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>
