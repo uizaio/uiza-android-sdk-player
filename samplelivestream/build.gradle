@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.uiza.module.samplelivestream"
+        minSdkVersion 18
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+    /*buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }*/
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    //api project(':uizacoresdk')
+    api project(':uizalivestream')
+
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.5.9'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.5.9'
+}

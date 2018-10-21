@@ -13,8 +13,8 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
         <!--<item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>-->
@@ -23,9 +23,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>-->
-
-        <!--chromecas color-->
-        <item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 
         <!--set color of preview seekbar-->
         <!--<item name="played_color">@color/White</item>
@@ -100,46 +97,4 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
-
-    <!--START CHROMECAST-->
-    <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@android:color/white</item>
-        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
-        <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>
-        <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
-        <item name="castExpandedControllerToolbarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar
-        </item>
-    </style>
-
-    <style name="CustomCastIntroOverlay" parent="CastIntroOverlay">
-        <item name="castButtonTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Button
-        </item>
-        <item name="castTitleTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Title
-        </item>
-    </style>
-
-    <style name="TextAppearance.CustomCastIntroOverlay.Button" parent="android:style/TextAppearance">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="TextAppearance.CustomCastIntroOverlay.Title" parent="android:style/TextAppearance.Large">
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="CustomCastMiniController" parent="CastMiniController">
-        <item name="castShowImageThumbnail">true</item>
-        <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-        <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
-    </style>
-
-    <style name="CustomCastExpandedController" parent="CastExpandedController" />
-
-    <style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
-        <item name="mediaRouteButtonStyle">@style/CustomMediaRouteButtonStyle</item>
-    </style>
-
-    <style name="CustomMediaRouteButtonStyle" parent="Widget.MediaRouter.Light.MediaRouteButton">
-        <item name="mediaRouteButtonTint">@color/White</item>
-    </style>
-    <!--STOP CHROMECAST-->
 </resources>

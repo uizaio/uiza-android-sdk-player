@@ -561,7 +561,7 @@ public class UZUtil {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
-    private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
+    //private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
     private final static String INDEX = "INDEX";
     private final static String AUTH = "AUTH";
     public final static String API_END_POINT = "API_END_POINT";
@@ -694,7 +694,7 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static Boolean getSlideUizaVideoEnabled(Context context) {
+    /*public static Boolean getSlideUizaVideoEnabled(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(SLIDE_UIZA_VIDEO_ENABLED, false);
     }
@@ -703,7 +703,7 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
         editor.apply();
-    }
+    }*/
 
     public static Boolean getClickedPip(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);

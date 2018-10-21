@@ -44,7 +44,7 @@ public class UZData {
 
     public void setCurrentPlayerId(int currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
-        UZUtil.setSlideUizaVideoEnabled(Utils.getContext(), true);
+        //UZUtil.setSlideUizaVideoEnabled(Utils.getContext(), true);
     }
 
     private String mDomainAPI;
