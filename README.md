@@ -19,15 +19,14 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
     }
 **Step 2. Add the dependency**
 
-    defaultConfig {
-          multiDexEnabled  true
-    }
-    dependencies {
-		  //for playing video VOD, LIVE
-          implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[lasted-release-number]'  
-          
-          //for live broadcaster
-		  implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'
+    defaultConfig {  
+        multiDexEnabled  true
+    }  
+    dependencies {  
+        //for playing video VOD, LIVE  
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[lasted-release-number]'        
+        //for live broadcaster  
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'  
     }
 
 Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
