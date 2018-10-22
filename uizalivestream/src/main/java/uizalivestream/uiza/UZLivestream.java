@@ -179,7 +179,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 tvLiveStatus.setVisibility(GONE);
                 tvLiveStatus.clearAnimation();
                 rtmpCamera1.stopStream();
-                //LDialogUtil.show(progressBar);
+                LDialogUtil.hide(progressBar);
             }
         });
         if (callback != null) {
