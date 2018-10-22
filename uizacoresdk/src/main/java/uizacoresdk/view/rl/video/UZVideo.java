@@ -17,6 +17,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -3033,8 +3034,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void handleClickCC() {
         if (uzPlayerManager.getSubtitleList() == null || uzPlayerManager.getSubtitleList().isEmpty()) {
-            UZDlgInfoV1 UZDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
-            UZUtil.showUizaDialog(activity, UZDlgInfoV1);
+            UZDlgInfoV1 uzDlgInfoV1 = new UZDlgInfoV1(activity, activity.getString(R.string.text), activity.getString(R.string.no_caption));
+            UZUtil.showUizaDialog(activity, uzDlgInfoV1);
         } else {
             View view = UZUtil.getBtText(debugRootView);
             if (view != null) {
@@ -3536,5 +3537,40 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //dialogPair.first.show();
             UZUtil.showUizaDialog(activity, dialogPair.first);
         }
+    }
+
+    public List<CheckedTextView> getHQList() {
+        View view = UZUtil.getBtVideo(debugRootView);
+        if (view == null) {
+            LLog.e(TAG, activity.getString(R.string.err_hq_null));
+            if (uzCallback != null) {
+                uzCallback.onError(new NullPointerException(activity.getString(R.string.err_hq_null)));
+            }
+            return null;
+        }
+        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
+        if (mappedTrackInfo != null) {
+            CharSequence title = ((Button) view).getText();
+            int rendererIndex = (int) view.getTag();
+            int rendererType = mappedTrackInfo.getRendererType(rendererIndex);
+            /*boolean allowAdaptiveSelections =
+                    rendererType == C.TRACK_TYPE_VIDEO
+                            || (rendererType == C.TRACK_TYPE_AUDIO
+                            && mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_VIDEO)
+                            == MappingTrackSelector.MappedTrackInfo.RENDERER_SUPPORT_NO_TRACKS);*/
+            boolean allowAdaptiveSelections = false;
+            //Pair<AlertDialog, TrackSelectionView> dialogPair = TrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
+            final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
+            dialogPair.second.setShowDisableOption(false);
+            dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
+            List<CheckedTextView> checkedTextViewList = dialogPair.second.getCheckedTextViewList();
+            /*if (Constants.IS_DEBUG) {
+                for (int i = 0; i < checkedTextViewList.size(); i++) {
+                    LLog.d(TAG, i + " - getText: " + checkedTextViewList.get(i).getText() + " - isChecked: " + checkedTextViewList.get(i).isChecked());
+                }
+            }*/
+            return checkedTextViewList;
+        }
+        return null;
     }
 }

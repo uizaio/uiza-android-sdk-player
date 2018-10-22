@@ -2,9 +2,15 @@ package testlibuiza.sample.v3.customhq;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
+
+import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -29,6 +35,7 @@ import vn.uiza.views.autosize.UZImageButton;
 public class CustomHQActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private UZImageButton uzibCustomHq;
+    private LinearLayout llListHq;
 
     @Override
     protected boolean setFullScreen() {
@@ -52,6 +59,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.setUZCallback(this);
 
@@ -60,9 +68,46 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         uzibCustomHq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LLog.d(TAG, "onClick uzibCustomHq");
+                showListHQ();
             }
         });
+    }
+
+    private void showListHQ() {
+        List<CheckedTextView> checkedTextViewList = uzVideo.getHQList();
+        for (int i = 0; i < checkedTextViewList.size(); i++) {
+            final CheckedTextView c = checkedTextViewList.get(i);
+            LLog.d(TAG, "no " + i + " - getText: " + c.getText() + " - isChecked: " + c.isChecked());
+
+            //add space
+            View view = new View(activity);
+            view.setBackgroundColor(Color.WHITE);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 5);
+            view.setLayoutParams(layoutParams);
+            llListHq.addView(view);
+
+            //customize here
+            final Button bt = new Button(activity);
+            if (c.isChecked()) {
+                bt.setText(c.getText() + " (✔)");
+                bt.setBackgroundColor(Color.GREEN);
+            } else {
+                bt.setText(c.getText());
+                bt.setBackgroundColor(Color.WHITE);
+            }
+            bt.setSoundEffectsEnabled(true);
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LLog.d(TAG, "switch to hq " + bt.getText());
+                    c.performClick();
+                    llListHq.removeAllViews();
+                    llListHq.invalidate();
+                }
+            });
+            llListHq.addView(bt);
+        }
+        llListHq.invalidate();
     }
 
     @Override

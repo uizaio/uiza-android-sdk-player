@@ -23,7 +23,9 @@ import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
 import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.util.Assertions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import uizacoresdk.R;
 import vn.uiza.core.utilities.LLog;
@@ -98,6 +100,12 @@ public class UZTrackSelectionView extends LinearLayout {
         this(context, attrs, 0);
     }
 
+    private List<CheckedTextView> checkedTextViewList = new ArrayList<>();
+
+    public List<CheckedTextView> getCheckedTextViewList() {
+        return checkedTextViewList;
+    }
+
     @SuppressWarnings("nullness")
     public UZTrackSelectionView(Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -130,6 +138,9 @@ public class UZTrackSelectionView extends LinearLayout {
         defaultView.setOnClickListener(componentListener);
         defaultView.setSoundEffectsEnabled(false);
         addView(defaultView);
+
+        checkedTextViewList.add(disableView);
+        checkedTextViewList.add(defaultView);
     }
 
     /**
@@ -227,7 +238,7 @@ public class UZTrackSelectionView extends LinearLayout {
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
                 trackView.setSoundEffectsEnabled(false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                LLog.d(TAG, "updateViews " + trackNameProvider.getTrackName(group.getFormat(trackIndex)));
+                //LLog.d(TAG, "updateViews " + trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 trackView.setText(trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex)
                         == RendererCapabilities.FORMAT_HANDLED) {
@@ -240,9 +251,16 @@ public class UZTrackSelectionView extends LinearLayout {
                 }
                 trackViews[groupIndex][trackIndex] = trackView;
                 addView(trackView);
+                checkedTextViewList.add(trackView);
             }
         }
         updateViewStates();
+        //LLog.d(TAG, "checkedTextViewList size " + checkedTextViewList.size());
+        /*if (Constants.IS_DEBUG) {
+            for (int i = 0; i < checkedTextViewList.size(); i++) {
+                LLog.d(TAG, i + " - getText: " + checkedTextViewList.get(i).getText() + " - isChecked: " + checkedTextViewList.get(i).isChecked());
+            }
+        }*/
     }
 
     private void updateViewStates() {
