@@ -9,9 +9,11 @@ import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
+import testlibuiza.sample.v3.customhq.CustomHQActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -21,7 +23,6 @@ import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
 import vn.uiza.rxandroid.ApiSubscriber;
-import uizacoresdk.util.UZUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -76,6 +77,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_custom_hq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomHQActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
