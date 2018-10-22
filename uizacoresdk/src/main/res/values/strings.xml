@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="err_hq_null">Error getHQList null</string>
+    <string name="err_audio_null">Error audio null</string>
 </resources>

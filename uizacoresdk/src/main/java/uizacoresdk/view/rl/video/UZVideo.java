@@ -1668,7 +1668,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibShareIcon) {
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
-            showUZTrackSelectionDialog(((Button) v));
+            showUZTrackSelectionDialog(((Button) v), true);
         } else if (v == rlChromeCast) {
             //dangerous to remove
             //LLog.d(TAG, "do nothing click rl_chrome_cast");
@@ -3504,7 +3504,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private void showUZTrackSelectionDialog(final View view) {
+    private List<CheckedTextView> showUZTrackSelectionDialog(final View view, boolean showDialog) {
         MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
         if (mappedTrackInfo != null) {
             CharSequence title = ((Button) view).getText();
@@ -3534,9 +3534,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     });
                 }
             });
-            //dialogPair.first.show();
-            UZUtil.showUizaDialog(activity, dialogPair.first);
+            if (showDialog) {
+                //dialogPair.first.show();
+                UZUtil.showUizaDialog(activity, dialogPair.first);
+            }
+            return dialogPair.second.getCheckedTextViewList();
         }
+        return null;
     }
 
     public List<CheckedTextView> getHQList() {
@@ -3548,29 +3552,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return null;
         }
-        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
-        if (mappedTrackInfo != null) {
-            CharSequence title = ((Button) view).getText();
-            int rendererIndex = (int) view.getTag();
-            int rendererType = mappedTrackInfo.getRendererType(rendererIndex);
-            /*boolean allowAdaptiveSelections =
-                    rendererType == C.TRACK_TYPE_VIDEO
-                            || (rendererType == C.TRACK_TYPE_AUDIO
-                            && mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_VIDEO)
-                            == MappingTrackSelector.MappedTrackInfo.RENDERER_SUPPORT_NO_TRACKS);*/
-            boolean allowAdaptiveSelections = false;
-            //Pair<AlertDialog, TrackSelectionView> dialogPair = TrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
-            final Pair<AlertDialog, UZTrackSelectionView> dialogPair = UZTrackSelectionView.getDialog(activity, title, uzPlayerManager.getTrackSelector(), rendererIndex);
-            dialogPair.second.setShowDisableOption(false);
-            dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
-            List<CheckedTextView> checkedTextViewList = dialogPair.second.getCheckedTextViewList();
-            /*if (Constants.IS_DEBUG) {
-                for (int i = 0; i < checkedTextViewList.size(); i++) {
-                    LLog.d(TAG, i + " - getText: " + checkedTextViewList.get(i).getText() + " - isChecked: " + checkedTextViewList.get(i).isChecked());
-                }
-            }*/
-            return checkedTextViewList;
+        return showUZTrackSelectionDialog(view, false);
+    }
+
+    public List<CheckedTextView> getAudioList() {
+        View view = UZUtil.getBtAudio(debugRootView);
+        if (view == null) {
+            LLog.e(TAG, activity.getString(R.string.err_audio_null));
+            if (uzCallback != null) {
+                uzCallback.onError(new NullPointerException(activity.getString(R.string.err_audio_null)));
+            }
+            return null;
         }
-        return null;
+        return showUZTrackSelectionDialog(view, false);
     }
 }

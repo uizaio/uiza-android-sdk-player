@@ -39,6 +39,7 @@ import vn.uiza.views.autosize.UZImageButton;
 public class CustomHQActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private UZImageButton uzibCustomHq;
+    private UZImageButton uzibCustomAudio;
     private LinearLayout llListHq;
 
     @Override
@@ -63,6 +64,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.setUZCallback(this);
@@ -72,14 +74,19 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         uzibCustomHq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showListHQ();
+                displayUI(uzVideo.getHQList());
+            }
+        });
+        uzibCustomAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayUI(uzVideo.getAudioList());
             }
         });
     }
 
-    private void showListHQ() {
+    private void displayUI(List<CheckedTextView> checkedTextViewList) {
         llListHq.removeAllViews();
-        List<CheckedTextView> checkedTextViewList = uzVideo.getHQList();
         for (int i = 0; i < checkedTextViewList.size(); i++) {
             final CheckedTextView c = checkedTextViewList.get(i);
             LLog.d(TAG, "no " + i + " - getText: " + c.getText() + " - isChecked: " + c.isChecked());
@@ -104,7 +111,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LLog.d(TAG, "switch to hq " + bt.getText());
                     LAnimationUtil.play(view, Techniques.Pulse);
                     c.performClick();
                     LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
