@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 
+import com.daimajia.androidanimations.library.Techniques;
+
 import java.util.List;
 
 import testlibuiza.R;
@@ -19,9 +21,11 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -74,6 +78,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
     }
 
     private void showListHQ() {
+        llListHq.removeAllViews();
         List<CheckedTextView> checkedTextViewList = uzVideo.getHQList();
         for (int i = 0; i < checkedTextViewList.size(); i++) {
             final CheckedTextView c = checkedTextViewList.get(i);
@@ -100,9 +105,15 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
                 @Override
                 public void onClick(View view) {
                     LLog.d(TAG, "switch to hq " + bt.getText());
+                    LAnimationUtil.play(view, Techniques.Pulse);
                     c.performClick();
-                    llListHq.removeAllViews();
-                    llListHq.invalidate();
+                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                        @Override
+                        public void doAfter(int mls) {
+                            llListHq.removeAllViews();
+                            llListHq.invalidate();
+                        }
+                    });
                 }
             });
             llListHq.addView(bt);
