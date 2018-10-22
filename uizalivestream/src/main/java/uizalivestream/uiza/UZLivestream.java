@@ -25,14 +25,6 @@ import java.util.Locale;
 
 import retrofit2.HttpException;
 import uizalivestream.R;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import uizalivestream.uiza.encoder.input.gl.render.filters.BaseFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.object.GifObjectFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.object.ImageObjectFilterRender;
@@ -41,6 +33,14 @@ import uizalivestream.uiza.encoder.utils.gl.TranslateTo;
 import uizalivestream.uiza.ossrs.rtmp.ConnectCheckerRtmp;
 import uizalivestream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import uizalivestream.uiza.rtplibrary.view.OpenGlView;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
@@ -261,9 +261,16 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         LDialogUtil.show(progressBar);
         rtmpCamera1.startStream(streamUrl);
         LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
+        this.isSavedToDevice = isSavedToDevice;
         if (isSavedToDevice) {
             startRecord();
         }
+    }
+
+    private boolean isSavedToDevice;
+
+    public boolean isSavedToDevice() {
+        return isSavedToDevice;
     }
 
     public void stopStream() {

@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import uizalivestream.uiza.PresetLiveStreamingFeed;
 import uizalivestream.uiza.UZLivestream;
 import uizalivestream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
@@ -47,11 +49,13 @@ import uizalivestream.uiza.encoder.input.gl.render.filters.TemperatureFilterRend
 import uizalivestream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
 import uizalivestream.uiza.encoder.utils.gl.TranslateTo;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
+    private Gson gson = new Gson();
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -99,8 +103,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
 
-        uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-        //uizaLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+        //uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+        uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -239,7 +243,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl());
                     } else {
                         LToast.show(activity, getString(R.string.err_dont_support));
@@ -258,7 +262,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.b_start_stop_store:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -286,8 +290,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     }
                 });
                 break;
-            default:
-                break;
         }
     }
 
@@ -296,7 +298,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LLog.e(TAG, "onError reason " + reason);
                 LToast.show(activity, reason);
+                bStartStop.setEnabled(true);
+                bStartStopStore.setEnabled(true);
+                bStartStop.setText("Start streaming");
+                bStartStopStore.setText("Start stream and Store");
             }
         });
     }
@@ -307,15 +314,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);
         btFilter.setEnabled(true);
+        LLog.d(TAG, "onGetDataSuccessmainUrl mainUrl: " + mainUrl);
+        LLog.d(TAG, "onGetDataSuccess: " + gson.toJson(presetLiveStreamingFeed));
         tvMainUrl.setText(mainUrl);
     }
 
     @Override
     public void onConnectionSuccessRtmp() {
+        LLog.d(TAG, "onConnectionSuccessRtmp");
     }
 
     @Override
     public void onConnectionFailedRtmp(String reason) {
+        LLog.e(TAG, "onConnectionFailedRtmp");
     }
 
     @Override
@@ -323,24 +334,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LLog.e(TAG, "onDisconnectRtmp");
                 bStartStop.setEnabled(true);
                 bStartStopStore.setEnabled(true);
                 btSwitchCamera.setEnabled(true);
                 btFilter.setEnabled(true);
+                bStartStop.setText("Start streaming");
+                bStartStopStore.setText("Start stream and Store");
             }
         });
     }
 
     @Override
     public void onAuthErrorRtmp() {
+        LLog.e(TAG, "onAuthErrorRtmp");
     }
 
     @Override
     public void onAuthSuccessRtmp() {
+        LLog.e(TAG, "onAuthSuccessRtmp");
     }
 
     @Override
     public void surfaceCreated() {
+        LLog.e(TAG, "surfaceCreated");
     }
 
     @Override
