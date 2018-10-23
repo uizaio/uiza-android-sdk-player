@@ -102,7 +102,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
                 seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        uzVideo.setControllerShowTimeoutMs(8000);
+        uzVideo.setControllerShowTimeoutMs(15000);
     }
 
     @Override

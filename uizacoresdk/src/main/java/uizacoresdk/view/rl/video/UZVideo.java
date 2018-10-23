@@ -237,7 +237,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isSetFirstRequestFocusDone;
 
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
-        //LLog.d(TAG, "updateUIButtonPlayPauseDependOnIsAutoStart isAutoStart: " + isAutoStart);
+        LLog.d(TAG, "updateUIButtonPlayPauseDependOnIsAutoStart isAutoStart: " + isAutoStart + ", isPlaying() " + isPlaying());
         //If auto start true, show button play and gone button pause
         //if not, gone button play and show button pause
         if (isAutoStart) {
@@ -253,16 +253,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         } else {
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(VISIBLE);
-                if (!isSetFirstRequestFocusDone) {
-                    //set first request focus if using player for TV
-                    ibPlayIcon.requestFocus();
-                    isSetFirstRequestFocusDone = true;
+            if (isPlaying()) {
+                if (ibPlayIcon != null) {
+                    ibPlayIcon.setVisibility(GONE);
                 }
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(GONE);
+                if (ibPauseIcon != null) {
+                    ibPauseIcon.setVisibility(VISIBLE);
+                    if (!isSetFirstRequestFocusDone) {
+                        //set first request focus if using player for TV
+                        ibPauseIcon.requestFocus();
+                        isSetFirstRequestFocusDone = true;
+                    }
+                }
+            } else {
+                if (ibPlayIcon != null) {
+                    ibPlayIcon.setVisibility(VISIBLE);
+                    if (!isSetFirstRequestFocusDone) {
+                        //set first request focus if using player for TV
+                        ibPlayIcon.requestFocus();
+                        isSetFirstRequestFocusDone = true;
+                    }
+                }
+                if (ibPauseIcon != null) {
+                    ibPauseIcon.setVisibility(GONE);
+                }
             }
         }
     }
@@ -1383,7 +1397,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought100(activity)) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
                 callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -1399,7 +1413,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought75(activity)) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
                 callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -1415,7 +1429,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought50(activity)) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
                 callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -1431,7 +1445,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought25(activity)) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
                 callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -1446,7 +1460,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void onStateReadyFirst() {
         LLog.d(TAG, "onStateReadyFirst");
-
+        updateUIButtonPlayPauseDependOnIsAutoStart();
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
@@ -1611,7 +1625,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
-        LLog.d(TAG, "PreviewView onStopPreview");
+        //LLog.d(TAG, "PreviewView onStopPreview");
         /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
             LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
         }*/
@@ -1694,11 +1708,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzPlayerManager != null) {
                     uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    if (!isPlayPlaylistFolder()) {
-                        if (isPlaying()) {
-                            isOnPlayerEnded = false;
-                            updateUIEndScreen();
-                        }
+                    if (isPlaying()) {
+                        isOnPlayerEnded = false;
+                        updateUIEndScreen();
                     }
                 }
             }
@@ -2163,7 +2175,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (Constants.IS_DEBUG) {
                     LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
                 }
@@ -2902,7 +2914,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
-        //LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
+        LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
         if (isShowReplay) {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
@@ -2944,12 +2956,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickSkipNext() {
-        LLog.d(TAG, "handleClickSkipNext");
+        //LLog.d(TAG, "handleClickSkipNext");
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
         autoSwitchNextVideo();
     }
 
     private void handleClickSkipPrevious() {
         //LLog.d(TAG, "handleClickSkipPrevious");
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
         autoSwitchPreviousLinkVideo();
     }
 
@@ -2969,7 +2985,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             isSetFirstRequestFocusDone = false;
             isOnPlayerEnded = false;
             updateUIEndScreen();
-            setVisibilityOfPlaylistFolderController(View.GONE);
+            if (isPlayPlaylistFolder()) {
+                setVisibilityOfPlaylistFolderController(View.VISIBLE);
+            } else {
+                setVisibilityOfPlaylistFolderController(View.GONE);
+            }
             trackUizaEventVideoStarts();
             trackUizaEventDisplay();
             trackUizaEventPlaysRequested();

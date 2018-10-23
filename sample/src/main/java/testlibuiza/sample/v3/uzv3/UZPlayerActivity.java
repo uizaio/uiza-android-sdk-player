@@ -29,6 +29,11 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -37,11 +42,6 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 /**
@@ -73,7 +73,13 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setAutoSwitchItemPlaylistFolder(false);
+        //true false
+        //false false
+        //false true
+        //false false
+        uzVideo.setAutoSwitchItemPlaylistFolder(true);
+        uzVideo.setAutoStart(false);
+
         sb = (SeekBar) findViewById(R.id.sb);
         sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
         sb.getThumb().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
@@ -93,6 +99,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         });
         btProgress = (Button) findViewById(R.id.bt_progress);
         uzVideo.setUZCallback(this);
+        uzVideo.setControllerShowTimeoutMs(30000);
 
         boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
         if (isInitWithPlaylistFolder) {
@@ -348,6 +355,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
+                sb.setMax((int) uzVideo.getDuration());
             }
 
             @Override
@@ -418,8 +426,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         if (isInitSuccess) {
             setListener();
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-            //uzVideo.setControllerShowTimeoutMs(0);
-            //uzVideo.setColorAllViewsEnable(ContextCompat.getColor(activity, R.color.Red));
             sb.setMax((int) uzVideo.getDuration());
         }
     }
