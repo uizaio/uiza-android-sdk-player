@@ -56,17 +56,17 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import uizacoresdk.glide.GlideApp;
+import uizacoresdk.glide.GlideThumbnailTransformationPB;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.listerner.VideoAdPlayerListerner;
+import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import uizacoresdk.glide.GlideApp;
-import uizacoresdk.glide.GlideThumbnailTransformationPB;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.listerner.VideoAdPlayerListerner;
-import uizacoresdk.view.rl.timebar.UZTimebar;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -179,7 +179,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo != null) {
                 uzVideo.setDefaultUseController(uzVideo.isDefaultUseController());
             }
-            LLog.d(TAG, "isOnAdEnded " + isOnAdEnded);
+            //LLog.d(TAG, "onAdEnded " + isOnAdEnded);
+            if (progressCallback != null) {
+                progressCallback.onAdEnded();
+            }
         }
     }
 

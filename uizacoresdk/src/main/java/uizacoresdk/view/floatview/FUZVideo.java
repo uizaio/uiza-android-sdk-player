@@ -153,6 +153,10 @@ public class FUZVideo extends RelativeLayout {
         floatUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
         floatUizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
+            public void onAdEnded() {
+            }
+
+            @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {

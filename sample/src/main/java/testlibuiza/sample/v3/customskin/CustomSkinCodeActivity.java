@@ -12,6 +12,11 @@ import android.widget.SeekBar;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -21,11 +26,6 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZVideo;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -80,11 +80,19 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         });
         uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
+            public void onAdEnded() {
+                //LLog.d(TAG, "onAdEnded");
+                seekBar.setMax((int) uzVideo.getDuration());
+            }
+
+            @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
+                //LLog.d(TAG, "onAdProgress currentMls " + currentMls);
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+                //LLog.d(TAG, "onVideoProgress currentMls " + currentMls);
                 seekBar.setProgress((int) currentMls);
             }
         });

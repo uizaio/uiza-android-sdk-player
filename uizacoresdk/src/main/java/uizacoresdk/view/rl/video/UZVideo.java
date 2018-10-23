@@ -406,8 +406,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (ad != null) {
                         urlIMAAd = ad.getLink();
                     }
-                    //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url);
-                    //urlIMAAd = activity.getString(loitp.core.R.string.ad_tag_url_uiza);
+                    //TODO revert
+                    urlIMAAd = activity.getString(R.string.ad_tag_url);
+                    //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
                 handleDataCallAPI();
@@ -1280,6 +1281,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzTimebar.setPreviewLoader(uzPlayerManager);
         }
         uzPlayerManager.setProgressCallback(new ProgressCallback() {
+            @Override
+            public void onAdEnded() {
+                //LLog.d(TAG, "onAdEnded");
+                if (progressCallback != null) {
+                    progressCallback.onAdEnded();
+                }
+            }
+
             @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");

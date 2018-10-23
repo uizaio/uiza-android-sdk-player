@@ -5,6 +5,8 @@ package uizacoresdk.listerner;
  */
 
 public interface ProgressCallback {
+    public void onAdEnded();
+
     public void onAdProgress(float currentMls, int s, float duration, int percent);
 
     public void onVideoProgress(float currentMls, int s, float duration, int percent);

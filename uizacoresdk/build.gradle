@@ -48,7 +48,8 @@ dependencies {
     //compile 'com.github.bumptech.glide:annotations:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 
-    api 'com.google.android.gms:play-services-ads:15.0.0'//need for ima Ad https://stackoverflow.com/questions/31833479/didnt-find-class-com-google-android-gms-ads-identifier-advertisingidclient
+    api 'com.google.android.gms:play-services-ads:15.0.0'
+    //need for ima Ad https://stackoverflow.com/questions/31833479/didnt-find-class-com-google-android-gms-ads-identifier-advertisingidclient
 
     //exoplayer
     api 'com.google.android.exoplayer:exoplayer:2.8.4'//2.7.3

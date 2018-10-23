@@ -423,6 +423,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
         FUZVideo.setProgressCallback(new ProgressCallback() {
             @Override
+            public void onAdEnded() {
+            }
+
+            @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
