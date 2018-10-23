@@ -57,6 +57,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         seekBar = (SeekBar) findViewById(R.id.sb);
+        uzVideo.setAutoStart(true);
         uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
@@ -93,7 +94,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
                 seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        uzVideo.setControllerShowTimeoutMs(4000);
+        uzVideo.setControllerShowTimeoutMs(8000);
     }
 
     @Override
