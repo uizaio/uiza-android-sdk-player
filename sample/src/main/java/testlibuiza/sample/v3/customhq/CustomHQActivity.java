@@ -102,11 +102,12 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
 
             //customize here
             final Button bt = new Button(activity);
+            bt.setAllCaps(false);
             if (c.isChecked()) {
-                bt.setText(c.getText().toString() + " -> " + uzItem.getFormat() + " (✔)");
+                bt.setText(c.getText().toString() + " -> format: " + uzItem.getFormat().getFormat() + ", getProfile: " + uzItem.getFormat().getProfile() + " (✔)");
                 bt.setBackgroundColor(Color.GREEN);
             } else {
-                bt.setText(c.getText().toString() + " -> " + uzItem.getFormat());
+                bt.setText(c.getText().toString() + " -> format: " + uzItem.getFormat().getFormat() + ", getProfile: " + uzItem.getFormat().getProfile());
                 bt.setBackgroundColor(Color.WHITE);
             }
             bt.setSoundEffectsEnabled(true);
