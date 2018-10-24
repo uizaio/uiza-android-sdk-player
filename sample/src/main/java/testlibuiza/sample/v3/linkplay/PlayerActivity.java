@@ -12,6 +12,7 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -123,6 +124,15 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (LScreenUtil.isFullScreen(activity)) {
+            uzVideo.toggleFullscreen();
+        } else {
+            super.onBackPressed();
         }
     }
 }
