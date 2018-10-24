@@ -1,10 +1,10 @@
-### 2.6.6 (2018-10-24)
+### 2.6.7 (2018-10-24)
 
      //for playing video VOD, LIVE  
-     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.6'
+     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.7'
      
      //for live broadcaster  
-     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.6'
+     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.7'
 
 - Refactor all.
 
