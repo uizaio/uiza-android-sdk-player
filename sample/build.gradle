@@ -48,8 +48,8 @@ dependencies {
     api project(':uizacoresdk')
     api project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.1'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.1'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.2'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.2'
 
     //implementation 'vn.vtvlive.drm:exoplayer:2.8.4'
 }
