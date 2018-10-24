@@ -21,7 +21,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class SplashActivity extends BaseActivity {
     private int currentPlayerId = R.layout.uz_player_skin_1;

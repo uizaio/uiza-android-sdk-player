@@ -1,57 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="loitp.core">
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <!--some devices need it-->
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera2.full" />
-    <uses-feature android:name="android.hardware.camera2.autofocus" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="true" />
-
-    <uses-feature
-        android:name="android.hardware.screen.portrait"
-        android:required="true" />
+    package="uizacoresdk">
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name">
-        <!-- support 18:9 -->
-        <meta-data
-            android:name="android.max_aspect"
-            android:value="2.1" />
-        <receiver android:name="vn.uiza.core.utilities.LConectifyBroadcast">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
 
         <service
-            android:name="vn.uiza.uzv3.view.floatview.FUZVideoService"
+            android:name=".view.floatview.FUZVideoService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="vn.uiza.uzv3.FloatClickFullScreenReceiverV3"
+            android:name=".FloatClickFullScreenReceiverV3"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -62,9 +22,9 @@
         <!--START CHROMECAST-->
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="vn.uiza.chromecast.CastOptionsProvider" />
+            android:value="uizacoresdk.chromecast.CastOptionsProvider" />
         <activity
-            android:name="vn.uiza.chromecast.ExpandedControlsActivity"
+            android:name=".chromecast.ExpandedControlsActivity"
             android:theme="@style/Theme.CastVideosDark" />
         <!--STOP CHROMECAST-->
     </application>

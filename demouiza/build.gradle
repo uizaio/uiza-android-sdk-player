@@ -7,7 +7,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 21
         versionCode 3
         versionName "1.0.3"
@@ -27,11 +27,28 @@ android {
     }
     productFlavors {
     }
+    /*packagingOptions {
+        pickFirst 'lib/arm64-v8a/libRSSupport.so'
+        pickFirst 'lib/arm64-v8a/librsjni.so'
+        pickFirst 'lib/arm64-v8a/librsjni_androidx.so'
+        pickFirst 'lib/x86_64/librsjni_androidx.so'
+        pickFirst 'lib/x86_64/libRSSupport.so'
+        pickFirst 'lib/x86_64/librsjni.so'
+        pickFirst 'lib/x86/librsjni.so'
+        pickFirst 'lib/x86/libRSSupport.so'
+        pickFirst 'lib/x86/librsjni_androidx.so'
+        pickFirst 'lib/armeabi-v7a/librsjni_androidx.so'
+        pickFirst 'lib/armeabi-v7a/librsjni.so'
+        pickFirst 'lib/armeabi-v7a/libRSSupport.so'
+    }*/
 }
 
 dependencies {
-    implementation project(':uizacoresdk')
-    //implementation 'com.github.uizaio:uiza-android-sdk-player:2.5.0'
+    api project(':uizacoresdk')
+    api project(':uizalivestream')
+
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.7'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.7'
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

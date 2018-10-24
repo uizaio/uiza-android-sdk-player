@@ -12,6 +12,11 @@ import android.widget.SeekBar;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -21,11 +26,6 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv3.util.UZUtil;
-import vn.uiza.uzv3.view.UZPlayerView;
-import vn.uiza.uzv3.view.rl.video.UZCallback;
-import vn.uiza.uzv3.view.rl.video.UZVideo;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -57,6 +57,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         seekBar = (SeekBar) findViewById(R.id.sb);
+        uzVideo.setAutoStart(true);
         uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
@@ -79,11 +80,19 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
         });
         uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
+            public void onAdEnded() {
+                //LLog.d(TAG, "onAdEnded");
+                seekBar.setMax((int) uzVideo.getDuration());
+            }
+
+            @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
+                //LLog.d(TAG, "onAdProgress currentMls " + currentMls);
             }
 
             @Override
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+                //LLog.d(TAG, "onVideoProgress currentMls " + currentMls);
                 seekBar.setProgress((int) currentMls);
             }
         });
@@ -93,13 +102,13 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
                 seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        uzVideo.setControllerShowTimeoutMs(4000);
+        uzVideo.setControllerShowTimeoutMs(15000);
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             seekBar.setMax((int) uzVideo.getDuration());
             updateUISeekbarPosition(false);
         }

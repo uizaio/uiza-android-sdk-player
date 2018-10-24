@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.uiza.module.samplelivestream"
+        minSdkVersion 18
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+    /*buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }*/
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+    productFlavors {
+    }
+    /*packagingOptions {
+        pickFirst 'lib/arm64-v8a/libRSSupport.so'
+        pickFirst 'lib/arm64-v8a/librsjni.so'
+        pickFirst 'lib/arm64-v8a/librsjni_androidx.so'
+        pickFirst 'lib/x86_64/librsjni_androidx.so'
+        pickFirst 'lib/x86_64/libRSSupport.so'
+        pickFirst 'lib/x86_64/librsjni.so'
+        pickFirst 'lib/x86/librsjni.so'
+        pickFirst 'lib/x86/libRSSupport.so'
+        pickFirst 'lib/x86/librsjni_androidx.so'
+        pickFirst 'lib/armeabi-v7a/librsjni_androidx.so'
+        pickFirst 'lib/armeabi-v7a/librsjni.so'
+        pickFirst 'lib/armeabi-v7a/libRSSupport.so'
+    }*/
+}
+
+dependencies {
+    api project(':uizalivestream')
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.7'
+}

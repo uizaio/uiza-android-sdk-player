@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.tplloi'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0.0"
+
+        /*renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
+
+        //https://stackoverflow.com/questions/41098015/how-to-set-vectordrawable-as-an-image-for-imageview-programmatically
+        //https://stackoverflow.com/questions/49014416/set-vector-drawable-to-imageview-in-xml
+        //https://stackoverflow.com/questions/34417843/how-to-use-vector-drawables-in-android-api-lower-21
+        vectorDrawables.useSupportLibrary = true*/
+    }
+    /*buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }*/
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+        //release & debug is in project animators
+        //matchingFallbacks = ['release', 'debug']
+    }
+}
+
+dependencies {
+    api project(':uizabase')
+    //implementation project(path:':uizabase', configuration: 'default')
+}

@@ -13,7 +13,7 @@ import uiza.R;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.uzv3.view.rl.videoinfo.UZVideoInfo;
+import uizacoresdk.view.rl.videoinfo.UZVideoInfo;
 
 public class FrmVideoBottom extends BaseFragment {
     private UZVideoInfo uizaIMAVideoInfo;

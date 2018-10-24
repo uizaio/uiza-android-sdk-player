@@ -16,7 +16,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.uzv3.util.UZUtil;
+import uizacoresdk.util.UZUtil;
 
 public class SetEntityIdActivity extends BaseActivity {
     //for entity id

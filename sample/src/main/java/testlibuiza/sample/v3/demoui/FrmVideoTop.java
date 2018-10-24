@@ -39,11 +39,11 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.uzv1.listerner.ProgressCallback;
-import vn.uiza.uzv3.util.UZUtil;
-import vn.uiza.uzv3.view.UZPlayerView;
-import vn.uiza.uzv3.view.rl.video.UZCallback;
-import vn.uiza.uzv3.view.rl.video.UZVideo;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UZCallback {
@@ -201,6 +201,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         });
         uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
+            public void onAdEnded() {
+            }
+
+            @Override
             public void onAdProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
@@ -284,7 +288,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 

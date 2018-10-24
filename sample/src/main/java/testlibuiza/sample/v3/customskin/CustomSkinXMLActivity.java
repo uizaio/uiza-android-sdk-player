@@ -21,9 +21,9 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.uzv3.util.UZUtil;
-import vn.uiza.uzv3.view.rl.video.UZCallback;
-import vn.uiza.uzv3.view.rl.video.UZVideo;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 /**
@@ -149,9 +149,9 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
+        /*if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
+        }*/
     }
 
     @Override

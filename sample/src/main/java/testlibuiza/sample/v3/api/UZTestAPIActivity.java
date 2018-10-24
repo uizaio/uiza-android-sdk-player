@@ -32,7 +32,7 @@ import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePasswor
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.uzv3.util.UZData;
+import uizacoresdk.util.UZData;
 import vn.uiza.views.LToast;
 
 public class UZTestAPIActivity extends BaseActivity implements View.OnClickListener {
