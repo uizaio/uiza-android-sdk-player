@@ -1671,7 +1671,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (v == rlMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
-            toggleScreenOritation();
+            //TODO revert
+            //toggleScreenOritation();
+            showPip();
         } else if (v == ibBackScreenIcon) {
             handleClickBackScreen();
         } else if (v == ibVolumeIcon) {
