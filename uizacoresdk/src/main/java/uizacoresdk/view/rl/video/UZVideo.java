@@ -2721,7 +2721,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             pfTotalPage = (int) ratio;
                         }
                     }
-                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage);
+                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage + " ->>>>>>> setDataList");
                     UZData.getInstance().setDataList(result.getData());
                     if (UZData.getInstance().getDataList() == null || UZData.getInstance().getDataList().isEmpty()) {
                         LLog.e(TAG, "callAPIGetListAllEntity success but no data");

@@ -11,12 +11,12 @@ import android.widget.EditText;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
 
 public class SetEntityIdActivity extends BaseActivity {
     //for entity id
@@ -102,7 +102,7 @@ public class SetEntityIdActivity extends BaseActivity {
                 UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
+                UZUtil.setIsInitPlaylistFolder(activity, false);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
@@ -158,7 +158,7 @@ public class SetEntityIdActivity extends BaseActivity {
                 UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);
+                UZUtil.setIsInitPlaylistFolder(activity, true);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);

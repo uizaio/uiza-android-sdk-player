@@ -28,6 +28,8 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.view.floatview.FUZVideoService;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDeviceUtil;
@@ -42,8 +44,6 @@ import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.Utils;
-import uizacoresdk.view.floatview.FUZVideoService;
-import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -425,7 +425,7 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback){
+    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback) {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
@@ -457,6 +457,7 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
@@ -490,6 +491,7 @@ public class UZUtil {
             LLog.d(TAG, "isSettingPlayer");
             return;
         }*/
+        //LLog.d(TAG, "playPlaylist metadataId " + metadataId);
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
@@ -561,7 +563,6 @@ public class UZUtil {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
-    //private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
     private final static String INDEX = "INDEX";
     private final static String AUTH = "AUTH";
     public final static String API_END_POINT = "API_END_POINT";
@@ -574,6 +575,7 @@ public class UZUtil {
     private final static String PREF_STATE_FILTER = "state_filter";
 
     //for api v3
+    private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
     private final static String V3UIZATOKEN = "V3UIZATOKEN";
     private final static String V3DATA = "V3DATA";
@@ -671,6 +673,17 @@ public class UZUtil {
         editor.apply();
     }*/
     /////////////////////////////////BOOLEAN
+
+    public static Boolean isInitPlaylistFolder(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(IS_INIT_PLAYLIST_FOLDER, false);
+    }
+
+    public static void setIsInitPlaylistFolder(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(IS_INIT_PLAYLIST_FOLDER, value);
+        editor.apply();
+    }
 
     public static Boolean getCheckAppReady(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -783,5 +796,6 @@ public class UZUtil {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         pref.edit().putBoolean(PREF_STATE_FILTER, on).apply();
     }
+
     //=============================================================================END PREF
 }

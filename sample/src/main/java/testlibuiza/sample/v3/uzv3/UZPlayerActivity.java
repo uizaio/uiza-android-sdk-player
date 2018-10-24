@@ -97,7 +97,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         uzVideo.setUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(30000);
 
-        boolean isInitWithPlaylistFolder = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
+        boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+        LLog.d(TAG, "isInitWithPlaylistFolder " + isInitWithPlaylistFolder);
         if (isInitWithPlaylistFolder) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
