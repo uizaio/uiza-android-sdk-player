@@ -40,6 +40,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
