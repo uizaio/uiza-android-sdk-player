@@ -59,7 +59,8 @@ import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.dlg.UZTrackSelectionView;
+import uizacoresdk.view.dlg.hq.UZItem;
+import uizacoresdk.view.dlg.hq.UZTrackSelectionView;
 import uizacoresdk.view.dlg.info.UZDlgInfoV1;
 import uizacoresdk.view.dlg.listentityrelation.CallbackPlayList;
 import uizacoresdk.view.dlg.listentityrelation.UZDligListEntityRelation;
@@ -3532,7 +3533,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private List<CheckedTextView> showUZTrackSelectionDialog(final View view, boolean showDialog) {
+    private List<UZItem> showUZTrackSelectionDialog(final View view, boolean showDialog) {
         MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
         if (mappedTrackInfo != null) {
             CharSequence title = ((Button) view).getText();
@@ -3566,12 +3567,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //dialogPair.first.show();
                 UZUtil.showUizaDialog(activity, dialogPair.first);
             }
-            return dialogPair.second.getCheckedTextViewList();
+            return dialogPair.second.getUZItemList();
         }
         return null;
     }
 
-    public List<CheckedTextView> getHQList() {
+    public List<UZItem> getHQList() {
         View view = UZUtil.getBtVideo(debugRootView);
         if (view == null) {
             LLog.e(TAG, activity.getString(R.string.err_hq_null));
@@ -3583,7 +3584,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return showUZTrackSelectionDialog(view, false);
     }
 
-    public List<CheckedTextView> getAudioList() {
+    public List<UZItem> getAudioList() {
         View view = UZUtil.getBtAudio(debugRootView);
         if (view == null) {
             LLog.e(TAG, activity.getString(R.string.err_audio_null));

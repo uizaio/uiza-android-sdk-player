@@ -1,4 +1,4 @@
-package uizacoresdk.view.dlg;
+package uizacoresdk.view.dlg.hq;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LLog;
 
 /**
  * A view for making track selections.
@@ -100,10 +99,10 @@ public class UZTrackSelectionView extends LinearLayout {
         this(context, attrs, 0);
     }
 
-    private List<CheckedTextView> checkedTextViewList = new ArrayList<>();
+    private List<UZItem> uzItemList = new ArrayList<>();
 
-    public List<CheckedTextView> getCheckedTextViewList() {
-        return checkedTextViewList;
+    public List<UZItem> getUZItemList() {
+        return uzItemList;
     }
 
     @SuppressWarnings("nullness")
@@ -139,8 +138,17 @@ public class UZTrackSelectionView extends LinearLayout {
         defaultView.setSoundEffectsEnabled(false);
         addView(defaultView);
 
-        checkedTextViewList.add(disableView);
-        checkedTextViewList.add(defaultView);
+        UZItem uzItemDisableView = new UZItem();
+        uzItemDisableView.setCheckedTextView(disableView);
+        uzItemDisableView.setFormat(T_UNKNOW);
+        uzItemDisableView.setDescription(disableView.getText().toString());
+        uzItemList.add(uzItemDisableView);
+
+        UZItem uzItemDefaultView = new UZItem();
+        uzItemDefaultView.setCheckedTextView(defaultView);
+        uzItemDefaultView.setFormat(T_UNKNOW);
+        uzItemDefaultView.setDescription(defaultView.getText().toString());
+        uzItemList.add(uzItemDefaultView);
     }
 
     /**
@@ -240,8 +248,7 @@ public class UZTrackSelectionView extends LinearLayout {
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 //LLog.d(TAG, "updateViews " + trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 trackView.setText(trackNameProvider.getTrackName(group.getFormat(trackIndex)));
-                if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex)
-                        == RendererCapabilities.FORMAT_HANDLED) {
+                if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex) == RendererCapabilities.FORMAT_HANDLED) {
                     trackView.setFocusable(true);
                     trackView.setTag(Pair.create(groupIndex, trackIndex));
                     trackView.setOnClickListener(componentListener);
@@ -251,7 +258,12 @@ public class UZTrackSelectionView extends LinearLayout {
                 }
                 trackViews[groupIndex][trackIndex] = trackView;
                 addView(trackView);
-                checkedTextViewList.add(trackView);
+
+                UZItem uzItem = new UZItem();
+                uzItem.setCheckedTextView(trackView);
+                uzItem.setDescription(trackView.getText().toString());
+                uzItem.setFormat(getFormatVideo(trackView.getText().toString()));
+                uzItemList.add(uzItem);
             }
         }
         updateViewStates();
@@ -261,6 +273,63 @@ public class UZTrackSelectionView extends LinearLayout {
                 LLog.d(TAG, i + " - getText: " + checkedTextViewList.get(i).getText() + " - isChecked: " + checkedTextViewList.get(i).isChecked());
             }
         }*/
+    }
+
+    //return SD, HD, FHD, QHD...
+    //https://www.image-engineering.de/library/technotes/991-separating-sd-hd-full-hd-4k-and-8k
+    private final String T_UNKNOW = "Unknow";
+    private final String T_SD = "SD";
+    private final String T_HD = "HD";
+    private final String T_FHD = "FHD";
+    private final String T_UHD = "UHD";
+    private final String T_2K = "2K";
+    private final String T_4K = "4K";
+
+    private String getFormatVideo(String description) {
+        if (description.contains(",")) {
+            String resolution = description.split(",")[0];
+            //LLog.d(TAG, "resolution " + resolution);
+            if (resolution.contains(" ")) {
+                String s[] = resolution.split(" ");
+                if (s.length < 3) {
+                    return T_UNKNOW;
+                }
+                String s0 = s[0];
+                String s1 = s[2];
+                //LLog.d(TAG, "s0 x s1: " + s0 + " x " + s1);
+
+                int w;
+                int h;
+                try {
+                    w = Integer.parseInt(s0);
+                    h = Integer.parseInt(s1);
+                } catch (Exception e) {
+                    return T_UNKNOW;
+                }
+                if (w < h) {
+                    w = h;
+                }
+                if (w <= 720) {
+                    return T_SD;
+                } else if (w <= 1280) {
+                    return T_HD;
+                } else if (w <= 1920) {
+                    return T_FHD;
+                } else if (w <= 3840) {
+                    return T_UHD;
+                } else if (w <= 4096) {
+                    return T_2K;
+                } else if (w <= 7680) {
+                    return T_4K;
+                } else {
+                    return T_UNKNOW;
+                }
+            } else {
+                return T_UNKNOW;
+            }
+        } else {
+            return T_UNKNOW;
+        }
     }
 
     private void updateViewStates() {

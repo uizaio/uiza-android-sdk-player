@@ -17,6 +17,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -85,11 +86,12 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         });
     }
 
-    private void displayUI(List<CheckedTextView> checkedTextViewList) {
+    private void displayUI(List<UZItem> uzItemList) {
         llListHq.removeAllViews();
-        for (int i = 0; i < checkedTextViewList.size(); i++) {
-            final CheckedTextView c = checkedTextViewList.get(i);
-            LLog.d(TAG, "no " + i + " - getText: " + c.getText() + " - isChecked: " + c.isChecked());
+        for (int i = 0; i < uzItemList.size(); i++) {
+            UZItem uzItem = uzItemList.get(i);
+            final CheckedTextView c = uzItem.getCheckedTextView();
+            LLog.d(TAG, i + ", getDescription: " + uzItem.getDescription() + ", isChecked: " + c.isChecked() + ", getFormat: " + uzItem.getFormat());
 
             //add space
             View view = new View(activity);
@@ -101,10 +103,10 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
             //customize here
             final Button bt = new Button(activity);
             if (c.isChecked()) {
-                bt.setText(c.getText() + " (✔)");
+                bt.setText(c.getText().toString() + " -> " + uzItem.getFormat() + " (✔)");
                 bt.setBackgroundColor(Color.GREEN);
             } else {
-                bt.setText(c.getText());
+                bt.setText(c.getText().toString() + " -> " + uzItem.getFormat());
                 bt.setBackgroundColor(Color.WHITE);
             }
             bt.setSoundEffectsEnabled(true);
