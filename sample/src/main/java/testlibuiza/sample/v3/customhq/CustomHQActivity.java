@@ -175,9 +175,9 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
+        /*if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
+        }*/
     }
 
     @Override

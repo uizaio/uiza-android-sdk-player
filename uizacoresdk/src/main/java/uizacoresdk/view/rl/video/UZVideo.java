@@ -1477,6 +1477,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             //LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
+            setEventBusMsgFromActivityIsInitSuccess();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -1634,8 +1635,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void onStopPreview(int progress) {
         if (uzPlayerManager != null) {
+            uzPlayerManager.seekTo(progress);
             if (isPlaying()) {
-                uzPlayerManager.seekTo(progress);
                 uzPlayerManager.resumeVideo();
                 isOnPlayerEnded = false;
                 updateUIEndScreen();
@@ -3248,7 +3249,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }*/
         if (isCastingChromecast()) {
-            LLog.e(TAG, activity.getString(R.string.err_pip_only_tablet));
+            LLog.e(TAG, activity.getString(R.string.err_pip_chromecast));
         } else {
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.performClick();

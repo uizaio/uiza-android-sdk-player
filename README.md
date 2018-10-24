@@ -178,15 +178,6 @@ Dont forget to add in activity life cycle event:
         }
     }
 
-Then put
-
-    @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
-    }
-
 All listener  (If you want to listen all events)
 
     private void setListener() {

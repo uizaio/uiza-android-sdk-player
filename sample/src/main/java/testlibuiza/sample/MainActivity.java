@@ -12,6 +12,7 @@ import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customhq.CustomHQActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
+import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
@@ -85,6 +86,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomHQActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_play_any_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, PlayerActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

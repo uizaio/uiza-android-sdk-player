@@ -66,6 +66,13 @@
                     android:layout_height="wrap_content"
                     android:enabled="true"
                     android:text="Custom HQ" />
+
+                <Button
+                    android:id="@+id/bt_play_any_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="Play any link" />
             </LinearLayout>
 
             <LinearLayout

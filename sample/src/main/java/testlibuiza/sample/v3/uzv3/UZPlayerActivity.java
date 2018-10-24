@@ -73,8 +73,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.setAutoStart(false);
+        uzVideo.setAutoSwitchItemPlaylistFolder(true);
+        uzVideo.setAutoStart(true);
 
         sb = (SeekBar) findViewById(R.id.sb);
         sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -421,7 +421,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             sb.setMax((int) uzVideo.getDuration());
         }
     }

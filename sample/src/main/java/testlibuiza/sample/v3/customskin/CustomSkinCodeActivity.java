@@ -108,7 +108,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             seekBar.setMax((int) uzVideo.getDuration());
             updateUISeekbarPosition(false);
         }
