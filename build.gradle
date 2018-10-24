@@ -9,7 +9,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.google.gms:google-services:4.1.0'
+        //classpath 'com.google.gms:google-services:4.1.0'
         //classpath "io.realm:realm-gradle-plugin:1.0.1"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,8 +19,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
         mavenLocal()
         maven { url "https://maven.google.com" }
         //maven { url 'maven.google.com' }
