@@ -44,11 +44,11 @@ android {
 }
 
 dependencies {
-    api project(':uizacoresdk')
-    api project(':uizalivestream')
+    //api project(':uizacoresdk')
+    //api project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.5'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.5'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.6'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.6'
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

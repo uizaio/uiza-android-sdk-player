@@ -1729,17 +1729,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPlayIcon.requestFocus();
             }
         } else if (v == ibPlayIcon) {
+            ibPlayIcon.setVisibility(GONE);
+            if (ibPauseIcon != null) {
+                ibPauseIcon.setVisibility(VISIBLE);
+                ibPauseIcon.requestFocus();
+            }
             if (isCastingChromecast) {
                 UZData.getInstance().getCasty().getPlayer().play();
             } else {
                 if (uzPlayerManager != null) {
                     uzPlayerManager.resumeVideo();
                 }
-            }
-            ibPlayIcon.setVisibility(GONE);
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-                ibPauseIcon.requestFocus();
             }
         } else if (v == ibReplayIcon) {
             replay();
@@ -2841,13 +2841,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //private TextView tvWaitingNextEntity;
 
     protected void onPlayerEnded() {
-        LLog.d(TAG, "onPlayerEnded");
-        isOnPlayerEnded = true;
-        if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
-            hideController();
-            autoSwitchNextVideo();
-        } else {
-            updateUIEndScreen();
+        //LLog.d(TAG, "onPlayerEnded");
+        LLog.d(TAG, ">>>onPlayerEnded isPlaying " + isPlaying());
+        if (isPlaying()) {
+            isOnPlayerEnded = true;
+            if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
+                hideController();
+                autoSwitchNextVideo();
+            } else {
+                updateUIEndScreen();
+            }
         }
     }
 
