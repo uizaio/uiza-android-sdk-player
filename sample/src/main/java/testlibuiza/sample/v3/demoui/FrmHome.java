@@ -11,7 +11,6 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
@@ -65,7 +64,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
         LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getActivity()));
         if (UZUtil.getClickedPip(getActivity())) {
-            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+            if (UZUtil.isInitPlaylistFolder(getActivity())) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
