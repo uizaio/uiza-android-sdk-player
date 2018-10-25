@@ -357,10 +357,10 @@ public class FUZVideo extends RelativeLayout {
             ivVideoCover.setVisibility(VISIBLE);
         }
         String urlImg = "";
-        if (UZData.getInstance().getUZInput() == null || UZData.getInstance().getUZInput().getData() == null || UZData.getInstance().getUZInput().getData().getThumbnail() == null) {
+        if (UZData.getInstance().getUzInput() == null || UZData.getInstance().getUzInput().getData() == null || UZData.getInstance().getUzInput().getData().getThumbnail() == null) {
             urlImg = Constants.URL_IMG_THUMBNAIL;
         } else {
-            urlImg = UZData.getInstance().getUZInput().getData().getThumbnail();
+            urlImg = UZData.getInstance().getUzInput().getData().getThumbnail();
         }
         LImageUtil.load(getContext(), urlImg, ivVideoCover, R.drawable.uiza);
     }

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -13,9 +16,11 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -23,6 +28,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class PlayerActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
+    private EditText etLinkPlay;
+    private Button btPlay;
 
     @Override
     protected boolean setFullScreen() {
@@ -45,15 +52,34 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        etLinkPlay = (EditText) findViewById(R.id.et_link_play);
+        btPlay = (Button) findViewById(R.id.bt_play);
         uzVideo.setUZCallback(this);
-        UZUtil.initEntity(activity, uzVideo, LSApplication.entityIdDefaultVOD);
+
+        etLinkPlay.setText("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+
+        //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
+        //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
+        //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
+        //listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+
+        LUIUtil.setLastCursorEditText(etLinkPlay);
+
+        btPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String linkPlay = etLinkPlay.getText().toString();
+                if (linkPlay == null || linkPlay.isEmpty()) {
+                    LToast.show(activity, "Please input correct linkplay");
+                } else {
+                    UZUtil.initLinkPlay(activity, uzVideo, linkPlay);
+                }
+            }
+        });
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        /*if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }*/
     }
 
     @Override

@@ -429,23 +429,45 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static void initEntity(Activity activity, UZVideo UZVideo, String entityId) {
+    public static void initLinkPlay(Activity activity, UZVideo uzVideo, String linkPlay) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
-        if (UZVideo == null) {
+        if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        if (linkPlay == null || linkPlay.isEmpty()) {
+            throw new NullPointerException("linkPlay cannot be null or empty");
+        }
         if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
-            UZUtil.play(UZVideo, null);
+            //LLog.d(TAG, "called from pip enter fullscreen");
+            UZUtil.playLinkPlay(uzVideo, null);
+        } else {
+            //check if play entity
+            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.playLinkPlay(uzVideo, linkPlay);
+        }
+    }
+
+    public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
+        if (activity == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
+        if (uzVideo == null) {
+            throw new NullPointerException("UZVideo cannot be null");
+        }
+        if (entityId == null || entityId.isEmpty()) {
+            throw new NullPointerException("entityId cannot be null or empty");
+        }
+        if (UZUtil.getClickedPip(activity)) {
+            //LLog.d(TAG, "called from pip enter fullscreen");
+            UZUtil.play(uzVideo, null);
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunningV3(activity);
             if (entityId != null) {
-                LLog.d(TAG, "initEntity entityId: " + entityId);
-                //setEntityId(activity, entityId);
-                UZUtil.play(UZVideo, entityId);
+                //LLog.d(TAG, "initEntity entityId: " + entityId);
+                UZUtil.play(uzVideo, entityId);
             }
         }
     }
@@ -457,11 +479,14 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        if (metadataId == null || metadataId.isEmpty()) {
+            throw new NullPointerException("metadataId cannot be null or empty");
+        }
         //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
+            //LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                //LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
                 playPlaylist(uzVideo, null);
             }
         } else {
@@ -472,11 +497,17 @@ public class UZUtil {
         }
     }
 
+    private static void playLinkPlay(final UZVideo uzVideo, final String linkPlay) {
+        UZData.getInstance().setSettingPlayer(false);
+        uzVideo.post(new Runnable() {
+            @Override
+            public void run() {
+                uzVideo.initLinkPlay(linkPlay);
+            }
+        });
+    }
+
     private static void play(final UZVideo uzVideo, final String entityId) {
-        /*if (UZData.getInstance().isSettingPlayer()) {
-            LLog.d(TAG, "isSettingPlayer");
-            return;
-        }*/
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
@@ -487,10 +518,6 @@ public class UZUtil {
     }
 
     private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
-        /*if (UZData.getInstance().isSettingPlayer()) {
-            LLog.d(TAG, "isSettingPlayer");
-            return;
-        }*/
         //LLog.d(TAG, "playPlaylist metadataId " + metadataId);
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
