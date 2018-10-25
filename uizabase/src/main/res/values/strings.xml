@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Core Basemaster</string>
     <string name="warning">Warning</string>
     <string name="cannot_find_messenger_app">Cannot find Messenger App!</string>
 

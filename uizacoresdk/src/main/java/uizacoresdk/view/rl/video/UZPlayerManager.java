@@ -60,6 +60,7 @@ import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.listerner.VideoAdPlayerListerner;
+import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
@@ -136,7 +137,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             // LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
-            adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
+            if (UZUtil.getClickedPip(context)) {
+                LLog.d(TAG, "UZPlayerManager dont init urlIMAAd because called from PIP again");
+            } else {
+                adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
+            }
         }
 
         userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
