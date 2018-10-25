@@ -30,6 +30,11 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -39,11 +44,6 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UZCallback {
@@ -288,7 +288,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
-            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 
@@ -348,10 +347,12 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     public void initEntity(String entityId) {
+        //LLog.d(TAG, "initEntity " + entityId);
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
+        //LLog.d(TAG, "initPlaylistFolder " + metadataId);
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 }

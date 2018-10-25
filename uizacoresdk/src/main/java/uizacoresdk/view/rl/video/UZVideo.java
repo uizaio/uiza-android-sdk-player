@@ -587,7 +587,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.showProgress();
         }
         setTitle();
-        updateUIDependOnLivetream();
+        //updateUIDependOnLivetream();
         callAPIGetLinkPlay();
         trackUizaEventDisplay();
         trackUizaEventPlaysRequested();
@@ -1450,6 +1450,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onStateReadyFirst() {
         LLog.d(TAG, "onStateReadyFirst");
         updateUIButtonPlayPauseDependOnIsAutoStart();
+        updateUIDependOnLivetream();
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
@@ -1923,7 +1924,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlLiveInfo.setVisibility(VISIBLE);
             }
             if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(GONE);
+                rlTimeBar.setVisibility(INVISIBLE);//set GONE ok, but then VISIBLE not work huhu :(
             }
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);

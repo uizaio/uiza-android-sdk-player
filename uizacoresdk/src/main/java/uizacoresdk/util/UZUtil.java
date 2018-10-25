@@ -456,9 +456,6 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
-        if (entityId == null || entityId.isEmpty()) {
-            throw new NullPointerException("entityId cannot be null or empty");
-        }
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
             UZUtil.play(uzVideo, null);
@@ -478,9 +475,6 @@ public class UZUtil {
         }
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
-        }
-        if (metadataId == null || metadataId.isEmpty()) {
-            throw new NullPointerException("metadataId cannot be null or empty");
         }
         //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
