@@ -378,9 +378,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UZData.getInstance().setData(d);
-                    if (!UZUtil.getClickedPip(activity)) {
+                    /*if (!UZUtil.getClickedPip(activity)) {
                         setVideoCover();
-                    }
+                    }*/
+                    setVideoCover();
                     handleDataCallAPI();
                 }
 
@@ -838,7 +839,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void removeVideoCover(boolean isFromHandleError) {
         if (ivVideoCover.getVisibility() != GONE) {
-            //LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
             ivVideoCover.setVisibility(GONE);
             if (isLivestream) {
                 if (tvLiveTime != null) {
@@ -2757,6 +2757,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LToast.show(activity, "Datalist is empty");
             return;
         }
+        LLog.d(TAG, "playPlaylistPosition position: " + position);
         if (position < 0) {
             LToast.show(activity, "This is the first item");
             return;
@@ -2942,7 +2943,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickSkipNext() {
-        //LLog.d(TAG, "handleClickSkipNext");
+        LLog.d(TAG, "handleClickSkipNext");
         isOnPlayerEnded = false;
         updateUIEndScreen();
         autoSwitchNextVideo();
