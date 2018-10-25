@@ -85,7 +85,6 @@ import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -374,14 +373,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
-                    LLog.d(TAG, "callAPIGetDetailEntity onSuccess -> handleGetDetailEntityDone");
+                    //LLog.d(TAG, "callAPIGetDetailEntity onSuccess -> handleGetDetailEntityDone");
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UZData.getInstance().setData(d);
-                    /*if (!UZUtil.getClickedPip(activity)) {
+
+                    //LLog.d(TAG, "callAPIGetDetailEntity if getClickedPip " + UZUtil.getClickedPip(activity) + ", isPlayPlaylistFolder " + isPlayPlaylistFolder());
+                    //set video cover o moi case, ngoai tru
+                    //click tu pip entity thi ko can show video cover
+                    //click tu pip playlist folder lan dau tien thi ko can show video cover, neu nhan skip next hoac skip prev thi se show video cover
+                    if (isPlayPlaylistFolder()) {
+                        if (UZUtil.getClickedPip(activity)) {
+                            if (isClickedSkipNextOrSkipPrevious) {
+                                setVideoCover();
+                            }
+                        } else {
+                            setVideoCover();
+                        }
+                    } else {
                         setVideoCover();
-                    }*/
-                    setVideoCover();
+                    }
                     handleDataCallAPI();
                 }
 
@@ -392,7 +403,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     LLog.e(TAG, "init onError " + e.toString());
                     if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "init onError: " + e.getMessage());
+                        LToast.show(activity, "init onError callAPIGetDetailEntity: " + e.getMessage());
                     }
                     UZData.getInstance().setSettingPlayer(false);
                     IllegalAccessException exception = new IllegalAccessException("init onError: " + e.getMessage());
@@ -401,8 +412,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             });
         } else {
             //init player khi user click vào fullscreen của floating view (pic)
-            LLog.d(TAG, "init UZData.getInstance().getData() != null else");
+            //LLog.d(TAG, "init UZData.getInstance().getData() != null else isPlayPlaylistFolder(): " + isPlayPlaylistFolder());
             isCalledApiGetDetailEntity = true;
+            //LLog.d(TAG, "callAPIGetDetailEntity else getClickedPip " + UZUtil.getClickedPip(activity) + ", isPlayPlaylistFolder " + isPlayPlaylistFolder());
             handleDataCallAPI();
         }
     }
@@ -434,7 +446,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored: " + e.getMessage());
+                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored (dont care): " + e.getMessage());
             }
         });
     }
@@ -690,6 +702,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZData.getInstance().clearDataForPlaylistFolder();
         }
         isHasError = false;
+        isClickedSkipNextOrSkipPrevious = false;
         callAPIGetListAllEntity(metadataId);
     }
 
@@ -827,7 +840,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVideoCover() {
-        if (ivVideoCover.getVisibility() != VISIBLE) {
+        if (ivVideoCover.getVisibility() != View.VISIBLE) {
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
@@ -838,8 +851,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void removeVideoCover(boolean isFromHandleError) {
-        if (ivVideoCover.getVisibility() != GONE) {
+        if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
+            ivVideoCover.invalidate();
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
@@ -850,6 +864,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
                 callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
+            //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -2168,7 +2183,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitLinkPlay");
             return;
         }
-        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
+        UZService service = RestClientTracking.createService(UZService.class);
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -2942,8 +2957,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setVisibilityOfPlayPauseReplay(false);
     }
 
+    private boolean isClickedSkipNextOrSkipPrevious;
+
     private void handleClickSkipNext() {
-        LLog.d(TAG, "handleClickSkipNext");
+        //LLog.d(TAG, "handleClickSkipNext");
+        isClickedSkipNextOrSkipPrevious = true;
         isOnPlayerEnded = false;
         updateUIEndScreen();
         autoSwitchNextVideo();
@@ -2951,6 +2969,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void handleClickSkipPrevious() {
         //LLog.d(TAG, "handleClickSkipPrevious");
+        isClickedSkipNextOrSkipPrevious = true;
         isOnPlayerEnded = false;
         updateUIEndScreen();
         autoSwitchPreviousLinkVideo();

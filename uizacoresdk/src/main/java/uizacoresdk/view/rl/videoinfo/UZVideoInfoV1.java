@@ -21,19 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.view.util.UizaDataV1;
 import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LDisplayUtils;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
-import vn.uiza.restapi.uiza.model.v2.listallentityrelation.JsonBodyListAllEntityRelation;
-import vn.uiza.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
-import vn.uiza.rxandroid.ApiSubscriber;
-import uizacoresdk.view.util.UizaDataV1;
 
 public class UZVideoInfoV1 extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
@@ -191,47 +184,10 @@ public class UZVideoInfoV1 extends RelativeLayout {
     }
 
     private void getListAllEntityRelation() {
-        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
-        //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
-
-        JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaDataV1.getInstance().getUizaInputV1().getEntityId());
-
-        ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
-            @Override
-            public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
-                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
-                if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
-                    tvMoreLikeThisMsg.setText(R.string.no_data);
-                    tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
-                } else {
-                    tvMoreLikeThisMsg.setVisibility(View.GONE);
-                    setupUIMoreLikeThis(listAllEntityRelation.getItemList());
-                }
-                LUIUtil.hideProgressBar(progressBar);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_list_relation), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        /*if (activity != null) {
-                            activity.onBackPressed();
-                        }*/
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        /*if (activity != null) {
-                            activity.onBackPressed();
-                        }*/
-                    }
-                });
-                LUIUtil.hideProgressBar(progressBar);
-            }
-        });
+        //TODO
+        tvMoreLikeThisMsg.setText(R.string.no_data);
+        tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
+        LUIUtil.hideProgressBar(progressBar);
     }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {

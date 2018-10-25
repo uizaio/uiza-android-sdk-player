@@ -656,7 +656,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
-            uzVideo.removeVideoCover(false);
+            if (uzVideo != null) {
+                uzVideo.removeVideoCover(false);
+            }
         }
 
         @Override

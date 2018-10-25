@@ -8,6 +8,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import rx.Observable;
+import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -163,4 +164,10 @@ public interface UZService {
 
     @GET("/api/private/v3/media/entity/cue-point")
     Observable<AdWrapper> getCuePoint(@Query("entityId") String entityId);
+
+    //=====================================================tracking
+    //@Headers("Content-Type: application/json")
+    @POST("/analytic-tracking/v1/tracking/mobile")
+    Observable<Object> track(@Body UizaTracking uizaTracking);
+    //end =====================================================tracking
 }

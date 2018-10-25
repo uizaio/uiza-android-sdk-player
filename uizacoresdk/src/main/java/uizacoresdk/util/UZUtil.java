@@ -441,7 +441,9 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
-            UZUtil.playLinkPlay(uzVideo, null);
+            //TODO
+            //UZUtil.playLinkPlay(uzVideo, null);
+            //UZUtil.setClickedPip(activity, false);
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunningV3(activity);
