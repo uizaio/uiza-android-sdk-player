@@ -351,6 +351,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
+
         //called api parallel here
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
@@ -630,6 +634,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
 
         UZInput uzInput = new UZInput();
         uzInput.setUrlIMAAd(urlIMAAd);
