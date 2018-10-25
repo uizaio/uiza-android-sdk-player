@@ -97,14 +97,25 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         uzVideo.setUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(30000);
 
-        boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
-        LLog.d(TAG, "isInitWithPlaylistFolder " + isInitWithPlaylistFolder);
-        if (isInitWithPlaylistFolder) {
-            String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
-            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
-        } else {
+        String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+        if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
-            UZUtil.initEntity(activity, uzVideo, entityId);
+            if (entityId == null) {
+                //LLog.d(TAG, "init metadataId && entityId == null -> pip");
+                boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+                //LLog.d(TAG, "isInitWithPlaylistFolder " + isInitWithPlaylistFolder);
+                if (isInitWithPlaylistFolder) {
+                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                } else {
+                    UZUtil.initEntity(activity, uzVideo, null);
+                }
+            } else {
+                //LLog.d(TAG, "init entity " + entityId);
+                UZUtil.initEntity(activity, uzVideo, entityId);
+            }
+        } else {
+            //LLog.d(TAG, "init playlist folder " + metadataId);
+            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         }
 
         //set uzVideo hide all controller

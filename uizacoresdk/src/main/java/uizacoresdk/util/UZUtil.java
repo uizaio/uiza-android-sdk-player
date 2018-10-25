@@ -447,6 +447,7 @@ public class UZUtil {
             UZUtil.stopServicePiPIfRunningV3(activity);
             UZUtil.playLinkPlay(uzVideo, linkPlay);
         }
+        UZUtil.setIsInitPlaylistFolder(activity, false);
     }
 
     public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
@@ -467,6 +468,7 @@ public class UZUtil {
                 UZUtil.play(uzVideo, entityId);
             }
         }
+        UZUtil.setIsInitPlaylistFolder(activity, false);
     }
 
     public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
@@ -489,6 +491,7 @@ public class UZUtil {
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }
+        UZUtil.setIsInitPlaylistFolder(activity, true);
     }
 
     private static void playLinkPlay(final UZVideo uzVideo, final String linkPlay) {

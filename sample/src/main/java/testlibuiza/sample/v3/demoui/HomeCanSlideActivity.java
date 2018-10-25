@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import testlibuiza.R;
+import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
@@ -18,7 +19,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
-public class HomeV4CanSlideActivity extends BaseActivity {
+public class HomeCanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
 
     public DraggablePanel getDraggablePanel() {
@@ -41,19 +42,25 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmVideoTop.getUZVideo().hideController();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().hideController();
+                }
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmVideoTop.getUZVideo().onDestroy();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().onDestroy();
+                }
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmVideoTop.getUZVideo().onDestroy();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().onDestroy();
+                }
             }
 
             @Override

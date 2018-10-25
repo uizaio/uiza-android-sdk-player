@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity;
+import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -45,7 +45,8 @@ public class SetEntityIdActivity extends BaseActivity {
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
+                UZUtil.setClickedPip(activity, false);
+                Intent intent = new Intent(activity, HomeCanSlideActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -102,7 +103,6 @@ public class SetEntityIdActivity extends BaseActivity {
                 UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                UZUtil.setIsInitPlaylistFolder(activity, false);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
@@ -158,7 +158,6 @@ public class SetEntityIdActivity extends BaseActivity {
                 UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                UZUtil.setIsInitPlaylistFolder(activity, true);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
