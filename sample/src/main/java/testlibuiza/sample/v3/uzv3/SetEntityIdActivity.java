@@ -45,7 +45,7 @@ public class SetEntityIdActivity extends BaseActivity {
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UZUtil.setClickedPip(activity, false);
+                //UZUtil.setClickedPip(activity, false);
                 Intent intent = new Intent(activity, HomeCanSlideActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
@@ -100,7 +100,6 @@ public class SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
@@ -131,7 +130,6 @@ public class SetEntityIdActivity extends BaseActivity {
     }
 
     private void initUIPlaylistFolder() {
-        //set default value entity id
         etInputMetadataId.setText(LSApplication.metadataDefault0);
         LUIUtil.setLastCursorEditText(etInputEntityId);
         etInputMetadataId.addTextChangedListener(new TextWatcher() {
@@ -155,7 +153,6 @@ public class SetEntityIdActivity extends BaseActivity {
         btStartPf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);

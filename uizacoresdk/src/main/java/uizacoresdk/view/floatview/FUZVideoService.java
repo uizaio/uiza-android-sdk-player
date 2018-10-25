@@ -40,16 +40,16 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZData;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.view.ComunicateMng;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -97,7 +97,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void findViews() {
         widthScreen = LScreenUtil.getScreenWidth();
-        LLog.d(TAG, "widthScreen " + widthScreen);
+        //LLog.d(TAG, "widthScreen " + widthScreen);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -196,7 +196,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 LUIUtil.showProgressBar(FUZVideo.getProgressBar());
                 moveView.setOnTouchListener(null);//disabled move view
 
-                //bắn cho FloatClickFullScreenReceiverV3
+                //bắn cho FloatClickFullScreenReceiver
                 UZUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
@@ -318,6 +318,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (FUZVideo != null) {
             FUZVideo.onDestroy();
         }
+        UZUtil.setClickedPip(getApplicationContext(), false);
         super.onDestroy();
     }
 
@@ -369,9 +370,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                LLog.e(TAG, "onPlayerError " + error.getMessage());
+                //LLog.e(TAG, "onPlayerError " + error.getMessage());
                 lastCurrentPosition = FUZVideo.getPlayer().getCurrentPosition();
-                LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
+                //LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
                 setupVideo();
             }
 
@@ -489,7 +490,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && FUZVideo != null) {
-            LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
+            //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
             setListener();
             if (lastCurrentPosition > 0) {
                 FUZVideo.getPlayer().seekTo(lastCurrentPosition);
@@ -507,13 +508,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onPlayerStateEnded() {
-        //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
-        if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            //TODO iplm this
+        //TODO Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
+        /*if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             LLog.d(TAG, "Dang play o che do playlist folder -> auto switch next data");
         } else {
             LLog.d(TAG, "Dang play o che do entity -> do nothing");
-        }
+        }*/
         stopSelf();
     }
 
@@ -521,10 +521,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
-            LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
+            //LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
             return;
         }
-        LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
+        //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
             FUZVideo.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);

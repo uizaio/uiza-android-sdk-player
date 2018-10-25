@@ -6,16 +6,16 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
 
 /**
  * Created by loitp on 5/8/2018.
  */
 
-public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
+public class FloatClickFullScreenReceiver extends BroadcastReceiver {
     private final String TAG = getClass().getSimpleName();
     //private Data data;
     private Gson gson = new Gson();
@@ -42,7 +42,7 @@ public class FloatClickFullScreenReceiverV3 extends BroadcastReceiver {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } catch (ClassNotFoundException e) {
-                LLog.e(TAG, "ClassNotFoundException " + e.toString());
+                LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
             }
         }
     }

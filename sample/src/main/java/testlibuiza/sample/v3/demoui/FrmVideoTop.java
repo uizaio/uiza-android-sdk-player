@@ -311,7 +311,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             uzVideo.pauseVideo();
             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();

@@ -21,7 +21,6 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
     private final String entityIdDefaultLIVE = LSApplication.entityIdDefaultLIVE;
     private final String metadataId = LSApplication.metadataDefault0;
@@ -37,21 +36,18 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         frmRootView.findViewById(R.id.bt_entity_vod).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
             }
         });
         frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultLIVE);
             }
         });
         frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });
@@ -83,7 +79,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
+        //LLog.d(TAG, "onBackPressed " + TAG);
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {

@@ -35,8 +35,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.restclient.RestClientV2;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -44,7 +42,6 @@ import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.Utils;
-import vn.uiza.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -336,7 +333,7 @@ public class UZUtil {
         return false;
     }
 
-    public static void setupRestClientV2(Activity activity) {
+    /*public static void setupRestClientV2(Activity activity) {
         if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
             String currentApi = getApiEndPoint(activity);
             if (currentApi == null || currentApi.isEmpty()) {
@@ -362,14 +359,14 @@ public class UZUtil {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
         }
-    }
+    }*/
 
     //stop service pip FUZVideoService
-    public static void stopServicePiPIfRunningV3(Activity activity) {
+    public static void stopServicePiPIfRunning(Activity activity) {
         if (activity == null) {
             return;
         }
-        //LLog.d(TAG, "stopServicePiPIfRunningV3");
+        //LLog.d(TAG, "stopServicePiPIfRunning");
         boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
@@ -446,7 +443,7 @@ public class UZUtil {
             //UZUtil.setClickedPip(activity, false);
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             UZUtil.playLinkPlay(uzVideo, linkPlay);
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
@@ -459,12 +456,15 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        if (entityId != null) {
+            UZUtil.setClickedPip(activity, false);
+        }
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
             UZUtil.play(uzVideo, null);
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             if (entityId != null) {
                 //LLog.d(TAG, "initEntity entityId: " + entityId);
                 UZUtil.play(uzVideo, entityId);
@@ -480,6 +480,9 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        if (metadataId != null) {
+            UZUtil.setClickedPip(activity, false);
+        }
         //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
@@ -489,7 +492,7 @@ public class UZUtil {
             }
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }

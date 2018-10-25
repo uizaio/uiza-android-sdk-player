@@ -39,7 +39,7 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
+        //LLog.d(TAG, "onBackPressed " + TAG);
         return false;
     }
 }
