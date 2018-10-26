@@ -191,6 +191,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    protected boolean isPlayingAd() {
+        if (videoAdPlayerListerner == null) {
+            return false;
+        }
+        return videoAdPlayerListerner.isPlayingAd();
+    }
+
     public void setRunnable() {
         //LLog.d(TAG, "runnable setRunnable");
         handler = new Handler();

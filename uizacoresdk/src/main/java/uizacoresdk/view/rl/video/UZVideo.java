@@ -68,6 +68,7 @@ import uizacoresdk.view.dlg.playlistfolder.UZDlgPlaylistFolder;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.NoConnectionException;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LAnimationUtil;
@@ -355,6 +356,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIEndScreen();
 
         //called api parallel here
+        if (!LConnectivityUtil.isConnected(activity)) {
+            if (uzCallback != null) {
+                uzCallback.onError(new NoConnectionException(activity.getString(R.string.error_no_connection)));
+            }
+            return;
+        }
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
@@ -644,7 +651,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         this.entityId = null;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = false;
         UZData.getInstance().setSettingPlayer(true);
-        isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
 
@@ -682,6 +688,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
         //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
+
+        if (!LConnectivityUtil.isConnected(activity)) {
+            if (uzCallback != null) {
+                uzCallback.onError(new NoConnectionException(activity.getString(R.string.error_no_connection)));
+            }
+            return;
+        }
 
         initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
         if (uzCallback != null) {
@@ -948,6 +961,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public boolean changeSkin(int skinId) {
         LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
+            return false;
+        }
+        if (uzPlayerManager.isPlayingAd()) {
+            if (uzCallback != null) {
+                uzCallback.onError(new IllegalArgumentException(activity.getString(R.string.error_change_skin)));
+            }
             return false;
         }
         UZData.getInstance().setCurrentPlayerId(skinId);
