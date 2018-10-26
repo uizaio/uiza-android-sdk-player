@@ -82,7 +82,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
-        //data = UZUtil.getData(this, gson);
         if (UZData.getInstance().getData() == null) {
             LLog.e(TAG, "onStartCommand data == null");
             return super.onStartCommand(intent, flags, startId);

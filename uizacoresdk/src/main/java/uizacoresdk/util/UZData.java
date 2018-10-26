@@ -297,10 +297,14 @@ public class UZData {
         uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
-        //entity_id
-        uizaTracking.setEntityId(uzInput == null ? "null" : uzInput.getData().getId());
-        //entity_name
-        uizaTracking.setEntityName(uzInput == null ? "null" : uzInput.getData().getName());
+        //entity_id, entity_name
+        if (uzInput == null || uzInput.getData() == null) {
+            uizaTracking.setEntityId("null");
+            uizaTracking.setEntityName("null");
+        } else {
+            uizaTracking.setEntityId(uzInput.getData().getId());
+            uizaTracking.setEntityName(uzInput.getData().getName());
+        }
         //TODO entity_series
         uizaTracking.setEntitySeries("");
         //TODO entity_producer
@@ -317,7 +321,7 @@ public class UZData {
         uizaTracking.setEntityDuration("0");
         //TODO entity_stream_type
         uizaTracking.setEntityStreamType("on-demand");
-        //TODO entity_encoding_variant
+        //TODO entity_encoding_variantonStartCommand data == null
         uizaTracking.setEntityEncodingVariant("");
         //TODO entity_cdn
         uizaTracking.setEntityCdn("");
