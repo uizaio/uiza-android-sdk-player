@@ -15,7 +15,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="FLOAT_CLICKED_FULLSCREEN_V3" />
+                <action android:name="FLOAT_CLICKED_FULLSCREEN" />
             </intent-filter>
         </receiver>
 

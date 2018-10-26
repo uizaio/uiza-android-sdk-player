@@ -91,7 +91,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
                 if (linkPlay == null || linkPlay.isEmpty()) {
                     LToast.show(activity, "Please input correct linkplay");
                 } else {
-                    UZUtil.initLinkPlay(activity, uzVideo, linkPlay);
+                    UZUtil.initLinkPlay(activity, uzVideo, linkPlay, false);
                 }
             }
         });

@@ -127,13 +127,13 @@ public class Constants {
     public static final String BROADCAST_ACTION = "BROADCAST_ACTION_SERVICE_ACITIVY";
 
     //public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
+    public final static String FLOAT_USER_USE_CUSTOM_LINK_PLAY = "FLOAT_USER_USE_CUSTOM_LINK_PLAY";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
     public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
     public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
     public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
-    public final static String FLOAT_CLICKED_FULLSCREEN_V3 = "FLOAT_CLICKED_FULLSCREEN_V3";
     public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
     public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
 

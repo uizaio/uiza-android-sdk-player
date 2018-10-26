@@ -426,7 +426,7 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static void initLinkPlay(Activity activity, UZVideo uzVideo, String linkPlay) {
+    public static void initLinkPlay(Activity activity, UZVideo uzVideo, String linkPlay, boolean isLivestream) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
@@ -444,7 +444,7 @@ public class UZUtil {
         } else {
             //check if play entity
             UZUtil.stopServicePiPIfRunning(activity);
-            UZUtil.playLinkPlay(uzVideo, linkPlay);
+            UZUtil.playLinkPlay(uzVideo, linkPlay, isLivestream);
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
     }
@@ -499,12 +499,12 @@ public class UZUtil {
         UZUtil.setIsInitPlaylistFolder(activity, true);
     }
 
-    private static void playLinkPlay(final UZVideo uzVideo, final String linkPlay) {
+    private static void playLinkPlay(final UZVideo uzVideo, final String linkPlay, final boolean isLivestream) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initLinkPlay(linkPlay);
+                uzVideo.initLinkPlay(linkPlay, isLivestream);
             }
         });
     }

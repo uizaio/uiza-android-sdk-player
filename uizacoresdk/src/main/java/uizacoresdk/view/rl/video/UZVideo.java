@@ -339,7 +339,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
-        isInitLinkPlay = false;
+        isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
         isCalledAPIGetTokenStreaming = false;
@@ -631,17 +631,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         init(entityId, false, true);
     }
 
-    public boolean isInitLinkPlay() {
-        return isInitLinkPlay;
+    public boolean isInitCustomLinkPlay() {
+        return isInitCustomLinkPlay;
     }
 
     //user pass any link (not use entityId or metadataId
-    private boolean isInitLinkPlay;
+    private boolean isInitCustomLinkPlay;
 
-    public void initLinkPlay(@NonNull String linkPlay) {
+    public void initLinkPlay(@NonNull String linkPlay, boolean isLivestream) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "init linkPlay " + linkPlay);
-        isInitLinkPlay = true;
+        isInitCustomLinkPlay = true;
         setVisibilityOfPlaylistFolderController(View.GONE);
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
@@ -665,7 +665,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(true);
 
         isHasError = false;
-        isLivestream = false;
+        this.isLivestream = isLivestream;
 
         setDefautValueForFlagIsTracked();
 
@@ -1391,8 +1391,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void trackProgress(int s, int percent) {
         //dont track if user use custom linkplay
-        if (isInitLinkPlay) {
-            //LLog.d(TAG, "trackProgress return isInitLinkPlay");
+        if (isInitCustomLinkPlay) {
+            //LLog.d(TAG, "trackProgress return isInitCustomLinkPlay");
             return;
         }
         //track event view (after video is played 5s)
@@ -2178,6 +2178,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         Intent intent = new Intent(activity, FUZVideoService.class);
+        intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
+        intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
@@ -2198,8 +2200,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(uizaTracking));
-        if (activity == null || isInitLinkPlay) {
-            LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitLinkPlay");
+        if (activity == null || isInitCustomLinkPlay) {
+            LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitCustomLinkPlay");
             return;
         }
         UZService service = RestClientTracking.createService(UZService.class);
@@ -3310,8 +3312,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventVideoStarts() {
-        if (isInitLinkPlay) {
-            LLog.d(TAG, "trackUizaEventVideoStarts return isInitLinkPlay");
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
             return;
         }
         if (UZTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
@@ -3327,8 +3329,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventDisplay() {
-        if (isInitLinkPlay) {
-            LLog.d(TAG, "trackUizaEventVideoStarts return isInitLinkPlay");
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
             return;
         }
         if (UZTrackingUtil.isTrackedEventTypeDisplay(activity)) {
@@ -3344,8 +3346,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventPlaysRequested() {
-        if (isInitLinkPlay) {
-            LLog.d(TAG, "trackUizaEventVideoStarts return isInitLinkPlay");
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
             return;
         }
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
