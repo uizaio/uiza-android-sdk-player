@@ -65,11 +65,11 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.uiza.R;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.listerner.VideoAdPlayerListerner;
+import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.utils.util.AppUtils;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -112,7 +112,7 @@ import uizacoresdk.listerner.VideoAdPlayerListerner;
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
-        userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
+        userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
                 context,

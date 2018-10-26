@@ -62,12 +62,12 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.listerner.VideoAdPlayerListerner;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
-import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.utils.util.AppUtils;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -144,7 +144,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
-        userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
+        userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
 
         //OPTION 1 OK
         /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
