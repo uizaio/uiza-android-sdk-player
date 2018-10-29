@@ -10,13 +10,13 @@ import android.widget.EditText;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import testlibuiza.sample.v3.demoui.HomeV4CanSlideActivity;
+import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
 
 public class SetEntityIdActivity extends BaseActivity {
     //for entity id
@@ -45,7 +45,8 @@ public class SetEntityIdActivity extends BaseActivity {
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
+                //UZUtil.setClickedPip(activity, false);
+                Intent intent = new Intent(activity, HomeCanSlideActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -99,10 +100,8 @@ public class SetEntityIdActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(activity, false);
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, false);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
@@ -131,7 +130,6 @@ public class SetEntityIdActivity extends BaseActivity {
     }
 
     private void initUIPlaylistFolder() {
-        //set default value entity id
         etInputMetadataId.setText(LSApplication.metadataDefault0);
         LUIUtil.setLastCursorEditText(etInputEntityId);
         etInputMetadataId.addTextChangedListener(new TextWatcher() {
@@ -155,10 +153,8 @@ public class SetEntityIdActivity extends BaseActivity {
         btStartPf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(activity, false);
                 String metadataId = etInputMetadataId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
-                intent.putExtra(Constants.KEY_UIZA_IS_PLAYLIST_FOLDER, true);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);

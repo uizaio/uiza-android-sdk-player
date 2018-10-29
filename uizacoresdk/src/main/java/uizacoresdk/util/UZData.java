@@ -136,10 +136,10 @@ public class UZData {
         }
     }
 
-    private UZInput UZInput;
+    private UZInput uzInput;
 
-    public UZInput getUZInput() {
-        return UZInput;
+    public UZInput getUzInput() {
+        return uzInput;
     }
 
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
@@ -153,7 +153,7 @@ public class UZData {
     }
 
     public void setUizaInput(UZInput UZInput, boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed) {
-        this.UZInput = UZInput;
+        this.uzInput = UZInput;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
 
         //add new uiza input to last position
@@ -182,7 +182,7 @@ public class UZData {
         }
         /*if (Constants.IS_DEBUG) {
             String x = "";
-            for (UZInput u : UZInputList) {
+            for (uzInput u : UZInputList) {
                 if (u != null && u.getData() != null && u.getData().getEntityName() != null) {
                     x += " > " + u.getData().getEntityName();
                 }
@@ -192,37 +192,37 @@ public class UZData {
     }
 
     public boolean isLivestream() {
-        if (UZInput == null) {
+        if (uzInput == null) {
             return false;
         }
-        return UZInput.isLivestream();
+        return uzInput.isLivestream();
     }
 
     public String getEntityId() {
-        if (UZInput == null) {
+        if (uzInput == null) {
             if (data == null) {
                 return null;
             }
             return data.getId();
         }
-        return UZInput.getData().getId();
+        return uzInput.getData().getId();
     }
 
     public String getEntityName() {
-        if (UZInput == null || UZInput.getData() == null) {
+        if (uzInput == null || uzInput.getData() == null) {
             return " - ";
         }
-        return UZInput.getData().getName();
+        return uzInput.getData().getName();
     }
 
     public String getThumbnail() {
-        /*if (UZInput == null) {
+        /*if (uzInput == null) {
             if (data != null && getData().getThumbnail() != null) {
                 return getData().getThumbnail();
             }
             return null;
         }
-        return UZInput.getData().getThumbnail();*/
+        return uzInput.getData().getThumbnail();*/
         if (data == null || data.getThumbnail() == null) {
             return null;
         }
@@ -230,31 +230,31 @@ public class UZData {
     }
 
     public String getChannelName() {
-        if (UZInput == null || UZInput.getData() == null) {
+        if (uzInput == null || uzInput.getData() == null) {
             return null;
         }
-        return UZInput.getData().getChannelName();
+        return uzInput.getData().getChannelName();
     }
 
     public String getUrlIMAAd() {
-        if (UZInput == null) {
+        if (uzInput == null) {
             return null;
         }
-        return UZInput.getUrlIMAAd();
+        return uzInput.getUrlIMAAd();
     }
 
     public String getUrlThumnailsPreviewSeekbar() {
-        if (UZInput == null) {
+        if (uzInput == null) {
             return null;
         }
-        return UZInput.getUrlThumnailsPreviewSeekbar();
+        return uzInput.getUrlThumnailsPreviewSeekbar();
     }
 
     public String getLastFeedId() {
-        if (UZInput == null || UZInput.getData() == null) {
+        if (uzInput == null || uzInput.getData() == null) {
             return null;
         }
-        return UZInput.getData().getLastFeedId();
+        return uzInput.getData().getLastFeedId();
     }
 
 
@@ -265,7 +265,7 @@ public class UZData {
     }*/
 
     public void clearUizaInputList() {
-        UZInput = null;
+        uzInput = null;
         UZInputList.clear();
     }
 
@@ -297,10 +297,14 @@ public class UZData {
         uizaTracking.setPlayerName("UizaAndroidSDKV3");
         //TODO player_version
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
-        //entity_id
-        uizaTracking.setEntityId(UZInput == null ? "null" : UZInput.getData().getId());
-        //entity_name
-        uizaTracking.setEntityName(UZInput == null ? "null" : UZInput.getData().getName());
+        //entity_id, entity_name
+        if (uzInput == null || uzInput.getData() == null) {
+            uizaTracking.setEntityId("null");
+            uizaTracking.setEntityName("null");
+        } else {
+            uizaTracking.setEntityId(uzInput.getData().getId());
+            uizaTracking.setEntityName(uzInput.getData().getName());
+        }
         //TODO entity_series
         uizaTracking.setEntitySeries("");
         //TODO entity_producer
@@ -317,7 +321,7 @@ public class UZData {
         uizaTracking.setEntityDuration("0");
         //TODO entity_stream_type
         uizaTracking.setEntityStreamType("on-demand");
-        //TODO entity_encoding_variant
+        //TODO entity_encoding_variantonStartCommand data == null
         uizaTracking.setEntityEncodingVariant("");
         //TODO entity_cdn
         uizaTracking.setEntityCdn("");

@@ -28,13 +28,14 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.model.UZCustomLinkPlay;
+import uizacoresdk.view.floatview.FUZVideoService;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.restclient.RestClientV2;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
@@ -42,9 +43,6 @@ import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.Utils;
-import uizacoresdk.view.floatview.FUZVideoService;
-import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.views.LToast;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
@@ -336,7 +334,7 @@ public class UZUtil {
         return false;
     }
 
-    public static void setupRestClientV2(Activity activity) {
+    /*public static void setupRestClientV2(Activity activity) {
         if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
             String currentApi = getApiEndPoint(activity);
             if (currentApi == null || currentApi.isEmpty()) {
@@ -362,14 +360,14 @@ public class UZUtil {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
             }
         }
-    }
+    }*/
 
     //stop service pip FUZVideoService
-    public static void stopServicePiPIfRunningV3(Activity activity) {
+    public static void stopServicePiPIfRunning(Activity activity) {
         if (activity == null) {
             return;
         }
-        //LLog.d(TAG, "stopServicePiPIfRunningV3");
+        //LLog.d(TAG, "stopServicePiPIfRunning");
         boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
@@ -425,29 +423,55 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback){
+    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback) {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static void initEntity(Activity activity, UZVideo UZVideo, String entityId) {
+    public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
-        if (UZVideo == null) {
+        if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
+        }
+        if (UZDataCLP.getInstance().getUzCustomLinkPlay() == null) {
+            LLog.e(TAG, "You must init custom linkPlay first.");
+            return false;
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            UZUtil.play(UZVideo, null);
+            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+        } else {
+            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+        }
+        UZUtil.setIsInitPlaylistFolder(activity, false);
+        return true;
+    }
+
+    public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
+        if (activity == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
+        if (uzVideo == null) {
+            throw new NullPointerException("UZVideo cannot be null");
+        }
+        if (entityId != null) {
+            UZUtil.setClickedPip(activity, false);
+        }
+        if (UZUtil.getClickedPip(activity)) {
+            //LLog.d(TAG, "called from pip enter fullscreen");
+            UZUtil.play(uzVideo, null);
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             if (entityId != null) {
-                LLog.d(TAG, "initEntity entityId: " + entityId);
-                //setEntityId(activity, entityId);
-                UZUtil.play(UZVideo, entityId);
+                //LLog.d(TAG, "initEntity entityId: " + entityId);
+                UZUtil.play(uzVideo, entityId);
             }
         }
+        UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZDataCLP.getInstance().clearData();
     }
 
     public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
@@ -457,25 +481,37 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
+        if (metadataId != null) {
+            UZUtil.setClickedPip(activity, false);
+        }
+        //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
+            //LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                //LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
                 playPlaylist(uzVideo, null);
             }
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunningV3(activity);
+            UZUtil.stopServicePiPIfRunning(activity);
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }
+        UZUtil.setIsInitPlaylistFolder(activity, true);
+        UZDataCLP.getInstance().clearData();
+    }
+
+    private static void playLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
+        UZData.getInstance().setSettingPlayer(false);
+        uzVideo.post(new Runnable() {
+            @Override
+            public void run() {
+                uzVideo.initLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
+            }
+        });
     }
 
     private static void play(final UZVideo uzVideo, final String entityId) {
-        /*if (UZData.getInstance().isSettingPlayer()) {
-            LLog.d(TAG, "isSettingPlayer");
-            return;
-        }*/
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
@@ -486,10 +522,7 @@ public class UZUtil {
     }
 
     private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
-        /*if (UZData.getInstance().isSettingPlayer()) {
-            LLog.d(TAG, "isSettingPlayer");
-            return;
-        }*/
+        //LLog.d(TAG, "playPlaylist metadataId " + metadataId);
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
@@ -561,7 +594,6 @@ public class UZUtil {
     private final static String PREFERENCES_FILE_NAME = "loitp";
     private final static String CHECK_APP_READY = "CHECK_APP_READY";
     private final static String PRE_LOAD = "PRE_LOAD";
-    //private final static String SLIDE_UIZA_VIDEO_ENABLED = "SLIDE_UIZA_VIDEO_ENABLED";
     private final static String INDEX = "INDEX";
     private final static String AUTH = "AUTH";
     public final static String API_END_POINT = "API_END_POINT";
@@ -574,6 +606,7 @@ public class UZUtil {
     private final static String PREF_STATE_FILTER = "state_filter";
 
     //for api v3
+    private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
     private final static String V3UIZATOKEN = "V3UIZATOKEN";
     private final static String V3DATA = "V3DATA";
@@ -671,6 +704,17 @@ public class UZUtil {
         editor.apply();
     }*/
     /////////////////////////////////BOOLEAN
+
+    public static Boolean isInitPlaylistFolder(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(IS_INIT_PLAYLIST_FOLDER, false);
+    }
+
+    public static void setIsInitPlaylistFolder(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(IS_INIT_PLAYLIST_FOLDER, value);
+        editor.apply();
+    }
 
     public static Boolean getCheckAppReady(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -783,5 +827,6 @@ public class UZUtil {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         pref.edit().putBoolean(PREF_STATE_FILTER, on).apply();
     }
+
     //=============================================================================END PREF
 }

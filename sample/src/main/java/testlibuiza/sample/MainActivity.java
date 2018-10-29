@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
@@ -14,16 +13,8 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.restclient.RestClientV2;
-import vn.uiza.restapi.uiza.UZServiceV1;
-import vn.uiza.restapi.uiza.model.v2.auth.Auth;
-import vn.uiza.restapi.uiza.model.v2.auth.JsonBodyAuth;
-import vn.uiza.rxandroid.ApiSubscriber;
 
 public class MainActivity extends BaseActivity {
 
@@ -31,8 +22,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //auth v2
-        authV2();
+        //authV2();
 
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,11 +90,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void authV2() {
+    /*private void authV2() {
         LLog.d(TAG, "authV2");
         UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
-        /*String accessKeyId = Constants.A_K_DEV;
-        String secretKeyId = Constants.S_K_DEV;*/
+        *//*String accessKeyId = Constants.A_K_DEV;
+        String secretKeyId = Constants.S_K_DEV;*//*
         String accessKeyId = Constants.A_K_UQC;
         String secretKeyId = Constants.S_K_UQC;
 
@@ -125,7 +115,7 @@ public class MainActivity extends BaseActivity {
                 LLog.e(TAG, "auth onFail " + e.getMessage());
             }
         });
-    }
+    }*/
 
     @Override
     protected boolean setFullScreen() {

@@ -58,7 +58,6 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LLog.d(TAG, "onViewCreated");
         if (UZUtil.getClickedPip(getActivity())) {
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");

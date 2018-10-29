@@ -19,20 +19,20 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZData;
+import uizacoresdk.util.UZTrackingUtil;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.RestClientTracking;
-import vn.uiza.restapi.uiza.UZServiceV1;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.rxandroid.ApiSubscriber;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZTrackingUtil;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FUZVideo extends RelativeLayout {
@@ -330,7 +330,7 @@ public class FUZVideo extends RelativeLayout {
             }
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
-        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
+        UZService service = RestClientTracking.createService(UZService.class);
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -357,10 +357,10 @@ public class FUZVideo extends RelativeLayout {
             ivVideoCover.setVisibility(VISIBLE);
         }
         String urlImg = "";
-        if (UZData.getInstance().getUZInput() == null || UZData.getInstance().getUZInput().getData() == null || UZData.getInstance().getUZInput().getData().getThumbnail() == null) {
+        if (UZData.getInstance().getUzInput() == null || UZData.getInstance().getUzInput().getData() == null || UZData.getInstance().getUzInput().getData().getThumbnail() == null) {
             urlImg = Constants.URL_IMG_THUMBNAIL;
         } else {
-            urlImg = UZData.getInstance().getUZInput().getData().getThumbnail();
+            urlImg = UZData.getInstance().getUzInput().getData().getThumbnail();
         }
         LImageUtil.load(getContext(), urlImg, ivVideoCover, R.drawable.uiza);
     }

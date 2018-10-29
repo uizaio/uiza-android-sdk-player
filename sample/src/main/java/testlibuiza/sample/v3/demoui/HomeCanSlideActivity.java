@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import testlibuiza.R;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LLog;
@@ -13,12 +15,10 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.view.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
-public class HomeV4CanSlideActivity extends BaseActivity {
+public class HomeCanSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
 
     public DraggablePanel getDraggablePanel() {
@@ -41,19 +41,25 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             @Override
             public void onMinimized() {
                 //LLog.d(TAG, "onMinimized");
-                frmVideoTop.getUZVideo().hideController();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().hideController();
+                }
             }
 
             @Override
             public void onClosedToLeft() {
                 //LLog.d(TAG, "onClosedToLeft");
-                frmVideoTop.getUZVideo().onDestroy();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().onDestroy();
+                }
             }
 
             @Override
             public void onClosedToRight() {
                 //LLog.d(TAG, "onClosedToRight");
-                frmVideoTop.getUZVideo().onDestroy();
+                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
+                    frmVideoTop.getUZVideo().onDestroy();
+                }
             }
 
             @Override
@@ -80,7 +86,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -150,14 +156,18 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            //LLog.d(TAG, "onBackPressed " + TAG);
+            if (draggablePanel != null) {
+                draggablePanel.setVisibility(View.INVISIBLE);
+            }
             super.onBackPressed();
         }
     }
 
     public void playEntityId(final String entityId) {
+        LLog.d(TAG, "playEntityId " + entityId);
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
@@ -178,6 +188,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
     }
 
     public void playPlaylistFolder(final String metadataId) {
+        LLog.d(TAG, "playPlaylistFolder " + metadataId);
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
@@ -199,7 +210,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     //this method will be called when entity is ready to play
     public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
+        //LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
         if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
         }

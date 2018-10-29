@@ -60,13 +60,14 @@ import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.listerner.VideoAdPlayerListerner;
+import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
-import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.utils.util.AppUtils;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -136,10 +137,14 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             // LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
-            adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
+            if (UZUtil.getClickedPip(context)) {
+                LLog.e(TAG, "UZPlayerManager don't init urlIMAAd because called from PIP again");
+            } else {
+                adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
+            }
         }
 
-        userAgent = Util.getUserAgent(context, context.getString(R.string.app_name));
+        userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
 
         //OPTION 1 OK
         /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
@@ -176,14 +181,18 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private void onAdEnded() {
         if (!isOnAdEnded) {
             isOnAdEnded = true;
-            if (uzVideo != null) {
-                uzVideo.setDefaultUseController(uzVideo.isDefaultUseController());
-            }
             //LLog.d(TAG, "onAdEnded " + isOnAdEnded);
             if (progressCallback != null) {
                 progressCallback.onAdEnded();
             }
         }
+    }
+
+    protected boolean isPlayingAd() {
+        if (videoAdPlayerListerner == null) {
+            return false;
+        }
+        return videoAdPlayerListerner.isPlayingAd();
     }
 
     public void setRunnable() {
@@ -310,8 +319,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     private MediaSource createMediaSourceVideo() {
         //Video Source
-        //MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkPlay));
-        //MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay), null, null);
         MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }
@@ -656,7 +663,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         public void onRenderedFirstFrame(Surface surface) {
             //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
-            uzVideo.removeVideoCover(false);
+            if (uzVideo != null) {
+                uzVideo.removeVideoCover(false);
+            }
         }
 
         @Override

@@ -30,6 +30,11 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.util.List;
 
 import testlibuiza.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZCallback;
+import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -39,11 +44,6 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UZCallback {
@@ -265,18 +265,18 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
-                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
-                        && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
-                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                if (((HomeCanSlideActivity) getActivity()).getDraggablePanel() != null
+                        && !((HomeCanSlideActivity) getActivity()).isLandscapeScreen()) {
+                    if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
                         if (isShow) {
                             //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
-                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
                         } else {
                             //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
-                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
                         }
                     } else {
-                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                        ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
                     }
                 }
             }
@@ -285,10 +285,9 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+        ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
-            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 
@@ -301,7 +300,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         if (LScreenUtil.isFullScreen(getActivity())) {
             uzVideo.toggleFullscreen();
         } else {
-            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
         }
     }
 
@@ -312,14 +311,13 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             uzVideo.pauseVideo();
-            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
-                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
                 }
             });
         }
@@ -348,10 +346,12 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     public void initEntity(String entityId) {
+        //LLog.d(TAG, "initEntity " + entityId);
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
+        //LLog.d(TAG, "initPlaylistFolder " + metadataId);
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 }

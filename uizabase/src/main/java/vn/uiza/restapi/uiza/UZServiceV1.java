@@ -105,9 +105,9 @@ public interface UZServiceV1 {
 
     //=====================================================end v1 http://dev-api.uiza.io/data/index.html
 
-    //=====================================================tracking
+    /*//=====================================================tracking
     //@Headers("Content-Type: application/json")
     @POST("/analytic-tracking/v1/tracking/mobile")
     Observable<Object> track(@Body UizaTracking uizaTracking);
-    //end =====================================================tracking
+    //end =====================================================tracking*/
 }

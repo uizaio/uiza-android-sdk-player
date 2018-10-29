@@ -27,7 +27,7 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
         frmRootView.findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(new FrmUser());
+                ((HomeCanSlideActivity) getActivity()).replaceFragment(new FrmUser());
             }
         });
     }
@@ -39,7 +39,7 @@ public class FrmLogin extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
+        //LLog.d(TAG, "onBackPressed " + TAG);
         return false;
     }
 }

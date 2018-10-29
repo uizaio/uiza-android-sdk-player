@@ -40,16 +40,16 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.UZData;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.view.ComunicateMng;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
 
 /**
  * Created by loitp on 3/27/2018.
@@ -66,13 +66,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private ImageButton btFullScreen;
     private ImageButton btPlayPause;
     private TextView tvMsg;
-    private FUZVideo FUZVideo;
+    private FUZVideo fuzVideo;
     private WindowManager.LayoutParams params;
-
-    //private Data data;
     private String linkPlay;
     private Gson gson = new Gson();
-
     private boolean isLivestream;
     private int widthScreen;
 
@@ -82,14 +79,19 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //LLog.d(TAG, "onStartCommand");
-        //data = UZUtil.getData(this, gson);
-        if (UZData.getInstance().getData() == null) {
-            LLog.e(TAG, "onStartCommand data == null");
-            return super.onStartCommand(intent, flags, startId);
+        boolean isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
+        LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay);
+        if (isInitCustomLinkplay) {
+        } else {
+            if (UZData.getInstance().getData() == null) {
+                LLog.e(TAG, "onStartCommand data == null");
+                return super.onStartCommand(intent, flags, startId);
+            }
         }
-        if (intent != null && intent.getExtras() != null) {
+        if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
+            LLog.d(TAG, "linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -97,7 +99,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void findViews() {
         widthScreen = LScreenUtil.getScreenWidth();
-        LLog.d(TAG, "widthScreen " + widthScreen);
+        //LLog.d(TAG, "widthScreen " + widthScreen);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -166,7 +168,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         params.x = LScreenUtil.getScreenWidth() - getWidth();
         params.y = LScreenUtil.getScreenHeight() - getHeight();
 
-        FUZVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
+        fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
 
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -192,15 +194,15 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 rlControl.setVisibility(View.GONE);
 
                 //stop video
-                FUZVideo.getPlayer().setPlayWhenReady(false);
-                LUIUtil.showProgressBar(FUZVideo.getProgressBar());
+                fuzVideo.getPlayer().setPlayWhenReady(false);
+                LUIUtil.showProgressBar(fuzVideo.getProgressBar());
                 moveView.setOnTouchListener(null);//disabled move view
 
-                //bắn cho FloatClickFullScreenReceiverV3
+                //bắn cho FloatClickFullScreenReceiver
                 UZUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
-                intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN_V3);
+                intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 sendBroadcast(intent);
             }
@@ -208,10 +210,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FUZVideo == null) {
+                if (fuzVideo == null) {
                     return;
                 }
-                boolean isToggleResume = FUZVideo.togglePauseResume();
+                boolean isToggleResume = fuzVideo.togglePauseResume();
                 if (isToggleResume) {
                     btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
                 } else {
@@ -315,9 +317,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (mFloatingView != null) {
             mWindowManager.removeView(mFloatingView);
         }
-        if (FUZVideo != null) {
-            FUZVideo.onDestroy();
+        if (fuzVideo != null) {
+            fuzVideo.onDestroy();
         }
+        UZUtil.setClickedPip(getApplicationContext(), false);
         super.onDestroy();
     }
 
@@ -331,10 +334,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void setListener() {
         //LLog.d(TAG, TAG + " addListener");
-        if (FUZVideo == null || FUZVideo.getPlayer() == null) {
+        if (fuzVideo == null || fuzVideo.getPlayer() == null) {
             return;
         }
-        FUZVideo.getPlayer().addListener(new Player.EventListener() {
+        fuzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -369,9 +372,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                LLog.e(TAG, "onPlayerError " + error.getMessage());
-                lastCurrentPosition = FUZVideo.getPlayer().getCurrentPosition();
-                LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
+                //LLog.e(TAG, "onPlayerError " + error.getMessage());
+                lastCurrentPosition = fuzVideo.getPlayer().getCurrentPosition();
+                //LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
                 setupVideo();
             }
 
@@ -390,7 +393,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, "onSeekProcessed");
             }
         });
-        FUZVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        fuzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -421,7 +424,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        FUZVideo.setProgressCallback(new ProgressCallback() {
+        fuzVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
             }
@@ -436,7 +439,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
         });
-        FUZVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        fuzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -472,13 +475,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, "onVideoDisabled");
             }
         });
-        FUZVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        fuzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
         });
-        FUZVideo.getPlayer().addTextOutput(new TextOutput() {
+        fuzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 // LLog.d(TAG, "onCues");
@@ -488,14 +491,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        if (isInitSuccess && FUZVideo != null) {
-            LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
+        if (isInitSuccess && fuzVideo != null) {
+            //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
             setListener();
             if (lastCurrentPosition > 0) {
-                FUZVideo.getPlayer().seekTo(lastCurrentPosition);
+                fuzVideo.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
-                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
+                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false -> send msg to UZVideo");
                 //bắn cho UZVideo nhận
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
@@ -507,13 +510,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onPlayerStateEnded() {
-        //Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
-        if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            //TODO iplm this
+        //TODO Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
+        /*if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             LLog.d(TAG, "Dang play o che do playlist folder -> auto switch next data");
         } else {
             LLog.d(TAG, "Dang play o che do entity -> do nothing");
-        }
+        }*/
         stopSelf();
     }
 
@@ -521,12 +523,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
-            LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
+            //LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
             return;
         }
-        LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
+        //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            FUZVideo.init(linkPlay, isLivestream, this);
+            fuzVideo.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
@@ -572,17 +574,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhận được vị trí từ UZVideo, tiến hành seek tới vị trí này
             //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            if (FUZVideo != null) {
-                FUZVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            if (fuzVideo != null) {
+                fuzVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
-            if (FUZVideo != null) {
+            if (fuzVideo != null) {
                 //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
                 //lấy vị trí của pip hiện tại để bắn cho UZVideo
                 ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
-                msgFromServicePosition.setPosition(FUZVideo.getCurrentPosition());
+                msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
                 ComunicateMng.postFromService(msgFromServicePosition);
                 stopSelf();
             }

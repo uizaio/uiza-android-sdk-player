@@ -96,11 +96,10 @@ public abstract class BaseFragment extends Fragment {
         });
     }
 
-    protected void showDialogMsg(String msg) {
+    /*protected void showDialogMsg(String msg) {
         LDialogUtil.showDialog1(getActivity(), getString(R.string.app_name), msg, getString(R.string.confirm), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
-                //getActivity().onBackPressed();
             }
 
             @Override
@@ -108,7 +107,7 @@ public abstract class BaseFragment extends Fragment {
 
             }
         });
-    }
+    }*/
 
     public interface FragmentCallback {
         public void onViewCreated();

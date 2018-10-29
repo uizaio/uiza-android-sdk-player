@@ -65,6 +65,7 @@
     <color name="DeepPink">#FF1493</color>
     <color name="bottom_press_icon">#b41482</color>
     <color name="Red">#FF0000</color>
+    <color name="RedTrans">#55FF0000</color>
     <color name="DimGray">#696969</color>
     <color name="Blue">#0000FF</color>
     <color name="BlueTran">#550000FF</color>

@@ -68,6 +68,7 @@ import uizacoresdk.view.dlg.playlistfolder.UZDlgPlaylistFolder;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.base.NoConnectionException;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LAnimationUtil;
@@ -85,7 +86,6 @@ import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
-import vn.uiza.restapi.uiza.UZServiceV1;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -333,13 +333,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             UZData.getInstance().clearDataForEntity();
         }
-        //setDefaultUIDependOnLivestream(View.VISIBLE);
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             setVisibilityOfPlaylistFolderController(View.VISIBLE);
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
+        isCalledFromChangeSkin = false;
+        isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
         isCalledAPIGetTokenStreaming = false;
@@ -351,7 +352,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
+
         //called api parallel here
+        if (!LConnectivityUtil.isConnected(activity)) {
+            if (uzCallback != null) {
+                uzCallback.onError(new NoConnectionException(activity.getString(R.string.error_no_connection)));
+            }
+            return;
+        }
         callAPIGetDetailEntity();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
@@ -370,11 +381,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
-                    LLog.d(TAG, "callAPIGetDetailEntity onSuccess -> handleGetDetailEntityDone");
+                    //LLog.d(TAG, "callAPIGetDetailEntity onSuccess -> handleGetDetailEntityDone");
                     isCalledApiGetDetailEntity = true;
                     //save current data
                     UZData.getInstance().setData(d);
-                    if (!UZUtil.getClickedPip(activity)) {
+
+                    //LLog.d(TAG, "callAPIGetDetailEntity if getClickedPip " + UZUtil.getClickedPip(activity) + ", isPlayPlaylistFolder " + isPlayPlaylistFolder());
+                    //set video cover o moi case, ngoai tru
+                    //click tu pip entity thi ko can show video cover
+                    //click tu pip playlist folder lan dau tien thi ko can show video cover, neu nhan skip next hoac skip prev thi se show video cover
+                    if (isPlayPlaylistFolder()) {
+                        if (UZUtil.getClickedPip(activity)) {
+                            if (isClickedSkipNextOrSkipPrevious) {
+                                setVideoCover();
+                            }
+                        } else {
+                            setVideoCover();
+                        }
+                    } else {
                         setVideoCover();
                     }
                     handleDataCallAPI();
@@ -387,7 +411,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     LLog.e(TAG, "init onError " + e.toString());
                     if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "init onError: " + e.getMessage());
+                        LToast.show(activity, "init onError callAPIGetDetailEntity: " + e.getMessage());
                     }
                     UZData.getInstance().setSettingPlayer(false);
                     IllegalAccessException exception = new IllegalAccessException("init onError: " + e.getMessage());
@@ -396,8 +420,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             });
         } else {
             //init player khi user click vào fullscreen của floating view (pic)
-            LLog.d(TAG, "init UZData.getInstance().getData() != null else");
+            //LLog.d(TAG, "init UZData.getInstance().getData() != null else isPlayPlaylistFolder(): " + isPlayPlaylistFolder());
             isCalledApiGetDetailEntity = true;
+            //LLog.d(TAG, "callAPIGetDetailEntity else getClickedPip " + UZUtil.getClickedPip(activity) + ", isPlayPlaylistFolder " + isPlayPlaylistFolder());
             handleDataCallAPI();
         }
     }
@@ -424,12 +449,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
+                //TODO uncomment this line
+                //urlIMAAd = activity.getString(R.string.ad_tag_url);
                 handleDataCallAPI();
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored: " + e.getMessage());
+                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored (dont care): " + e.getMessage());
             }
         });
     }
@@ -452,17 +479,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     LToast.show(activity, "callAPIGetTokenStreaming onSuccess");
                 }
                 if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
-                    /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                        }
-                    });*/
                     handleError(new Exception(activity.getString(R.string.no_token_streaming)));
                     return;
                 }
@@ -476,17 +492,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             public void onFail(Throwable e) {
                 LLog.e(TAG, "callAPIGetTokenStreaming onFail " + e.getMessage());
                 final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_token_streaming) + "\n" + e.getMessage() : activity.getString(R.string.no_token_streaming);
-                /*LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        handleError(new Exception(msg));
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        handleError(new Exception(msg));
-                    }
-                });*/
                 handleError(new Exception(msg));
             }
         });
@@ -495,17 +500,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void callAPIGetLinkPlay() {
         //LLog.d(TAG, "callAPIGetLinkPlay isLivestream " + isLivestream);
         if (tokenStreaming == null || tokenStreaming.isEmpty()) {
-            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_token_streaming), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                }
-
-                @Override
-                public void onCancel() {
-                    handleError(new Exception(activity.getString(R.string.no_token_streaming)));
-                }
-            });*/
             handleError(new Exception(activity.getString(R.string.no_token_streaming)));
             return;
         }
@@ -537,17 +531,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     LLog.e(TAG, "getLinkPlayLive LIVE onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
-                    /*LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(msg));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(msg));
-                        }
-                    });*/
                     handleError(new Exception(msg));
                 }
             });
@@ -580,17 +563,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     LLog.e(TAG, "callAPIGetLinkPlay VOD onFail " + e.getMessage());
                     final String msg = Constants.IS_DEBUG ? activity.getString(R.string.no_link_play) + "\n" + e.getMessage() : activity.getString(R.string.no_link_play);
-                    /*LDialogUtil.showDialog1Immersive(activity, msg, new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(msg));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(msg));
-                        }
-                    });*/
                     handleError(new Exception(msg));
                 }
             });
@@ -601,15 +573,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
         if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
             //LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
-            UZInput UZInput = new UZInput();
-            UZInput.setData(UZData.getInstance().getData());
-            UZInput.setUrlIMAAd(urlIMAAd);
+            UZInput uzInput = new UZInput();
+            uzInput.setData(UZData.getInstance().getData());
+            uzInput.setUrlIMAAd(urlIMAAd);
 
             //TODO correct url thumnail, null till now
             //UZInput.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
             //UZInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
-            UZInput.setUrlThumnailsPreviewSeekbar(null);
-            UZData.getInstance().setUizaInput(UZInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
+            uzInput.setUrlThumnailsPreviewSeekbar(null);
+            UZData.getInstance().setUizaInput(uzInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
         }
     }
@@ -619,17 +591,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         if (UZData.getInstance().getEntityId() == null || UZData.getInstance().getEntityId().isEmpty()) {
             LLog.e(TAG, "checkData getEntityId null or empty -> return");
-            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.entity_cannot_be_null_or_empty), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
-                }
-
-                @Override
-                public void onCancel() {
-                    handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
-                }
-            });*/
             handleError(new Exception(activity.getString(R.string.entity_cannot_be_null_or_empty)));
             UZData.getInstance().setSettingPlayer(false);
             return;
@@ -650,12 +611,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.release();
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
-        }
-        if (uzPlayerManager != null) {
             uzPlayerManager.showProgress();
         }
         setTitle();
-        updateUIDependOnLivetream();
+        //updateUIDependOnLivetream();
         callAPIGetLinkPlay();
         trackUizaEventDisplay();
         trackUizaEventPlaysRequested();
@@ -675,6 +634,79 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         init(entityId, false, true);
     }
 
+    public boolean isInitCustomLinkPlay() {
+        return isInitCustomLinkPlay;
+    }
+
+    //user pass any link (not use entityId or metadataId
+    private boolean isInitCustomLinkPlay;
+
+    public void initLinkPlay(@NonNull String linkPlay, boolean isLivestream) {
+        LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
+        LLog.d(TAG, "init linkPlay " + linkPlay);
+        isInitCustomLinkPlay = true;
+        isCalledFromChangeSkin = false;
+        setVisibilityOfPlaylistFolderController(View.GONE);
+        isCalledApiGetDetailEntity = false;
+        isCalledAPIGetUrlIMAAdTag = false;
+        isCalledAPIGetTokenStreaming = false;
+        urlIMAAd = null;
+        tokenStreaming = null;
+        this.entityId = null;
+        this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = false;
+        UZData.getInstance().setSettingPlayer(true);
+        hideLayoutMsg();
+        setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
+
+        isOnPlayerEnded = false;
+        updateUIEndScreen();
+
+        UZInput uzInput = new UZInput();
+        uzInput.setUrlIMAAd(urlIMAAd);
+        uzInput.setUrlThumnailsPreviewSeekbar(null);
+
+        UZData.getInstance().setUizaInput(uzInput, false);
+        UZData.getInstance().setSettingPlayer(true);
+
+        isHasError = false;
+        this.isLivestream = isLivestream;
+
+        setDefautValueForFlagIsTracked();
+
+        if (uzPlayerManager != null) {
+            //LLog.d(TAG, "init uizaPlayerManager != null");
+            uzPlayerManager.release();
+            mResultGetLinkPlay = null;
+            resetCountTryLinkPlayError();
+            uzPlayerManager.showProgress();
+        }
+        updateUIDependOnLivetream();
+
+        List<Subtitle> subtitleList = null;
+        //TODO iplm init linkplay chua co subtitle
+        /*subtitleList = new ArrayList<>();
+        Subtitle subtitle = new Subtitle();
+        subtitle.setLanguage("en");
+        subtitle.setUrl("https://www.iandevlin.com/html5test/webvtt/upc-video-subtitles-en.vtt");
+        subtitleList.add(subtitle);*/
+
+        //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
+        //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
+
+        if (!LConnectivityUtil.isConnected(activity)) {
+            if (uzCallback != null) {
+                uzCallback.onError(new NoConnectionException(activity.getString(R.string.error_no_connection)));
+            }
+            return;
+        }
+
+        initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+        if (uzCallback != null) {
+            uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
+        }
+        initUizaPlayerManager();
+    }
+
     /**
      * init player with metadatId (playlist/folder)
      */
@@ -687,6 +719,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZData.getInstance().clearDataForPlaylistFolder();
         }
         isHasError = false;
+        isClickedSkipNextOrSkipPrevious = false;
         callAPIGetListAllEntity(metadataId);
     }
 
@@ -777,17 +810,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (countTryLinkPlayError >= listLinkPlay.size()) {
                 if (LConnectivityUtil.isConnected(activity)) {
-                    /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                        }
-                    });*/
                     handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
                 } else {
                     //LLog.d(TAG, "checkToSetUpResouce else err_no_internet");
@@ -808,24 +830,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
             //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-            initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            if (isCalledFromChangeSkin) {
+                //if called from func changeSkin(), dont initDataSource with uilIMA Ad.
+                initDataSource(linkPlay, null, UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            } else {
+                initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            }
             if (uzCallback != null) {
                 uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
             }
-            initUizaPlayerManagerV3();
+            initUizaPlayerManager();
         } else {
             //LLog.d(TAG, "checkToSetUpResouce else");
-            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.err_setup), new LDialogUtil.Callback1() {
-                @Override
-                public void onClick1() {
-                    handleError(new Exception(activity.getString(R.string.err_setup)));
-                }
-
-                @Override
-                public void onCancel() {
-                    handleError(new Exception(activity.getString(R.string.err_setup)));
-                }
-            });*/
             handleError(new Exception(activity.getString(R.string.err_setup)));
         }
     }
@@ -835,7 +851,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVideoCover() {
-        if (ivVideoCover.getVisibility() != VISIBLE) {
+        if (ivVideoCover.getVisibility() != View.VISIBLE) {
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
@@ -846,9 +862,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void removeVideoCover(boolean isFromHandleError) {
-        if (ivVideoCover.getVisibility() != GONE) {
-            //LLog.d(TAG, "removeVideoCover isFromHandleError: " + isFromHandleError);
+        if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
+            ivVideoCover.invalidate();
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
@@ -859,6 +875,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
                 callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
+            //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
@@ -934,18 +951,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //TODO improve this func
     private boolean isRefreshFromChangeSkin;
     private long currentPositionBeforeChangeSkin;
+    private boolean isCalledFromChangeSkin;
 
     /*
      **change skin of player
      * return true if success
      */
     public boolean changeSkin(int skinId) {
-        LLog.d(TAG, "changeSkin skinId " + skinId);
+        //LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
+            return false;
+        }
+        if (uzPlayerManager.isPlayingAd()) {
+            if (uzCallback != null) {
+                uzCallback.onError(new IllegalArgumentException(activity.getString(R.string.error_change_skin)));
+            }
             return false;
         }
         UZData.getInstance().setCurrentPlayerId(skinId);
         isRefreshFromChangeSkin = true;
+        isCalledFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
         playerView = (UZPlayerView) activity.getLayoutInflater().inflate(skinId, null);
@@ -1300,6 +1325,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (progressCallback != null) {
                     progressCallback.onAdEnded();
                 }
+                setDefaultUseController(isDefaultUseController());
             }
 
             @Override
@@ -1365,6 +1391,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackProgress(int s, int percent) {
+        //dont track if user use custom linkplay
+        if (isInitCustomLinkPlay) {
+            //LLog.d(TAG, "trackProgress return isInitCustomLinkPlay");
+            return;
+        }
         //track event view (after video is played 5s)
         //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
         if (s == (isLivestream ? 3 : 5)) {
@@ -1461,6 +1492,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onStateReadyFirst() {
         LLog.d(TAG, "onStateReadyFirst");
         updateUIButtonPlayPauseDependOnIsAutoStart();
+        updateUIDependOnLivetream();
+
+        //Dang play ad entity vod, ma dot nhien init entity live|| metadata thi ko hien ra controller dc
+        //do luc dang play ad thi o class UZManager da set setUseController(false)
+        //luc ad ended thi moi setUseController(default)
+        //trong case ad dang play ma init moi thi init ok, nhung controller van dang set la false
+        //setDefaultUseController(isDefaultUseController());
+
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
@@ -1542,8 +1581,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.resumeVideo();
             }
         } else {
-            LLog.d(TAG, "onResume else initUizaPlayerManagerV3");
-            //initUizaPlayerManagerV3();
+            LLog.d(TAG, "onResume else initUizaPlayerManager");
+            //initUizaPlayerManager();
         }*/
         if (uzPlayerManager != null) {
             if (ibPlayIcon != null && ibPlayIcon.getVisibility() == VISIBLE) {
@@ -1564,14 +1603,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzPlayerManager.getPlayer().getPlayWhenReady();
     }
 
-    private void initUizaPlayerManagerV3() {
+    private void initUizaPlayerManager() {
         if (uzPlayerManager != null) {
             uzPlayerManager.init();
             if (UZUtil.getClickedPip(activity) && !UZData.getInstance().isPlayWithPlaylistFolder()) {
-                //LLog.d(TAG, "initUizaPlayerManagerV3 setPlayWhenReady false ");
+                //LLog.d(TAG, "initUizaPlayerManager setPlayWhenReady false ");
                 uzPlayerManager.getPlayer().setPlayWhenReady(false);
             } else {
-                //LLog.d(TAG, "initUizaPlayerManagerV3 do nothing");
+                //LLog.d(TAG, "initUizaPlayerManager do nothing");
                 if (isRefreshFromChangeSkin) {
                     uzPlayerManager.seekTo(currentPositionBeforeChangeSkin);
                     isRefreshFromChangeSkin = false;
@@ -1751,7 +1790,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LAnimationUtil.play(v, Techniques.Pulse);
         }
 
-        /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này a có thể xử lý khi click vào con trol thì reset count down để ẩn control ko
+        /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này a có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn, cái này mình sẽ reset cout và update bản mới.*/
         if (isDefaultUseController) {
             if (rlMsg != null && rlMsg.getVisibility() == View.VISIBLE) {
@@ -1805,7 +1844,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 firstViewHasFocus = view;
             }
         }
-        //updateUIFocusChange(view, isFocus);
     }
 
     public void updateUIFocusChange(View view, boolean isFocus) {
@@ -1814,7 +1852,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (isFocus) {
             if (view instanceof UZImageButton) {
-                //LAnimationUtil.play(view, Techniques.FlipInX);
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
                 ((UZImageButton) view).setColorFilter(Color.GRAY);
             } else if (view instanceof UZTimebar) {
@@ -1934,7 +1971,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlLiveInfo.setVisibility(VISIBLE);
             }
             if (rlTimeBar != null) {
-                rlTimeBar.setVisibility(GONE);
+                rlTimeBar.setVisibility(INVISIBLE);//set GONE ok, but then VISIBLE not work huhu :(
             }
             if (ibPlaylistRelationIcon != null) {
                 ibPlaylistRelationIcon.setVisibility(GONE);
@@ -2124,17 +2161,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (activity == null) {
             return;
         }
-        if (isTablet) {
-            LLog.d(TAG, "handleClickPictureInPicture only available for tablet -> return");
-            return;
-        }
         if (isCastingChromecast()) {
-            LLog.d(TAG, "handleClickPictureInPicture isCastingChromecast -> return");
+            LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-            //If the draw over permission is not available open the settings screen
-            //to grant the permission.
             //LLog.d(TAG, "handleClickPictureInPicture if");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
             activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
@@ -2149,6 +2180,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         Intent intent = new Intent(activity, FUZVideoService.class);
+        intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
@@ -2169,10 +2201,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(uizaTracking));
-        if (activity == null) {
+        if (activity == null || isInitCustomLinkPlay) {
+            LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitCustomLinkPlay");
             return;
         }
-        UZServiceV1 service = RestClientTracking.createService(UZServiceV1.class);
+        UZService service = RestClientTracking.createService(UZService.class);
         activity.subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -2208,6 +2241,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
+            //TODO connect api 28 depricated
             LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
@@ -2445,6 +2479,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
     //receiver FUZVideoService de truyen current position
     public void setEventBusMsgFromActivityIsInitSuccess() {
+        LLog.d(TAG, "setEventBusMsgFromActivityIsInitSuccess getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);
@@ -2695,17 +2730,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     LLog.d(TAG, "callAPIGetListAllEntity onSuccess");
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uzCallback != null) {
-                            /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.no_data), new LDialogUtil.Callback1() {
-                                @Override
-                                public void onClick1() {
-                                    handleError(new Exception(activity.getString(R.string.no_data)));
-                                }
-
-                                @Override
-                                public void onCancel() {
-                                    handleError(new Exception(activity.getString(R.string.no_data)));
-                                }
-                            });*/
                             handleError(new Exception(activity.getString(R.string.no_data)));
                         }
                         return;
@@ -2721,7 +2745,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             pfTotalPage = (int) ratio;
                         }
                     }
-                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage);
+                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage + " ->>>>>>> setDataList");
                     UZData.getInstance().setDataList(result.getData());
                     if (UZData.getInstance().getDataList() == null || UZData.getInstance().getDataList().isEmpty()) {
                         LLog.e(TAG, "callAPIGetListAllEntity success but no data");
@@ -2771,6 +2795,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LToast.show(activity, "Datalist is empty");
             return;
         }
+        LLog.d(TAG, "playPlaylistPosition position: " + position);
         if (position < 0) {
             LToast.show(activity, "This is the first item");
             return;
@@ -2826,7 +2851,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
 
         //end update UI for skip next and skip previous button
-
         UZData.getInstance().setCurrentPositionOfDataList(position);
         Data data = UZData.getInstance().getDataWithPositionOfDataList(position);
         if (data == null || data.getId() == null || data.getId().isEmpty()) {
@@ -2838,7 +2862,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private boolean isOnPlayerEnded;
-    //private TextView tvWaitingNextEntity;
 
     protected void onPlayerEnded() {
         //LLog.d(TAG, "onPlayerEnded");
@@ -2900,9 +2923,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onClickItem(Data data, int position) {
                 //LLog.d(TAG, "UZDlgPlaylistFolder onClickItem " + gson.toJson(data));
-                //currentPositionOfDataList = position;
                 UZData.getInstance().setCurrentPositionOfDataList(position);
-                //playPlaylistPosition(currentPositionOfDataList);
                 playPlaylistPosition(position);
             }
 
@@ -2959,8 +2980,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setVisibilityOfPlayPauseReplay(false);
     }
 
+    private boolean isClickedSkipNextOrSkipPrevious;
+
     private void handleClickSkipNext() {
         //LLog.d(TAG, "handleClickSkipNext");
+        isClickedSkipNextOrSkipPrevious = true;
         isOnPlayerEnded = false;
         updateUIEndScreen();
         autoSwitchNextVideo();
@@ -2968,6 +2992,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void handleClickSkipPrevious() {
         //LLog.d(TAG, "handleClickSkipPrevious");
+        isClickedSkipNextOrSkipPrevious = true;
         isOnPlayerEnded = false;
         updateUIEndScreen();
         autoSwitchPreviousLinkVideo();
@@ -3130,7 +3155,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setUseController(this.isDefaultUseController);
     }
 
-    protected void setUseController(boolean isUseController) {
+    protected void setUseController(final boolean isUseController) {
         if (playerView != null) {
             playerView.setUseController(isUseController);
         }
@@ -3193,45 +3218,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    /*
-     **toggle volume on/off
-     */
     public void toggleVolume() {
         if (ibVolumeIcon != null) {
             ibVolumeIcon.performClick();
         }
     }
 
-    /*
-     **toggle fullscreen
-     */
     public void toggleFullscreen() {
         if (ibFullscreenIcon != null) {
             ibFullscreenIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị subtitle
-     */
     public void showCCPopup() {
         if (ibCcIcon != null) {
             ibCcIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị chất lượng video
-     */
     public void showHQPopup() {
         if (ibSettingIcon != null) {
             ibSettingIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị share lên mạng xã hội
-     */
     public void showSharePopup() {
         if (ibShareIcon != null) {
             ibShareIcon.performClick();
@@ -3244,13 +3254,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Device phải là tablet
      */
     public void showPip() {
-        /*if (isCastingChromecast() || !isTablet) {
-            LLog.e(TAG, activity.getString(R.string.err_pip_only_tablet));
-        } else {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.performClick();
-            }
-        }*/
         if (isCastingChromecast()) {
             LLog.e(TAG, activity.getString(R.string.err_pip_chromecast));
         } else {
@@ -3289,6 +3292,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventVideoStarts() {
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
+            return;
+        }
         if (UZTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
@@ -3302,6 +3309,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventDisplay() {
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
+            return;
+        }
         if (UZTrackingUtil.isTrackedEventTypeDisplay(activity)) {
             //da track roi ko can track nua
         } else {
@@ -3315,6 +3326,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void trackUizaEventPlaysRequested() {
+        if (isInitCustomLinkPlay) {
+            LLog.d(TAG, "trackUizaEventVideoStarts return isInitCustomLinkPlay");
+            return;
+        }
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
             //da track roi ko can track nua
         } else {
@@ -3327,9 +3342,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    /**
-     * return player view
-     */
     protected PlayerView getPlayerView() {
         return playerView;
     }
@@ -3338,16 +3350,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return debugTextView;
     }
 
-    /**
-     * return progress bar view
-     */
     public ProgressBar getProgressBar() {
         return progressBar;
     }
 
-    /**
-     * return thumnail imageview
-     */
     public ImageView getIvThumbnail() {
         return ivThumbnail;
     }

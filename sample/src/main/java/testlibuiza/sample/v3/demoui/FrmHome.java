@@ -11,18 +11,16 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import uizacoresdk.view.IOnBackPressed;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
-
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
     private final String entityIdDefaultLIVE = LSApplication.entityIdDefaultLIVE;
     private final String metadataId = LSApplication.metadataDefault0;
@@ -38,38 +36,36 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         frmRootView.findViewById(R.id.bt_entity_vod).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
+                ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
             }
         });
         frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(entityIdDefaultLIVE);
+                ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultLIVE);
             }
         });
         frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UZUtil.setClickedPip(getActivity(), false);
-                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
+                ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });
         frmRootView.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeV4CanSlideActivity) getActivity()).replaceFragment(new FrmLogin());
+                ((HomeCanSlideActivity) getActivity()).replaceFragment(new FrmLogin());
             }
         });
 
+        LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getActivity()));
         if (UZUtil.getClickedPip(getActivity())) {
-            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+            if (UZUtil.isInitPlaylistFolder(getActivity())) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
-                ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
+                ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
                 LLog.d(TAG, "Called if user click pip fullscreen playEntityId");
-                ((HomeV4CanSlideActivity) getActivity()).playEntityId(null);
+                ((HomeCanSlideActivity) getActivity()).playEntityId(null);
             }
         }
     }
@@ -83,7 +79,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        LLog.d(TAG, "onBackPressed " + TAG);
+        //LLog.d(TAG, "onBackPressed " + TAG);
         if (backPressed + 2000 > System.currentTimeMillis()) {
             return false;
         } else {
@@ -91,9 +87,9 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             if (isLandscapeScreen) {
                 LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
             } else {
-                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
-                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
+                    if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                        ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
                         return true;
                     }
                 }
