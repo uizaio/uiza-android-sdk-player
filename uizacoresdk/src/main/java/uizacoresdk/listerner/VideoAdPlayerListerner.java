@@ -10,7 +10,6 @@ import vn.uiza.core.utilities.LLog;
 
 public class VideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
     private final String TAG = VideoAdPlayerListerner.class.getSimpleName();
-
     private boolean isPlayingAd;
     private boolean isEnded;
 

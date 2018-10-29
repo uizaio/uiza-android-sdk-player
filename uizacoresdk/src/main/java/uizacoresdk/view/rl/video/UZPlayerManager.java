@@ -138,7 +138,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             // LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             if (UZUtil.getClickedPip(context)) {
-                LLog.d(TAG, "UZPlayerManager dont init urlIMAAd because called from PIP again");
+                LLog.e(TAG, "UZPlayerManager don't init urlIMAAd because called from PIP again");
             } else {
                 adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
             }
@@ -181,9 +181,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private void onAdEnded() {
         if (!isOnAdEnded) {
             isOnAdEnded = true;
-            if (uzVideo != null) {
-                uzVideo.setDefaultUseController(uzVideo.isDefaultUseController());
-            }
             //LLog.d(TAG, "onAdEnded " + isOnAdEnded);
             if (progressCallback != null) {
                 progressCallback.onAdEnded();
@@ -322,8 +319,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     private MediaSource createMediaSourceVideo() {
         //Video Source
-        //MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkPlay));
-        //MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay), null, null);
         MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }

@@ -1492,6 +1492,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "onStateReadyFirst");
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
+
+        //Dang play ad entity vod, ma dot nhien init entity live|| metadata thi ko hien ra controller dc
+        //do luc dang play ad thi o class UZManager da set setUseController(false)
+        //luc ad ended thi moi setUseController(default)
+        //trong case ad dang play ma init moi thi init ok, nhung controller van dang set la false
+        //setDefaultUseController(isDefaultUseController());
+
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
@@ -1782,7 +1789,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LAnimationUtil.play(v, Techniques.Pulse);
         }
 
-        /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này a có thể xử lý khi click vào con trol thì reset count down để ẩn control ko
+        /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này a có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn, cái này mình sẽ reset cout và update bản mới.*/
         if (isDefaultUseController) {
             if (rlMsg != null && rlMsg.getVisibility() == View.VISIBLE) {
@@ -3147,7 +3154,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setUseController(this.isDefaultUseController);
     }
 
-    protected void setUseController(boolean isUseController) {
+    protected void setUseController(final boolean isUseController) {
         if (playerView != null) {
             playerView.setUseController(isUseController);
         }
