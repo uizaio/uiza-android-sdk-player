@@ -28,6 +28,8 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.model.SDTUZCustomLinkPlay;
+import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -426,27 +428,26 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static void initLinkPlay(Activity activity, UZVideo uzVideo, String linkPlay, boolean isLivestream) {
+    public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {
         if (activity == null) {
             throw new NullPointerException("Activity cannot be null");
         }
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
-        if (linkPlay == null || linkPlay.isEmpty()) {
-            throw new NullPointerException("linkPlay cannot be null or empty");
+        if (SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay() == null) {
+            LLog.e(TAG, "You must init custom linkPlay first.");
+            return false;
         }
         if (UZUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "called from pip enter fullscreen");
-            //TODO
-            //UZUtil.playLinkPlay(uzVideo, null);
-            //UZUtil.setClickedPip(activity, false);
+            LLog.d(TAG, "called from pip enter fullscreen");
+            UZUtil.playLinkPlay(uzVideo, SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay());
         } else {
-            //check if play entity
             UZUtil.stopServicePiPIfRunning(activity);
-            UZUtil.playLinkPlay(uzVideo, linkPlay, isLivestream);
+            UZUtil.playLinkPlay(uzVideo, SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
+        return true;
     }
 
     public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
@@ -499,12 +500,12 @@ public class UZUtil {
         UZUtil.setIsInitPlaylistFolder(activity, true);
     }
 
-    private static void playLinkPlay(final UZVideo uzVideo, final String linkPlay, final boolean isLivestream) {
+    private static void playLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initLinkPlay(linkPlay, isLivestream);
+                uzVideo.initLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
             }
         });
     }

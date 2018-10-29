@@ -2473,6 +2473,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
     //receiver FUZVideoService de truyen current position
     public void setEventBusMsgFromActivityIsInitSuccess() {
+        LLog.d(TAG, "setEventBusMsgFromActivityIsInitSuccess getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);

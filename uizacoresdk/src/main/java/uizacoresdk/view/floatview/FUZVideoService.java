@@ -198,7 +198,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 moveView.setOnTouchListener(null);//disabled move view
 
                 //bắn cho FloatClickFullScreenReceiver
-
                 UZUtil.setClickedPip(getApplicationContext(), true);
                 Intent intent = new Intent();
                 intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
