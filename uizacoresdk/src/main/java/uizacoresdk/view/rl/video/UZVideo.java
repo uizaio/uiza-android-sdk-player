@@ -445,11 +445,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (ad != null) {
                         urlIMAAd = ad.getLink();
                     }
-                    //TODO uncomment this line
-                    urlIMAAd = activity.getString(R.string.ad_tag_url);
+                    //urlIMAAd = activity.getString(R.string.ad_tag_url);
                     //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
+                //TODO uncomment this line
+                //urlIMAAd = activity.getString(R.string.ad_tag_url);
                 handleDataCallAPI();
             }
 
