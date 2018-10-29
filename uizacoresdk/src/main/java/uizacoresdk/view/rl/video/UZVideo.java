@@ -3217,45 +3217,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    /*
-     **toggle volume on/off
-     */
     public void toggleVolume() {
         if (ibVolumeIcon != null) {
             ibVolumeIcon.performClick();
         }
     }
 
-    /*
-     **toggle fullscreen
-     */
     public void toggleFullscreen() {
         if (ibFullscreenIcon != null) {
             ibFullscreenIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị subtitle
-     */
     public void showCCPopup() {
         if (ibCcIcon != null) {
             ibCcIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị chất lượng video
-     */
     public void showHQPopup() {
         if (ibSettingIcon != null) {
             ibSettingIcon.performClick();
         }
     }
 
-    /*
-     **Hiển thị share lên mạng xã hội
-     */
     public void showSharePopup() {
         if (ibShareIcon != null) {
             ibShareIcon.performClick();
@@ -3268,13 +3253,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Device phải là tablet
      */
     public void showPip() {
-        /*if (isCastingChromecast() || !isTablet) {
-            LLog.e(TAG, activity.getString(R.string.err_pip_only_tablet));
-        } else {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.performClick();
-            }
-        }*/
         if (isCastingChromecast()) {
             LLog.e(TAG, activity.getString(R.string.err_pip_chromecast));
         } else {
