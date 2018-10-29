@@ -339,6 +339,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
+        isCalledFromChangeSkin = false;
         isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
@@ -642,6 +643,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "init linkPlay " + linkPlay);
         isInitCustomLinkPlay = true;
+        isCalledFromChangeSkin = false;
         setVisibilityOfPlaylistFolderController(View.GONE);
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
@@ -806,17 +808,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (countTryLinkPlayError >= listLinkPlay.size()) {
                 if (LConnectivityUtil.isConnected(activity)) {
-                    /*LDialogUtil.showDialog1Immersive(activity, activity.getString(R.string.try_all_link_play_but_no_luck), new LDialogUtil.Callback1() {
-                        @Override
-                        public void onClick1() {
-                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
-                        }
-                    });*/
                     handleError(new Exception(activity.getString(R.string.try_all_link_play_but_no_luck)));
                 } else {
                     //LLog.d(TAG, "checkToSetUpResouce else err_no_internet");
@@ -837,7 +828,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
             //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
 
-            initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            if (isCalledFromChangeSkin) {
+                //if called from func changeSkin(), dont initDataSource with uilIMA Ad.
+                initDataSource(linkPlay, null, UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            } else {
+                initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+            }
             if (uzCallback != null) {
                 uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
             }
@@ -953,6 +949,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //TODO improve this func
     private boolean isRefreshFromChangeSkin;
     private long currentPositionBeforeChangeSkin;
+    private boolean isCalledFromChangeSkin;
 
     /*
      **change skin of player
@@ -971,6 +968,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         UZData.getInstance().setCurrentPlayerId(skinId);
         isRefreshFromChangeSkin = true;
+        isCalledFromChangeSkin = true;
         rootView.removeView(playerView);
         rootView.requestLayout();
         playerView = (UZPlayerView) activity.getLayoutInflater().inflate(skinId, null);
@@ -1325,6 +1323,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (progressCallback != null) {
                     progressCallback.onAdEnded();
                 }
+                setDefaultUseController(isDefaultUseController());
             }
 
             @Override
