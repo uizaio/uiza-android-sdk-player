@@ -2155,12 +2155,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (activity == null) {
             return;
         }
-        if (isTablet) {
-            LLog.d(TAG, "handleClickPictureInPicture only available for tablet -> return");
-            return;
-        }
         if (isCastingChromecast()) {
-            LLog.d(TAG, "handleClickPictureInPicture isCastingChromecast -> return");
+            LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
@@ -2179,7 +2175,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         Intent intent = new Intent(activity, FUZVideoService.class);
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
-        intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);

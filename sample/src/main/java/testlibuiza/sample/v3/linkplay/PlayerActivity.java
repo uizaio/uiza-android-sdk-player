@@ -118,7 +118,9 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-
+        if (isInitSuccess) {
+            onBackPressed();
+        }
     }
 
     @Override

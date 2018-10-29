@@ -68,11 +68,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private TextView tvMsg;
     private FUZVideo fuzVideo;
     private WindowManager.LayoutParams params;
-
-    //private Data data;
     private String linkPlay;
     private Gson gson = new Gson();
-
     private boolean isLivestream;
     private int widthScreen;
 
@@ -495,13 +492,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
-            //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition);
+            //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
             setListener();
             if (lastCurrentPosition > 0) {
                 fuzVideo.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
-                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false");
+                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false -> send msg to UZVideo");
                 //bắn cho UZVideo nhận
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
