@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import testlibuiza.R;
-import uizacoresdk.model.SDTUZCustomLinkPlay;
 import uizacoresdk.model.UZCustomLinkPlay;
+import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -100,32 +100,32 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SDTUZCustomLinkPlay.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay0);
-                etLinkPlay.setText(SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay0);
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SDTUZCustomLinkPlay.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay1);
-                etLinkPlay.setText(SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay1);
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SDTUZCustomLinkPlay.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay2);
-                etLinkPlay.setText(SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay2);
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
         findViewById(R.id.bt_3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SDTUZCustomLinkPlay.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay3);
-                etLinkPlay.setText(SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay3);
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });

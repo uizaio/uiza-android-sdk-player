@@ -1,13 +1,15 @@
-package uizacoresdk.model;
+package uizacoresdk.util;
 
-public class SDTUZCustomLinkPlay {
-    private static final SDTUZCustomLinkPlay ourInstance = new SDTUZCustomLinkPlay();
+import uizacoresdk.model.UZCustomLinkPlay;
 
-    public static SDTUZCustomLinkPlay getInstance() {
+public class UZDataCLP {
+    private static final UZDataCLP ourInstance = new UZDataCLP();
+
+    public static UZDataCLP getInstance() {
         return ourInstance;
     }
 
-    private SDTUZCustomLinkPlay() {
+    private UZDataCLP() {
     }
 
     private UZCustomLinkPlay uzCustomLinkPlay;
@@ -18,5 +20,9 @@ public class SDTUZCustomLinkPlay {
 
     public void setUzCustomLinkPlay(UZCustomLinkPlay uzCustomLinkPlay) {
         this.uzCustomLinkPlay = uzCustomLinkPlay;
+    }
+
+    public void clearData() {
+        uzCustomLinkPlay = null;
     }
 }

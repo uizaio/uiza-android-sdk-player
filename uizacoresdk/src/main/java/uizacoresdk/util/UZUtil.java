@@ -28,7 +28,6 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
-import uizacoresdk.model.SDTUZCustomLinkPlay;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -435,16 +434,16 @@ public class UZUtil {
         if (uzVideo == null) {
             throw new NullPointerException("UZVideo cannot be null");
         }
-        if (SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay() == null) {
+        if (UZDataCLP.getInstance().getUzCustomLinkPlay() == null) {
             LLog.e(TAG, "You must init custom linkPlay first.");
             return false;
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
-            UZUtil.playLinkPlay(uzVideo, SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay());
+            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
             UZUtil.stopServicePiPIfRunning(activity);
-            UZUtil.playLinkPlay(uzVideo, SDTUZCustomLinkPlay.getInstance().getUzCustomLinkPlay());
+            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
         return true;
@@ -472,6 +471,7 @@ public class UZUtil {
             }
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZDataCLP.getInstance().clearData();
     }
 
     public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
@@ -498,6 +498,7 @@ public class UZUtil {
             playPlaylist(uzVideo, metadataId);
         }
         UZUtil.setIsInitPlaylistFolder(activity, true);
+        UZDataCLP.getInstance().clearData();
     }
 
     private static void playLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {

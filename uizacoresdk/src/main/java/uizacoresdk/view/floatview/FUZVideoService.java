@@ -91,6 +91,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
+            LLog.d(TAG, "linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
