@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import testlibuiza.R;
-import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
@@ -157,9 +156,12 @@ public class HomeCanSlideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        //LLog.d(TAG, "onBackPressed " + TAG);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            //LLog.d(TAG, "onBackPressed " + TAG);
+            if (draggablePanel != null) {
+                draggablePanel.setVisibility(View.INVISIBLE);
+            }
             super.onBackPressed();
         }
     }

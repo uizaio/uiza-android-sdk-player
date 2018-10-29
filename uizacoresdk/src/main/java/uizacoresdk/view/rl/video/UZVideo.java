@@ -445,7 +445,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (ad != null) {
                         urlIMAAd = ad.getLink();
                     }
-                    //urlIMAAd = activity.getString(R.string.ad_tag_url);
+                    //TODO uncomment this line
+                    urlIMAAd = activity.getString(R.string.ad_tag_url);
                     //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
@@ -956,7 +957,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * return true if success
      */
     public boolean changeSkin(int skinId) {
-        LLog.d(TAG, "changeSkin skinId " + skinId);
+        //LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
             return false;
         }
