@@ -2245,8 +2245,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
+                    uzPlayerManager.hideProgress();
                     if (uzPlayerManager.getExoPlaybackException() == null) {
-                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing getControllerShowTimeoutMs: " + getControllerShowTimeoutMs());
+                        resumeVideo();
+                        hideController();
                         hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
@@ -2266,10 +2269,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //LLog.d(TAG, "onMessageEventConnectEvent uzPlayerManager == null");
                 }
             } else {
+                pauseVideo();
+                if (uzPlayerManager != null) {
+                    uzPlayerManager.showProgress();
+                }
                 showTvMsg(activity.getString(R.string.err_no_internet));
+
                 //if current screen is portrait -> do nothing
                 //else current screen is landscape -> change screen to portrait
-                LActivityUtil.changeScreenPortrait(activity);
+                //LActivityUtil.changeScreenPortrait(activity);
             }
         }
     }
@@ -3110,7 +3118,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickShare() {
-        //LSocialUtil.share(activity, isLandscape);
         LSocialUtil.share(activity, isLandscape, activity.getString(R.string.uiza_introduce));
     }
 

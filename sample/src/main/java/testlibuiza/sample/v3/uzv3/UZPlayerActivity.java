@@ -95,7 +95,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         });
         btProgress = (Button) findViewById(R.id.bt_progress);
         uzVideo.setUZCallback(this);
-        uzVideo.setControllerShowTimeoutMs(30000);
+        uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
