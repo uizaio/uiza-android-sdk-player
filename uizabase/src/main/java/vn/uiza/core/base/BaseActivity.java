@@ -1,6 +1,11 @@
 package vn.uiza.core.base;
 
 import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +13,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -19,16 +28,14 @@ import vn.uiza.R;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.connection.LConectifyService;
+import vn.uiza.data.EventBusData;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected CompositeSubscription compositeSubscription = new CompositeSubscription();
     protected Activity activity;
     protected String TAG;
-    //private RelativeLayout rootView;
-
-    /*protected RelativeLayout getRootView() {
-        return rootView;
-    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,15 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(setLayoutResourceId());
 
-        /*View view = activity.findViewById(R.id.scroll_view);
-        if (view != null) {
-            if (view instanceof ScrollView) {
-                LUIUtil.setPullLikeIOSVertical((ScrollView) view);
-            } else if (view instanceof NestedScrollView) {
-                LUIUtil.setPullLikeIOSVertical((NestedScrollView) view);
-            }
-        }
-        rootView = (RelativeLayout) activity.findViewById(R.id.root_view);*/
+        scheduleJob();
     }
 
     protected void setCustomStatusBar(int colorStatusBar, int colorNavigationBar) {
@@ -92,21 +91,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(activity)) {
-            //showDialogError(getString(R.string.err_no_internet));
             subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
             return;
         }
-
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
         compositeSubscription.add(subscription);
     }
-
-    /*public void startActivity(Class<? extends Activity> clazz) {
-        Intent intent = new Intent(this, clazz);
-        startActivity(intent);
-    }*/
 
     protected abstract boolean setFullScreen();
 
@@ -122,93 +114,50 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    //private TextView tvConnectStt;
-
-    /*private void showTvNoConnect() {
-        if (rootView != null) {
-            if (tvConnectStt == null) {
-                //LLog.d(TAG, "tvConnectStt == null -> new tvConnectStt");
-                tvConnectStt = new TextView(activity);
-                tvConnectStt.setTextColor(Color.WHITE);
-                //tvConnectStt.setBackgroundColor(ContextCompat.getColor(activity, R.color.LightPink));
-                tvConnectStt.setBackgroundColor(Color.RED);
-                tvConnectStt.setPadding(20, 20, 20, 20);
-                tvConnectStt.setGravity(Gravity.CENTER);
-                //tvConnectStt.setText(R.string.check_ur_connection);
-                tvConnectStt.setText(R.string.check_ur_connection_vn);
-
-                RelativeLayout.LayoutParams rLParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                rLParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 1);
-                rootView.addView(tvConnectStt, rLParams);
-                //rootView.requestLayout();
-            } else {
-                //LLog.d(TAG, "tvConnectStt != null");
-                tvConnectStt.setText(R.string.check_ur_connection);
-            }
-            LAnimationUtil.play(tvConnectStt, Techniques.FadeIn);
-        } else {
-            //LLog.d(TAG, "rootView == null");
-        }
-    }*/
-
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventBusData.ConnectEvent event) {
-        //TAG = "onMessageEvent";
-        //LLog.d(TAG, "onMessageEvent " + event.isConnected());
-        //onNetworkChange(event);
-        *//*if (!event.isConnected()) {//no network
-            showTvNoConnect();
-        } else {
-            if (tvConnectStt != null) {
-                LAnimationUtil.play(tvConnectStt, Techniques.FadeOut, new LAnimationUtil.UZCallback() {
-                    @Override
-                    public void onCancel() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onEnd() {
-                        if (tvConnectStt != null) {
-                            tvConnectStt.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onRepeat() {
-                        //do nothing
-                    }
-
-                    @Override
-                    public void onStart() {
-                        //do nothing
-                    }
-                });
-                tvConnectStt = null;
-            }
-        }*//*
-    }*/
-
-    /*protected void onNetworkChange(EventBusData.ConnectEvent event){
-
-    }*/
-
-    /*@Override
+    @Override
     public void onStart() {
-        super.onStart();
         EventBus.getDefault().register(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent startServiceIntent = new Intent(this, LConectifyService.class);
+            startService(startServiceIntent);
+        }
+        super.onStart();
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         EventBus.getDefault().unregister(this);
-    }*/
-
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        if (!LConnectivityUtil.isConnected(activity)) {
-            showTvNoConnect();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            stopService(new Intent(this, LConectifyService.class));
         }
-    }*/
+        super.onStop();
+    }
+
+    private void scheduleJob() {
+        JobInfo myJob = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            myJob = new JobInfo.Builder(0, new ComponentName(this, LConectifyService.class))
+                    .setRequiresCharging(true)
+                    .setMinimumLatency(1000)
+                    .setOverrideDeadline(2000)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .build();
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            jobScheduler.schedule(myJob);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusData.ConnectEvent event) {
+        //TAG = "onMessageEvent";
+        //LLog.d(TAG, "onMessageEvent " + event.isConnected());
+        onNetworkChange(event);
+    }
+
+    protected void onNetworkChange(EventBusData.ConnectEvent event) {
+        if (event != null) {
+            LLog.d(TAG, "onNetworkChange " + event.isConnected());
+        }
+    }
 }
