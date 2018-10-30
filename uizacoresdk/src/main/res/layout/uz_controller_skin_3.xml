@@ -281,8 +281,8 @@
         <vn.uiza.views.seekbar.UZVerticalSeekBarWrapper
             android:layout_width="@dimen/w_50"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:minWidth="10dp">
 
             <vn.uiza.views.seekbar.UZVerticalSeekBar
@@ -328,9 +328,9 @@
                 android:layout_below="@id/previewFrameLayout"
                 android:layout_toLeftOf="@id/exo_duration"
                 android:layout_toRightOf="@+id/exo_position"
-                app:ad_marker_color="@color/White"
-                app:buffered_color="@color/Gray"
-                app:played_ad_marker_color="@color/White"
+                app:ad_marker_color="@color/LightYellow"
+                app:buffered_color="@color/LightGrey"
+                app:played_ad_marker_color="@color/LightYellow"
                 app:played_color="@color/White"
                 app:previewFrameLayout="@id/previewFrameLayout"
                 app:scrubber_color="@color/White"
@@ -350,8 +350,8 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@id/previewFrameLayout"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
