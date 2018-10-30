@@ -33,6 +33,7 @@ import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -438,6 +439,10 @@ public class UZUtil {
             LLog.e(TAG, "You must init custom linkPlay first.");
             return false;
         }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, activity.getString(R.string.error_no_connection));
+            return false;
+        }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "called from pip enter fullscreen");
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
@@ -458,6 +463,10 @@ public class UZUtil {
         }
         if (entityId != null) {
             UZUtil.setClickedPip(activity, false);
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, activity.getString(R.string.error_no_connection));
+            return;
         }
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
@@ -483,6 +492,10 @@ public class UZUtil {
         }
         if (metadataId != null) {
             UZUtil.setClickedPip(activity, false);
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, activity.getString(R.string.error_no_connection));
+            return;
         }
         //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {

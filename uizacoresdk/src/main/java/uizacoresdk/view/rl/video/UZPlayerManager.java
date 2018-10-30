@@ -578,8 +578,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo == null) {
                 return;
             }
+            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
+            } else {
+                uzVideo.pauseVideo();
             }
         }
 
