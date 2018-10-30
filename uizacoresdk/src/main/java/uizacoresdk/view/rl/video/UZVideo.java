@@ -2241,17 +2241,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
                     if (uzPlayerManager.getExoPlaybackException() == null) {
-                        LLog.d(TAG, "onMessageEventConnectEvent do nothing");
+                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing");
                         hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uzPlayerManager.setResumeIfConnectionError();
-                        LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
+                        //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             uzPlayerManager.init();
                             if (isCalledFromConnectionEventBus) {
@@ -2259,11 +2259,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                                 isCalledFromConnectionEventBus = false;
                             }
                         } else {
-                            LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
+                            //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
                 } else {
-                    LLog.d(TAG, "onMessageEventConnectEvent uzPlayerManager == null");
+                    //LLog.d(TAG, "onMessageEventConnectEvent uzPlayerManager == null");
                 }
             } else {
                 showTvMsg(activity.getString(R.string.err_no_internet));
