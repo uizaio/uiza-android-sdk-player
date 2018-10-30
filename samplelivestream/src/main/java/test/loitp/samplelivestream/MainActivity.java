@@ -103,8 +103,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
 
-        uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-        //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+        //uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+        uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
     }
 
     private void handleFilterClick(MenuItem item) {

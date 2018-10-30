@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.uiza.moduledemouiza"
         minSdkVersion 18
-        targetSdkVersion 21
+        targetSdkVersion 28
         versionCode 3
         versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
