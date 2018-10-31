@@ -1,7 +1,7 @@
-package vn.uiza.core.base;
+package vn.uiza.core.exception;
 
 /**
- * Created by LENOVO on 5/21/2018.
+ * Created by loitp on 5/21/2018.
  */
 
 public class NoConnectionException extends Exception {

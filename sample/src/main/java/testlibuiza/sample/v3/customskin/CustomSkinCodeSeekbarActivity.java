@@ -31,7 +31,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private SeekBar seekBar;
 

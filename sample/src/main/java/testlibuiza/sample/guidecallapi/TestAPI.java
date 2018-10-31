@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.uiza.core.base.NoConnectionException;
+import vn.uiza.core.exception.NoConnectionException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;

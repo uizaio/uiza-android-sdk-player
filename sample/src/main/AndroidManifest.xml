@@ -40,7 +40,7 @@
             android:name=".sample.v3.customskin.CustomSkinXMLActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinCodeActivity"
+            android:name=".sample.v3.customskin.CustomSkinCodeSeekbarActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.customhq.CustomHQActivity"

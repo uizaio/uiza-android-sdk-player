@@ -25,6 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import vn.uiza.R;
+import vn.uiza.core.exception.NoConnectionException;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
