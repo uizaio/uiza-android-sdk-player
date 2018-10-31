@@ -18,7 +18,7 @@
 
     <string name="empty_list">Danh sách rỗng</string>
     <string name="err">Error</string>
-    <string name="err_setup">Cannot get link play or detail entity</string>
+    <string name="err_setup">Init failed: Cannot get link play or detail entity</string>
     <string name="err_400">Bad Request: The request was unacceptable, often due to missing a required parameter.</string>
     <string name="err_401">Unauthorized: No valid API key provided.</string>
     <string name="err_404">Not Found: The requested resource does not exist.</string>
@@ -30,7 +30,8 @@
     <string name="more_like_this">More like this</string>
     <string name="cannot_play_any_videos">Cannot play any linkplays.</string>
     <string name="has_no_linkplay">Dữ liệu của video này bị lỗi.</string>
-    <string name="no_data">Không có dữ liệu</string>
+    <string name="no_data">No data</string>
+    <string name="err_cannot_get_list_all_entity">Error: Cannot get list all entity.</string>
     <string name="err_list_relation_null">listAllEntityRelation == null -> should init related list before by using UizaData.putToListAllEntityRelation()</string>
     <string name="search">Tìm kiếm</string>
     <string name="starring">Starring:</string>
@@ -41,8 +42,8 @@
     <string name="err_no_internet">No internet connection.</string>
     <string name="err_no_internet_tap_to_retry">No internet connection.\nTap to retry.</string>
     <string name="err_live_is_stopped">This content is not available now</string>
-    <string name="try_all_link_play_but_no_luck">Đã thử play tất cả các link nhưng đều không thành công</string>
-    <string name="entity_cannot_be_null_or_empty">Entity cannot be null or empty</string>
+    <string name="try_all_link_play_but_no_luck">Tried to play all linkplay of this entity, but failed</string>
+    <string name="entity_cannot_be_null_or_empty">Entity ID cannot be null or empty</string>
     <string name="auth_or_app_id_is_null_or_empty">Error: auth or appId is null or empty</string>
     <string name="no_token_streaming">Error: Token streaming cannot be found</string>
     <string name="no_link_play">This entity has no linkplay</string>

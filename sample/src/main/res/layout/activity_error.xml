@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    android:orientation="vertical"
+    tools:context="testlibuiza.sample.MainActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_5"
+            android:background="@color/White"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_err"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/txt_12" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

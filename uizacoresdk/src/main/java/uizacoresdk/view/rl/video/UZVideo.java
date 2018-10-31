@@ -414,7 +414,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         LToast.show(activity, "init onError callAPIGetDetailEntity: " + e.getMessage());
                     }
                     UZData.getInstance().setSettingPlayer(false);
-                    IllegalAccessException exception = new IllegalAccessException("init onError: " + e.getMessage());
+                    IllegalAccessException exception = new IllegalAccessException("Init onError: cannot get detail of entity " + e.getMessage());
                     handleError(exception);
                 }
             });
@@ -2731,7 +2731,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     LLog.d(TAG, "callAPIGetListAllEntity onSuccess");
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uzCallback != null) {
-                            handleError(new Exception(activity.getString(R.string.no_data)));
+                            handleError(new Exception(activity.getString(R.string.err_cannot_get_list_all_entity)));
                         }
                         return;
                     }

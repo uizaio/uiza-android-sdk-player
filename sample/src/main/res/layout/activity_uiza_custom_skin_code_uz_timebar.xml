@@ -3,9 +3,10 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/WhiteSmoke">
 
-    <uizacoresdk.view.rl.video.UZVideoV1
+    <uizacoresdk.view.rl.video.UZVideo
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -18,7 +19,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
             android:text="@string/large_text" />
     </ScrollView>
-</RelativeLayout>
 
+    <SeekBar
+        android:id="@+id/sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -31,7 +31,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private SeekBar seekBar;
 
@@ -47,7 +47,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_code_seekbar;
+        return R.layout.activity_uiza_custom_skin_code_uz_timebar;
     }
 
     @Override
