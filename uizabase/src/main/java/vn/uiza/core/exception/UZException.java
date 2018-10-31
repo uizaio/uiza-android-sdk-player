@@ -73,6 +73,9 @@ public class UZException {
     public final static int ERR_CODE_23 = 23;
     public final static String ERR_23 = "Data of this entity is invalid";
 
+    public final static int ERR_CODE_24 = 24;
+    public final static String ERR_24 = "Error: Playback exception";
+
     public final static int ERR_CODE_400 = 400;
     public final static String ERR_400 = "Bad Request: The request was unacceptable, often due to missing a required parameter.";
 

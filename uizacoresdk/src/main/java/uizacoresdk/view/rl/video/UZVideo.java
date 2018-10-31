@@ -284,10 +284,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private boolean isHasError;
 
-    private void handleError(UZException e) {
+    protected void handleError(UZException e) {
         //TODO if has error, should clear all variable, flag to default?
         if (e == null) {
             return;
+        }
+        if (uzCallback != null) {
+            uzCallback.onError(e);
         }
         if (isHasError) {
             LLog.e(TAG, "handleError isHasError=true -> return");
@@ -295,9 +298,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         LLog.e(TAG, "handleError " + e.toString());
         isHasError = true;
-        if (uzCallback != null) {
-            uzCallback.onError(e);
-        }
         UZData.getInstance().setSettingPlayer(false);
     }
 
@@ -3243,7 +3243,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void showPip() {
         if (isCastingChromecast()) {
             LLog.e(TAG, UZException.ERR_19);
-            if(uzCallback!=null){
+            if (uzCallback != null) {
                 uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
             }
         } else {

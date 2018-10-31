@@ -63,6 +63,7 @@ import uizacoresdk.listerner.VideoAdPlayerListerner;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -571,6 +572,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 return;
             }
             LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
+            error.printStackTrace();
             exoPlaybackException = error;
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
@@ -578,6 +580,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo == null) {
                 return;
             }
+            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
             //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();

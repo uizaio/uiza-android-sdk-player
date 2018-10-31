@@ -127,4 +127,13 @@ public class UZExceptionUtil {
         uzException.setException(exception);
         return uzException;
     }
+
+    public static UZException getExceptionPlayback() {
+        Exception exception = new Exception(UZException.ERR_24);
+
+        UZException uzException = new UZException();
+        uzException.setErrorCode(UZException.ERR_CODE_24);
+        uzException.setException(exception);
+        return uzException;
+    }
 }
