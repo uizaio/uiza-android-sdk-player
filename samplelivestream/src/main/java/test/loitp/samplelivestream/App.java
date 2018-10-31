@@ -2,8 +2,6 @@ package test.loitp.samplelivestream;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.google.gson.Gson;
-
 import uizalivestream.uiza.UZUtil;
 import vn.uiza.core.common.Constants;
 

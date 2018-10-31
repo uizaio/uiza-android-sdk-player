@@ -16,7 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import vn.uiza.R;
-import vn.uiza.core.exception.NoConnectionException;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 
@@ -61,7 +61,7 @@ public abstract class BaseFragment extends Fragment {
     @SuppressWarnings("unchecked")
     protected void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(getActivity())) {
-            subscriber.onError(new NoConnectionException("NoConnectionException"));
+            subscriber.onError(new Exception(UZException.ERR_0));
             return;
         }
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())

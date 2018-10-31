@@ -37,6 +37,7 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -329,7 +330,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }

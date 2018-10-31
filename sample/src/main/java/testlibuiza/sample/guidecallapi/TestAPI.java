@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.uiza.core.exception.NoConnectionException;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
@@ -76,7 +76,7 @@ public class TestAPI extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(this)) {
-            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
+            subscriber.onError(new Exception(UZException.ERR_0));
             return;
         }
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())

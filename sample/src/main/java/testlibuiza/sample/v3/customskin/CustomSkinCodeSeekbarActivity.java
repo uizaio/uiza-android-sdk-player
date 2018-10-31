@@ -19,8 +19,8 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -151,11 +151,10 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }
-        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

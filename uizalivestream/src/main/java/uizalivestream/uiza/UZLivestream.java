@@ -35,6 +35,7 @@ import uizalivestream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import uizalivestream.uiza.rtplibrary.view.OpenGlView;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -452,7 +453,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     public void setId(final String entityLiveId) {
         if (entityLiveId == null || entityLiveId.isEmpty()) {
-            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
+            throw new NullPointerException(UZException.ERR_5);
         }
         //Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
         //Van tiep tuc goi detail entity de lay streamUrl

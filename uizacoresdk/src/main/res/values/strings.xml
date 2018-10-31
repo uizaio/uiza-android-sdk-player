@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="err_hq_null">Error getHQList null</string>
-    <string name="err_audio_null">Error audio null</string>
-    <string name="error_change_skin">Error: You cannot change skin if player is playing ad.</string>
-    <string name="error_no_connection">Error: No connection. Please check your network and try again.</string>
 </resources>

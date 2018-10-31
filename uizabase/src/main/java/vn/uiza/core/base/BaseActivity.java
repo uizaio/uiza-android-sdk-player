@@ -25,7 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import vn.uiza.R;
-import vn.uiza.core.exception.NoConnectionException;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -92,7 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {
         if (!LConnectivityUtil.isConnected(activity)) {
-            subscriber.onError(new NoConnectionException(getString(R.string.err_no_internet)));
+            subscriber.onError(new Exception(UZException.ERR_0));
             return;
         }
         Subscription subscription = observable.subscribeOn(Schedulers.newThread())

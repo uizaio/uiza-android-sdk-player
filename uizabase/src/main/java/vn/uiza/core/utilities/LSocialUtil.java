@@ -1,18 +1,14 @@
 package vn.uiza.core.utilities;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
-import java.util.List;
-
 import vn.uiza.R;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.utils.util.AppUtils;
 import vn.uiza.views.LToast;
 
@@ -153,7 +149,7 @@ public class LSocialUtil {
             LLog.d(TAG, "packageManager com.facebook.orca: " + e.toString());
         }
         if (!isFBInstalled) {
-            LDialogUtil.showDialog1(activity, activity.getString(R.string.err), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
+            LDialogUtil.showDialog1(activity, "Error", UZException.ERR_22, activity.getString(R.string.ok), null);
         } else {
             Uri uri = Uri.parse("fb-messenger://user/");
             uri = ContentUris.withAppendedId(uri, Long.valueOf("947139732073591"));
@@ -162,7 +158,7 @@ public class LSocialUtil {
                 activity.startActivity(intent);
                 LActivityUtil.tranIn(activity);
             } catch (Exception e) {
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.err_cannot_chat_messenger_now), activity.getString(R.string.cannot_find_messenger_app), activity.getString(R.string.ok), null);
+                LDialogUtil.showDialog1(activity, UZException.ERR_20, UZException.ERR_22, activity.getString(R.string.ok), null);
             }
         }
     }

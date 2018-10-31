@@ -14,6 +14,7 @@ import uizacoresdk.view.rl.video.UZTVCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -97,7 +98,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }

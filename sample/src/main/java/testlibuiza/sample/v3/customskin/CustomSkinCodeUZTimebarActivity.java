@@ -12,6 +12,7 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -78,7 +79,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
     }
 
     @Override
