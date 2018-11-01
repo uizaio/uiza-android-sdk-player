@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LPopupMenu;
+import uizalivestream.uiza.PresetLiveStreamingFeed;
+import uizalivestream.uiza.UZLivestream;
 import uizalivestream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -49,9 +48,10 @@ import uizalivestream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
 import uizalivestream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
 import uizalivestream.uiza.encoder.utils.gl.TranslateTo;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizalivestream.uiza.PresetLiveStreamingFeed;
-import uizalivestream.uiza.UZLivestream;
 import vn.uiza.views.LToast;
 
 public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
@@ -101,9 +101,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         bStartStopStore.setOnClickListener(this);
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
+    }
 
-        uzLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
-        //uizaLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
+    @Override
+    protected void onResume() {
+        uzLivestream.onResume();
+        super.onResume();
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -291,6 +294,20 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onPermission(boolean b) {
+        if (b) {
+            bStartStop.setEnabled(true);
+            bStartStopStore.setEnabled(true);
+            btSwitchCamera.setEnabled(true);
+            btFilter.setEnabled(true);
+            //uzLivestream.setId(LSApplication.entityIdDefaultLIVE_TRANSCODE);
+            uzLivestream.setId(LSApplication.entityIdDefaultLIVE_NO_TRANSCODE);
+        } else {
+            LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
         }
     }
 
