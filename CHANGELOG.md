@@ -1,3 +1,15 @@
+### 2.7.3 (2018-11-1)
+
+	//for playing video VOD, LIVE  
+     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.3'
+     
+     //for live broadcaster  
+     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.3'
+
+- Update runtime permission for UZLivestream.
+- Update error message and error code.
+- Update sample.
+
 ### 2.7.0 (2018-10-29)
 
      //for playing video VOD, LIVE  
