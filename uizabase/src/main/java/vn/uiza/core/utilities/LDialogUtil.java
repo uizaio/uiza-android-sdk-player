@@ -124,17 +124,13 @@ public class LDialogUtil {
         alertDialogList.add(dialog);
     }
 
-    /*public static void showDialog1(Context context, String title, String msg, String button1, final Callback1 callback1) {
-        showDialog1(context, title, msg, button1, false, callback1, null);
-    }*/
-
-    /*public interface Callback2 {
+    public interface Callback2 {
         public void onClick1();
 
         public void onClick2();
     }
 
-    public static void showDialog2(Context context, String title, String msg, String button1, String button2, final Callback2 callback2) {
+    public static AlertDialog showDialog2(Context context, String title, String msg, String button1, String button2, final Callback2 callback2) {
         //LLog.d(TAG, "showDialog2");
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -170,6 +166,7 @@ public class LDialogUtil {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         alertDialogList.add(dialog);
+        return dialog;
     }
 
     public interface Callback3 {
@@ -248,7 +245,7 @@ public class LDialogUtil {
         AlertDialog dialog = builder.create();
         dialog.show();
         alertDialogList.add(dialog);
-    }*/
+    }
 
     public static ProgressDialog getSpinnerProgressDialog(Context context, String title, String msg) {
         return getProgressDialog(context, 100, title, msg, false, ProgressDialog.STYLE_SPINNER, null, null);
@@ -300,50 +297,4 @@ public class LDialogUtil {
             progressBar.setVisibility(View.GONE);
         }
     }
-
-    /*public static void showIOSDialog1(Activity activity, String title, String subtitle, String label1, boolean isBold, final Callback1 callback1) {
-        final iOSDialog iOSDialog = new iOSDialog(activity);
-        iOSDialog.setTitle(title);
-        iOSDialog.setSubtitle(subtitle);
-        iOSDialog.setPositiveLabel(label1);
-        iOSDialog.setBoldPositiveLabel(isBold);
-        iOSDialog.setPositiveListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iOSDialog.dismiss();
-                if (callback1 != null) {
-                    callback1.onClick1();
-                }
-            }
-        });
-        iOSDialog.show();
-    }
-
-    public static void showIOSDialog2(Activity activity, String title, String subtitle, String label1, String label2, boolean isBold, final Callback2 callback2) {
-        final iOSDialog iOSDialog = new iOSDialog(activity);
-        iOSDialog.setTitle(title);
-        iOSDialog.setSubtitle(subtitle);
-        iOSDialog.setNegativeLabel(label1);
-        iOSDialog.setPositiveLabel(label2);
-        iOSDialog.setBoldPositiveLabel(isBold);
-        iOSDialog.setNegativeListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iOSDialog.dismiss();
-                if (callback2 != null) {
-                    callback2.onClick1();
-                }
-            }
-        });
-        iOSDialog.setPositiveListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iOSDialog.dismiss();
-                if (callback2 != null) {
-                    callback2.onClick2();
-                }
-            }
-        });
-        iOSDialog.show();
-    }*/
 }
