@@ -9,8 +9,10 @@ import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customhq.CustomHQActivity;
-import testlibuiza.sample.v3.customskin.CustomSkinCodeActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
+import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import vn.uiza.core.base.BaseActivity;
@@ -21,8 +23,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //authV2();
 
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,10 +64,18 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
-        findViewById(R.id.bt_uiza_custom_skin_code).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bt_uiza_custom_skin_code_seekbar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, CustomSkinCodeActivity.class);
+                Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_uiza_custom_skin_code_uz_timebar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeUZTimebarActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -88,34 +96,15 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
-    }
-
-    /*private void authV2() {
-        LLog.d(TAG, "authV2");
-        UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
-        *//*String accessKeyId = Constants.A_K_DEV;
-        String secretKeyId = Constants.S_K_DEV;*//*
-        String accessKeyId = Constants.A_K_UQC;
-        String secretKeyId = Constants.S_K_UQC;
-
-        JsonBodyAuth jsonBodyAuth = new JsonBodyAuth();
-        jsonBodyAuth.setAccessKeyId(accessKeyId);
-        jsonBodyAuth.setSecretKeyId(secretKeyId);
-
-        subscribe(service.auth(jsonBodyAuth), new ApiSubscriber<Auth>() {
+        findViewById(R.id.bt_error).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Auth auth) {
-                LLog.d(TAG, "authV2 onSuccess");
-                UZUtil.setAuth(activity, auth, LSApplication.getInstance().getGson());
-                RestClientV2.addAuthorization(auth.getData().getToken());
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "auth onFail " + e.getMessage());
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ErrorActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
             }
         });
-    }*/
+    }
 
     @Override
     protected boolean setFullScreen() {

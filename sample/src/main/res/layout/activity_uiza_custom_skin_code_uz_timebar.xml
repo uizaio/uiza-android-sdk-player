@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/WhiteSmoke">
+
+    <uizacoresdk.view.rl.video.UZVideo
+        android:id="@id/uiza_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uiza_video">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
+            android:text="@string/large_text" />
+    </ScrollView>
+
+    <!--<RelativeLayout
+        android:id="@id/rl_time_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@id/previewFrameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/video_frame"
+            android:padding="@dimen/video_frame_width">
+
+            <ImageView
+                android:id="@id/image_view_thumnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
+
+        <vn.uiza.views.autosize.UZTextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/previewFrameLayout"
+            android:includeFontPadding="false"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
+
+        <uizacoresdk.view.rl.timebar.UZTimebar
+            android:id="@id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/previewFrameLayout"
+            android:layout_toLeftOf="@id/exo_duration"
+            android:layout_toRightOf="@+id/exo_position"
+            app:ad_marker_color="@color/LightYellow"
+            app:buffered_color="@color/LightGrey"
+            app:played_ad_marker_color="@color/LightYellow"
+            app:played_color="@color/White"
+            app:previewFrameLayout="@id/previewFrameLayout"
+            app:scrubber_color="@color/White"
+            app:unplayed_color="@color/Gray" />
+
+        <vn.uiza.views.autosize.UZTextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/previewFrameLayout"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
+    </RelativeLayout>-->
+
+</RelativeLayout>

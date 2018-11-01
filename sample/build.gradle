@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.uiza.module.sample"
         minSdkVersion 18
-        targetSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -45,11 +45,11 @@ android {
 }
 
 dependencies {
-    //api project(':uizacoresdk')
-    //api project(':uizalivestream')
+    api project(':uizacoresdk')
+    api project(':uizalivestream')
 
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.6.9'
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.6.9'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.2'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.2'
 
     //implementation 'vn.vtvlive.drm:exoplayer:2.8.4'
 }

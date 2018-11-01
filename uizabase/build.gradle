@@ -82,5 +82,8 @@ dependencies {
     //compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.1'
 
     //compile 'com.nshmura:snappysmoothscroller:1.0.0'
+
+    //runtime permission https://github.com/Karumi/Dexter
+    api 'com.karumi:dexter:4.2.0'
 }
 

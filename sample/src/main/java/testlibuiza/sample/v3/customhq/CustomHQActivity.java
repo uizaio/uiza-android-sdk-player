@@ -22,6 +22,7 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
@@ -205,11 +206,10 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }
-        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

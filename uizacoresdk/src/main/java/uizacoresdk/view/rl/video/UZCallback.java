@@ -2,6 +2,7 @@ package uizacoresdk.view.rl.video;
 
 import android.content.Intent;
 
+import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -28,6 +29,6 @@ public interface UZCallback {
     public void onSkinChange();
 
     //when uiimavideo had an error
-    public void onError(Exception e);
+    public void onError(UZException e);
 
 }

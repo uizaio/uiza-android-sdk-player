@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/LightGreen"
+                android:background="@color/White"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -54,11 +54,18 @@
                     android:text="Custom skin by xml" />
 
                 <Button
-                    android:id="@+id/bt_uiza_custom_skin_code"
+                    android:id="@+id/bt_uiza_custom_skin_code_seekbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="Custom skin by code" />
+                    android:text="Custom skin by code (seekbar)" />
+
+                <Button
+                    android:id="@+id/bt_uiza_custom_skin_code_uz_timebar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="Custom skin by code (UZTimebar)" />
 
                 <Button
                     android:id="@+id/bt_custom_hq"
@@ -79,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/LightGreen"
+                android:background="@color/White"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -100,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
-                android:background="@color/LightGreen"
+                android:background="@color/White"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_5">
 
@@ -115,6 +122,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Livestream" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@color/White"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="More"
+                    android:textSize="@dimen/txt_30" />
+
+                <Button
+                    android:id="@+id/bt_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Error" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

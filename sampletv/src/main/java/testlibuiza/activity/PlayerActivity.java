@@ -8,17 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import testlibuiza.app.R;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
-import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZTVCallback;
 import uizacoresdk.view.rl.video.UZVideo;
+import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback {
@@ -27,7 +27,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "onCreate");
         UZUtil.setCasty(this);
 
         //init skin
@@ -99,12 +98,12 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }
         LLog.e(TAG, "onError: " + e.toString());
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
+        /*LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {
                 onBackPressed();
@@ -114,7 +113,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
             public void onCancel() {
                 onBackPressed();
             }
-        });
+        });*/
     }
 
     @Override

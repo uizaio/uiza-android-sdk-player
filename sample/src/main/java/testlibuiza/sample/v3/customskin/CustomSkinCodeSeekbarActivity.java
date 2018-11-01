@@ -19,8 +19,8 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -31,7 +31,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private SeekBar seekBar;
 
@@ -47,7 +47,7 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_code;
+        return R.layout.activity_uiza_custom_skin_code_seekbar;
     }
 
     @Override
@@ -151,11 +151,10 @@ public class CustomSkinCodeActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }
-        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

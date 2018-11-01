@@ -1,7 +1,7 @@
 package vn.uiza.utils;
 
-import vn.uiza.R;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
@@ -41,7 +41,7 @@ public class UZUtilBase {
             public void onSuccess(ResultRetrieveALive result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
                     if (callbackGetDetailEntity != null) {
-                        callbackGetDetailEntity.onError(new Exception(activity.getString(R.string.err_call_api_retrievealiveevent)));
+                        callbackGetDetailEntity.onError(new Exception(UZException.ERR_21));
                     }
                 } else {
                     if (callbackGetDetailEntity != null) {

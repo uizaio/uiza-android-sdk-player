@@ -33,6 +33,8 @@ import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -429,13 +431,17 @@ public class UZUtil {
 
     public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {
         if (activity == null) {
-            throw new NullPointerException("Activity cannot be null");
+            throw new NullPointerException(UZException.ERR_12);
         }
         if (uzVideo == null) {
-            throw new NullPointerException("UZVideo cannot be null");
+            throw new NullPointerException(UZException.ERR_13);
         }
         if (UZDataCLP.getInstance().getUzCustomLinkPlay() == null) {
-            LLog.e(TAG, "You must init custom linkPlay first.");
+            LLog.e(TAG, UZException.ERR_14);
+            return false;
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, UZException.ERR_0);
             return false;
         }
         if (UZUtil.getClickedPip(activity)) {
@@ -451,13 +457,17 @@ public class UZUtil {
 
     public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
         if (activity == null) {
-            throw new NullPointerException("Activity cannot be null");
+            throw new NullPointerException(UZException.ERR_12);
         }
         if (uzVideo == null) {
-            throw new NullPointerException("UZVideo cannot be null");
+            throw new NullPointerException(UZException.ERR_13);
         }
         if (entityId != null) {
             UZUtil.setClickedPip(activity, false);
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, UZException.ERR_0);
+            return;
         }
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
@@ -476,13 +486,17 @@ public class UZUtil {
 
     public static void initPlaylistFolder(Activity activity, UZVideo uzVideo, String metadataId) {
         if (activity == null) {
-            throw new NullPointerException("Activity cannot be null");
+            throw new NullPointerException(UZException.ERR_12);
         }
         if (uzVideo == null) {
-            throw new NullPointerException("UZVideo cannot be null");
+            throw new NullPointerException(UZException.ERR_13);
         }
         if (metadataId != null) {
             UZUtil.setClickedPip(activity, false);
+        }
+        if (!LConnectivityUtil.isConnected(activity)) {
+            LLog.e(TAG, UZException.ERR_0);
+            return;
         }
         //LLog.d(TAG, "initPlaylistFolder getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
@@ -534,16 +548,16 @@ public class UZUtil {
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
-            throw new NullPointerException("Error: Context cannot be null");
+            throw new NullPointerException(UZException.ERR_15);
         }
         if (domainApi == null || domainApi.isEmpty()) {
-            throw new NullPointerException("Domain api cannot be null or empty");
+            throw new NullPointerException(UZException.ERR_16);
         }
         if (token == null || token.isEmpty()) {
-            throw new NullPointerException("Token cannot be null or empty");
+            throw new NullPointerException(UZException.ERR_17);
         }
         if (appId == null || appId.isEmpty()) {
-            throw new NullPointerException("App id be null or empty");
+            throw new NullPointerException(UZException.ERR_18);
         }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
@@ -561,7 +575,7 @@ public class UZUtil {
 
     public static void setCasty(Activity activity) {
         if (activity == null) {
-            throw new NullPointerException("Error: Activity cannot be null");
+            throw new NullPointerException(UZException.ERR_12);
         }
         if (LDeviceUtil.isTV(activity)) {
             return;

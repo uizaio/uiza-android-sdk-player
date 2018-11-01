@@ -83,7 +83,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        //LActivityUtil.changeScreenLandscape(activity);
 
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
         uzLivestream.setCallback(this);
@@ -102,9 +101,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         bStartStopStore.setOnClickListener(this);
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
+    }
 
-        uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-        //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+    @Override
+    protected void onResume() {
+        uzLivestream.onResume();
+        super.onResume();
     }
 
     private void handleFilterClick(MenuItem item) {
@@ -294,11 +296,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public void onPermission(boolean areAllPermissionsGranted) {
+        if (areAllPermissionsGranted) {
+            bStartStop.setEnabled(true);
+            bStartStopStore.setEnabled(true);
+            btSwitchCamera.setEnabled(true);
+            btFilter.setEnabled(true);
+            //uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+            uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+        } else {
+            LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
+            onBackPressed();
+        }
+    }
+
+    @Override
     public void onError(final String reason) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LLog.e(TAG, "onError reason " + reason);
                 LToast.show(activity, reason);
                 bStartStop.setEnabled(true);
                 bStartStopStore.setEnabled(true);

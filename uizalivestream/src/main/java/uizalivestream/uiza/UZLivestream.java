@@ -1,12 +1,17 @@
 package uizalivestream.uiza;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,11 +21,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.HttpException;
@@ -35,6 +46,7 @@ import uizalivestream.uiza.rtplibrary.rtmp.RtmpCamera1;
 import uizalivestream.uiza.rtplibrary.view.OpenGlView;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -49,6 +61,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
+import vn.uiza.utils.util.AppUtils;
 import vn.uiza.views.LToast;
 
 /**
@@ -71,22 +84,22 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     public UZLivestream(Context context) {
         super(context);
-        onCreate();
+        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs) {
         super(context, attrs);
-        onCreate();
+        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        onCreate();
+        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        onCreate();
+        //onCreate();
     }
 
     public ProgressBar getProgressBar() {
@@ -110,6 +123,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private void onCreate() {
+        LLog.d(TAG, "onCreate");
         inflate(getContext(), R.layout.v3_uiza_livestream_filter, this);
         tvLiveStatus = (TextView) findViewById(R.id.tv_live_status);
         progressBar = (ProgressBar) findViewById(R.id.pb);
@@ -123,6 +137,94 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         //openGlView.getHolder().setFixedSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenWidth() * 16 / 9);
         //openGlView.setKeepAspectRatio(true);
         //openGlView.setFrontPreviewFlip(true);
+    }
+
+    public void onResume() {
+        if (!isShowDialogCheck) {
+            checkPermission();
+        }
+    }
+
+    private boolean isShowDialogCheck;
+
+    private void checkPermission() {
+        LLog.d(TAG, "checkPermission");
+        isShowDialogCheck = true;
+        Dexter.withActivity((Activity) getContext())
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.RECORD_AUDIO)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            LLog.d(TAG, "onPermissionsChecked do you work now");
+                            onCreate();
+                            if (callback != null) {
+                                callback.onPermission(true);
+                            }
+                        } else {
+                            LLog.d(TAG, "!areAllPermissionsGranted");
+                            showShouldAcceptPermission();
+                        }
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            LLog.d(TAG, "onPermissionsChecked permission is denied permenantly, navigate user to app settings");
+                            showSettingsDialog();
+                        }
+                        isShowDialogCheck = true;
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        LLog.d(TAG, "onPermissionRationaleShouldBeShown");
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
+    }
+
+    private void showShouldAcceptPermission() {
+        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature.", "Okay", "Cancel", new LDialogUtil.Callback2() {
+            @Override
+            public void onClick1() {
+                checkPermission();
+            }
+
+            @Override
+            public void onClick2() {
+                LLog.d(TAG, "showShouldAcceptPermission onClick2");
+                if (callback != null) {
+                    callback.onPermission(false);
+                }
+            }
+        });
+        alertDialog.setCancelable(false);
+    }
+
+    private void showSettingsDialog() {
+        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature. You can grant them in app settings.", "GOTO SETTINGS", "Cancel", new LDialogUtil.Callback2() {
+            @Override
+            public void onClick1() {
+                isShowDialogCheck = false;
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", AppUtils.getAppPackageName(), null);
+                intent.setData(uri);
+                ((Activity) getContext()).startActivityForResult(intent, 101);
+            }
+
+            @Override
+            public void onClick2() {
+                LLog.d(TAG, "showSettingsDialog onClick2");
+                if (callback != null) {
+                    callback.onPermission(false);
+                }
+            }
+        });
+        alertDialog.setCancelable(false);
     }
 
     private void updateUISurfaceView(int width, int height) {
@@ -452,7 +554,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     public void setId(final String entityLiveId) {
         if (entityLiveId == null || entityLiveId.isEmpty()) {
-            throw new NullPointerException(getContext().getString(R.string.entity_cannot_be_null_or_empty));
+            throw new NullPointerException(UZException.ERR_5);
         }
         //Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
         //Van tiep tuc goi detail entity de lay streamUrl
@@ -573,6 +675,8 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     public interface Callback {
+        public void onPermission(boolean areAllPermissionsGranted);
+
         public void onError(String reason);
 
         public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed);

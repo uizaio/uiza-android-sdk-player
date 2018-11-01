@@ -36,6 +36,7 @@ import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -95,7 +96,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         });
         btProgress = (Button) findViewById(R.id.bt_progress);
         uzVideo.setUZCallback(this);
-        uzVideo.setControllerShowTimeoutMs(30000);
+        uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
@@ -466,7 +467,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(UZException e) {
         if (e == null) {
             return;
         }
