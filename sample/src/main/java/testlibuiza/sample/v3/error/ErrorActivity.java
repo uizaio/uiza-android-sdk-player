@@ -44,6 +44,7 @@ public class ErrorActivity extends BaseActivity {
                 + UZException.ERR_CODE_422 + " - " + UZException.ERR_422 + "\n"
                 + UZException.ERR_CODE_500 + " - " + UZException.ERR_500 + "\n"
                 + UZException.ERR_CODE_503 + " - " + UZException.ERR_503 + "\n";
+
         tvErr.setText(s);
     }
 
