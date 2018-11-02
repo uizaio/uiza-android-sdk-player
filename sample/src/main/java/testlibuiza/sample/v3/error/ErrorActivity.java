@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import testlibuiza.R;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.exception.UZException;
 
 public class ErrorActivity extends BaseActivity {
 
@@ -12,46 +13,38 @@ public class ErrorActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TextView tvErr = (TextView) findViewById(R.id.tv_err);
-        tvErr.setText("Exception(\"Init onError: cannot get detail of entity \" + e.getMessage());//Goi API lâý thông tin entity failed\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Error: Token streaming cannot be found\")//Không tìm thấy token streaming để call API lấy linkplay\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"This entity has no linkplay\")//Entity này không có linkplay\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Entity ID cannot be null or empty\")//User init entity id ko hợp lệ\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Tried to play all linkplay of this entity, but failed\")//1 entity có thể có nhiều linkplay, nếu linkplay này failed sẽ auto switch sang link khác, lỗi này trả về nếu all linkplay đều failed\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Init failed: Cannot get link play or detail entity\")//Lỗi khi init player\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Error: Cannot get list all entity.\")//Call API thành công nhưng dữ liệu rỗng\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Bad Request: The request was unacceptable, often due to missing a required parameter.\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Unauthorized: No valid API key provided.\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Not Found: The requested resource does not exist.\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Unprocessable: The syntax of the request entity is incorrect (often is wrong parameter).\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Internal Server Error: We had a problem with our server. Try again later.\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"Service Unavailable: The server is overloaded or down for maintenance.\")\n" +
-                "\n" +
-                "\n" +
-                "Exception(\"No internet connection.\")");
+        String s = UZException.ERR_CODE_0 + " - " + UZException.ERR_0 + "\n"
+                + UZException.ERR_CODE_1 + " - " + UZException.ERR_1 + "\n"
+                + UZException.ERR_CODE_2 + " - " + UZException.ERR_2 + "\n"
+                + UZException.ERR_CODE_3 + " - " + UZException.ERR_3 + "\n"
+                + UZException.ERR_CODE_4 + " - " + UZException.ERR_4 + "\n"
+                + UZException.ERR_CODE_5 + " - " + UZException.ERR_5 + "\n"
+                + UZException.ERR_CODE_6 + " - " + UZException.ERR_6 + "\n"
+                + UZException.ERR_CODE_7 + " - " + UZException.ERR_7 + "\n"
+                + UZException.ERR_CODE_8 + " - " + UZException.ERR_8 + "\n"
+                + UZException.ERR_CODE_9 + " - " + UZException.ERR_9 + "\n"
+                + UZException.ERR_CODE_10 + " - " + UZException.ERR_10 + "\n"
+                + UZException.ERR_CODE_11 + " - " + UZException.ERR_11 + "\n"
+                + UZException.ERR_CODE_12 + " - " + UZException.ERR_12 + "\n"
+                + UZException.ERR_CODE_13 + " - " + UZException.ERR_13 + "\n"
+                + UZException.ERR_CODE_14 + " - " + UZException.ERR_14 + "\n"
+                + UZException.ERR_CODE_15 + " - " + UZException.ERR_15 + "\n"
+                + UZException.ERR_CODE_16 + " - " + UZException.ERR_16 + "\n"
+                + UZException.ERR_CODE_17 + " - " + UZException.ERR_17 + "\n"
+                + UZException.ERR_CODE_18 + " - " + UZException.ERR_18 + "\n"
+                + UZException.ERR_CODE_19 + " - " + UZException.ERR_19 + "\n"
+                + UZException.ERR_CODE_20 + " - " + UZException.ERR_20 + "\n"
+                + UZException.ERR_CODE_21 + " - " + UZException.ERR_21 + "\n"
+                + UZException.ERR_CODE_22 + " - " + UZException.ERR_22 + "\n"
+                + UZException.ERR_CODE_23 + " - " + UZException.ERR_23 + "\n"
+                + UZException.ERR_CODE_24 + " - " + UZException.ERR_24 + "\n"
+                + UZException.ERR_CODE_400 + " - " + UZException.ERR_400 + "\n"
+                + UZException.ERR_CODE_401 + " - " + UZException.ERR_401 + "\n"
+                + UZException.ERR_CODE_404 + " - " + UZException.ERR_404 + "\n"
+                + UZException.ERR_CODE_422 + " - " + UZException.ERR_422 + "\n"
+                + UZException.ERR_CODE_500 + " - " + UZException.ERR_500 + "\n"
+                + UZException.ERR_CODE_503 + " - " + UZException.ERR_503 + "\n";
+        tvErr.setText(s);
     }
 
     @Override
