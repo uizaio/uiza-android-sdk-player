@@ -86,12 +86,12 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "onAdProgress currentMls " + currentMls);
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "onVideoProgress currentMls " + currentMls);
                 seekBar.setProgress((int) currentMls);
             }
@@ -101,7 +101,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
             }
 
             @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
             }
         });
         uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {

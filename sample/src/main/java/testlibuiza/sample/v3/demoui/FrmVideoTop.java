@@ -205,12 +205,12 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
 
@@ -219,7 +219,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             }
 
             @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
             }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {

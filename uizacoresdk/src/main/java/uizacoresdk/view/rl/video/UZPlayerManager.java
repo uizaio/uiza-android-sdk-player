@@ -216,8 +216,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                         uzVideo.setUseController(false);
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            mls = videoProgressUpdate.getCurrentTime();
-                            duration = videoProgressUpdate.getDuration();
+                            mls = (long) videoProgressUpdate.getCurrentTime();
+                            duration = (long) videoProgressUpdate.getDuration();
                             percent = (int) (mls * 100 / duration);
                             s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
@@ -244,7 +244,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                 if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
                                     bufferPosition = uzVideo.getBufferedPosition();
                                     bufferPercentage = uzVideo.getBufferedPercentage();
-                                    progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage());
+                                    progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage(), duration);
                                 }
                             }
                         }
@@ -258,8 +258,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         handler.postDelayed(runnable, 0);
     }
 
-    private float mls;
-    private float duration;
+    private long mls;
+    private long duration;
     private int percent;
     private int s;
     private long bufferPosition = 0;

@@ -1316,7 +1316,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {
                     progressCallback.onAdProgress(currentMls, s, duration, percent);
@@ -1324,7 +1324,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
                 if (progressCallback != null) {
@@ -1341,10 +1341,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
                 //LLog.d(TAG, "progressCallback onBufferProgress bufferedPosition: " + bufferedPosition + ", bufferedPercentage: " + bufferedPercentage);
                 if (progressCallback != null) {
-                    progressCallback.onBufferProgress(bufferedPosition, bufferedPercentage);
+                    progressCallback.onBufferProgress(bufferedPosition, bufferedPercentage, duration);
                 }
             }
         });
