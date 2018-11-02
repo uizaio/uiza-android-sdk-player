@@ -185,118 +185,22 @@ All listener  (If you want to listen all events)
             return;
         }
         uzVideo.getPlayer().addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-            }
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-            }
-
-            @Override
-            public void onSeekProcessed() {
-            }
+            //...
         });
         uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
-            @Override
-            public void onAudioEnabled(DecoderCounters counters) {
-            }
-
-            @Override
-            public void onAudioSessionId(int audioSessionId) {
-            }
-
-            @Override
-            public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            }
-
-            @Override
-            public void onAudioInputFormatChanged(Format format) {
-            }
-
-            @Override
-            public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-            }
-
-            @Override
-          public void onAudioDisabled(DecoderCounters counters) {
-           }
+            //...
         });
         uzVideo.setProgressCallback(new ProgressCallback() {
-            @Override
-           public void onAdProgress(float currentMls, int s, float duration, int percent) {
-           }
-
-            @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-            }
+           //...
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
-            @Override
-           public void onVideoEnabled(DecoderCounters counters) {
-           }
-
-            @Override
-           public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-           }
-
-            @Override
-           public void onVideoInputFormatChanged(Format format) {
-           }
-
-            @Override
-           public void onDroppedFrames(int count, long elapsedMs) {
-           }
-
-            @Override
-           public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-           }
-
-            @Override
-           public void onRenderedFirstFrame(Surface surface) {
-           }
-
-            @Override
-          public void onVideoDisabled(DecoderCounters counters) {
-           }
+           //...
         });
         uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
-            @Override
-           public void onMetadata(Metadata metadata) {
-           }
+           //...
         });
         uzVideo.getPlayer().addTextOutput(new TextOutput() {
-            @Override
-           public void onCues(List<Cue> cues) {
-           }
+           //...
         });
     }
 Listener touch event
