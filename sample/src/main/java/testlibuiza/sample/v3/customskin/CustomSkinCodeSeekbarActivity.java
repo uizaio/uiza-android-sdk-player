@@ -95,6 +95,14 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
                 //LLog.d(TAG, "onVideoProgress currentMls " + currentMls);
                 seekBar.setProgress((int) currentMls);
             }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            }
         });
         uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override

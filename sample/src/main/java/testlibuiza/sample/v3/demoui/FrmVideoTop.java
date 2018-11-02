@@ -213,6 +213,14 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override

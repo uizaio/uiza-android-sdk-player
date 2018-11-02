@@ -172,6 +172,14 @@ public class FUZVideo extends RelativeLayout {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
             }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            }
         });
     }
 

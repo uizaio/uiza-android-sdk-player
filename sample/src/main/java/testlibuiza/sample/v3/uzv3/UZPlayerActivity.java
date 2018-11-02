@@ -379,6 +379,14 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
                 btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
                 sb.setProgress((int) currentMls);
             }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            }
         });
         uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
