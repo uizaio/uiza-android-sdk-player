@@ -14,6 +14,9 @@ public class LConnectivityUtil {
      * @return
      */
     public static NetworkInfo getNetworkInfo(Context context) {
+        if (context == null) {
+            return null;
+        }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
