@@ -4,6 +4,5 @@
     android:id="@id/player_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:keepScreenOn="true"
     app:controller_layout_id="@layout/framgia_controller_skin_custom_detail" />

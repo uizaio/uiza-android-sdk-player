@@ -2,6 +2,7 @@ package testlibuiza.sample.v3.customskin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -48,6 +49,8 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
+
+        uzVideo.setBackgroundColorUZVideoRootView(Color.RED);
         //uzVideo.setUzTimebarBottom();
 
         final String entityId = LSApplication.entityIdDefaultVOD;

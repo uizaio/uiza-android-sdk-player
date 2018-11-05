@@ -3,7 +3,6 @@
     android:id="@id/root_view_uz_video"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
     android:background="@color/Black">
 
     <RelativeLayout

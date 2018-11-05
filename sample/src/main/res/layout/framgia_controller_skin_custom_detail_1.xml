@@ -4,7 +4,6 @@
     android:id="@id/root_view_controller"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
     android:elevation="4dp"
     android:layoutDirection="ltr">
 

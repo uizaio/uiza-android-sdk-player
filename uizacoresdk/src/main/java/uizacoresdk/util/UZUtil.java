@@ -136,10 +136,10 @@ public class UZUtil {
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 4;
-                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 4 * Constants.RATIO_9_16 + pixedAdded);
+                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 4 * Constants.RATIO_9_16);
             } else {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 5;
-                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 5 * Constants.RATIO_9_16 + pixedAdded);
+                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 5 * Constants.RATIO_9_16);
             }
             //LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
             flImgThumnailPreviewSeekbar.requestLayout();

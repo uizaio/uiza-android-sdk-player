@@ -927,7 +927,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         //LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         //lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        //lp.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
         //uzPlayerView.setLayoutParams(lp);
 
         rootView.addView(uzPlayerView);
@@ -3645,19 +3645,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             throw new NullPointerException("uzTimebar cannot be null");
         }
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
-        View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
 
-        /*RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);
-        uzVideoRootView.setBackgroundResource(0);
+        //View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
+        //setMarginDependOnUZTimeBar(videoSurfaceView);
 
-        setMarginDependOnUZTimeBar(videoSurfaceView);
-        setMarginDependOnUZTimeBar(uzVideoRootView);*/
+        //RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);
+        //uzVideoRootView.setBackgroundResource(0);
+        //setMarginDependOnUZTimeBar(uzVideoRootView);
     }
 
     //return pixel
-    private int getHeightUZTimeBar() {
-        //return LUIUtil.getHeightOfView(uzTimebar);
-        return 200;
+    public int getHeightUZTimeBar() {
+        return LUIUtil.getHeightOfView(uzTimebar);
+    }
+
+    public void setBackgroundColorUZVideoRootView(int color) {
+        RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);
+        if (uzVideoRootView != null) {
+            uzVideoRootView.setBackgroundColor(color);
+        }
     }
 
     public void setMarginDependOnUZTimeBar(View view) {
