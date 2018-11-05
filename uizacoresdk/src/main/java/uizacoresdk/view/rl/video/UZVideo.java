@@ -2328,6 +2328,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         playerView.setControllerAutoShow(isAutoShow);
     }
 
+    public boolean getControllerAutoShow() {
+        if (playerView == null) {
+            return false;
+        }
+        return playerView.getControllerAutoShow();
+    }
+
     public void showController() {
         if (playerView != null) {
             playerView.showController();

@@ -46,8 +46,9 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setAutoStart(true);
-        uzVideo.hideUzTimebar();
+        //uzVideo.setAutoStart(true);
+        uzVideo.setControllerAutoShow(false);
+        //uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
