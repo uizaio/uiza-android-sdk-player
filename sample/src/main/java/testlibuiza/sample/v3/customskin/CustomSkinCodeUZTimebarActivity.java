@@ -48,12 +48,20 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
-        uzVideo.setUzTimebarBottom();
+        //uzVideo.setUzTimebarBottom();
+
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
-        View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
+        //View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        //uzVideo.setMarginDependOnUZTimeBar(shadow);
+
+        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setUzTimebarBottom();
+            }
+        });
     }
 
     @Override

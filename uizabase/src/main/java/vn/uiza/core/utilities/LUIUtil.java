@@ -628,6 +628,9 @@ public class LUIUtil {
     }
 
     public static int getHeightOfView(View view) {
+        if (view == null) {
+            return 0;
+        }
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         return view.getMeasuredHeight();
     }

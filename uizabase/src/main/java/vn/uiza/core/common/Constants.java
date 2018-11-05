@@ -168,4 +168,10 @@ public class Constants {
     public static final String PLATFORM_ANDROID = "android";
     public static final String PLATFORM_IOS = "ios";
     public static final String PLATFORM_WEBSITE = "website";
+
+    public static final float RATIO_9_16 = 9f / 16f;
+    public static final float RATIO_10_16 = 10f / 16f;
+    public static final float RATIO_11_16 = 11f / 16f;
+    public static final float RATIO_12_16 = 12f / 16f;
+    public static final float RATIO_16_16 = 1;
 }
