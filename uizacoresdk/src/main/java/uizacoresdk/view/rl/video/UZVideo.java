@@ -927,7 +927,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         //LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         //lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        //lp.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+        //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         //uzPlayerView.setLayoutParams(lp);
 
         rootView.addView(uzPlayerView);
@@ -1108,7 +1108,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -3644,9 +3645,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar == null) {
             throw new NullPointerException("uzTimebar cannot be null");
         }
+
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
 
         //View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
+        /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                Gravity.TOP);
+        videoSurfaceView.setLayoutParams(params);*/
+
         //setMarginDependOnUZTimeBar(videoSurfaceView);
 
         //RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);

@@ -56,7 +56,8 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
-        //View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        shadow.setVisibility(View.GONE);
         //uzVideo.setMarginDependOnUZTimeBar(shadow);
 
         findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
