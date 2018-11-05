@@ -5,9 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@drawable/background_player_controller"
     android:elevation="4dp"
     android:layoutDirection="ltr">
+
+    <View
+        android:id="@+id/bkg_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_player_controller" />
 
     <LinearLayout
         android:id="@id/ll_top"

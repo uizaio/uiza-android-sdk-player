@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -46,13 +47,13 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        //uzVideo.setAutoStart(true);
-        //uzVideo.setControllerAutoShow(false);
-        //uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
-        uzVideo.setMarginBottom();
+        uzVideo.setUzTimebarBottom();
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
+
+        View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
     }
 
     @Override

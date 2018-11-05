@@ -3634,24 +3634,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return getPlayer().getBufferedPercentage();
     }
 
-    public void setMarginBottom() {
+    public void setUzTimebarBottom() {
         if (uzPlayerView == null) {
             throw new NullPointerException("uzPlayerView cannot be null");
         }
         if (uzTimebar == null) {
             throw new NullPointerException("uzTimebar cannot be null");
         }
-
-        View view = uzPlayerView.getVideoSurfaceView();
-        int heightUZTimebar = LUIUtil.getHeightOfView(uzTimebar);
-        LLog.d(TAG, "setMarginBottom heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+        View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
         RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);
         uzVideoRootView.setBackgroundResource(0);
+        setMarginDependOnUZTimeBar(videoSurfaceView);
+        setMarginDependOnUZTimeBar(uzVideoRootView);
+    }
 
-        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
-        rootViewController.setBackgroundResource(0);
-
-        LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 20 : heightUZTimebar / 2);
-        LUIUtil.setMarginPx(uzVideoRootView, 0, 0, 0, heightUZTimebar == 0 ? 20 : heightUZTimebar / 2);
+    public void setMarginDependOnUZTimeBar(View view) {
+        if (view == null || uzTimebar == null) {
+            return;
+        }
+        int heightUZTimebar = LUIUtil.getHeightOfView(uzTimebar);
+        LLog.d(TAG, "setMarginBottom heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+        LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 0 : heightUZTimebar / 2);
     }
 }
