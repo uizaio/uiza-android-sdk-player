@@ -205,7 +205,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             @Override
             public void run() {
                 //LLog.d(TAG, "runnable run");
-                if (uzVideo != null && uzVideo.getPlayerView() != null) {
+                if (uzVideo != null && uzVideo.getUzPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     if (videoAdPlayerListerner.isEnded()) {
                         onAdEnded();
@@ -279,7 +279,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        uzVideo.getPlayerView().setPlayer(player);
+        uzVideo.getUzPlayerView().setPlayer(player);
 
         MediaSource mediaSourceVideo = createMediaSourceVideo();
 
@@ -402,7 +402,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 mediaSource,
                 this,
                 adsLoader,
-                uzVideo.getPlayerView().getOverlayFrameLayout(),
+                uzVideo.getUzPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
