@@ -157,7 +157,7 @@ public class FUZVideo extends RelativeLayout {
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {
                     progressCallback.onAdProgress(currentMls, s, duration, percent);
@@ -165,12 +165,20 @@ public class FUZVideo extends RelativeLayout {
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
             }
         });
     }

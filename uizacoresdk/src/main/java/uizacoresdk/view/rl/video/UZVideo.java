@@ -1308,27 +1308,43 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
-                //LLog.d(TAG, "onAdEnded");
+                //LLog.d(TAG, "progressCallback onAdEnded");
+                setDefaultUseController(isDefaultUseController());
                 if (progressCallback != null) {
                     progressCallback.onAdEnded();
                 }
-                setDefaultUseController(isDefaultUseController());
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+                //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {
                     progressCallback.onAdProgress(currentMls, s, duration, percent);
                 }
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+                //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                }
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                //LLog.d(TAG, "progressCallback onPlayerStateChanged playWhenReady " + playWhenReady + ", playbackState: " + playbackState);
+                if (progressCallback != null) {
+                    progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
+                }
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+                //LLog.d(TAG, "progressCallback onBufferProgress bufferedPosition: " + bufferedPosition + ", bufferedPercentage: " + bufferedPercentage);
+                if (progressCallback != null) {
+                    progressCallback.onBufferProgress(bufferedPosition, bufferedPercentage, duration);
                 }
             }
         });
@@ -1377,7 +1393,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isTracked100 = false;
     }
 
-    private void trackProgress(int s, int percent) {
+    protected void trackProgress(int s, int percent) {
         //dont track if user use custom linkplay
         if (isInitCustomLinkPlay) {
             //LLog.d(TAG, "trackProgress return isInitCustomLinkPlay");
@@ -3593,5 +3609,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return null;
         }
         return showUZTrackSelectionDialog(view, false);
+    }
+
+    public long getBufferedPosition() {
+        if (getPlayer() == null) {
+            return Constants.NOT_FOUND;
+        }
+        //LLog.d(TAG, "getBufferedPosition " + getPlayer().getBufferedPosition());
+        return getPlayer().getBufferedPosition();
+    }
+
+    public int getBufferedPercentage() {
+        if (getPlayer() == null) {
+            return Constants.NOT_FOUND;
+        }
+        //LLog.d(TAG, "getBufferedPosition " + getPlayer().getBufferedPosition());
+        return getPlayer().getBufferedPercentage();
     }
 }

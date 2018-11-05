@@ -6,27 +6,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Surface;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
-
-import java.util.List;
 
 import testlibuiza.R;
 import uizacoresdk.listerner.ProgressCallback;
@@ -51,7 +35,11 @@ import vn.uiza.views.LToast;
 
 public class UZPlayerActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
-    private Button btProgress;
+    private TextView tvProgressAd;
+    private TextView tvProgressVideo;
+    private TextView tvStateVideo;
+    private TextView tvBuffer;
+    private TextView tvClickEvent;
     private SeekBar sb;
 
     @Override
@@ -94,7 +82,11 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
                 uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
-        btProgress = (Button) findViewById(R.id.bt_progress);
+        tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
+        tvProgressVideo = (TextView) findViewById(R.id.tv_progress_video);
+        tvStateVideo = (TextView) findViewById(R.id.tv_state_video);
+        tvBuffer = (TextView) findViewById(R.id.tv_buffer);
+        tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
         uzVideo.setUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(8000);
 
@@ -130,31 +122,38 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed() {
+                tvClickEvent.setText("onSingleTapConfirmed");
             }
 
             @Override
             public void onLongPress() {
+                tvClickEvent.setText("onLongPress");
             }
 
             @Override
             public void onDoubleTap() {
+                tvClickEvent.setText("onDoubleTap");
                 uzVideo.setDisplayPortrait(!uzVideo.isDisplayPortrait());
             }
 
             @Override
             public void onSwipeRight() {
+                tvClickEvent.setText("onSwipeRight");
             }
 
             @Override
             public void onSwipeLeft() {
+                tvClickEvent.setText("onSwipeLeft");
             }
 
             @Override
             public void onSwipeBottom() {
+                tvClickEvent.setText("onSwipeBottom");
             }
 
             @Override
             public void onSwipeTop() {
+                tvClickEvent.setText("onSwipeTop");
             }
         });
 
@@ -279,7 +278,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
-        uzVideo.getPlayer().addListener(new Player.EventListener() {
+        /*uzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -329,8 +328,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onSeekProcessed() {
                 //LLog.d(TAG, "onTimelineChanged");
             }
-        });
-        uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        });*/
+        /*uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -360,27 +359,46 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onAudioDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioDisabled");
             }
-        });
+        });*/
         uzVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
                 sb.setMax((int) uzVideo.getDuration());
+                tvProgressAd.setText("onAdEnded");
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-                btProgress.setText("Ad: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+                tvProgressAd.setText("Ad: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-                btProgress.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+                tvProgressVideo.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
                 sb.setProgress((int) currentMls);
             }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == Player.STATE_BUFFERING) {
+                    tvStateVideo.setText("onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
+                } else if (playbackState == Player.STATE_IDLE) {
+                    tvStateVideo.setText("onPlayerStateChanged STATE_IDLE, playWhenReady: " + playWhenReady);
+                } else if (playbackState == Player.STATE_READY) {
+                    tvStateVideo.setText("onPlayerStateChanged STATE_READY, playWhenReady: " + playWhenReady);
+                } else if (playbackState == Player.STATE_ENDED) {
+                    tvStateVideo.setText("onPlayerStateChanged STATE_ENDED, playWhenReady: " + playWhenReady);
+                }
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+                tvBuffer.setText("onBufferProgress bufferedPosition: " + bufferedPosition + "/" + duration + "(mls), bufferedPercentage: " + bufferedPercentage + "%");
+            }
         });
-        uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+        /*uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -415,26 +433,25 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
             public void onVideoDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoDisabled");
             }
-        });
-        uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        });*/
+        /*uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
-        });
-        uzVideo.getPlayer().addTextOutput(new TextOutput() {
+        });*/
+        /*uzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
             }
-        });
+        });*/
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
-            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
             sb.setMax((int) uzVideo.getDuration());
         }
     }
@@ -455,7 +472,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             onBackPressed();
         }
@@ -463,7 +479,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onSkinChange() {
-
     }
 
     @Override
@@ -471,7 +486,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         if (e == null) {
             return;
         }
-        LLog.e(TAG, "onError: " + e.toString());
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
             @Override
             public void onClick1() {

@@ -130,8 +130,8 @@ import vn.uiza.utils.util.AppUtils;
                         hideProgress();
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            float mls = videoProgressUpdate.getCurrentTime();
-                            float duration = videoProgressUpdate.getDuration();
+                            long mls = (long) videoProgressUpdate.getCurrentTime();
+                            long duration = (long) videoProgressUpdate.getDuration();
                             int percent = (int) (mls * 100 / duration);
                             int s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
@@ -140,8 +140,8 @@ import vn.uiza.utils.util.AppUtils;
                     } else {
                         if (progressCallback != null) {
                             if (player != null) {
-                                float mls = player.getCurrentPosition();
-                                float duration = player.getDuration();
+                                long mls = (long) player.getCurrentPosition();
+                                long duration = (long) player.getDuration();
                                 int percent = (int) (mls * 100 / duration);
                                 int s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");

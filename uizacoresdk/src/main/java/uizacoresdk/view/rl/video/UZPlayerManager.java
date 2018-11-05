@@ -130,6 +130,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.mls = 0;
+        this.bufferPercentage = 0;
+        this.bufferPercentage = 0;
         this.context = uzVideo.getContext();
         this.uzVideo = uzVideo;
         this.linkPlay = linkPlay;
@@ -180,7 +182,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private boolean isOnAdEnded;
 
     private void onAdEnded() {
-        if (!isOnAdEnded) {
+        if (!isOnAdEnded && uzVideo != null) {
             isOnAdEnded = true;
             //LLog.d(TAG, "onAdEnded " + isOnAdEnded);
             if (progressCallback != null) {
@@ -203,7 +205,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             @Override
             public void run() {
                 //LLog.d(TAG, "runnable run");
-                if (uzVideo.getPlayerView() != null) {
+                if (uzVideo != null && uzVideo.getPlayerView() != null) {
                     boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
                     if (videoAdPlayerListerner.isEnded()) {
                         onAdEnded();
@@ -211,17 +213,22 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd + ", isEnded " + isEnded);
                     if (isPlayingAd) {
                         hideProgress();
-                        if (uzVideo != null) {
-                            uzVideo.setUseController(false);
-                        }
+                        uzVideo.setUseController(false);
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            mls = videoProgressUpdate.getCurrentTime();
-                            duration = videoProgressUpdate.getDuration();
+                            mls = (long) videoProgressUpdate.getCurrentTime();
+                            duration = (long) videoProgressUpdate.getDuration();
                             percent = (int) (mls * 100 / duration);
                             s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onAdProgress(mls, s, duration, percent);
+
+                            //buffer changing
+                            /*if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
+                                bufferPosition = uzVideo.getBufferedPosition();
+                                bufferPercentage = uzVideo.getBufferedPercentage();
+                                progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage());
+                            }*/
                         }
                     } else {
                         if (progressCallback != null) {
@@ -232,6 +239,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
+
+                                //buffer changing
+                                if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
+                                    bufferPosition = uzVideo.getBufferedPosition();
+                                    bufferPercentage = uzVideo.getBufferedPercentage();
+                                    progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage(), duration);
+                                }
                             }
                         }
                     }
@@ -244,10 +258,12 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         handler.postDelayed(runnable, 0);
     }
 
-    private float mls;
-    private float duration;
+    private long mls;
+    private long duration;
     private int percent;
     private int s;
+    private long bufferPosition = 0;
+    private int bufferPercentage = 0;
 
     private DefaultTrackSelector trackSelector;
 
@@ -483,6 +499,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     @Override
     public void loadPreview(long currentPosition, long max) {
+        if (player == null) {
+            return;
+        }
         player.setPlayWhenReady(false);
         if (thumbnailsUrl != null) {
             GlideApp.with(imageView)
@@ -553,6 +572,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
+            }
+            if (progressCallback != null) {
+                progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
             }
         }
 

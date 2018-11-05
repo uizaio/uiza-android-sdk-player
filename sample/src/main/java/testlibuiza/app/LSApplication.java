@@ -6,11 +6,11 @@ import android.support.multidex.MultiDexApplication;
 import com.google.gson.Gson;
 
 import testlibuiza.R;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.data.ActivityData;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
-import uizacoresdk.util.UZUtil;
 
 public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
@@ -51,7 +51,7 @@ public class LSApplication extends MultiDexApplication {
 
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_STAG);
         RestClientTracking.init(Constants.URL_TRACKING_STAG);
-        Constants.setDebugMode(true);
+        Constants.setDebugMode(false);
 
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }

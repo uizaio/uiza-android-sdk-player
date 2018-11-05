@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -18,29 +17,18 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
 import uizacoresdk.R;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
@@ -393,7 +381,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, "onSeekProcessed");
             }
         });
-        fuzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        /*fuzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -423,8 +411,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             public void onAudioDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioDisabled");
             }
-        });
-        fuzVideo.setProgressCallback(new ProgressCallback() {
+        });*/
+        /*fuzVideo.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
             }
@@ -438,8 +426,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             public void onVideoProgress(float currentMls, int s, float duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
             }
-        });
-        fuzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
+            }
+        });*/
+        /*fuzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -474,19 +470,19 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             public void onVideoDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoDisabled");
             }
-        });
-        fuzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        });*/
+        /*fuzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
-        });
-        fuzVideo.getPlayer().addTextOutput(new TextOutput() {
+        });*/
+        /*fuzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 // LLog.d(TAG, "onCues");
             }
-        });
+        });*/
     }
 
     @Override

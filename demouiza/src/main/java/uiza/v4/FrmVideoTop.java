@@ -9,28 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Surface;
 import android.view.View;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
-
-import java.util.List;
-
 import uiza.R;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZCallback;
@@ -117,7 +98,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
-        uzVideo.getPlayer().addListener(new Player.EventListener() {
+        /*uzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
                 //LLog.d(TAG, "onTimelineChanged");
@@ -167,8 +148,8 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             public void onSeekProcessed() {
                 //LLog.d(TAG, "onTimelineChanged");
             }
-        });
-        uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
+        });*/
+        /*uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioEnabled");
@@ -198,23 +179,29 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             public void onAudioDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onAudioDisabled");
             }
-        });
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        });*/
+        /*uzVideo.setProgressCallback(new ProgressCallback() {
+            @Override
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+            }
+
             @Override
             public void onAdEnded() {
             }
 
             @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
             }
 
             @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             }
-        });
-        uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+            }
+        });*/
+        /*uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoEnabled");
@@ -249,19 +236,19 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
             public void onVideoDisabled(DecoderCounters counters) {
                 //LLog.d(TAG, "onVideoDisabled");
             }
-        });
-        uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
+        });*/
+        /*uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
             @Override
             public void onMetadata(Metadata metadata) {
                 //LLog.d(TAG, "onMetadata");
             }
-        });
-        uzVideo.getPlayer().addTextOutput(new TextOutput() {
+        });*/
+        /*uzVideo.getPlayer().addTextOutput(new TextOutput() {
             @Override
             public void onCues(List<Cue> cues) {
                 //LLog.d(TAG, "onCues");
             }
-        });
+        });*/
         uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
