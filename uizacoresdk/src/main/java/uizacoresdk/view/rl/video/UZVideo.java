@@ -1535,12 +1535,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(false);
     }
 
-    public void setProgressSeekbar(final UZVerticalSeekBar UZVerticalSeekBar, final int progressSeekbar) {
-        if (UZVerticalSeekBar == null) {
+    public void setProgressSeekbar(final UZVerticalSeekBar uzVerticalSeekBar, final int progressSeekbar) {
+        if (uzVerticalSeekBar == null) {
+            LLog.e(TAG, "Error setProgressSeekbar null");
+            //TODO gia su ca seekbarVolume va seekbarBirghtness deu null? chi moi care truong hop nhan vo toggle volume nhung seekbarVolume null
+            handleSeekbarVolume(progressSeekbar);
             return;
         }
-        UZVerticalSeekBar.setProgress(progressSeekbar);
-        //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
+        uzVerticalSeekBar.setProgress(progressSeekbar);
+        LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
 
     public void setProgressVolumeSeekbar(int progress) {
@@ -2073,63 +2076,71 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
         if (seekBar == seekbarVolume) {
-            if (isSetProgressSeekbarFirst || isExoVolumeClicked) {
-                if (ivPreview != null) {
-                    ivPreview.setVisibility(INVISIBLE);
-                }
-            } else {
-                if (ivPreview != null) {
-                    if (progress >= 66) {
-                        ivPreview.setImageResource(R.drawable.baseline_volume_up_white_48);
-                    } else if (progress >= 33) {
-                        ivPreview.setImageResource(R.drawable.baseline_volume_down_white_48);
-                    } else {
-                        ivPreview.setImageResource(R.drawable.baseline_volume_mute_white_48);
-                    }
-                }
-            }
-            //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
-            if (progress == 0) {
-                if (ibVolumeIcon != null) {
-                    ibVolumeIcon.setImageResource(R.drawable.baseline_volume_off_white_48);
-                }
-            } else {
-                if (ibVolumeIcon != null) {
-                    ibVolumeIcon.setImageResource(R.drawable.baseline_volume_up_white_48);
-                }
-            }
-            uzPlayerManager.setVolume(((float) progress / 100));
-            if (isExoVolumeClicked) {
-                isExoVolumeClicked = false;
-            }
+            handleSeekbarVolume(progress);
         } else if (seekBar == seekbarBirghtness) {
-            //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
-            if (isSetProgressSeekbarFirst) {
-                if (ivPreview != null) {
-                    ivPreview.setVisibility(INVISIBLE);
-                }
-            } else {
-                if (ivPreview != null) {
-                    if (progress >= 210) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
-                    } else if (progress >= 175) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
-                    } else if (progress >= 140) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
-                    } else if (progress >= 105) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
-                    } else if (progress >= 70) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
-                    } else if (progress >= 35) {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
-                    } else {
-                        ivPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
-                    }
+            handleSeekbarBrightness(progress);
+        }
+    }
+
+    private void handleSeekbarVolume(int progress) {
+        if (isSetProgressSeekbarFirst || isExoVolumeClicked) {
+            if (ivPreview != null) {
+                ivPreview.setVisibility(INVISIBLE);
+            }
+        } else {
+            if (ivPreview != null) {
+                if (progress >= 66) {
+                    ivPreview.setImageResource(R.drawable.baseline_volume_up_white_48);
+                } else if (progress >= 33) {
+                    ivPreview.setImageResource(R.drawable.baseline_volume_down_white_48);
+                } else {
+                    ivPreview.setImageResource(R.drawable.baseline_volume_mute_white_48);
                 }
             }
-            //LLog.d(TAG, "onProgressChanged setBrightness " + progress);
-            LScreenUtil.setBrightness(activity, progress);
         }
+        //LLog.d(TAG, "seekbarVolume onProgressChanged " + progress + " -> " + ((float) progress / 100));
+        if (progress == 0) {
+            if (ibVolumeIcon != null) {
+                ibVolumeIcon.setImageResource(R.drawable.baseline_volume_off_white_48);
+            }
+        } else {
+            if (ibVolumeIcon != null) {
+                ibVolumeIcon.setImageResource(R.drawable.baseline_volume_up_white_48);
+            }
+        }
+        uzPlayerManager.setVolume(((float) progress / 100));
+        if (isExoVolumeClicked) {
+            isExoVolumeClicked = false;
+        }
+    }
+
+    private void handleSeekbarBrightness(int progress) {
+        //LLog.d(TAG, "seekbarBirghtness onProgressChanged " + progress);
+        if (isSetProgressSeekbarFirst) {
+            if (ivPreview != null) {
+                ivPreview.setVisibility(INVISIBLE);
+            }
+        } else {
+            if (ivPreview != null) {
+                if (progress >= 210) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_7_black_48dp);
+                } else if (progress >= 175) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_6_black_48dp);
+                } else if (progress >= 140) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_5_black_48dp);
+                } else if (progress >= 105) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_4_black_48dp);
+                } else if (progress >= 70) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_3_black_48dp);
+                } else if (progress >= 35) {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_2_black_48dp);
+                } else {
+                    ivPreview.setImageResource(R.drawable.ic_brightness_1_black_48dp);
+                }
+            }
+        }
+        //LLog.d(TAG, "onProgressChanged setBrightness " + progress);
+        LScreenUtil.setBrightness(activity, progress);
     }
 
     @Override
@@ -3047,7 +3058,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Ngược lại, sẽ handle volume on/off ở exo player*/
     private void handleClickBtVolume() {
         if (isCastingChromecast) {
-            //LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
+            LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
             boolean isMute = UZData.getInstance().getCasty().toggleMuteVolume();
             if (ibVolumeIcon != null) {
                 if (isMute) {
@@ -3057,7 +3068,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         } else {
-            //LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
+            LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
             if (uzPlayerManager != null) {
                 isExoVolumeClicked = true;
                 uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
@@ -3664,7 +3675,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     //return pixel
     public int getHeightUZTimeBar() {
-        return LUIUtil.getHeightOfView(uzTimebar);
+        //return LUIUtil.getHeightOfView(uzTimebar);
+        return 500;
     }
 
     public void setBackgroundColorUZVideoRootView(int color) {

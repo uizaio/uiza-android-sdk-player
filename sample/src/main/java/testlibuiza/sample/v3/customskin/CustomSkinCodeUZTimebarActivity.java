@@ -51,7 +51,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         uzVideo.setUZCallback(this);
 
         uzVideo.setBackgroundColorUZVideoRootView(Color.RED);
-        //uzVideo.setUzTimebarBottom();
+        uzVideo.setUzTimebarBottom();
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -63,7 +63,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.setUzTimebarBottom();
+
             }
         });
     }
