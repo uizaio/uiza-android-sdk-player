@@ -447,7 +447,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
-                //TODO uncomment this line
                 //urlIMAAd = activity.getString(R.string.ad_tag_url);
                 handleDataCallAPI();
             }
@@ -1109,8 +1108,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            //TODO revert to VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -3695,11 +3693,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         int heightUZTimebar = 0;
         if (isLandscape) {
-            LLog.d(TAG, "fuck setMarginBottom !isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+            //LLog.d(TAG, "setMarginBottom !isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
             LUIUtil.setMarginPx(view, 0, 0, 0, 0);
         } else {
             heightUZTimebar = getHeightUZTimeBar();
-            LLog.d(TAG, "fuck setMarginBottom isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+            //LLog.d(TAG, "setMarginBottom isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
             LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 0 : heightUZTimebar / 2);
         }
     }
