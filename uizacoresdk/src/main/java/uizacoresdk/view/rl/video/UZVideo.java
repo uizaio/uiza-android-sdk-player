@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
@@ -1541,7 +1542,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         uzVerticalSeekBar.setProgress(progressSeekbar);
-        LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
+        //LLog.d(TAG, "setProgressSeekbar " + progressSeekbar);
     }
 
     public void setProgressVolumeSeekbar(int progress) {
@@ -1913,8 +1914,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         updateUISizeThumnail();
-        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         updateUIPositionOfProgressBar();
+        if (isSetUZTimebarBottom) {
+            setUzTimebarBottom();
+        } else {
+            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+        }
+        if (uzCallback != null) {
+            uzCallback.onScreenRotate(isLandscape);
+        }
     }
 
     private void updateUISizeThumnail() {
@@ -3651,6 +3659,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return getPlayer().getBufferedPercentage();
     }
 
+    private boolean isSetUZTimebarBottom;
+
     public void setUzTimebarBottom() {
         if (uzPlayerView == null) {
             throw new NullPointerException("uzPlayerView cannot be null");
@@ -3658,27 +3668,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar == null) {
             throw new NullPointerException("uzTimebar cannot be null");
         }
-
+        if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FILL) {
+            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        }
         UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
-
-        //View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
-        /*FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                Gravity.TOP);
-        videoSurfaceView.setLayoutParams(params);*/
-
-        //setMarginDependOnUZTimeBar(videoSurfaceView);
-
-        //RelativeLayout uzVideoRootView = (RelativeLayout) findViewById(R.id.root_view_uz_video);
-        //uzVideoRootView.setBackgroundResource(0);
-        //setMarginDependOnUZTimeBar(uzVideoRootView);
+        View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
+        setMarginDependOnUZTimeBar(videoSurfaceView);
+        isSetUZTimebarBottom = true;
     }
 
     //return pixel
     public int getHeightUZTimeBar() {
-        //return LUIUtil.getHeightOfView(uzTimebar);
-        return 500;
+        return LUIUtil.getHeightOfView(uzTimebar);
     }
 
     public void setBackgroundColorUZVideoRootView(int color) {
@@ -3692,8 +3693,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (view == null || uzTimebar == null) {
             return;
         }
-        int heightUZTimebar = getHeightUZTimeBar();
-        LLog.d(TAG, "setMarginBottom heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
-        LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 0 : heightUZTimebar / 2);
+        int heightUZTimebar = 0;
+        if (isLandscape) {
+            LLog.d(TAG, "fuck setMarginBottom !isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+            LUIUtil.setMarginPx(view, 0, 0, 0, 0);
+        } else {
+            heightUZTimebar = getHeightUZTimeBar();
+            LLog.d(TAG, "fuck setMarginBottom isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
+            LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 0 : heightUZTimebar / 2);
+        }
     }
 }

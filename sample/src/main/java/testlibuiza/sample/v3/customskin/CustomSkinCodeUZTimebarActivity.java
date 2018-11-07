@@ -26,6 +26,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
+    private View shadow;
 
     @Override
     protected boolean setFullScreen() {
@@ -50,22 +51,16 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setUZCallback(this);
 
-        uzVideo.setBackgroundColorUZVideoRootView(Color.RED);
+        //config uztimebar bottom
+        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
+
+        //shadow background
+        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
-
-        View shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        shadow.setVisibility(View.GONE);
-        //uzVideo.setMarginDependOnUZTimeBar(shadow);
-
-        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     @Override
@@ -91,6 +86,11 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     public void onSkinChange() {
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
     }
 
     @Override

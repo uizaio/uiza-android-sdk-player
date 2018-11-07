@@ -28,6 +28,9 @@ public interface UZCallback {
     //when skin is changed
     public void onSkinChange();
 
+    //when screen rotate
+    public void onScreenRotate(boolean isLandscape);
+
     //when uiimavideo had an error
     public void onError(UZException e);
 

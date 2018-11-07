@@ -150,9 +150,6 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        /*if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }*/
     }
 
     @Override
@@ -178,6 +175,10 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
     @Override
     public void onSkinChange() {
         handleClickSampeText();
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override

@@ -176,9 +176,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        /*if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }*/
     }
 
     @Override
@@ -203,6 +200,10 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onSkinChange() {
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override
