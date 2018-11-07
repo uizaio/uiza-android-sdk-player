@@ -1057,6 +1057,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
         previewFrameLayout = uzPlayerView.findViewById(R.id.previewFrameLayout);
         if (uzTimebar != null) {
+            if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
+                isSetUZTimebarBottom = true;
+            } else {
+                isSetUZTimebarBottom = false;
+            }
             uzTimebar.addOnPreviewChangeListener(this);
             uzTimebar.setOnFocusChangeListener(this);
         }
@@ -1500,6 +1505,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
 
+        LLog.d(TAG, "fuck onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
+        if (isSetUZTimebarBottom && uzPlayerView != null) {
+            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
+            View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
+            setMarginDependOnUZTimeBar(videoSurfaceView);
+        }
+
         //Dang play ad entity vod, ma dot nhien init entity live|| metadata thi ko hien ra controller dc
         //do luc dang play ad thi o class UZManager da set setUseController(false)
         //luc ad ended thi moi setUseController(default)
@@ -1914,7 +1926,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
         if (isSetUZTimebarBottom) {
-            setUzTimebarBottom();
+            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
+            View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
+            setMarginDependOnUZTimeBar(videoSurfaceView);
         } else {
             UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
         }
@@ -3669,10 +3683,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FILL) {
             uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         }
-        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
-        View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
-        setMarginDependOnUZTimeBar(videoSurfaceView);
-        isSetUZTimebarBottom = true;
     }
 
     //return pixel

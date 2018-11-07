@@ -298,6 +298,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/previewFrameLayout"
+                android:tag="@string/use_bottom_uz_timebar"
                 app:ad_marker_color="@color/DeepPink"
                 app:buffered_color="@color/Green"
                 app:played_ad_marker_color="@color/Red"

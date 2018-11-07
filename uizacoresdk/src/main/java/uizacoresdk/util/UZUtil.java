@@ -72,12 +72,12 @@ public class UZUtil {
      ** isDisplayPortrait true -> portrait display như YUP
      ** isDisplayPortrait false thi se bop ve 16/9 video
      */
+
     public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait) {
         resizeLayout(viewGroup, llMid, ivVideoCover, isDisplayPortrait, 0);
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait, int pixedAdded) {
-        LLog.d(TAG, "resizeLayout pixedAdded " + pixedAdded);
+    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait, int pixelAdded) {
         if (viewGroup == null) {
             return;
         }
@@ -92,16 +92,10 @@ public class UZUtil {
             if (isDisplayPortrait) {
                 heightScreen = LScreenUtil.getScreenHeight();
             } else {
-                heightScreen = (int) (widthScreen * Constants.RATIO_9_16 + pixedAdded);
+                heightScreen = (int) (widthScreen * Constants.RATIO_9_16) + pixelAdded;
             }
         }
-        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
-
-        //RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(widthScreen, heightScreen);
-        //lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        //rootView.setLayoutParams(lp);
-
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
         viewGroup.getLayoutParams().width = widthScreen;
         viewGroup.getLayoutParams().height = heightScreen;
         viewGroup.requestLayout();
