@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.Surface;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
@@ -69,6 +68,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
+import vn.uiza.views.autosize.UZImageButton;
 
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
@@ -308,13 +308,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         player.setPlayWhenReady(uzVideo.isAutoStart());
         seekTo(contentPosition);
 
-        //LLog.d(TAG, "last progress volume " + uzVideo.getCurrentProgressSeekbarVolume());
-        if (uzVideo.getCurrentProgressSeekbarVolume() == Constants.NOT_FOUND) {
-            setVolume(0.99f);
-        } else {
-            setVolume(uzVideo.getCurrentProgressSeekbarVolume());
-        }
-
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
@@ -408,19 +401,19 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return mediaSourceWithAds;
     }
 
-    public void resumeVideo() {
+    protected void resumeVideo() {
         if (player != null) {
             player.setPlayWhenReady(true);
         }
     }
 
-    public void pauseVideo() {
+    protected void pauseVideo() {
         if (player != null) {
             player.setPlayWhenReady(false);
         }
     }
 
-    public void reset() {
+    protected void reset() {
         if (player != null) {
             contentPosition = player.getContentPosition();
             player.release();
@@ -512,20 +505,20 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
-    public void hideProgress() {
+    protected void hideProgress() {
         if (uzVideo.isCastingChromecast()) {
             return;
         }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());
     }
 
-    public void showProgress() {
+    protected void showProgress() {
         LUIUtil.showProgressBar(uzVideo.getProgressBar());
     }
 
     private ExoPlaybackException exoPlaybackException;
 
-    public ExoPlaybackException getExoPlaybackException() {
+    protected ExoPlaybackException getExoPlaybackException() {
         return exoPlaybackException;
     }
 
@@ -718,9 +711,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
-    private float currentVolume;
+    private float volumeToggle;
 
-    public void toggleVolumeMute(ImageButton exoVolume) {
+    protected void toggleVolumeMute(UZImageButton exoVolume) {
         //LLog.d(TAG, "toggleVolumeMute");
         if (player == null || exoVolume == null) {
             //LLog.d(TAG, "toggleVolumeMute player == null || exoVolume == null -> return");
@@ -728,36 +721,36 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
         if (player.getVolume() == 0f) {
             //LLog.d(TAG, "toggleVolumeMute off -> on");
-            uzVideo.setProgressVolumeSeekbar((int) (currentVolume * 100));
+            setVolume(volumeToggle);
+            exoVolume.setSrcDrawableEnabled();
         } else {
             //LLog.d(TAG, "toggleVolumeMute on -> off");
-            currentVolume = player.getVolume();
-            uzVideo.setProgressVolumeSeekbar(0);
+            volumeToggle = player.getVolume();
+            setVolume(0f);
+            exoVolume.setSrcDrawableDisabledCanTouch();
         }
         //LLog.d(TAG, "toggleVolumeMute currentVolume " + currentVolume);
         //LLog.d(TAG, "toggleVolumeMute player.getVolume() " + player.getVolume());
     }
 
-    public SimpleExoPlayer getPlayer() {
+    protected SimpleExoPlayer getPlayer() {
         return player;
     }
 
-    public void setVolume(float volume) {
+    protected void setVolume(float volume) {
         if (player != null) {
-            //LLog.d(TAG, "setVolume volume " + volume);
             player.setVolume(volume);
-            //LLog.d(TAG, "-> setVolume done: " + player.getVolume());
         }
     }
 
-    public float getVolume() {
+    protected float getVolume() {
         if (player != null) {
             return player.getVolume();
         }
         return Constants.NOT_FOUND;
     }
 
-    public boolean seekTo(long positionMs) {
+    protected boolean seekTo(long positionMs) {
         //LLog.d(TAG, "seekTo positionMs: " + positionMs);
         if (player != null) {
             player.seekTo(positionMs);
@@ -768,7 +761,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     //forward  10000mls
-    public void seekToForward(long forward) {
+    protected void seekToForward(long forward) {
         if (player.getCurrentPosition() + forward > player.getDuration()) {
             player.seekTo(player.getDuration() - 100);
         } else {
@@ -777,7 +770,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     //next 10000mls
-    public void seekToBackward(long backward) {
+    protected void seekToBackward(long backward) {
         if (player.getCurrentPosition() - backward > 0) {
             player.seekTo(player.getCurrentPosition() - backward);
         } else {
@@ -802,7 +795,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         contentPosition = (long) mls;
     }
 
-    public long getCurrentPosition() {
+    protected long getCurrentPosition() {
         if (player == null) {
             return 0;
         }

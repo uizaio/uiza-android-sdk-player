@@ -24,7 +24,6 @@
     <item name="exo_skip_previous" type="id" />
     <item name="exo_cc" type="id" />
     <item name="exo_playlist_folder" type="id" />
-    <item name="exo_playlist_relation" type="id" />
     <item name="exo_hearing" type="id" />
     <item name="exo_setting" type="id" />
     <item name="exo_share" type="id" />
