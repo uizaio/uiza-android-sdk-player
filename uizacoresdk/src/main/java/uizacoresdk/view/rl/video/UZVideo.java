@@ -125,7 +125,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
-    private RelativeLayout llMid;//play controller
+    private RelativeLayout llMid;
     private View llMidSub;
 
     private FrameLayout previewFrameLayout;
@@ -1057,10 +1057,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
         previewFrameLayout = uzPlayerView.findViewById(R.id.previewFrameLayout);
         if (uzTimebar != null) {
-            if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
-                isSetUZTimebarBottom = true;
-            } else {
+            if (uzTimebar.getTag() == null) {
                 isSetUZTimebarBottom = false;
+            } else {
+                if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
+                    isSetUZTimebarBottom = true;
+                } else {
+                    isSetUZTimebarBottom = false;
+                }
             }
             uzTimebar.addOnPreviewChangeListener(this);
             uzTimebar.setOnFocusChangeListener(this);
