@@ -316,7 +316,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void onSkinChange() {
+    }
 
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override

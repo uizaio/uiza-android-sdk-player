@@ -98,6 +98,10 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
+    public void onScreenRotate(boolean isLandscape) {
+    }
+
+    @Override
     public void onError(UZException e) {
         if (e == null) {
             return;

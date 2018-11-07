@@ -153,6 +153,10 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
     }
 
     @Override
+    public void onScreenRotate(boolean isLandscape) {
+    }
+
+    @Override
     public void onError(UZException e) {
         e.printStackTrace();
         LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
