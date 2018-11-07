@@ -1538,8 +1538,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void setProgressSeekbar(final UZVerticalSeekBar uzVerticalSeekBar, final int progressSeekbar) {
         if (uzVerticalSeekBar == null) {
             LLog.e(TAG, "Error setProgressSeekbar null");
-            //TODO gia su ca seekbarVolume va seekbarBirghtness deu null? chi moi care truong hop nhan vo toggle volume nhung seekbarVolume null
-            handleSeekbarVolume(progressSeekbar);
             return;
         }
         uzVerticalSeekBar.setProgress(progressSeekbar);
@@ -1547,7 +1545,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void setProgressVolumeSeekbar(int progress) {
-        setProgressSeekbar(seekbarVolume, progress);
+        if (seekbarVolume == null) {
+            handleSeekbarVolume(progress);
+        } else {
+            setProgressSeekbar(seekbarVolume, progress);
+        }
     }
 
     public int getCurrentProgressSeekbarVolume() {
