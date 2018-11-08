@@ -56,15 +56,15 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
         uzVideo.setDefaultUseController(false);
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
-            public void onSingleTapConfirmed() {
+            public void onSingleTapConfirmed(float x, float y) {
             }
 
             @Override
-            public void onLongPress() {
+            public void onLongPress(float x, float y) {
             }
 
             @Override
-            public void onDoubleTap() {
+            public void onDoubleTap(float x, float y) {
             }
 
             @Override

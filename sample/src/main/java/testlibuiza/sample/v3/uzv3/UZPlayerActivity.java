@@ -123,17 +123,17 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
-            public void onSingleTapConfirmed() {
+            public void onSingleTapConfirmed(float x, float y) {
                 tvClickEvent.setText("onSingleTapConfirmed");
             }
 
             @Override
-            public void onLongPress() {
+            public void onLongPress(float x, float y) {
                 tvClickEvent.setText("onLongPress");
             }
 
             @Override
-            public void onDoubleTap() {
+            public void onDoubleTap(float x, float y) {
                 tvClickEvent.setText("onDoubleTap");
                 uzVideo.setDisplayPortrait(!uzVideo.isDisplayPortrait());
             }
