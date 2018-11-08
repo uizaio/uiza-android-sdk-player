@@ -316,7 +316,6 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
 
             @Override
             public void onFocusChange(Dummy dummy, int position) {
-                LLog.d(TAG, "onFocusChange position " + position);
                 if (recyclerView != null) {
                     recyclerView.smoothScrollToPosition(position);
                 }

@@ -106,18 +106,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
         if (e == null) {
             return;
         }
-        LLog.e(TAG, "onError: " + e.toString());
-        /*LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-
-            @Override
-            public void onCancel() {
-                onBackPressed();
-            }
-        });*/
     }
 
     @Override

@@ -3122,7 +3122,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      ** Bo video hien tai va choi tiep theo 1 video trong playlist/folder
      */
     public void skipNextVideo() {
-        if (ibSkipNextIcon != null) {
+        if (ibSkipNextIcon != null && !isLivestream) {
             ibSkipNextIcon.performClick();
         }
     }
@@ -3131,7 +3131,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Bo video hien tai va choi lui lai 1 video trong playlist/folder
      */
     public void skipPreviousVideo() {
-        if (ibSkipPreviousIcon != null) {
+        if (ibSkipPreviousIcon != null && !isLivestream) {
             ibSkipPreviousIcon.performClick();
         }
     }

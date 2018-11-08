@@ -8,12 +8,6 @@
     <item name="tv_title" type="id" />
     <item name="exo_cast" type="id" />
     <item name="exo_picture_in_picture" type="id" />
-    <item name="exo_iv_preview" type="id" />
-    <item name="exo_volume_seekbar" type="id" />
-    <item name="seekbar_volume" type="id" />
-    <item name="seekbar_birghtness" type="id" />
-    <item name="exo_birghtness_seekbar" type="id" />
-    <!--<item name="preview_seekbar_layout" type="id" />-->
     <item name="preview_frame_layout" type="id" />
     <item name="image_view_thumnail" type="id" />
     <item name="exo_volume" type="id" />
