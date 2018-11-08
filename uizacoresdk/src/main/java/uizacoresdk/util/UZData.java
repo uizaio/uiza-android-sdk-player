@@ -205,6 +205,9 @@ public class UZData {
             }
             return data.getId();
         }
+        if (uzInput.getData() == null) {
+            return null;
+        }
         return uzInput.getData().getId();
     }
 
