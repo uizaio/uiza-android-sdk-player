@@ -73,11 +73,11 @@ public class UZUtil {
      ** isDisplayPortrait false thi se bop ve 16/9 video
      */
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait) {
-        resizeLayout(viewGroup, llMid, ivVideoCover, isDisplayPortrait, 0);
+    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, boolean isDisplayPortrait) {
+        resizeLayout(viewGroup, ivVideoCover, isDisplayPortrait, 0);
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, RelativeLayout llMid, ImageView ivVideoCover, boolean isDisplayPortrait, int pixelAdded) {
+    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, boolean isDisplayPortrait, int pixelAdded) {
         if (viewGroup == null) {
             return;
         }
@@ -112,16 +112,6 @@ public class UZUtil {
             ivVideoCover.getLayoutParams().width = widthScreen;
             ivVideoCover.getLayoutParams().height = heightScreen;
             ivVideoCover.requestLayout();
-        }
-
-        //edit size of seekbar volume and brightness
-        if (llMid != null) {
-            if (isFullScreen) {
-                llMid.getLayoutParams().height = (int) (heightScreen / 1.75);
-            } else {
-                llMid.getLayoutParams().height = (int) (heightScreen / 1.95);
-            }
-            llMid.requestLayout();
         }
 
         //edit size of imageview thumnail

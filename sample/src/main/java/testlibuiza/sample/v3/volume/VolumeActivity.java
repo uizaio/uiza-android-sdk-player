@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.VolumeCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -20,14 +21,17 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
+import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
  * Created by loitp on 7/16/2018.
  */
 
-public class VolumeActivity extends BaseActivity implements UZCallback {
+public class VolumeActivity extends BaseActivity implements UZCallback, VolumeCallback {
     private UZVideo uzVideo;
     private SeekBar sb;
+    private UZVerticalSeekBar sb1;
+    private UZVerticalSeekBar sb2;
     private TextView tv;
 
     @Override
@@ -52,8 +56,11 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         sb = (SeekBar) findViewById(R.id.sb);
+        sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);
+        sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
         tv = (TextView) findViewById(R.id.tv);
         uzVideo.setUZCallback(this);
+        uzVideo.setVolumeCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -73,9 +80,39 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
                 print();
             }
         });
+        sb1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                print();
+            }
+        });
+        sb2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                print();
+            }
+        });
     }
 
-    private void print(){
+    private void print() {
         tv.setText(uzVideo.getVolume() * 100 + "%");
     }
 
@@ -126,6 +163,8 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             sb.setProgress((int) (uzVideo.getVolume() * 100));
+            sb1.setProgress((int) (uzVideo.getVolume() * 100));
+            sb2.setProgress((int) (uzVideo.getVolume() * 100));
             print();
         }
     }
@@ -169,5 +208,12 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onVolumeChange(float volume) {
+        sb.setProgress((int) (volume * 100));
+        sb1.setProgress((int) (volume * 100));
+        sb2.setProgress((int) (volume * 100));
     }
 }

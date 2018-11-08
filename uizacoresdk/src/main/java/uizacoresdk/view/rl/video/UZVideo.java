@@ -51,6 +51,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.interfaces.VolumeCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
@@ -121,8 +122,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ProgressBar progressBar;
 
     private LinearLayout llTop;
-    private RelativeLayout llMid;
-    private View llMidSub;
 
     private FrameLayout previewFrameLayout;
     private UZTimebar uzTimebar;
@@ -196,7 +195,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void setDisplayPortrait(boolean isDisplayPortrait) {
         this.isDisplayPortrait = isDisplayPortrait;
-        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
     }
 
     private boolean isAutoStart = true;
@@ -890,7 +889,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
-        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -960,7 +959,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         rootView.requestLayout();
 
         findViews();
-        UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -1034,8 +1033,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
-        llMid = (RelativeLayout) findViewById(R.id.ll_mid);
-        llMidSub = (View) findViewById(R.id.ll_mid_sub);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         uzPlayerView = findViewById(R.id.player_view);
@@ -1255,10 +1252,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (llTop.getParent() instanceof ViewGroup) {
                 ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
             }
-        } else if (llMid != null) {
-            if (llMid.getParent() instanceof ViewGroup) {
-                ((RelativeLayout) llMid.getParent()).addView(rlChromeCast, 0);
-            }
         } else if (rlLiveInfo != null) {
             if (rlLiveInfo.getParent() instanceof ViewGroup) {
                 ((RelativeLayout) rlLiveInfo.getParent()).addView(rlChromeCast, 0);
@@ -1459,7 +1452,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
         if (isSetUZTimebarBottom && uzPlayerView != null) {
-            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
+            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
         }
@@ -1655,7 +1648,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isLandToPort) {
             //do nothing
         } else {
-            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, false);
+            UZUtil.resizeLayout(rootView, ivVideoCover, false);
         }
     }
 
@@ -1855,11 +1848,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
         if (isSetUZTimebarBottom) {
-            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
+            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
         } else {
-            UZUtil.resizeLayout(rootView, llMid, ivVideoCover, isDisplayPortrait);
+            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
         }
         if (uzCallback != null) {
             uzCallback.onScreenRotate(isLandscape);
@@ -2497,9 +2490,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(GONE);
             }
-            if (llMid != null) {
-                llMid.setVisibility(GONE);
-            }
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(GONE);
             }
@@ -2533,9 +2523,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (ibCcIcon != null) {
                 ibCcIcon.setVisibility(VISIBLE);
-            }
-            if (llMid != null) {
-                llMid.setVisibility(VISIBLE);
             }
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(VISIBLE);
@@ -3486,6 +3473,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "setMarginBottom isLandscape heightUZTimebar " + heightUZTimebar + "->" + heightUZTimebar / 2);
             LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar == 0 ? 0 : heightUZTimebar / 2);
         }
+    }
+
+    protected VolumeCallback volumeCallback;
+
+    public void setVolumeCallback(VolumeCallback volumeCallback) {
+        this.volumeCallback = volumeCallback;
     }
 
     public void setVolume(float volume) {

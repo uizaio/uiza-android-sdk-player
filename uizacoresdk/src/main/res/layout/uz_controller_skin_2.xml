@@ -175,7 +175,6 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@id/ll_mid_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_end_screen"
