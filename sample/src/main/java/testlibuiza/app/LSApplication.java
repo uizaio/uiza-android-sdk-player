@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
+import vn.uiza.data.ActivityData;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.RestClientV2;
 
@@ -46,7 +47,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         //config activity transition default
-        //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
+        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
 
         RestClientV2.init(Constants.URL_DEV_UIZA_VERSION_2_STAG);
         RestClientTracking.init(Constants.URL_TRACKING_STAG);

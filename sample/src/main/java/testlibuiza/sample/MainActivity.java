@@ -15,6 +15,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
+import testlibuiza.sample.v3.volume.VolumeActivity;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LActivityUtil;
 
@@ -100,6 +101,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ErrorActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_volume).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, VolumeActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

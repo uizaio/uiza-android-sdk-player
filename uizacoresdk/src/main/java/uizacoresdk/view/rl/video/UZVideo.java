@@ -1650,8 +1650,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private boolean isExoVolumeClicked;
-
     protected void toggleScreenOritation() {
         boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
         if (isLandToPort) {
@@ -2904,7 +2902,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
             if (uzPlayerManager != null) {
-                isExoVolumeClicked = true;
                 uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
             }
         }

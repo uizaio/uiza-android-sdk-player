@@ -29,7 +29,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.connection.LConectifyService;
 import vn.uiza.data.EventBusData;
 
@@ -157,8 +156,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void onNetworkChange(EventBusData.ConnectEvent event) {
-        if (event != null) {
+        /*if (event != null) {
             LLog.d(TAG, "onNetworkChange " + event.isConnected());
-        }
+        }*/
     }
 }
