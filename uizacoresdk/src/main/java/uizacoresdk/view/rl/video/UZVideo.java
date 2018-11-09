@@ -2941,21 +2941,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LSocialUtil.share(activity, isLandscape, activity.getString(R.string.uiza_introduce));
     }
 
-    /*
-     ** Phát tiếp video
-     */
     public void resumeVideo() {
-        if (uzPlayerManager != null) {
-            uzPlayerManager.resumeVideo();
+        if (ibPlayIcon != null) {
+            ibPlayIcon.performClick();
         }
     }
 
-    /*
-     ** Tạm dừng video
-     */
     public void pauseVideo() {
-        if (uzPlayerManager != null) {
-            uzPlayerManager.pauseVideo();
+        if (ibPauseIcon != null) {
+            ibPauseIcon.performClick();
         }
     }
 
@@ -3038,9 +3032,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (getPlayer().getPlayWhenReady()) {
-            getPlayer().setPlayWhenReady(false);
+            //getPlayer().setPlayWhenReady(false);
+            pauseVideo();
         } else {
-            getPlayer().setPlayWhenReady(true);
+            //getPlayer().setPlayWhenReady(true);
+            resumeVideo();
         }
     }
 
