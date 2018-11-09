@@ -1,4 +1,23 @@
-### 2.7.4 (2018-11-3)
+### 2.7.8 (2018-11-09)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.8'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.8'
+
+- Now you can put the UZTimebar on the bottom of the video view, please check this [sample](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarActivity.java) for more details.
+- Fixed func volume toggle.
+- Add onScreenRotate() in UZCallback.
+- Removed some useless components (like volume seekbar, brightness seekbar).
+- Update func setOnTouchEvent().
+- Add [sample demo volume of video](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/volume/VolumeActivity.java).
+- Add func uzVideo.setVolumeCallback();
+- Fixed adaptive, uzVideo will be played with best profile based on the device's network.
+
+
+
+### 2.7.4 (2018-11-03)
 
     //for playing video VOD, LIVE  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.4'
@@ -10,7 +29,7 @@
 - Add feature play any custom linkplay (uzVideo.initLinkPlay(...)).
 - Solved https://github.com/uizaio/uiza-android-sdk-player/issues/47
 
-### 2.7.3 (2018-11-1)
+### 2.7.3 (2018-11-01)
 
 	//for playing video VOD, LIVE  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.3'

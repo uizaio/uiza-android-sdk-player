@@ -113,6 +113,7 @@ Create java file MainActivity:
        public void onClickPipVideoInitSuccess(...);
        public void onSkinChange(...);
        public void onError(...);
+       public void onScreenRotate(boolean isLandscape);
     }
 Manifest
 
