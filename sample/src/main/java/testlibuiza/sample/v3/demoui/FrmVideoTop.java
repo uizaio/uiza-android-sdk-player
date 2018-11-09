@@ -337,6 +337,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     @Override
+    public void onScreenRotate(boolean isLandscape) {
+    }
+
+    @Override
     public void onError(UZException e) {
         if (e == null) {
             return;

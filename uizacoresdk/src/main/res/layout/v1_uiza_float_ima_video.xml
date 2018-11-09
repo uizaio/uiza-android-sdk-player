@@ -4,14 +4,12 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/colorPrimary">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:keepScreenOn="true"
         app:use_controller="false" />
 

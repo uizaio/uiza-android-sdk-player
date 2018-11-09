@@ -1,10 +1,22 @@
+### 2.7.4 (2018-11-3)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.4'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.4'
+
+- Update func uzVideo.setProgressCallback(...);
+- Add feature play any custom linkplay (uzVideo.initLinkPlay(...)).
+- Solved https://github.com/uizaio/uiza-android-sdk-player/issues/47
+
 ### 2.7.3 (2018-11-1)
 
 	//for playing video VOD, LIVE  
-     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.3'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.7.3'
      
-     //for live broadcaster  
-     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.3'
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.3'
 
 - Update runtime permission for UZLivestream.
 - Update error message and error code.

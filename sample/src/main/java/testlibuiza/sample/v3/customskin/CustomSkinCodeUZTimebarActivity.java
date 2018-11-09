@@ -2,8 +2,10 @@ package testlibuiza.sample.v3.customskin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -24,6 +26,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
+    private View shadow;
 
     @Override
     protected boolean setFullScreen() {
@@ -43,12 +46,19 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
+        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setAutoStart(true);
-        uzVideo.hideUzTimebar();
         uzVideo.setUZCallback(this);
+
+        //config uztimebar bottom
+        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
+        uzVideo.setUzTimebarBottom();
+
+        //shadow background
+        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
+
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
     }
@@ -76,6 +86,11 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     public void onSkinChange() {
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
     }
 
     @Override

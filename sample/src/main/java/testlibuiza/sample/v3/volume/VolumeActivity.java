@@ -1,38 +1,38 @@
-package testlibuiza.sample.v3.customskin;
+package testlibuiza.sample.v3.volume;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
-
-import com.daimajia.androidanimations.library.Techniques;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.VolumeCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
+import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
+public class VolumeActivity extends BaseActivity implements UZCallback, VolumeCallback {
     private UZVideo uzVideo;
+    private SeekBar sb;
+    private UZVerticalSeekBar sb1;
+    private UZVerticalSeekBar sb2;
+    private TextView tv;
 
     @Override
     protected boolean setFullScreen() {
@@ -46,63 +46,74 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_xml;
+        return R.layout.activity_volume;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setControllerShowTimeoutMs(5000);
+        sb = (SeekBar) findViewById(R.id.sb);
+        sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);
+        sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
+        tv = (TextView) findViewById(R.id.tv);
         uzVideo.setUZCallback(this);
+        uzVideo.setVolumeCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
-        findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (uzVideo != null) {
-                    uzVideo.changeSkin(R.layout.uiza_controller_skin_custom_main);
-                }
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             }
-        });
-        findViewById(R.id.bt_change_skin_0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uzVideo != null) {
-                    uzVideo.changeSkin(R.layout.uz_player_skin_0);
-                }
-            }
-        });
-        findViewById(R.id.bt_change_skin_1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uzVideo != null) {
-                    uzVideo.changeSkin(R.layout.uz_player_skin_1);
-                }
-            }
-        });
-        findViewById(R.id.bt_change_skin_2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uzVideo != null) {
-                    uzVideo.changeSkin(R.layout.uz_player_skin_2);
-                }
-            }
-        });
-        findViewById(R.id.bt_change_skin_3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uzVideo != null) {
-                    uzVideo.changeSkin(R.layout.uz_player_skin_3);
-                }
-            }
-        });
 
-        handleClickSampeText();
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                print();
+            }
+        });
+        sb1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                print();
+            }
+        });
+        sb2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                print();
+            }
+        });
+    }
+
+    private void print() {
+        tv.setText(uzVideo.getVolume() * 100 + "%");
     }
 
     @Override
@@ -150,6 +161,12 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
+            sb.setProgress((int) (uzVideo.getVolume() * 100));
+            sb1.setProgress((int) (uzVideo.getVolume() * 100));
+            sb2.setProgress((int) (uzVideo.getVolume() * 100));
+            print();
+        }
     }
 
     @Override
@@ -174,7 +191,6 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onSkinChange() {
-        handleClickSampeText();
     }
 
     @Override
@@ -183,21 +199,6 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
-        LLog.e(TAG, "onError: " + e.toString());
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-
-            @Override
-            public void onCancel() {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -209,18 +210,10 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
         }
     }
 
-    private void handleClickSampeText() {
-        TextView tvSample = uzVideo.findViewById(R.id.tv_sample);
-        if (tvSample != null) {
-            tvSample.setText("This is a view from custom skin.\nTry to tap me.");
-            LUIUtil.setTextShadow(tvSample);
-            tvSample.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LAnimationUtil.play(v, Techniques.Pulse);
-                    LToast.show(activity, "Click!");
-                }
-            });
-        }
+    @Override
+    public void onVolumeChange(float volume) {
+        sb.setProgress((int) (volume * 100));
+        sb1.setProgress((int) (volume * 100));
+        sb2.setProgress((int) (volume * 100));
     }
 }

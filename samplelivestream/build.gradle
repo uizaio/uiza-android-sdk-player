@@ -42,9 +42,13 @@ android {
         pickFirst 'lib/armeabi-v7a/librsjni.so'
         pickFirst 'lib/armeabi-v7a/libRSSupport.so'
     }*/
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     api project(':uizalivestream')
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.4'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.7'
 }

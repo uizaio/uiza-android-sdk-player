@@ -123,11 +123,11 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
     }
 
     public interface OnTouchEvent {
-        public void onSingleTapConfirmed();
+        public void onSingleTapConfirmed(float x, float y);
 
-        public void onLongPress();
+        public void onLongPress(float x, float y);
 
-        public void onDoubleTap();
+        public void onDoubleTap(float x, float y);
 
         public void onSwipeRight();
 
@@ -157,33 +157,31 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            //LLog.d(TAG, "onSingleTapConfirmed");
+            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
             if (!controllerVisible) {
-                //LLog.d(TAG, "showController");
                 showController();
             } else if (getControllerHideOnTouch()) {
-                //LLog.d(TAG, "hideController");
                 hideController();
             }
             if (onTouchEvent != null) {
-                onTouchEvent.onSingleTapConfirmed();
+                onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }
             return true;
         }
 
         @Override
         public void onLongPress(MotionEvent e) {
-            //LLog.d(TAG, "onLongPress");
+            //LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
-                onTouchEvent.onLongPress();
+                onTouchEvent.onLongPress(e.getX(), e.getY());
             }
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            //LLog.d(TAG, "onDoubleTap");
+            //LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
-                onTouchEvent.onDoubleTap();
+                onTouchEvent.onDoubleTap(e.getX(), e.getY());
             }
             return true;
         }

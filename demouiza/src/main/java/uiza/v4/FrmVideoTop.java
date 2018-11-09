@@ -19,7 +19,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -252,7 +251,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
-                LLog.d(TAG, "onVisibilityChange isShow " + isShow);
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
                         && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
@@ -273,7 +271,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        LLog.d(TAG, "isInitResult " + isInitSuccess);
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
@@ -296,12 +293,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
 
     @Override
     public void onClickPip(Intent intent) {
-        LLog.d(TAG, "onClickPip");
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        LLog.d(TAG, "onClickPipVideoInitSuccess " + isInitSuccess);
         if (isInitSuccess) {
             uzVideo.pauseVideo();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
@@ -320,11 +315,14 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     @Override
+    public void onScreenRotate(boolean isLandscape) {
+    }
+
+    @Override
     public void onError(UZException e) {
         if (e == null) {
             return;
         }
-        LLog.d(TAG, "onError " + e.getMessage());
         ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
         LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
             @Override
@@ -335,7 +333,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     public void initEntity(String entityId) {
-        LLog.d(TAG, "initEntity " + entityId);
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 

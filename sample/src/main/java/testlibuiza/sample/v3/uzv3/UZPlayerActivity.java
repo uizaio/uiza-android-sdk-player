@@ -40,6 +40,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     private TextView tvStateVideo;
     private TextView tvBuffer;
     private TextView tvClickEvent;
+    private TextView tvScreenRotate;
     private SeekBar sb;
 
     @Override
@@ -60,6 +61,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
@@ -87,6 +89,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         tvStateVideo = (TextView) findViewById(R.id.tv_state_video);
         tvBuffer = (TextView) findViewById(R.id.tv_buffer);
         tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
+        tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.setUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(8000);
 
@@ -121,17 +124,17 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
-            public void onSingleTapConfirmed() {
+            public void onSingleTapConfirmed(float x, float y) {
                 tvClickEvent.setText("onSingleTapConfirmed");
             }
 
             @Override
-            public void onLongPress() {
+            public void onLongPress(float x, float y) {
                 tvClickEvent.setText("onLongPress");
             }
 
             @Override
-            public void onDoubleTap() {
+            public void onDoubleTap(float x, float y) {
                 tvClickEvent.setText("onDoubleTap");
                 uzVideo.setDisplayPortrait(!uzVideo.isDisplayPortrait());
             }
@@ -479,6 +482,11 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
 
     @Override
     public void onSkinChange() {
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
+        tvScreenRotate.setText("isLandscape " + isLandscape);
     }
 
     @Override

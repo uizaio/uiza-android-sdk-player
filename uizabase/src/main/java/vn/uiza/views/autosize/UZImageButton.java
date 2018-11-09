@@ -69,6 +69,18 @@ public class UZImageButton extends AppCompatImageButton {
         invalidate();
     }
 
+    public void setSrcDrawableDisabledCanTouch() {
+        setClickable(true);
+        setFocusable(true);
+        if (drawableDisabled == null) {
+            setColorFilter(Color.GRAY);
+        } else {
+            setImageDrawable(drawableDisabled);
+            clearColorFilter();
+        }
+        invalidate();
+    }
+
     private void initSizeScreenW(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZImageButton);
         isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
