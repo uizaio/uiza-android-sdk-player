@@ -3521,6 +3521,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isShow) {
         } else {
             //luon hien nhung view alwaysVisibileView len ke ca khi controller da hide
+            //TODO iplm
             if (alwaysVisibileView != null) {
                 showController();
                 View[] childArr = uzPlayerView.getAllChild();
