@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -30,6 +31,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     private UZVideo uzVideo;
     private View shadow;
     private LinearLayout ll;
+    private ProgressBar pb;
 
     @Override
     protected boolean setFullScreen() {
@@ -53,6 +55,9 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         ll = (LinearLayout) findViewById(R.id.ll);
+        pb = (ProgressBar) findViewById(R.id.p);
+        ll.setVisibility(View.INVISIBLE);
+        pb.setVisibility(View.VISIBLE);
         uzVideo.setUZCallback(this);
 
         //config uztimebar bottom
@@ -70,6 +75,8 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
+            pb.setVisibility(View.GONE);
+            ll.setVisibility(View.VISIBLE);
             LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
         }
     }
