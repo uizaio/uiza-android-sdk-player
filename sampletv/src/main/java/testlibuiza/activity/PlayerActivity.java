@@ -2,48 +2,81 @@ package testlibuiza.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import com.daimajia.androidanimations.library.Techniques;
+
+import java.util.List;
 
 import testlibuiza.app.R;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZTVCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
+import vn.uiza.views.autosize.UZImageButton;
 
-public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback {
+public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback {
     private UZVideo uzVideo;
-    private ViewGroup rootView;
+    private UZImageButton uzibCustomHq;
+    private UZImageButton uzibCustomAudio;
+    private ScrollView sv;
+    private LinearLayout llListHq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UZUtil.setCasty(this);
 
         //init skin
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
 
         super.onCreate(savedInstanceState);
-        rootView = (ViewGroup) findViewById(R.id.root_view);
+        sv = (ScrollView) findViewById(R.id.sv);
+        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
+
+        uzibCustomHq.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                uzVideo.updateUIFocusChange(view, b);
+            }
+        });
+        uzibCustomAudio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                uzVideo.updateUIFocusChange(view, b);
+            }
+        });
+
         uzVideo.setUZCallback(this);
         uzVideo.setUZTVCallback(this);
+        uzVideo.setControllerStateCallback(this);
 
-        //uzVideo.setUseController(false);
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -51,6 +84,19 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
         } else {
             UZUtil.initEntity(activity, uzVideo, entityId);
         }
+
+        uzibCustomHq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayUI(uzVideo.getHQList());
+            }
+        });
+        uzibCustomAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayUI(uzVideo.getAudioList());
+            }
+        });
     }
 
     @Override
@@ -103,9 +149,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
     }
 
     @Override
@@ -153,7 +196,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        //LLog.d(TAG, "onKeyUp " + keyCode);
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
@@ -235,5 +277,74 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
             }
         }*/
         uzVideo.updateUIFocusChange(view, isFocus);
+    }
+
+    private void displayUI(List<UZItem> uzItemList) {
+        sv.setVisibility(View.VISIBLE);
+        llListHq.removeAllViews();
+        for (int i = 0; i < uzItemList.size(); i++) {
+            UZItem uzItem = uzItemList.get(i);
+            final CheckedTextView c = uzItem.getCheckedTextView();
+
+            //customize here
+            final Button bt = new Button(activity);
+            bt.setAllCaps(false);
+            bt.setFocusable(true);
+            bt.setSoundEffectsEnabled(true);
+            if (c.isChecked()) {
+                bt.setText(c.getText().toString() + " -> format: " + uzItem.getFormat().getFormat() + ", getProfile: " + uzItem.getFormat().getProfile() + " (✔)");
+                bt.setBackgroundColor(Color.GREEN);
+                bt.requestFocus();
+            } else {
+                bt.setText(c.getText().toString() + " -> format: " + uzItem.getFormat().getFormat() + ", getProfile: " + uzItem.getFormat().getProfile());
+                bt.setBackgroundColor(Color.WHITE);
+            }
+            bt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (b) {
+                        bt.setBackgroundColor(Color.GREEN);
+                    } else {
+                        bt.setBackgroundColor(Color.WHITE);
+                    }
+                    uzVideo.showController();
+                }
+            });
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LAnimationUtil.play(view, Techniques.Pulse);
+                    c.performClick();
+                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
+                        @Override
+                        public void doAfter(int mls) {
+                            llListHq.removeAllViews();
+                            llListHq.invalidate();
+                            sv.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
+            });
+            llListHq.addView(bt);
+        }
+        llListHq.invalidate();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sv.getVisibility() == View.VISIBLE) {
+            sv.setVisibility(View.INVISIBLE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onVisibilityChange(boolean isShow) {
+        if (!isShow) {
+            if (sv.getVisibility() == View.VISIBLE) {
+                sv.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }

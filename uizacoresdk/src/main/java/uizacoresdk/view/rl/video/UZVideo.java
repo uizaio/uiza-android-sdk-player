@@ -1804,6 +1804,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (view instanceof UZImageButton) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
                 ((UZImageButton) view).setColorFilter(Color.GRAY);
+            } else if (view instanceof Button) {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
@@ -1811,6 +1813,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (view instanceof UZImageButton) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
                 ((UZImageButton) view).clearColorFilter();
+            } else if (view instanceof Button) {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
