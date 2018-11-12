@@ -304,10 +304,10 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
                 public void onFocusChange(View view, boolean b) {
                     if (b) {
                         bt.setBackgroundColor(Color.GREEN);
+                        uzVideo.showController();
                     } else {
                         bt.setBackgroundColor(Color.WHITE);
                     }
-                    uzVideo.showController();
                 }
             });
             bt.setOnClickListener(new View.OnClickListener() {
