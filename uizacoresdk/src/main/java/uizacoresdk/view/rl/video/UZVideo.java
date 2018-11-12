@@ -109,7 +109,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener {
+public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, UZPlayerView.ControllerStateCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;//8000 mls
@@ -1035,7 +1035,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-        uzPlayerView = findViewById(R.id.player_view);
+        //uzPlayerView = findViewById(R.id.player_view);
+        if (uzPlayerView != null) {
+            uzPlayerView.setControllerStateCallback(UZVideo.this);
+        }
 
         updateUIPositionOfProgressBar();
 
@@ -1740,7 +1743,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isDefaultUseController) {
             if (rlMsg != null && rlMsg.getVisibility() == View.VISIBLE) {
             } else {
-                showController();
+                if (isPlayerControllerShowing()) {
+                    showController();
+                }
             }
         }
     }
@@ -1799,6 +1804,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (view instanceof UZImageButton) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
                 ((UZImageButton) view).setColorFilter(Color.GRAY);
+            } else if (view instanceof Button) {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
@@ -1806,6 +1813,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (view instanceof UZImageButton) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
                 ((UZImageButton) view).clearColorFilter();
+            } else if (view instanceof Button) {
+                UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus, R.drawable.bkg_tv_no_focus);
             } else if (view instanceof UZTimebar) {
                 UZUtil.updateUIFocusChange(view, isFocus, R.drawable.bkg_tv_has_focus_uz_timebar, R.drawable.bkg_tv_no_focus_uz_timebar);
             }
@@ -2175,17 +2184,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzPlayerView.getControllerAutoShow();
     }
 
+    public boolean isPlayerControllerShowing() {
+        if (uzPlayerView != null) {
+            return uzPlayerView.isControllerVisible();
+        }
+        return false;
+    }
+
     public void showController() {
         if (uzPlayerView != null) {
             uzPlayerView.showController();
         }
     }
 
-    public boolean isPlayerControllerShowing() {
-        if (uzPlayerView != null) {
-            return uzPlayerView.isControllerVisible();
-        }
-        return false;
+    private View[] alwaysVisibileView;
+
+    public void setViewsAlwaysVisible(View... views) {
+        alwaysVisibileView = views;
     }
 
     public void hideController() {
@@ -2953,10 +2968,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void setControllerStateCallback(UZPlayerView.ControllerStateCallback controllerStateCallback) {
-        if (uzPlayerView != null) {
-            uzPlayerView.setControllerStateCallback(controllerStateCallback);
-        }
+    private UZPlayerView.ControllerStateCallback controllerStateCallback;
+
+    public void setControllerStateCallback(final UZPlayerView.ControllerStateCallback controllerStateCallback) {
+        this.controllerStateCallback = controllerStateCallback;
     }
 
     /*
@@ -3440,6 +3455,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public int getHeightUZVideo() {
+        if (rootView == null) {
+            return 0;
+        }
+        if (isSetUZTimebarBottom) {
+            int hRootView = LUIUtil.getHeightOfView(rootView);
+            int hUZTimebar = getHeightUZTimeBar();
+            return hRootView - hUZTimebar / 2;
+        } else {
+            return LUIUtil.getHeightOfView(rootView);
+        }
+    }
+
     //return pixel
     public int getHeightUZTimeBar() {
         return LUIUtil.getHeightOfView(uzTimebar);
@@ -3492,5 +3520,41 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return Constants.NOT_FOUND;
         }
         return uzPlayerManager.getCurrentPosition();
+    }
+
+    @Override
+    public void onVisibilityChange(boolean isShow) {
+        //LLog.d(TAG, "onVisibilityChange " + isShow);
+        if (controllerStateCallback != null) {
+            controllerStateCallback.onVisibilityChange(isShow);
+        }
+        if (uzPlayerView == null) {
+            return;
+        }
+        if (isShow) {
+        } else {
+            //luon hien nhung view alwaysVisibileView len ke ca khi controller da hide
+            //TODO iplm
+            if (alwaysVisibileView != null) {
+                showController();
+                View[] childArr = uzPlayerView.getAllChild();
+                if (childArr == null) {
+                    //LLog.e(TAG, "onVisibilityChange null");
+                    return;
+                }
+                //LLog.d(TAG, "alwaysVisibileView size: " + alwaysVisibileView.length);
+                //LLog.d(TAG, "getAllChild size: " + childArr.length);
+                for (int i = 0; i < childArr.length; i++) {
+                    if (childArr[i] instanceof ViewGroup) {
+                        continue;
+                    }
+                    childArr[i].setVisibility(View.INVISIBLE);
+                }
+                for (int i = 0; i < alwaysVisibileView.length; i++) {
+                    //LLog.d(TAG, "VISIBLE " + i);
+                    alwaysVisibileView[i].setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }

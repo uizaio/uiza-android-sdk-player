@@ -3,10 +3,50 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/WhiteSmoke">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/LightSeaGreen"
+                    android:padding="@dimen/padding_5"
+                    android:text="Sample text"
+                    android:textColor="@color/White"
+                    android:textSize="@dimen/txt_32" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_text" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
     <uizacoresdk.view.rl.video.UZVideo
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/p"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/w_20"
+        android:layout_height="@dimen/w_20"
+        android:layout_centerInParent="true" />
 </RelativeLayout>

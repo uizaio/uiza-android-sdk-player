@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -18,7 +16,6 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -27,11 +24,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private View shadow;
-    private LinearLayout ll;
-    private ProgressBar pb;
 
     @Override
     protected boolean setFullScreen() {
@@ -45,24 +40,21 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_code_uz_timebar;
+        return R.layout.activity_uiza_custom_skin_u_tube;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
+        UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        ll = (LinearLayout) findViewById(R.id.ll);
-        pb = (ProgressBar) findViewById(R.id.p);
-        ll.setVisibility(View.INVISIBLE);
-        pb.setVisibility(View.VISIBLE);
         uzVideo.setUZCallback(this);
 
         //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
+        uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
@@ -74,11 +66,6 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            pb.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
-        }
     }
 
     @Override
