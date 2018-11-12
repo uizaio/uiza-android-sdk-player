@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -16,6 +17,7 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -27,6 +29,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private View shadow;
+    private LinearLayout ll;
 
     @Override
     protected boolean setFullScreen() {
@@ -49,6 +52,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        ll = (LinearLayout) findViewById(R.id.ll);
         uzVideo.setUZCallback(this);
 
         //config uztimebar bottom
@@ -65,6 +69,9 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
+            LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
+        }
     }
 
     @Override

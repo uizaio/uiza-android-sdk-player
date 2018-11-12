@@ -3455,6 +3455,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public int getHeightUZVideo() {
+        if (rootView == null) {
+            return 0;
+        }
+        if (isSetUZTimebarBottom) {
+            int hRootView = LUIUtil.getHeightOfView(rootView);
+            int hUZTimebar = getHeightUZTimeBar();
+            return hRootView - hUZTimebar / 2;
+        } else {
+            return LUIUtil.getHeightOfView(rootView);
+        }
+    }
+
     //return pixel
     public int getHeightUZTimeBar() {
         return LUIUtil.getHeightOfView(uzTimebar);
