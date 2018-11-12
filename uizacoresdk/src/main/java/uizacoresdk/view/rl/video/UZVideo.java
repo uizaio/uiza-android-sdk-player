@@ -3511,7 +3511,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onVisibilityChange(boolean isShow) {
-        LLog.d(TAG, "fuck onVisibilityChange " + isShow);
+        //LLog.d(TAG, "onVisibilityChange " + isShow);
         if (controllerStateCallback != null) {
             controllerStateCallback.onVisibilityChange(isShow);
         }
