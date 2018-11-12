@@ -9,6 +9,10 @@ import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.util.List;
+
+import vn.uiza.core.utilities.LUIUtil;
+
 /**
  * Created by loitp on 6/8/2018.
  */
@@ -232,5 +236,29 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
             }
             return true;
         }
+    }
+
+    public PlayerControlView getPlayerControlView() {
+        //PlayerControlView playerControlView = (PlayerControlView) findViewById(R.id.exo_controller);
+        //return playerControlView;
+        for (int i = 0; i < this.getChildCount(); i++) {
+            //LLog.d(TAG, "getPlayerControlView " + i);
+            if (this.getChildAt(i) instanceof PlayerControlView) {
+                return (PlayerControlView) getChildAt(i);
+            }
+        }
+        return null;
+    }
+
+    public View[] getAllChild() {
+        PlayerControlView playerControlView = getPlayerControlView();
+        if (playerControlView == null) {
+            //LLog.e(TAG, "playerControlView == null");
+            return null;
+        }
+        //LLog.d(TAG, "playerControlView != null");
+        //LLog.d(TAG, "playerControlView.getChildCount() " + playerControlView.getChildCount());
+        List<View> viewList = LUIUtil.getAllChildren(playerControlView);
+        return viewList.toArray(new View[viewList.size()]);
     }
 }
