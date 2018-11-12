@@ -1,3 +1,17 @@
+### 2.8.0 (2018-11-12)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.0'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.0'
+
+- Fixed onFocusChange for AndroidTV, AndroidBox.
+- Add func getHeightUZVideo() of uzVideo.
+- Update sample TV with custom HQ, custom audio view.
+- Update sample using UZTimebar.
+
+
 ### 2.7.8 (2018-11-09)
 
     //for playing video VOD, LIVE  
