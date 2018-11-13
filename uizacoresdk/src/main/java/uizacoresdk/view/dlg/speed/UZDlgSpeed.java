@@ -9,7 +9,6 @@ import android.widget.CheckedTextView;
 import android.widget.ScrollView;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
@@ -35,7 +34,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.activity = activity;
         this.currentSpeed = currentSpeed;
-        LLog.d(TAG, "fuck currentSpeed " + currentSpeed);
+        //LLog.d(TAG, "currentSpeed " + currentSpeed);
         this.callback = callback;
     }
 
