@@ -9,4 +9,13 @@
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/Red"
+        android:padding="@dimen/padding_5"
+        android:text="In Progress"
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_32" />
 </RelativeLayout>

@@ -234,6 +234,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             if (player != null) {
                                 mls = player.getCurrentPosition();
                                 duration = player.getDuration();
+                                if (mls >= duration) {
+                                    mls = duration;
+                                }
                                 percent = (int) (mls * 100 / duration);
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
@@ -771,8 +774,12 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     //forward  10000mls
     protected void seekToForward(long forward) {
+        if (player == null) {
+            return;
+        }
         if (player.getCurrentPosition() + forward > player.getDuration()) {
-            player.seekTo(player.getDuration() - 100);
+            //player.seekTo(player.getDuration() - 100);
+            player.seekTo(player.getDuration());
         } else {
             player.seekTo(player.getCurrentPosition() + forward);
         }
@@ -780,6 +787,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     //next 10000mls
     protected void seekToBackward(long backward) {
+        if (player == null) {
+            return;
+        }
         if (player.getCurrentPosition() - backward > 0) {
             player.seekTo(player.getCurrentPosition() - backward);
         } else {

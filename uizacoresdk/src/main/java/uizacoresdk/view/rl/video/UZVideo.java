@@ -1072,6 +1072,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         ibReplayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_replay_uiza);
         ibRewIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_rew);
+        if (ibRewIcon != null) {
+            ibRewIcon.setSrcDrawableDisabled();
+        }
         ibFfwdIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_ffwd);
         ibBackScreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_back_screen);
         ibVolumeIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_volume);
@@ -1295,7 +1298,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onAdProgress(long currentMls, int s, long duration, int percent) {
-                //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
                 if (progressCallback != null) {
                     progressCallback.onAdProgress(currentMls, s, duration, percent);
                 }
@@ -1303,8 +1306,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
-                updateUIIbRewIconDependOnProgress(s);
+                //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
+                updateUIIbRewIconDependOnProgress(currentMls);
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
@@ -1635,21 +1638,35 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "PreviewView onPreview progress " + progress);
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
         }
         updateUIIbRewIconDependOnProgress(progress);
     }
 
-    private void updateUIIbRewIconDependOnProgress(int progress) {
-        if (ibRewIcon != null) {
-            if (progress == 0) {
-                ibRewIcon.setSrcDrawableDisabled();
+    private void updateUIIbRewIconDependOnProgress(long currentMls) {
+        if (ibRewIcon != null && ibFfwdIcon != null) {
+            if (currentMls == 0) {
+                if (ibRewIcon.isSetSrcDrawableEnabled()) {
+                    ibRewIcon.setSrcDrawableDisabled();
+                }
+                if (!ibFfwdIcon.isSetSrcDrawableEnabled()) {
+                    ibFfwdIcon.setSrcDrawableEnabled();
+                }
+            } else if (currentMls == getDuration()) {
+                if (!ibRewIcon.isSetSrcDrawableEnabled()) {
+                    ibRewIcon.setSrcDrawableEnabled();
+                }
+                if (ibFfwdIcon.isSetSrcDrawableEnabled()) {
+                    ibFfwdIcon.setSrcDrawableDisabled();
+                }
             } else {
                 if (!ibRewIcon.isSetSrcDrawableEnabled()) {
-                    //LLog.d(TAG, "setSrcDrawableEnabled " + progress);
                     ibRewIcon.setSrcDrawableEnabled();
+                }
+                if (!ibFfwdIcon.isSetSrcDrawableEnabled()) {
+                    ibFfwdIcon.setSrcDrawableEnabled();
                 }
             }
         }
@@ -2821,15 +2838,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibReplayIcon.requestFocus();
             }
             if (ibFfwdIcon != null) {
-                ibFfwdIcon.setSrcDrawableDisabled();
+                //ibFfwdIcon.setSrcDrawableDisabled();
             }
         } else {
             updateUIButtonPlayPauseDependOnIsAutoStart();
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(GONE);
-            }
-            if (ibFfwdIcon != null) {
-                ibFfwdIcon.setSrcDrawableEnabled();
             }
         }
     }

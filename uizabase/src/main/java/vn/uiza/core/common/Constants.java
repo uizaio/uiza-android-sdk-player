@@ -16,19 +16,11 @@ public class Constants {
 
     public final static String LOITP = "LoitpDebug";
 
-    public static String ASSET_FILE_GIFT = "img/ic_gift.png";
-
     public static final int NOT_FOUND = -404;
-    public static final String MENU_HOME_V3 = "Home V3";
-    public static final String MENU_LIVESTREAM = "Livestream";
+    public static final int UNKNOW = -400;
 
     //public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     //public final static String URL_IMG_LONG = "https://c2.staticflickr.com/6/5476/29412311793_8067369e64_b.jpg";
-
-    public static final String SPACE = " ";
-
-    public static final String ACTION_VIEW = "com.google.android.exoplayer.demo.action.VIEW";
-    public static final String ACTION_VIEW_LIST = "com.google.android.exoplayer.demo.action.VIEW_LIST";
 
     public static int TYPE_ACTIVITY_TRANSITION_NO_ANIM = -1;
     public static int TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT = 0;
@@ -112,19 +104,6 @@ public class Constants {
     public final static int PLAYTHROUGH_50 = 50;
     public final static int PLAYTHROUGH_75 = 75;
     public final static int PLAYTHROUGH_100 = 98;
-
-    public final static String ENTITYID_WITH_SUBTITLE = "56a4f990-17e6-473c-8434-ef6c7e40bba1";
-
-    public final static String A_K_DEV = "2LMJ7HTEGNCNYU3PE20G";
-    public final static String S_K_DEV = "jgQZDMvcKzhOiO2FLsNvbpOT0jzR7Jsco2cQEiMh";
-
-    public final static String A_K_UQC = "NPGRU7CIJBYO6XLAHT9P";
-    public final static String S_K_UQC = "DzzQukulJV6tmw59i7AwO7deK5qgDysLKZXBSL8X";
-
-    public final static String A_K_DEMO = "S2O8JGAPI3OICRTHR2DS";
-    public final static String S_K_DEMO = "UHf9LWrTHuQ5Zy99foX36IavJ4NRQhpo411sFYry";
-
-    public static final String BROADCAST_ACTION = "BROADCAST_ACTION_SERVICE_ACITIVY";
 
     //public final static String FLOAT_CURRENT_POSITION = "FLOAT_CURRENT_POSITION";
     public final static String FLOAT_USER_USE_CUSTOM_LINK_PLAY = "FLOAT_USER_USE_CUSTOM_LINK_PLAY";
