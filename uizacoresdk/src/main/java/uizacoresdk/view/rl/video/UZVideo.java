@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -64,6 +65,7 @@ import uizacoresdk.view.dlg.hq.UZTrackSelectionView;
 import uizacoresdk.view.dlg.info.UZDlgInfoV1;
 import uizacoresdk.view.dlg.playlistfolder.CallbackPlaylistFolder;
 import uizacoresdk.view.dlg.playlistfolder.UZDlgPlaylistFolder;
+import uizacoresdk.view.dlg.speed.UZDlgSpeed;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.base.BaseActivity;
@@ -120,19 +122,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
     private ProgressBar progressBar;
-
     private LinearLayout llTop;
-
     private FrameLayout previewFrameLayout;
     private UZTimebar uzTimebar;
     private ImageView ivThumbnail;
     private UZTextView tvPosition;
     private UZTextView tvDuration;
-
     private ViewGroup rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
-
     private ImageView ivVideoCover;
     private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
@@ -151,25 +149,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZImageButton ibShareIcon;
     private UZImageButton ibSkipPreviousIcon;
     private UZImageButton ibSkipNextIcon;
+    private UZImageButton ibSpeedIcon;
     private RelativeLayout rlLiveInfo;
     private TextView tvLiveStatus;
     private TextView tvLiveView;
     private TextView tvLiveTime;
     private UZImageButton ivLiveTime;
     private UZImageButton ivLiveView;
-
     private LinearLayout debugLayout;
     private LinearLayout debugRootView;
     private TextView debugTextView;
-
     private RelativeLayout rlEndScreen;
     private TextView tvEndScreenMsg;
-
     private ResultGetLinkPlay mResultGetLinkPlay;
-
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
-
     private boolean isTV;//current device is TV or not (smartphone, tablet)
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton uzMediaRouteButton;
@@ -1086,6 +1080,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibShareIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_share);
         ibSkipNextIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_next);
         ibSkipPreviousIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_previous);
+        ibSpeedIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_speed);
 
         /*if (ibHearingIcon != null) {
             ibHearingIcon.setVisibility(GONE);
@@ -1200,6 +1195,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setOnClickListener(this);
             ibSkipPreviousIcon.setOnFocusChangeListener(this);
+        }
+        if (ibSpeedIcon != null) {
+            ibSpeedIcon.setOnClickListener(this);
+            ibSpeedIcon.setOnFocusChangeListener(this);
         }
     }
 
@@ -1763,6 +1762,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleClickSkipNext();
         } else if (v == ibSkipPreviousIcon) {
             handleClickSkipPrevious();
+        } else if (v == ibSpeedIcon) {
+            handleClickSpeed();
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         }
@@ -2866,6 +2867,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setVisibilityOfPlayPauseReplay(false);
     }
 
+    private void handleClickSpeed() {
+        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(activity, new UZDlgSpeed.Callback() {
+            @Override
+            public void onSelectItem(UZDlgSpeed.Speed speed) {
+                //LLog.d(TAG, "select " + speed.getName() + " - " + speed.getValue());
+                if (speed != null) {
+                    setSpeed(speed.getValue());
+                }
+            }
+        });
+        UZUtil.showUizaDialog(activity, uzDlgSpeed);
+    }
+
     private boolean isClickedSkipNextOrSkipPrevious;
 
     private void handleClickSkipNext() {
@@ -3308,6 +3322,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return ibSkipNextIcon;
     }
 
+    public UZImageButton getIbSpeedIcon() {
+        return ibSpeedIcon;
+    }
+
     public RelativeLayout getRlLiveInfo() {
         return rlLiveInfo;
     }
@@ -3582,5 +3600,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
+    }
+
+    public void setSpeed(float speed) {
+        if (speed > 3 || speed < -3) {
+            throw new IllegalArgumentException("Error UizaSpeed: Please set speed with the value between -3 and 3.");
+        }
+        PlaybackParameters playbackParameters = new PlaybackParameters(speed);
+        getPlayer().setPlaybackParameters(playbackParameters);
     }
 }

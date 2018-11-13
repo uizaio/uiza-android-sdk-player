@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="use_bottom_uz_timebar">use_bottom_uz_timebar</string>
+    <string name="speed">Speed</string>
 </resources>
