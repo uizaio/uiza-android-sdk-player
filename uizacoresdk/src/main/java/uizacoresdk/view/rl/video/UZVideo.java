@@ -2868,7 +2868,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickSpeed() {
-        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(activity, new UZDlgSpeed.Callback() {
+        if (getPlayer() == null) {
+            return;
+        }
+        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(activity, getPlayer().getPlaybackParameters().speed, new UZDlgSpeed.Callback() {
             @Override
             public void onSelectItem(UZDlgSpeed.Speed speed) {
                 //LLog.d(TAG, "select " + speed.getName() + " - " + speed.getValue());
@@ -3607,6 +3610,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             throw new IllegalArgumentException("Error UizaSpeed: Please set speed with the value between -3 and 3.");
         }
         PlaybackParameters playbackParameters = new PlaybackParameters(speed);
-        getPlayer().setPlaybackParameters(playbackParameters);
+        if (getPlayer() != null) {
+            getPlayer().setPlaybackParameters(playbackParameters);
+        }
     }
 }

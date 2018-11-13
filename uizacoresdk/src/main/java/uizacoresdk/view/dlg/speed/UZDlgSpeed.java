@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckedTextView;
+import android.widget.ScrollView;
 
 import uizacoresdk.R;
+import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LUIUtil;
 
 /**
  * Created by loitp on 13/11/2018.
@@ -16,6 +19,7 @@ import uizacoresdk.R;
 public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
+    private ScrollView sv;
     private CheckedTextView ct0;
     private CheckedTextView ct1;
     private CheckedTextView ct2;
@@ -24,10 +28,14 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     private CheckedTextView ct5;
     private CheckedTextView ct6;
 
-    public UZDlgSpeed(Activity activity, Callback callback) {
+    private float currentSpeed;
+
+    public UZDlgSpeed(Activity activity, float currentSpeed, Callback callback) {
         super(activity);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.activity = activity;
+        this.currentSpeed = currentSpeed;
+        LLog.d(TAG, "fuck currentSpeed " + currentSpeed);
         this.callback = callback;
     }
 
@@ -35,6 +43,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dlg_speed);
+        sv = (ScrollView) findViewById(R.id.sv);
         ct0 = (CheckedTextView) findViewById(R.id.ct_0);
         ct1 = (CheckedTextView) findViewById(R.id.ct_1);
         ct2 = (CheckedTextView) findViewById(R.id.ct_2);
@@ -74,6 +83,32 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
         setEvent(ct4);
         setEvent(ct5);
         setEvent(ct6);
+
+        if (currentSpeed == speed0.value) {
+            scrollTo(ct0);
+        } else if (currentSpeed == speed1.value) {
+            scrollTo(ct1);
+        } else if (currentSpeed == speed2.value) {
+            scrollTo(ct2);
+        } else if (currentSpeed == speed3.value) {
+            scrollTo(ct3);
+        } else if (currentSpeed == speed4.value) {
+            scrollTo(ct4);
+        } else if (currentSpeed == speed5.value) {
+            scrollTo(ct5);
+        } else if (currentSpeed == speed6.value) {
+            scrollTo(ct6);
+        }
+    }
+
+    private void scrollTo(final CheckedTextView checkedTextView) {
+        checkedTextView.setChecked(true);
+        sv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sv.scrollTo(0, checkedTextView.getTop());
+            }
+        }, 100);
     }
 
     private void setEvent(CheckedTextView checkedTextView) {
@@ -97,7 +132,12 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
                 callback.onSelectItem((Speed) view.getTag());
             }
         }
-        cancel();
+        LUIUtil.setDelay(200, new LUIUtil.DelayCallback() {
+            @Override
+            public void doAfter(int mls) {
+                cancel();
+            }
+        });
     }
 
     public interface Callback {
