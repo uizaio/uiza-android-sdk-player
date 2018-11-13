@@ -1304,6 +1304,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                updateUIIbRewIconDependOnProgress(s);
                 trackProgress(s, percent);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
@@ -1618,9 +1619,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
-        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onStopPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
-        }*/
         onStopPreview(progress);
     }
 
@@ -1638,11 +1636,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         //LLog.d(TAG, "PreviewView onPreview progress " + progress);
-        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
-        }*/
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
+        }
+        updateUIIbRewIconDependOnProgress(progress);
+    }
+
+    private void updateUIIbRewIconDependOnProgress(int progress) {
+        if (ibRewIcon != null) {
+            if (progress == 0) {
+                ibRewIcon.setSrcDrawableDisabled();
+            } else {
+                if (!ibRewIcon.isSetSrcDrawableEnabled()) {
+                    //LLog.d(TAG, "setSrcDrawableEnabled " + progress);
+                    ibRewIcon.setSrcDrawableEnabled();
+                }
+            }
         }
     }
 

@@ -47,6 +47,12 @@ public class UZImageButton extends AppCompatImageButton {
     private boolean isTablet;
     private boolean isUseDefault;
 
+    private boolean isSetSrcDrawableEnabled;
+
+    public boolean isSetSrcDrawableEnabled() {
+        return isSetSrcDrawableEnabled;
+    }
+
     public void setSrcDrawableEnabled() {
         if (drawableEnabled != null) {
             setClickable(true);
@@ -55,6 +61,7 @@ public class UZImageButton extends AppCompatImageButton {
         }
         clearColorFilter();
         invalidate();
+        isSetSrcDrawableEnabled = true;
     }
 
     public void setSrcDrawableDisabled() {
@@ -67,6 +74,7 @@ public class UZImageButton extends AppCompatImageButton {
             clearColorFilter();
         }
         invalidate();
+        isSetSrcDrawableEnabled = false;
     }
 
     public void setSrcDrawableDisabledCanTouch() {
@@ -79,6 +87,7 @@ public class UZImageButton extends AppCompatImageButton {
             clearColorFilter();
         }
         invalidate();
+        isSetSrcDrawableEnabled = false;
     }
 
     private void initSizeScreenW(AttributeSet attrs) {
