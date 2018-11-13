@@ -1646,6 +1646,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIIbRewIconDependOnProgress(long currentMls) {
+        if (isLivestream) {
+            return;
+        }
         if (ibRewIcon != null && ibFfwdIcon != null) {
             if (currentMls == 0) {
                 if (ibRewIcon.isSetSrcDrawableEnabled()) {
@@ -1954,7 +1957,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
-        LLog.d(TAG, "updateUIDependOnLivetream isLivestream " + isLivestream);
+        //LLog.d(TAG, "updateUIDependOnLivetream isLivestream " + isLivestream);
         if (isLivestream) {
             if (rlLiveInfo != null) {
                 rlLiveInfo.setVisibility(VISIBLE);

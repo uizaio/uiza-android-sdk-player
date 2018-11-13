@@ -275,6 +275,7 @@ public class UZImageButton extends AppCompatImageButton {
     }*/
 
     public void setUIVisible(final boolean isVisible) {
+        //LLog.d(TAG, "setUIVisible isVisible " + isVisible);
         setClickable(isVisible);
         setFocusable(isVisible);
         if (isVisible) {
