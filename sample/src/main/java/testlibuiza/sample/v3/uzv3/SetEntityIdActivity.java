@@ -11,7 +11,6 @@ import android.widget.EditText;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -30,7 +29,6 @@ public class SetEntityIdActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         findViews();
         initUIEntity();
         initUIPlaylistFolder();

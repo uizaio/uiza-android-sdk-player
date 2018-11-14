@@ -1967,6 +1967,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlTimeBar.setVisibility(INVISIBLE);//set GONE ok, but then VISIBLE not work huhu :(
             }
             //TODO why set gone not work?
+            if (ibSpeedIcon != null) {
+                //ibSpeedIcon.setVisibility(GONE);
+                ibSpeedIcon.setUIVisible(false);
+            }
             if (ibRewIcon != null) {
                 //ibRewIcon.setVisibility(GONE);
                 ibRewIcon.setUIVisible(false);
@@ -1983,6 +1987,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 rlTimeBar.setVisibility(VISIBLE);
             }
             //TODO why set visible not work?
+            if (ibSpeedIcon != null) {
+                //ibSpeedIcon.setVisibility(VISIBLE);
+                ibSpeedIcon.setUIVisible(true);
+            }
             if (ibRewIcon != null) {
                 //ibRewIcon.setVisibility(VISIBLE);
                 ibRewIcon.setUIVisible(true);
@@ -3612,6 +3620,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void setSpeed(float speed) {
+        if (isLivestream) {
+            throw new IllegalArgumentException("Error UizaSpeed: You cannot set speed with live content.");
+        }
         if (speed > 3 || speed < -3) {
             throw new IllegalArgumentException("Error UizaSpeed: Please set speed with the value between -3 and 3.");
         }

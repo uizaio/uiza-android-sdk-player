@@ -218,6 +218,14 @@
                 android:src="@drawable/baseline_skip_next_white_48" />
 
             <vn.uiza.views.autosize.UZImageButton
+                android:id="@id/exo_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_directions_run_white_48dp" />
+
+            <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_playlist_folder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -240,14 +248,6 @@
                 android:background="@color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_high_quality_white_48" />
-
-            <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_directions_run_white_48dp" />
 
         </LinearLayout>
     </LinearLayout>

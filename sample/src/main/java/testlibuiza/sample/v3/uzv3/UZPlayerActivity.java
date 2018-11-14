@@ -61,7 +61,9 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
