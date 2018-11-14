@@ -10,6 +10,7 @@
     <dimen name="margin_3">3dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="txt_20">20dp</dimen>
+    <dimen name="txt_22">22dp</dimen>
     <dimen name="txt_25">25dp</dimen>
     <dimen name="txt_30">30dp</dimen>
     <dimen name="txt_80">80dp</dimen>
@@ -44,9 +45,11 @@
     <dimen name="w_350">350dp</dimen>
     <dimen name="w_100">100dp</dimen>
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_13">13dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_25">25dp</dimen>
     <dimen name="txt_14">14dp</dimen>
+    <dimen name="txt_16">16dp</dimen>
     <dimen name="txt_150">150dp</dimen>
     <dimen name="txt_32">32dp</dimen>
     <dimen name="margin_55">55dp</dimen>
@@ -76,6 +79,7 @@
 
     <dimen name="w_15">15dp</dimen>
     <dimen name="w_200">200dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
     <dimen name="padding_30">30dp</dimen>
     <dimen name="padding_50">50dp</dimen>
     <dimen name="size_icon">40dp</dimen>

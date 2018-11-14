@@ -44,12 +44,6 @@ public class UZDlgInfoV1 extends Dialog {
 
         tvTitle = (TextView) findViewById(R.id.tv_title);
         final TextView tvContent = (TextView) findViewById(R.id.tv_content);
-        findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
 
         tvTitle.setText(title);
         LUIUtil.setDelay(1000, new LUIUtil.DelayCallback() {
