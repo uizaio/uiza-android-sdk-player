@@ -3146,6 +3146,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void showSpeed() {
+        if (ibSpeedIcon != null) {
+            ibSpeedIcon.performClick();
+        }
+    }
+
     /*
      **Lấy độ dài video
      */

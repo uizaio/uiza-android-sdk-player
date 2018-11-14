@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -28,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LLog;
 
 /**
  * A view for making track selections.
@@ -72,7 +72,6 @@ public class UZTrackSelectionView extends LinearLayout {
         // Inflate with the builder's context to ensure the correct style is used.
         LayoutInflater dialogInflater = LayoutInflater.from(builder.getContext());
         View dialogView = dialogInflater.inflate(R.layout.uz_track_selection_dialog, null);
-
         final UZTrackSelectionView selectionView = dialogView.findViewById(R.id.uz_track_selection_view);
         selectionView.init(trackSelector, rendererIndex);
         /*Dialog.OnClickListener okClickListener =
@@ -347,6 +346,36 @@ public class UZTrackSelectionView extends LinearLayout {
             for (int j = 0; j < trackViews[i].length; j++) {
                 trackViews[i][j].setChecked(override != null && override.groupIndex == i && override.containsTrack(j));
             }
+        }
+
+        //scroll to
+        if (disableView.isChecked()) {
+            scrollTo(disableView);
+        }
+        if (defaultView.isChecked()) {
+            scrollTo(defaultView);
+        }
+        for (int i = 0; i < trackViews.length; i++) {
+            for (int j = 0; j < trackViews[i].length; j++) {
+                if (trackViews[i][j].isChecked()) {
+                    scrollTo(trackViews[i][j]);
+                }
+            }
+        }
+    }
+
+    private void scrollTo(final CheckedTextView checkedTextView) {
+        if (this.getParent() instanceof ScrollView) {
+            final ScrollView sv = (ScrollView) this.getParent();
+            if (sv == null) {
+                return;
+            }
+            sv.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    sv.scrollTo(0, checkedTextView.getTop());
+                }
+            }, 100);
         }
     }
 

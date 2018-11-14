@@ -208,6 +208,12 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
                 uzVideo.showHQPopup();
             }
         });
+        findViewById(R.id.bt_speed).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.showSpeed();
+            }
+        });
         findViewById(R.id.bt_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
