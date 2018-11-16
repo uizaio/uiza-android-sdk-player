@@ -106,14 +106,7 @@ This class help you know how to use all Uiza API, please refer to
 Create java file MainActivity:
 
     public class MainActivity extends BaseActivity implements UZCallback{
-       public void isInitResult(...);
-       public void onClickListEntityRelation(...);
-       public void onClickBack(...);
-       public void onClickPip(...);
-       public void onClickPipVideoInitSuccess(...);
-       public void onSkinChange(...);
-       public void onError(...);
-       public void onScreenRotate(boolean isLandscape);
+       ...
     }
 Manifest
 
@@ -179,62 +172,7 @@ Dont forget to add in activity life cycle event:
         }
     }
 
-All listener  (If you want to listen all events)
-
-    private void setListener() {
-        if (uzVideo == null || uzVideo.getPlayer() == null) {
-            return;
-        }
-        uzVideo.getPlayer().addListener(new Player.EventListener() {
-            //...
-        });
-        uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
-            //...
-        });
-        uzVideo.setProgressCallback(new ProgressCallback() {
-           //...
-        });
-        uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
-           //...
-        });
-        uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
-           //...
-        });
-        uzVideo.getPlayer().addTextOutput(new TextOutput() {
-           //...
-        });
-    }
-Listener touch event
-
-    uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
-        @Override
-        public void onSingleTapConfirmed() {
-        }
-
-        @Override
-        public void onLongPress() {
-        }
-
-        @Override
-        public void onDoubleTap() {
-        }
-
-        @Override
-        public void onSwipeRight() {
-        }
-
-        @Override
-        public void onSwipeLeft() {
-        }
-
-        @Override
-        public void onSwipeBottom() {
-        }
-
-        @Override
-        public void onSwipeTop() {
-        }
-    });
+If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
 
@@ -242,7 +180,7 @@ This sample help you know how to use all Uiza SDK, please refer to  [THIS](https
 You can use this SDK for AndroidTV, AndroidBox as well, but limited some features.
 We also provide some functions for AndroidTV like:
 
-    uzVideo.setUZTVCallback(this);//listen event onFocusChange of components.
+    uzVideo.addUZTVCallback(this);//listen event onFocusChange of components.
 Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sampletv) for more details.
 # How to customize your skin?:
 Only 3 steps, you can customize everything about player skin.
