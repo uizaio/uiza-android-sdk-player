@@ -54,6 +54,11 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
         uzVideo.setPlayerControllerAlwayVisible();
+
+        //shadow background
+        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
+
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
         //uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
@@ -87,10 +92,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
             public void onSwipeTop() {
             }
         });
-
-        //shadow background
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -141,6 +142,11 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
             } else {
                 rlInfo.setVisibility(View.VISIBLE);
             }
+        }
+        if (shadow.getVisibility() == View.VISIBLE) {
+            shadow.setVisibility(View.GONE);
+        } else {
+            shadow.setVisibility(View.VISIBLE);
         }
     }
 
