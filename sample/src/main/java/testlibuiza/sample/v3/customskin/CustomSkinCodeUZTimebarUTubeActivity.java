@@ -49,7 +49,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
 
         //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);

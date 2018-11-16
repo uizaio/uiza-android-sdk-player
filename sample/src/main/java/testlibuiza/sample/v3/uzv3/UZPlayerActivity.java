@@ -92,7 +92,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         tvBuffer = (TextView) findViewById(R.id.tv_buffer);
         tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);

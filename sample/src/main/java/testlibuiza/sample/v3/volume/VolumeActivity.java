@@ -60,7 +60,7 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
         sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);
         sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
         tv = (TextView) findViewById(R.id.tv);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
         uzVideo.addAudioListener(new AudioListener() {
             @Override
             public void onVolumeChanged(float volume) {

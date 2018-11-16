@@ -63,7 +63,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
     }
 
     @Override

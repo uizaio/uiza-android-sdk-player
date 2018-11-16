@@ -292,14 +292,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /**
      * set uzCallback for uiza video
      */
-    public void setUZCallback(UZCallback uzCallback) {
+    public void addUZCallback(UZCallback uzCallback) {
         this.uzCallback = uzCallback;
     }
 
     /**
      * set uzTVCallback for uiza video
      */
-    public void setUZTVCallback(UZTVCallback uztvCallback) {
+    public void addUZTVCallback(UZTVCallback uztvCallback) {
         this.uztvCallback = uztvCallback;
         hanldeFirstViewHasFocus();
     }
@@ -3652,19 +3652,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected MetadataOutput metadataOutput;
 
-    public void setMetadataOutput(MetadataOutput metadataOutput) {
+    public void addMetadataOutput(MetadataOutput metadataOutput) {
         this.metadataOutput = metadataOutput;
     }
 
     protected TextOutput textOutput;
 
-    public void setTextOutput(TextOutput textOutput) {
+    public void addTextOutput(TextOutput textOutput) {
         this.textOutput = textOutput;
     }
 
     protected VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback;
 
-    public void setVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
+    public void addVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
         this.videoAdPlayerCallback = videoAdPlayerCallback;
     }
 }

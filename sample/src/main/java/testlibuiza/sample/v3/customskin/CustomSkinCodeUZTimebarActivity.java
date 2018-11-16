@@ -58,7 +58,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         pb = (ProgressBar) findViewById(R.id.p);
         ll.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.VISIBLE);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
 
         //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);

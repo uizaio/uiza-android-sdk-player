@@ -42,7 +42,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
     }
 
     @Override

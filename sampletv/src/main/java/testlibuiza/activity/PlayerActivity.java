@@ -73,8 +73,8 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
             }
         });
 
-        uzVideo.setUZCallback(this);
-        uzVideo.setUZTVCallback(this);
+        uzVideo.addUZCallback(this);
+        uzVideo.addUZTVCallback(this);
         uzVideo.setControllerStateCallback(this);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);

@@ -56,7 +56,7 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setControllerShowTimeoutMs(5000);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);

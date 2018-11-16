@@ -51,8 +51,8 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
         rl = (RelativeLayout) findViewById(R.id.rl);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setUZCallback(this);
-        uzVideo.setUZTVCallback(this);
+        uzVideo.addUZCallback(this);
+        uzVideo.addUZTVCallback(this);
         uzVideo.setDefaultUseController(false);
         uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override

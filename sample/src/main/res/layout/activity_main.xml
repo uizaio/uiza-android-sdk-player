@@ -94,6 +94,13 @@
                     android:layout_height="wrap_content"
                     android:enabled="true"
                     android:text="Volume controller" />
+
+                <Button
+                    android:id="@+id/bt_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="Event" />
             </LinearLayout>
 
             <LinearLayout

@@ -59,7 +59,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
         seekBar = (SeekBar) findViewById(R.id.sb);
         uzVideo.setAutoStart(true);
         uzVideo.hideUzTimebar();
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
         seekBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
