@@ -7,9 +7,10 @@ import android.support.annotation.Nullable;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.audio.AudioListener;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.VolumeCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -27,7 +28,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by loitp on 7/16/2018.
  */
 
-public class VolumeActivity extends BaseActivity implements UZCallback, VolumeCallback {
+public class VolumeActivity extends BaseActivity implements UZCallback {
     private UZVideo uzVideo;
     private SeekBar sb;
     private UZVerticalSeekBar sb1;
@@ -60,7 +61,14 @@ public class VolumeActivity extends BaseActivity implements UZCallback, VolumeCa
         sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
         tv = (TextView) findViewById(R.id.tv);
         uzVideo.setUZCallback(this);
-        uzVideo.setVolumeCallback(this);
+        uzVideo.addAudioListener(new AudioListener() {
+            @Override
+            public void onVolumeChanged(float volume) {
+                sb.setProgress((int) (volume * 100));
+                sb1.setProgress((int) (volume * 100));
+                sb2.setProgress((int) (volume * 100));
+            }
+        });
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -208,12 +216,5 @@ public class VolumeActivity extends BaseActivity implements UZCallback, VolumeCa
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onVolumeChange(float volume) {
-        sb.setProgress((int) (volume * 100));
-        sb1.setProgress((int) (volume * 100));
-        sb2.setProgress((int) (volume * 100));
     }
 }

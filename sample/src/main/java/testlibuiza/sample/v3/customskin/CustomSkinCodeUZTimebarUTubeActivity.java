@@ -54,7 +54,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
-        uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
+        //uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);

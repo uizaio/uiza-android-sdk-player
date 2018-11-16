@@ -29,6 +29,7 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -52,7 +53,6 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
-import uizacoresdk.interfaces.VolumeCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
@@ -2235,11 +2235,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private View[] alwaysVisibileView;
+    //private View[] alwaysVisibileView;
 
-    public void setViewsAlwaysVisible(View... views) {
+    /*public void setViewsAlwaysVisible(View... views) {
         alwaysVisibileView = views;
-    }
+    }*/
 
     public void hideController() {
         if (isCastingChromecast) {
@@ -3556,12 +3556,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    protected VolumeCallback volumeCallback;
-
-    public void setVolumeCallback(VolumeCallback volumeCallback) {
-        this.volumeCallback = volumeCallback;
-    }
-
     public void setVolume(float volume) {
         if (uzPlayerManager == null) {
             return;
@@ -3592,7 +3586,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerView == null) {
             return;
         }
-        if (isShow) {
+        /*if (isShow) {
         } else {
             //luon hien nhung view alwaysVisibileView len ke ca khi controller da hide
             //TODO iplm
@@ -3616,7 +3610,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     alwaysVisibileView[i].setVisibility(View.VISIBLE);
                 }
             }
-        }
+        }*/
     }
 
     public void setSpeed(float speed) {
@@ -3630,5 +3624,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (getPlayer() != null) {
             getPlayer().setPlaybackParameters(playbackParameters);
         }
+    }
+
+    protected AudioListener audioListener;
+
+    public void addAudioListener(AudioListener audioListener) {
+        this.audioListener = audioListener;
     }
 }
