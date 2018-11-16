@@ -18,8 +18,8 @@ package uizacoresdk.view.floatview;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
-import android.view.Surface;
 
+import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -31,11 +31,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -47,8 +43,6 @@ import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -60,13 +54,12 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.listerner.VideoAdPlayerListerner;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
@@ -74,24 +67,19 @@ import vn.uiza.utils.util.AppUtils;
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-/* package */ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
+public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
     private Context context;
-
     private FUZVideo FUZVideo;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
-
     private SimpleExoPlayer player;
-
     private String userAgent;
     private String linkPlay;
     private List<Subtitle> subtitleList;
-
-    private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
-
+    private FUZVideoAdPlayerListerner FUZVideoAdPlayerListerner = new FUZVideoAdPlayerListerner();
     private Handler handler;
     private Runnable runnable;
 
@@ -124,7 +112,7 @@ import vn.uiza.utils.util.AppUtils;
             @Override
             public void run() {
                 if (uizaIMAVideo.getPlayerView() != null) {
-                    boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
+                    boolean isPlayingAd = FUZVideoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
                         hideProgress();
@@ -191,17 +179,13 @@ import vn.uiza.utils.util.AppUtils;
         // Prepare the player with the source.
         //player.seekTo(contentPosition);
         //LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
-        player.addListener(new PlayerEventListener());
-        player.addAudioDebugListener(new AudioEventListener());
-        player.addVideoDebugListener(new VideoEventListener());
-        player.addMetadataOutput(new MetadataOutputListener());
-        player.addTextOutput(new TextOutputListener());
+        player.addListener(new FUZPlayerEventListener());
+        player.addVideoListener(new FUZVideoListener());
 
         if (adsLoader != null) {
-            adsLoader.addCallback(videoAdPlayerListerner);
+            adsLoader.addCallback(FUZVideoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
-        //player.seekTo(0);
         player.setPlayWhenReady(true);
     }
 
@@ -375,7 +359,7 @@ import vn.uiza.utils.util.AppUtils;
         LUIUtil.showProgressBar(FUZVideo.getProgressBar());
     }
 
-    public class PlayerEventListener implements Player.EventListener {
+    private class FUZPlayerEventListener implements Player.EventListener {
 
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
@@ -445,95 +429,77 @@ import vn.uiza.utils.util.AppUtils;
         }
     }
 
-    public class AudioEventListener implements AudioRendererEventListener {
-
-        @Override
-        public void onAudioEnabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onAudioEnabled");
-        }
-
-        @Override
-        public void onAudioSessionId(int audioSessionId) {
-            //LLog.d(TAG, "onAudioSessionId audioSessionId: " + audioSessionId);
-        }
-
-        @Override
-        public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            //LLog.d(TAG, "onAudioDecoderInitialized");
-        }
-
-        @Override
-        public void onAudioInputFormatChanged(Format format) {
-            //LLog.d(TAG, "onAudioInputFormatChanged");
-        }
-
-        @Override
-        public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-            //LLog.d(TAG, "onAudioSinkUnderrun");
-        }
-
-        @Override
-        public void onAudioDisabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onAudioDisabled");
-        }
-    }
-
-    public class VideoEventListener implements VideoRendererEventListener {
-
-        @Override
-        public void onVideoEnabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onVideoEnabled");
-        }
-
-        @Override
-        public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            //LLog.d(TAG, "onVideoDecoderInitialized decoderName: " + decoderName + ", initializedTimestampMs " + initializedTimestampMs + ", initializationDurationMs " + initializationDurationMs);
-        }
-
-        @Override
-        public void onVideoInputFormatChanged(Format format) {
-            //LLog.d(TAG, "onVideoInputFormatChanged");
-        }
-
-        @Override
-        public void onDroppedFrames(int count, long elapsedMs) {
-            //LLog.d(TAG, "onDroppedFrames count " + count + ",elapsedMs " + elapsedMs);
-        }
-
+    private class FUZVideoListener implements VideoListener {
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + ", pixelWidthHeightRatio " + pixelWidthHeightRatio);
         }
 
         @Override
-        public void onRenderedFirstFrame(Surface surface) {
-            //LLog.d(TAG, "onRenderedFirstFrame");
+        public void onSurfaceSizeChanged(int width, int height) {
+        }
+
+        @Override
+        public void onRenderedFirstFrame() {
             FUZVideo.onStateReadyFirst();
-        }
-
-        @Override
-        public void onVideoDisabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onVideoDisabled");
-        }
-    }
-
-    public class MetadataOutputListener implements MetadataOutput {
-
-        @Override
-        public void onMetadata(Metadata metadata) {
-            //LLog.d(TAG, "onMetadata " + metadata.length());
-        }
-    }
-
-    public class TextOutputListener implements TextOutput {
-
-        @Override
-        public void onCues(List<Cue> cues) {
-            //LLog.d(TAG, "onCues " + cues.size());
         }
     }
 
     public SimpleExoPlayer getPlayer() {
         return player;
+    }
+
+    private class FUZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
+        private final String TAG = FUZVideoAdPlayerListerner.class.getSimpleName();
+        private boolean isPlayingAd;
+        private boolean isEnded;
+
+        @Override
+        public void onPlay() {
+            //LLog.d(TAG, "onPlay");
+            isPlayingAd = true;
+        }
+
+        @Override
+        public void onVolumeChanged(int i) {
+            //LLog.d(TAG, "onVolumeChanged");
+        }
+
+        @Override
+        public void onPause() {
+            //LLog.d(TAG, "onPause");
+            isPlayingAd = false;
+        }
+
+        @Override
+        public void onLoaded() {
+            //LLog.d(TAG, "onLoaded");
+        }
+
+        @Override
+        public void onResume() {
+            //LLog.d(TAG, "onResume");
+            isPlayingAd = true;
+        }
+
+        @Override
+        public void onEnded() {
+            //LLog.d(TAG, "onEnded");
+            isPlayingAd = false;
+            isEnded = true;
+        }
+
+        @Override
+        public void onError() {
+            //LLog.d(TAG, "onError");
+            isPlayingAd = false;
+        }
+
+        public boolean isPlayingAd() {
+            return isPlayingAd;
+        }
+
+        public boolean isEnded() {
+            return isEnded;
+        }
     }
 }

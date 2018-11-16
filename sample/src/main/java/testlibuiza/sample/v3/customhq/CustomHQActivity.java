@@ -69,7 +69,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.setControllerShowTimeoutMs(5000);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);

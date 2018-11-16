@@ -59,7 +59,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
         seekBar = (SeekBar) findViewById(R.id.sb);
         uzVideo.setAutoStart(true);
         uzVideo.hideUzTimebar();
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
         seekBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -78,7 +78,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
                 uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
                 //LLog.d(TAG, "onAdEnded");
@@ -104,7 +104,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
             public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
             }
         });
-        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);

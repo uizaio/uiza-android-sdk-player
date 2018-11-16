@@ -6,10 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -49,19 +52,136 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setUZCallback(this);
-
-        //config uztimebar bottom
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
-        uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
+        uzVideo.addUZCallback(this);
+        uzVideo.setPlayerControllerAlwayVisible();
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
 
+        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
+        uzVideo.setUzTimebarBottom();
+        //uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
+        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+            @Override
+            public void onSingleTapConfirmed(float x, float y) {
+                toggleControllerExceptUZTimebar();
+            }
+
+            @Override
+            public void onLongPress(float x, float y) {
+            }
+
+            @Override
+            public void onDoubleTap(float x, float y) {
+            }
+
+            @Override
+            public void onSwipeRight() {
+            }
+
+            @Override
+            public void onSwipeLeft() {
+            }
+
+            @Override
+            public void onSwipeBottom() {
+            }
+
+            @Override
+            public void onSwipeTop() {
+            }
+        });
+
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
+
+        findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleUIUZTimebar();
+            }
+        });
+        findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleUIRewFfw();
+            }
+        });
+        findViewById(R.id.bt_2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleControllerExceptUZTimebar();
+            }
+        });
+    }
+
+    private void toggleControllerExceptUZTimebar() {
+        if (uzVideo.getLlTop() != null) {
+            if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
+                uzVideo.getLlTop().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getLlTop().setVisibility(View.VISIBLE);
+            }
+        }
+        if (uzVideo.getRlLiveInfo() != null) {
+            if (uzVideo.getRlLiveInfo().getVisibility() == View.VISIBLE) {
+                uzVideo.getRlLiveInfo().setVisibility(View.INVISIBLE);
+            } else {
+                if (uzVideo.isLivestream()) {
+                    uzVideo.getRlLiveInfo().setVisibility(View.VISIBLE);
+                }
+            }
+        }
+        LinearLayout llControllerButton = uzVideo.findViewById(R.id.ll_controller_button);
+        if (llControllerButton != null) {
+            if (llControllerButton.getVisibility() == View.VISIBLE) {
+                llControllerButton.setVisibility(View.INVISIBLE);
+            } else {
+                llControllerButton.setVisibility(View.VISIBLE);
+            }
+        }
+        RelativeLayout rlInfo = uzVideo.findViewById(R.id.rl_info);
+        if (rlInfo != null) {
+            if (rlInfo.getVisibility() == View.VISIBLE) {
+                rlInfo.setVisibility(View.INVISIBLE);
+            } else {
+                rlInfo.setVisibility(View.VISIBLE);
+            }
+        }
+        if (shadow.getVisibility() == View.VISIBLE) {
+            shadow.setVisibility(View.GONE);
+        } else {
+            shadow.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void toggleUIUZTimebar() {
+        if (uzVideo.getUZTimeBar() == null) {
+            return;
+        }
+        if (uzVideo.getUZTimeBar().getVisibility() == View.VISIBLE) {
+            uzVideo.getUZTimeBar().setVisibility(View.INVISIBLE);
+        } else {
+            uzVideo.getUZTimeBar().setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void toggleUIRewFfw() {
+        if (uzVideo.getIbRewIcon() != null) {
+            if (uzVideo.getIbRewIcon().getVisibility() == View.VISIBLE) {
+                uzVideo.getIbRewIcon().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getIbRewIcon().setVisibility(View.VISIBLE);
+            }
+        }
+        if (uzVideo.getIbFfwdIcon() != null) {
+            if (uzVideo.getIbFfwdIcon().getVisibility() == View.VISIBLE) {
+                uzVideo.getIbFfwdIcon().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getIbFfwdIcon().setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

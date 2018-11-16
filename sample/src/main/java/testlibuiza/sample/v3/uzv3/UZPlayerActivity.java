@@ -92,7 +92,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         tvBuffer = (TextView) findViewById(R.id.tv_buffer);
         tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
         uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -119,12 +119,12 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         //set uzVideo hide all controller
         //uzVideo.setDefaultUseController(false);
         //uzVideo.setControllerAutoShow(true);
-        //uzVideo.hideControllerOnTouch(true);
+        //uzVideo.setHideControllerOnTouch(true);
         //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
         //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
         //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
 
-        uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
                 tvClickEvent.setText("onSingleTapConfirmed");
@@ -371,7 +371,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });*/
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
                 sb.setMax((int) uzVideo.getDuration());

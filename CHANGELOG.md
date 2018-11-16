@@ -1,3 +1,18 @@
+### 2.8.2 (2018-11-14)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.2'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.0'
+
+- Update default skin.
+- Update UI state of ibRewIcon, ibFfwdIcon.
+- Add func let you can set speed of player uzVideo.setSpeed(value);
+- Add new Speed Button (id exo_speed) of player controller, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizacoresdk/src/main/res/layout/uz_controller_skin_0.xml) for more details.
+- Update sample demo.
+
+
 ### 2.8.0 (2018-11-12)
 
     //for playing video VOD, LIVE  

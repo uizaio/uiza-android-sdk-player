@@ -50,50 +50,51 @@
                     android:id="@+id/bt_uiza_custom_skin_xml"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Custom skin by xml" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_code_seekbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
-                    android:text="Custom skin by code (seekbar) - deprecated" />
+                    android:text="Custom skin by code (seekbar) - deprecated"
+                    android:textSize="@dimen/txt_10"
+                    android:textStyle="italic" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_code_uz_timebar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Custom skin by code (UZTimebar)" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_u_tube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Custom skin like Youtube" />
 
                 <Button
                     android:id="@+id/bt_custom_hq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Custom HQ" />
 
                 <Button
                     android:id="@+id/bt_play_any_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Play any link" />
 
                 <Button
                     android:id="@+id/bt_volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:text="Volume controller" />
+
+                <Button
+                    android:id="@+id/bt_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event" />
             </LinearLayout>
 
             <LinearLayout

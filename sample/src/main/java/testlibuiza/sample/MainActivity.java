@@ -14,6 +14,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
+import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
@@ -118,6 +119,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, VolumeActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, EventActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

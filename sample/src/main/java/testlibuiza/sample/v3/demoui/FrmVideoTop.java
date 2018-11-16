@@ -63,7 +63,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
             }
@@ -271,7 +271,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onCues");
             }
         });
-        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 if (((HomeCanSlideActivity) getActivity()).getDraggablePanel() != null

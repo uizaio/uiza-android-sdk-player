@@ -10,12 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Red"
-        android:padding="@dimen/padding_5"
-        android:text="In Progress"
-        android:textColor="@color/White"
-        android:textSize="@dimen/txt_32" />
+        android:layout_below="@id/uiza_video"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show/Hide UZTimebar" />
+
+        <Button
+            android:id="@+id/bt_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show/Hide Rew/Ffw" />
+
+        <Button
+            android:id="@+id/bt_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show/Hide Controller (Except UZTimebar)" />
+    </LinearLayout>
 </RelativeLayout>

@@ -3,11 +3,11 @@ package uizacoresdk.view.rl.video;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
-import android.view.Surface;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
+import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -19,8 +19,8 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
+import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.audio.AudioListener;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
@@ -49,7 +49,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,6 @@ import java.util.List;
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.listerner.VideoAdPlayerListerner;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.common.Constants;
@@ -97,27 +96,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return linkPlay;
     }
 
-    private VideoAdPlayerListerner videoAdPlayerListerner = new VideoAdPlayerListerner();
+    private UZVideoAdPlayerListerner uzVideoAdPlayerListerner = new UZVideoAdPlayerListerner();
 
     private UZTimebar uzTimebar;
     private String thumbnailsUrl;
     private ImageView imageView;
-    private Player.EventListener eventListener = new Player.DefaultEventListener() {
-        @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            if (playbackState == Player.STATE_READY && playWhenReady) {
-                //LLog.d(TAG, "onPlayerStateChanged STATE_READY");
-                if (uzVideo != null) {
-                    uzVideo.hideLayoutMsg();
-                    uzVideo.resetCountTryLinkPlayError();
-                }
-                if (uzTimebar != null) {
-                    uzTimebar.hidePreview();
-                }
-            }
-        }
-    };
-
     private Handler handler;
     private Runnable runnable;
 
@@ -191,10 +174,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected boolean isPlayingAd() {
-        if (videoAdPlayerListerner == null) {
+        if (uzVideoAdPlayerListerner == null) {
             return false;
         }
-        return videoAdPlayerListerner.isPlayingAd();
+        return uzVideoAdPlayerListerner.isPlayingAd();
     }
 
     public void setRunnable() {
@@ -205,8 +188,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             public void run() {
                 //LLog.d(TAG, "runnable run");
                 if (uzVideo != null && uzVideo.getUzPlayerView() != null) {
-                    boolean isPlayingAd = videoAdPlayerListerner.isPlayingAd();
-                    if (videoAdPlayerListerner.isEnded()) {
+                    boolean isPlayingAd = uzVideoAdPlayerListerner.isPlayingAd();
+                    if (uzVideoAdPlayerListerner.isEnded()) {
                         onAdEnded();
                     }
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd + ", isEnded " + isEnded);
@@ -296,17 +279,15 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
 
         // Prepare the player with the source.
-
-        player.addListener(eventListener);
-        player.addListener(new PlayerEventListener());
-        player.addAudioDebugListener(new AudioEventListener());
-        player.addVideoDebugListener(new VideoEventListener());
-        player.addMetadataOutput(new MetadataOutputListener());
-        player.addTextOutput(new TextOutputListener());
-
+        player.addListener(new UZPlayerEventListener());
+        player.addAudioListener(new UZAudioEventListener());
+        player.addVideoListener(new UZVideoEventListener());
+        player.addMetadataOutput(new UZMetadataOutputListener());
+        player.addTextOutput(new UZTextOutputListener());
         if (adsLoader != null) {
-            adsLoader.addCallback(videoAdPlayerListerner);
+            adsLoader.addCallback(uzVideoAdPlayerListerner);
         }
+
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(uzVideo.isAutoStart());
         seekTo(contentPosition);
@@ -524,11 +505,14 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return exoPlaybackException;
     }
 
-    public class PlayerEventListener implements Player.EventListener {
+    private class UZPlayerEventListener implements Player.EventListener {
 
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
             //LLog.d(TAG, "onTimelineChanged");
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+            }
         }
 
         @Override
@@ -537,11 +521,17 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onTracksChanged(trackGroups, trackSelections);
+            }
         }
 
         @Override
         public void onLoadingChanged(boolean isLoading) {
             //LLog.d(TAG, "onLoadingChanged isLoading " + isLoading);
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onLoadingChanged(isLoading);
+            }
         }
 
         @Override
@@ -563,6 +553,15 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                     break;
                 case Player.STATE_READY:
                     hideProgress();
+                    if (playWhenReady) {
+                        if (uzVideo != null) {
+                            uzVideo.hideLayoutMsg();
+                            uzVideo.resetCountTryLinkPlayError();
+                        }
+                        if (uzTimebar != null) {
+                            uzTimebar.hidePreview();
+                        }
+                    }
                     break;
             }
             if (debugCallback != null) {
@@ -571,16 +570,25 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (progressCallback != null) {
                 progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
             }
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onPlayerStateChanged(playWhenReady, playbackState);
+            }
         }
 
         @Override
         public void onRepeatModeChanged(int repeatMode) {
             //LLog.d(TAG, "onRepeatModeChanged repeatMode: " + repeatMode);
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onRepeatModeChanged(repeatMode);
+            }
         }
 
         @Override
         public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
             //LLog.d(TAG, "onShuffleModeEnabledChanged shuffleModeEnabled: " + shuffleModeEnabled);
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onShuffleModeEnabledChanged(shuffleModeEnabled);
+            }
         }
 
         @Override
@@ -604,112 +612,163 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             } else {
                 uzVideo.pauseVideo();
             }
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onPlayerError(error);
+            }
         }
 
         @Override
         public void onPositionDiscontinuity(int reason) {
             //LLog.d(TAG, "onPositionDiscontinuity");
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onPositionDiscontinuity(reason);
+            }
         }
 
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             //LLog.d(TAG, "onPlaybackParametersChanged");
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onPlaybackParametersChanged(playbackParameters);
+            }
         }
 
         @Override
         public void onSeekProcessed() {
             //LLog.d(TAG, "onSeekProcessed");
+            if (uzVideo != null && uzVideo.eventListener != null) {
+                uzVideo.eventListener.onSeekProcessed();
+            }
         }
     }
 
-    public class AudioEventListener implements AudioRendererEventListener {
-
-        @Override
-        public void onAudioEnabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onAudioEnabled");
-        }
-
+    private class UZAudioEventListener implements AudioListener {
         @Override
         public void onAudioSessionId(int audioSessionId) {
-            //LLog.d(TAG, "onAudioSessionId audioSessionId: " + audioSessionId);
-        }
-
-        @Override
-        public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            //LLog.d(TAG, "onAudioDecoderInitialized");
-        }
-
-        @Override
-        public void onAudioInputFormatChanged(Format format) {
-            //LLog.d(TAG, "onAudioInputFormatChanged");
-        }
-
-        @Override
-        public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-            //LLog.d(TAG, "onAudioSinkUnderrun");
-        }
-
-        @Override
-        public void onAudioDisabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onAudioDisabled");
-        }
-    }
-
-    public class VideoEventListener implements VideoRendererEventListener {
-
-        @Override
-        public void onVideoEnabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onVideoEnabled");
-        }
-
-        @Override
-        public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-            //LLog.d(TAG, "onVideoDecoderInitialized decoderName: " + decoderName + ", initializedTimestampMs " + initializedTimestampMs + ", initializationDurationMs " + initializationDurationMs);
-        }
-
-        @Override
-        public void onVideoInputFormatChanged(Format format) {
-            //LLog.d(TAG, "onVideoInputFormatChanged");
-        }
-
-        @Override
-        public void onDroppedFrames(int count, long elapsedMs) {
-            //LLog.d(TAG, "onDroppedFrames count " + count + ",elapsedMs " + elapsedMs);
-        }
-
-        @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + ", pixelWidthHeightRatio " + pixelWidthHeightRatio);
-        }
-
-        @Override
-        public void onRenderedFirstFrame(Surface surface) {
-            //LLog.d(TAG, "onRenderedFirstFrame");
-            exoPlaybackException = null;
-            if (uzVideo != null) {
-                uzVideo.removeVideoCover(false);
+            //LLog.d(TAG, "UZAudioEventListener onAudioSessionId " + audioSessionId);
+            if (uzVideo != null && uzVideo.audioListener != null) {
+                uzVideo.audioListener.onAudioSessionId(audioSessionId);
             }
         }
 
         @Override
-        public void onVideoDisabled(DecoderCounters counters) {
-            //LLog.d(TAG, "onVideoDisabled");
+        public void onAudioAttributesChanged(AudioAttributes audioAttributes) {
+            //LLog.d(TAG, "UZAudioEventListener audioAttributes");
+            if (uzVideo != null && uzVideo.audioListener != null) {
+                uzVideo.audioListener.onAudioAttributesChanged(audioAttributes);
+            }
+        }
+
+        @Override
+        public void onVolumeChanged(float volume) {
+            //LLog.d(TAG, "UZAudioEventListener onVolumeChanged " + volume);
+            if (uzVideo != null && uzVideo.audioListener != null) {
+                uzVideo.audioListener.onVolumeChanged(volume);
+            }
         }
     }
 
-    public class MetadataOutputListener implements MetadataOutput {
+    private class UZVideoEventListener implements VideoListener {
+        @Override
+        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            if (uzVideo != null && uzVideo.videoListener != null) {
+                uzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            }
+        }
+
+        @Override
+        public void onSurfaceSizeChanged(int width, int height) {
+            if (uzVideo != null && uzVideo.videoListener != null) {
+                uzVideo.videoListener.onSurfaceSizeChanged(width, height);
+            }
+        }
+
+        @Override
+        public void onRenderedFirstFrame() {
+            exoPlaybackException = null;
+            if (uzVideo != null) {
+                uzVideo.removeVideoCover(false);
+            }
+            if (uzVideo != null && uzVideo.videoListener != null) {
+                uzVideo.videoListener.onRenderedFirstFrame();
+            }
+        }
+    }
+
+    private class UZMetadataOutputListener implements MetadataOutput {
 
         @Override
         public void onMetadata(Metadata metadata) {
             //LLog.d(TAG, "onMetadata " + metadata.length());
+            if (uzVideo != null && uzVideo.metadataOutput != null) {
+                uzVideo.metadataOutput.onMetadata(metadata);
+            }
         }
     }
 
-    public class TextOutputListener implements TextOutput {
+    private class UZTextOutputListener implements TextOutput {
 
         @Override
         public void onCues(List<Cue> cues) {
             //LLog.d(TAG, "onCues " + cues.size());
+            if (uzVideo != null && uzVideo.textOutput != null) {
+                uzVideo.textOutput.onCues(cues);
+            }
+        }
+    }
+
+    private class UZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
+        private final String TAG = UZVideoAdPlayerListerner.class.getSimpleName();
+        private boolean isPlayingAd;
+        private boolean isEnded;
+
+        @Override
+        public void onPlay() {
+            //LLog.d(TAG, "onPlay");
+            isPlayingAd = true;
+        }
+
+        @Override
+        public void onVolumeChanged(int i) {
+            //LLog.d(TAG, "onVolumeChanged");
+        }
+
+        @Override
+        public void onPause() {
+            //LLog.d(TAG, "onPause");
+            isPlayingAd = false;
+        }
+
+        @Override
+        public void onLoaded() {
+            //LLog.d(TAG, "onLoaded");
+        }
+
+        @Override
+        public void onResume() {
+            //LLog.d(TAG, "onResume");
+            isPlayingAd = true;
+        }
+
+        @Override
+        public void onEnded() {
+            //LLog.d(TAG, "onEnded");
+            isPlayingAd = false;
+            isEnded = true;
+        }
+
+        @Override
+        public void onError() {
+            //LLog.d(TAG, "onError");
+            isPlayingAd = false;
+        }
+
+        public boolean isPlayingAd() {
+            return isPlayingAd;
+        }
+
+        public boolean isEnded() {
+            return isEnded;
         }
     }
 
@@ -742,9 +801,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     protected void setVolume(float volume) {
         if (player != null) {
             player.setVolume(volume);
-            if (uzVideo != null && uzVideo.volumeCallback != null) {
-                uzVideo.volumeCallback.onVolumeChange(volume);
-            }
             if (uzVideo != null && uzVideo.getIbVolumeIcon() != null) {
                 if (player.getVolume() != 0f) {
                     uzVideo.getIbVolumeIcon().setSrcDrawableEnabled();

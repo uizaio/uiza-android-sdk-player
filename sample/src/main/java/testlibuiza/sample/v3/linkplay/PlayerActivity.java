@@ -61,7 +61,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         etLinkPlay = (EditText) findViewById(R.id.et_link_play);
         btPlay = (Button) findViewById(R.id.bt_play);
         btPlay.setEnabled(false);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
 
         etLinkPlay.addTextChangedListener(new TextWatcher() {
             @Override

@@ -42,7 +42,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
-        uzVideo.setUZCallback(this);
+        uzVideo.addUZCallback(this);
     }
 
     @Override
@@ -179,7 +179,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });*/
-        /*uzVideo.setProgressCallback(new ProgressCallback() {
+        /*uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(long currentMls, int s, long duration, int percent) {
             }
@@ -248,7 +248,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onCues");
             }
         });*/
-        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
