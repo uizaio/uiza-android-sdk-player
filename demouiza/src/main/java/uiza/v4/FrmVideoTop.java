@@ -248,7 +248,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onCues");
             }
         });*/
-        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null

@@ -289,16 +289,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(false);
     }
 
-    /**
-     * set uzCallback for uiza video
-     */
     public void addUZCallback(UZCallback uzCallback) {
         this.uzCallback = uzCallback;
     }
 
-    /**
-     * set uzTVCallback for uiza video
-     */
     public void addUZTVCallback(UZTVCallback uztvCallback) {
         this.uztvCallback = uztvCallback;
         hanldeFirstViewHasFocus();
@@ -3026,7 +3020,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private UZPlayerView.ControllerStateCallback controllerStateCallback;
 
-    public void setControllerStateCallback(final UZPlayerView.ControllerStateCallback controllerStateCallback) {
+    public void addControllerStateCallback(final UZPlayerView.ControllerStateCallback controllerStateCallback) {
         this.controllerStateCallback = controllerStateCallback;
     }
 

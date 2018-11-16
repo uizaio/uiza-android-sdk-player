@@ -25,6 +25,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -48,6 +49,7 @@ public class EventActivity extends BaseActivity {
     private TextView tvMetadataOutput;
     private TextView tvTextOutput;
     private TextView tvAd;
+    private TextView tvController;
 
     @Override
     protected boolean setFullScreen() {
@@ -75,6 +77,7 @@ public class EventActivity extends BaseActivity {
         tvPlayerListener = (TextView) findViewById(R.id.tv_player_listener);
         tvMetadataOutput = (TextView) findViewById(R.id.tv_metadata_output);
         tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
+        tvController = (TextView) findViewById(R.id.tv_controller);
         tvAd = (TextView) findViewById(R.id.tv_ad);
         uzVideo.setControllerShowTimeoutMs(5000);
 
@@ -233,6 +236,12 @@ public class EventActivity extends BaseActivity {
             @Override
             public void onError() {
                 tvAd.setText("onError");
+            }
+        });
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+            @Override
+            public void onVisibilityChange(boolean isShow) {
+                tvController.setText("onVisibilityChange " + isShow);
             }
         });
         final String entityId = LSApplication.entityIdDefaultVOD;

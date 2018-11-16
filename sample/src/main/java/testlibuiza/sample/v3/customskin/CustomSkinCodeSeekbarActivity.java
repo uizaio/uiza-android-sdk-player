@@ -104,7 +104,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
             public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
             }
         });
-        uzVideo.setControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
