@@ -2792,8 +2792,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             showController();
             if (uzPlayerView != null) {
                 uzPlayerView.setControllerShowTimeoutMs(0);
+                uzPlayerView.setControllerHideOnTouch(false);
             }
-            setHideControllerOnTouch(false);
         } else {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
                 rlEndScreen.setVisibility(GONE);
