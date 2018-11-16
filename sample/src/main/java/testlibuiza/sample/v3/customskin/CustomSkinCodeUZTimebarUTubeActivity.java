@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -51,7 +53,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
-        isShowController = true;
         uzVideo.setPlayerControllerAlwayVisible();
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
@@ -108,10 +109,39 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         });
     }
 
-    private boolean isShowController;
-
     private void toggleControllerExceptUZTimebar() {
-
+        if (uzVideo.getLlTop() != null) {
+            if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
+                uzVideo.getLlTop().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getLlTop().setVisibility(View.VISIBLE);
+            }
+        }
+        if (uzVideo.getRlLiveInfo() != null) {
+            if (uzVideo.getRlLiveInfo().getVisibility() == View.VISIBLE) {
+                uzVideo.getRlLiveInfo().setVisibility(View.INVISIBLE);
+            } else {
+                if (uzVideo.isLivestream()) {
+                    uzVideo.getRlLiveInfo().setVisibility(View.VISIBLE);
+                }
+            }
+        }
+        LinearLayout llControllerButton = uzVideo.findViewById(R.id.ll_controller_button);
+        if (llControllerButton != null) {
+            if (llControllerButton.getVisibility() == View.VISIBLE) {
+                llControllerButton.setVisibility(View.INVISIBLE);
+            } else {
+                llControllerButton.setVisibility(View.VISIBLE);
+            }
+        }
+        RelativeLayout rlInfo = uzVideo.findViewById(R.id.rl_info);
+        if (rlInfo != null) {
+            if (rlInfo.getVisibility() == View.VISIBLE) {
+                rlInfo.setVisibility(View.INVISIBLE);
+            } else {
+                rlInfo.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void toggleUIUZTimebar() {

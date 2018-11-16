@@ -3422,6 +3422,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzTimebar;
     }
 
+    public LinearLayout getLlTop(){
+        return llTop;
+    }
+
     public void hideUzTimebar() {
         if (previewFrameLayout != null) {
             previewFrameLayout.setVisibility(GONE);
