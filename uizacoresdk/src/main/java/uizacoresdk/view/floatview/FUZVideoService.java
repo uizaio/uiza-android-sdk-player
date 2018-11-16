@@ -412,7 +412,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });*/
-        /*fuzVideo.setProgressCallback(new ProgressCallback() {
+        /*fuzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
             }

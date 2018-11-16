@@ -57,6 +57,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Progress"
+                android:textSize="@dimen/txt_32" />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Metadata output"
                 android:textSize="@dimen/txt_32" />
 
@@ -95,6 +106,17 @@
 
             <TextView
                 android:id="@+id/tv_controller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Touch"
+                android:textSize="@dimen/txt_32" />
+
+            <TextView
+                android:id="@+id/tv_touch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

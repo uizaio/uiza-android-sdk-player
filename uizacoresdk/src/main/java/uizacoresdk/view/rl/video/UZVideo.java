@@ -1265,7 +1265,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private ProgressCallback progressCallback;
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
+    public void addProgressCallback(ProgressCallback progressCallback) {
         this.progressCallback = progressCallback;
     }
 
@@ -3049,7 +3049,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*
      ** Bat cac event cua player nhu click, long click
      */
-    public void setOnTouchEvent(UZPlayerView.OnTouchEvent onTouchEvent) {
+    public void addOnTouchEvent(UZPlayerView.OnTouchEvent onTouchEvent) {
         if (uzPlayerView != null) {
             uzPlayerView.setOnTouchEvent(onTouchEvent);
         }

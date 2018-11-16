@@ -78,7 +78,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
                 uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
                 //LLog.d(TAG, "onAdEnded");

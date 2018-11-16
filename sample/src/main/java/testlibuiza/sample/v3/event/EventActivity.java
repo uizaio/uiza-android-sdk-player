@@ -24,6 +24,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZCallback;
@@ -50,6 +51,8 @@ public class EventActivity extends BaseActivity {
     private TextView tvTextOutput;
     private TextView tvAd;
     private TextView tvController;
+    private TextView tvProgress;
+    private TextView tvTouch;
 
     @Override
     protected boolean setFullScreen() {
@@ -79,6 +82,8 @@ public class EventActivity extends BaseActivity {
         tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
         tvController = (TextView) findViewById(R.id.tv_controller);
         tvAd = (TextView) findViewById(R.id.tv_ad);
+        tvProgress = (TextView) findViewById(R.id.tv_progress);
+        tvTouch = (TextView) findViewById(R.id.tv_touch);
         uzVideo.setControllerShowTimeoutMs(5000);
 
         uzVideo.addUZCallback(new UZCallback() {
@@ -242,6 +247,68 @@ public class EventActivity extends BaseActivity {
             @Override
             public void onVisibilityChange(boolean isShow) {
                 tvController.setText("onVisibilityChange " + isShow);
+            }
+        });
+        uzVideo.addProgressCallback(new ProgressCallback() {
+            @Override
+            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+                tvProgress.setText("onAdProgress " + currentMls + "/" + duration);
+            }
+
+            @Override
+            public void onAdEnded() {
+                tvProgress.setText("onAdEnded");
+            }
+
+            @Override
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+                tvProgress.setText("onVideoProgress " + currentMls + "/" + duration);
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                tvProgress.setText("onPlayerStateChanged " + playWhenReady + " - " + playbackState);
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+                tvProgress.setText("onBufferProgress " + bufferedPosition + "/" + duration);
+            }
+        });
+        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+            @Override
+            public void onSingleTapConfirmed(float x, float y) {
+                tvTouch.setText("onSingleTapConfirmed");
+            }
+
+            @Override
+            public void onLongPress(float x, float y) {
+                tvTouch.setText("onLongPress");
+            }
+
+            @Override
+            public void onDoubleTap(float x, float y) {
+                tvTouch.setText("onDoubleTap");
+            }
+
+            @Override
+            public void onSwipeRight() {
+                tvTouch.setText("onSwipeRight");
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                tvTouch.setText("onSwipeLeft");
+            }
+
+            @Override
+            public void onSwipeBottom() {
+                tvTouch.setText("onSwipeBottom");
+            }
+
+            @Override
+            public void onSwipeTop() {
+                tvTouch.setText("onSwipeTop");
             }
         });
         final String entityId = LSApplication.entityIdDefaultVOD;

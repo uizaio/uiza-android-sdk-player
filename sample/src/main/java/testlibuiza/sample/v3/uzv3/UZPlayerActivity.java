@@ -124,7 +124,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
         //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
 
-        uzVideo.setOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
                 tvClickEvent.setText("onSingleTapConfirmed");
@@ -371,7 +371,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });*/
-        uzVideo.setProgressCallback(new ProgressCallback() {
+        uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
                 sb.setMax((int) uzVideo.getDuration());

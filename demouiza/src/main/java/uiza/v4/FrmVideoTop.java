@@ -179,7 +179,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
                 //LLog.d(TAG, "onAudioDisabled");
             }
         });*/
-        /*uzVideo.setProgressCallback(new ProgressCallback() {
+        /*uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdProgress(long currentMls, int s, long duration, int percent) {
             }
