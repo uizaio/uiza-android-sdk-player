@@ -2236,15 +2236,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    //private View[] alwaysVisibileView;
-
-    /*public void setViewsAlwaysVisible(View... views) {
-        alwaysVisibileView = views;
-    }*/
-
     public void hideController() {
         if (isPlayerControllerAlwayVisible) {
-            throw new IllegalArgumentException("Error: You cannot set hideController() because you set isPlayerControllerAlwayVisible=true before.");
+            LLog.e(TAG, "Error hideController " + isPlayerControllerAlwayVisible);
+            return;
         }
         //LLog.d(TAG, "hideController");
         if (isCastingChromecast) {
@@ -2256,7 +2251,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private boolean isHideOnTouch;
+    private boolean isHideOnTouch = true;
 
     public void setHideControllerOnTouch(boolean isHide) {
         if (uzPlayerView != null) {
@@ -3422,7 +3417,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzTimebar;
     }
 
-    public LinearLayout getLlTop(){
+    public LinearLayout getLlTop() {
         return llTop;
     }
 
