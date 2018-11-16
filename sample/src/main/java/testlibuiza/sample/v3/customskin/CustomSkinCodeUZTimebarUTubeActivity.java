@@ -108,6 +108,12 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
                 toggleUIRewFfw();
             }
         });
+        findViewById(R.id.bt_2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleControllerExceptUZTimebar();
+            }
+        });
     }
 
     private void toggleControllerExceptUZTimebar() {
