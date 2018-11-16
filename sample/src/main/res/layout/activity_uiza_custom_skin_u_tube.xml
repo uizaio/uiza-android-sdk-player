@@ -10,4 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uiza_video"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show/Hide UZTimebar" />
+
+        <Button
+            android:id="@+id/bt_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show/Hide Rew/Ffw" />
+    </LinearLayout>
 </RelativeLayout>

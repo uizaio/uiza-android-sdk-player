@@ -79,6 +79,18 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
         }
     }
 
+    @Override
+    public void showController() {
+        //LLog.d(TAG, "showController");
+        super.showController();
+    }
+
+    @Override
+    public void hideController() {
+        //LLog.d(TAG, "hideController");
+        super.hideController();
+    }
+
     public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
         this.onTouchEvent = onTouchEvent;
     }
@@ -140,11 +152,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
         public void onSwipeBottom();
 
         public void onSwipeTop();
-    }
-
-    @Override
-    public void hideController() {
-        super.hideController();
     }
 
     private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {

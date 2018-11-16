@@ -56,8 +56,9 @@
                     android:id="@+id/bt_uiza_custom_skin_code_seekbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/LightPink"
-                    android:text="Custom skin by code (seekbar) - deprecated" />
+                    android:text="Custom skin by code (seekbar) - deprecated"
+                    android:textSize="@dimen/txt_10"
+                    android:textStyle="italic" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_code_uz_timebar"

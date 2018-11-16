@@ -10,6 +10,7 @@ import android.view.View;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -50,11 +51,41 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
-
-        //config uztimebar bottom
+        isShowController = true;
+        uzVideo.setPlayerControllerAlwayVisible();
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
         //uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
+        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+            @Override
+            public void onSingleTapConfirmed(float x, float y) {
+                toggleControllerExceptUZTimebar();
+            }
+
+            @Override
+            public void onLongPress(float x, float y) {
+            }
+
+            @Override
+            public void onDoubleTap(float x, float y) {
+            }
+
+            @Override
+            public void onSwipeRight() {
+            }
+
+            @Override
+            public void onSwipeLeft() {
+            }
+
+            @Override
+            public void onSwipeBottom() {
+            }
+
+            @Override
+            public void onSwipeTop() {
+            }
+        });
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
@@ -62,6 +93,53 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
+
+        findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleUIUZTimebar();
+            }
+        });
+        findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleUIRewFfw();
+            }
+        });
+    }
+
+    private boolean isShowController;
+
+    private void toggleControllerExceptUZTimebar() {
+
+    }
+
+    private void toggleUIUZTimebar() {
+        if (uzVideo.getUZTimeBar() == null) {
+            return;
+        }
+        if (uzVideo.getUZTimeBar().getVisibility() == View.VISIBLE) {
+            uzVideo.getUZTimeBar().setVisibility(View.INVISIBLE);
+        } else {
+            uzVideo.getUZTimeBar().setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void toggleUIRewFfw() {
+        if (uzVideo.getIbRewIcon() != null) {
+            if (uzVideo.getIbRewIcon().getVisibility() == View.VISIBLE) {
+                uzVideo.getIbRewIcon().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getIbRewIcon().setVisibility(View.VISIBLE);
+            }
+        }
+        if (uzVideo.getIbFfwdIcon() != null) {
+            if (uzVideo.getIbFfwdIcon().getVisibility() == View.VISIBLE) {
+                uzVideo.getIbFfwdIcon().setVisibility(View.INVISIBLE);
+            } else {
+                uzVideo.getIbFfwdIcon().setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

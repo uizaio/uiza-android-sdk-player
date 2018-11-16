@@ -582,7 +582,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.showProgress();
         }
         setTitle();
-        //updateUIDependOnLivetream();
         callAPIGetLinkPlay();
         trackUizaEventDisplay();
         trackUizaEventPlaysRequested();
@@ -912,7 +911,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView.setLayoutParams(lp);
 
         rootView.addView(uzPlayerView);
-        setControllerAutoShow(false);
+        setControllerAutoShow(isAutoShow);
     }
 
     /*
@@ -2210,7 +2209,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return Constants.NOT_FOUND;
     }
 
+    private boolean isAutoShow;
+
     public void setControllerAutoShow(boolean isAutoShow) {
+        this.isAutoShow = isAutoShow;
         uzPlayerView.setControllerAutoShow(isAutoShow);
     }
 
@@ -2241,6 +2243,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }*/
 
     public void hideController() {
+        if (isPlayerControllerAlwayVisible) {
+            throw new IllegalArgumentException("Error: You cannot set hideController() because you set isPlayerControllerAlwayVisible=true before.");
+        }
+        //LLog.d(TAG, "hideController");
         if (isCastingChromecast) {
             //dont hide if is casting chromecast
         } else {
@@ -2250,8 +2256,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void hideControllerOnTouch(boolean isHide) {
+    private boolean isHideOnTouch;
+
+    public void setHideControllerOnTouch(boolean isHide) {
         if (uzPlayerView != null) {
+            this.isHideOnTouch = isHide;
             uzPlayerView.setControllerHideOnTouch(isHide);
         }
     }
@@ -2271,6 +2280,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void showLayoutMsg() {
+        //LLog.d(TAG, "showLayoutMsg");
         hideController();
         if (rlMsg.getVisibility() != VISIBLE) {
             rlMsg.setVisibility(VISIBLE);
@@ -2766,6 +2776,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isPlaying()) {
             isOnPlayerEnded = true;
             if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
+                //LLog.d(TAG, "onPlayerEnded");
                 hideController();
                 autoSwitchNextVideo();
             } else {
@@ -2787,7 +2798,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (uzPlayerView != null) {
                 uzPlayerView.setControllerShowTimeoutMs(0);
             }
-            hideControllerOnTouch(false);
+            setHideControllerOnTouch(false);
         } else {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
                 rlEndScreen.setVisibility(GONE);
@@ -2797,7 +2808,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (uzPlayerView != null) {
                 uzPlayerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
             }
-            hideControllerOnTouch(true);
+            setHideControllerOnTouch(isHideOnTouch);
         }
     }
 
@@ -2961,6 +2972,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void handleClickBackScreen() {
         if (!isOnPlayerEnded) {
+            //LLog.d(TAG, "handleClickBackScreen");
             hideController();
         }
         if (isLandscape) {
@@ -3582,35 +3594,31 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (controllerStateCallback != null) {
             controllerStateCallback.onVisibilityChange(isShow);
         }
-        if (uzPlayerView == null) {
-            return;
-        }
-        /*if (isShow) {
-        } else {
-            //luon hien nhung view alwaysVisibileView len ke ca khi controller da hide
-            //TODO iplm
-            if (alwaysVisibileView != null) {
-                showController();
-                View[] childArr = uzPlayerView.getAllChild();
-                if (childArr == null) {
-                    //LLog.e(TAG, "onVisibilityChange null");
-                    return;
-                }
-                //LLog.d(TAG, "alwaysVisibileView size: " + alwaysVisibileView.length);
-                //LLog.d(TAG, "getAllChild size: " + childArr.length);
-                for (int i = 0; i < childArr.length; i++) {
-                    if (childArr[i] instanceof ViewGroup) {
-                        continue;
-                    }
-                    childArr[i].setVisibility(View.INVISIBLE);
-                }
-                for (int i = 0; i < alwaysVisibileView.length; i++) {
-                    //LLog.d(TAG, "VISIBLE " + i);
-                    alwaysVisibileView[i].setVisibility(View.VISIBLE);
-                }
-            }
-        }*/
     }
+
+    /*public void toggleAllChildVisibility() {
+        if (isAllChildVisible()) {
+            setAllChildVisibility(View.INVISIBLE);
+        } else {
+            setAllChildVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean isAllChildVisible() {
+        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
+        if (rootViewController == null) {
+            throw new NullPointerException("Error: View with id root_view_controller not found");
+        }
+        return rootViewController.getVisibility() == View.VISIBLE;
+    }
+
+    private void setAllChildVisibility(int visibility) {
+        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
+        if (rootViewController == null) {
+            throw new NullPointerException("Error: View with id root_view_controller not found");
+        }
+        rootViewController.setVisibility(visibility);
+    }*/
 
     public void setSpeed(float speed) {
         if (isLivestream) {
@@ -3660,5 +3668,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void addVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
         this.videoAdPlayerCallback = videoAdPlayerCallback;
+    }
+
+    private boolean isPlayerControllerAlwayVisible;
+
+    public void setPlayerControllerAlwayVisible() {
+        setControllerAutoShow(true);
+        setHideControllerOnTouch(false);
+        setControllerShowTimeoutMs(0);
+        isPlayerControllerAlwayVisible = true;
     }
 }
