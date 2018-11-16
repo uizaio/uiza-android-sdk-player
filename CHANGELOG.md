@@ -1,10 +1,29 @@
+### 2.8.6 (2018-11-16)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.6'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.6'
+
+- Add func addAudioListener();
+- Add sample help you know how to listen all event of SDK, [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
+- Update some methods name:
++ setUZCallback -> addUZCallback
++ setUZTVCallback -> addUZTVCallback
++ setControllerStateCallback -> addControllerStateCallback
++ setProgressCallback -> addProgressCallback
++ setOnTouchEvent -> addOnTouchEvent
++ hideControllerOnTouch -> setHideControllerOnTouch
+- Update sample how to customize skin like [Youtube player](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarUTubeActivity.java).
+
 ### 2.8.2 (2018-11-14)
 
     //for playing video VOD, LIVE  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.2'
          
     //for live broadcaster  
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.0'
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.2'
 
 - Update default skin.
 - Update UI state of ibRewIcon, ibFfwdIcon.
