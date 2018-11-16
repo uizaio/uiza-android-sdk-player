@@ -26,14 +26,19 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.PreviewView;
+import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioListener;
+import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
@@ -3626,9 +3631,40 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    //add listener
     protected AudioListener audioListener;
 
     public void addAudioListener(AudioListener audioListener) {
         this.audioListener = audioListener;
+    }
+
+    protected Player.EventListener eventListener;
+
+    public void addPlayerEventListener(Player.EventListener eventListener) {
+        this.eventListener = eventListener;
+    }
+
+    protected VideoListener videoListener;
+
+    public void setVideoListener(VideoListener videoListener) {
+        this.videoListener = videoListener;
+    }
+
+    protected MetadataOutput metadataOutput;
+
+    public void setMetadataOutput(MetadataOutput metadataOutput) {
+        this.metadataOutput = metadataOutput;
+    }
+
+    protected TextOutput textOutput;
+
+    public void setTextOutput(TextOutput textOutput) {
+        this.textOutput = textOutput;
+    }
+
+    protected VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback;
+
+    public void setVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
+        this.videoAdPlayerCallback = videoAdPlayerCallback;
     }
 }
