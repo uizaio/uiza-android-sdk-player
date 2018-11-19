@@ -149,10 +149,6 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
     }
 

@@ -145,11 +145,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-        LLog.d(TAG, "onClickPip");
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         if (isInitSuccess) {
             uzVideo.pauseVideo();

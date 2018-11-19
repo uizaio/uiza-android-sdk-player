@@ -23,7 +23,6 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -477,11 +476,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onClickPip(Intent intent) {
-        LLog.d(TAG, "onClickPip");
     }
 
     @Override

@@ -96,11 +96,6 @@ public class EventActivity extends BaseActivity {
             }
 
             @Override
-            public void onClickPip(Intent intent) {
-                tvUzCallback.setText("onClickPip");
-            }
-
-            @Override
             public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
                 if (isInitSuccess) {
                     onBackPressed();

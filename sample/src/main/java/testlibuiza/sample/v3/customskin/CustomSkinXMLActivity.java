@@ -165,10 +165,6 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         if (isInitSuccess) {
             onBackPressed();

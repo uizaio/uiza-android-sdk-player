@@ -180,10 +180,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         if (isInitSuccess) {
             onBackPressed();

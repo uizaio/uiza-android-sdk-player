@@ -191,10 +191,6 @@ public class VolumeActivity extends BaseActivity implements UZCallback, UZItemCl
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
         if (isInitSuccess) {
             onBackPressed();

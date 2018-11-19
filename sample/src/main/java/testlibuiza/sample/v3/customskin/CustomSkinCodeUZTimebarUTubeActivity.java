@@ -224,10 +224,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
     }
 
     @Override
-    public void onClickPip(Intent intent) {
-    }
-
-    @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
     }
 

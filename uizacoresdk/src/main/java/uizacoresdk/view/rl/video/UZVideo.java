@@ -2094,9 +2094,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
-        if (uzCallback != null) {
-            uzCallback.onClickPip(intent);
-        }
     }
 
     public SimpleExoPlayer getPlayer() {
