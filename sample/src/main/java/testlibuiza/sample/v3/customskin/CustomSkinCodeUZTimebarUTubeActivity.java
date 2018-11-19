@@ -21,7 +21,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -97,21 +96,17 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         uzVideo.addCallbackUZTimebar(new UZVideo.CallbackUZTimebar() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
-                //LLog.d(TAG, "onStartPreview");
             }
 
             @Override
             public void onStopPreview(PreviewView previewView, int progress) {
-                //LLog.d(TAG, "onStopPreview");
             }
 
             @Override
             public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-                //LLog.d(TAG, "onPreview");
                 setAutoHideController();
             }
         });
-        uzVideo.getUZTimeBar().setScrubberColor(Color.TRANSPARENT);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -141,11 +136,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
             if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
                 uzVideo.getLlTop().setVisibility(View.INVISIBLE);
                 cancelAutoHideController();
-                uzVideo.getUZTimeBar().setScrubberColor(Color.TRANSPARENT);
             } else {
                 uzVideo.getLlTop().setVisibility(View.VISIBLE);
                 setAutoHideController();
-                uzVideo.getUZTimeBar().setScrubberColor(Color.RED);
             }
         }
         if (uzVideo.getRlLiveInfo() != null) {
@@ -212,7 +205,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setAutoHideController();
-            uzVideo.getUZTimeBar().setScrubberColor(Color.RED);
         }
     }
 
@@ -303,8 +295,8 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
     private void cancelAutoHideController() {
         if (countDownTimer != null) {
+            uzVideo.getUZTimeBar().setScrubberColor(Color.TRANSPARENT);
             countDownTimer.cancel();
-            LLog.d(TAG, "cancel");
         }
     }
 
@@ -312,15 +304,14 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
+        uzVideo.getUZTimeBar().setScrubberColor(Color.RED);
         countDownTimer = new CountDownTimer(millisInFuture, INTERVAL) {
             @Override
             public void onTick(long l) {
-                LLog.d(TAG, "onTick " + l);
             }
 
             @Override
             public void onFinish() {
-                LLog.d(TAG, "onFinish");
                 toggleControllerExceptUZTimebar();
             }
         };
