@@ -17,6 +17,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -28,7 +29,6 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -38,7 +38,7 @@ import vn.uiza.views.autosize.UZImageButton;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomHQActivity extends BaseActivity implements UZCallback {
+public class CustomHQActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private UZImageButton uzibCustomHq;
     private UZImageButton uzibCustomAudio;
@@ -70,6 +70,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -179,15 +180,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
-    }
-
-    @Override
     public void onClickPip(Intent intent) {
     }
 
@@ -230,6 +222,17 @@ public class CustomHQActivity extends BaseActivity implements UZCallback {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
         }
     }
 }

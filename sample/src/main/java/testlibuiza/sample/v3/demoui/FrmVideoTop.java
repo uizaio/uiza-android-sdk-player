@@ -31,6 +31,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
@@ -41,12 +42,11 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class FrmVideoTop extends BaseFragment implements UZCallback {
+public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
@@ -64,6 +64,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
     }
 
     @Override
@@ -301,15 +302,15 @@ public class FrmVideoTop extends BaseFragment implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        if (LScreenUtil.isFullScreen(getActivity())) {
-            uzVideo.toggleFullscreen();
-        } else {
-            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (LScreenUtil.isFullScreen(getActivity())) {
+                    uzVideo.toggleFullscreen();
+                } else {
+                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                }
+                break;
         }
     }
 

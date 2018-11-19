@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -12,13 +13,13 @@ import com.google.android.exoplayer2.audio.AudioListener;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -28,7 +29,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by loitp on 7/16/2018.
  */
 
-public class VolumeActivity extends BaseActivity implements UZCallback {
+public class VolumeActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private SeekBar sb;
     private UZVerticalSeekBar sb1;
@@ -61,6 +62,7 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
         sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
         tv = (TextView) findViewById(R.id.tv);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
         uzVideo.addAudioListener(new AudioListener() {
             @Override
             public void onVolumeChanged(float volume) {
@@ -178,12 +180,14 @@ public class VolumeActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

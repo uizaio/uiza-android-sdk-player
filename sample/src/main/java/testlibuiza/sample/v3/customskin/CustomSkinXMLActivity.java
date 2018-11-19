@@ -12,6 +12,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
@@ -22,7 +23,6 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -31,7 +31,7 @@ import vn.uiza.views.LToast;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
+public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
 
     @Override
@@ -57,6 +57,7 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -153,12 +154,14 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

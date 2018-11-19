@@ -1082,23 +1082,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibSkipNextIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_next);
         ibSkipPreviousIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_previous);
         ibSpeedIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_speed);
-
-        /*if (ibHearingIcon != null) {
-            ibHearingIcon.setVisibility(GONE);
-        }
-        if (ibCcIcon != null) {
-            ibCcIcon.setVisibility(GONE);
-        }
-        if (ibShareIcon != null) {
-            ibShareIcon.setVisibility(GONE);
-        }*/
-
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert to VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1805,8 +1795,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
-        if(uzItemClick!=null){
-            uzItemClick.onClick(v);
+        if (uzItemClick != null) {
+            uzItemClick.onItemClick(v);
         }
     }
 
@@ -3007,9 +2997,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibFullscreenIcon.performClick();
             }
         } else {
-            if (uzCallback != null) {
+            /*if (uzCallback != null) {
                 uzCallback.onClickBack();
-            }
+            }*/
+            /*if (ibBackScreenIcon != null) {
+                ibBackScreenIcon.performClick();
+            }*/
         }
     }
 

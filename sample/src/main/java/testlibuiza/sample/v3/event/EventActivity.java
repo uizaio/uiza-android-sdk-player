@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
@@ -25,6 +26,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
@@ -33,7 +35,6 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -93,15 +94,6 @@ public class EventActivity extends BaseActivity {
             }
 
             @Override
-            public void onClickListEntityRelation(Item item, int position) {
-            }
-
-            @Override
-            public void onClickBack() {
-                onBackPressed();
-            }
-
-            @Override
             public void onClickPip(Intent intent) {
                 tvUzCallback.setText("onClickPip");
             }
@@ -128,6 +120,20 @@ public class EventActivity extends BaseActivity {
                 tvUzCallback.setText("onError");
             }
         });
+
+        uzVideo.addItemClick(new UZItemClick() {
+            @Override
+            public void onItemClick(View view) {
+                switch (view.getId()) {
+                    case R.id.exo_back_screen:
+                        if (!uzVideo.isLandscape()) {
+                            onBackPressed();
+                        }
+                        break;
+                }
+            }
+        });
+
         uzVideo.addAudioListener(new AudioListener() {
             @Override
             public void onAudioSessionId(int audioSessionId) {

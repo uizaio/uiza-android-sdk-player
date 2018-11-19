@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
@@ -23,7 +24,6 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -32,7 +32,7 @@ import vn.uiza.views.LToast;
  * Created by loitp on 7/16/2018.
  */
 
-public class PlayerActivity extends BaseActivity implements UZCallback {
+public class PlayerActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private EditText etLinkPlay;
     private Button btPlay;
@@ -62,6 +62,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
         btPlay = (Button) findViewById(R.id.bt_play);
         btPlay.setEnabled(false);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
 
         etLinkPlay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -150,13 +151,14 @@ public class PlayerActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-
-    }
-
-    @Override
-    public void onClickBack() {
-
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

@@ -23,7 +23,6 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -31,7 +30,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private View shadow;
 
@@ -103,13 +102,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
                 setAutoHideController();
             }
         });
-        uzVideo.addItemClick(new UZItemClick() {
-            @Override
-            public void onClick(View view) {
-                setAutoHideController();
-            }
-        });
-
+        uzVideo.addItemClick(this);
         uzVideo.setPlayerControllerAlwayVisible();
 
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
@@ -219,12 +212,15 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
+    public void onItemClick(View view) {
+        setAutoHideController();
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

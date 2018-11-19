@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.Player;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
@@ -24,7 +25,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -33,7 +33,7 @@ import vn.uiza.views.LToast;
  * Created by loitp on 7/16/2018.
  */
 
-public class UZPlayerActivity extends BaseActivity implements UZCallback {
+public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private TextView tvProgressAd;
     private TextView tvProgressVideo;
@@ -93,6 +93,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
         tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
         uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -468,12 +469,14 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback {
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override
