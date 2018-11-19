@@ -17,6 +17,7 @@ import java.util.List;
 
 import testlibuiza.app.R;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
@@ -28,13 +29,12 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 
-public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback {
+public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
     private UZVideo uzVideo;
     private UZImageButton uzibCustomHq;
     private UZImageButton uzibCustomAudio;
@@ -76,6 +76,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
         uzVideo.addUZCallback(this);
         uzVideo.addUZTVCallback(this);
         uzVideo.addControllerStateCallback(this);
+        uzVideo.addItemClick(this);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
@@ -122,21 +123,18 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onClickPip(Intent intent) {
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override
     public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-
     }
 
     @Override
