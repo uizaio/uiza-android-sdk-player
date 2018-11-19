@@ -685,6 +685,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         @Override
         public void onRenderedFirstFrame() {
+            //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
             if (uzVideo != null) {
                 uzVideo.removeVideoCover(false);
@@ -875,5 +876,19 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             return 0;
         }
         return player.getCurrentPosition();
+    }
+
+    protected boolean isVOD() {
+        if (player == null) {
+            return false;
+        }
+        return !player.isCurrentWindowDynamic();
+    }
+
+    protected boolean isLIVE() {
+        if (player == null) {
+            return false;
+        }
+        return player.isCurrentWindowDynamic();
     }
 }

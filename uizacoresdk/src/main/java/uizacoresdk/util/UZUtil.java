@@ -443,7 +443,7 @@ public class UZUtil {
             return false;
         }
         if (UZUtil.getClickedPip(activity)) {
-            LLog.d(TAG, "called from pip enter fullscreen");
+            //LLog.d(TAG, "called from pip enter fullscreen");
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
             UZUtil.stopServicePiPIfRunning(activity);

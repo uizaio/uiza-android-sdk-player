@@ -832,6 +832,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void removeVideoCover(boolean isFromHandleError) {
+        //LLog.d(TAG, "removeVideoCover");
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
@@ -846,9 +847,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
             //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
-            if (!isFromHandleError) {
+            /*if (!isFromHandleError) {
                 onStateReadyFirst();
-            }
+            }*/
+        }
+        if (!isFromHandleError) {
+            onStateReadyFirst();
         }
     }
 
@@ -1087,7 +1091,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
         }
@@ -1442,7 +1447,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst");
+        LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE());
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
 
