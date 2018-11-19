@@ -17,10 +17,11 @@ import java.util.List;
 
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZTVCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -28,14 +29,13 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
-public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZTVCallback {
+public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZTVCallback, UZItemClick {
     private UZVideo uzVideo;
     private RelativeLayout rl;
     private RecyclerView recyclerView;
@@ -53,6 +53,7 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
         uzVideo.addUZTVCallback(this);
+        uzVideo.addItemClick(this);
         uzVideo.setDefaultUseController(false);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
@@ -132,16 +133,14 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onClickPip(Intent intent) {
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

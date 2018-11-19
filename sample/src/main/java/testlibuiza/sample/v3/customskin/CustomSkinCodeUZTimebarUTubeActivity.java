@@ -4,22 +4,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.github.rubensousa.previewseekbar.PreviewView;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -27,7 +30,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private View shadow;
 
@@ -52,16 +55,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+
+        //listener
         uzVideo.addUZCallback(this);
-        uzVideo.setPlayerControllerAlwayVisible();
-
-        //shadow background
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
-
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
-        //uzVideo.setViewsAlwaysVisible(uzVideo.getUZTimeBar(), uzVideo.getIbBackScreenIcon());
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -92,6 +88,28 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
             public void onSwipeTop() {
             }
         });
+        uzVideo.addCallbackUZTimebar(new UZVideo.CallbackUZTimebar() {
+            @Override
+            public void onStartPreview(PreviewView previewView, int progress) {
+            }
+
+            @Override
+            public void onStopPreview(PreviewView previewView, int progress) {
+            }
+
+            @Override
+            public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
+                setAutoHideController();
+            }
+        });
+        uzVideo.addItemClick(this);
+        uzVideo.setPlayerControllerAlwayVisible();
+
+        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
+
+        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
+        uzVideo.setUzTimebarBottom();
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -120,8 +138,10 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         if (uzVideo.getLlTop() != null) {
             if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
                 uzVideo.getLlTop().setVisibility(View.INVISIBLE);
+                cancelAutoHideController();
             } else {
                 uzVideo.getLlTop().setVisibility(View.VISIBLE);
+                setAutoHideController();
             }
         }
         if (uzVideo.getRlLiveInfo() != null) {
@@ -186,19 +206,21 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
+            setAutoHideController();
+        }
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onClickPip(Intent intent) {
+    public void onItemClick(View view) {
+        setAutoHideController();
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override
@@ -244,8 +266,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
     @Override
     public void onStop() {
-        super.onStop();
         uzVideo.onStop();
+        cancelAutoHideController();
+        super.onStop();
     }
 
     @Override
@@ -266,5 +289,34 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         } else {
             super.onBackPressed();
         }
+    }
+
+    private CountDownTimer countDownTimer;
+    private final int INTERVAL = 1000;
+    private final long millisInFuture = 8000;//controller will be hide after 8000mls
+
+    private void cancelAutoHideController() {
+        if (countDownTimer != null) {
+            uzVideo.getUZTimeBar().setScrubberColor(Color.TRANSPARENT);
+            countDownTimer.cancel();
+        }
+    }
+
+    private void setAutoHideController() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        uzVideo.getUZTimeBar().setScrubberColor(Color.RED);
+        countDownTimer = new CountDownTimer(millisInFuture, INTERVAL) {
+            @Override
+            public void onTick(long l) {
+            }
+
+            @Override
+            public void onFinish() {
+                toggleControllerExceptUZTimebar();
+            }
+        };
+        countDownTimer.start();
     }
 }

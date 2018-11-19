@@ -11,15 +11,15 @@ import android.widget.ProgressBar;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -27,7 +27,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback {
+public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private View shadow;
     private LinearLayout ll;
@@ -59,6 +59,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
         ll.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
 
         //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
@@ -82,16 +83,14 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     }
 
     @Override
-    public void onClickListEntityRelation(Item item, int position) {
-    }
-
-    @Override
-    public void onClickBack() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onClickPip(Intent intent) {
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
     }
 
     @Override

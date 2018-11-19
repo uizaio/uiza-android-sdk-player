@@ -12,11 +12,11 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import uiza.R;
+import uizacoresdk.interfaces.IOnBackPressed;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.view.IOnBackPressed;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
 

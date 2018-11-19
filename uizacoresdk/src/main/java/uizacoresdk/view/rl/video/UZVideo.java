@@ -58,6 +58,9 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
@@ -546,8 +549,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzInput.setUrlIMAAd(urlIMAAd);
 
             //TODO correct url thumnail, null till now
-            //UZInput.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
-            //UZInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+            //uzInput.setUrlThumnailsPreviewSeekbar(activity.getString(R.string.url_thumbnails));
+            //uzInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
             uzInput.setUrlThumnailsPreviewSeekbar(null);
             UZData.getInstance().setUizaInput(uzInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
@@ -1079,17 +1082,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibSkipNextIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_next);
         ibSkipPreviousIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_skip_previous);
         ibSpeedIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_speed);
-
-        /*if (ibHearingIcon != null) {
-            ibHearingIcon.setVisibility(GONE);
-        }
-        if (ibCcIcon != null) {
-            ibCcIcon.setVisibility(GONE);
-        }
-        if (ibShareIcon != null) {
-            ibShareIcon.setVisibility(GONE);
-        }*/
-
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
@@ -1608,18 +1600,47 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         EventBus.getDefault().unregister(this);
     }
 
+    public interface CallbackUZTimebar {
+        public void onStartPreview(PreviewView previewView, int progress);
+
+        public void onStopPreview(PreviewView previewView, int progress);
+
+        public void onPreview(PreviewView previewView, int progress, boolean fromUser);
+    }
+
+    private CallbackUZTimebar callbackUZTimebar;
+
+    public void addCallbackUZTimebar(CallbackUZTimebar callbackUZTimebar) {
+        this.callbackUZTimebar = callbackUZTimebar;
+    }
+
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
-        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
-        }*/
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onStartPreview(previewView, progress);
+        }
+    }
+
+    @Override
+    public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().seek(progress);
+        }
+        updateUIIbRewIconDependOnProgress(progress);
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onPreview(previewView, progress, fromUser);
+        }
     }
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
         onStopPreview(progress);
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onStopPreview(previewView, progress);
+        }
     }
 
     public void onStopPreview(int progress) {
@@ -1631,15 +1652,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 updateUIEndScreen();
             }
         }
-    }
-
-    @Override
-    public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().seek(progress);
-        }
-        updateUIIbRewIconDependOnProgress(progress);
     }
 
     private void updateUIIbRewIconDependOnProgress(long currentMls) {
@@ -1679,6 +1691,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             UZUtil.resizeLayout(rootView, ivVideoCover, false);
         }
+    }
+
+    private UZItemClick uzItemClick;
+
+    public void addItemClick(UZItemClick uzItemClick) {
+        this.uzItemClick = uzItemClick;
     }
 
     @Override
@@ -1775,6 +1793,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     showController();
                 }
             }
+        }
+        if (uzItemClick != null) {
+            uzItemClick.onItemClick(v);
         }
     }
 
@@ -2072,9 +2093,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
-        if (uzCallback != null) {
-            uzCallback.onClickPip(intent);
-        }
     }
 
     public SimpleExoPlayer getPlayer() {
@@ -2975,9 +2993,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibFullscreenIcon.performClick();
             }
         } else {
-            if (uzCallback != null) {
+            /*if (uzCallback != null) {
                 uzCallback.onClickBack();
-            }
+            }*/
+            /*if (ibBackScreenIcon != null) {
+                ibBackScreenIcon.performClick();
+            }*/
         }
     }
 
@@ -3594,30 +3615,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             controllerStateCallback.onVisibilityChange(isShow);
         }
     }
-
-    /*public void toggleAllChildVisibility() {
-        if (isAllChildVisible()) {
-            setAllChildVisibility(View.INVISIBLE);
-        } else {
-            setAllChildVisibility(View.VISIBLE);
-        }
-    }
-
-    private boolean isAllChildVisible() {
-        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
-        if (rootViewController == null) {
-            throw new NullPointerException("Error: View with id root_view_controller not found");
-        }
-        return rootViewController.getVisibility() == View.VISIBLE;
-    }
-
-    private void setAllChildVisibility(int visibility) {
-        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
-        if (rootViewController == null) {
-            throw new NullPointerException("Error: View with id root_view_controller not found");
-        }
-        rootViewController.setVisibility(visibility);
-    }*/
 
     public void setSpeed(float speed) {
         if (isLivestream) {

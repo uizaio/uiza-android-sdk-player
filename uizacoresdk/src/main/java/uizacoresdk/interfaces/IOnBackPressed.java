@@ -1,4 +1,4 @@
-package uizacoresdk.view;
+package uizacoresdk.interfaces;
 
 /**
  * Created by loitp on 5/4/2018.
