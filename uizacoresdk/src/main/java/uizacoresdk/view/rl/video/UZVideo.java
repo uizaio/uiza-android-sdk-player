@@ -546,8 +546,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzInput.setUrlIMAAd(urlIMAAd);
 
             //TODO correct url thumnail, null till now
-            //UZInput.setUrlThumnailsPreviewSeekbar(activity.getString(loitp.core.R.string.url_thumbnails));
-            //UZInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+            //uzInput.setUrlThumnailsPreviewSeekbar(activity.getString(R.string.url_thumbnails));
+            //uzInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
             uzInput.setUrlThumnailsPreviewSeekbar(null);
             UZData.getInstance().setUizaInput(uzInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
@@ -3594,30 +3594,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             controllerStateCallback.onVisibilityChange(isShow);
         }
     }
-
-    /*public void toggleAllChildVisibility() {
-        if (isAllChildVisible()) {
-            setAllChildVisibility(View.INVISIBLE);
-        } else {
-            setAllChildVisibility(View.VISIBLE);
-        }
-    }
-
-    private boolean isAllChildVisible() {
-        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
-        if (rootViewController == null) {
-            throw new NullPointerException("Error: View with id root_view_controller not found");
-        }
-        return rootViewController.getVisibility() == View.VISIBLE;
-    }
-
-    private void setAllChildVisibility(int visibility) {
-        RelativeLayout rootViewController = (RelativeLayout) findViewById(R.id.root_view_controller);
-        if (rootViewController == null) {
-            throw new NullPointerException("Error: View with id root_view_controller not found");
-        }
-        rootViewController.setVisibility(visibility);
-    }*/
 
     public void setSpeed(float speed) {
         if (isLivestream) {
