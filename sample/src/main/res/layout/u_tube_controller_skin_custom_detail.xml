@@ -302,22 +302,6 @@
                     android:scaleType="centerCrop" />
             </FrameLayout>
 
-            <!--<uizacoresdk.view.rl.timebar.UZTimebar
-                android:id="@id/exo_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
-                android:tag="@string/use_bottom_uz_timebar"
-                app:ad_marker_color="@color/DeepPink"
-                app:buffered_color="@color/Green"
-                app:played_ad_marker_color="@color/Red"
-                app:played_color="@color/Blue"
-                app:previewFrameLayout="@id/previewFrameLayout"
-                app:scrubber_color="@color/Red"
-                app:scrubber_disabled_size="20dp"
-                app:scrubber_dragged_size="20dp"
-                app:scrubber_enabled_size="10dp"
-                app:unplayed_color="@color/LightGreen" />-->
             <uizacoresdk.view.rl.timebar.UZTimebar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
@@ -329,8 +313,24 @@
                 app:played_ad_marker_color="@color/Red"
                 app:played_color="@color/Blue"
                 app:previewFrameLayout="@id/previewFrameLayout"
-                app:scrubber_color="@color/Red"
+                app:scrubber_dragged_size="20dp"
+                app:scrubber_enabled_size="10dp"
                 app:unplayed_color="@color/LightGreen" />
+
+            <!--<uizacoresdk.view.rl.timebar.UZTimebar
+                android:id="@id/exo_progress"
+                android:layout_width="match_parent"
+                app:scrubber_disabled_size="50dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/previewFrameLayout"
+                android:tag="@string/use_bottom_uz_timebar"
+                app:ad_marker_color="@color/DeepPink"
+                app:buffered_color="@color/Green"
+                app:played_ad_marker_color="@color/Red"
+                app:played_color="@color/Blue"
+                app:previewFrameLayout="@id/previewFrameLayout"
+                app:scrubber_color="@color/Red"
+                app:unplayed_color="@color/LightGreen" />-->
         </RelativeLayout>
     </RelativeLayout>
 

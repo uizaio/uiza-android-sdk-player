@@ -1608,18 +1608,47 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         EventBus.getDefault().unregister(this);
     }
 
+    public interface CallbackUZTimebar {
+        public void onStartPreview(PreviewView previewView, int progress);
+
+        public void onStopPreview(PreviewView previewView, int progress);
+
+        public void onPreview(PreviewView previewView, int progress, boolean fromUser);
+    }
+
+    private CallbackUZTimebar callbackUZTimebar;
+
+    public void addCallbackUZTimebar(CallbackUZTimebar callbackUZTimebar) {
+        this.callbackUZTimebar = callbackUZTimebar;
+    }
+
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
-        /*if (uzPlayerManager != null && uzPlayerManager.getPlayer() != null) {
-            LLog.d(TAG, "PreviewView onStartPreview getPlaybackState() " + uzPlayerManager.getPlayer().getPlaybackState());
-        }*/
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onStartPreview(previewView, progress);
+        }
+    }
+
+    @Override
+    public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().seek(progress);
+        }
+        updateUIIbRewIconDependOnProgress(progress);
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onPreview(previewView, progress, fromUser);
+        }
     }
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
         onStopPreview(progress);
+        if (callbackUZTimebar != null) {
+            callbackUZTimebar.onStopPreview(previewView, progress);
+        }
     }
 
     public void onStopPreview(int progress) {
@@ -1631,15 +1660,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 updateUIEndScreen();
             }
         }
-    }
-
-    @Override
-    public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().seek(progress);
-        }
-        updateUIIbRewIconDependOnProgress(progress);
     }
 
     private void updateUIIbRewIconDependOnProgress(long currentMls) {
