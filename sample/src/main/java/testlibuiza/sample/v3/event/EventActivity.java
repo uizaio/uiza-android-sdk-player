@@ -54,6 +54,7 @@ public class EventActivity extends BaseActivity {
     private TextView tvController;
     private TextView tvProgress;
     private TextView tvTouch;
+    private TextView tvItemClick;
 
     @Override
     protected boolean setFullScreen() {
@@ -85,6 +86,7 @@ public class EventActivity extends BaseActivity {
         tvAd = (TextView) findViewById(R.id.tv_ad);
         tvProgress = (TextView) findViewById(R.id.tv_progress);
         tvTouch = (TextView) findViewById(R.id.tv_touch);
+        tvItemClick = (TextView) findViewById(R.id.tv_item_click);
         uzVideo.setControllerShowTimeoutMs(5000);
 
         uzVideo.addUZCallback(new UZCallback() {
@@ -131,6 +133,7 @@ public class EventActivity extends BaseActivity {
                         }
                         break;
                 }
+                tvItemClick.setText("onItemClick " + view.getId());
             }
         });
 
