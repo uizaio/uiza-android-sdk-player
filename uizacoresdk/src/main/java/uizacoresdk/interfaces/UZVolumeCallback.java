@@ -1,5 +1,5 @@
 package uizacoresdk.interfaces;
 
-public interface VolumeCallback {
+public interface UZVolumeCallback {
     public void onVolumeChange(float volume);
 }

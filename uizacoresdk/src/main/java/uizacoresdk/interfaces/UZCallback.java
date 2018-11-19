@@ -1,4 +1,4 @@
-package uizacoresdk.view.rl.video;
+package uizacoresdk.interfaces;
 
 import android.content.Intent;
 

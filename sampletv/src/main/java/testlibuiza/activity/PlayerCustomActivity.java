@@ -17,10 +17,10 @@ import java.util.List;
 
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
-import uizacoresdk.view.rl.video.UZTVCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;

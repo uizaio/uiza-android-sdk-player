@@ -12,9 +12,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import uiza.R;
+import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;

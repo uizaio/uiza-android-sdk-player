@@ -14,9 +14,10 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
@@ -55,14 +56,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+
+        //listener
         uzVideo.addUZCallback(this);
-        uzVideo.setPlayerControllerAlwayVisible();
-
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
-
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -107,6 +103,20 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
                 setAutoHideController();
             }
         });
+        uzVideo.addItemClick(new UZItemClick() {
+            @Override
+            public void onClick(View view) {
+                setAutoHideController();
+            }
+        });
+
+        uzVideo.setPlayerControllerAlwayVisible();
+
+        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
+
+        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
+        uzVideo.setUzTimebarBottom();
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);

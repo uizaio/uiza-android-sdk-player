@@ -10,9 +10,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.IOnBackPressed;
 import vn.uiza.core.base.BaseFragment;
-import vn.uiza.core.utilities.LLog;
-import uizacoresdk.view.IOnBackPressed;
 
 public class FrmLogin extends BaseFragment implements IOnBackPressed {
 

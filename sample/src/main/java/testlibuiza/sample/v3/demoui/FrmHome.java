@@ -11,8 +11,8 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;

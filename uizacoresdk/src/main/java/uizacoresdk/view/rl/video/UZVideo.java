@@ -58,6 +58,9 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
+import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
@@ -1701,6 +1704,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private UZItemClick uzItemClick;
+
+    public void addItemClick(UZItemClick uzItemClick) {
+        this.uzItemClick = uzItemClick;
+    }
+
     @Override
     public void onClick(View v) {
         if (v == rlMsg) {
@@ -1795,6 +1804,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     showController();
                 }
             }
+        }
+        if(uzItemClick!=null){
+            uzItemClick.onClick(v);
         }
     }
 

@@ -11,10 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;

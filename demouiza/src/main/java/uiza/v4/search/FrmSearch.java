@@ -23,6 +23,8 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
+import uizacoresdk.interfaces.IOnBackPressed;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
@@ -33,8 +35,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.KeyboardUtils;
-import uizacoresdk.view.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {

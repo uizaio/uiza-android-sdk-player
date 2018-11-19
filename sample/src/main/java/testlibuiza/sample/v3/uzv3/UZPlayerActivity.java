@@ -13,10 +13,10 @@ import android.widget.TextView;
 import com.google.android.exoplayer2.Player;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;

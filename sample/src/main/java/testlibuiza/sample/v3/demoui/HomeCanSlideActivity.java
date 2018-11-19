@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.IOnBackPressed;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LLog;
