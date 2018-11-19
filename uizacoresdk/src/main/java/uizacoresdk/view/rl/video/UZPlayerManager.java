@@ -290,7 +290,12 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(uzVideo.isAutoStart());
-        seekTo(contentPosition);
+        LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
+        if (uzVideo.isLivestream()) {
+            player.seekToDefaultPosition();
+        } else {
+            seekTo(contentPosition);
+        }
 
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
