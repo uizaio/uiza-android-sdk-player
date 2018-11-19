@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -54,8 +55,8 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
         uzVideo.setPlayerControllerAlwayVisible();
+        setAutoHideController();
 
-        //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
 
@@ -119,8 +120,10 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         if (uzVideo.getLlTop() != null) {
             if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
                 uzVideo.getLlTop().setVisibility(View.INVISIBLE);
+                cancelAutoHideController();
             } else {
                 uzVideo.getLlTop().setVisibility(View.VISIBLE);
+                setAutoHideController();
             }
         }
         if (uzVideo.getRlLiveInfo() != null) {
@@ -243,8 +246,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
     @Override
     public void onStop() {
-        super.onStop();
         uzVideo.onStop();
+        cancelAutoHideController();
+        super.onStop();
     }
 
     @Override
@@ -265,5 +269,29 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         } else {
             super.onBackPressed();
         }
+    }
+
+    private CountDownTimer countDownTimer;
+    private final int INTERVAL = 1000;
+    private final long millisInFuture = 8000;//controller will be hide after 8000mls
+
+    private void cancelAutoHideController() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
+    private void setAutoHideController() {
+        countDownTimer = new CountDownTimer(millisInFuture, INTERVAL) {
+            @Override
+            public void onTick(long l) {
+            }
+
+            @Override
+            public void onFinish() {
+                toggleControllerExceptUZTimebar();
+            }
+        };
+        countDownTimer.start();
     }
 }
