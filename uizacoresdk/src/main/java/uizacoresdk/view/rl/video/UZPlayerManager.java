@@ -72,18 +72,15 @@ import vn.uiza.views.autosize.UZImageButton;
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
 public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
-
     private UZVideo uzVideo;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
-
     private SimpleExoPlayer player;
-
     private String userAgent;
     private String linkPlay;
     private List<Subtitle> subtitleList;

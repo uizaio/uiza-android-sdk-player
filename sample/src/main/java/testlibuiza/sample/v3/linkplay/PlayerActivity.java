@@ -94,8 +94,8 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
         uZCustomLinkPlay2.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
-        uZCustomLinkPlay3.setLinkPlay("http://112.78.4.162:8081/live/stream/manifest_dvr.mpd");
-        uZCustomLinkPlay3.setLivestream(true);
+        uZCustomLinkPlay3.setLinkPlay("https://morning.cf/uz/wrong/manifest.mpd");
+        uZCustomLinkPlay3.setLivestream(false);
 
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
             @Override
