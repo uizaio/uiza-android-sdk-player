@@ -545,6 +545,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }*/
         }
 
+        //This is called when the available or selected tracks change
         @Override
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
             if (debugCallback != null) {
@@ -622,12 +623,20 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called then a error happens
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (error == null) {
                 return;
             }
             LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
+            if (error.type == ExoPlaybackException.TYPE_SOURCE) {
+                LLog.e(TAG, "onPlayerError TYPE_SOURCE");
+            } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
+                LLog.e(TAG, "onPlayerError TYPE_RENDERER");
+            } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+                LLog.e(TAG, "onPlayerError TYPE_UNEXPECTED");
+            }
             error.printStackTrace();
             exoPlaybackException = error;
             if (debugCallback != null) {
@@ -666,6 +675,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when seek finishes
         @Override
         public void onSeekProcessed() {
             //LLog.d(TAG, "onSeekProcessed");
@@ -731,6 +741,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     private class UZMetadataOutputListener implements MetadataOutput {
 
+        //This is called when there is metadata associated with current playback time
         @Override
         public void onMetadata(Metadata metadata) {
             //LLog.d(TAG, "onMetadata " + metadata.length());
