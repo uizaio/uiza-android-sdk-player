@@ -28,6 +28,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -3677,5 +3678,27 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setHideControllerOnTouch(false);
         setControllerShowTimeoutMs(0);
         isPlayerControllerAlwayVisible = true;
+    }
+
+    public Format getVideoFormat() {
+        if (getPlayer() == null) {
+            return null;
+        }
+        Format format = getPlayer().getVideoFormat();
+        if (format == null) {
+            return null;
+        }
+        return format;
+    }
+
+    public Format getAudioFormat() {
+        if (getPlayer() == null) {
+            return null;
+        }
+        Format format = getPlayer().getAudioFormat();
+        if (format == null) {
+            return null;
+        }
+        return format;
     }
 }

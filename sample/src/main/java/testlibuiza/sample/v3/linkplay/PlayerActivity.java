@@ -90,7 +90,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
         uZCustomLinkPlay1.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
+        uZCustomLinkPlay2.setLinkPlay("http://118.69.82.182:833/this-is-thopp-live-live/htv7-hd/playlist_dvr_timeshift-0-300.m3u8");
         uZCustomLinkPlay2.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();

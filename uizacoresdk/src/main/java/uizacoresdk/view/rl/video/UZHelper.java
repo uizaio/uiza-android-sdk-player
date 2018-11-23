@@ -81,12 +81,23 @@ public class UZHelper implements Player.EventListener, Runnable {
         updateAndPost();
     }
 
-    // Protected methods.
+    private int currentVideoProfileW = Constants.UNKNOW;
+    private int currentVideoProfileH = Constants.UNKNOW;
 
     @SuppressLint("SetTextI18n")
     protected final void updateAndPost() {
-        //LLog.d(TAG, "updateAndPost: " + getDebugString());
         if (uzCallbackHelper != null) {
+            //LLog.d(TAG, "updateAndPost: " + getDebugString());
+            int w = getVideoProfileW();
+            int h = getVideoProfileH();
+            if (currentVideoProfileW != w || currentVideoProfileH != h) {
+                if (w != Constants.UNKNOW && h != Constants.UNKNOW) {
+                    //LLog.d(TAG, "updateAndPost: " + w + "x" + h);
+                    currentVideoProfileW = w;
+                    currentVideoProfileH = h;
+                    uzCallbackHelper.onVideoFormatProfileChange(currentVideoProfileW, currentVideoProfileH);
+                }
+            }
             uzCallbackHelper.onDebug(getDebugString());
             handler.postDelayed(this, REFRESH_INTERVAL_MS);
         }

@@ -516,6 +516,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    @Override
+    public void onVideoFormatProfileChange(int width, int height) {
+        LLog.d(TAG, "onVideoFormatProfileChange: " + width + "x" + height);
+    }
+
     private class UZPlayerEventListener implements Player.EventListener {
         //This is called when the current playlist changes
         @Override
