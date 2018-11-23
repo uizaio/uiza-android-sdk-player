@@ -37,6 +37,7 @@ import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoListener;
@@ -3194,7 +3195,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     /*
-     **Lấy độ dài video
+     **The duration of the playing content
      */
     public long getDuration() {
         if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
@@ -3523,6 +3524,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return showUZTrackSelectionDialog(view, false);
     }
 
+    //An estimate of the position in the current window up to which data is buffered. If the length of the content is 100,00 ms, and played 50,000 ms already with extra 50,000 ms~ 60,000 ms buffered, it returns 60,000 ms.
     public long getBufferedPosition() {
         if (getPlayer() == null) {
             return Constants.NOT_FOUND;
@@ -3531,6 +3533,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return getPlayer().getBufferedPosition();
     }
 
+    //An estimate of the percentage in the current window up to which data is buffered. If the length of the content is 100,00 ms, and played 50,000 ms already with extra 50,000 ms~ 60,000 ms buffered, it returns 60(%).
     public int getBufferedPercentage() {
         if (getPlayer() == null) {
             return Constants.NOT_FOUND;
@@ -3607,6 +3610,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzPlayerManager.getVolume();
     }
 
+    //The current position of playing. the window means playable region, which is all of the content if vod, and some portion of the content if live.
     public long getCurrentPosition() {
         if (uzPlayerManager == null) {
             return Constants.NOT_FOUND;
@@ -3707,5 +3711,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void addUZCallbackInformation(UZCallbackInformation uzCallbackInformation) {
         this.uzCallbackInformation = uzCallbackInformation;
+    }
+
+    //the current track selections for each renderer
+    public TrackSelectionArray getCurrentTrackSelections() {
+        if (getPlayer() == null) {
+            return null;
+        }
+        return getPlayer().getCurrentTrackSelections();
     }
 }

@@ -712,6 +712,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private class UZVideoEventListener implements VideoListener {
+        //This is called when the video size changes
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
             if (uzVideo != null && uzVideo.videoListener != null) {
@@ -726,6 +727,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when first frame is rendered
         @Override
         public void onRenderedFirstFrame() {
             //LLog.d(TAG, "onRenderedFirstFrame");
