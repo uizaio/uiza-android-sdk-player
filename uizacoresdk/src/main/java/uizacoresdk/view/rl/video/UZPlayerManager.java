@@ -41,7 +41,6 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -56,6 +55,7 @@ import java.util.List;
 
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
+import uizacoresdk.interfaces.UZCallbackHelper;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
@@ -71,11 +71,12 @@ import vn.uiza.views.autosize.UZImageButton;
 /**
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
-public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
+//https://medium.com/@takusemba/understands-callbacks-of-exoplayer-c05ac3c322c2
+public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader, UZCallbackHelper {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
-    private DebugTextViewHelper debugTextViewHelper;
+    private UZHelper uzHelper;//clone from DebugTextViewHelper
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
@@ -116,6 +117,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.linkPlay = linkPlay;
         //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
+
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             // LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
@@ -298,10 +300,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             debugCallback.onUpdateButtonVisibilities();
         }
 
-        if (uzVideo.getDebugTextView() != null) {
-            debugTextViewHelper = new DebugTextViewHelper(player, uzVideo.getDebugTextView());
-            debugTextViewHelper.start();
-        }
+        uzHelper = new UZHelper(player);
+        uzHelper.setUzCallbackHelper(this);
+        uzHelper.start();
     }
 
     public void init() {
@@ -407,9 +408,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             handler = null;
             runnable = null;
 
-            if (debugTextViewHelper != null) {
-                debugTextViewHelper.stop();
-                debugTextViewHelper = null;
+            if (uzHelper != null) {
+                uzHelper.stop();
+                uzHelper = null;
             }
         }
     }
@@ -422,9 +423,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             handler = null;
             runnable = null;
 
-            if (debugTextViewHelper != null) {
-                debugTextViewHelper.stop();
-                debugTextViewHelper = null;
+            if (uzHelper != null) {
+                uzHelper.stop();
+                uzHelper = null;
             }
         }
         if (adsLoader != null) {
@@ -507,19 +508,32 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return exoPlaybackException;
     }
 
-    private class UZPlayerEventListener implements Player.EventListener {
+    //listerner from uzHelper
+    @Override
+    public void onDebug(String debugString) {
+        if (uzVideo != null && uzVideo.getDebugTextView() != null) {
+            uzVideo.getDebugTextView().setText(debugString);
+        }
+    }
 
+    private class UZPlayerEventListener implements Player.EventListener {
+        //This is called when the current playlist changes
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            //LLog.d(TAG, "onTimelineChanged");
+            /*if (reason == Player.TIMELINE_CHANGE_REASON_PREPARED) {
+                LLog.d(TAG, "onTimelineChanged TIMELINE_CHANGE_REASON_PREPARED");
+            } else if (reason == Player.TIMELINE_CHANGE_REASON_RESET) {
+                LLog.d(TAG, "onTimelineChanged TIMELINE_CHANGE_REASON_RESET");
+            } else if (reason == Player.TIMELINE_CHANGE_REASON_DYNAMIC) {
+                LLog.d(TAG, "onTimelineChanged TIMELINE_CHANGE_REASON_DYNAMIC");
+            }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
-            }
+            }*/
         }
 
         @Override
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            //LLog.d(TAG, "onTracksChanged");
             if (debugCallback != null) {
                 debugCallback.onUpdateButtonVisibilities();
             }
@@ -528,6 +542,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when ExoPlayer starts or stops loading sources(TS files, fMP4 files…)
         @Override
         public void onLoadingChanged(boolean isLoading) {
             //LLog.d(TAG, "onLoadingChanged isLoading " + isLoading);
@@ -536,6 +551,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when either playWhenReady or playbackState changes
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             //LLog.d(TAG, "onPlayerStateChanged playWhenReady: " + playWhenReady);
@@ -619,6 +635,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when a position discontinuity occurs without a change to the timeline
         @Override
         public void onPositionDiscontinuity(int reason) {
             //LLog.d(TAG, "onPositionDiscontinuity");
@@ -627,6 +644,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        //This is called when the current playback parameters change
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             //LLog.d(TAG, "onPlaybackParametersChanged");
