@@ -26,6 +26,7 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
+import uizacoresdk.interfaces.UZCallbackInformation;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
@@ -34,6 +35,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -55,6 +57,7 @@ public class EventActivity extends BaseActivity {
     private TextView tvProgress;
     private TextView tvTouch;
     private TextView tvItemClick;
+    private TextView tvInformationListener;
 
     @Override
     protected boolean setFullScreen() {
@@ -87,6 +90,7 @@ public class EventActivity extends BaseActivity {
         tvProgress = (TextView) findViewById(R.id.tv_progress);
         tvTouch = (TextView) findViewById(R.id.tv_touch);
         tvItemClick = (TextView) findViewById(R.id.tv_item_click);
+        tvInformationListener = (TextView) findViewById(R.id.tv_information_listener);
         uzVideo.setControllerShowTimeoutMs(5000);
 
         uzVideo.addUZCallback(new UZCallback() {
@@ -313,6 +317,17 @@ public class EventActivity extends BaseActivity {
             @Override
             public void onSwipeTop() {
                 tvTouch.setText("onSwipeTop");
+            }
+        });
+        uzVideo.addUZCallbackInformation(new UZCallbackInformation() {
+            @Override
+            public void onVideoInfomartionChange(String information) {
+                tvInformationListener.setText(information);
+            }
+
+            @Override
+            public void onVideoFormatProfileChange(int width, int height) {
+                LLog.d(TAG, "onVideoFormatProfileChange " + width + "x" + height);
             }
         });
         final String entityId = LSApplication.entityIdDefaultVOD;

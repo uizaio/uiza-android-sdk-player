@@ -68,6 +68,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Information Listener"
+                android:textSize="@dimen/txt_32" />
+
+            <TextView
+                android:id="@+id/tv_information_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Progress"
                 android:textSize="@dimen/txt_32" />
 

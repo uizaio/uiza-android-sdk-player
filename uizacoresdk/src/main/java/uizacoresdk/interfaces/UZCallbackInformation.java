@@ -1,7 +1,7 @@
 package uizacoresdk.interfaces;
 
-public interface UZCallbackHelper {
-    public void onDebug(String debugString);
+public interface UZCallbackInformation {
+    public void onVideoInfomartionChange(String information);
 
     public void onVideoFormatProfileChange(int width, int height);
 }

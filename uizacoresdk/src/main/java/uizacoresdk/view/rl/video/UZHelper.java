@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.util.Assertions;
 
 import java.util.Locale;
 
-import uizacoresdk.interfaces.UZCallbackHelper;
+import uizacoresdk.interfaces.UZCallbackInformation;
 import vn.uiza.core.common.Constants;
 
 /**
@@ -26,10 +26,10 @@ public class UZHelper implements Player.EventListener, Runnable {
     private final SimpleExoPlayer player;
     private boolean started;
     private Handler handler = new Handler();
-    private UZCallbackHelper uzCallbackHelper;
+    private UZCallbackInformation uzCallbackInformation;
 
-    public void setUzCallbackHelper(UZCallbackHelper uzCallbackHelper) {
-        this.uzCallbackHelper = uzCallbackHelper;
+    public void setUzCallbackInformation(UZCallbackInformation uzCallbackInformation) {
+        this.uzCallbackInformation = uzCallbackInformation;
     }
 
     public UZHelper(SimpleExoPlayer player) {
@@ -86,7 +86,7 @@ public class UZHelper implements Player.EventListener, Runnable {
 
     @SuppressLint("SetTextI18n")
     protected final void updateAndPost() {
-        if (uzCallbackHelper != null) {
+        if (uzCallbackInformation != null) {
             //LLog.d(TAG, "updateAndPost: " + getDebugString());
             int w = getVideoProfileW();
             int h = getVideoProfileH();
@@ -95,10 +95,10 @@ public class UZHelper implements Player.EventListener, Runnable {
                     //LLog.d(TAG, "updateAndPost: " + w + "x" + h);
                     currentVideoProfileW = w;
                     currentVideoProfileH = h;
-                    uzCallbackHelper.onVideoFormatProfileChange(currentVideoProfileW, currentVideoProfileH);
+                    uzCallbackInformation.onVideoFormatProfileChange(currentVideoProfileW, currentVideoProfileH);
                 }
             }
-            uzCallbackHelper.onDebug(getDebugString());
+            uzCallbackInformation.onVideoInfomartionChange(getDebugString());
             handler.postDelayed(this, REFRESH_INTERVAL_MS);
         }
     }

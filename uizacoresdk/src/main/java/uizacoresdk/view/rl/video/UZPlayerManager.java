@@ -55,7 +55,7 @@ import java.util.List;
 
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
-import uizacoresdk.interfaces.UZCallbackHelper;
+import uizacoresdk.interfaces.UZCallbackInformation;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
@@ -72,7 +72,7 @@ import vn.uiza.views.autosize.UZImageButton;
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
 //https://medium.com/@takusemba/understands-callbacks-of-exoplayer-c05ac3c322c2
-public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader, UZCallbackHelper {
+public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader, UZCallbackInformation {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
@@ -301,7 +301,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
 
         uzHelper = new UZHelper(player);
-        uzHelper.setUzCallbackHelper(this);
+        uzHelper.setUzCallbackInformation(this);
         uzHelper.start();
     }
 
@@ -508,17 +508,25 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return exoPlaybackException;
     }
 
-    //listerner from uzHelper
+    //listerner UzCallbackInformation from uzHelper
     @Override
-    public void onDebug(String debugString) {
-        if (uzVideo != null && uzVideo.getDebugTextView() != null) {
-            uzVideo.getDebugTextView().setText(debugString);
+    public void onVideoInfomartionChange(String information) {
+        if (uzVideo == null) {
+            return;
+        }
+        if (uzVideo.getDebugTextView() != null) {
+            uzVideo.getDebugTextView().setText(information);
+        }
+        if (uzVideo.uzCallbackInformation != null) {
+            uzVideo.uzCallbackInformation.onVideoInfomartionChange(information);
         }
     }
 
     @Override
     public void onVideoFormatProfileChange(int width, int height) {
-        LLog.d(TAG, "onVideoFormatProfileChange: " + width + "x" + height);
+        if (uzVideo != null && uzVideo.uzCallbackInformation != null) {
+            uzVideo.uzCallbackInformation.onVideoFormatProfileChange(width, height);
+        }
     }
 
     private class UZPlayerEventListener implements Player.EventListener {
