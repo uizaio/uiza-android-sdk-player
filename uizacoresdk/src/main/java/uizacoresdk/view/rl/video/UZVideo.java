@@ -61,7 +61,6 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZCallbackInformation;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
@@ -1097,6 +1096,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
+            debugTextView = null;
         }
 
         rlLiveInfo = (RelativeLayout) uzPlayerView.findViewById(R.id.rl_live_info);
@@ -3705,12 +3705,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return null;
         }
         return format;
-    }
-
-    protected UZCallbackInformation uzCallbackInformation;
-
-    public void addUZCallbackInformation(UZCallbackInformation uzCallbackInformation) {
-        this.uzCallbackInformation = uzCallbackInformation;
     }
 
     //the current track selections for each renderer

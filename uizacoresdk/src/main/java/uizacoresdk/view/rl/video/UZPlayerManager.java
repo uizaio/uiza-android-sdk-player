@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.audio.AudioListener;
+import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
@@ -52,10 +53,10 @@ import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
-import uizacoresdk.interfaces.UZCallbackInformation;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
@@ -72,11 +73,10 @@ import vn.uiza.views.autosize.UZImageButton;
  * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
  */
 //https://medium.com/@takusemba/understands-callbacks-of-exoplayer-c05ac3c322c2
-public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader, UZCallbackInformation {
+public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory, PreviewLoader {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
-    private UZHelper uzHelper;//clone from DebugTextViewHelper
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
@@ -233,6 +233,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             }
                         }
                     }
+                    if (uzVideo.getDebugTextView() != null) {
+                        uzVideo.getDebugTextView().setText(getDebugString());
+                    }
                     if (handler != null && runnable != null) {
                         handler.postDelayed(runnable, 1000);
                     }
@@ -299,10 +302,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
-
-        uzHelper = new UZHelper(player);
-        uzHelper.setUzCallbackInformation(this);
-        uzHelper.start();
     }
 
     public void init() {
@@ -407,11 +406,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
             handler = null;
             runnable = null;
-
-            if (uzHelper != null) {
-                uzHelper.stop();
-                uzHelper = null;
-            }
         }
     }
 
@@ -422,11 +416,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
             handler = null;
             runnable = null;
-
-            if (uzHelper != null) {
-                uzHelper.stop();
-                uzHelper = null;
-            }
         }
         if (adsLoader != null) {
             adsLoader.release();
@@ -506,27 +495,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     protected ExoPlaybackException getExoPlaybackException() {
         return exoPlaybackException;
-    }
-
-    //listerner UzCallbackInformation from uzHelper
-    @Override
-    public void onVideoInfomartionChange(String information) {
-        if (uzVideo == null) {
-            return;
-        }
-        if (uzVideo.getDebugTextView() != null) {
-            uzVideo.getDebugTextView().setText(information);
-        }
-        if (uzVideo.uzCallbackInformation != null) {
-            uzVideo.uzCallbackInformation.onVideoInfomartionChange(information);
-        }
-    }
-
-    @Override
-    public void onVideoFormatProfileChange(int width, int height) {
-        if (uzVideo != null && uzVideo.uzCallbackInformation != null) {
-            uzVideo.uzCallbackInformation.onVideoFormatProfileChange(width, height);
-        }
     }
 
     private class UZPlayerEventListener implements Player.EventListener {
@@ -715,6 +683,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //This is called when the video size changes
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            LLog.d(TAG, "fuck onVideoSizeChanged " + width + "x" + height + " - " + pixelWidthHeightRatio);
             if (uzVideo != null && uzVideo.videoListener != null) {
                 uzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
             }
@@ -722,6 +691,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         @Override
         public void onSurfaceSizeChanged(int width, int height) {
+            //LLog.d(TAG, "onSurfaceSizeChanged " + width + "x" + height);
             if (uzVideo != null && uzVideo.videoListener != null) {
                 uzVideo.videoListener.onSurfaceSizeChanged(width, height);
             }
@@ -730,7 +700,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //This is called when first frame is rendered
         @Override
         public void onRenderedFirstFrame() {
-            //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
             if (uzVideo != null) {
                 uzVideo.removeVideoCover(false);
@@ -936,5 +905,108 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             return false;
         }
         return player.isCurrentWindowDynamic();
+    }
+
+    protected String getDebugString() {
+        return getPlayerStateString() + getVideoString() + getAudioString();
+    }
+
+    /**
+     * Returns a string containing player state debugging information.
+     */
+    protected String getPlayerStateString() {
+        if (player == null) {
+            return null;
+        }
+        String playbackStateString;
+        switch (player.getPlaybackState()) {
+            case Player.STATE_BUFFERING:
+                playbackStateString = "buffering";
+                break;
+            case Player.STATE_ENDED:
+                playbackStateString = "ended";
+                break;
+            case Player.STATE_IDLE:
+                playbackStateString = "idle";
+                break;
+            case Player.STATE_READY:
+                playbackStateString = "ready";
+                break;
+            default:
+                playbackStateString = "unknown";
+                break;
+        }
+        return String.format("playWhenReady:%s playbackState:%s window:%s", player.getPlayWhenReady(), playbackStateString, player.getCurrentWindowIndex());
+    }
+
+    /**
+     * Returns a string containing video debugging information.
+     */
+    protected String getVideoString() {
+        if (player == null) {
+            return null;
+        }
+        Format format = player.getVideoFormat();
+        if (format == null) {
+            return "";
+        }
+        return "\n" + format.sampleMimeType + "(id:" + format.id + " r:" + format.width + "x"
+                + format.height + getPixelAspectRatioString(format.pixelWidthHeightRatio)
+                + getDecoderCountersBufferCountString(player.getVideoDecoderCounters()) + ")";
+    }
+
+    protected int getVideoProfileW() {
+        if (player == null) {
+            return Constants.UNKNOW;
+        }
+        Format format = player.getVideoFormat();
+        if (format == null) {
+            return Constants.UNKNOW;
+        }
+        return format.width;
+    }
+
+    protected int getVideoProfileH() {
+        if (player == null) {
+            return Constants.UNKNOW;
+        }
+        Format format = player.getVideoFormat();
+        if (format == null) {
+            return Constants.UNKNOW;
+        }
+        return format.height;
+    }
+
+    /**
+     * Returns a string containing audio debugging information.
+     */
+    protected String getAudioString() {
+        if (player == null) {
+            return null;
+        }
+        Format format = player.getAudioFormat();
+        if (format == null) {
+            return "";
+        }
+        return "\n" + format.sampleMimeType + "(id:" + format.id + " hz:" + format.sampleRate + " ch:"
+                + format.channelCount
+                + getDecoderCountersBufferCountString(player.getAudioDecoderCounters()) + ")";
+    }
+
+    protected String getDecoderCountersBufferCountString(DecoderCounters counters) {
+        if (counters == null) {
+            return "";
+        }
+        counters.ensureUpdated();
+        return " sib:" + counters.skippedInputBufferCount
+                + " sb:" + counters.skippedOutputBufferCount
+                + " rb:" + counters.renderedOutputBufferCount
+                + " db:" + counters.droppedBufferCount
+                + " mcdb:" + counters.maxConsecutiveDroppedBufferCount
+                + " dk:" + counters.droppedToKeyframeCount;
+    }
+
+    protected String getPixelAspectRatioString(float pixelAspectRatio) {
+        return pixelAspectRatio == Format.NO_VALUE || pixelAspectRatio == 1f ? "" : (" par:" + String.format(Locale.US, "%.02f", pixelAspectRatio));
     }
 }
