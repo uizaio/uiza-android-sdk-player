@@ -3707,6 +3707,20 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return format;
     }
 
+    public int getVideoProfileW() {
+        if (uzPlayerManager == null) {
+            return Constants.UNKNOW;
+        }
+        return uzPlayerManager.getVideoProfileW();
+    }
+
+    public int getVideoProfileH() {
+        if (uzPlayerManager == null) {
+            return Constants.UNKNOW;
+        }
+        return uzPlayerManager.getVideoProfileH();
+    }
+
     //the current track selections for each renderer
     public TrackSelectionArray getCurrentTrackSelections() {
         if (getPlayer() == null) {
