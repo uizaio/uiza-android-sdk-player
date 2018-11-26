@@ -129,6 +129,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isLivestream;
     private boolean isTablet;
     private Gson gson = new Gson();
+    private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
     private ProgressBar progressBar;
@@ -189,17 +190,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             });
         }
-    }
-
-    private boolean isDisplayPortrait;//display with 9:16 ratio(portrait screen like YUP)
-
-    public boolean isDisplayPortrait() {
-        return isDisplayPortrait;
-    }
-
-    public void setDisplayPortrait(boolean isDisplayPortrait) {
-        this.isDisplayPortrait = isDisplayPortrait;
-        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
     }
 
     private boolean isAutoStart = true;
@@ -890,7 +880,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
-        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -933,7 +923,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isCalledFromChangeSkin;
 
     /*
-     **change skin of player
+     **change skin of player (realtime)
      * return true if success
      */
     public boolean changeSkin(int skinId) {
@@ -960,7 +950,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         rootView.requestLayout();
 
         findViews();
-        UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -1026,6 +1016,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void findViews() {
         //LLog.d(TAG, "findViews");
+        bkg = (View) findViewById(R.id.bkg);
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -1093,7 +1084,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugTextView = findViewById(R.id.debug_text_view);
 
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;
@@ -1449,13 +1441,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void onStateReadyFirst() {
-        LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE());
+        LLog.d(TAG, "fuck onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
 
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
         if (isSetUZTimebarBottom && uzPlayerView != null) {
-            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
         }
@@ -1692,12 +1684,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void toggleScreenOritation() {
-        boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
+        LActivityUtil.toggleScreenOritation(activity);
+        /*boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
         if (isLandToPort) {
             //do nothing
         } else {
-            UZUtil.resizeLayout(rootView, ivVideoCover, false);
-        }
+            UZUtil.resizeLayout(rootView, ivVideoCover, 0);
+        }*/
     }
 
     private UZItemClick uzItemClick;
@@ -1912,12 +1905,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
         if (isSetUZTimebarBottom) {
-            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait, getHeightUZTimeBar() / 2);
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
-        } else {
-            UZUtil.resizeLayout(rootView, ivVideoCover, isDisplayPortrait);
         }
         if (uzCallback != null) {
             uzCallback.onScreenRotate(isLandscape);
@@ -3449,6 +3440,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return llTop;
     }
 
+    public View getBkg() {
+        return bkg;
+    }
+
     public void hideUzTimebar() {
         if (previewFrameLayout != null) {
             previewFrameLayout.setVisibility(GONE);
@@ -3551,9 +3546,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar == null) {
             throw new NullPointerException("uzTimebar cannot be null");
         }
-        if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FILL) {
-            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT) {
+            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
         }
+        /*if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIT) {
+            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        }*/
     }
 
     public int getHeightUZVideo() {
@@ -3569,9 +3567,37 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    //Lay pixel dung cho custom UI like youtube, uzTimebar bottom of player controller
+    private int getPixelAdded() {
+        if (isSetUZTimebarBottom) {
+            return getHeightUZTimeBar() / 2;
+        }
+        return 0;
+    }
+
+    private int getVideoW() {
+        if (uzPlayerManager == null) {
+            return 0;
+        }
+        return uzPlayerManager.getVideoW();
+    }
+
+    private int getVideoH() {
+        if (uzPlayerManager == null) {
+            return 0;
+        }
+        return uzPlayerManager.getVideoH();
+    }
+
     //return pixel
     public int getHeightUZTimeBar() {
         return LUIUtil.getHeightOfView(uzTimebar);
+    }
+
+    public void setBackgroundColorBkg(int color) {
+        if (bkg != null) {
+            bkg.setBackgroundColor(color);
+        }
     }
 
     public void setBackgroundColorUZVideoRootView(int color) {

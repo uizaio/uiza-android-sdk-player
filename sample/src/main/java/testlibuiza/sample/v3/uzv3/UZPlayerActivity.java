@@ -138,7 +138,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
             @Override
             public void onDoubleTap(float x, float y) {
                 tvClickEvent.setText("onDoubleTap");
-                uzVideo.setDisplayPortrait(!uzVideo.isDisplayPortrait());
             }
 
             @Override

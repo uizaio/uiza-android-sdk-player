@@ -67,7 +67,6 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -79,6 +78,8 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
             pb.setVisibility(View.GONE);
             ll.setVisibility(View.VISIBLE);
             LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
+            shadow.getLayoutParams().height = uzVideo.getHeightUZVideo();
+            uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         }
     }
 
@@ -104,6 +105,7 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     @Override
     public void onScreenRotate(boolean isLandscape) {
         uzVideo.setMarginDependOnUZTimeBar(shadow);
+        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
     }
 
     @Override

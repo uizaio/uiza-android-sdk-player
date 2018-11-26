@@ -109,6 +109,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        this.videoW = 0;
+        this.videoH = 0;
         this.mls = 0;
         this.bufferPercentage = 0;
         this.bufferPercentage = 0;
@@ -679,11 +681,24 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    private int videoW = 0;
+    private int videoH = 0;
+
+    protected int getVideoW() {
+        return videoW;
+    }
+
+    protected int getVideoH() {
+        return videoH;
+    }
+
     private class UZVideoEventListener implements VideoListener {
         //This is called when the video size changes
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            LLog.d(TAG, "fuck onVideoSizeChanged " + width + "x" + height + " - " + pixelWidthHeightRatio);
+            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + " - " + pixelWidthHeightRatio);
+            videoW = width;
+            videoH = height;
             if (uzVideo != null && uzVideo.videoListener != null) {
                 uzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
             }

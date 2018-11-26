@@ -23,6 +23,7 @@
     <item name="exo_fullscreen_toggle_icon" type="id" />
     <item name="viewHeader" type="id" />
     <item name="viewDesc" type="id" />
+    <item name="bkg" type="id" />
     <item name="root_view" type="id" />
     <item name="root_view_controller" type="id" />
     <item name="root_view_uz_video" type="id" />

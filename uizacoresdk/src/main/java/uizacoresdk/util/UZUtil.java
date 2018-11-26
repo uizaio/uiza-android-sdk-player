@@ -68,49 +68,43 @@ public class UZUtil {
         }
     }
 
-    /*
-     ** isDisplayPortrait true -> portrait display như YUP
-     ** isDisplayPortrait false thi se bop ve 16/9 video
-     */
-
-    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, boolean isDisplayPortrait) {
-        resizeLayout(viewGroup, ivVideoCover, isDisplayPortrait, 0);
-    }
-
-    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, boolean isDisplayPortrait, int pixelAdded) {
+    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH) {
         if (viewGroup == null) {
             return;
         }
-        int widthScreen = 0;
-        int heightScreen = 0;
+        int widthSurfaceView = 0;
+        int heightSurfaceView = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
         if (isFullScreen) {
-            widthScreen = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
-            heightScreen = LScreenUtil.getScreenHeight();
+            //landscape
+            widthSurfaceView = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
+            heightSurfaceView = LScreenUtil.getScreenHeight();
         } else {
-            widthScreen = LScreenUtil.getScreenWidth();
-            if (isDisplayPortrait) {
-                heightScreen = LScreenUtil.getScreenHeight();
+            //portrait
+            widthSurfaceView = LScreenUtil.getScreenWidth();
+            heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+            /*if (videoW == 0 || videoH == 0) {
+                heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
-                heightScreen = (int) (widthScreen * Constants.RATIO_9_16) + pixelAdded;
-            }
+                heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+            }*/
         }
-        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + " -> " + widthScreen + "x" + heightScreen);
-        viewGroup.getLayoutParams().width = widthScreen;
-        viewGroup.getLayoutParams().height = heightScreen;
+        LLog.d(TAG, "fuck resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        viewGroup.getLayoutParams().width = widthSurfaceView;
+        viewGroup.getLayoutParams().height = heightSurfaceView;
         viewGroup.requestLayout();
 
         //set size of parent view group of viewGroup
         RelativeLayout parentViewGroup = (RelativeLayout) viewGroup.getParent();
         if (parentViewGroup != null) {
-            parentViewGroup.getLayoutParams().width = widthScreen;
-            parentViewGroup.getLayoutParams().height = heightScreen;
+            parentViewGroup.getLayoutParams().width = widthSurfaceView;
+            parentViewGroup.getLayoutParams().height = heightSurfaceView;
             parentViewGroup.requestLayout();
         }
 
         if (ivVideoCover != null) {
-            ivVideoCover.getLayoutParams().width = widthScreen;
-            ivVideoCover.getLayoutParams().height = heightScreen;
+            ivVideoCover.getLayoutParams().width = widthSurfaceView;
+            ivVideoCover.getLayoutParams().height = heightSurfaceView;
             ivVideoCover.requestLayout();
         }
 
@@ -119,11 +113,11 @@ public class UZUtil {
         //LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
-                flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 4;
-                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 4 * Constants.RATIO_9_16);
+                flImgThumnailPreviewSeekbar.getLayoutParams().width = widthSurfaceView / 4;
+                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthSurfaceView / 4 * Constants.RATIO_9_16);
             } else {
-                flImgThumnailPreviewSeekbar.getLayoutParams().width = widthScreen / 5;
-                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthScreen / 5 * Constants.RATIO_9_16);
+                flImgThumnailPreviewSeekbar.getLayoutParams().width = widthSurfaceView / 5;
+                flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthSurfaceView / 5 * Constants.RATIO_9_16);
             }
             //LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
             flImgThumnailPreviewSeekbar.requestLayout();
