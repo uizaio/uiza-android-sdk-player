@@ -78,7 +78,6 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
             pb.setVisibility(View.GONE);
             ll.setVisibility(View.VISIBLE);
             LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
-            shadow.getLayoutParams().height = uzVideo.getHeightUZVideo();
             uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         }
     }
