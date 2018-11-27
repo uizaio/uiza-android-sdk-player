@@ -153,4 +153,8 @@ public class Constants {
     public static final float RATIO_11_16 = 11f / 16f;
     public static final float RATIO_12_16 = 12f / 16f;
     public static final float RATIO_16_16 = 1;
+
+    public static final String DRM_SCHEME_NULL = null;
+    public static final String DRM_SCHEME_PLAYREADY = "playready";
+    public static final String DRM_SCHEME_WIDEVINE = "widevine";
 }

@@ -1265,7 +1265,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);*/
 
         //thumbnail seekbar
-        //urlThumnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);
+        /*urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);*/
 
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumbnailsPreviewSeekbar, subtitleList);

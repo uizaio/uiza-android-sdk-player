@@ -275,9 +275,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         isOnAdEnded = false;
 
         //Exo Player Initialization
-        String drmScheme = null;//playready, widevine
+        //String drmScheme = Constants.DRM_SCHEME_NULL;
+        //String drmScheme = Constants.DRM_SCHEME_PLAYREADY;
+        String drmScheme = Constants.DRM_SCHEME_WIDEVINE;
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-        if (drmScheme != null) {
+        if (drmScheme != Constants.DRM_SCHEME_NULL) {
             String drmLicenseUrl = "https://wv.service.expressplay.com/hms/wv/rights/?ExpressPlayToken=BAAaXbkVKbEAAABg_0gifyfSLlqtjYGc9boiYUIudGi445e5xHzay2CzEazC0uj6GWg79k_yexpv7t2GmjWF10ehecUV2kqV5MBWM-7kURuaQcSJ368ocXFpcoT4l2EXQO8_9R67vZC3Y9lDqLE-9_FTTIqg7C-oWLoXZgWAmJQ";
             String[] keyRequestPropertiesArray = null;
             boolean multiSession = false;
@@ -304,8 +306,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        //player = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector, drmSessionManager);
-        player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        player = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector, drmSessionManager);
+        //player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 
         uzVideo.getUzPlayerView().setPlayer(player);
         MediaSource mediaSourceVideo = createMediaSourceVideo();
