@@ -87,7 +87,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
             }
 
             @Override
-            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+            public void onAdProgress(int s, int duration, int percent) {
                 //LLog.d(TAG, "onAdProgress currentMls " + currentMls);
             }
 

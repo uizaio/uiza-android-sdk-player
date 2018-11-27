@@ -1250,23 +1250,27 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         this.progressCallback = progressCallback;
     }
 
-    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         //hardcode to test
-        subtitleList = new ArrayList<>();
+
+        //subtitleList
+        /*subtitleList = new ArrayList<>();
         Subtitle subtitle = new Subtitle();
         subtitle.setLanguage("en");
         subtitle.setUrl("https://www.iandevlin.com/html5test/webvtt/upc-video-subtitles-en.vtt");
-        subtitleList.add(subtitle);
+        subtitleList.add(subtitle);*/
+
         //ima ad
-        urlIMAAd = activity.getString(R.string.ad_tag_url);
-        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
+        /*urlIMAAd = activity.getString(R.string.ad_tag_url);
+        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);*/
+
         //thumbnail seekbar
         //urlThumnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);
 
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
-        uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumbnailsPreviewSeekbar, subtitleList);
         if (uzTimebar != null) {
-            if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
+            if (urlThumbnailsPreviewSeekbar == null || urlThumbnailsPreviewSeekbar.isEmpty()) {
                 uzTimebar.setPreviewEnabled(false);
             } else {
                 uzTimebar.setPreviewEnabled(true);
@@ -1284,10 +1288,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
-            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+            public void onAdProgress( int s, int duration, int percent) {
                 //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
                 if (progressCallback != null) {
-                    progressCallback.onAdProgress(currentMls, s, duration, percent);
+                    progressCallback.onAdProgress( s, duration, percent);
                 }
             }
 

@@ -118,12 +118,14 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                         hideProgress();
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            long mls = (long) videoProgressUpdate.getCurrentTime();
-                            long duration = (long) videoProgressUpdate.getDuration();
-                            int percent = (int) (mls * 100 / duration);
-                            int s = Math.round(mls / 1000);
+                            int duration = (int) videoProgressUpdate.getDuration();
+                            int s = (int) videoProgressUpdate.getCurrentTime();
+                            int percent = 0;
+                            if (duration != 0) {
+                                percent = (int) (s * 100 / duration);
+                            }
                             //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                            progressCallback.onAdProgress(mls, s, duration, percent);
+                            progressCallback.onAdProgress(s, duration, percent);
                         }
                     } else {
                         if (progressCallback != null) {

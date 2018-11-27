@@ -207,21 +207,20 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                         uzVideo.setUseController(false);
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            duration = (long) videoProgressUpdate.getDuration();
+                            duration = (int) videoProgressUpdate.getDuration();
+                            s = (int) (videoProgressUpdate.getCurrentTime()) + 1;//add 1 second
                             if (duration != 0) {
-                                mls = (long) videoProgressUpdate.getCurrentTime();
-                                s = Math.round(mls / 1000);
-                                percent = (int) (mls * 100 / duration);
-                                //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                                progressCallback.onAdProgress(mls, s, duration, percent);
+                                percent = (int) (s * 100 / duration);
+                            }
+                            //LLog.d(TAG, "runnable ad s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            progressCallback.onAdProgress(s, (int) duration, percent);
 
-                                //buffer changing
+                            //buffer changing
                                 /*if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
                                     bufferPosition = uzVideo.getBufferedPosition();
                                     bufferPercentage = uzVideo.getBufferedPercentage();
                                     progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage());
                                 }*/
-                            }
                         }
                     } else {
                         if (progressCallback != null) {
