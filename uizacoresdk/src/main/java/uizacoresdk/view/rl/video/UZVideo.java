@@ -903,6 +903,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView = null;
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         uzPlayerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
+        uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
 
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
