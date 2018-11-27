@@ -30,18 +30,6 @@
                     android:textColor="@color/White"
                     android:textSize="@dimen/txt_32" />
 
-                <Button
-                    android:id="@+id/bt_bkg_ran"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Set random color background" />
-
-                <Button
-                    android:id="@+id/bt_bkg_red"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Set red background" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

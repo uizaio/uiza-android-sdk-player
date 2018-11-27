@@ -6,8 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
@@ -18,8 +18,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.core.utilities.LStoreUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -27,11 +26,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class ResizeActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
-    private View shadow;
-    private LinearLayout ll;
-    private ProgressBar pb;
 
     @Override
     protected boolean setFullScreen() {
@@ -45,71 +41,46 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_code_uz_timebar;
+        return R.layout.activity_resize;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        ll = (LinearLayout) findViewById(R.id.ll);
-        pb = (ProgressBar) findViewById(R.id.p);
-        ll.setVisibility(View.INVISIBLE);
-        pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
 
-        //config uztimebar bottom
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
-
-        //shadow background
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
-        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-
-        final String entityId = LSApplication.entityIdDefaultVOD;
+        final String entityId = LSApplication.entityIdDefaultVODportrait;
         UZUtil.initEntity(activity, uzVideo, entityId);
-    }
 
-    @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            pb.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
-        }
-    }
+        findViewById(R.id.bt_bkg_ran).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setBackgroundColorBkg(LStoreUtil.getRandomColor());
+            }
+        });
+        findViewById(R.id.bt_bkg_red).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setBackgroundColorBkg(Color.RED);
+            }
+        });
 
-    @Override
-    public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-    }
-
-    @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
-        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
-    }
-
-    @Override
-    public void onError(UZException e) {
+        findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+            }
+        });
+        findViewById(R.id.bt_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+            }
+        });
     }
 
     @Override
@@ -154,8 +125,42 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
     }
 
     @Override
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    }
+
+    @Override
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.exo_back_screen:
+                if (!uzVideo.isLandscape()) {
+                    onBackPressed();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+        if (isInitSuccess) {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onSkinChange() {
+    }
+
+    @Override
+    public void onScreenRotate(boolean isLandscape) {
+    }
+
+    @Override
+    public void onError(UZException e) {
+    }
+
+    @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

@@ -3755,4 +3755,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         return getPlayer().getCurrentTrackSelections();
     }
+
+    public void setResizeMode(int resizeMode) {
+        if (uzPlayerView != null) {
+            uzPlayerView.setResizeMode(resizeMode);
+        }
+    }
 }
