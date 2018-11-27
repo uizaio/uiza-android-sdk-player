@@ -82,12 +82,18 @@ public class UZUtil {
         } else {
             //portrait
             widthSurfaceView = LScreenUtil.getScreenWidth();
-            heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
-            /*if (videoW == 0 || videoH == 0) {
+            //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+            if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
-                heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
-            }*/
+                if(videoW>=videoH){
+                    LLog.d(TAG, "fuck video source is landscape -> scale depend on videoW, videoH");
+                    heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                }else{
+                    LLog.d(TAG, "fuck video source is portrait -> scale 9-16");
+                    heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                }
+            }
         }
         LLog.d(TAG, "fuck resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
         viewGroup.getLayoutParams().width = widthSurfaceView;
