@@ -19,6 +19,7 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LStoreUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -67,9 +68,24 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
         //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
+        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
+
+        findViewById(R.id.bt_bkg_ran).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setBackgroundColorBkg(LStoreUtil.getRandomColor());
+            }
+        });
+        findViewById(R.id.bt_bkg_red).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setBackgroundColorBkg(Color.RED);
+            }
+        });
     }
 
     @Override
@@ -78,7 +94,6 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
             pb.setVisibility(View.GONE);
             ll.setVisibility(View.VISIBLE);
             LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
-            uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         }
     }
 
@@ -103,8 +118,8 @@ public class CustomSkinCodeUZTimebarActivity extends BaseActivity implements UZC
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
-        uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
+        uzVideo.setMarginDependOnUZTimeBar(shadow);
     }
 
     @Override
