@@ -419,11 +419,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (ad != null) {
                         urlIMAAd = ad.getLink();
                     }
-                    //urlIMAAd = activity.getString(R.string.ad_tag_url);
-                    //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
                     LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
                 }
-                //urlIMAAd = activity.getString(R.string.ad_tag_url);
                 handleDataCallAPI();
             }
 
@@ -540,9 +537,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzInput.setData(UZData.getInstance().getData());
             uzInput.setUrlIMAAd(urlIMAAd);
 
-            //TODO correct url thumnail, null till now
-            //uzInput.setUrlThumnailsPreviewSeekbar(activity.getString(R.string.url_thumbnails));
-            //uzInput.setUrlThumnailsPreviewSeekbar(urlThumnailsPreviewSeekbar);
+            //TODO iplm url thumnail
             uzInput.setUrlThumnailsPreviewSeekbar(null);
             UZData.getInstance().setUizaInput(uzInput, isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed);
             checkData();
@@ -1037,7 +1032,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         rlTimeBar = uzPlayerView.findViewById(R.id.rl_time_bar);
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
-        previewFrameLayout = uzPlayerView.findViewById(R.id.previewFrameLayout);
+        previewFrameLayout = uzPlayerView.findViewById(R.id.preview_frame_layout);
         if (uzTimebar != null) {
             if (uzTimebar.getTag() == null) {
                 isSetUZTimebarBottom = false;
@@ -1052,10 +1047,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzTimebar.setOnFocusChangeListener(this);
         }
         ivThumbnail = (ImageView) uzPlayerView.findViewById(R.id.image_view_thumnail);
-
         tvPosition = (UZTextView) uzPlayerView.findViewById(R.id.exo_position);
         tvDuration = (UZTextView) uzPlayerView.findViewById(R.id.exo_duration);
-
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
         ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
@@ -1083,15 +1076,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugLayout = findViewById(R.id.debug_layout);
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
-
         if (Constants.IS_DEBUG) {
-            //TODO revert VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;
         }
-
         rlLiveInfo = (RelativeLayout) uzPlayerView.findViewById(R.id.rl_live_info);
         tvLiveStatus = (TextView) uzPlayerView.findViewById(R.id.tv_live);
         tvLiveView = (TextView) uzPlayerView.findViewById(R.id.tv_live_view);
@@ -1261,18 +1251,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void initDataSource(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        //hardcode to test
+        subtitleList = new ArrayList<>();
+        Subtitle subtitle = new Subtitle();
+        subtitle.setLanguage("en");
+        subtitle.setUrl("https://www.iandevlin.com/html5test/webvtt/upc-video-subtitles-en.vtt");
+        subtitleList.add(subtitle);
+        //ima ad
+        urlIMAAd = activity.getString(R.string.ad_tag_url);
+        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
+        //thumbnail seekbar
+        //urlThumnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);
+
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-        if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
-            if (uzTimebar != null) {
+        if (uzTimebar != null) {
+            if (urlThumnailsPreviewSeekbar == null || urlThumnailsPreviewSeekbar.isEmpty()) {
                 uzTimebar.setPreviewEnabled(false);
-            }
-        } else {
-            if (uzTimebar != null) {
+            } else {
                 uzTimebar.setPreviewEnabled(true);
             }
-        }
-        if (uzTimebar != null) {
             uzTimebar.setPreviewLoader(uzPlayerManager);
         }
         uzPlayerManager.setProgressCallback(new ProgressCallback() {
@@ -1646,11 +1644,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void onStopPreview(int progress) {
         if (uzPlayerManager != null) {
             uzPlayerManager.seekTo(progress);
-            if (isPlaying()) {
-                uzPlayerManager.resumeVideo();
-                isOnPlayerEnded = false;
-                updateUIEndScreen();
-            }
+            uzPlayerManager.resumeVideo();
+            isOnPlayerEnded = false;
+            updateUIEndScreen();
         }
     }
 
@@ -2483,7 +2479,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         movieMetadata.putString(MediaMetadata.KEY_TITLE, UZData.getInstance().getData().getEntityName());
         movieMetadata.addImage(new WebImage(Uri.parse(UZData.getInstance().getData().getThumbnail())));
 
-        //TODO add subtile vtt to chromecast
+        //TODO add subtitle vtt to chromecast
         List<MediaTrack> mediaTrackList = new ArrayList<>();
         /*MediaTrack mediaTrack = UZData.getInstance().buildTrack(
                 1,

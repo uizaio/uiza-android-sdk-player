@@ -44,5 +44,4 @@
     <item name="ibs_cast" type="id" />
     <item name="rl_end_screen" type="id" />
     <item name="tv_end_screen_msg" type="id" />
-    <item name="previewFrameLayout" type="id" />
 </resources>

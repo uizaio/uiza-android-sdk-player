@@ -86,16 +86,16 @@ public class UZUtil {
             if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
-                if(videoW>=videoH){
-                    LLog.d(TAG, "fuck video source is landscape -> scale depend on videoW, videoH");
+                if (videoW >= videoH) {
+                    //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
                     heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
-                }else{
-                    LLog.d(TAG, "fuck video source is portrait -> scale 9-16");
+                } else {
+                    //LLog.d(TAG, "video source is portrait -> scale 9-16");
                     heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
                 }
             }
         }
-        LLog.d(TAG, "fuck resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
         viewGroup.getLayoutParams().width = widthSurfaceView;
         viewGroup.getLayoutParams().height = heightSurfaceView;
         viewGroup.requestLayout();
@@ -116,7 +116,6 @@ public class UZUtil {
 
         //edit size of imageview thumnail
         FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.preview_frame_layout);
-        //LLog.d(TAG, flImgThumnailPreviewSeekbar == null ? "resizeLayout imgThumnailPreviewSeekbar null" : "resizeLayout imgThumnailPreviewSeekbar !null");
         if (flImgThumnailPreviewSeekbar != null) {
             if (isFullScreen) {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthSurfaceView / 4;
@@ -125,7 +124,6 @@ public class UZUtil {
                 flImgThumnailPreviewSeekbar.getLayoutParams().width = widthSurfaceView / 5;
                 flImgThumnailPreviewSeekbar.getLayoutParams().height = (int) (widthSurfaceView / 5 * Constants.RATIO_9_16);
             }
-            //LLog.d(TAG, "resizeLayout: " + flImgThumnailPreviewSeekbar.getWidth() + " x " + flImgThumnailPreviewSeekbar.getHeight());
             flImgThumnailPreviewSeekbar.requestLayout();
         }
     }
