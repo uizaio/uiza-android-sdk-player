@@ -68,7 +68,6 @@ public class ResizeActivity extends BaseActivity implements UZCallback, UZItemCl
                 uzVideo.setBackgroundColorBkg(Color.RED);
             }
         });
-
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +78,24 @@ public class ResizeActivity extends BaseActivity implements UZCallback, UZItemCl
             @Override
             public void onClick(View view) {
                 uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+            }
+        });
+        findViewById(R.id.bt_2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+            }
+        });
+        findViewById(R.id.bt_3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+            }
+        });
+        findViewById(R.id.bt_4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             }
         });
     }
