@@ -366,14 +366,21 @@ public class LDateUtils {
     }
 
     public static String convertSecondsToHMmSs(long seconds) {
-        //long s = seconds % 60;
+        if (seconds <= 0) {
+            return "0:00";
+        }
+        long s = seconds % 60;
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
-        //return String.format("%d:%02d:%02d", h, m, s);
-        return String.format("%d:%02d", h, m);
+        if (h == 0) {
+            return String.format("%d:%02d", m, s);
+        } else {
+            return String.format("%d:%02d:%02d", h, m, s);
+        }
+        //return String.format("%d:%02d", h, m);
     }
 
-    public static String convertMlscondsToHMmSs(long mls) {
+    public static String convertMlsecondsToHMmSs(long mls) {
         return convertSecondsToHMmSs(mls / 1000);
     }
 }
