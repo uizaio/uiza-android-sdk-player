@@ -742,14 +742,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             List<String> listLinkPlay = new ArrayList<>();
             List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
-            for (Url url : urlList) {
-                if (url.getSupport().toLowerCase().equals("mpd")) {
-                    listLinkPlay.add(url.getUrl());
+            if (isLivestream) {
+                LLog.d(TAG, "checkToSetUpResouce isLivestream true -> m3u8");
+                //Bat buoc dung linkplay m3u8 cho nay, do bug cua system
+                for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("m3u8")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
                 }
-            }
-            for (Url url : urlList) {
-                if (url.getSupport().toLowerCase().equals("m3u8")) {
-                    listLinkPlay.add(url.getUrl());
+                /*for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("mpd")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }*/
+            } else {
+                LLog.d(TAG, "checkToSetUpResouce isLivestream false -> mpd -> m3u8");
+                for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("mpd")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }
+                for (Url url : urlList) {
+                    if (url.getSupport().toLowerCase().equals("m3u8")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
                 }
             }
 
@@ -1288,10 +1304,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
 
             @Override
-            public void onAdProgress( int s, int duration, int percent) {
+            public void onAdProgress(int s, int duration, int percent) {
                 //LLog.d(TAG, "progressCallback ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
                 if (progressCallback != null) {
-                    progressCallback.onAdProgress( s, duration, percent);
+                    progressCallback.onAdProgress(s, duration, percent);
                 }
             }
 
