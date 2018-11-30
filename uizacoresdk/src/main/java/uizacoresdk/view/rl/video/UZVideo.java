@@ -746,24 +746,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 LLog.d(TAG, "checkToSetUpResouce isLivestream true -> m3u8");
                 //Bat buoc dung linkplay m3u8 cho nay, do bug cua system
                 for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("m3u8")) {
+                    if (url.getUrl().toLowerCase().endsWith(".m3u8")) {
                         listLinkPlay.add(url.getUrl());
                     }
                 }
                 /*for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("mpd")) {
+                    if (url.getUrl().toLowerCase().endsWith(".mpd")) {
                         listLinkPlay.add(url.getUrl());
                     }
                 }*/
             } else {
                 LLog.d(TAG, "checkToSetUpResouce isLivestream false -> mpd -> m3u8");
                 for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("mpd")) {
+                    if (url.getUrl().toLowerCase().endsWith(".mpd")) {
                         listLinkPlay.add(url.getUrl());
                     }
                 }
                 for (Url url : urlList) {
-                    if (url.getSupport().toLowerCase().equals("m3u8")) {
+                    if (url.getUrl().toLowerCase().endsWith(".m3u8")) {
                         listLinkPlay.add(url.getUrl());
                     }
                 }
