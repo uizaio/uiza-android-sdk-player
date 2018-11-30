@@ -1690,7 +1690,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (tvPosition != null) {
             if (isLivestream) {
                 long duration = getDuration();
-                LLog.d(TAG, "current " + currentMls + "/" + duration);
+                //LLog.d(TAG, "current " + currentMls + "/" + duration);
                 long past = duration - currentMls;
                 //LLog.d(TAG, "setTextPosition -" + LDateUtils.convertMlsecondsToHMmSs(past));
                 tvPosition.setText("-" + LDateUtils.convertMlsecondsToHMmSs(past));

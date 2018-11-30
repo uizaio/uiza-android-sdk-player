@@ -264,7 +264,7 @@
             android:paddingBottom="@dimen/padding_30">
 
             <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_position"
+                android:id="@id/uz_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
@@ -272,7 +272,7 @@
                 android:textStyle="bold" />
 
             <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_duration"
+                android:id="@id/uz_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

@@ -121,8 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/preview_frame_layout"
-                android:layout_toLeftOf="@id/exo_duration"
-                android:layout_toRightOf="@+id/exo_position"
+                android:layout_toLeftOf="@id/uz_duration"
+                android:layout_toRightOf="@id/uz_position"
                 app:ad_marker_color="@color/LightYellow"
                 app:buffered_color="@color/LightGrey"
                 app:played_ad_marker_color="@color/LightYellow"
@@ -132,7 +132,7 @@
                 app:unplayed_color="@color/Gray" />
 
             <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_position"
+                android:id="@id/uz_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/preview_frame_layout"
@@ -142,7 +142,7 @@
                 android:textStyle="bold" />
 
             <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_duration"
+                android:id="@id/uz_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/preview_frame_layout"
