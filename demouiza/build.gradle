@@ -51,8 +51,8 @@ dependencies {
     api project(':uizacoresdk')
     api project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.8'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.8'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.9.0'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.9.0'
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
