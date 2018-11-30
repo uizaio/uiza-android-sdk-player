@@ -1,3 +1,23 @@
+### 2.9.1 (2018-11-30)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.9.1'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.9.1'
+
+- Add func getVideoFormat().
+- Add func getAudioFormat().
+- Add func getVideoProfileH().
+- Add func getVideoProfileW().
+- Add func onVideoSizeChanged().
+- Add func setBackgroundColorBkg
+- Update sample custom ui like youtube, UZTimeBar.
+- Add sample ResizeActivity.
+- Change id previewFrameLayout->preview_frame_layout.
+- Update func ProgressCallback.
+- Iplm DRM fearture.
+
 ### 2.8.8 (2018-11-19)
 
     //for playing video VOD, LIVE  
