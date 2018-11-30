@@ -115,7 +115,7 @@
             android:layout_marginTop="@dimen/margin_5">
 
             <FrameLayout
-                android:id="@id/previewFrameLayout"
+                android:id="@id/preview_frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/video_frame">
@@ -131,14 +131,14 @@
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
+                android:layout_below="@id/preview_frame_layout"
                 android:layout_toLeftOf="@id/exo_duration"
                 android:layout_toRightOf="@+id/exo_position"
                 app:ad_marker_color="@color/Red"
                 app:buffered_color="@color/DeepPink"
                 app:played_ad_marker_color="@color/LightYellow"
                 app:played_color="@color/Blue"
-                app:previewFrameLayout="@id/previewFrameLayout"
+                app:previewFrameLayout="@id/preview_frame_layout"
                 app:scrubber_color="@color/White"
                 app:unplayed_color="@color/Gray" />
 
@@ -146,7 +146,7 @@
                 android:id="@id/exo_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
+                android:layout_below="@id/preview_frame_layout"
                 android:includeFontPadding="false"
                 android:padding="@dimen/padding_5"
                 android:textColor="@color/Red"
@@ -156,7 +156,7 @@
                 android:id="@id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/previewFrameLayout"
+                android:layout_below="@id/preview_frame_layout"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="bottom"
                 android:includeFontPadding="false"

@@ -5,7 +5,7 @@ package uizacoresdk.listerner;
  */
 
 public interface ProgressCallback {
-    public void onAdProgress(long currentMls, int s, long duration, int percent);
+    public void onAdProgress(int s, int duration, int percent);
 
     public void onAdEnded();
 

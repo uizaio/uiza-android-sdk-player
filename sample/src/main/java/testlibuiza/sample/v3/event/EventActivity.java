@@ -255,8 +255,8 @@ public class EventActivity extends BaseActivity {
         });
         uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
-            public void onAdProgress(long currentMls, int s, long duration, int percent) {
-                tvProgress.setText("onAdProgress " + currentMls + "/" + duration);
+            public void onAdProgress(int s, int duration, int percent) {
+                tvProgress.setText("onAdProgress " + s + "/" + duration);
             }
 
             @Override

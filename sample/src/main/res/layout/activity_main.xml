@@ -73,6 +73,12 @@
                     android:text="Custom skin like Youtube" />
 
                 <Button
+                    android:id="@+id/bt_resize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resize" />
+
+                <Button
                     android:id="@+id/bt_custom_hq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

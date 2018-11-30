@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.view.util.UizaDataV1;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 
@@ -69,7 +67,7 @@ public class UZDlgListEntityRelation extends Dialog {
 
     private void getListAllEntityRelation() {
         LUIUtil.showProgressBar(progressBar);
-        //TODO
+        //TODO getListAllEntityRelation
         setupUI();
     }
 

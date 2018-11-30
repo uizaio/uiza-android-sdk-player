@@ -20,9 +20,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -88,15 +86,15 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
         uZCustomLinkPlay0.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay1 = new UZCustomLinkPlay();
-        uZCustomLinkPlay1.setLinkPlay("http://yt-dash-mse-test.commondatastorage.googleapis.com/media/feelings_vp9-20130806-manifest.mpd");
+        uZCustomLinkPlay1.setLinkPlay("http://112.78.4.162:8081/live/stream/manifest_dvr.mpd");
         uZCustomLinkPlay1.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
-        uZCustomLinkPlay2.setLivestream(false);
+        uZCustomLinkPlay2.setLinkPlay("http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8");
+        uZCustomLinkPlay2.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
-        uZCustomLinkPlay3.setLinkPlay("https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
+        uZCustomLinkPlay3.setLinkPlay("https://morning.cf/uz/wrong/drm_sample_segment/manifest.mpd");
         uZCustomLinkPlay3.setLivestream(false);
 
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
@@ -170,7 +168,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
 
     @Override
     public void onSkinChange() {
-
     }
 
     @Override
@@ -179,21 +176,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
 
     @Override
     public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
-        LLog.e(TAG, "onError: " + e.toString());
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-
-            @Override
-            public void onCancel() {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
@@ -239,7 +221,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZItemCl
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

@@ -157,10 +157,10 @@ public class FUZVideo extends RelativeLayout {
             }
 
             @Override
-            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+            public void onAdProgress(int s, int duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 if (progressCallback != null) {
-                    progressCallback.onAdProgress(currentMls, s, duration, percent);
+                    progressCallback.onAdProgress(s, duration, percent);
                 }
             }
 

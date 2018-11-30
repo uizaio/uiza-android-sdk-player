@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    android:orientation="vertical">
+
+    <uizacoresdk.view.rl.video.UZVideo
+        android:id="@id/uiza_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_bkg_ran"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set random color background" />
+
+            <Button
+                android:id="@+id/bt_bkg_red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set red background" />
+
+            <Button
+                android:id="@+id/bt_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESIZE_MODE_FIXED_HEIGHT" />
+
+            <Button
+                android:id="@+id/bt_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESIZE_MODE_FIXED_WIDTH" />
+
+            <Button
+                android:id="@+id/bt_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESIZE_MODE_ZOOM" />
+
+            <Button
+                android:id="@+id/bt_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESIZE_MODE_FILL" />
+
+            <Button
+                android:id="@+id/bt_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESIZE_MODE_FIT" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -13,6 +13,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
+import testlibuiza.sample.v3.customskin.ResizeActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
@@ -127,6 +128,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, EventActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_resize).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ResizeActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

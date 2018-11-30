@@ -138,7 +138,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
             @Override
             public void onDoubleTap(float x, float y) {
                 tvClickEvent.setText("onDoubleTap");
-                uzVideo.setDisplayPortrait(!uzVideo.isDisplayPortrait());
             }
 
             @Override
@@ -379,9 +378,9 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
             }
 
             @Override
-            public void onAdProgress(long currentMls, int s, long duration, int percent) {
+            public void onAdProgress(int s, int duration, int percent) {
                 //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-                tvProgressAd.setText("Ad: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+                tvProgressAd.setText("Ad: " + s + "/" + duration + " (s) => " + percent + "%");
             }
 
             @Override

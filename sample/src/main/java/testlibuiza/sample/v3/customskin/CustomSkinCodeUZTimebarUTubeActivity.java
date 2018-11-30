@@ -107,6 +107,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
 
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
+        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
 
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
@@ -234,6 +235,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
     @Override
     public void onScreenRotate(boolean isLandscape) {
         uzVideo.setMarginDependOnUZTimeBar(shadow);
+        uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
     }
 
     @Override

@@ -184,7 +184,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
     }
 
     private void getListAllEntityRelation() {
-        //TODO
+        //TODO getListAllEntityRelation
         tvMoreLikeThisMsg.setText(R.string.no_data);
         tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
         LUIUtil.hideProgressBar(progressBar);

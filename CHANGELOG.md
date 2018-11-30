@@ -1,3 +1,27 @@
+### 2.8.8 (2018-11-19)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.8.8'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.8'
+
+- Update sample customize skin like [Youtube](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarUTubeActivity.java).
+- Add func `uzVideo.addCallbackUZTimebar();`
+- Remove some callback in `UZCallback` such as `onClickBack`,  `onClickListEntityRelation`,   `onClickPip`. Use this func `addItemClick();` instead.
+- Ex:
+- 
+
+    @Override  
+    public void onItemClick(View view) {  
+        switch (view.getId()) {  
+            case R.id.exo_back_screen:  
+                //onClick exo_back_screen
+                break;  
+        }  
+    }
+
+
 ### 2.8.6 (2018-11-16)
 
     //for playing video VOD, LIVE  
@@ -6,15 +30,15 @@
     //for live broadcaster  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.6'
 
-- Add func addAudioListener();
+- Add func `addAudioListener();`
 - Add sample help you know how to listen all event of SDK, [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
 - Update some methods name:
-+ setUZCallback -> addUZCallback
-+ setUZTVCallback -> addUZTVCallback
-+ setControllerStateCallback -> addControllerStateCallback
-+ setProgressCallback -> addProgressCallback
-+ setOnTouchEvent -> addOnTouchEvent
-+ hideControllerOnTouch -> setHideControllerOnTouch
++ `setUZCallback` -> `addUZCallback`
++ `setUZTVCallback` -> `addUZTVCallback`
++ `setControllerStateCallback` -> `addControllerStateCallback`
++ `setProgressCallback` -> `addProgressCallback`
++ `setOnTouchEvent` -> `addOnTouchEvent`
++ `hideControllerOnTouch` -> `setHideControllerOnTouch`
 - Update sample how to customize skin like [Youtube player](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarUTubeActivity.java).
 
 ### 2.8.2 (2018-11-14)
@@ -26,9 +50,9 @@
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.2'
 
 - Update default skin.
-- Update UI state of ibRewIcon, ibFfwdIcon.
-- Add func let you can set speed of player uzVideo.setSpeed(value);
-- Add new Speed Button (id exo_speed) of player controller, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizacoresdk/src/main/res/layout/uz_controller_skin_0.xml) for more details.
+- Update UI state of `ibRewIcon`, `ibFfwdIcon`.
+- Add func let you can set speed of player `uzVideo.setSpeed(value);`
+- Add new Speed Button (id `exo_speed`) of player controller, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizacoresdk/src/main/res/layout/uz_controller_skin_0.xml) for more details.
 - Update sample demo.
 
 
@@ -41,7 +65,7 @@
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.8.0'
 
 - Fixed onFocusChange for AndroidTV, AndroidBox.
-- Add func getHeightUZVideo() of uzVideo.
+- Add func `getHeightUZVideo()` of uzVideo.
 - Update sample TV with custom HQ, custom audio view.
 - Update sample using UZTimebar.
 
@@ -56,11 +80,11 @@
 
 - Now you can put the UZTimebar on the bottom of the video view, please check this [sample](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarActivity.java) for more details.
 - Fixed func volume toggle.
-- Add onScreenRotate() in UZCallback.
+- Add `onScreenRotate()` in UZCallback.
 - Removed some useless components (like volume seekbar, brightness seekbar).
-- Update func setOnTouchEvent().
+- Update func `setOnTouchEvent()`.
 - Add [sample demo volume of video](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/volume/VolumeActivity.java).
-- Add func uzVideo.setVolumeCallback();
+- Add func `uzVideo.setVolumeCallback();`
 - Fixed adaptive, uzVideo will be played with best profile based on the device's network.
 
 
@@ -73,8 +97,8 @@
     //for live broadcaster  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.7.4'
 
-- Update func uzVideo.setProgressCallback(...);
-- Add feature play any custom linkplay (uzVideo.initLinkPlay(...)).
+- Update func `uzVideo.setProgressCallback(...);`
+- Add feature play any custom linkplay (`uzVideo.initLinkPlay(...)`).
 - Solved https://github.com/uizaio/uiza-android-sdk-player/issues/47
 
 ### 2.7.3 (2018-11-01)
