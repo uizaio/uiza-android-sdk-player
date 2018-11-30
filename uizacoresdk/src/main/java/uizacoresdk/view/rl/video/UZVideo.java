@@ -743,7 +743,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
 
             if (isLivestream) {
-                LLog.d(TAG, "checkToSetUpResouce isLivestream true -> m3u8");
+                //LLog.d(TAG, "checkToSetUpResouce isLivestream true -> m3u8");
                 //Bat buoc dung linkplay m3u8 cho nay, do bug cua system
                 for (Url url : urlList) {
                     if (url.getUrl().toLowerCase().endsWith(".m3u8")) {
@@ -756,7 +756,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }*/
             } else {
-                LLog.d(TAG, "checkToSetUpResouce isLivestream false -> mpd -> m3u8");
+                //LLog.d(TAG, "checkToSetUpResouce isLivestream false -> mpd -> m3u8");
                 for (Url url : urlList) {
                     if (url.getUrl().toLowerCase().endsWith(".mpd")) {
                         listLinkPlay.add(url.getUrl());
