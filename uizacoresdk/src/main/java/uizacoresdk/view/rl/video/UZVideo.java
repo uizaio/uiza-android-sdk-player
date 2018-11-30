@@ -911,8 +911,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView = null;
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         uzPlayerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
-        uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
-        //uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        //uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+        uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -3607,12 +3607,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar == null) {
             throw new NullPointerException("uzTimebar cannot be null");
         }
-        if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT) {
+        /*if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT) {
             uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
-        }
-        /*if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIT) {
-            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         }*/
+        if (uzPlayerView.getResizeMode() != AspectRatioFrameLayout.RESIZE_MODE_FIT) {
+            uzPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        }
     }
 
     public int getHeightUZVideo() {

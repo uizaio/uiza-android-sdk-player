@@ -16,12 +16,12 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.views.LToast;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
+    private final String entityIdDefaultVOD219 = LSApplication.entityIdDefaultVOD_21_9;
     private final String entityIdDefaultLIVE = LSApplication.entityIdDefaultLIVE;
     private final String metadataId = LSApplication.metadataDefault0;
 
@@ -37,6 +37,12 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
+            }
+        });
+        frmRootView.findViewById(R.id.bt_entity_vod_21_9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD219);
             }
         });
         frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
@@ -58,13 +64,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             }
         });
 
-        LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getActivity()));
         if (UZUtil.getClickedPip(getActivity())) {
             if (UZUtil.isInitPlaylistFolder(getActivity())) {
-                LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
-                LLog.d(TAG, "Called if user click pip fullscreen playEntityId");
                 ((HomeCanSlideActivity) getActivity()).playEntityId(null);
             }
         }

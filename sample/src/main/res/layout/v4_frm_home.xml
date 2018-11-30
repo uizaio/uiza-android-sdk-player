@@ -22,6 +22,12 @@
                 android:text="Play entity VOD" />
 
             <Button
+                android:id="@+id/bt_entity_vod_21_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play entity VOD 21:9" />
+
+            <Button
                 android:id="@+id/bt_entity_live"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

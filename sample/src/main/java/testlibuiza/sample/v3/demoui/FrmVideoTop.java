@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.google.android.exoplayer2.video.VideoListener;
+
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -21,6 +23,7 @@ import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -35,7 +38,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
 
     @Override
     protected String setTag() {
-        return getClass().getSimpleName();
+        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -44,6 +47,15 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
+        uzVideo.setVideoListener(new VideoListener() {
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
+                int screenW = LScreenUtil.getScreenWidth();
+                int screenH = height * screenW / width;
+                ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(screenH);
+            }
+        });
         uzVideo.addItemClick(this);
     }
 
@@ -137,7 +149,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
                 } else {
                     ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 }*/
-                if(!uzVideo.isLandscape()){
+                if (!uzVideo.isLandscape()) {
                     ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 }
                 break;

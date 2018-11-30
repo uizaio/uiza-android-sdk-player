@@ -28,7 +28,7 @@ public class HomeCanSlideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
@@ -149,11 +149,20 @@ public class HomeCanSlideActivity extends BaseActivity {
         }
     }
 
+    private int topFragmentHeight;
+
+    public void setTopViewHeightApllyNow(int topFragmentHeight) {
+        if (draggablePanel != null) {
+            this.topFragmentHeight = topFragmentHeight;
+            draggablePanel.setTopViewHeightApllyNow(topFragmentHeight);
+        }
+    }
+
     private void setSizeFrmTop() {
         if (isLandscape) {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenWidth() * 9 / 16);
+            draggablePanel.setTopViewHeightApllyNow(topFragmentHeight == 0 ? LScreenUtil.getScreenWidth() * 9 / 16 : topFragmentHeight);
         }
     }
 
