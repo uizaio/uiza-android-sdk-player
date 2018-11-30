@@ -50,7 +50,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo.setVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
                 int screenW = LScreenUtil.getScreenWidth();
                 int screenH = height * screenW / width;
                 ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(screenH);
