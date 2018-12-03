@@ -19,9 +19,7 @@ import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.text.Spannable;
@@ -34,11 +32,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -51,9 +46,6 @@ import java.util.Random;
 
 import vn.uiza.R;
 import vn.uiza.utils.util.ConvertUtils;
-import vn.uiza.views.overscroll.lib.overscroll.IOverScrollDecor;
-import vn.uiza.views.overscroll.lib.overscroll.IOverScrollUpdateListener;
-import vn.uiza.views.overscroll.lib.overscroll.OverScrollDecoratorHelper;
 
 /**
  * File created on 11/3/2016.
@@ -337,183 +329,6 @@ public class LUIUtil {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(o);
         textView.setText(json);
-    }
-
-    public static void setPullLikeIOSVertical(RecyclerView recyclerView) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-
-        // Horizontal
-        //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
-
-        // Vertical
-        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-    }
-
-    public static void setPullLikeIOSHorizontal(RecyclerView recyclerView) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-
-        // Horizontal
-        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
-    }
-
-    public static void setPullLikeIOSHorizontal(final ViewPager viewPager, final Callback callback) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(viewPager);
-        if (callback != null) {
-            decor.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
-                @Override
-                public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-                    final View view = decor.getView();
-                    if (offset > 0) {
-                        // 'view' is currently being over-scrolled from the top.
-                        lastOffset = offset;
-                        isUp = true;
-                        //LLog.d(TAG, "________________>0 " + lastOffset + " " + isUp);
-                    } else if (offset < 0) {
-                        // 'view' is currently being over-scrolled from the bottom.
-                        lastOffset = offset;
-                        isUp = false;
-                        //LLog.d(TAG, "________________<0 " + lastOffset + " " + isUp);
-                    } else {
-                        // No over-scroll is in-effect.
-                        // This is synonymous with having (state == STATE_IDLE).
-                        //LLog.d(TAG, "________________STATE_IDLE" + lastOffset + " " + isUp);
-                        if (isUp) {
-                            //LLog.d(TAG, "________________ up " + lastOffset);
-                            if (lastOffset > 1.8f) {
-                                callback.onUpOrLeftRefresh(lastOffset);
-                                LSoundUtil.startMusicFromAsset(viewPager.getContext(), "ting.ogg");
-                            } else {
-                                callback.onUpOrLeft(lastOffset);
-                            }
-                        } else {
-                            //LLog.d(TAG, "________________ down " + lastOffset);
-                            if (lastOffset < -1.8f) {
-                                callback.onDownOrRightRefresh(lastOffset);
-                            } else {
-                                callback.onDownOrRight(lastOffset);
-                            }
-                        }
-                        lastOffset = 0;
-                        isUp = false;
-                    }
-                }
-            });
-        }
-    }
-
-    private static float lastOffset = 0.0f;
-    private static boolean isUp = false;
-
-    public static void setPullLikeIOSVertical(final RecyclerView recyclerView, final Callback callback) {
-        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-        if (callback != null) {
-            /*decor.setOverScrollStateListener(new IOverScrollStateListener() {
-                @Override
-                public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
-                    switch (newState) {
-                        case STATE_IDLE:
-                            // No over-scroll is in effect.
-                            callback.onIdle();
-                            break;
-                        case STATE_DRAG_START_SIDE:
-                            // Dragging started at the left-end.
-                            callback.onDragStarSide();
-                            break;
-                        case STATE_DRAG_END_SIDE:
-                            // Dragging started at the right-end.
-                            callback.onDragEndSide();
-                            break;
-                        case STATE_BOUNCE_BACK:
-                            if (oldState == STATE_DRAG_START_SIDE) {
-                                // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
-                            } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
-                                // View is starting to bounce back from the *right-end*.
-                            }
-                            break;
-                    }
-                }
-            });*/
-            decor.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
-                @Override
-                public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-                    final View view = decor.getView();
-                    if (offset > 0) {
-                        // 'view' is currently being over-scrolled from the top.
-                        lastOffset = offset;
-                        isUp = true;
-                        //LLog.d(TAG, "________________>0 " + lastOffset + " " + isUp);
-                    } else if (offset < 0) {
-                        // 'view' is currently being over-scrolled from the bottom.
-                        lastOffset = offset;
-                        isUp = false;
-                        //LLog.d(TAG, "________________<0 " + lastOffset + " " + isUp);
-                    } else {
-                        // No over-scroll is in-effect.
-                        // This is synonymous with having (state == STATE_IDLE).
-                        //LLog.d(TAG, "________________STATE_IDLE" + lastOffset + " " + isUp);
-                        if (isUp) {
-                            //LLog.d(TAG, "________________ up " + lastOffset);
-                            if (lastOffset > 1.8f) {
-                                callback.onUpOrLeftRefresh(lastOffset);
-                                LSoundUtil.startMusicFromAsset(recyclerView.getContext(), "ting.ogg");
-                            } else {
-                                callback.onUpOrLeft(lastOffset);
-                            }
-                        } else {
-                            //LLog.d(TAG, "________________ down " + lastOffset);
-                            if (lastOffset < -1.8f) {
-                                callback.onDownOrRightRefresh(lastOffset);
-                            } else {
-                                callback.onDownOrRight(lastOffset);
-                            }
-                        }
-                        lastOffset = 0;
-                        isUp = false;
-                    }
-                }
-            });
-        }
-    }
-
-    public interface Callback {
-        public void onUpOrLeft(float offset);
-
-        public void onUpOrLeftRefresh(float offset);
-
-        public void onDownOrRight(float offset);
-
-        public void onDownOrRightRefresh(float offset);
-    }
-
-    public static void setPullLikeIOSHorizontal(ViewPager viewPager) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-        OverScrollDecoratorHelper.setUpOverScroll(viewPager);
-    }
-
-    public static void setPullLikeIOSVertical(ScrollView scrollView) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-    }
-
-    public static void setPullLikeIOSVertical(ListView listView) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-        OverScrollDecoratorHelper.setUpOverScroll(listView);
-    }
-
-    public static void setPullLikeIOSVertical(HorizontalScrollView scrollView) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-    }
-
-    public static void setPullLikeIOSVertical(View view) {
-        //guide: https://github.com/EverythingMe/overscroll-decor
-
-        // Horizontal
-        //OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
-
-        // Vertical
-        OverScrollDecoratorHelper.setUpStaticOverScroll(view, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
     }
 
     private static int colors[] = {

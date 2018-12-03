@@ -22,6 +22,7 @@ import vn.uiza.views.LToast;
 public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
     private final String entityIdDefaultVOD219 = LSApplication.entityIdDefaultVOD_21_9;
+    private final String entityIdDefaultVODPortrait = LSApplication.entityIdDefaultVODportrait;
     private final String entityIdDefaultLIVE = LSApplication.entityIdDefaultLIVE;
     private final String metadataId = LSApplication.metadataDefault0;
 
@@ -43,6 +44,12 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD219);
+            }
+        });
+        frmRootView.findViewById(R.id.bt_entity_vod_portrait).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVODPortrait);
             }
         });
         frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {

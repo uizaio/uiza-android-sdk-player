@@ -10,16 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.view.util.UizaDataV1;
 import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LSocialUtil;
-import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.view.util.UizaDataV1;
 import vn.uiza.views.layout.flowlayout.FlowLayout;
 
 /**
@@ -60,8 +58,8 @@ public class UZDlgShare extends Dialog {
             }
         });
 
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_view);
-        LUIUtil.setPullLikeIOSVertical(scrollView);
+        //ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_view);
+        //LUIUtil.setPullLikeIOSVertical(scrollView);
 
         genUI();
     }

@@ -17,11 +17,9 @@ import com.daimajia.androidanimations.library.Techniques;
 import java.util.List;
 
 import uizacoresdk.R;
-import vn.uiza.core.utilities.LAnimationUtil;
-import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import uizacoresdk.util.UZData;
+import vn.uiza.core.utilities.LAnimationUtil;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
@@ -34,15 +32,10 @@ public class UZDlgPlaylistFolder extends Dialog {
     private Activity activity;
     private AlertDialog dialog;
     private boolean isLandscape;
-    //private Gson gson = new Gson();
-    //private ProgressBar progressBar;
-    //private TextView tvMsg;
     private RecyclerView recyclerView;
     private AdapterPlaylistFolder adapterPlaylistFolder;
-
     private List<Data> dataList;
     private int currentPositionOfDataList;
-
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
     public UZDlgPlaylistFolder(Activity activity, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
@@ -59,11 +52,6 @@ public class UZDlgPlaylistFolder extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v3_dialog_list_playlist_folder);
-
-        //progressBar = (ProgressBar) findViewById(R.id.pb);
-        //LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
-
-        //tvMsg = (TextView) findViewById(R.id.tv_msg);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         final ImageButton btExit = (ImageButton) findViewById(R.id.bt_exit);
         btExit.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +78,10 @@ public class UZDlgPlaylistFolder extends Dialog {
 
     private void setupUI() {
         //recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-
         SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setSnapType(SnapType.CENTER);
         layoutManager.setSnapInterpolator(new DecelerateInterpolator());
         recyclerView.setLayoutManager(layoutManager);
-
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
         adapterPlaylistFolder = new AdapterPlaylistFolder(activity, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
@@ -126,9 +112,7 @@ public class UZDlgPlaylistFolder extends Dialog {
             }
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
-        LUIUtil.setPullLikeIOSHorizontal(recyclerView);
-        LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList + "/" + dataList.size());
-        //recyclerView.smoothScrollToPosition(currentPositionOfDataList);
+        //LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList + "/" + dataList.size());
         recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
 

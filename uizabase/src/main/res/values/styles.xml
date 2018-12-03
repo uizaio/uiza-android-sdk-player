@@ -71,14 +71,14 @@
         <item name="android:windowExitAnimation">@null</item>
     </style>
 
-    <declare-styleable name="AnswerView">
+    <!--<declare-styleable name="AnswerView">
         <attr name="aw_ShowTextWhenActive" format="boolean" />
         <attr name="aw_NumberOfAnswers" format="integer" />
         <attr name="aw_ShowNumber" format="boolean" />
         <attr name="aw_Number" format="integer" />
         <attr name="aw_changeOnClick" format="boolean" />
         <attr name="aw_canCancelAnswer" format="boolean" />
-    </declare-styleable>
+    </declare-styleable>-->
 
     <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
