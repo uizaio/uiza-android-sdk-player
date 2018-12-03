@@ -22,7 +22,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -50,9 +49,17 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo.setVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                int screenW = LScreenUtil.getScreenWidth();
-                int screenH = height * screenW / width;
-                ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(screenH);
+                if (width >= height) {
+                    int screenW = LScreenUtil.getScreenWidth();
+                    int screenH = height * screenW / width;
+                    //LLog.d(TAG, "onVideoSizeChanged >=: " + screenW + "x" + screenH);
+                    resizeView(screenW, screenH);
+                } else {
+                    int screenW = LScreenUtil.getScreenWidth();
+                    int screenH = screenW;
+                    //LLog.d(TAG, "onVideoSizeChanged <: " + screenW + "x" + screenH);
+                    resizeView(screenW, screenH);
+                }
             }
         });
         uzVideo.addItemClick(this);
@@ -117,10 +124,8 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
                         && !((HomeCanSlideActivity) getActivity()).isLandscapeScreen()) {
                     if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
                         if (isShow) {
-                            //LLog.d(TAG, TAG + " onVisibilityChange visibility == View.VISIBLE");
                             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
                         } else {
-                            //LLog.d(TAG, TAG + " onVisibilityChange visibility != View.VISIBLE");
                             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
                         }
                     } else {
@@ -143,11 +148,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.exo_back_screen:
-                /*if (LScreenUtil.isFullScreen(getActivity())) {
-                    uzVideo.toggleFullscreen();
-                } else {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
-                }*/
                 if (!uzVideo.isLandscape()) {
                     ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 }
@@ -182,17 +182,34 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         if (e == null) {
             return;
         }
-        //LLog.e(TAG, "onError: " + e.toString());
-        LLog.e(TAG, "onError " + e.getMessage());
     }
 
     public void initEntity(String entityId) {
-        //LLog.d(TAG, "initEntity " + entityId);
+        int w = LScreenUtil.getScreenWidth();
+        int h = (int) (w * Constants.RATIO_9_16);
+        resizeView(w, h);
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        //LLog.d(TAG, "initPlaylistFolder " + metadataId);
+        int w = LScreenUtil.getScreenWidth();
+        int h = (int) (w * Constants.RATIO_9_16);
+        resizeView(w, h);
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
+    }
+
+    private void resizeView(int w, int h) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(h);
+            }
+        });
+        uzVideo.post(new Runnable() {
+            @Override
+            public void run() {
+                uzVideo.setSize(w, h);
+            }
+        });
     }
 }

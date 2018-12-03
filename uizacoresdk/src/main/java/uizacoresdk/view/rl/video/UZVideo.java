@@ -3821,4 +3821,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerView.setResizeMode(resizeMode);
         }
     }
+
+    public void setSize(int width, int height){
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), width, height);
+    }
 }
