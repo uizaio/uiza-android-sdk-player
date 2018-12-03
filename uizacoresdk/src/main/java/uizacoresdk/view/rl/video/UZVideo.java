@@ -850,10 +850,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
             //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
+            if (!isFromHandleError) {
+                onStateReadyFirst();
+            }
         }
-        if (!isFromHandleError) {
+        /*if (!isFromHandleError) {
             onStateReadyFirst();
-        }
+        }*/
     }
 
     public UZVideo(Context context) {
@@ -1474,23 +1477,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 tvDuration.setText(LDateUtils.convertMlsecondsToHMmSs(getDuration()));
             }
         }
-
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
-
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
         if (isSetUZTimebarBottom && uzPlayerView != null) {
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
         }
-
-        //Dang play ad entity vod, ma dot nhien init entity live|| metadata thi ko hien ra controller dc
-        //do luc dang play ad thi o class UZManager da set setUseController(false)
-        //luc ad ended thi moi setUseController(default)
-        //trong case ad dang play ma init moi thi init ok, nhung controller van dang set la false
-        //setDefaultUseController(isDefaultUseController());
-
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
@@ -1505,7 +1499,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.getPlayer().setPlayWhenReady(true);
         }
         if (uzCallback != null) {
-            //LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
+            LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
         }
@@ -3822,7 +3816,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void setSize(int width, int height){
+    public void setSize(int width, int height) {
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), width, height);
     }
 }

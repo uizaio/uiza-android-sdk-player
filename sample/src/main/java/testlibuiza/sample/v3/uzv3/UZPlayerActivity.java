@@ -408,54 +408,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
                 tvBuffer.setText("onBufferProgress bufferedPosition: " + bufferedPosition + "/" + duration + "(mls), bufferedPercentage: " + bufferedPercentage + "%");
             }
         });
-        /*uzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
-            @Override
-            public void onVideoEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoEnabled");
-            }
-
-            @Override
-            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onVideoDecoderInitialized");
-            }
-
-            @Override
-            public void onVideoInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onVideoInputFormatChanged");
-            }
-
-            @Override
-            public void onDroppedFrames(int count, long elapsedMs) {
-                //LLog.d(TAG, "onDroppedFrames");
-            }
-
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                //LLog.d(TAG, "onAudioDisabled");
-            }
-
-            @Override
-            public void onRenderedFirstFrame(Surface surface) {
-                //LLog.d(TAG, "onRenderedFirstFrame");
-            }
-
-            @Override
-            public void onVideoDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoDisabled");
-            }
-        });*/
-        /*uzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
-            @Override
-            public void onMetadata(Metadata metadata) {
-                //LLog.d(TAG, "onMetadata");
-            }
-        });*/
-        /*uzVideo.getPlayer().addTextOutput(new TextOutput() {
-            @Override
-            public void onCues(List<Cue> cues) {
-                //LLog.d(TAG, "onCues");
-            }
-        });*/
     }
 
     @Override

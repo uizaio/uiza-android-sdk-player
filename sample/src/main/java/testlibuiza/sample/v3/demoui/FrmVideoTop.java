@@ -138,6 +138,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        //LLog.d(TAG, ">>>> isInitResult " + isInitSuccess + " - " + isGetDataSuccess);
         ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
