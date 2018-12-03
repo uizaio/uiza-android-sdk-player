@@ -1,3 +1,17 @@
+### 2.9.3 (2018-12-3)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.9.3'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.9.3'
+
+- Change id of some components (exo_position -> uz_position, exo_duration -> uz_duration).
+- Removed unused resources.
+- Iplm DVR, Timeshift (The UZTimebar will be display, user  can seeks in live HLS content).
+- Update UI (default skin).
+- Fixed callback isInitResult() is called more times.
+
 ### 2.9.1 (2018-11-30)
 
     //for playing video VOD, LIVE  
