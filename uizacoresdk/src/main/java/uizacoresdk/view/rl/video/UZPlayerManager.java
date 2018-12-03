@@ -334,7 +334,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(uzVideo.isAutoStart());
-        LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
+        //LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
         if (uzVideo.isLivestream()) {
             player.seekToDefaultPosition();
         } else {
@@ -560,10 +560,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 LLog.d(TAG, "onTimelineChanged TIMELINE_CHANGE_REASON_RESET");
             } else if (reason == Player.TIMELINE_CHANGE_REASON_DYNAMIC) {
                 LLog.d(TAG, "onTimelineChanged TIMELINE_CHANGE_REASON_DYNAMIC");
-            }
+            }*/
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
-            }*/
+            }
         }
 
         //This is called when the available or selected tracks change
@@ -699,7 +699,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //This is called when seek finishes
         @Override
         public void onSeekProcessed() {
-            //LLog.d(TAG, "onSeekProcessed");
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onSeekProcessed();
             }
@@ -766,6 +765,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //This is called when first frame is rendered
         @Override
         public void onRenderedFirstFrame() {
+            //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
             if (uzVideo != null) {
                 uzVideo.removeVideoCover(false);

@@ -9,14 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 
 import uiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LUIUtil;
 
 public class FrmHome extends BaseFragment implements IOnBackPressed {
 
@@ -30,9 +28,6 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         super.onViewCreated(view, savedInstanceState);
         ImageView iv = (ImageView) view.findViewById(R.id.iv);
         LImageUtil.load(getActivity(), Constants.URL_IMG_THUMBNAIL_2, iv);
-
-        ScrollView scrollView = (ScrollView) view.findViewById(R.id.scroll_view);
-        LUIUtil.setPullLikeIOSVertical(scrollView);
     }
 
     @Override

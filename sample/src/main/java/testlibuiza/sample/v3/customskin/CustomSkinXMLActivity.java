@@ -55,11 +55,10 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
 
-        final String entityId = LSApplication.entityIdDefaultVOD;
+        final String entityId = LSApplication.entityIdDefaultVODLongtime;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
@@ -102,7 +101,6 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
                 }
             }
         });
-
         handleClickSampeText();
     }
 

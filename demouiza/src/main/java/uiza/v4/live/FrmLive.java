@@ -104,7 +104,6 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        LUIUtil.setPullLikeIOSVertical(recyclerView);
         getListAllEntities();
     }
 

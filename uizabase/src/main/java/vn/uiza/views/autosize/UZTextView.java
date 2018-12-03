@@ -9,6 +9,7 @@ import android.util.TypedValue;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
@@ -42,18 +43,19 @@ public class UZTextView extends AppCompatTextView {
     private void init(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZTextView);
         isUseDefault = a.getBoolean(R.styleable.UZTextView_useDefaultTV, true);
-        //LLog.d(TAG, "init isUseDefault " + isUseDefault);
+        LLog.d(TAG, "init isUseDefault " + isUseDefault);
         LUIUtil.setTextShadow(this);
+        updateSize();
+        setSingleLine();
         a.recycle();
     }
 
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
+    private void updateSize() {
         if (!isUseDefault) {
             //LLog.d(TAG, "onConfigurationChanged !isUseDefault -> return");
             return;
         }
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (isLandscape) {
             int textSize = getTextSizeLand();
             //LLog.d(TAG, "textSize " + textSize);
             setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
@@ -64,11 +66,23 @@ public class UZTextView extends AppCompatTextView {
         }
     }
 
+    private boolean isLandscape;
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isLandscape = true;
+        } else {
+            isLandscape = false;
+        }
+        updateSize();
+    }
+
     private int textSizeLand = Constants.NOT_FOUND;
     private int textSizePortrait = Constants.NOT_FOUND;
 
     public int getTextSizeLand() {
-        return textSizeLand == Constants.NOT_FOUND ? 17 : textSizeLand;
+        return textSizeLand == Constants.NOT_FOUND ? 15 : textSizeLand;
     }
 
     //sp
@@ -77,7 +91,7 @@ public class UZTextView extends AppCompatTextView {
     }
 
     public int getTextSizePortrait() {
-        return textSizePortrait == Constants.NOT_FOUND ? 12 : textSizePortrait;
+        return textSizePortrait == Constants.NOT_FOUND ? 10 : textSizePortrait;
     }
 
     //sp

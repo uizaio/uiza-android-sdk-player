@@ -127,13 +127,33 @@
 
             </FrameLayout>
 
+            <vn.uiza.views.autosize.UZTextView
+                android:id="@id/uz_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/preview_frame_layout"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:includeFontPadding="false"
+                android:textColor="@color/Red"
+                android:textStyle="bold" />
+
+            <vn.uiza.views.autosize.UZTextView
+                android:id="@id/uz_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/preview_frame_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="@dimen/margin_5"
+                android:includeFontPadding="false"
+                android:textColor="@color/White"
+                android:textStyle="bold" />
+
             <uizacoresdk.view.rl.timebar.UZTimebar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/preview_frame_layout"
-                android:layout_toLeftOf="@id/exo_duration"
-                android:layout_toRightOf="@+id/exo_position"
+                android:layout_below="@id/uz_duration"
                 app:ad_marker_color="@color/Red"
                 app:buffered_color="@color/DeepPink"
                 app:played_ad_marker_color="@color/LightYellow"
@@ -141,36 +161,13 @@
                 app:previewFrameLayout="@id/preview_frame_layout"
                 app:scrubber_color="@color/White"
                 app:unplayed_color="@color/Gray" />
-
-            <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/preview_frame_layout"
-                android:includeFontPadding="false"
-                android:padding="@dimen/padding_5"
-                android:textColor="@color/Red"
-                android:textStyle="bold" />
-
-            <vn.uiza.views.autosize.UZTextView
-                android:id="@id/exo_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/preview_frame_layout"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="bottom"
-                android:includeFontPadding="false"
-                android:padding="@dimen/padding_5"
-                android:textColor="@color/White"
-                android:textStyle="bold" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_5">
+            android:orientation="horizontal">
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_play_uiza"

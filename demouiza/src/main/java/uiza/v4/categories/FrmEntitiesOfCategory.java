@@ -100,7 +100,6 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        LUIUtil.setPullLikeIOSVertical(recyclerView);
         getListAllEntities();
     }
 

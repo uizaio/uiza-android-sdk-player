@@ -90,7 +90,6 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        LUIUtil.setPullLikeIOSVertical(recyclerView);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

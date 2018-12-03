@@ -19,13 +19,13 @@ import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.SplashActivity;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
 
 public class OptionActivity extends BaseActivity {
     public static final String KEY_SKIN = "KEY_SKIN";
@@ -92,7 +92,6 @@ public class OptionActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.getLayoutParams().height = LScreenUtil.getScreenWidth() * 9 / 16;
         viewPager.invalidate();
-        LUIUtil.setPullLikeIOSHorizontal(viewPager);
         //setting debug mode
         radioDebugMode = (RadioGroup) findViewById(R.id.radio_debug_mode);
         radioDebugModeDisable = (RadioButton) findViewById(R.id.radio_debug_mode_disable);

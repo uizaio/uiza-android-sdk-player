@@ -13,7 +13,7 @@ import java.io.File;
 public final class IntentUtils {
 
     private IntentUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+        throw new UnsupportedOperationException("u can't troll me...");
     }
 
     public static Intent getInstallAppIntent(String filePath, String authority) {

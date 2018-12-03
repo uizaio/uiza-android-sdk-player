@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="RecyclerViewPager">
+    <!--<declare-styleable name="RecyclerViewPager">
         <attr name="rvp_triggerOffset" format="float" />
         <attr name="rvp_flingFactor" format="float" />
         <attr name="rvp_singlePageFling" format="boolean" />
-    </declare-styleable>
+    </declare-styleable>-->
 
-    <declare-styleable name="LSProgressBar">
+    <!--<declare-styleable name="LSProgressBar">
         <attr name="filterColor" format="color" />
-    </declare-styleable>
+    </declare-styleable>-->
 
-    <declare-styleable name="GridCenterView">
+    <!--<declare-styleable name="GridCenterView">
         <attr name="dividerHeight" format="dimension" />
         <attr name="dividerColor" format="reference" />
         <attr name="spanNumber" format="integer" />
-    </declare-styleable>
-    <declare-styleable name="ParallaxViewPager">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ParallaxViewPager">
         <attr name="mode">
             <enum name="left_overlay" value="0" />
             <enum name="right_overlay" value="1" />
@@ -26,8 +27,9 @@
         <attr name="shadow_width" format="dimension" />
         <attr name="left_shadow" format="reference" />
         <attr name="right_shadow" format="reference" />
-    </declare-styleable>
-    <declare-styleable name="LabelsView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="LabelsView">
         <attr name="max_labels" format="integer" />
         <attr name="show_cross" format="boolean" />
         <attr name="icon_cross" format="reference" />
@@ -36,8 +38,9 @@
         <attr name="label_background_res" format="reference" />
         <attr name="label_clickable" format="boolean" />
         <attr name="label_padding" format="dimension" />
-    </declare-styleable>
-    <declare-styleable name="ShineButton">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ShineButton">
         <attr name="btn_color" format="color" />
         <attr name="btn_fill_color" format="color" />
         <attr name="shine_count" format="integer" />
@@ -51,10 +54,12 @@
         <attr name="click_animation_duration" format="integer" />
         <attr name="shine_distance_multiple" format="float" />
         <attr name="shine_size" format="dimension" />
-    </declare-styleable>
-    <declare-styleable name="PorterImageView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="PorterImageView">
         <attr name="siShape" format="integer|reference" />
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="AVLoadingIndicatorView">
         <attr name="minWidth" format="dimension" />
         <attr name="maxWidth" format="dimension" />
@@ -63,19 +68,22 @@
         <attr name="indicatorName" format="string" />
         <attr name="indicatorColor" format="color" />
     </declare-styleable>
-    <declare-styleable name="LColorSwitchCompat">
+
+    <!--<declare-styleable name="LColorSwitchCompat">
         <attr name="toggleOnColor" format="color" />
         <attr name="toggleOffColor" format="color" />
         <attr name="bgOnColor" format="color" />
         <attr name="bgOffColor" format="color" />
-    </declare-styleable>
-    <declare-styleable name="LCircleImageView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="LCircleImageView">
         <attr name="civ_border_width" format="dimension" />
         <attr name="civ_border_color" format="color" />
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_fill_color" format="color" />
-    </declare-styleable>
-    <declare-styleable name="ZoomEngine">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ZoomEngine">
         <attr name="hasClickableChildren" format="boolean" />
         <attr name="overScrollable" format="boolean" />
         <attr name="overScrollHorizontal" format="boolean" />
@@ -91,28 +99,33 @@
             <enum name="zoom" value="0" />
             <enum name="realZoom" value="1" />
         </attr>
-    </declare-styleable>
-    <declare-styleable name="RoundedImage">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="RoundedImage">
         <attr name="rounded_radius" format="float" />
-    </declare-styleable>
-    <declare-styleable name="CircleImage">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="CircleImage">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
         <attr name="add_shadow" format="boolean" />
         <attr name="shadow_color" format="color" />
         <attr name="shadow_radius" format="float" />
-    </declare-styleable>
-    <declare-styleable name="ColorTextView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ColorTextView">
         <attr name="color_texts" format="string" />
         <attr name="color_arrays" format="string" />
-    </declare-styleable>
-    <declare-styleable name="MultiScrollNumber">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="MultiScrollNumber">
         <attr name="primary_number" format="integer" />
         <attr name="target_number" format="integer" />
         <attr name="number_size" format="integer" />
-        <!--<attr name="number_color" format="color"/>-->
-    </declare-styleable>
-    <declare-styleable name="VerticalMarqueeTextView">
+        &lt;!&ndash;<attr name="number_color" format="color"/>&ndash;&gt;
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="VerticalMarqueeTextView">
         <attr name="autoStartMarquee" format="boolean" />
         <attr name="marqueeSpeed" format="reference|integer" />
         <attr name="text" format="reference|string" />
@@ -130,18 +143,21 @@
             <enum name="serif" value="2" />
             <enum name="monospace" value="3" />
         </attr>
-    </declare-styleable>
-    <declare-styleable name="TranslucentView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="TranslucentView">
         <attr name="translucentBackgroundColor" format="color" />
-    </declare-styleable>
-    <declare-styleable name="FButton">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="FButton">
         <attr name="shadowEnabled" format="boolean" />
         <attr name="buttonColor" format="color" />
         <attr name="shadowColor" format="color" />
         <attr name="shadowHeight" format="dimension" />
         <attr name="cornerRadius" format="dimension" />
-    </declare-styleable>
-    <declare-styleable name="MaterialTextField">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="MaterialTextField">
         <attr name="mtf_cardCollapsedHeight" format="dimension" />
         <attr name="mtf_labelColor" format="color" />
         <attr name="mtf_image" format="reference" />
@@ -149,8 +165,9 @@
         <attr name="mtf_animationDuration" format="integer" />
         <attr name="mtf_openKeyboardOnFocus" format="boolean" />
         <attr name="mtf_backgroundColor" format="color" />
-    </declare-styleable>
-    <declare-styleable name="BiuEditStyle">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="BiuEditStyle">
         <attr name="biu_text_color" format="color" />
         <attr name="biu_text_start_size" format="dimension" />
         <attr name="biu_text_scale" format="float" />
@@ -159,9 +176,9 @@
             <enum name="flyup" value="0" />
             <enum name="flydown" value="1" />
         </attr>
+    </declare-styleable>-->
 
-    </declare-styleable>
-    <declare-styleable name="CustomToggle">
+    <!--<declare-styleable name="CustomToggle">
         <attr name="ctg_addLeftIcon" format="reference" type="drawable" />
         <attr name="ctg_addRightIcon" format="reference" />
         <attr name="ctg_addSlideBackgroundColor" format="color" />
@@ -173,9 +190,9 @@
             <enum name="phantom_animation" value="1" />
             <enum name="extra_animation" value="2" />
         </attr>
-    </declare-styleable>
+    </declare-styleable>-->
 
-    <declare-styleable name="CircularProgressBar">
+    <!--<declare-styleable name="CircularProgressBar">
         <attr name="maximum" format="float" />
         <attr name="progress" format="float" />
         <attr name="animateProgress" format="boolean" />
@@ -190,18 +207,21 @@
         <attr name="indeterminateMinimumAngle" format="float" />
         <attr name="indeterminateArcAnimationDuration" format="integer" />
         <attr name="indeterminateRotationAnimationDuration" format="integer" />
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="RealtimeBlurView">
         <attr name="realtimeBlurRadius" format="dimension" />
         <attr name="realtimeDownsampleFactor" format="float" />
         <attr name="realtimeOverlayColor" format="color" />
     </declare-styleable>
-    <declare-styleable name="AutoViewPager">
+
+    <!--<declare-styleable name="AutoViewPager">
         <attr name="avp_indeterminate" format="boolean" />
         <attr name="avp_autoScroll" format="boolean" />
         <attr name="avp_duration" format="integer" />
-    </declare-styleable>
-    <declare-styleable name="ShapeFlyer">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ShapeFlyer">
         <attr name="shape_width" format="dimension" />
         <attr name="shape_height" format="dimension" />
         <attr name="enable_alpha" format="boolean" />
@@ -210,12 +230,14 @@
         <attr name="to_scale" format="float" />
         <attr name="from_alpha" format="float" />
         <attr name="to_alpha" format="float" />
-    </declare-styleable>
-    <declare-styleable name="ParallaxImageView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ParallaxImageView">
         <attr name="parallax_ratio" format="float" />
         <attr name="center_crop" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="CircularSeekBar">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="CircularSeekBar">
         <attr name="enabled" format="boolean" />
         <attr name="showIndicator" format="boolean" />
         <attr name="min" format="float" />
@@ -230,35 +252,38 @@
         <attr name="innerCircleColor" format="color" />
         <attr name="progressTextColor" format="color" />
         <attr name="progressTextSize" format="float" />
-    </declare-styleable>
-    <declare-styleable name="AutofitEditText">
-        <!-- Minimum size of the text. -->
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="AutofitEditText">
+        &lt;!&ndash; Minimum size of the text. &ndash;&gt;
         <attr name="minTextSize" format="dimension" />
-        <!-- Amount of precision used to calculate the correct text size to fit within its
-        bounds. Lower precision is more precise and takes more time. -->
+        &lt;!&ndash; Amount of precision used to calculate the correct text size to fit within its
+        bounds. Lower precision is more precise and takes more time. &ndash;&gt;
         <attr name="precision" format="float" />
-        <!-- Defines whether to automatically resize text to fit to the view's bounds. -->
+        &lt;!&ndash; Defines whether to automatically resize text to fit to the view's bounds. &ndash;&gt;
         <attr name="sizeToFit" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="AutofitTextView">
-        <!-- Minimum size of the text. -->
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="AutofitTextView">
+        &lt;!&ndash; Minimum size of the text. &ndash;&gt;
         <attr name="minTextSizeTv" format="dimension" />
-        <!-- Amount of precision used to calculate the correct text size to fit within its
-        bounds. Lower precision is more precise and takes more time. -->
+        &lt;!&ndash; Amount of precision used to calculate the correct text size to fit within its
+        bounds. Lower precision is more precise and takes more time. &ndash;&gt;
         <attr name="precisionTv" format="float" />
-        <!-- Defines whether to automatically resize text to fit to the view's bounds. -->
+        &lt;!&ndash; Defines whether to automatically resize text to fit to the view's bounds. &ndash;&gt;
         <attr name="sizeToFitTv" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="ArcDrawer">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ArcDrawer">
         <attr name="arc_width" format="dimension" />
         <attr name="arc_cropDirection" format="enum">
             <enum name="cropInside" value="0" />
             <enum name="cropOutside" value="1" />
         </attr>
-    </declare-styleable>
-    <!--LoadingButton-->
-    <declare-styleable name="buttonLoading">
+    </declare-styleable>-->
 
+    <!--LoadingButton-->
+    <!--<declare-styleable name="buttonLoading">
         <attr name="BL_enable" format="boolean" />
         <attr name="BL_idParent" format="integer" />
         <attr name="BL_font" format="string" />
@@ -276,13 +301,14 @@
             <enum name="animationFinish" value="4" />
         </attr>
 
-    </declare-styleable>
-    <declare-styleable name="ContinuousScrollableImageView">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="ContinuousScrollableImageView">
         <attr name="imageSrc" format="reference" />
         <attr name="direction" />
         <attr name="duration" format="integer" />
         <attr name="scaleType" />
-    </declare-styleable>
+    </declare-styleable>-->
 
     <attr name="direction">
         <enum name="up" value="0" />
@@ -302,11 +328,11 @@
         <enum name="centerInside" value="7" />
     </attr>
 
-    <declare-styleable name="PanoramaImageView">
+    <!--<declare-styleable name="PanoramaImageView">
         <attr name="piv_enablePanoramaMode" format="boolean" />
         <attr name="piv_invertScrollDirection" format="boolean" />
         <attr name="piv_show_scrollbar" format="boolean" />
-    </declare-styleable>
+    </declare-styleable>-->
 
     <declare-styleable name="draggable_panel">
         <attr name="top_fragment_height" format="dimension" />
@@ -334,73 +360,74 @@
         <attr name="top_view_resize" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="TreeView">
+    <!--<declare-styleable name="TreeView">
         <attr name="level_separation" format="dimension" />
         <attr name="line_thickness" format="dimension" />
         <attr name="line_color" format="color" />
-    </declare-styleable>
+    </declare-styleable>-->
 
-    <declare-styleable name="DraggableFlipView">
+    <!--<declare-styleable name="DraggableFlipView">
         <attr name="dragDetectAngle" format="integer" />
         <attr name="draggableAngle" format="integer" />
         <attr name="frontView" format="reference" />
         <attr name="backView" format="reference" />
-    </declare-styleable>
-    <declare-styleable name="CircularView">
-        <!-- The text that will appear in the center of the view. -->
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="CircularView">
+        &lt;!&ndash; The text that will appear in the center of the view. &ndash;&gt;
         <attr name="text_circular" format="string" />
 
-        <!-- The size of the text that appears in the center of the view. -->
+        &lt;!&ndash; The size of the text that appears in the center of the view. &ndash;&gt;
         <attr name="textSize_circular" format="dimension" />
 
-        <!-- The color of the text that appears in the center of the view. -->
+        &lt;!&ndash; The color of the text that appears in the center of the view. &ndash;&gt;
         <attr name="textColor_circular" format="color" />
 
-        <!-- The color of the center of the background. -->
+        &lt;!&ndash; The color of the center of the background. &ndash;&gt;
         <attr name="centerBackgroundColor" format="color" />
 
-        <!-- The drawable of the center view -->
+        &lt;!&ndash; The drawable of the center view &ndash;&gt;
         <attr name="centerDrawable" format="reference" />
 
-        <!-- Starting points for where the markers will be drawn. -->
+        &lt;!&ndash; Starting points for where the markers will be drawn. &ndash;&gt;
         <attr name="markerStartingPoint" format="float">
-            <!-- Starting point at the top of the view. -->
+            &lt;!&ndash; Starting point at the top of the view. &ndash;&gt;
             <enum name="top" value="270" />
-            <!-- Starting point at the bottom of the view. -->
+            &lt;!&ndash; Starting point at the bottom of the view. &ndash;&gt;
             <enum name="bottom" value="90" />
-            <!-- Starting point at the left of the view. -->
+            &lt;!&ndash; Starting point at the left of the view. &ndash;&gt;
             <enum name="left" value="180" />
-            <!-- Starting point at the right of the view. -->
+            &lt;!&ndash; Starting point at the right of the view. &ndash;&gt;
             <enum name="right" value="0" />
         </attr>
 
-        <!-- Flag that determines if the highlighted marker will be drawn on top of others. -->
+        &lt;!&ndash; Flag that determines if the highlighted marker will be drawn on top of others. &ndash;&gt;
         <attr name="drawHighlightedMarkerOnTop" format="boolean" />
 
-        <!-- The degree that is highlighted. -->
+        &lt;!&ndash; The degree that is highlighted. &ndash;&gt;
         <attr name="highlightedDegree" format="float">
-            <!-- Starting point at the top of the view. -->
+            &lt;!&ndash; Starting point at the top of the view. &ndash;&gt;
             <enum name="top" value="270" />
-            <!-- Starting point at the bottom of the view. -->
+            &lt;!&ndash; Starting point at the bottom of the view. &ndash;&gt;
             <enum name="bottom" value="90" />
-            <!-- Starting point at the left of the view. -->
+            &lt;!&ndash; Starting point at the left of the view. &ndash;&gt;
             <enum name="left" value="180" />
-            <!-- Starting point at the right of the view. -->
+            &lt;!&ndash; Starting point at the right of the view. &ndash;&gt;
             <enum name="right" value="0" />
         </attr>
 
-        <!-- Flag that determines if markers will animate when the highlight animation is not running. -->
+        &lt;!&ndash; Flag that determines if markers will animate when the highlight animation is not running. &ndash;&gt;
         <attr name="animateMarkersOnStillHighlight" format="boolean" />
 
-        <!-- Flag that determine if this object's drawable should fit inside of the center circle. -->
+        &lt;!&ndash; Flag that determine if this object's drawable should fit inside of the center circle. &ndash;&gt;
         <attr name="fitToCircle" format="boolean" />
 
-        <!-- Attribute to display markers when in edit mode. -->
+        &lt;!&ndash; Attribute to display markers when in edit mode. &ndash;&gt;
         <attr name="editMode_markerCount" format="integer" />
-        <!-- Set the marker radius for edit mode only. -->
+        &lt;!&ndash; Set the marker radius for edit mode only. &ndash;&gt;
         <attr name="editMode_markerRadius" format="integer" />
-    </declare-styleable>
-    <declare-styleable name="Toggle">
+    </declare-styleable>-->
+    <!--<declare-styleable name="Toggle">
 
         <attr name="textOn" format="string" />
 
@@ -419,7 +446,8 @@
         <attr name="android:textSize" />
 
         <attr name="android:enabled" />
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="AutoLinearLayout">
         <!-- Standard orientation constant. -->
         <attr name="auto_orientation">
@@ -472,7 +500,8 @@
     <declare-styleable name="AutoLinearLayoutTheme">
         <attr name="autoLinearLayoutStyle" format="reference" />
     </declare-styleable>
-    <declare-styleable name="SwipeableLayout">
+
+    <!--<declare-styleable name="SwipeableLayout">
         <attr name="swipeSpeed" format="float" />
         <attr name="swipeOrientation" format="enum">
             <enum name="leftToRight" value="0" />
@@ -481,12 +510,14 @@
             <enum name="none" value="3" />
         </attr>
         <attr name="scrollAndClickable" format="boolean" />
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="MovieView">
         <attr name="android:src" />
         <attr name="android:title" />
         <attr name="android:adjustViewBounds" />
     </declare-styleable>
+
     <declare-styleable name="FlowLayout">
         <attr name="flFlow" format="boolean" />
         <attr name="flChildSpacing" format="enum|dimension">
@@ -504,7 +535,8 @@
         <attr name="flMaxRows" format="integer" />
         <attr name="android:gravity" />
     </declare-styleable>
-    <declare-styleable name="SwipeBackLayout">
+
+    <!--<declare-styleable name="SwipeBackLayout">
         <attr name="swipeBackFactor" format="float" />
         <attr name="maskAlpha" format="integer" />
         <attr name="isSwipeFromEdge" format="boolean" />
@@ -514,7 +546,8 @@
             <enum name="top" value="4" />
             <enum name="bottom" value="8" />
         </attr>
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="UZVerticalSeekBar">
         <attr name="seekBarRotation">
             <!-- Clock wise - 90 deg; top = min, bottom = max -->
@@ -523,7 +556,8 @@
             <enum name="CW270" value="270" />
         </attr>
     </declare-styleable>
-    <declare-styleable name="WatchWhileLayout">
+
+    <!--<declare-styleable name="WatchWhileLayout">
         <attr name="playerViewId" format="reference" />
         <attr name="playerTopLeftViewId" format="reference" />
         <attr name="metadataViewId" format="reference" />
@@ -532,14 +566,17 @@
         <attr name="tabletLayout" format="boolean" />
         <attr name="miniPlayerWidth" format="dimension" />
         <attr name="miniPlayerPadding" format="dimension" />
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="FixedAspectRatio">
         <attr name="aspectRatio" format="fraction" />
     </declare-styleable>
+
     <declare-styleable name="FixedAspectRatioRelativeLayout">
         <attr name="aspectRatioRelativeLayout" format="fraction" />
     </declare-styleable>
-    <declare-styleable name="BannerLayout">
+
+    <!--<declare-styleable name="BannerLayout">
         <attr name="interval" />
         <attr name="showIndicator_banner_layout" />
         <attr name="orientation" />
@@ -547,8 +584,9 @@
         <attr name="itemSpace" format="integer" />
         <attr name="centerScale" format="float" />
         <attr name="moveSpeed" format="float" />
-    </declare-styleable>
-    <declare-styleable name="RecyclerViewBannerBase">
+    </declare-styleable>-->
+
+    <!--<declare-styleable name="RecyclerViewBannerBase">
         <attr name="interval" />
         <attr name="showIndicator_banner_base" />
         <attr name="orientation" />
@@ -564,11 +602,13 @@
             <enum name="center" value="1" />
             <enum name="right" value="2" />
         </attr>
-    </declare-styleable>
+    </declare-styleable>-->
+
     <declare-styleable name="UZImageButton">
         <attr name="useDefaultIB" format="boolean" />
         <attr name="srcDisabled" format="reference" />
     </declare-styleable>
+
     <declare-styleable name="UZTextView">
         <attr name="useDefaultTV" format="boolean" />
     </declare-styleable>

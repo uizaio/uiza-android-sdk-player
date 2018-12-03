@@ -15,10 +15,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v2.listallentityrelation.ListAllEntityRelation;
-import uizacoresdk.util.UZData;
 
 /**
  * Created by loitp on 5/2/2018.
@@ -158,7 +158,7 @@ public class UZDligListEntityRelation extends Dialog {
                 }
             });
             recyclerView.setAdapter(adapterPlayList);
-            LUIUtil.setPullLikeIOSHorizontal(recyclerView);
+            //LUIUtil.setPullLikeIOSHorizontal(recyclerView);
         }
         LUIUtil.hideProgressBar(progressBar);
     }
