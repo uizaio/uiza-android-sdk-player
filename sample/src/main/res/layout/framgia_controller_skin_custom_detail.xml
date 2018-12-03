@@ -247,8 +247,7 @@
             android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:paddingBottom="@dimen/padding_10">
+            android:layout_marginBottom="@dimen/margin_10">
 
             <vn.uiza.views.autosize.UZTextView
                 android:id="@id/uz_position"
