@@ -835,7 +835,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void removeVideoCover(boolean isFromHandleError) {
-        //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
+        //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError + ", isInitCustomLinkPlay: " + isInitCustomLinkPlay);
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
@@ -849,14 +849,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
                 callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
             }
-            //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError);
             if (!isFromHandleError) {
                 onStateReadyFirst();
             }
+        } else {
+            //goi changskin realtime thi no ko vao if nen ko update tvDuration dc
+            updateTvDuration();
         }
-        /*if (!isFromHandleError) {
-            onStateReadyFirst();
-        }*/
     }
 
     public UZVideo(Context context) {
@@ -1101,8 +1100,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            //TODO revert VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;
@@ -1468,15 +1466,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    protected void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
+    private void updateTvDuration() {
         if (tvDuration != null) {
             if (isLivestream) {
                 tvDuration.setText(LDateUtils.convertMlsecondsToHMmSs(0));
             } else {
                 tvDuration.setText(LDateUtils.convertMlsecondsToHMmSs(getDuration()));
             }
+        } else {
+            //LLog.d(TAG, "tvDuration==null");
         }
+    }
+
+    protected void onStateReadyFirst() {
+        //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
+        updateTvDuration();
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
