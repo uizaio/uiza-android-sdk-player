@@ -3634,14 +3634,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return 0;
     }
 
-    private int getVideoW() {
+    public int getVideoW() {
         if (uzPlayerManager == null) {
             return 0;
         }
         return uzPlayerManager.getVideoW();
     }
 
-    private int getVideoH() {
+    public int getVideoH() {
         if (uzPlayerManager == null) {
             return 0;
         }
