@@ -148,12 +148,12 @@ public class LActivityUtil {
     public static boolean toggleScreenOritation(Activity activity) {
         int s = getScreenOrientation(activity);
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
-            LLog.d(TAG, "fuck landscape -> portrait");
+            //LLog.d(TAG, "landscape -> portrait");
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
             return true;
         } else if (s == Configuration.ORIENTATION_PORTRAIT) {
-            LLog.d(TAG, "fuck portrait -> landscape");
+            //LLog.d(TAG, "portrait -> landscape");
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);//xoay qua xoay lai landscape
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);//ko thay gi xay ra

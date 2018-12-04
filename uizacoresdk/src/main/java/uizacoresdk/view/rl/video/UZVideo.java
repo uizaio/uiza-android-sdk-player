@@ -1923,9 +1923,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onOrientationChange(int orientation) {
         if (orientation == 90 || orientation == 270) {
-            LLog.d(TAG, "fuck onOrientationChange landscape");
+            //LLog.d(TAG, "onOrientationChange landscape");
         } else {
-            LLog.d(TAG, "fuck onOrientationChange portrait");
+            //LLog.d(TAG, "onOrientationChange portrait");
         }
     }
 
@@ -1934,7 +1934,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         super.onConfigurationChanged(newConfig);
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                LLog.d(TAG, "fuck onConfigurationChanged ORIENTATION_LANDSCAPE");
+                //LLog.d(TAG, "onConfigurationChanged ORIENTATION_LANDSCAPE");
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
@@ -1944,7 +1944,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }
             } else {
-                LLog.d(TAG, "fuck onConfigurationChanged !ORIENTATION_LANDSCAPE");
+                //LLog.d(TAG, "onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
