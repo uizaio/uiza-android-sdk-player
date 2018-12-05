@@ -1101,8 +1101,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            //TODo revert to VISIBLE
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(View.VISIBLE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;

@@ -1,3 +1,14 @@
+### 2.9.5 (2018-12-5)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.9.5'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.9.5'
+
+- Fixed auto screen rotation.
+
+
 ### 2.9.3 (2018-12-3)
 
     //for playing video VOD, LIVE  
