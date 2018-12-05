@@ -97,31 +97,18 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             if (entityId == null) {
-                //LLog.d(TAG, "init metadataId && entityId == null -> pip");
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
-                //LLog.d(TAG, "isInitWithPlaylistFolder " + isInitWithPlaylistFolder);
                 if (isInitWithPlaylistFolder) {
                     UZUtil.initPlaylistFolder(activity, uzVideo, null);
                 } else {
                     UZUtil.initEntity(activity, uzVideo, null);
                 }
             } else {
-                //LLog.d(TAG, "init entity " + entityId);
                 UZUtil.initEntity(activity, uzVideo, entityId);
             }
         } else {
-            //LLog.d(TAG, "init playlist folder " + metadataId);
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         }
-
-        //set uzVideo hide all controller
-        //uzVideo.setDefaultUseController(false);
-        //uzVideo.setControllerAutoShow(true);
-        //uzVideo.setHideControllerOnTouch(true);
-        //uzVideo.getIbFullscreenIcon().setVisibility(View.GONE);
-        //uzVideo.getIbSettingIcon().setVisibility(View.GONE);
-        //uzVideo.getIbSettingIcon().setImageResource(R.mipmap.ic_launcher);
-
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -158,7 +145,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
                 tvClickEvent.setText("onSwipeTop");
             }
         });
-
         findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,88 +272,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
-        /*uzVideo.getPlayer().addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-
-            @Override
-            public void onSeekProcessed() {
-                //LLog.d(TAG, "onTimelineChanged");
-            }
-        });*/
-        /*uzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
-            @Override
-            public void onAudioEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioEnabled");
-            }
-
-            @Override
-            public void onAudioSessionId(int audioSessionId) {
-                //LLog.d(TAG, "onAudioSessionId");
-            }
-
-            @Override
-            public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onAudioDecoderInitialized");
-            }
-
-            @Override
-            public void onAudioInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onAudioInputFormatChanged");
-            }
-
-            @Override
-            public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                //LLog.d(TAG, "onAudioSinkUnderrun");
-            }
-
-            @Override
-            public void onAudioDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioDisabled");
-            }
-        });*/
         uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
