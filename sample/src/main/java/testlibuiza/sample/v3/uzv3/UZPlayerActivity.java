@@ -22,8 +22,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDialogUtil;
-import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -447,25 +445,11 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
 
     @Override
     public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-
-            @Override
-            public void onCancel() {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

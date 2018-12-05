@@ -64,6 +64,7 @@ import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.SensorOrientationChangeNotifier;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
 import uizacoresdk.util.UZTrackingUtil;
@@ -121,7 +122,7 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by www.muathu@gmail.com on 7/26/2017.
  */
 
-public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, UZPlayerView.ControllerStateCallback {
+public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, UZPlayerView.ControllerStateCallback, SensorOrientationChangeNotifier.Listener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private int DEFAULT_VALUE_BACKWARD_FORWARD = 10000;//10000 mls
     private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;//8000 mls
@@ -1549,16 +1550,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         //LLog.d(TAG, "onResume getUZInputList().size " + UZData.getInstance().getUZInputList().size());
         activityIsPausing = false;
-        /*if (isExoShareClicked) {
-            LLog.d(TAG, "onResume if");
-            isExoShareClicked = false;
-            if (uzPlayerManager != null) {
-                uzPlayerManager.resumeVideo();
-            }
-        } else {
-            LLog.d(TAG, "onResume else initUizaPlayerManager");
-            //initUizaPlayerManager();
-        }*/
+        SensorOrientationChangeNotifier.getInstance(activity).addListener(this);
         if (uzPlayerManager != null) {
             if (ibPlayIcon != null && ibPlayIcon.getVisibility() == VISIBLE) {
                 //LLog.d(TAG, "onResume uzPlayerManager != null - if -> do nothing");
@@ -1608,15 +1600,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void onPause() {
         //LLog.d(TAG, "onPause " + isExoShareClicked);
         activityIsPausing = true;
-        /*if (isExoShareClicked) {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.pauseVideo();
-            }
-        } else {
-            if (uzPlayerManager != null) {
-                uzPlayerManager.reset();
-            }
-        }*/
+        SensorOrientationChangeNotifier.getInstance(activity).remove(this);
         if (uzPlayerManager != null) {
             uzPlayerManager.pauseVideo();
         }
@@ -1742,16 +1726,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    protected void toggleScreenOritation() {
-        LActivityUtil.toggleScreenOritation(activity);
-        /*boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
-        if (isLandToPort) {
-            //do nothing
-        } else {
-            UZUtil.resizeLayout(rootView, ivVideoCover, 0);
-        }*/
-    }
-
     private UZItemClick uzItemClick;
 
     public void addItemClick(UZItemClick uzItemClick) {
@@ -1763,7 +1737,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (v == rlMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
-            toggleScreenOritation();
+            LActivityUtil.toggleScreenOritation(activity);
         } else if (v == ibBackScreenIcon) {
             handleClickBackScreen();
         } else if (v == ibVolumeIcon) {
@@ -1937,10 +1911,36 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     @Override
+    public void onOrientationChange(int orientation) {
+        //LLog.d(TAG, "=====================================" + orientation);
+        //270 land trai
+        //0 portrait duoi
+        //90 land phai
+        //180 portrait tren
+        boolean isDeviceAutoRotation = LDeviceUtil.isRotationPossible(activity);
+        if (orientation == 90 || orientation == 270) {
+            //LLog.d(TAG, "orientation is landscape, isDeviceAutoRotation is On: " + isDeviceAutoRotation + ", isLandscape: " + isLandscape);
+            if (isDeviceAutoRotation) {
+                if (!isLandscape) {
+                    LActivityUtil.changeScreenLandscape(activity, orientation);
+                }
+            }
+        } else {
+            //LLog.d(TAG, "orientation is portrait, isDeviceAutoRotation is On: " + isDeviceAutoRotation + ", isLandscape: " + isLandscape);
+            if (isDeviceAutoRotation) {
+                if (isLandscape) {
+                    LActivityUtil.changeScreenPortrait(activity);
+                }
+            }
+        }
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                //LLog.d(TAG, "onConfigurationChanged ORIENTATION_LANDSCAPE");
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
@@ -1950,6 +1950,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }
             } else {
+                //LLog.d(TAG, "onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
@@ -3634,14 +3635,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return 0;
     }
 
-    private int getVideoW() {
+    public int getVideoW() {
         if (uzPlayerManager == null) {
             return 0;
         }
         return uzPlayerManager.getVideoW();
     }
 
-    private int getVideoH() {
+    public int getVideoH() {
         if (uzPlayerManager == null) {
             return 0;
         }

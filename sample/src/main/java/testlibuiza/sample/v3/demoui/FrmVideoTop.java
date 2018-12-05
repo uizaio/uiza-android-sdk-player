@@ -49,17 +49,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo.setVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                if (width >= height) {
-                    int screenW = LScreenUtil.getScreenWidth();
-                    int screenH = height * screenW / width;
-                    //LLog.d(TAG, "onVideoSizeChanged >=: " + screenW + "x" + screenH);
-                    resizeView(screenW, screenH);
-                } else {
-                    int screenW = LScreenUtil.getScreenWidth();
-                    int screenH = screenW;
-                    //LLog.d(TAG, "onVideoSizeChanged <: " + screenW + "x" + screenH);
-                    resizeView(screenW, screenH);
-                }
+                calSize(width, height);
             }
         });
         uzVideo.addItemClick(this);
@@ -138,7 +128,6 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        //LLog.d(TAG, ">>>> isInitResult " + isInitSuccess + " - " + isGetDataSuccess);
         ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
@@ -176,13 +165,17 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
+        //LLog.d(TAG, "onScreenRotate isLandscape " + isLandscape);
+        if (!isLandscape) {
+            int width = uzVideo.getVideoW();
+            int height = uzVideo.getVideoH();
+            //LLog.d(TAG, "onScreenRotate " + width + "x" + height);
+            calSize(width, height);
+        }
     }
 
     @Override
     public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
     }
 
     public void initEntity(String entityId) {
@@ -197,6 +190,20 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         int h = (int) (w * Constants.RATIO_9_16);
         resizeView(w, h);
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
+    }
+
+    private void calSize(int width, int height) {
+        if (width >= height) {
+            int screenW = LScreenUtil.getScreenWidth();
+            int screenH = height * screenW / width;
+            //LLog.d(TAG, "calSize >=: " + screenW + "x" + screenH);
+            resizeView(screenW, screenH);
+        } else {
+            int screenW = LScreenUtil.getScreenWidth();
+            int screenH = screenW;
+            //LLog.d(TAG, "calSize <: " + screenW + "x" + screenH);
+            resizeView(screenW, screenH);
+        }
     }
 
     private void resizeView(int w, int h) {

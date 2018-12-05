@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 
 import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.data.EventBusData;
 
 /**
@@ -95,20 +94,20 @@ public class LConectifyService extends JobService implements ConnectivityReceive
             boolean isConnectedWifi = false;
             boolean isConnectedFast = false;
             if (LConnectivityUtil.isConnectedMobile(this)) {
-                LLog.d(TAG, "isConnectedMobile");
+                //LLog.d(TAG, "isConnectedMobile");
                 isConnectedMobile = true;
             }
             if (LConnectivityUtil.isConnectedWifi(this)) {
-                LLog.d(TAG, "isConnectedWifi");
+                //LLog.d(TAG, "isConnectedWifi");
                 isConnectedWifi = true;
             }
             if (LConnectivityUtil.isConnectedFast(this)) {
-                LLog.d(TAG, "isConnectedFast");
+                //LLog.d(TAG, "isConnectedFast");
                 isConnectedFast = true;
             }
             EventBusData.getInstance().sendConnectChange(true, isConnectedFast, isConnectedWifi, isConnectedMobile);
         } else {
-            LLog.d(TAG, "!isConnected");
+            //LLog.d(TAG, "!isConnected");
             EventBusData.getInstance().sendConnectChange(false, false, false, false);
         }
     }

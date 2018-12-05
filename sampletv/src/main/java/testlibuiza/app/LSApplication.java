@@ -12,12 +12,13 @@ public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
 
-    private final String DF_DOMAIN_API = "veep.uiza.co";
-    private final String DF_TOKEN = "uap-4f892058d35e46dd8a3a660481583b79-6a1319cb";
-    private final String DF_APP_ID = "4f892058d35e46dd8a3a660481583b79";
-    public static String entityIdDefaultVOD = "aa0874b7-16fd-4ede-aa5a-a6b3a4f3ba79";
-    public static String entityIdDefaultLIVE = "64d0665e-9593-491d-b849-a8624ba47c73";
-    public static String metadataDefault0 = "a8d02fcd-d5b8-42f5-b0c4-628533ec8a9c";
+    //TODO input information of your workspace
+    private final String DF_DOMAIN_API = "input";
+    private final String DF_TOKEN = "input";
+    private final String DF_APP_ID = "input";
+    public static String entityIdDefaultVOD = "input";
+    public static String entityIdDefaultLIVE = "input";
+    public static String metadataDefault0 = "input";
     private final int env = Constants.ENVIRONMENT_PROD;
 
     @Override

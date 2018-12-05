@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
@@ -95,5 +96,15 @@ public class LDeviceUtil {
         } else {
             return false;
         }
+    }
+
+    //return true if device is set auto switch rotation on
+    //return false if device is set auto switch rotation off
+    public static boolean isRotationPossible(Context context) {
+        if (context == null) {
+            return false;
+        }
+        boolean hasAccelerometer = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER);
+        return (hasAccelerometer && android.provider.Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
     }
 }
