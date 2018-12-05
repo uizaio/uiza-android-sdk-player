@@ -1101,7 +1101,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODo revert to VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;
@@ -1726,16 +1727,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    protected void toggleScreenOritation() {
-        LActivityUtil.toggleScreenOritation(activity);
-        /*boolean isLandToPort = LActivityUtil.toggleScreenOritation(activity);
-        if (isLandToPort) {
-            //do nothing
-        } else {
-            UZUtil.resizeLayout(rootView, ivVideoCover, 0);
-        }*/
-    }
-
     private UZItemClick uzItemClick;
 
     public void addItemClick(UZItemClick uzItemClick) {
@@ -1747,7 +1738,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (v == rlMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
-            toggleScreenOritation();
+            LActivityUtil.toggleScreenOritation(activity);
         } else if (v == ibBackScreenIcon) {
             handleClickBackScreen();
         } else if (v == ibVolumeIcon) {
@@ -1922,10 +1913,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onOrientationChange(int orientation) {
+        //LLog.d(TAG, "=====================================" + orientation);
+        //270 land trai
+        //0 portrait duoi
+        //90 land phai
+        //180 portrait tren
+        boolean isDeviceAutoRotation = LDeviceUtil.isRotationPossible(activity);
         if (orientation == 90 || orientation == 270) {
-            //LLog.d(TAG, "onOrientationChange landscape");
+            //LLog.d(TAG, "orientation is landscape, isDeviceAutoRotation is On: " + isDeviceAutoRotation + ", isLandscape: " + isLandscape);
+            if (isDeviceAutoRotation) {
+                if (!isLandscape) {
+                    LActivityUtil.changeScreenLandscape(activity, orientation);
+                }
+            }
         } else {
-            //LLog.d(TAG, "onOrientationChange portrait");
+            //LLog.d(TAG, "orientation is portrait, isDeviceAutoRotation is On: " + isDeviceAutoRotation + ", isLandscape: " + isLandscape);
+            if (isDeviceAutoRotation) {
+                if (isLandscape) {
+                    LActivityUtil.changeScreenPortrait(activity);
+                }
+            }
         }
     }
 
