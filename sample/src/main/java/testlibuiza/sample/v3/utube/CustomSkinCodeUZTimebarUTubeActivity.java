@@ -111,6 +111,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         uzVideo.setUzTimebarBottom();
 
         final String entityId = LSApplication.entityIdDefaultVOD;
+        //final String entityId = LSApplication.entityIdDefaultLIVE;
         UZUtil.initEntity(activity, uzVideo, entityId);
 
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {

@@ -27,7 +27,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -257,12 +256,12 @@ public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemCli
         if (width >= height) {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = height * screenW / width;
-            LLog.d(TAG, "fuck calSize >=: " + screenW + "x" + screenH);
+            //LLog.d(TAG, "calSize >=: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         } else {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = screenW;
-            LLog.d(TAG, "fuck calSize <: " + screenW + "x" + screenH);
+            //LLog.d(TAG, "calSize <: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         }
     }
