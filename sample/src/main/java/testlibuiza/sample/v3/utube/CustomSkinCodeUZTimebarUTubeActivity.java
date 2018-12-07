@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.customskin;
+package testlibuiza.sample.v3.utube;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -52,11 +52,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.u_tube_controller_skin_custom_main);
+        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-
-        //listener
         uzVideo.addUZCallback(this);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override

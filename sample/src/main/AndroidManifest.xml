@@ -58,13 +58,15 @@
             android:name=".sample.v3.volume.VolumeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinCodeUZTimebarUTubeActivity"
+            android:name=".sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.event.EventActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.customskin.ResizeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" /><activity
+            android:name=".sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 
