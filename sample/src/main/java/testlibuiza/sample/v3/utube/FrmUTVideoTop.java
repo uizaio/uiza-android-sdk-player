@@ -162,34 +162,10 @@ public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemCli
         }
     }
 
-    private void setListener() {
-        if (uzVideo == null || uzVideo.getPlayer() == null) {
-            return;
-        }
-        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
-            @Override
-            public void onVisibilityChange(boolean isShow) {
-                if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel() != null
-                        && !((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isLandscapeScreen()) {
-                    if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        if (isShow) {
-                            ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
-                        } else {
-                            ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
-                        }
-                    } else {
-                        ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
-                    }
-                }
-            }
-        });
-    }
-
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
-            setListener();
             setAutoHideController();
         }
     }
@@ -281,14 +257,32 @@ public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemCli
         });
     }
 
+    //listerner controller visibility state
+    private void onVisibilityChange(boolean isShow) {
+        if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel() != null
+                && !((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isLandscapeScreen()) {
+            if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                if (isShow) {
+                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                } else {
+                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                }
+            } else {
+                ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+            }
+        }
+    }
+
     private void toggleControllerExceptUZTimebar() {
         if (uzVideo.getLlTop() != null) {
             if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
                 uzVideo.getLlTop().setVisibility(View.INVISIBLE);
                 cancelAutoHideController();
+                onVisibilityChange(false);
             } else {
                 uzVideo.getLlTop().setVisibility(View.VISIBLE);
                 setAutoHideController();
+                onVisibilityChange(true);
             }
         }
         if (uzVideo.getRlLiveInfo() != null) {
