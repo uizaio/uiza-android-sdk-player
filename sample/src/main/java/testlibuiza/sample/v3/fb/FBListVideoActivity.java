@@ -3,6 +3,7 @@ package testlibuiza.sample.v3.fb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,6 +26,7 @@ public class FBListVideoActivity extends BaseActivity {
     private List<Data> dataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;
+    private CardView cvPlaylistFolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class FBListVideoActivity extends BaseActivity {
         NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
         nsv.setNestedScrollingEnabled(false);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
-        findViewById(R.id.ll_playlist_folder).setOnClickListener(new View.OnClickListener() {
+        cvPlaylistFolder = (CardView) findViewById(R.id.cv_playlist_folder);
+        cvPlaylistFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
@@ -83,6 +86,7 @@ public class FBListVideoActivity extends BaseActivity {
             @Override
             public void onSuccess(ResultListEntity result) {
                 dataList.addAll(result.getData());
+                cvPlaylistFolder.setVisibility(View.VISIBLE);
                 fbVideoAdapter.notifyDataSetChanged();
             }
 

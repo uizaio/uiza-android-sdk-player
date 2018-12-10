@@ -89,15 +89,16 @@
             </LinearLayout>
 
             <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cv_playlist_folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10"
+                android:visibility="invisible"
                 app:cardBackgroundColor="@color/White"
                 app:cardCornerRadius="@dimen/round_15"
                 app:cardElevation="3dp">
 
                 <LinearLayout
-                    android:id="@+id/ll_playlist_folder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
