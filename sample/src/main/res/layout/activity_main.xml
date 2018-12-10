@@ -67,6 +67,12 @@
                     android:text="Custom skin by code (UZTimebar)" />
 
                 <Button
+                    android:id="@+id/bt_mini_fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mini player like Facebook" />
+
+                <Button
                     android:id="@+id/bt_uiza_custom_skin_u_tube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

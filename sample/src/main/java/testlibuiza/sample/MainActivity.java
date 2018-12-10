@@ -15,6 +15,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
+import testlibuiza.sample.v3.fb.FBListVideoActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity;
@@ -145,6 +146,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ResizeActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_mini_fb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, FBListVideoActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

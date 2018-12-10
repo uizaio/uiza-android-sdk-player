@@ -11,11 +11,11 @@ import android.widget.TextView;
 import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnFocusChangeListener, View.OnClickListener {

@@ -205,12 +205,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
                 uzVideo.showSharePopup();
             }
         });
-        findViewById(R.id.bt_picture_in_picture).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uzVideo.showPip();
-            }
-        });
         findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
