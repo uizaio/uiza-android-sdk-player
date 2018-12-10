@@ -1101,7 +1101,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            //TODO revert VISIBLE
+            debugLayout.setVisibility(View.GONE);
         } else {
             debugLayout.setVisibility(View.GONE);
             debugTextView = null;
@@ -1944,17 +1945,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
-                if (isTablet) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(GONE);
-                    }
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(GONE);
                 }
             } else {
                 //LLog.d(TAG, "onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
-                if (isTablet && !isCastingChromecast()) {
+                if (!isCastingChromecast()) {
                     if (ibPictureInPictureIcon != null) {
                         ibPictureInPictureIcon.setVisibility(VISIBLE);
                     }
@@ -2019,17 +2018,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPictureInPictureIcon.setVisibility(GONE);
             }
         } else {
-            if (isTablet) {
-                if (isTV) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(GONE);
-                    }
-                } else {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(VISIBLE);
-                    }
-                }
-            } else {
+            if (isTablet && isTV) {
+                //only hide ibPictureInPictureIcon if device is TV
                 if (ibPictureInPictureIcon != null) {
                     ibPictureInPictureIcon.setVisibility(GONE);
                 }

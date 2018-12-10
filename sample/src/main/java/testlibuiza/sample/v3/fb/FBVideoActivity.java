@@ -19,7 +19,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 /**
- * Created by loitp on 7/16/2018.
+ * Created by loitp on 12/10/2018.
  */
 
 public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {
@@ -43,7 +43,7 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
