@@ -37,6 +37,10 @@
                 android:src="@drawable/baseline_audiotrack_white_48"
                 android:tint="@color/Red" />
 
+            <View
+                android:layout_width="@dimen/w_25"
+                android:layout_height="@dimen/w_1" />
+
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_setting"
                 android:layout_width="wrap_content"
@@ -45,14 +49,17 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/baseline_high_quality_white_48" />
 
-            <vn.uiza.views.autosize.UZImageButton
+            <Button
                 android:id="@+id/uzib_custom_hq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_high_quality_white_48"
-                android:tint="@color/Red" />
+                android:background="@drawable/rounded_live"
+                android:text="HQ"
+                android:textColor="@color/White" />
+
+            <View
+                android:layout_width="@dimen/w_25"
+                android:layout_height="@dimen/w_1" />
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_fullscreen_toggle_icon"

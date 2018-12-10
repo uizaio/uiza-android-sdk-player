@@ -11,6 +11,7 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 
 import com.daimajia.androidanimations.library.Techniques;
+import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ import vn.uiza.views.autosize.UZImageButton;
 
 public class CustomHQActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
-    private UZImageButton uzibCustomHq;
+    private Button btCustomHq;
     private UZImageButton uzibCustomAudio;
     private LinearLayout llListHq;
 
@@ -65,15 +66,21 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_hq_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        btCustomHq = (Button) uzVideo.findViewById(R.id.uzib_custom_hq);
         uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        uzVideo.addVideoListener(new VideoListener() {
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                btCustomHq.setText("Auto " + width + "x" + height);
+            }
+        });
 
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
-        uzibCustomHq.setOnClickListener(new View.OnClickListener() {
+        btCustomHq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 displayUI(uzVideo.getHQList());
