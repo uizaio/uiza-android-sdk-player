@@ -88,6 +88,7 @@ public class FBListVideoActivity extends BaseActivity {
                 dataList.addAll(result.getData());
                 cvPlaylistFolder.setVisibility(View.VISIBLE);
                 fbVideoAdapter.notifyDataSetChanged();
+                findViewById(R.id.pb).setVisibility(View.GONE);
             }
 
             @Override

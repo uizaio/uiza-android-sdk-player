@@ -124,4 +124,11 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <ProgressBar
+        android:id="@id/pb"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/w_30"
+        android:layout_height="@dimen/w_30"
+        android:layout_centerInParent="true" />
+
 </RelativeLayout>
