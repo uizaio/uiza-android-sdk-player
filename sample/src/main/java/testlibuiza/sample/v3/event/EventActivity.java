@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class EventActivity extends BaseActivity {
     private UZVideo uzVideo;
     private TextView tvUzCallback;
     private TextView tvAudioListener;
+    private TextView tvVideoListener;
     private TextView tvPlayerListener;
     private TextView tvMetadataOutput;
     private TextView tvTextOutput;
@@ -79,6 +81,7 @@ public class EventActivity extends BaseActivity {
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         tvUzCallback = (TextView) findViewById(R.id.tv_uz_callback);
         tvAudioListener = (TextView) findViewById(R.id.tv_audio_listener);
+        tvVideoListener = (TextView) findViewById(R.id.tv_video_listener);
         tvPlayerListener = (TextView) findViewById(R.id.tv_player_listener);
         tvMetadataOutput = (TextView) findViewById(R.id.tv_metadata_output);
         tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
@@ -313,6 +316,16 @@ public class EventActivity extends BaseActivity {
             @Override
             public void onSwipeTop() {
                 tvTouch.setText("onSwipeTop");
+            }
+        });
+        uzVideo.addVideoListener(new VideoListener() {
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                tvVideoListener.setText("Current profile " + width + "x" + height);
+            }
+
+            @Override
+            public void onSurfaceSizeChanged(int width, int height) {
             }
         });
         final String entityId = LSApplication.entityIdDefaultVOD;

@@ -73,6 +73,12 @@
                     android:text="Custom skin like Youtube" />
 
                 <Button
+                    android:id="@+id/bt_uiza_custom_skin_u_tube_with_slide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom skin like Youtube With Slide" />
+
+                <Button
                     android:id="@+id/bt_resize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

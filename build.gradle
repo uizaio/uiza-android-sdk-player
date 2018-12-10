@@ -26,8 +26,7 @@ allprojects {
         //maven { url 'maven.google.com' }
         maven { url 'https://jitpack.io' }
         //mavenCentral()
-
-        //maven { url 'https://dl.bintray.com/vtvlive/drm-sdk-onsports/' }
+        maven { url 'https://google.bintray.com/exoplayer/' }
     }
 }
 

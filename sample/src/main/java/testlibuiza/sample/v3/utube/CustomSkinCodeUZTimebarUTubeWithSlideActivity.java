@@ -1,7 +1,8 @@
-package testlibuiza.sample.v3.demoui;
+package testlibuiza.sample.v3.utube;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -10,7 +11,6 @@ import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -18,68 +18,15 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
-public class HomeCanSlideActivity extends BaseActivity {
+/**
+ * Created by loitp on 7/16/2018.
+ */
+
+public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends BaseActivity {
     private DraggablePanel draggablePanel;
 
     public DraggablePanel getDraggablePanel() {
         return draggablePanel;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
-        UZUtil.setCasty(this);
-        super.onCreate(savedInstanceState);
-        draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
-        draggablePanel.setDraggableListener(new DraggableListener() {
-            @Override
-            public void onMaximized() {
-                //LLog.d(TAG, "onMaximized");
-            }
-
-            @Override
-            public void onMinimized() {
-                //LLog.d(TAG, "onMinimized");
-                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
-                    frmVideoTop.getUZVideo().hideController();
-                }
-            }
-
-            @Override
-            public void onClosedToLeft() {
-                //LLog.d(TAG, "onClosedToLeft");
-                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
-                    frmVideoTop.getUZVideo().onDestroy();
-                }
-            }
-
-            @Override
-            public void onClosedToRight() {
-                //LLog.d(TAG, "onClosedToRight");
-                if (frmVideoTop != null && frmVideoTop.getUZVideo() != null) {
-                    frmVideoTop.getUZVideo().onDestroy();
-                }
-            }
-
-            @Override
-            public void onDrag(int left, int top, int dx, int dy) {
-                //LLog.d(TAG, "onDrag " + left + " - " + top + " - " + dx + " - " + dy);
-            }
-        });
-        initializeDraggablePanel();
-        replaceFragment(new FrmHome());
-    }
-
-    public void replaceFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmHome) {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
-        } else {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
-        }
     }
 
     @Override
@@ -94,26 +41,71 @@ public class HomeCanSlideActivity extends BaseActivity {
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.v4_home_canslide_activity;
+        return R.layout.activity_uiza_custom_skin_code_uz_timebar_with_slide;
     }
 
-    private FrmVideoTop frmVideoTop;
-    private FrmVideoBottom frmVideoBottom;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
+        UZUtil.setCasty(this);
+        super.onCreate(savedInstanceState);
+        draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
+        draggablePanel.setDraggableListener(new DraggableListener() {
+            @Override
+            public void onMaximized() {
+            }
+
+            @Override
+            public void onMinimized() {
+                if (frmUTVideoTop != null && frmUTVideoTop.getUZVideo() != null) {
+                    frmUTVideoTop.getUZVideo().hideController();
+                }
+            }
+
+            @Override
+            public void onClosedToLeft() {
+                if (frmUTVideoTop != null && frmUTVideoTop.getUZVideo() != null) {
+                    frmUTVideoTop.getUZVideo().onDestroy();
+                }
+            }
+
+            @Override
+            public void onClosedToRight() {
+                if (frmUTVideoTop != null && frmUTVideoTop.getUZVideo() != null) {
+                    frmUTVideoTop.getUZVideo().onDestroy();
+                }
+            }
+
+            @Override
+            public void onDrag(int left, int top, int dx, int dy) {
+            }
+        });
+        initializeDraggablePanel();
+        replaceFragment(new FrmUTHome());
+    }
+
+    public void replaceFragment(BaseFragment baseFragment) {
+        if (baseFragment instanceof FrmUTHome) {
+            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
+        } else {
+            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
+        }
+    }
+
+    private FrmUTVideoTop frmUTVideoTop;
+    private FrmUTVideoBottom frmUTVideoBottom;
 
     private void initializeDraggablePanel() {
-        if (frmVideoTop != null || frmVideoBottom != null) {
-            LLog.d(TAG, "initializeDraggablePanel exist");
+        if (frmUTVideoTop != null || frmUTVideoBottom != null) {
             draggablePanel.minimize();
-            frmVideoTop.onResume();
+            frmUTVideoTop.onResume();
             return;
         }
-        frmVideoTop = new FrmVideoTop();
-        frmVideoBottom = new FrmVideoBottom();
-
+        frmUTVideoTop = new FrmUTVideoTop();
+        frmUTVideoBottom = new FrmUTVideoBottom();
         draggablePanel.setFragmentManager(getSupportFragmentManager());
-        draggablePanel.setTopFragment(frmVideoTop);
-        draggablePanel.setBottomFragment(frmVideoBottom);
-
+        draggablePanel.setTopFragment(frmUTVideoTop);
+        draggablePanel.setBottomFragment(frmUTVideoBottom);
         //draggablePanel.setXScaleFactor(xScaleFactor);
         //draggablePanel.setYScaleFactor(yScaleFactor);
         //draggablePanel.setTopViewHeight(800);
@@ -178,7 +170,6 @@ public class HomeCanSlideActivity extends BaseActivity {
     }
 
     public void playEntityId(final String entityId) {
-        LLog.d(TAG, "playEntityId " + entityId);
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
@@ -193,13 +184,12 @@ public class HomeCanSlideActivity extends BaseActivity {
         } else {
             draggablePanel.maximize();
         }
-        if (frmVideoTop != null) {
-            frmVideoTop.initEntity(entityId);
+        if (frmUTVideoTop != null) {
+            frmUTVideoTop.initEntity(entityId);
         }
     }
 
     public void playPlaylistFolder(final String metadataId) {
-        LLog.d(TAG, "playPlaylistFolder " + metadataId);
         if (draggablePanel.getVisibility() != View.VISIBLE) {
             draggablePanel.setVisibility(View.VISIBLE);
         }
@@ -214,16 +204,15 @@ public class HomeCanSlideActivity extends BaseActivity {
         } else {
             draggablePanel.maximize();
         }
-        if (frmVideoTop != null) {
-            frmVideoTop.initPlaylistFolder(metadataId);
+        if (frmUTVideoTop != null) {
+            frmUTVideoTop.initPlaylistFolder(metadataId);
         }
     }
 
     //this method will be called when entity is ready to play
     public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        //LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
-        if (frmVideoBottom != null && isGetDataSuccess) {
-            frmVideoBottom.updateUI(resultGetLinkPlay, data);
+        if (frmUTVideoBottom != null && isGetDataSuccess) {
+            frmUTVideoBottom.updateUI(resultGetLinkPlay, data);
         }
     }
 }

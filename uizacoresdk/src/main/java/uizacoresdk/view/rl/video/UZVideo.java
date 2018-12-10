@@ -3740,7 +3740,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected VideoListener videoListener;
 
-    public void setVideoListener(VideoListener videoListener) {
+    public void addVideoListener(VideoListener videoListener) {
         this.videoListener = videoListener;
     }
 
