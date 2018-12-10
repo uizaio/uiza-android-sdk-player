@@ -46,7 +46,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
-        uzVideo.setVideoListener(new VideoListener() {
+        uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
                 calSize(width, height);

@@ -35,7 +35,7 @@ import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 
 /**
- * Created by loitp on 7/16/2018.
+ * Created by loitp on 12/10/2018.
  */
 
 public class CustomHQActivity extends BaseActivity implements UZCallback, UZItemClick {
@@ -68,7 +68,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
         uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
         uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
-        uzVideo.setControllerShowTimeoutMs(5000);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
 

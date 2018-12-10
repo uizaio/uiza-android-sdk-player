@@ -57,6 +57,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Video Listener"
+                android:textSize="@dimen/txt_32" />
+
+            <TextView
+                android:id="@+id/tv_video_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Player Listener"
                 android:textSize="@dimen/txt_32" />
 
