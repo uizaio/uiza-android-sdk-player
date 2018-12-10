@@ -74,7 +74,7 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
         uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                btCustomHq.setText("Auto " + width + "x" + height);
+                btCustomHq.setText("Auto " + width + "x" + height + " - " + UZUtil.getFormatVideo(width, height).getProfile());
             }
         });
 
