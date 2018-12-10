@@ -162,9 +162,9 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends BaseActivity 
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            if (draggablePanel != null) {
+            /*if (draggablePanel != null) {
                 draggablePanel.setVisibility(View.INVISIBLE);
-            }
+            }*/
             super.onBackPressed();
         }
     }
