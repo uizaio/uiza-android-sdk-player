@@ -1,3 +1,17 @@
+### 2.9.8 (2018-12-10)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:2.9.8'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:2.9.8'
+
+- Change function name uzVideo.setVideoListener() -> uzVideo.addVideoListener().
+- Update [screen](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/utube/CustomSkinCodeUZTimebarUTubeActivity.java) custom UI like Youtube without sliding.
+- Add [sample](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/utube/CustomSkinCodeUZTimebarUTubeWithSlideActivity.java) custom UI like Youtube with UZTimebar and DraggablePanel. 
+- Update screen [EventActivity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
+- Update screen [CustomHQActivity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customhq/CustomHQActivity.java).
+
 ### 2.9.5 (2018-12-5)
 
     //for playing video VOD, LIVE  
