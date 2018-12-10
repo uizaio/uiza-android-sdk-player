@@ -296,6 +296,12 @@ public class DraggablePanel extends FrameLayout {
         return draggableView.isMaximized();
     }
 
+    public void setBottomUZTimebar(int bottomUZTimebar) {
+        if (draggableView != null) {
+            draggableView.setBottomUZTimebar(bottomUZTimebar);
+        }
+    }
+
     /**
      * Checks if the top Fragment is minimized.
      *
