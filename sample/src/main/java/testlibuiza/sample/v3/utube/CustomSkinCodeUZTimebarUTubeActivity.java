@@ -25,6 +25,7 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -134,45 +135,69 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends BaseActivity implement
         });
     }
 
-    private void toggleControllerExceptUZTimebar() {
+    //listerner controller visibility state
+    private boolean isShowingController = true;
+
+    private void onVisibilityChange(boolean isShow) {
+        this.isShowingController = isShow;
+        LToast.show(activity, "isShowingController " + isShowingController);
+    }
+
+    private void showController() {
+        if (uzVideo.getLlTop() != null) {
+            uzVideo.getLlTop().setVisibility(View.VISIBLE);
+            setAutoHideController();
+        }
+        if (uzVideo.getRlLiveInfo() != null) {
+            if (uzVideo.isLivestream()) {
+                uzVideo.getRlLiveInfo().setVisibility(View.VISIBLE);
+            }
+        }
+        LinearLayout llControllerButton = uzVideo.findViewById(R.id.ll_controller_button);
+        if (llControllerButton != null) {
+            llControllerButton.setVisibility(View.VISIBLE);
+        }
+        RelativeLayout rlInfo = uzVideo.findViewById(R.id.rl_info);
+        if (rlInfo != null) {
+            rlInfo.setVisibility(View.VISIBLE);
+        }
+        shadow.setVisibility(View.VISIBLE);
+        onVisibilityChange(true);
+    }
+
+    private void hideController() {
         if (uzVideo.getLlTop() != null) {
             if (uzVideo.getLlTop().getVisibility() == View.VISIBLE) {
                 uzVideo.getLlTop().setVisibility(View.INVISIBLE);
                 cancelAutoHideController();
-            } else {
-                uzVideo.getLlTop().setVisibility(View.VISIBLE);
-                setAutoHideController();
             }
         }
         if (uzVideo.getRlLiveInfo() != null) {
             if (uzVideo.getRlLiveInfo().getVisibility() == View.VISIBLE) {
                 uzVideo.getRlLiveInfo().setVisibility(View.INVISIBLE);
-            } else {
-                if (uzVideo.isLivestream()) {
-                    uzVideo.getRlLiveInfo().setVisibility(View.VISIBLE);
-                }
             }
         }
         LinearLayout llControllerButton = uzVideo.findViewById(R.id.ll_controller_button);
         if (llControllerButton != null) {
             if (llControllerButton.getVisibility() == View.VISIBLE) {
                 llControllerButton.setVisibility(View.INVISIBLE);
-            } else {
-                llControllerButton.setVisibility(View.VISIBLE);
             }
         }
         RelativeLayout rlInfo = uzVideo.findViewById(R.id.rl_info);
         if (rlInfo != null) {
             if (rlInfo.getVisibility() == View.VISIBLE) {
                 rlInfo.setVisibility(View.INVISIBLE);
-            } else {
-                rlInfo.setVisibility(View.VISIBLE);
             }
         }
-        if (shadow.getVisibility() == View.VISIBLE) {
-            shadow.setVisibility(View.GONE);
+        shadow.setVisibility(View.GONE);
+        onVisibilityChange(false);
+    }
+
+    private void toggleControllerExceptUZTimebar() {
+        if (isShowingController) {
+            hideController();
         } else {
-            shadow.setVisibility(View.VISIBLE);
+            showController();
         }
     }
 
