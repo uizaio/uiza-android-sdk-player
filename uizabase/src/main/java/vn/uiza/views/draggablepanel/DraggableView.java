@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
 import vn.uiza.R;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.views.draggablepanel.transformer.Transformer;
 import vn.uiza.views.draggablepanel.transformer.TransformerFactory;
 
@@ -150,14 +151,6 @@ public class DraggableView extends RelativeLayout {
     public void setEnableSlide(boolean isEnableSlide) {
         //LLog.d(TAG, "setEnableSlide " + isEnableSlide);
         this.isEnableSlide = isEnableSlide;
-        //setEnabled(isEnableSlide);
-        //setTouchEnabled(isEnableSlide);
-    }
-
-    public void onViewPositionChanged(int left, int top, int dx, int dy) {
-        if (listener != null) {
-            listener.onDrag(left, top, dx, dy);
-        }
     }
 
     /**
@@ -469,20 +462,37 @@ public class DraggableView extends RelativeLayout {
     private int bottomUZTimebar = 0;
 
     public void setBottomUZTimebar(int bottomUZTimebar) {
-        //LLog.d(TAG, "setBottomUZTimebar " + bottomUZTimebar);
+        //LLog.d(TAG, "fuck setBottomUZTimebar " + bottomUZTimebar);
         this.bottomUZTimebar = bottomUZTimebar;
+    }
+
+    public void onViewPositionChanged(int left, int top, int dx, int dy) {
+        LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top);
+        if (listener != null) {
+            listener.onDrag(left, top, dx, dy);
+        }
+        if (isDragViewAtTop()) {
+            LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtTop");
+            ViewHelper.setY(dragView, top - bottomUZTimebar / 2);
+        }
+        if (isDragViewAtBottom()) {
+            LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtBottom");
+            ViewHelper.setY(dragView, top + bottomUZTimebar  / 2);
+        }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        //LLog.d(TAG, "onLayout bottomUZTimebar " + bottomUZTimebar);
+        //LLog.d(TAG, "fuck onLayout bottomUZTimebar " + bottomUZTimebar + " - " + left + " - " + top + " - " + right + " - " + bottom);
         if (isInEditMode())
             super.onLayout(changed, left, top, right, bottom);
         else if (isDragViewAtTop()) {
+            //dragView.layout(left, top, right, transformer.getOriginalHeight() - bottomUZTimebar);
             dragView.layout(left, top, right, transformer.getOriginalHeight());
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
             ViewHelper.setY(dragView, top);
-            ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
+            //ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
+            ViewHelper.setY(secondView, transformer.getOriginalHeight());
         } else {
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
         }
@@ -545,8 +555,8 @@ public class DraggableView extends RelativeLayout {
      * Modify secondView position to be always below dragged view.
      */
     void changeSecondViewPosition() {
-        //LLog.d(TAG, "changeSecondViewPosition ");
-        ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
+        //ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
+        ViewHelper.setY(secondView, dragView.getBottom());
     }
 
     /**
@@ -767,7 +777,7 @@ public class DraggableView extends RelativeLayout {
     }
 
     /**
-     * Calculate the dragged view  top position normalized between 1 and 0.
+     * Calculate the dragged view top position normalized between 1 and 0.
      *
      * @return dragged view top divided by vertical drag range.
      */
@@ -788,6 +798,7 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is maximized to the DraggableListener
      */
     private void notifyMaximizeToListener() {
+        //LLog.d(TAG, "fuck notifyMaximizeToListener");
         if (listener != null) {
             listener.onMaximized();
         }
@@ -797,6 +808,7 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is minimized to the DraggableListener
      */
     private void notifyMinimizeToListener() {
+        //LLog.d(TAG, "fuck notifyMinimizeToListener");
         if (listener != null) {
             listener.onMinimized();
         }

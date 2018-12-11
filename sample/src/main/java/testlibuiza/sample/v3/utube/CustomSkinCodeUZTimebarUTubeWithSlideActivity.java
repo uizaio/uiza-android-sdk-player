@@ -19,7 +19,7 @@ import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
 /**
- * Created by loitp on 7/16/2018.
+ * Created by loitp on 12/11/2018.
  */
 
 public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends BaseActivity {
