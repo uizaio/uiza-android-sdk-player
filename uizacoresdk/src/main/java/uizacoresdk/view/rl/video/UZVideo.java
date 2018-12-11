@@ -140,7 +140,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivThumbnail;
     private UZTextView tvPosition;
     private UZTextView tvDuration;
-    //private ViewGroup rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
     private ImageView ivVideoCover;
