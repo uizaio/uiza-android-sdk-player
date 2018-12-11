@@ -59,7 +59,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private String linkPlay;
     private Gson gson = new Gson();
     private boolean isLivestream;
-    private int widthScreen;
+    private int screenWidth;
 
     public FUZVideoService() {
     }
@@ -85,7 +85,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void findViews() {
-        widthScreen = LScreenUtil.getScreenWidth();
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -122,6 +121,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
+        screenWidth = LScreenUtil.getScreenWidth();
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.v3_layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
@@ -138,7 +138,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        setSizeMoveView(false);
+        setSizeMoveView(true, false);
 
         //Specify the view position
         //Initially view will be added to top-left corner
@@ -148,8 +148,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
         //right-bottom corner
         params.gravity = Gravity.TOP | Gravity.LEFT;
-        params.x = LScreenUtil.getScreenWidth() - getWidth();
-        params.y = LScreenUtil.getScreenHeight() - getHeight();
+        params.x = screenWidth - getMoveViewWidth();
+        params.y = LScreenUtil.getScreenHeight() - getMoveViewHeight();
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
         //Add the view to the window
@@ -168,8 +168,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             @Override
             public void onClick(View v) {
                 //set UI
-                moveView.getLayoutParams().width = widthScreen;
-                moveView.getLayoutParams().height = widthScreen * 9 / 16;
+                int screenHeight = screenWidth * 9 / 16;
+                moveView.getLayoutParams().width = screenWidth;
+                moveView.getLayoutParams().height = screenHeight;
                 moveView.requestLayout();
                 updateUISlide(0, 0);
                 rlControl.setVisibility(View.GONE);
@@ -289,10 +290,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
             if (rlControl.getVisibility() == View.VISIBLE) {
                 rlControl.setVisibility(View.GONE);
-                setSizeMoveView(false);
+                setSizeMoveView(false, false);
             } else {
                 rlControl.setVisibility(View.VISIBLE);
-                setSizeMoveView(true);
+                setSizeMoveView(false, true);
             }
         }
     }
@@ -374,6 +375,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
             //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
+            editSizeOfMoveView();
             setListener();
             if (lastCurrentPosition > 0) {
                 fuzVideo.getPlayer().seekTo(lastCurrentPosition);
@@ -416,27 +418,73 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
     }
 
-    private void setSizeMoveView(boolean isLarger) {
+    //click vo se larger, click lan nua de smaller
+    private void setSizeMoveView(boolean isFirstSizeInit, boolean isLarger) {
+        if (moveView == null) {
+            return;
+        }
         int w;
         int h;
-        if (isLarger) {
-            w = widthScreen * 70 / 100;
+        if (isFirstSizeInit) {
+            w = screenWidth / 2;
+            h = w * 9 / 16;
         } else {
-            w = widthScreen * 50 / 100;
+            if (isLarger) {
+                w = getMoveViewWidth() * 120 / 100;
+                h = getMoveViewHeight() * 120 / 100;
+            } else {
+                int videoW = fuzVideo.getVideoW();
+                int videoH = fuzVideo.getVideoH();
+                w = screenWidth / 2;
+                h = w * videoH / videoW;
+            }
         }
-        h = w * 9 / 16;
         moveView.getLayoutParams().width = w;
         moveView.getLayoutParams().height = h;
-        LLog.d(TAG, "setSizeMoveView isLarger " + isLarger + ", " + w + "x" + h);
+        LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
         moveView.requestLayout();
     }
 
-    private int getWidth() {
+    private int getMoveViewWidth() {
+        if (moveView == null) {
+            return 0;
+        }
         return moveView.getLayoutParams().width;
     }
 
-    private int getHeight() {
+    private int getMoveViewHeight() {
+        if (moveView == null) {
+            return 0;
+        }
         return moveView.getLayoutParams().height;
+    }
+
+    private int getVideoW() {
+        if (fuzVideo == null) {
+            return 0;
+        }
+        return fuzVideo.getVideoW();
+    }
+
+    private int getVideoH() {
+        if (fuzVideo == null) {
+            return 0;
+        }
+        return fuzVideo.getVideoH();
+    }
+
+    private void editSizeOfMoveView() {
+        if (fuzVideo == null || moveView == null) {
+            return;
+        }
+        int videoW = fuzVideo.getVideoW();
+        int videoH = fuzVideo.getVideoH();
+        int moveW = getMoveViewWidth();
+        int moveH = moveW * videoH / videoW;
+        LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
+        moveView.getLayoutParams().width = moveW;
+        moveView.getLayoutParams().height = moveH;
+        moveView.requestLayout();
     }
 
     //listen msg from UZVideo

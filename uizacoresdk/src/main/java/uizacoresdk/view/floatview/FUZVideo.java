@@ -38,7 +38,7 @@ import vn.uiza.views.LToast;
 public class FUZVideo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private PlayerView playerView;
-    private FUZPlayerManager floatUizaPlayerManager;
+    private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
     private RelativeLayout rootView;
     private ImageView ivVideoCover;
@@ -69,9 +69,9 @@ public class FUZVideo extends RelativeLayout {
         this.isLivestream = isLivestream;
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
         this.callback = callback;
-        if (floatUizaPlayerManager != null) {
+        if (fuzUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
-            floatUizaPlayerManager.release();
+            fuzUizaPlayerManager.release();
         }
         checkToSetUp();
         //track event eventype display
@@ -147,8 +147,8 @@ public class FUZVideo extends RelativeLayout {
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         //LLog.d(TAG, "initData linkPlay " + linkPlay);
-        floatUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-        floatUizaPlayerManager.setProgressCallback(new ProgressCallback() {
+        fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
             }
@@ -288,33 +288,38 @@ public class FUZVideo extends RelativeLayout {
         if (callback != null) {
             callback.isInitResult(true);
         }
-        removeVideoCover();
+    }
+
+    protected void onPlayerStateEnded() {
+        if (callback != null) {
+            callback.onPlayerStateEnded();
+        }
     }
 
     public void onDestroy() {
         //LLog.d(TAG, "trackUiza onDestroy");
-        if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.release();
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.release();
         }
     }
 
     public void onResume() {
-        if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.init();
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.init();
         }
     }
 
     public void onPause() {
-        if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.reset();
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.reset();
         }
     }
 
     public SimpleExoPlayer getPlayer() {
-        if (floatUizaPlayerManager == null) {
+        if (fuzUizaPlayerManager == null) {
             return null;
         }
-        return floatUizaPlayerManager.getPlayer();
+        return fuzUizaPlayerManager.getPlayer();
     }
 
     public interface Callback {
@@ -374,29 +379,36 @@ public class FUZVideo extends RelativeLayout {
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "removeVideoCover");
             ivVideoCover.setVisibility(GONE);
+            onStateReadyFirst();
         }
     }
 
     protected void seekTo(long position) {
-        if (floatUizaPlayerManager != null) {
-            floatUizaPlayerManager.seekTo(position);
+        if (fuzUizaPlayerManager != null) {
+            fuzUizaPlayerManager.seekTo(position);
         }
     }
 
     //return true if toggleResume
     //return false if togglePause
     protected boolean togglePauseResume() {
-        if (floatUizaPlayerManager == null) {
+        if (fuzUizaPlayerManager == null) {
             return false;
         }
-        return floatUizaPlayerManager.togglePauseResume();
+        return fuzUizaPlayerManager.togglePauseResume();
     }
 
-    //Nếu pip đang play 1 playlist folder end thì mình phải switch sang position kế tiếp
-    protected void onPlayerStateEnded() {
-        LLog.d(TAG, "onPlayerStateEnded");
-        if (callback != null) {
-            callback.onPlayerStateEnded();
+    protected int getVideoW() {
+        if (fuzUizaPlayerManager == null) {
+            return 0;
         }
+        return fuzUizaPlayerManager.getVideoW();
+    }
+
+    protected int getVideoH() {
+        if (fuzUizaPlayerManager == null) {
+            return 0;
+        }
+        return fuzUizaPlayerManager.getVideoH();
     }
 }

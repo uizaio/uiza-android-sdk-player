@@ -32,7 +32,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -73,10 +72,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         this.context = fuzVideo.getContext();
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
-        //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
+        this.videoW = 0;
+        this.videoH = 0;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            //LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -137,8 +136,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     public void init() {
         reset();
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         fuzVideo.getPlayerView().setPlayer(player);
@@ -180,7 +178,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             return mediaSource;
         }
         //LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
-
         List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
         for (int i = 0; i < subtitleList.size(); i++) {
             Subtitle subtitle = subtitleList.get(i);
@@ -380,9 +377,23 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
     }
 
+    private int videoW = 0;
+    private int videoH = 0;
+
+    protected int getVideoW() {
+        return videoW;
+    }
+
+    protected int getVideoH() {
+        return videoH;
+    }
+
     private class FUZVideoListener implements VideoListener {
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            videoW = width;
+            videoH = height;
+            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
         }
 
         @Override
@@ -391,7 +402,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onRenderedFirstFrame() {
-            fuzVideo.onStateReadyFirst();
+            fuzVideo.removeVideoCover();
         }
     }
 
