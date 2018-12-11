@@ -32,13 +32,13 @@
             android:textColor="@color/White"
             android:textStyle="bold" />
 
-        <vn.uiza.views.autosize.UZImageButton
+        <!--<vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_picture_in_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:scaleType="centerInside"
-            android:src="@drawable/baseline_picture_in_picture_alt_white_48" />
+            android:src="@drawable/baseline_picture_in_picture_alt_white_48" />-->
 
         <vn.uiza.views.autosize.UZImageButton
             android:id="@id/exo_share"
