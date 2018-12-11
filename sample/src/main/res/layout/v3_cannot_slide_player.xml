@@ -26,12 +26,6 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <SeekBar
-                    android:id="@+id/sb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_5" />
-
                 <TextView
                     android:id="@+id/tv_progress_ad"
                     android:layout_width="match_parent"

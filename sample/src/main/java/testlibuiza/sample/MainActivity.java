@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
@@ -22,6 +23,7 @@ import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 
 public class MainActivity extends BaseActivity {
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

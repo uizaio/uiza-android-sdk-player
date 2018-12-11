@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
@@ -58,7 +57,7 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
 
-        final String entityId = LSApplication.entityIdDefaultVODLongtime;
+        final String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         UZUtil.initEntity(activity, uzVideo, entityId);
 
         findViewById(R.id.bt_change_skin_custom).setOnClickListener(new View.OnClickListener() {
