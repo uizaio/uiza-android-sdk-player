@@ -44,7 +44,7 @@ import vn.uiza.core.utilities.LUIUtil;
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private final int CLICK_ACTION_THRESHHOLD = 200;
     private WindowManager mWindowManager;
     private View mFloatingView;
@@ -66,7 +66,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //LLog.d(TAG, "onStartCommand");
         boolean isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay);
         if (isInitCustomLinkplay) {
@@ -87,7 +86,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void findViews() {
         widthScreen = LScreenUtil.getScreenWidth();
-        //LLog.d(TAG, "widthScreen " + widthScreen);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -122,15 +120,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onCreate() {
-        //LLog.d(TAG, "onCreate");
         super.onCreate();
-
         EventBus.getDefault().register(this);
-
-        //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.v3_layout_floating_uiza_video, null);
         findViews();
-
         //Add the view to the window.
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -145,23 +138,23 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        setSizeMoveView();
+        setSizeMoveView(false);
 
         //Specify the view position
-        //params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
+        //Initially view will be added to top-left corner
+        //params.gravity = Gravity.TOP | Gravity.LEFT;
         //params.x = 0;
         //params.y = 0;
 
+        //right-bottom corner
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = LScreenUtil.getScreenWidth() - getWidth();
         params.y = LScreenUtil.getScreenHeight() - getHeight();
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
-
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
-
         //Drag and move floating view using user's touch action.
         dragAndMove();
 
@@ -294,8 +287,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void clickRoot(long lastTouchDown) {
         if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-            rlControl.setVisibility(rlControl.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            setSizeMoveView();
+            if (rlControl.getVisibility() == View.VISIBLE) {
+                rlControl.setVisibility(View.GONE);
+                setSizeMoveView(false);
+            } else {
+                rlControl.setVisibility(View.VISIBLE);
+                setSizeMoveView(true);
+            }
         }
     }
 
@@ -328,34 +326,26 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         fuzVideo.getPlayer().addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-                //LLog.d(TAG, "onTimelineChanged");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                //LLog.d(TAG, "onTracksChanged");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                //LLog.d(TAG, "onLoadingChanged");
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                /*if (playbackState == Player.STATE_READY) {
-                    LLog.d(TAG, "onPlayerStateChanged STATE_READY");
-                }*/
             }
 
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-                //LLog.d(TAG, "onRepeatModeChanged");
             }
 
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                //LLog.d(TAG, "onShuffleModeEnabledChanged");
             }
 
             @Override
@@ -368,121 +358,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             @Override
             public void onPositionDiscontinuity(int reason) {
-                //LLog.d(TAG, "onPositionDiscontinuity");
             }
 
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                //LLog.d(TAG, "onPlaybackParametersChanged");
             }
 
             @Override
             public void onSeekProcessed() {
-                //LLog.d(TAG, "onSeekProcessed");
             }
         });
-        /*fuzVideo.getPlayer().addAudioDebugListener(new AudioRendererEventListener() {
-            @Override
-            public void onAudioEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioEnabled");
-            }
-
-            @Override
-            public void onAudioSessionId(int audioSessionId) {
-                //LLog.d(TAG, "onAudioSessionId");
-            }
-
-            @Override
-            public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onAudioDecoderInitialized");
-            }
-
-            @Override
-            public void onAudioInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onAudioInputFormatChanged");
-            }
-
-            @Override
-            public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                //LLog.d(TAG, "onAudioSinkUnderrun");
-            }
-
-            @Override
-            public void onAudioDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onAudioDisabled");
-            }
-        });*/
-        /*fuzVideo.addProgressCallback(new ProgressCallback() {
-            @Override
-            public void onAdEnded() {
-            }
-
-            @Override
-            public void onAdProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-            }
-
-            @Override
-            public void onVideoProgress(float currentMls, int s, float duration, int percent) {
-                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
-
-            @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage) {
-            }
-        });*/
-        /*fuzVideo.getPlayer().addVideoDebugListener(new VideoRendererEventListener() {
-            @Override
-            public void onVideoEnabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoEnabled");
-            }
-
-            @Override
-            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                //LLog.d(TAG, "onVideoDecoderInitialized");
-            }
-
-            @Override
-            public void onVideoInputFormatChanged(Format format) {
-                //LLog.d(TAG, "onVideoInputFormatChanged");
-            }
-
-            @Override
-            public void onDroppedFrames(int count, long elapsedMs) {
-                //LLog.d(TAG, "onDroppedFrames");
-            }
-
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                //LLog.d(TAG, "onVideoSizeChanged");
-            }
-
-            @Override
-            public void onRenderedFirstFrame(Surface surface) {
-                //LLog.d(TAG, "onRenderedFirstFrame");
-            }
-
-            @Override
-            public void onVideoDisabled(DecoderCounters counters) {
-                //LLog.d(TAG, "onVideoDisabled");
-            }
-        });*/
-        /*fuzVideo.getPlayer().addMetadataOutput(new MetadataOutput() {
-            @Override
-            public void onMetadata(Metadata metadata) {
-                //LLog.d(TAG, "onMetadata");
-            }
-        });*/
-        /*fuzVideo.getPlayer().addTextOutput(new TextOutput() {
-            @Override
-            public void onCues(List<Cue> cues) {
-                // LLog.d(TAG, "onCues");
-            }
-        });*/
     }
 
     @Override
@@ -531,25 +416,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
     }
 
-    private void setSizeMoveView() {
-        if (rlControl.getVisibility() == View.VISIBLE) {
-            //LLog.d(TAG, "setSizeMoveView if");
-            //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
-
-            /*moveView.getLayoutParams().width = widthScreen * 50 / 100;
-            moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;*/
-
-            moveView.getLayoutParams().width = widthScreen * 70 / 100;
-            moveView.getLayoutParams().height = widthScreen * 70 / 100 * 9 / 16;
-
-            /*moveView.getLayoutParams().width = widthScreen;
-            moveView.getLayoutParams().height = widthScreen * 9 / 16;*/
+    private void setSizeMoveView(boolean isLarger) {
+        int w;
+        int h;
+        if (isLarger) {
+            w = widthScreen * 70 / 100;
         } else {
-            //LLog.d(TAG, "setSizeMoveView else");
-            //LLog.d(TAG, "setSizeMoveView: " + widthScreen + "x" + widthScreen);
-            moveView.getLayoutParams().width = widthScreen * 50 / 100;
-            moveView.getLayoutParams().height = widthScreen * 50 / 100 * 9 / 16;
+            w = widthScreen * 50 / 100;
         }
+        h = w * 9 / 16;
+        moveView.getLayoutParams().width = w;
+        moveView.getLayoutParams().height = h;
+        LLog.d(TAG, "setSizeMoveView isLarger " + isLarger + ", " + w + "x" + h);
         moveView.requestLayout();
     }
 

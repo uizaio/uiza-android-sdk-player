@@ -1,7 +1,7 @@
 package uizacoresdk.view.floatview;
 
 /**
- * Created by www.muathu@gmail.com on 12/24/2017.
+ * Created by www.muathu@gmail.com on 12/11/2018.
  */
 
 import android.content.Context;
@@ -67,16 +67,13 @@ public class FUZVideo extends RelativeLayout {
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
         this.isLivestream = isLivestream;
-
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
-
         this.callback = callback;
         if (floatUizaPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             floatUizaPlayerManager.release();
         }
         checkToSetUp();
-
         //track event eventype display
         if (UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
             //da track roi ko can track nua
