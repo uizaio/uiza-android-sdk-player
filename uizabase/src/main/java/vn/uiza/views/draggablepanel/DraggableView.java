@@ -464,25 +464,44 @@ public class DraggableView extends RelativeLayout {
 
     private int bottomUZTimebar = 0;
 
-    public void setBottomUZTimebar(int bottomUZTimebar) {
+    public void setBottomUZTimebar(int bottomUZTimebar, Callback callback) {
         LLog.d(TAG, "fuck setBottomUZTimebar " + bottomUZTimebar);
         this.bottomUZTimebar = bottomUZTimebar;
+        this.callback = callback;
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
-        LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
+        //LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
         if (listener != null) {
             listener.onDrag(left, top, dx, dy);
         }
-        /*if (isDragViewAtTop()) {
-            LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtTop");
-            ViewHelper.setY(dragView, top - bottomUZTimebar / 2);
+        if (callback != null) {
+            if (isViewInTopPart(top)) {
+                LLog.d(TAG, "fuck onViewPositionChanged top");
+                if (!isNotifiedPartTop) {
+                    callback.onPartOfView(true);
+                    isNotifiedPartTop = true;
+                }
+                isNotifiedPartBottom = false;
+            } else {
+                LLog.d(TAG, "fuck onViewPositionChanged bottom");
+                if (!isNotifiedPartBottom) {
+                    callback.onPartOfView(false);
+                    isNotifiedPartBottom = true;
+                }
+                isNotifiedPartTop = false;
+            }
         }
-        if (isDragViewAtBottom()) {
-            LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtBottom");
-            ViewHelper.setY(dragView, top + bottomUZTimebar / 2);
-        }*/
     }
+
+    private boolean isNotifiedPartTop;
+    private boolean isNotifiedPartBottom;
+
+    public interface Callback {
+        public void onPartOfView(boolean isViewInTopPart);
+    }
+
+    private Callback callback;
 
     private boolean isViewInTopPart(int positionLeft) {
         //LLog.d(TAG, "fuck isViewInTopPart " + positionLeft + " - " + (screenWidth / 2));
@@ -494,7 +513,7 @@ public class DraggableView extends RelativeLayout {
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        LLog.d(TAG, "fuck onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
+        //LLog.d(TAG, "fuck onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
         if (isInEditMode()) {
             super.onLayout(changed, left, top, right, bottom);
         } else if (isDragViewAtTop()) {

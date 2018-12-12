@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import vn.uiza.R;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /**
@@ -36,6 +37,7 @@ import vn.uiza.core.utilities.LScreenUtil;
  * @author Pedro Vicente Gómez Sánchez.
  */
 public class DraggablePanel extends FrameLayout {
+    private final String TAG = getClass().getSimpleName();
     private static final int DEFAULT_TOP_FRAGMENT_HEIGHT = 200;
     private static final int DEFAULT_TOP_FRAGMENT_MARGIN = 0;
     private static final float DEFAULT_SCALE_FACTOR = 2;
@@ -298,9 +300,30 @@ public class DraggablePanel extends FrameLayout {
         return draggableView.isMaximized();
     }
 
-    public void setBottomUZTimebar(int bottomUZTimebar) {
+    public void setBottomUZTimebar(final int bottomUZTimebar) {
         if (draggableView != null) {
-            draggableView.setBottomUZTimebar(bottomUZTimebar);
+            draggableView.setBottomUZTimebar(bottomUZTimebar, new DraggableView.Callback() {
+                @Override
+                public void onPartOfView(boolean isViewInTopPart) {
+                    if (draggableView == null) {
+                        return;
+                    }
+                    int currentHeight = draggableView.getLayoutParams().height;
+                    int screenH = LScreenUtil.getScreenHeight();
+                    if (isViewInTopPart) {
+                        if (currentHeight <= screenH) {
+                            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                            LLog.d(TAG, "fuck onPartOfView true -> " + (LScreenUtil.getScreenHeight() + bottomUZTimebar));
+                        }
+                    } else {
+                        if (currentHeight >= screenH) {
+                            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight();
+                            LLog.d(TAG, "fuck onPartOfView false -> " + (LScreenUtil.getScreenHeight() - bottomUZTimebar));
+                        }
+                    }
+                    draggableView.requestLayout();
+                }
+            });
             draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
             draggableView.requestLayout();
         }
