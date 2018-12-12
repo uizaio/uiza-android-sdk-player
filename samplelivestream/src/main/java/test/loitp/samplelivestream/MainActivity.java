@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
-        if (App.DF_DOMAIN_API.equals("input")){
+        if (App.DF_DOMAIN_API.equals("input")) {
             LToast.show(activity, "Please configure your workspace's information in App.java");
             return;
         }
@@ -107,7 +107,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onResume() {
-        uzLivestream.onResume();
+        if (uzLivestream != null) {
+            uzLivestream.onResume();
+        }
         super.onResume();
     }
 
