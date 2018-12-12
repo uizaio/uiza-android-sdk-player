@@ -23,7 +23,6 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import vn.uiza.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /**
@@ -312,21 +311,21 @@ public class DraggablePanel extends FrameLayout {
                     int screenH = LScreenUtil.getScreenHeight();
                     if (isViewInTopPart) {
                         if (currentHeight <= screenH) {
-                            //draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                            //LLog.d(TAG, "onPartOfView top");
                             draggableView.setTopViewMarginBottom(0);
-                            LLog.d(TAG, "fuck onPartOfView true -> " + (LScreenUtil.getScreenHeight() + bottomUZTimebar));
                         }
                     } else {
                         if (currentHeight >= screenH) {
+                            //LLog.d(TAG, "onPartOfView bottom");
                             draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight();
-                            draggableView.setTopViewMarginBottom(bottomUZTimebar * 2);
-                            LLog.d(TAG, "fuck onPartOfView false -> " + (LScreenUtil.getScreenHeight() - bottomUZTimebar));
+                            draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
                         }
                     }
                     draggableView.requestLayout();
                 }
             });
             draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+            draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
             draggableView.requestLayout();
         }
     }

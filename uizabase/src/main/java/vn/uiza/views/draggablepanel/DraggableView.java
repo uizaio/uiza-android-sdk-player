@@ -31,7 +31,6 @@ import android.widget.RelativeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
 import vn.uiza.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.views.draggablepanel.transformer.Transformer;
 import vn.uiza.views.draggablepanel.transformer.TransformerFactory;
 
@@ -465,26 +464,26 @@ public class DraggableView extends RelativeLayout {
     private int bottomUZTimebar = 0;
 
     public void setBottomUZTimebar(int bottomUZTimebar, Callback callback) {
-        LLog.d(TAG, "fuck setBottomUZTimebar " + bottomUZTimebar);
+        //LLog.d(TAG, "setBottomUZTimebar " + bottomUZTimebar);
         this.bottomUZTimebar = bottomUZTimebar;
         this.callback = callback;
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
-        //LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
+        //LLog.d(TAG, "onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
         if (listener != null) {
             listener.onDrag(left, top, dx, dy);
         }
         if (callback != null) {
             if (isViewInTopPart(top)) {
-                LLog.d(TAG, "fuck onViewPositionChanged top");
+                //LLog.d(TAG, "onViewPositionChanged top");
                 if (!isNotifiedPartTop) {
                     callback.onPartOfView(true);
                     isNotifiedPartTop = true;
                 }
                 isNotifiedPartBottom = false;
             } else {
-                LLog.d(TAG, "fuck onViewPositionChanged bottom");
+                //LLog.d(TAG, "onViewPositionChanged bottom");
                 if (!isNotifiedPartBottom) {
                     callback.onPartOfView(false);
                     isNotifiedPartBottom = true;
@@ -504,7 +503,7 @@ public class DraggableView extends RelativeLayout {
     private Callback callback;
 
     private boolean isViewInTopPart(int positionLeft) {
-        //LLog.d(TAG, "fuck isViewInTopPart " + positionLeft + " - " + (screenWidth / 2));
+        //LLog.d(TAG, "isViewInTopPart " + positionLeft + " - " + (screenWidth / 2));
         return positionLeft <= screenWidth / 2;
     }
 
@@ -513,7 +512,7 @@ public class DraggableView extends RelativeLayout {
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        //LLog.d(TAG, "fuck onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
+        //LLog.d(TAG, "onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
         if (isInEditMode()) {
             super.onLayout(changed, left, top, right, bottom);
         } else if (isDragViewAtTop()) {
@@ -535,7 +534,7 @@ public class DraggableView extends RelativeLayout {
      * displacement while the view is dragged.
      */
     void changeDragViewPosition() {
-        //LLog.d(TAG, "fuck changeDragViewPosition getVerticalDragOffset() " + getVerticalDragOffset());
+        //LLog.d(TAG, "changeDragViewPosition getVerticalDragOffset() " + getVerticalDragOffset());
         transformer.updatePosition(getVerticalDragOffset());
     }
 
@@ -831,7 +830,7 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is maximized to the DraggableListener
      */
     private void notifyMaximizeToListener() {
-        //LLog.d(TAG, "fuck notifyMaximizeToListener");
+        //LLog.d(TAG, "notifyMaximizeToListener");
         if (listener != null) {
             listener.onMaximized();
         }
@@ -841,7 +840,7 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is minimized to the DraggableListener
      */
     private void notifyMinimizeToListener() {
-        //LLog.d(TAG, "fuck notifyMinimizeToListener");
+        //LLog.d(TAG, "notifyMinimizeToListener");
         if (listener != null) {
             listener.onMinimized();
         }
