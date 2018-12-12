@@ -254,6 +254,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     } else {
                         LToast.show(activity, getString(R.string.err_dont_support));
                     }
+                    /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                        uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+                    } else {
+                        LToast.show(activity, getString(R.string.err_dont_support));
+                    }*/
+                    /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
+                        uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+                    } else {
+                        LToast.show(activity, getString(R.string.err_dont_support));
+                    }*/
                 } else {
                     bStartStop.setText(R.string.start_button);
                     uzLivestream.stopStream();
