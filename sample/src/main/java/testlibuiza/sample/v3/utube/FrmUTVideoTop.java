@@ -337,33 +337,12 @@ public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemCli
         }
     }
 
-    private void toggleUIUZTimebar() {
+    /*private void hideUZTimebar() {
         if (uzVideo.getUZTimeBar() == null) {
             return;
         }
-        if (uzVideo.getUZTimeBar().getVisibility() == View.VISIBLE) {
-            uzVideo.getUZTimeBar().setVisibility(View.INVISIBLE);
-        } else {
-            uzVideo.getUZTimeBar().setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void toggleUIRewFfw() {
-        if (uzVideo.getIbRewIcon() != null) {
-            if (uzVideo.getIbRewIcon().getVisibility() == View.VISIBLE) {
-                uzVideo.getIbRewIcon().setVisibility(View.INVISIBLE);
-            } else {
-                uzVideo.getIbRewIcon().setVisibility(View.VISIBLE);
-            }
-        }
-        if (uzVideo.getIbFfwdIcon() != null) {
-            if (uzVideo.getIbFfwdIcon().getVisibility() == View.VISIBLE) {
-                uzVideo.getIbFfwdIcon().setVisibility(View.INVISIBLE);
-            } else {
-                uzVideo.getIbFfwdIcon().setVisibility(View.VISIBLE);
-            }
-        }
-    }
+        uzVideo.getUZTimeBar().setVisibility(View.INVISIBLE);
+    }*/
 
     private CountDownTimer countDownTimer;
     private final int INTERVAL = 1000;

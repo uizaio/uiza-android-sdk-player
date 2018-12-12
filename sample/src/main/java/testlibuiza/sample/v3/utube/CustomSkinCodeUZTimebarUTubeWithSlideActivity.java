@@ -57,9 +57,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends BaseActivity 
 
             @Override
             public void onMinimized() {
-                if (frmUTVideoTop != null && frmUTVideoTop.getUZVideo() != null) {
-                    frmUTVideoTop.getUZVideo().hideController();
-                }
             }
 
             @Override
