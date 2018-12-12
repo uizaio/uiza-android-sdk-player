@@ -10,8 +10,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import uizalivestream.uiza.PresetLiveStreamingFeed;
 import uizalivestream.uiza.UZLivestream;
 import uizalivestream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
@@ -55,7 +53,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
-    private Gson gson = new Gson();
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -83,6 +80,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+
+        if (App.DF_DOMAIN_API.equals("input")){
+            LToast.show(activity, "Please configure your workspace's information in App.java");
+            return;
+        }
 
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
         uzLivestream.setCallback(this);
@@ -331,7 +333,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btSwitchCamera.setEnabled(true);
         btFilter.setEnabled(true);
         LLog.d(TAG, "onGetDataSuccessmainUrl mainUrl: " + mainUrl);
-        LLog.d(TAG, "onGetDataSuccess: " + gson.toJson(presetLiveStreamingFeed));
         tvMainUrl.setText(mainUrl);
     }
 
