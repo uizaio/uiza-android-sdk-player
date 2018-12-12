@@ -42,6 +42,8 @@ import vn.uiza.views.draggablepanel.transformer.TransformerFactory;
  */
 public class DraggableView extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
+    private int screenWidth;
+    private int screenHeight;
     private static final int DEFAULT_SCALE_FACTOR = 2;
     private static final int DEFAULT_TOP_VIEW_MARGIN = 30;
     private static final int DEFAULT_TOP_VIEW_HEIGHT = -1;
@@ -57,7 +59,6 @@ public class DraggableView extends RelativeLayout {
     private static final float SENSITIVITY = 1f;
     private static final boolean DEFAULT_TOP_VIEW_RESIZE = false;
     private static final int INVALID_POINTER = -1;
-
     private int activePointerId = INVALID_POINTER;
     private float lastTouchActionDownXPosition;
 
@@ -144,6 +145,11 @@ public class DraggableView extends RelativeLayout {
      */
     public void setTouchEnabled(boolean touchEnabled) {
         this.touchEnabled = touchEnabled;
+    }
+
+    protected void setScreenSize(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     private boolean isEnableSlide = true;
@@ -456,46 +462,77 @@ public class DraggableView extends RelativeLayout {
         return MotionEvent.obtain(event.getDownTime(), event.getEventTime(), action, event.getX(), event.getY(), event.getMetaState());
     }
 
-    /**
-     * Override method to configure the dragged view and secondView layout properly.
-     */
     private int bottomUZTimebar = 0;
 
     public void setBottomUZTimebar(int bottomUZTimebar) {
-        //LLog.d(TAG, "fuck setBottomUZTimebar " + bottomUZTimebar);
+        LLog.d(TAG, "fuck setBottomUZTimebar " + bottomUZTimebar);
         this.bottomUZTimebar = bottomUZTimebar;
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
-        LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top);
+        LLog.d(TAG, "fuck onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
         if (listener != null) {
             listener.onDrag(left, top, dx, dy);
         }
-        if (isDragViewAtTop()) {
+        /*if (isDragViewAtTop()) {
             LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtTop");
             ViewHelper.setY(dragView, top - bottomUZTimebar / 2);
         }
         if (isDragViewAtBottom()) {
             LLog.d(TAG, "fuck onViewPositionChanged isDragViewAtBottom");
-            ViewHelper.setY(dragView, top + bottomUZTimebar  / 2);
-        }
+            ViewHelper.setY(dragView, top + bottomUZTimebar / 2);
+        }*/
     }
 
+    private boolean isViewInTopPart(int positionLeft) {
+        //LLog.d(TAG, "fuck isViewInTopPart " + positionLeft + " - " + (screenWidth / 2));
+        return positionLeft <= screenWidth / 2;
+    }
+
+    /**
+     * Override method to configure the dragged view and secondView layout properly.
+     */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        //LLog.d(TAG, "fuck onLayout bottomUZTimebar " + bottomUZTimebar + " - " + left + " - " + top + " - " + right + " - " + bottom);
-        if (isInEditMode())
+        LLog.d(TAG, "fuck onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
+        if (isInEditMode()) {
             super.onLayout(changed, left, top, right, bottom);
-        else if (isDragViewAtTop()) {
+        } else if (isDragViewAtTop()) {
             //dragView.layout(left, top, right, transformer.getOriginalHeight() - bottomUZTimebar);
             dragView.layout(left, top, right, transformer.getOriginalHeight());
+            //secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
+
             ViewHelper.setY(dragView, top);
-            //ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
-            ViewHelper.setY(secondView, transformer.getOriginalHeight());
+            ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
+            //ViewHelper.setY(secondView, transformer.getOriginalHeight());
         } else {
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
         }
+    }
+
+    /**
+     * Modify dragged view pivot based on the dragged view vertical position to simulate a horizontal
+     * displacement while the view is dragged.
+     */
+    void changeDragViewPosition() {
+        //LLog.d(TAG, "fuck changeDragViewPosition getVerticalDragOffset() " + getVerticalDragOffset());
+        transformer.updatePosition(getVerticalDragOffset());
+    }
+
+    /**
+     * Modify secondView position to be always below dragged view.
+     */
+    void changeSecondViewPosition() {
+        ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
+        //ViewHelper.setY(secondView, dragView.getBottom());
+    }
+
+    /**
+     * Modify dragged view scale based on the dragged view vertical position and the scale factor.
+     */
+    void changeDragViewScale() {
+        transformer.updateScale(getVerticalDragOffset());
     }
 
     /**
@@ -541,29 +578,6 @@ public class DraggableView extends RelativeLayout {
      */
     void attachBottomFragment(Fragment bottomFragment) {
         addFragmentToView(R.id.second_view, bottomFragment);
-    }
-
-    /**
-     * Modify dragged view pivot based on the dragged view vertical position to simulate a horizontal
-     * displacement while the view is dragged.
-     */
-    void changeDragViewPosition() {
-        transformer.updatePosition(getVerticalDragOffset());
-    }
-
-    /**
-     * Modify secondView position to be always below dragged view.
-     */
-    void changeSecondViewPosition() {
-        //ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
-        ViewHelper.setY(secondView, dragView.getBottom());
-    }
-
-    /**
-     * Modify dragged view scale based on the dragged view vertical position and the scale factor.
-     */
-    void changeDragViewScale() {
-        transformer.updateScale(getVerticalDragOffset());
     }
 
     /**

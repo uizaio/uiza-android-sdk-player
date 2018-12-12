@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import vn.uiza.R;
+import vn.uiza.core.utilities.LScreenUtil;
 
 /**
  * Custom view created to handle DraggableView using fragments. With this custom view the client
@@ -269,6 +270,7 @@ public class DraggablePanel extends FrameLayout {
 
         inflate(getContext(), R.layout.view_draggable_panel, this);
         draggableView = (DraggableView) findViewById(R.id.draggable_view);
+        draggableView.setScreenSize(LScreenUtil.getScreenWidth(), LScreenUtil.getScreenHeight());
         draggableView.setTopViewHeight(topFragmentHeight);
         draggableView.setFragmentManager(fragmentManager);
         draggableView.attachTopFragment(topFragment);
@@ -299,6 +301,8 @@ public class DraggablePanel extends FrameLayout {
     public void setBottomUZTimebar(int bottomUZTimebar) {
         if (draggableView != null) {
             draggableView.setBottomUZTimebar(bottomUZTimebar);
+            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+            draggableView.requestLayout();
         }
     }
 
