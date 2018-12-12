@@ -40,7 +40,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
- * Created by loitp on 3/27/2018.
+ * Created by loitp on 12/12/2018.
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
@@ -67,7 +67,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
-        LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay);
+        //LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay);
         if (isInitCustomLinkplay) {
         } else {
             if (UZData.getInstance().getData() == null) {
@@ -78,7 +78,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
-            LLog.d(TAG, "linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
+            //LLog.d(TAG, "linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -257,7 +257,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-
                         //remember the initial position.
                         initialX = params.x;
                         initialY = params.y;
@@ -273,6 +272,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         clickRoot(lastTouchDown);
                         return true;
                     case MotionEvent.ACTION_MOVE:
+                        LLog.d(TAG, "ACTION_MOVE " + (int) event.getRawX() + " - " + (int) event.getRawY());
                         //Calculate the X and Y coordinates of the view.
                         params.x = initialX + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
@@ -481,7 +481,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int videoH = fuzVideo.getVideoH();
         int moveW = getMoveViewWidth();
         int moveH = moveW * videoH / videoW;
-        LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
+        //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
         moveView.getLayoutParams().width = moveW;
         moveView.getLayoutParams().height = moveH;
         moveView.requestLayout();
