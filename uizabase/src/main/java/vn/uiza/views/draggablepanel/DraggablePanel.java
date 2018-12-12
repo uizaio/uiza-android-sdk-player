@@ -312,12 +312,14 @@ public class DraggablePanel extends FrameLayout {
                     int screenH = LScreenUtil.getScreenHeight();
                     if (isViewInTopPart) {
                         if (currentHeight <= screenH) {
-                            draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                            //draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                            draggableView.setTopViewMarginBottom(0);
                             LLog.d(TAG, "fuck onPartOfView true -> " + (LScreenUtil.getScreenHeight() + bottomUZTimebar));
                         }
                     } else {
                         if (currentHeight >= screenH) {
                             draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight();
+                            draggableView.setTopViewMarginBottom(bottomUZTimebar * 2);
                             LLog.d(TAG, "fuck onPartOfView false -> " + (LScreenUtil.getScreenHeight() - bottomUZTimebar));
                         }
                     }
