@@ -303,7 +303,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
     }
 
-    private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER}
+    private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, OUT_LEFT, OUT_RIGHT, OUT_TOP, OUT_BOTTOM}
 
     private POS pos;
 
@@ -369,6 +369,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 rlControl.setVisibility(View.VISIBLE);
                 setSizeMoveView(false, true);
             }
+        }
+        if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
+            updateUISlide(0, 0);
         }
     }
 
