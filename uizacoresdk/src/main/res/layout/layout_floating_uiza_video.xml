@@ -24,8 +24,8 @@
 
             <ImageButton
                 android:id="@+id/bt_full_screen"
-                android:layout_width="@dimen/w_40"
-                android:layout_height="@dimen/w_40"
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_marginRight="@dimen/margin_10"
@@ -38,8 +38,8 @@
 
             <ImageButton
                 android:id="@+id/bt_play_pause"
-                android:layout_width="@dimen/w_40"
-                android:layout_height="@dimen/w_40"
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/margin_5"
@@ -51,8 +51,8 @@
 
             <ImageButton
                 android:id="@+id/bt_exit"
-                android:layout_width="@dimen/w_40"
-                android:layout_height="@dimen/w_40"
+                android:layout_width="@dimen/w_30"
+                android:layout_height="@dimen/w_30"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_marginLeft="@dimen/margin_10"
@@ -71,7 +71,7 @@
             android:background="@drawable/background_err"
             android:gravity="center"
             android:text="@string/err_no_internet_tap_to_retry"
-            android:textSize="@dimen/txt_14"
+            android:textSize="@dimen/txt_12"
             android:textStyle="bold"
             android:visibility="gone" />
     </RelativeLayout>

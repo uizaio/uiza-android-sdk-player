@@ -60,6 +60,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private Gson gson = new Gson();
     private boolean isLivestream;
     private int screenWidth;
+    private int screenHeight;
+    private int statusBarHeight;
 
     public FUZVideoService() {
     }
@@ -122,7 +124,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         super.onCreate();
         EventBus.getDefault().register(this);
         screenWidth = LScreenUtil.getScreenWidth();
-        mFloatingView = LayoutInflater.from(this).inflate(R.layout.v3_layout_floating_uiza_video, null);
+        screenHeight = LScreenUtil.getScreenHeight();
+        statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
+        LLog.d(TAG, "statusBarHeight " + statusBarHeight);
+        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
         int LAYOUT_FLAG;
@@ -272,18 +277,77 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         clickRoot(lastTouchDown);
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        LLog.d(TAG, "ACTION_MOVE " + (int) event.getRawX() + " - " + (int) event.getRawY());
+                        //LLog.d(TAG, "ACTION_MOVE " + (int) event.getRawX() + " - " + (int) event.getRawY() + "___" + (initialX + (int) (event.getRawX() - initialTouchX) + " - " + (initialY + (int) (event.getRawY() - initialTouchY))));
                         //Calculate the X and Y coordinates of the view.
                         params.x = initialX + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
 
                         //Update the layout with new X & Y coordinate
                         mWindowManager.updateViewLayout(mFloatingView, params);
+                        //LLog.d(TAG, "ACTION_MOVE " + getLocationOnScreen(mFloatingView));
+                        getLocationOnScreen(mFloatingView);
                         return true;
                 }
                 return false;
             }
         });
+    }
+
+    private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER}
+
+    private POS pos;
+
+    private void notiPos(POS tmpPos) {
+        if (pos != tmpPos) {
+            pos = tmpPos;
+            LLog.d(TAG, "notiPos: " + pos);
+        }
+    }
+
+    private void getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int posLeft = location[0];
+        int posTop = location[1];
+        int posRight = posLeft + view.getWidth();
+        int posBottom = posTop + view.getHeight();
+        //LLog.d(TAG, "getLocationOnScreen " + posLeft + " - " + posTop + " - " + posRight + " - " + posBottom);
+        if (posLeft == 0) {
+            if (posTop == 0 || posTop == statusBarHeight) {
+                //LLog.d(TAG, "TOP_LEFT");
+                notiPos(POS.TOP_LEFT);
+            } else if (posBottom == screenHeight) {
+                //LLog.d(TAG, "BOTTOM_LEFT");
+                notiPos(POS.BOTTOM_LEFT);
+            } else {
+                //LLog.d(TAG, "LEFT");
+                notiPos(POS.LEFT);
+            }
+        } else {
+            if (posRight == screenWidth) {
+                if (posTop == 0 || posTop == statusBarHeight) {
+                    //LLog.d(TAG, "TOP_RIGHT");
+                    notiPos(POS.TOP_RIGHT);
+                } else if (posBottom == screenHeight) {
+                    //LLog.d(TAG, "BOTTOM_RIGHT");
+                    notiPos(POS.BOTTOM_RIGHT);
+                } else {
+                    //LLog.d(TAG, "RIGHT");
+                    notiPos(POS.RIGHT);
+                }
+            } else {
+                if (posTop == 0 || posTop == statusBarHeight) {
+                    //LLog.d(TAG, "TOP");
+                    notiPos(POS.TOP);
+                } else if (posBottom == screenHeight) {
+                    //LLog.d(TAG, "BOTTOM");
+                    notiPos(POS.BOTTOM);
+                } else {
+                    //LLog.d(TAG, "CENTER");
+                    notiPos(POS.CENTER);
+                }
+            }
+        }
     }
 
     private void clickRoot(long lastTouchDown) {
@@ -441,7 +505,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         moveView.getLayoutParams().width = w;
         moveView.getLayoutParams().height = h;
-        LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
+        //LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
         moveView.requestLayout();
     }
 
