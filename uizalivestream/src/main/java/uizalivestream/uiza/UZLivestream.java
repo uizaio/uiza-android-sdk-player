@@ -576,22 +576,27 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             @Override
             public void onFail(Throwable e) {
                 Log.e(TAG, "startLivestream onFail " + e.toString() + ", " + e.getMessage());
-                HttpException error = (HttpException) e;
-                String responseBody = null;
                 try {
-                    responseBody = error.response().errorBody().string();
-                    ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
-                    Log.e(TAG, "startLivestream onFail try " + errorBody);
-                    /*if (callback != null) {
-                        callback.onError(errorBody.getMessage());
-                    }*/
-                    getDetailEntity(entityLiveId, true, errorBody.getMessage());
-                } catch (IOException e1) {
-                    Log.e(TAG, "startLivestream IOException catch " + e1.toString());
-                    /*if (callback != null) {
-                        callback.onError(e1.getMessage());
-                    }*/
-                    getDetailEntity(entityLiveId, true, e1.getMessage());
+                    HttpException error = (HttpException) e;
+                    String responseBody = null;
+                    try {
+                        responseBody = error.response().errorBody().string();
+                        ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
+                        Log.e(TAG, "startLivestream onFail try " + errorBody);
+                        /*if (callback != null) {
+                            callback.onError(errorBody.getMessage());
+                        }*/
+                        getDetailEntity(entityLiveId, true, errorBody.getMessage());
+                    } catch (IOException e1) {
+                        Log.e(TAG, "startLivestream IOException catch " + e1.toString());
+                        /*if (callback != null) {
+                            callback.onError(e1.getMessage());
+                        }*/
+                        getDetailEntity(entityLiveId, true, e1.getMessage());
+                    }
+                } catch (Exception ex) {
+                    Log.e(TAG, "startLivestream Exception catch " + ex.toString());
+                    getDetailEntity(entityLiveId, true, ex.getMessage());
                 }
             }
         });
