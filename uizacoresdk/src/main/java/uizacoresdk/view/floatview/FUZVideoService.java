@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -220,28 +221,25 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
     }
 
-    /*private void slideToPosition(int goToPosX, int goToPosY) {
+    private void slideToPosition(int goToPosX, int goToPosY) {
         int currentPosX = params.x;
         int currentPosY = params.y;
         LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
 
-//        final int a = (int) Math.abs(goToPosX - currentPosX);
-//        final int b = (int) Math.abs(goToPosY - currentPosY);
+        //final int a = (int) Math.abs(goToPosX - currentPosX);
+        //final int b = (int) Math.abs(goToPosY - currentPosY);
 
-//        final int a = goToPosX;
-//        final int b = goToPosY;
+        //final int a = goToPosX;
+        //final int b = goToPosY;
 
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
 
         LLog.d(TAG, "slideToPosition " + a + " : " + b);
 
-        //rlControl.setVisibility(View.GONE);
-        //setSizeMoveView();
-
-        new CountDownTimer(500, 5) {
+        new CountDownTimer(300, 3) {
             public void onTick(long t) {
-                float step = (500 - t) / 5;
+                float step = (300 - t) / 3;
                 LLog.d(TAG, "slideToLeft onTick step: " + step);
                 //LLog.d(TAG, "slideToPosition onTick: " + a * step / 100 + " - " + b * step / 100);
                 updateUISlide((int) (a * step / 100), (int) (b * step / 100));
@@ -252,7 +250,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 updateUISlide(a, b);
             }
         }.start();
-    }*/
+    }
 
     private void updateUISlide(int x, int y) {
         params.x = x;
@@ -371,7 +369,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         }
         if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
-            updateUISlide(0, 0);
+            //updateUISlide(0, 0);
+            slideToPosition(0, 0);
         }
     }
 
