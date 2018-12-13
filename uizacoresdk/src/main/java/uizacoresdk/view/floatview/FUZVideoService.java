@@ -126,7 +126,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
         statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
-        LLog.d(TAG, "statusBarHeight " + statusBarHeight);
+        //LLog.d(TAG, "statusBarHeight " + statusBarHeight);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
