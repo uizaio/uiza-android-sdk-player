@@ -61,7 +61,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private boolean isLivestream;
     private int screenWidth;
     private int screenHeight;
-    private int statusBarHeight;
+    //private int statusBarHeight;
 
     public FUZVideoService() {
     }
@@ -125,7 +125,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         EventBus.getDefault().register(this);
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
-        statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
+        //statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
         //LLog.d(TAG, "statusBarHeight " + statusBarHeight);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
@@ -323,7 +323,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int posBottom = posTop + view.getHeight();
         //LLog.d(TAG, "getLocationOnScreen " + posLeft + " - " + posTop + " - " + posRight + " - " + posBottom);
         if (posLeft == 0) {
-            if (posTop == 0 || posTop == statusBarHeight) {
+            if (posTop == 0) {
                 //LLog.d(TAG, "TOP_LEFT");
                 notiPos(POS.TOP_LEFT);
             } else if (posBottom == screenHeight) {
@@ -335,7 +335,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         } else {
             if (posRight == screenWidth) {
-                if (posTop == 0 || posTop == statusBarHeight) {
+                if (posTop == 0) {
                     //LLog.d(TAG, "TOP_RIGHT");
                     notiPos(POS.TOP_RIGHT);
                 } else if (posBottom == screenHeight) {
@@ -346,7 +346,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     notiPos(POS.RIGHT);
                 }
             } else {
-                if (posTop == 0 || posTop == statusBarHeight) {
+                if (posTop == 0) {
                     //LLog.d(TAG, "TOP");
                     notiPos(POS.TOP);
                 } else if (posBottom == screenHeight) {
