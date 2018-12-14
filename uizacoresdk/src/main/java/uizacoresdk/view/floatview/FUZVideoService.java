@@ -422,12 +422,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 slideToPosition(screenWidth - getMoveViewWidth(), posY);
             }
         }*/
-        LLog.d(TAG, "onMoveUp");
+        //LLog.d(TAG, "onMoveUp");
         int posX = params.x;
         int posY = params.y;
         int centerPosX = posX + getMoveViewWidth() / 2;
         int centerPosY = posY + getMoveViewHeight() / 2;
-        LLog.d(TAG, "->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
+        LLog.d(TAG, "onMoveUp ->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
         if (centerPosX < screenWidth / 2) {
             slideToPosition(0, posY);
         } else {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -24,6 +25,7 @@ import vn.uiza.views.LToast;
 
 public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
+    private Button btMini;
 
     @Override
     protected boolean setFullScreen() {
@@ -50,6 +52,13 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
         uzVideo.setAutoStart(true);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        btMini = (Button) findViewById(R.id.bt_mini);
+        btMini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uzVideo.showPip();
+            }
+        });
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
@@ -114,6 +123,9 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        if (isInitSuccess) {
+            btMini.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
