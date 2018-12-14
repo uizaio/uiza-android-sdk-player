@@ -484,6 +484,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
                 }
                 break;
+            case LEFT:
+            case CENTER_LEFT:
+                posY = params.y;
+                centerPosY = posY + getMoveViewHeight() / 2;
+                if (centerPosY < screenHeight / 2) {
+                    slideToPosition(0, 0);
+                } else {
+                    slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                }
+                break;
         }
     }
 
