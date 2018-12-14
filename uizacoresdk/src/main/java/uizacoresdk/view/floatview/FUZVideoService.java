@@ -299,7 +299,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            LLog.d(TAG, "onSingleTapConfirmed");
+            //LLog.d(TAG, "onSingleTapConfirmed");
             if (rlControl.getVisibility() == View.VISIBLE) {
                 rlControl.setVisibility(View.GONE);
                 setSizeMoveView(false, false);
