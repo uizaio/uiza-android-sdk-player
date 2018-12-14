@@ -253,22 +253,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private CountDownTimer countDownTimer;
 
     private void slideToPosition(final int goToPosX, final int goToPosY) {
-        /*final int currentPosX;
-        final int currentPosY;
-        if (params.x < 0) {
-            currentPosX = 0;
-        } else if (params.x > screenWidth) {
-            currentPosX = screenWidth;
-        } else {
-            currentPosX = params.x;
-        }
-        if (params.y < 0) {
-            currentPosY = 0;
-        } else if (params.y > screenHeight) {
-            currentPosY = screenHeight;
-        } else {
-            currentPosY = params.y;
-        }*/
         final int currentPosX = params.x;
         final int currentPosY = params.y;
         LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
@@ -310,7 +294,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private class GestureTap extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            LLog.d(TAG, "onDoubleTap");
             return true;
         }
 
@@ -324,7 +307,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 rlControl.setVisibility(View.VISIBLE);
                 setSizeMoveView(false, true);
             }
-            //btFullScreen.performClick();
             return true;
         }
     }

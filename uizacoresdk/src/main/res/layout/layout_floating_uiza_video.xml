@@ -25,12 +25,10 @@
 
             <ImageButton
                 android:id="@+id/bt_full_screen"
-                android:layout_width="@dimen/w_30"
-                android:layout_height="@dimen/w_30"
+                android:layout_width="@dimen/w_25"
+                android:layout_height="@dimen/w_25"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_toLeftOf="@+id/bt_play_pause"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
@@ -39,8 +37,8 @@
 
             <ImageButton
                 android:id="@+id/bt_play_pause"
-                android:layout_width="@dimen/w_30"
-                android:layout_height="@dimen/w_30"
+                android:layout_width="@dimen/w_25"
+                android:layout_height="@dimen/w_25"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/margin_5"
@@ -52,12 +50,11 @@
 
             <ImageButton
                 android:id="@+id/bt_exit"
-                android:layout_width="@dimen/w_30"
-                android:layout_height="@dimen/w_30"
+                android:layout_width="@dimen/w_25"
+                android:layout_height="@dimen/w_25"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_toRightOf="@+id/bt_play_pause"
                 android:background="@color/transparent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
