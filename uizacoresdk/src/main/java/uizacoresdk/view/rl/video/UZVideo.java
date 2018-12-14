@@ -2132,7 +2132,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void initializePiP() {
-        if (activity == null) {
+        if (activity == null || uzPlayerManager == null || uzPlayerManager.getLinkPlay() == null) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
             return;
         }
         Intent intent = new Intent(activity, FUZVideoService.class);

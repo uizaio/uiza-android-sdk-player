@@ -263,12 +263,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     tmpX = currentPosX + (int) (a * step / 100);
                     tmpY = currentPosY + (int) (b * step / 100);
                 }
-                LLog.d(TAG, "slideToLeft onTick step: " + step + ", " + tmpX + " x " + tmpY);
+                //LLog.d(TAG, "slideToLeft onTick step: " + step + ", " + tmpX + " x " + tmpY);
                 updateUISlide(tmpX, tmpY);
             }
 
             public void onFinish() {
-                LLog.d(TAG, "slideToLeft onFinish " + goToPosX + " x " + goToPosY);
+                //LLog.d(TAG, "slideToLeft onFinish " + goToPosX + " x " + goToPosY);
                 updateUISlide(goToPosX, goToPosY);
             }
         }.start();
@@ -303,7 +303,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         lastTouchDown = System.currentTimeMillis();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        //on Click event
+                        //onClick event
                         clickRoot(lastTouchDown);
                         return true;
                     case MotionEvent.ACTION_MOVE:
@@ -381,14 +381,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void clickRoot(long lastTouchDown) {
+        //works fine
         if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-            if (rlControl.getVisibility() == View.VISIBLE) {
+            //click vao root se to hon, click lai de thu nho
+            /*if (rlControl.getVisibility() == View.VISIBLE) {
                 rlControl.setVisibility(View.GONE);
                 setSizeMoveView(false, false);
             } else {
                 rlControl.setVisibility(View.VISIBLE);
                 setSizeMoveView(false, true);
-            }
+            }*/
+            btFullScreen.performClick();
         }
         if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
             int posX = params.x;
@@ -532,15 +535,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (moveView == null) {
             return;
         }
-        int w;
-        int h;
+        int w = 0;
+        int h = 0;
         if (isFirstSizeInit) {
             w = screenWidth / 2;
             h = w * 9 / 16;
         } else {
+            //works fine
             //OPTION 1: isLarger->mini player se to hon 1 chut
             //!isLarger->ve trang thai ban dau
-            if (isLarger) {
+            /*if (isLarger) {
                 w = getMoveViewWidth() * 120 / 100;
                 h = getMoveViewHeight() * 120 / 100;
             } else {
@@ -548,18 +552,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 int videoH = fuzVideo.getVideoH();
                 w = screenWidth / 2;
                 h = w * videoH / videoW;
-            }
-
-            //OPTION 2: ko thay doi kich thuoc
-            /*int videoW = fuzVideo.getVideoW();
-            int videoH = fuzVideo.getVideoH();
-            w = screenWidth / 2;
-            h = w * videoH / videoW;*/
+            }*/
         }
-        moveView.getLayoutParams().width = w;
-        moveView.getLayoutParams().height = h;
-        //LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
-        moveView.requestLayout();
+        if (w != 0 && h != 0) {
+            moveView.getLayoutParams().width = w;
+            moveView.getLayoutParams().height = h;
+            //LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
+            moveView.requestLayout();
+        }
     }
 
     private int getMoveViewWidth() {
