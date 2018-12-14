@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,7 +48,6 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
-    private final int CLICK_ACTION_THRESHHOLD = 300;//original value is 200
     private WindowManager mWindowManager;
     private View mFloatingView;
     private RelativeLayout rlControl;
@@ -305,16 +305,42 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         mWindowManager.updateViewLayout(mFloatingView, params);
     }
 
+    private GestureDetector mTapDetector;
+
+    private class GestureTap extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            LLog.d(TAG, "onDoubleTap");
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            LLog.d(TAG, "onSingleTapConfirmed");
+            if (rlControl.getVisibility() == View.VISIBLE) {
+                rlControl.setVisibility(View.GONE);
+                setSizeMoveView(false, false);
+            } else {
+                rlControl.setVisibility(View.VISIBLE);
+                setSizeMoveView(false, true);
+            }
+            //btFullScreen.performClick();
+            return true;
+        }
+    }
+
     private void dragAndMove() {
+        mTapDetector = new GestureDetector(getBaseContext(), new GestureTap());
+
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
             private float initialTouchX;
             private float initialTouchY;
-            private long lastTouchDown;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                mTapDetector.onTouchEvent(event);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         //remember the initial position.
@@ -324,12 +350,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         //get the touch location
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
-
-                        lastTouchDown = System.currentTimeMillis();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        //onClick event
-                        clickRoot(lastTouchDown);
+                        onMoveUp();
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         //LLog.d(TAG, "ACTION_MOVE " + (int) event.getRawX() + " - " + (int) event.getRawY() + "___" + (initialX + (int) (event.getRawX() - initialTouchX) + " - " + (initialY + (int) (event.getRawY() - initialTouchY))));
@@ -347,18 +370,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
     }
 
-    private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, OUT_LEFT, OUT_RIGHT, OUT_TOP, OUT_BOTTOM}
+    //private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, OUT_LEFT, OUT_RIGHT, OUT_TOP, OUT_BOTTOM}
 
-    private POS pos;
+    //private POS pos;
 
-    private void notiPos(POS tmpPos) {
+    /*private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
             pos = tmpPos;
             //LLog.d(TAG, "notiPos: " + pos);
         }
-    }
+    }*/
 
-    private void getLocationOnScreen(View view) {
+    /*private void getLocationOnScreen(View view) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         int posLeft = location[0];
@@ -402,22 +425,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             }
         }
-    }
+    }*/
 
-    private void clickRoot(long lastTouchDown) {
-        //works fine
-        if (System.currentTimeMillis() - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-            //click vao root se to hon, click lai de thu nho
-            /*if (rlControl.getVisibility() == View.VISIBLE) {
-                rlControl.setVisibility(View.GONE);
-                setSizeMoveView(false, false);
-            } else {
-                rlControl.setVisibility(View.VISIBLE);
-                setSizeMoveView(false, true);
-            }*/
-            btFullScreen.performClick();
-        }
-        if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
+    private void onMoveUp() {
+        /*if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
             int posX = params.x;
             int posY = params.y;
             int centerPosX = posX + getMoveViewWidth() / 2;
@@ -428,6 +439,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             } else {
                 slideToPosition(screenWidth - getMoveViewWidth(), posY);
             }
+        }*/
+        LLog.d(TAG, "onMoveUp");
+        int posX = params.x;
+        int posY = params.y;
+        int centerPosX = posX + getMoveViewWidth() / 2;
+        int centerPosY = posY + getMoveViewHeight() / 2;
+        LLog.d(TAG, "->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
+        if (centerPosX < screenWidth / 2) {
+            slideToPosition(0, posY);
+        } else {
+            slideToPosition(screenWidth - getMoveViewWidth(), posY);
         }
     }
 
