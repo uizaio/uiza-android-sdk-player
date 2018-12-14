@@ -175,7 +175,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         params.x = screenWidth - getMoveViewWidth();
         //params.y = screenHeight - getMoveViewHeight();
         params.y = screenHeight - getMoveViewHeight() - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-        LLog.d(TAG, "first position: " + params.x + "-" + params.y);
+        //LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
         fuzVideo.addVideoListener(new VideoListener() {
@@ -634,13 +634,24 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onPlayerStateEnded() {
-        //TODO Cần check xem nếu play pip ở playlist folder thì auto next, còn nếu là entity thì thôi
-        /*if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            LLog.d(TAG, "Dang play o che do playlist folder -> auto switch next data");
+        if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+            LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
+            fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
+                @Override
+                public void onSuccess(String lp) {
+                    linkPlay = lp;
+                    if (linkPlay == null) {
+                        LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
+                        stopSelf();
+                    }
+                    LLog.d(TAG, "next linkPlay " + linkPlay);
+                    setupVideo();
+                }
+            });
         } else {
-            LLog.d(TAG, "Dang play o che do entity -> do nothing");
-        }*/
-        stopSelf();
+            LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
+            stopSelf();
+        }
     }
 
     private boolean isSendMsgToActivity;

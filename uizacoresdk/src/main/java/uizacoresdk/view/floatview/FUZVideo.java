@@ -16,7 +16,9 @@ import android.widget.RelativeLayout;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoListener;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
@@ -30,9 +32,16 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.RestClientTracking;
+import vn.uiza.restapi.restclient.UZRestClient;
+import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
+import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
+import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
+import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
@@ -43,6 +52,7 @@ public class FUZVideo extends RelativeLayout {
     private ProgressBar progressBar;
     private RelativeLayout rootView;
     private ImageView ivVideoCover;
+    private Gson gson = new Gson();//TODO remove later
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -58,6 +68,14 @@ public class FUZVideo extends RelativeLayout {
     //Lấy vị trí của pip player
     public long getCurrentPosition() {
         return getPlayer().getCurrentPosition();
+    }
+
+    protected void setDefautValueForFlagIsTracked() {
+        UZTrackingUtil.clearAllValues(getContext());
+        isTracked25 = false;
+        isTracked50 = false;
+        isTracked75 = false;
+        isTracked100 = false;
     }
 
     public void init(String linkPlay, boolean isLivestream, Callback callback) {
@@ -292,6 +310,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     protected void onPlayerStateEnded() {
+        setDefautValueForFlagIsTracked();
         if (callback != null) {
             callback.onPlayerStateEnded();
         }
@@ -417,5 +436,141 @@ public class FUZVideo extends RelativeLayout {
 
     public void addVideoListener(VideoListener videoListener) {
         this.videoListener = videoListener;
+    }
+
+    protected void getLinkPlayOfNextItem(CallbackGetLinkPlay callbackGetLinkPlay) {
+        if (UZData.getInstance().getDataList() == null) {
+            LLog.e(TAG, "playPlaylistPosition error: incorrect position");
+            callbackGetLinkPlay.onSuccess(null);
+            return;
+        }
+        int currentPositionOfDataList = UZData.getInstance().getCurrentPositionOfDataList();
+        int position = currentPositionOfDataList + 1;
+        if (position < 0) {
+            LLog.e(TAG, "This is the first item");
+            callbackGetLinkPlay.onSuccess(null);
+            return;
+        }
+        if (position > UZData.getInstance().getDataList().size() - 1) {
+            LLog.e(TAG, "This is the last item");
+            callbackGetLinkPlay.onSuccess(null);
+            return;
+        }
+        UZData.getInstance().setCurrentPositionOfDataList(position);
+        Data data = UZData.getInstance().getDataWithPositionOfDataList(position);
+        if (data == null || data.getId() == null || data.getId().isEmpty()) {
+            LLog.e(TAG, "playPlaylistPosition error: data null or cannot get id");
+            callbackGetLinkPlay.onSuccess(null);
+            return;
+        }
+        LLog.d(TAG, "-----------------------> playPlaylistPosition " + position + " -> " + data.getName());
+        callAPIGetTokenStreaming(data.getId(), callbackGetLinkPlay);
+    }
+
+    private void callAPIGetTokenStreaming(final String entityId, final CallbackGetLinkPlay callbackGetLinkPlay) {
+        //LLog.d(TAG, "callAPIGetTokenStreaming entityId " + entityId);
+        UZService service = UZRestClient.createService(UZService.class);
+        SendGetTokenStreaming sendGetTokenStreaming = new SendGetTokenStreaming();
+        sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
+        sendGetTokenStreaming.setEntityId(entityId);
+        sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
+        ApiMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            @Override
+            public void onSuccess(ResultGetTokenStreaming result) {
+                //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
+                if (result == null || result.getData() == null || result.getData().getToken() == null || result.getData().getToken().isEmpty()) {
+                    callbackGetLinkPlay.onSuccess(null);
+                    return;
+                }
+                String tokenStreaming = result.getData().getToken();
+                //LLog.d(TAG, "tokenStreaming " + tokenStreaming);
+                callAPIGetLinkPlay(entityId, tokenStreaming, callbackGetLinkPlay);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                //LLog.e(TAG, "callAPIGetTokenStreaming onFail " + e.getMessage());
+                callbackGetLinkPlay.onSuccess(null);
+            }
+        });
+    }
+
+    private void callAPIGetLinkPlay(String entityId, String tokenStreaming, final CallbackGetLinkPlay callbackGetLinkPlay) {
+        //LLog.d(TAG, "callAPIGetLinkPlay isLivestream " + isLivestream);
+        if (tokenStreaming == null || tokenStreaming.isEmpty()) {
+            callbackGetLinkPlay.onSuccess(null);
+            return;
+        }
+        UZRestClientGetLinkPlay.addAuthorization(tokenStreaming);
+        UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
+        String appId = UZData.getInstance().getAppId();
+        String typeContent = SendGetTokenStreaming.STREAM;
+        //LLog.d(TAG, "===================================");
+        //LLog.d(TAG, "========tokenStreaming: " + tokenStreaming);
+        //LLog.d(TAG, "========appId: " + appId);
+        //LLog.d(TAG, "========entityId: " + entityId);
+        //LLog.d(TAG, "===================================");
+        ApiMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+            @Override
+            public void onSuccess(ResultGetLinkPlay result) {
+                //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
+                checkToSetUpResouce(result, callbackGetLinkPlay);
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                callbackGetLinkPlay.onSuccess(null);
+            }
+        });
+    }
+
+    public interface CallbackGetLinkPlay {
+        public void onSuccess(String linkPlay);
+    }
+
+    private CallbackGetLinkPlay callbackGetLinkPlay;
+
+    private void checkToSetUpResouce(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
+        //LLog.d(TAG, "checkToSetUpResouce isResultGetLinkPlayDone");
+        if (mResultGetLinkPlay != null && UZData.getInstance().getData() != null) {
+            //LLog.d(TAG, "checkToSetUpResouce if");
+            List<String> listLinkPlay = new ArrayList<>();
+            List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
+            if (isLivestream) {
+                //LLog.d(TAG, "checkToSetUpResouce isLivestream true -> m3u8");
+                //Bat buoc dung linkplay m3u8 cho nay, do bug cua system
+                for (Url url : urlList) {
+                    if (url.getUrl().toLowerCase().endsWith(".m3u8")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }
+                /*for (Url url : urlList) {
+                    if (url.getUrl().toLowerCase().endsWith(".mpd")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }*/
+            } else {
+                //LLog.d(TAG, "checkToSetUpResouce isLivestream false -> mpd -> m3u8");
+                for (Url url : urlList) {
+                    if (url.getUrl().toLowerCase().endsWith(".mpd")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }
+                for (Url url : urlList) {
+                    if (url.getUrl().toLowerCase().endsWith(".m3u8")) {
+                        listLinkPlay.add(url.getUrl());
+                    }
+                }
+            }
+
+            //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
+            if (listLinkPlay == null || listLinkPlay.isEmpty()) {
+                LLog.e(TAG, "checkToSetUpResouce listLinkPlay == null || listLinkPlay.isEmpty()");
+                callbackGetLinkPlay.onSuccess(null);
+                return;
+            }
+            String lp = listLinkPlay.get(0);
+            callbackGetLinkPlay.onSuccess(lp);
+        }
     }
 }
