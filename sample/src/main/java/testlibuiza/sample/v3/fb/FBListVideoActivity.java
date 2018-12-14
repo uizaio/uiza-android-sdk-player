@@ -13,6 +13,7 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -95,5 +96,11 @@ public class FBListVideoActivity extends BaseActivity {
             public void onFail(Throwable e) {
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        UZUtil.stopServicePiPIfRunning(activity);//stop mini player
+        super.onDestroy();
     }
 }

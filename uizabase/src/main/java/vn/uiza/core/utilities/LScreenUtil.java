@@ -50,7 +50,6 @@ public class LScreenUtil {
     public static int getBottomBarHeight(Context mContext) {
         boolean hasMenuKey = ViewConfiguration.get(mContext).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-
         if (!hasMenuKey && !hasBackKey) {
             // Do whatever you need to do, this device has a navigation bar
             int result = 0;
