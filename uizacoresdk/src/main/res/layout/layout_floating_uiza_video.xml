@@ -16,6 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <View
+            android:id="@+id/view_destroy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_65"
+            android:visibility="gone" />
+
         <RelativeLayout
             android:id="@+id/rl_control"
             android:layout_width="match_parent"

@@ -50,6 +50,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private WindowManager mWindowManager;
     private View mFloatingView;
+    private View viewDestroy;
     private RelativeLayout rlControl;
     private RelativeLayout moveView;
     private ImageButton btExit;
@@ -89,6 +90,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void findViews() {
+        viewDestroy = (View) mFloatingView.findViewById(R.id.view_destroy);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -344,7 +346,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
                         //Update the layout with new X & Y coordinate
                         mWindowManager.updateViewLayout(mFloatingView, params);
-                        //getLocationOnScreen(mFloatingView);
+                        getLocationOnScreen(mFloatingView);
                         return true;
                 }
                 return false;
@@ -352,86 +354,114 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
     }
 
-    //private enum POS {TOP, LEFT, BOTTOM, RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, OUT_LEFT, OUT_RIGHT, OUT_TOP, OUT_BOTTOM}
+    private enum POS {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER}
 
-    //private POS pos;
+    private POS pos;
 
-    /*private void notiPos(POS tmpPos) {
+    private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
             pos = tmpPos;
-            //LLog.d(TAG, "notiPos: " + pos);
+            LLog.d(TAG, "notiPos: " + pos);
+            if (pos == POS.TOP_LEFT) {
+                viewDestroy.setVisibility(View.VISIBLE);
+            } else if (pos == POS.TOP_RIGHT) {
+                viewDestroy.setVisibility(View.VISIBLE);
+            } else if (pos == POS.BOTTOM_LEFT) {
+                viewDestroy.setVisibility(View.VISIBLE);
+            } else if (pos == POS.BOTTOM_RIGHT) {
+                viewDestroy.setVisibility(View.VISIBLE);
+            } else {
+                if (viewDestroy.getVisibility() != View.GONE) {
+                    viewDestroy.setVisibility(View.GONE);
+                }
+            }
         }
-    }*/
+    }
 
-    /*private void getLocationOnScreen(View view) {
+    private void getLocationOnScreen(View view) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         int posLeft = location[0];
         int posTop = location[1];
         int posRight = posLeft + view.getWidth();
         int posBottom = posTop + view.getHeight();
+        int centerX = (posLeft + posRight) / 2;
+        int centerY = (posTop + posBottom) / 2;
         //LLog.d(TAG, "getLocationOnScreen " + posLeft + " - " + posTop + " - " + posRight + " - " + posBottom);
-        if (posLeft == 0) {
-            if (posTop == 0) {
+        if (centerX < 0) {
+            if (centerY < 0) {
                 //LLog.d(TAG, "TOP_LEFT");
                 notiPos(POS.TOP_LEFT);
-            } else if (posBottom == screenHeight) {
+            } else if (centerY > screenHeight) {
                 //LLog.d(TAG, "BOTTOM_LEFT");
                 notiPos(POS.BOTTOM_LEFT);
             } else {
-                //LLog.d(TAG, "LEFT");
-                notiPos(POS.LEFT);
+                //LLog.d(TAG, "CENTER_LEFT");
+                notiPos(POS.CENTER_LEFT);
+            }
+        } else if (centerX > screenWidth) {
+            if (centerY < 0) {
+                //LLog.d(TAG, "TOP_RIGHT");
+                notiPos(POS.TOP_RIGHT);
+            } else if (centerY > screenHeight) {
+                //LLog.d(TAG, "BOTTOM_RIGHT");
+                notiPos(POS.BOTTOM_RIGHT);
+            } else {
+                //LLog.d(TAG, "CENTER_RIGHT");
+                notiPos(POS.CENTER_RIGHT);
             }
         } else {
-            if (posRight == screenWidth) {
-                if (posTop == 0) {
-                    //LLog.d(TAG, "TOP_RIGHT");
-                    notiPos(POS.TOP_RIGHT);
-                } else if (posBottom == screenHeight) {
-                    //LLog.d(TAG, "BOTTOM_RIGHT");
-                    notiPos(POS.BOTTOM_RIGHT);
-                } else {
+            if (centerY < 0) {
+                //LLog.d(TAG, "CENTER_TOP");
+                notiPos(POS.CENTER_TOP);
+            } else if (centerY > screenHeight) {
+                //LLog.d(TAG, "CENTER_BOTTOM");
+                notiPos(POS.CENTER_BOTTOM);
+            } else {
+                if (posLeft < 0) {
+                    //LLog.d(TAG, "LEFT");
+                    notiPos(POS.LEFT);
+                } else if (posRight > screenWidth) {
                     //LLog.d(TAG, "RIGHT");
                     notiPos(POS.RIGHT);
-                }
-            } else {
-                if (posTop == 0) {
-                    //LLog.d(TAG, "TOP");
-                    notiPos(POS.TOP);
-                } else if (posBottom == screenHeight) {
-                    //LLog.d(TAG, "BOTTOM");
-                    notiPos(POS.BOTTOM);
                 } else {
-                    //LLog.d(TAG, "CENTER");
-                    notiPos(POS.CENTER);
+                    if (posTop < 0) {
+                        //LLog.d(TAG, "TOP");
+                        notiPos(POS.TOP);
+                    } else if (posBottom > screenHeight) {
+                        //LLog.d(TAG, "BOTTOM");
+                        notiPos(POS.BOTTOM);
+                    } else {
+                        //LLog.d(TAG, "CENTER");
+                        notiPos(POS.CENTER);
+                    }
                 }
             }
         }
-    }*/
+
+    }
 
     private void onMoveUp() {
-        /*if (pos == POS.CENTER && rlControl.getVisibility() == View.GONE) {
+        LLog.d(TAG, "onMoveUp " + pos.name());
+        if (pos == POS.TOP_LEFT) {
+            stopSelf();
+        } else if (pos == POS.TOP_RIGHT) {
+            stopSelf();
+        } else if (pos == POS.BOTTOM_LEFT) {
+            stopSelf();
+        } else if (pos == POS.BOTTOM_RIGHT) {
+            stopSelf();
+        } else {
             int posX = params.x;
             int posY = params.y;
             int centerPosX = posX + getMoveViewWidth() / 2;
             int centerPosY = posY + getMoveViewHeight() / 2;
-            LLog.d(TAG, "->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
+            //LLog.d(TAG, "onMoveUp ->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
             if (centerPosX < screenWidth / 2) {
                 slideToPosition(0, posY);
             } else {
                 slideToPosition(screenWidth - getMoveViewWidth(), posY);
             }
-        }*/
-        //LLog.d(TAG, "onMoveUp");
-        int posX = params.x;
-        int posY = params.y;
-        int centerPosX = posX + getMoveViewWidth() / 2;
-        int centerPosY = posY + getMoveViewHeight() / 2;
-        LLog.d(TAG, "onMoveUp ->" + posX + " x " + posY + " -> " + centerPosX + " x " + centerPosY);
-        if (centerPosX < screenWidth / 2) {
-            slideToPosition(0, posY);
-        } else {
-            slideToPosition(screenWidth - getMoveViewWidth(), posY);
         }
     }
 
