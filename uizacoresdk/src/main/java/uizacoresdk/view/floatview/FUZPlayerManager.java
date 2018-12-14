@@ -394,6 +394,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             videoW = width;
             videoH = height;
             //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
+            if (fuzVideo != null && fuzVideo.videoListener != null) {
+                fuzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            }
         }
 
         @Override

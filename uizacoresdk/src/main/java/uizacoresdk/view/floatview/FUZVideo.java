@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.List;
 
@@ -410,5 +411,11 @@ public class FUZVideo extends RelativeLayout {
             return 0;
         }
         return fuzUizaPlayerManager.getVideoH();
+    }
+
+    protected VideoListener videoListener;
+
+    public void addVideoListener(VideoListener videoListener) {
+        this.videoListener = videoListener;
     }
 }

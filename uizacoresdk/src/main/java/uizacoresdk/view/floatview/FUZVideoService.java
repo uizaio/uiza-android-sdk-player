@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -174,6 +175,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
+        fuzVideo.addVideoListener(new VideoListener() {
+            @Override
+            public void onVideoSizeChanged(int videoW, int videoH, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                updateUIVideoSizeOneTime(videoW, videoH);
+            }
+        });
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
@@ -225,6 +232,22 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             }
         });
+    }
+
+    //only update 1 one time
+    private boolean isUpdatedUIVideoSize;
+
+    private void updateUIVideoSizeOneTime(int videoW, int videoH) {
+        if (!isUpdatedUIVideoSize) {
+            LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
+            int vW = screenWidth / 2;
+            int vH = vW * videoH / videoW;
+            LLog.d(TAG, "-> " + vW + "x" + vH);
+            int newPosX = params.x;
+            int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
+            updateUISlide(newPosX, newPosY);
+            isUpdatedUIVideoSize = true;
+        }
     }
 
     private CountDownTimer countDownTimer;
