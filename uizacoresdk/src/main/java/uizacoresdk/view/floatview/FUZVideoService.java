@@ -47,7 +47,7 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
     private final String TAG = "TAG" + getClass().getSimpleName();
-    private final int CLICK_ACTION_THRESHHOLD = 200;
+    private final int CLICK_ACTION_THRESHHOLD = 300;//original value is 200
     private WindowManager mWindowManager;
     private View mFloatingView;
     private RelativeLayout rlControl;
@@ -239,10 +239,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
         if (!isUpdatedUIVideoSize) {
-            LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
+            //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
             int vW = screenWidth / 2;
             int vH = vW * videoH / videoW;
-            LLog.d(TAG, "-> " + vW + "x" + vH);
+            //LLog.d(TAG, "-> " + vW + "x" + vH);
             int newPosX = params.x;
             int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
             updateUISlide(newPosX, newPosY);
@@ -253,7 +253,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private CountDownTimer countDownTimer;
 
     private void slideToPosition(final int goToPosX, final int goToPosY) {
-        final int currentPosX;
+        /*final int currentPosX;
         final int currentPosY;
         if (params.x < 0) {
             currentPosX = 0;
@@ -268,7 +268,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             currentPosY = screenHeight;
         } else {
             currentPosY = params.y;
-        }
+        }*/
+        final int currentPosX = params.x;
+        final int currentPosY = params.y;
         LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
@@ -337,8 +339,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
                         //Update the layout with new X & Y coordinate
                         mWindowManager.updateViewLayout(mFloatingView, params);
-                        //LLog.d(TAG, "ACTION_MOVE " + getLocationOnScreen(mFloatingView));
-                        getLocationOnScreen(mFloatingView);
+                        //getLocationOnScreen(mFloatingView);
                         return true;
                 }
                 return false;
