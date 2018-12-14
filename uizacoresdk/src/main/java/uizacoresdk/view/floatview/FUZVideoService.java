@@ -276,8 +276,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 } else {
-                    tmpX = currentPosX + (int) (a * step / 100);
-                    tmpY = currentPosY + (int) (b * step / 100);
+                    if (currentPosY > goToPosY) {
+                        tmpX = currentPosX + (int) (a * step / 100);
+                        tmpY = currentPosY - (int) (b * step / 100);
+                    } else {
+                        tmpX = currentPosX + (int) (a * step / 100);
+                        tmpY = currentPosY + (int) (b * step / 100);
+                    }
                 }
                 LLog.d(TAG, "slideToLeft onTick step: " + step + ", " + tmpX + " x " + tmpY);
                 updateUISlide(tmpX, tmpY);
@@ -448,6 +453,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void onMoveUp() {
         LLog.d(TAG, "onMoveUp " + pos.name());
+        int posX;
+        int posY;
+        int centerPosX;
+        int centerPosY;
         switch (pos) {
             case TOP_LEFT:
             case TOP_RIGHT:
@@ -457,12 +466,22 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 break;
             case TOP:
             case CENTER_TOP:
-                int posX = params.x;
-                int centerPosX = posX + getMoveViewWidth() / 2;
+                posX = params.x;
+                centerPosX = posX + getMoveViewWidth() / 2;
                 if (centerPosX < screenWidth / 2) {
                     slideToPosition(0, 0);
                 } else {
                     slideToPosition(screenWidth - getMoveViewWidth(), 0);
+                }
+                break;
+            case BOTTOM:
+            case CENTER_BOTTOM:
+                posX = params.x;
+                centerPosX = posX + getMoveViewWidth() / 2;
+                if (centerPosX < screenWidth / 2) {
+                    slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                } else {
+                    slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
                 }
                 break;
         }
