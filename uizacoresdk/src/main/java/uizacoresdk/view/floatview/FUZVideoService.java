@@ -455,6 +455,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void onMoveUp() {
         //LLog.d(TAG, "onMoveUp " + pos.name());
+        if (pos == null) {
+            return;
+        }
         int posX;
         int posY;
         int centerPosX;
