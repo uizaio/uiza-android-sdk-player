@@ -38,6 +38,7 @@ import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
@@ -257,10 +258,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void slideToPosition(final int goToPosX, final int goToPosY) {
         final int currentPosX = params.x;
         final int currentPosY = params.y;
-        LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
+        //LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
         final int a = (int) Math.abs(goToPosX - currentPosX);
         final int b = (int) Math.abs(goToPosY - currentPosY);
-        LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b);
+        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b);
 
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
@@ -284,7 +285,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 }
-                LLog.d(TAG, "slideToLeft onTick step: " + step + ", " + tmpX + " x " + tmpY);
+                //LLog.d(TAG, "slideToLeft onTick step: " + step + ", " + tmpX + " x " + tmpY);
                 updateUISlide(tmpX, tmpY);
             }
 
@@ -371,19 +372,20 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
             pos = tmpPos;
-            LLog.d(TAG, "notiPos: " + pos);
-            if (pos == POS.TOP_LEFT) {
-                viewDestroy.setVisibility(View.VISIBLE);
-            } else if (pos == POS.TOP_RIGHT) {
-                viewDestroy.setVisibility(View.VISIBLE);
-            } else if (pos == POS.BOTTOM_LEFT) {
-                viewDestroy.setVisibility(View.VISIBLE);
-            } else if (pos == POS.BOTTOM_RIGHT) {
-                viewDestroy.setVisibility(View.VISIBLE);
-            } else {
-                if (viewDestroy.getVisibility() != View.GONE) {
-                    viewDestroy.setVisibility(View.GONE);
-                }
+            //LLog.d(TAG, "notiPos: " + pos);
+            switch (pos) {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                    LDeviceUtil.vibrate(getBaseContext());
+                    viewDestroy.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    if (viewDestroy.getVisibility() != View.GONE) {
+                        viewDestroy.setVisibility(View.GONE);
+                    }
+                    break;
             }
         }
     }
@@ -452,7 +454,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void onMoveUp() {
-        LLog.d(TAG, "onMoveUp " + pos.name());
+        //LLog.d(TAG, "onMoveUp " + pos.name());
         int posX;
         int posY;
         int centerPosX;
@@ -509,6 +511,24 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 posY = params.y;
                 centerPosX = posX + getMoveViewWidth() / 2;
                 centerPosY = posY + getMoveViewHeight() / 2;
+                //LLog.d(TAG, "CENTER " + centerPosX + "x" + centerPosY);
+                if (centerPosX < screenWidth / 2) {
+                    if (centerPosY < screenHeight / 2) {
+                        //LLog.d(TAG, "top left part");
+                        slideToPosition(0, 0);
+                    } else {
+                        //LLog.d(TAG, "bottom left part");
+                        slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                    }
+                } else {
+                    if (centerPosY < screenHeight / 2) {
+                        //LLog.d(TAG, "top right part");
+                        slideToPosition(screenWidth - getMoveViewWidth(), 0);
+                    } else {
+                        //LLog.d(TAG, "bottom right part");
+                        slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                    }
+                }
                 break;
         }
     }
