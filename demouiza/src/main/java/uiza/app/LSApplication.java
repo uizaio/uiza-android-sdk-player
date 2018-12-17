@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.data.ActivityData;
 
 public class LSApplication extends MultiDexApplication {
     private final String TAG = LSApplication.class.getSimpleName();
@@ -26,16 +25,12 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        //Utils.init(this);
-        ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
-
         /*if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);*/
-
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, ENVIRONMENT);
     }
 

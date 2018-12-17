@@ -240,7 +240,7 @@ XML:
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestream.Callback {
+    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestreamCallback {
     ...
     }
 
