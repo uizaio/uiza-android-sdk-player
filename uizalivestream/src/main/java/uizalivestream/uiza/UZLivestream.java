@@ -84,22 +84,18 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     public UZLivestream(Context context) {
         super(context);
-        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //onCreate();
     }
 
     public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        //onCreate();
     }
 
     public ProgressBar getProgressBar() {
