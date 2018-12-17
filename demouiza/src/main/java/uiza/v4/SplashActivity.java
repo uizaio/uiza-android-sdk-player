@@ -16,12 +16,12 @@ import android.widget.RadioGroup;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
+import vn.uiza.views.LToast;
 
 public class SplashActivity extends BaseActivity {
     private int currentPlayerId = R.layout.uz_player_skin_1;
@@ -40,10 +40,7 @@ public class SplashActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.pb);
         progressBar.setVisibility(View.GONE);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-
-        //init skin
         currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
-
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
         etAppId = (EditText) findViewById(R.id.et_app_id);
@@ -73,7 +70,6 @@ public class SplashActivity extends BaseActivity {
                 } else if (checkedId == R.id.rd_env_prod) {
                     environment = Constants.ENVIRONMENT_PROD;
                 }
-                LLog.d(TAG, "onCheckedChanged " + environment);
             }
         });
 
@@ -124,23 +120,20 @@ public class SplashActivity extends BaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String domainApi = etApiDomain.getText().toString().trim();
+                if (domainApi == null || domainApi.equals("input")) {
+                    LToast.show(activity, "You must correct your workspace's information first.");
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
                 btStart.setVisibility(View.GONE);
                 llInputInfo.setVisibility(View.GONE);
-
-                String domainApi = etApiDomain.getText().toString().trim();
                 if (domainApi.contains("http://")) {
                     domainApi = domainApi.replace("http://", "");
                 }
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
-
-                //UizaDataV3.getInstance().setCurrentPlayerId(currentPlayerId);
-                //UizaDataV3.getInstance().initSDK(domainApi, token, appId, environment);
-                //UZUtil.initWorkspace(activity, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, environment, currentPlayerId);
                 UZUtil.initWorkspace(activity, domainApi, token, appId, environment, currentPlayerId);
-
-                //final Intent intent = new Intent(activity, HomeV3CanSlideActivity.class);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
                 if (intent != null) {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
