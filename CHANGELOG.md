@@ -1,3 +1,17 @@
+### 3.0.0 (2018-17-10)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.0'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.0'
+
+- Remove white space when using floating player.
+- Update (CustomSkinCodeUZTimebarUTubeWithSlideActivity)[https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/utube/CustomSkinCodeUZTimebarUTubeWithSlideActivity.java].
+- Add feature (mini player like Facebook)[https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/fb/FBVideoActivity.java].
+- Single tap to show/hide controller of mini player
+
+
 ### 2.9.8 (2018-12-10)
 
     //for playing video VOD, LIVE  
