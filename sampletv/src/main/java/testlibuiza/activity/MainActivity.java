@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
 
     private void showDialogInitWorkspace() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Please correct your workspace's information before..");
+        builder.setMessage("Please correct your workspace's information first..");
         builder.setCancelable(false);
         builder.setPositiveButton(
                 "Yes",
