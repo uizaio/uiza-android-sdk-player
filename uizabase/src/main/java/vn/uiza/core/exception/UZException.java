@@ -59,7 +59,7 @@ public class UZException {
     public final static String ERR_18 = "AppID cannot be null or empty";
 
     public final static int ERR_CODE_19 = 19;
-    public final static String ERR_19 = "Cannot use this feature at this time (you are casting now)";
+    public final static String ERR_19 = "Cannot use this feature at this time";
 
     public final static int ERR_CODE_20 = 20;
     public final static String ERR_20 = "Cannot chat messenger now";

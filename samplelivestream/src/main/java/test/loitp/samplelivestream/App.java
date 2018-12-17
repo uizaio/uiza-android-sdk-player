@@ -12,12 +12,11 @@ public class App extends MultiDexApplication {
     public static final String DF_APP_ID = "input";
     public static String entityIdDefaultLIVE_TRANSCODE = "input";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "input";
-    private final int env = Constants.ENVIRONMENT_PROD;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Constants.setDebugMode(false);
+        Constants.setDebugMode(true);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 }

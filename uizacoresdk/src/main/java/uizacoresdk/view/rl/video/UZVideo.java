@@ -140,7 +140,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivThumbnail;
     private UZTextView tvPosition;
     private UZTextView tvDuration;
-    //private ViewGroup rlTimeBar;
     private RelativeLayout rlMsg;
     private TextView tvMsg;
     private ImageView ivVideoCover;
@@ -1944,17 +1943,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
-                if (isTablet) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(GONE);
-                    }
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(GONE);
                 }
             } else {
                 //LLog.d(TAG, "onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
-                if (isTablet && !isCastingChromecast()) {
+                if (!isCastingChromecast()) {
                     if (ibPictureInPictureIcon != null) {
                         ibPictureInPictureIcon.setVisibility(VISIBLE);
                     }
@@ -2019,17 +2016,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPictureInPictureIcon.setVisibility(GONE);
             }
         } else {
-            if (isTablet) {
-                if (isTV) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(GONE);
-                    }
-                } else {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(VISIBLE);
-                    }
-                }
-            } else {
+            if (isTablet && isTV) {
+                //only hide ibPictureInPictureIcon if device is TV
                 if (ibPictureInPictureIcon != null) {
                     ibPictureInPictureIcon.setVisibility(GONE);
                 }
@@ -2143,7 +2131,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void initializePiP() {
-        if (activity == null) {
+        if (activity == null || uzPlayerManager == null || uzPlayerManager.getLinkPlay() == null) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
             return;
         }
         Intent intent = new Intent(activity, FUZVideoService.class);

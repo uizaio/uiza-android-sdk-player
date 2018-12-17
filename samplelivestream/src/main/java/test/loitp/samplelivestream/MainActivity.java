@@ -10,8 +10,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import uizalivestream.uiza.PresetLiveStreamingFeed;
 import uizalivestream.uiza.UZLivestream;
 import uizalivestream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
@@ -55,7 +53,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
-    private Gson gson = new Gson();
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -84,6 +81,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
+        if (App.DF_DOMAIN_API.equals("input")) {
+            LToast.show(activity, "Please configure your workspace's information in App.java");
+            return;
+        }
+
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
         uzLivestream.setCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
@@ -105,7 +107,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onResume() {
-        uzLivestream.onResume();
+        if (uzLivestream != null) {
+            uzLivestream.onResume();
+        }
         super.onResume();
     }
 
@@ -250,6 +254,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     } else {
                         LToast.show(activity, getString(R.string.err_dont_support));
                     }
+                    /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                        uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+                    } else {
+                        LToast.show(activity, getString(R.string.err_dont_support));
+                    }*/
+                    /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
+                        uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+                    } else {
+                        LToast.show(activity, getString(R.string.err_dont_support));
+                    }*/
                 } else {
                     bStartStop.setText(R.string.start_button);
                     uzLivestream.stopStream();
@@ -331,7 +345,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btSwitchCamera.setEnabled(true);
         btFilter.setEnabled(true);
         LLog.d(TAG, "onGetDataSuccessmainUrl mainUrl: " + mainUrl);
-        LLog.d(TAG, "onGetDataSuccess: " + gson.toJson(presetLiveStreamingFeed));
         tvMainUrl.setText(mainUrl);
     }
 

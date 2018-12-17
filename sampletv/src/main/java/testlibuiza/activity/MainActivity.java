@@ -1,5 +1,7 @@
 package testlibuiza.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,11 +13,11 @@ import android.widget.TextView;
 import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.views.LToast;
 
 public class MainActivity extends BaseActivity implements View.OnFocusChangeListener, View.OnClickListener {
@@ -45,7 +47,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
             btCustom.setVisibility(View.GONE);
         }
 
-        etInput.setText(LSApplication.entityIdDefaultVOD);
+        etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInput);
 
         etInput.setOnFocusChangeListener(this);
@@ -77,6 +79,26 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         TextView tvVs = (TextView) findViewById(R.id.tv_vs);
         LUIUtil.setTextShadow(tvVs);
         tvVs.setText("© 2018 Uiza. All rights reserved.\nVersion " + BuildConfig.VERSION_NAME);
+
+        if(LSApplication.getInstance().DF_DOMAIN_API.equals("input")){
+            showDialogInitWorkspace();
+        }
+    }
+
+    private void showDialogInitWorkspace() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Please correct your workspace's information before..");
+        builder.setCancelable(false);
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        onBackPressed();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -112,13 +134,13 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     @Override
     public void onClick(View view) {
         if (view == btVod) {
-            etInput.setText(LSApplication.entityIdDefaultVOD);
+            etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btLive) {
-            etInput.setText(LSApplication.entityIdDefaultLIVE);
+            etInput.setText(LSApplication.getInstance().entityIdDefaultLIVE);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btPlaylistFolder) {
-            etInput.setText(LSApplication.metadataDefault0);
+            etInput.setText(LSApplication.getInstance().metadataDefault0);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btClear) {
             etInput.setText("");

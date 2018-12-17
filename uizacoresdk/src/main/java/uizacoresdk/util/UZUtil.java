@@ -92,7 +92,8 @@ public class UZUtil {
                     heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                 } else {
                     //LLog.d(TAG, "video source is portrait -> scale 9-16");
-                    heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    heightSurfaceView = widthSurfaceView;
                 }
             }
         }

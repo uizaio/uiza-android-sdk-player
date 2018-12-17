@@ -13,13 +13,13 @@ public class LSApplication extends MultiDexApplication {
     private Gson gson;
 
     //TODO input information of your workspace
-    private final String DF_DOMAIN_API = "input";
-    private final String DF_TOKEN = "input";
-    private final String DF_APP_ID = "input";
-    public static String entityIdDefaultVOD = "input";
-    public static String entityIdDefaultLIVE = "input";
-    public static String metadataDefault0 = "input";
-    private final int env = Constants.ENVIRONMENT_PROD;
+    public final String DF_DOMAIN_API = "input";
+    public final String DF_TOKEN = "input";
+    public final String DF_APP_ID = "input";
+    public final String entityIdDefaultVOD = "input";
+    public final String entityIdDefaultLIVE = "input";
+    public final String metadataDefault0 = "input";
+    public final int env = Constants.ENVIRONMENT_PROD;
 
     @Override
     public void onCreate() {
@@ -28,8 +28,6 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        //config activity transition default
-        //ActivityData.getInstance().setType(Constants.TYPE_ACTIVITY_TRANSITION_FADE);
         Constants.setDebugMode(false);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }

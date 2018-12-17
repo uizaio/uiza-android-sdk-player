@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import testlibuiza.R;
+import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
@@ -15,12 +16,14 @@ import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
+import testlibuiza.sample.v3.fb.FBListVideoActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 
 public class MainActivity extends BaseActivity {
@@ -65,6 +68,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
@@ -145,6 +149,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ResizeActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_mini_fb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, FBListVideoActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }

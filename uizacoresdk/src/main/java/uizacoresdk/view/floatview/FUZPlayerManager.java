@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package uizacoresdk.view.floatview;
 
 import android.content.Context;
@@ -24,7 +9,6 @@ import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -48,7 +32,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -64,13 +47,10 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
 
-/**
- * Manages the {@link ExoPlayer}, the IMA plugin and all video playback.
- */
 public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
     private Context context;
-    private FUZVideo FUZVideo;
+    private FUZVideo fuzVideo;
     private DebugTextViewHelper debugTextViewHelper;
     private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
@@ -82,21 +62,20 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     private FUZVideoAdPlayerListerner FUZVideoAdPlayerListerner = new FUZVideoAdPlayerListerner();
     private Handler handler;
     private Runnable runnable;
-
     private ProgressCallback progressCallback;
 
     public void setProgressCallback(ProgressCallback progressCallback) {
         this.progressCallback = progressCallback;
     }
 
-    public FUZPlayerManager(final FUZVideo uizaIMAVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
-        this.context = uizaIMAVideo.getContext();
-        this.FUZVideo = uizaIMAVideo;
+    public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        this.context = fuzVideo.getContext();
+        this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
-        //LLog.d(TAG, "UZPlayerManagerV1 linkPlay " + linkPlay);
         this.subtitleList = subtitleList;
+        this.videoW = 0;
+        this.videoH = 0;
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            //LLog.d(TAG, "UZPlayerManagerV1 urlIMAAd == null || urlIMAAd.isEmpty()");
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
@@ -111,7 +90,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (uizaIMAVideo.getPlayerView() != null) {
+                if (fuzVideo.getPlayerView() != null) {
                     boolean isPlayingAd = FUZVideoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
@@ -146,9 +125,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             }
         };
         handler.postDelayed(runnable, 0);
-
-        //playerView.setControllerAutoShow(false);
-        uizaIMAVideo.getPlayerView().setControllerShowTimeoutMs(0);
+        fuzVideo.getPlayerView().setControllerShowTimeoutMs(0);
     }
 
     private DefaultTrackSelector trackSelector;
@@ -159,31 +136,23 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     public void init() {
         reset();
-
-        //Exo Player Initialization
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-        FUZVideo.getPlayerView().setPlayer(player);
-
+        fuzVideo.getPlayerView().setPlayer(player);
         MediaSource mediaSourceVideo = createMediaSourceVideo();
-
         //merge title to media source video
         //SUBTITLE
         MediaSource mediaSourceWithSubtitle = createMediaSourceWithSubtitle(mediaSourceVideo);
-
         //merge ads to media source subtitle
         //IMA ADS
         // Compose the content media source into a new AdsMediaSource with both ads and content.
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
-
         // Prepare the player with the source.
         //player.seekTo(contentPosition);
         //LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
-
         if (adsLoader != null) {
             adsLoader.addCallback(FUZVideoAdPlayerListerner);
         }
@@ -200,7 +169,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     private MediaSource createMediaSourceVideo() {
         //Video Source
-        //MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(linkPlay));
         MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }
@@ -210,7 +178,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             return mediaSource;
         }
         //LLog.d(TAG, "createMediaSourceWithSubtitle " + gson.toJson(subtitleList));
-
         List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
         for (int i = 0; i < subtitleList.size(); i++) {
             Subtitle subtitle = subtitleList.get(i);
@@ -244,7 +211,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                 mediaSource,
                 this,
                 adsLoader,
-                FUZVideo.getPlayerView().getOverlayFrameLayout(),
+                fuzVideo.getPlayerView().getOverlayFrameLayout(),
                 null,
                 null);
         return mediaSourceWithAds;
@@ -307,13 +274,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
     }
 
-    // AdsMediaSource.MediaSourceFactory implementation.
-
-    /*@Override
-    public MediaSource createMediaSource(Uri uri, @Nullable Handler handler, @Nullable MediaSourceEventListener listener) {
-        return buildMediaSource(uri, handler, listener);
-    }*/
-
     @Override
     public MediaSource createMediaSource(Uri uri) {
         return buildMediaSource(uri);
@@ -334,60 +294,52 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                         new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                         manifestDataSourceFactory)
                         .createMediaSource(uri);
-            //.createMediaSource(uri, handler, listener);
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(
                         new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory)
                         .createMediaSource(uri);
-            //.createMediaSource(uri, handler, listener);
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(mediaDataSourceFactory)
                         .createMediaSource(uri);
-            //.createMediaSource(uri, handler, listener);
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource.Factory(mediaDataSourceFactory)
                         .createMediaSource(uri);
-            //.createMediaSource(uri, handler, listener);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }
     }
 
     private void hideProgress() {
-        LUIUtil.hideProgressBar(FUZVideo.getProgressBar());
+        LUIUtil.hideProgressBar(fuzVideo.getProgressBar());
     }
 
     private void showProgress() {
-        LUIUtil.showProgressBar(FUZVideo.getProgressBar());
+        LUIUtil.showProgressBar(fuzVideo.getProgressBar());
     }
 
     private class FUZPlayerEventListener implements Player.EventListener {
 
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            //LLog.d(TAG, "onTimelineChanged");
         }
 
         @Override
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            //LLog.d(TAG, "onTracksChanged");
         }
 
         @Override
         public void onLoadingChanged(boolean isLoading) {
-            //LLog.d(TAG, "onLoadingChanged isLoading " + isLoading);
         }
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            //LLog.d(TAG, "onPlayerStateChanged playWhenReady: " + playWhenReady);
             switch (playbackState) {
                 case Player.STATE_BUFFERING:
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
-                    if (FUZVideo != null) {
-                        FUZVideo.onPlayerStateEnded();
+                    if (fuzVideo != null) {
+                        fuzVideo.onPlayerStateEnded();
                     }
                     hideProgress();
                     break;
@@ -402,38 +354,49 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onRepeatModeChanged(int repeatMode) {
-            //LLog.d(TAG, "onRepeatModeChanged repeatMode: " + repeatMode);
         }
 
         @Override
         public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-            //LLog.d(TAG, "onShuffleModeEnabledChanged shuffleModeEnabled: " + shuffleModeEnabled);
         }
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
-            //LLog.d(TAG, "onPlayerError " + error.toString());
         }
 
         @Override
         public void onPositionDiscontinuity(int reason) {
-            //LLog.d(TAG, "onPositionDiscontinuity");
         }
 
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-            //LLog.d(TAG, "onPlaybackParametersChanged");
         }
 
         @Override
         public void onSeekProcessed() {
-            //LLog.d(TAG, "onSeekProcessed");
         }
+    }
+
+    private int videoW = 0;
+    private int videoH = 0;
+
+    protected int getVideoW() {
+        return videoW;
+    }
+
+    protected int getVideoH() {
+        return videoH;
     }
 
     private class FUZVideoListener implements VideoListener {
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            videoW = width;
+            videoH = height;
+            //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
+            if (fuzVideo != null && fuzVideo.videoListener != null) {
+                fuzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            }
         }
 
         @Override
@@ -442,7 +405,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onRenderedFirstFrame() {
-            FUZVideo.onStateReadyFirst();
+            fuzVideo.removeVideoCover();
         }
     }
 
@@ -457,42 +420,35 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onPlay() {
-            //LLog.d(TAG, "onPlay");
             isPlayingAd = true;
         }
 
         @Override
         public void onVolumeChanged(int i) {
-            //LLog.d(TAG, "onVolumeChanged");
         }
 
         @Override
         public void onPause() {
-            //LLog.d(TAG, "onPause");
             isPlayingAd = false;
         }
 
         @Override
         public void onLoaded() {
-            //LLog.d(TAG, "onLoaded");
         }
 
         @Override
         public void onResume() {
-            //LLog.d(TAG, "onResume");
             isPlayingAd = true;
         }
 
         @Override
         public void onEnded() {
-            //LLog.d(TAG, "onEnded");
             isPlayingAd = false;
             isEnded = true;
         }
 
         @Override
         public void onError() {
-            //LLog.d(TAG, "onError");
             isPlayingAd = false;
         }
 

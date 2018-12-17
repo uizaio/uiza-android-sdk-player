@@ -105,7 +105,7 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
                 recyclerView.requestFocus();
             }
         });
-        UZUtil.initEntity(activity, uzVideo, LSApplication.entityIdDefaultVOD);
+        UZUtil.initEntity(activity, uzVideo, LSApplication.getInstance().entityIdDefaultVOD);
         setupUI();
         setupData();
     }

@@ -2,12 +2,9 @@ package testlibuiza.sample.v3.uzv3;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.Player;
@@ -38,7 +35,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
     private TextView tvBuffer;
     private TextView tvClickEvent;
     private TextView tvScreenRotate;
-    private SeekBar sb;
 
     @Override
     protected boolean setFullScreen() {
@@ -58,31 +54,11 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
-
-        sb = (SeekBar) findViewById(R.id.sb);
-        sb.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-        sb.getThumb().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.onStopPreview(seekBar.getProgress());
-            }
-        });
         tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
         tvProgressVideo = (TextView) findViewById(R.id.tv_progress_video);
         tvStateVideo = (TextView) findViewById(R.id.tv_state_video);
@@ -205,12 +181,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
                 uzVideo.showSharePopup();
             }
         });
-        findViewById(R.id.bt_picture_in_picture).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uzVideo.showPip();
-            }
-        });
         findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -275,7 +245,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
-                sb.setMax((int) uzVideo.getDuration());
                 tvProgressAd.setText("onAdEnded");
             }
 
@@ -289,7 +258,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 tvProgressVideo.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
-                sb.setProgress((int) currentMls);
             }
 
             @Override
@@ -316,7 +284,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
-            sb.setMax((int) uzVideo.getDuration());
         }
     }
 
