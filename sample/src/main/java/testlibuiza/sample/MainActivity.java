@@ -1,5 +1,7 @@
 package testlibuiza.sample;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +33,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         findViewById(R.id.bt_test_api_v3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +162,28 @@ public class MainActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
+
+        if (LSApplication.DF_DOMAIN_API.equals("input")) {
+            showDialogInitWorkspace();
+        }
     }
+
+    private void showDialogInitWorkspace() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Please correct your workspace's information first..");
+        builder.setCancelable(false);
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        onBackPressed();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
     @Override
     protected boolean setFullScreen() {
