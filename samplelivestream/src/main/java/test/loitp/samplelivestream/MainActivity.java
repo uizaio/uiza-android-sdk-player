@@ -154,17 +154,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }*/
 
             //HD
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
-                LToast.show(activity, getString(R.string.err_dont_support));
-            }
-
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
-                uzLivestream.startStream(uzLivestream.getMainStreamUrl());
-            } else {
-                LToast.show(activity, getString(R.string.err_dont_support));
+                LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
+
+            //FULL HD
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
+                uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+            } else {
+                LToast.show(activity, "Error preparing stream, This device cant do it");
+            }
         } else {
             bStartStop.setText(R.string.start_button);
             uzLivestream.stopStream();

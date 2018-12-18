@@ -444,7 +444,18 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
+        List<Camera.Size> bestResolutionList = getBestResolutionList();
+        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
+            Log.e(TAG, "prepareVideoFullHD false -> bestResolutionList null or empty");
+            return false;
+        }
+        /*for (int i = 0; i < bestResolutionList.size(); i++) {
+            LLog.d(TAG, "prepareVideoFullHD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
+        }*/
+        Camera.Size bestSize = bestResolutionList.get(0);
+        int bestBitrate = getBestBitrate();
+        //return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideoHD(boolean isLandscape) {
