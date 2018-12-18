@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
-            if (uzLivestream.isRecording() || uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+            if (uzLivestream.isRecording() || uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");

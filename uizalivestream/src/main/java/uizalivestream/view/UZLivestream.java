@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -42,6 +43,7 @@ import net.ossrs.rtmp.ConnectCheckerRtmp;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -437,28 +439,21 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
-    /*public boolean prepareVideoFullHD(boolean isLandscape) {
-        Camera.Size size = getCorrectCameraSize(1920, 1080);
-        if (size == null) {
-            Log.e(TAG, getContext().getString(R.string.err_dont_support));
-            return false;
-        }
-        return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
-    }*/
-
-    /*public boolean prepareVideoHD(boolean isLandscape) {
+    public boolean prepareVideoFullHD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        Camera.Size size = getCorrectCameraSize(1280, 720);
-        if (size == null) {
-            Log.e(TAG, getContext().getString(R.string.err_dont_support));
+        return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
+    }
+
+    public boolean prepareVideoHD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        return prepareVideo(size.width, size.height, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
-        //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
-    }*/
+        return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
+    }
 
     public boolean prepareVideoSD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
@@ -466,6 +461,66 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             return false;
         }
         return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+    }
+
+    public boolean prepareVideo(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideo false with presetLiveStreamingFeed null");
+            return false;
+        }
+        if (rtmpCamera1 == null) {
+            Log.e(TAG, "prepareVideo false -> rtmpCamera1 == null");
+            return false;
+        }
+        boolean isFrontCamera = rtmpCamera1.isFrontCamera();
+        LLog.d(TAG, "isFrontCamera " + isFrontCamera);
+        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
+        Camera.Size bestSize = getBestResolution(sizeListFront);
+        int bestBitrate = getBestBitrate();
+        LLog.d(TAG, "bestBitrate " + bestBitrate);
+        if (bestSize == null) {
+            Log.e(TAG, "prepareVideo false -> bestSize == null");
+            return false;
+        }
+        //return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+    }
+
+    private Camera.Size getBestResolution(List<Camera.Size> sizeList) {
+        if (sizeList == null || sizeList.isEmpty()) {
+            return null;
+        }
+        List<Camera.Size> bestResolutionList = new ArrayList<>();
+        for (int i = 0; i < sizeList.size(); i++) {
+            Camera.Size size = sizeList.get(i);
+            float w = size.width;
+            float h = size.height;
+            float ratioWH = w / h;
+            //LLog.d(TAG, i + " -> " + w + "x" + h + " -> " + ratioWH);
+            if (ratioWH == 16f / 9f) {
+                bestResolutionList.add(size);
+            }
+        }
+        if (bestResolutionList.isEmpty()) {
+            return null;
+        }
+        /*for (int i = 0; i < bestResolutionList.size(); i++) {
+            Camera.Size size = bestResolutionList.get(i);
+            float w = size.width;
+            float h = size.height;
+            LLog.d(TAG, "getBestResolution " + i + " -> " + w + "x" + h);
+        }*/
+        return bestResolutionList.get(0);
+    }
+
+    private int getBestBitrate() {
+        if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedWifi(getContext())) {
+            return presetLiveStreamingFeed.getS1080p();
+        } else if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedMobile(getContext())) {
+            return presetLiveStreamingFeed.getS720p();
+        } else {
+            return presetLiveStreamingFeed.getS480p();
+        }
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
@@ -613,18 +668,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         }
     }
 
-    /*private Camera.Size getCorrectCameraSize(int width, int height) {
-        return rtmpCamera1.getCorrectCameraSize(width, height);
-    }*/
-
-    /*public List<Camera.Size> getListCameraResolutionSupportBack() {
-        return rtmpCamera1.getListCameraResolutionSupportBack();
-    }*/
-
-    /*public List<Camera.Size> getListCameraResolutionSupportFront() {
-        return rtmpCamera1.getListCameraResolutionSupportFront();
-    }*/
-
     public String getMainStreamUrl() {
         return mainStreamUrl;
     }
@@ -646,7 +689,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
+                //LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
                 getDetailEntity(entityLiveId, false, null);
             }
 
@@ -658,7 +701,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     String responseBody = null;
                     try {
                         responseBody = error.response().errorBody().string();
-                        LLog.e(TAG, "responseBody " + responseBody);
+                        Log.e(TAG, "responseBody " + responseBody);
                         ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
                         getDetailEntity(entityLiveId, true, errorBody.getMessage());
                     } catch (IOException e1) {
@@ -677,7 +720,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZUtilBase.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
-                LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
+                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
                     throw new NullPointerException("Data is null");
                 }
@@ -709,11 +752,11 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
                         if (uzLivestreamCallback != null) {
-                            LLog.d(TAG, "isErrorStartLive -> onError Last process null");
+                            //LLog.d(TAG, "isErrorStartLive -> onError Last process null");
                             uzLivestreamCallback.onError("Error: Last process null");
                         }
                     } else {
-                        LLog.d(TAG, "getLastProcess " + d.getLastProcess());
+                        //LLog.d(TAG, "getLastProcess " + d.getLastProcess());
                         if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
                             LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
                             if (uzLivestreamCallback != null) {
