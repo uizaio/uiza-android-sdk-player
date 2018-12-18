@@ -449,20 +449,41 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     public boolean prepareVideoHD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
-            return false;
-        }
-        return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
-    }
-
-    public boolean prepareVideoSD(boolean isLandscape) {
-        if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
+            Log.e(TAG, "prepareVideoHD false with presetLiveStreamingFeed null");
             return false;
         }
         List<Camera.Size> bestResolutionList = getBestResolutionList();
         if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoFullHD false -> bestResolutionList null or empty");
+            Log.e(TAG, "prepareVideoHD false -> bestResolutionList null or empty");
+            return false;
+        }
+        for (int i = 0; i < bestResolutionList.size(); i++) {
+            LLog.d(TAG, "prepareVideoHD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
+        }
+        int sizeList = bestResolutionList.size();
+        int index;
+        if (sizeList > 2) {
+            index = sizeList / 2;
+        } else if (sizeList == 2) {
+            index = 1;
+        } else {
+            index = 0;
+        }
+        //LLog.d(TAG, "index " + index);
+        Camera.Size bestSize = bestResolutionList.get(index);
+        int bestBitrate = getBestBitrate();
+        //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+    }
+
+    public boolean prepareVideoSD(boolean isLandscape) {
+        if (presetLiveStreamingFeed == null) {
+            Log.e(TAG, "prepareVideoSD false with presetLiveStreamingFeed null");
+            return false;
+        }
+        List<Camera.Size> bestResolutionList = getBestResolutionList();
+        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
+            Log.e(TAG, "prepareVideoSD false -> bestResolutionList null or empty");
             return false;
         }
         /*for (int i = 0; i < bestResolutionList.size(); i++) {
