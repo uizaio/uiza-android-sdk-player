@@ -491,7 +491,8 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         if (sizeListFront == null || sizeListFront.isEmpty() || sizeListBack == null || sizeListBack.isEmpty()) {
             return null;
         }
-        List<Camera.Size> bestList = new ArrayList<>();
+        //WORKS FINE
+        /*List<Camera.Size> bestList = new ArrayList<>();
         //scan sizeListFront
         List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
         for (int i = 0; i < sizeListFront.size(); i++) {
@@ -529,12 +530,28 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         for (int i = 0; i < bestList.size(); i++) {
             LLog.d(TAG, "final " + bestList.get(i).width + "x" + bestList.get(i).height);
         }
-        return bestList;
+        return bestList;*/
+
+        List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
+        for (int i = 0; i < sizeListFront.size(); i++) {
+            Camera.Size size = sizeListFront.get(i);
+            float w = size.width;
+            float h = size.height;
+            float ratioWH = w / h;
+            //LLog.d(TAG, "front " + i + " -> " + w + "x" + h + " -> " + ratioWH);
+            if (ratioWH == 16f / 9f) {
+                bestResolutionFrontList.add(size);
+            }
+        }
+        /*for (int i = 0; i < bestResolutionFrontList.size(); i++) {
+            LLog.d(TAG, "final " + bestResolutionFrontList.get(i).width + "x" + bestResolutionFrontList.get(i).height);
+        }*/
+        return bestResolutionFrontList;
     }
 
     private Camera.Size getBestResolution() {
         List<Camera.Size> bestResolutionList = getBestResolutionList();
-        if (bestResolutionList.isEmpty()) {
+        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
             return null;
         }
         /*for (int i = 0; i < bestResolutionList.size(); i++) {
