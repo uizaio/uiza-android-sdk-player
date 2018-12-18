@@ -364,7 +364,7 @@ public class LiveLandscapeActivity extends BaseActivity implements View.OnClickL
     }
 
     private void toggleFlash() {
-        //TODO
+        uzLivestream.toggleLantern();
     }
 
     @Override
