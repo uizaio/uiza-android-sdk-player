@@ -140,11 +140,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            /*if ( uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
+            if ( uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
-            }*/
+            }
 
             //SD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
@@ -161,11 +161,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }*/
 
             //FULL HD
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
-            }
+            }*/
         } else {
             bStartStop.setText(R.string.start_button);
             uzLivestream.stopStream();

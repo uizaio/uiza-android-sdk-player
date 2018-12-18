@@ -599,13 +599,22 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         if (bestResolutionList == null || bestResolutionList.isEmpty()) {
             return null;
         }
-        /*for (int i = 0; i < bestResolutionList.size(); i++) {
-            Camera.Size size = bestResolutionList.get(i);
-            float w = size.width;
-            float h = size.height;
-            LLog.d(TAG, "getBestResolution " + i + " -> " + w + "x" + h);
-        }*/
-        return bestResolutionList.get(0);
+        int sizeList = bestResolutionList.size();
+        int index;
+        if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedWifi(getContext())) {
+            index = 0;
+        } else if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedMobile(getContext())) {
+            if (sizeList > 2) {
+                index = sizeList / 2;
+            } else if (sizeList == 2) {
+                index = 1;
+            } else {
+                index = 0;
+            }
+        } else {
+            index = sizeList - 1;
+        }
+        return bestResolutionList.get(index);
     }
 
     private int getBestBitrate() {
