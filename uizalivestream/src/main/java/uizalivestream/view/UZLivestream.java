@@ -50,6 +50,7 @@ import java.util.Locale;
 
 import retrofit2.HttpException;
 import uizalivestream.R;
+import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import vn.uiza.core.base.BaseActivity;
@@ -90,6 +91,11 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     private TextView tvLiveStatus;
     private UZLivestreamCallback uzLivestreamCallback;
     private String mainStreamUrl;
+    private CameraCallback cameraCallback;
+
+    public void setCameraCallback(CameraCallback cameraCallback) {
+        this.cameraCallback = cameraCallback;
+    }
 
     public SpriteGestureController getSpriteGestureController() {
         return spriteGestureController;
@@ -280,6 +286,11 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         });
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onConnectionSuccessRtmp();
+        }
+        if (rtmpCamera1 != null) {
+            if (cameraCallback != null) {
+                cameraCallback.onCameraChange(rtmpCamera1.isFrontCamera());
+            }
         }
     }
 
@@ -643,6 +654,9 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     public void switchCamera() {
         if (rtmpCamera1 != null) {
             rtmpCamera1.switchCamera();
+            if (cameraCallback != null) {
+                cameraCallback.onCameraChange(rtmpCamera1.isFrontCamera());
+            }
         }
     }
 
@@ -907,10 +921,14 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return result;
     }
 
-    public Boolean isFrontCamera() {
-        if (rtmpCamera1 != null) {
-            return rtmpCamera1.isFrontCamera();
+    public void a() {
+        if (rtmpCamera1 == null) {
+            return;
         }
-        return null;
+        Camera cam = Camera.open();
+        Camera.Parameters p = cam.getParameters();
+        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        cam.setParameters(p);
+        cam.startPreview();
     }
 }

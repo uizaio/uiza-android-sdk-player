@@ -45,6 +45,7 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 
+import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
@@ -53,7 +54,7 @@ import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback {
+public class MainActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -92,6 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void findViews() {
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
         uzLivestream.setUzLivestreamCallback(this);
+        uzLivestream.setCameraCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
@@ -395,12 +397,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onConnectionSuccessRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvInfo.setText("isFrontCamera " + uzLivestream.isFrontCamera());
-            }
-        });
     }
 
     @Override
@@ -440,5 +436,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         int width = result[0];
         int height = result[1];
         startPreview.onSizeStartPreview(width, height);
+    }
+
+    @Override
+    public void onCameraChange(boolean isFrontCamera) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvInfo.setText("isFrontCamera " + isFrontCamera);
+            }
+        });
     }
 }

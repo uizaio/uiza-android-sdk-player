@@ -78,5 +78,12 @@
                 android:text="Filter (Beta)"
                 android:textSize="@dimen/txt_10" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
