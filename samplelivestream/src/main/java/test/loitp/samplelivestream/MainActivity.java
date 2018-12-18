@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Button bStartStopStore;
     private Button btSwitchCamera;
     private Button btFilter;
+    private Button btFlash;
     private TextView tvMainUrl;
     private TextView tvInfo;
 
@@ -98,6 +99,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = (Button) findViewById(R.id.b_filter);
+        btFlash = (Button) findViewById(R.id.b_flash);
         tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
         tvInfo = (TextView) findViewById(R.id.tv_info);
         bStartStop.setEnabled(false);
@@ -108,6 +110,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         bStartStopStore.setOnClickListener(this);
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
+        btFlash.setOnClickListener(this);
     }
 
     @Override
@@ -137,6 +140,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         handleFilterClick(menuItem);
                     }
                 });
+                break;
+            case R.id.b_flash:
+                toggleFlash();
                 break;
         }
     }
@@ -357,6 +363,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    private void toggleFlash() {
+        //TODO
+    }
+
     @Override
     public void onPermission(boolean areAllPermissionsGranted) {
         if (areAllPermissionsGranted) {
@@ -444,6 +454,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void run() {
                 tvInfo.setText("isFrontCamera " + isFrontCamera);
+                btFlash.setVisibility(isFrontCamera ? View.GONE : View.VISIBLE);
             }
         });
     }

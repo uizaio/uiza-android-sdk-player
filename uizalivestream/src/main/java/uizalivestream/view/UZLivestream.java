@@ -921,14 +921,5 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return result;
     }
 
-    public void a() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        Camera cam = Camera.open();
-        Camera.Parameters p = cam.getParameters();
-        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-        cam.setParameters(p);
-        cam.startPreview();
-    }
+
 }
