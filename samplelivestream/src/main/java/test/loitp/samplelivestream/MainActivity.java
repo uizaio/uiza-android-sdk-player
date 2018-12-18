@@ -139,16 +139,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
-            if (uzLivestream.isRecording() || uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
-                uzLivestream.startStream(uzLivestream.getMainStreamUrl());
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
-            }
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+            //AUTO
+            /*if ( uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
+
+            //SD
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+                uzLivestream.startStream(uzLivestream.getMainStreamUrl());
+            } else {
+                LToast.show(activity, "Error preparing stream, This device cant do it");
+            }
+
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {

@@ -460,7 +460,18 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+        List<Camera.Size> bestResolutionList = getBestResolutionList();
+        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
+            Log.e(TAG, "prepareVideoFullHD false -> bestResolutionList null or empty");
+            return false;
+        }
+        /*for (int i = 0; i < bestResolutionList.size(); i++) {
+            LLog.d(TAG, "prepareVideoSD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
+        }*/
+        Camera.Size bestSize = bestResolutionList.get(bestResolutionList.size() - 1);
+        int bestBitrate = getBestBitrate();
+        //return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
     public boolean prepareVideo(boolean isLandscape) {
@@ -476,7 +487,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         //LLog.d(TAG, "isFrontCamera " + isFrontCamera);
         Camera.Size bestSize = getBestResolution();
         int bestBitrate = getBestBitrate();
-        LLog.d(TAG, "bestBitrate " + bestBitrate);
         if (bestSize == null) {
             Log.e(TAG, "prepareVideo false -> bestSize == null");
             return false;
@@ -486,13 +496,13 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private List<Camera.Size> getBestResolutionList() {
-        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
+        //WORKS FINE
+        /*List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
         List<Camera.Size> sizeListBack = rtmpCamera1.getResolutionsBack();
         if (sizeListFront == null || sizeListFront.isEmpty() || sizeListBack == null || sizeListBack.isEmpty()) {
             return null;
         }
-        //WORKS FINE
-        /*List<Camera.Size> bestList = new ArrayList<>();
+        List<Camera.Size> bestList = new ArrayList<>();
         //scan sizeListFront
         List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
         for (int i = 0; i < sizeListFront.size(); i++) {
@@ -531,7 +541,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             LLog.d(TAG, "final " + bestList.get(i).width + "x" + bestList.get(i).height);
         }
         return bestList;*/
-
+        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
+        if (sizeListFront == null || sizeListFront.isEmpty()) {
+            return null;
+        }
         List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
         for (int i = 0; i < sizeListFront.size(); i++) {
             Camera.Size size = sizeListFront.get(i);
