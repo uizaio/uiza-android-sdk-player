@@ -173,7 +173,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     private boolean isShowDialogCheck;
 
     private void checkPermission() {
-        LLog.d(TAG, "checkPermission");
+        //LLog.d(TAG, "checkPermission");
         isShowDialogCheck = true;
         Dexter.withActivity((Activity) getContext())
                 .withPermissions(
@@ -186,17 +186,17 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            LLog.d(TAG, "onPermissionsChecked do you work now");
+                            //LLog.d(TAG, "onPermissionsChecked do you work now");
                             onCreate();
                             if (uzLivestreamCallback != null) {
                                 uzLivestreamCallback.onPermission(true);
                             }
                         } else {
-                            LLog.d(TAG, "!areAllPermissionsGranted");
+                            //LLog.d(TAG, "!areAllPermissionsGranted");
                             showShouldAcceptPermission();
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            LLog.d(TAG, "onPermissionsChecked permission is denied permenantly, navigate user to app settings");
+                            //LLog.d(TAG, "onPermissionsChecked permission is denied permenantly, navigate user to app settings");
                             showSettingsDialog();
                         }
                         isShowDialogCheck = true;
@@ -472,10 +472,9 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             Log.e(TAG, "prepareVideo false -> rtmpCamera1 == null");
             return false;
         }
-        boolean isFrontCamera = rtmpCamera1.isFrontCamera();
-        LLog.d(TAG, "isFrontCamera " + isFrontCamera);
-        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
-        Camera.Size bestSize = getBestResolution(sizeListFront);
+        //boolean isFrontCamera = rtmpCamera1.isFrontCamera();
+        //LLog.d(TAG, "isFrontCamera " + isFrontCamera);
+        Camera.Size bestSize = getBestResolution();
         int bestBitrate = getBestBitrate();
         LLog.d(TAG, "bestBitrate " + bestBitrate);
         if (bestSize == null) {
@@ -486,21 +485,55 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
-    private Camera.Size getBestResolution(List<Camera.Size> sizeList) {
-        if (sizeList == null || sizeList.isEmpty()) {
+    private List<Camera.Size> getBestResolutionList() {
+        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
+        List<Camera.Size> sizeListBack = rtmpCamera1.getResolutionsBack();
+        if (sizeListFront == null || sizeListFront.isEmpty() || sizeListBack == null || sizeListBack.isEmpty()) {
             return null;
         }
-        List<Camera.Size> bestResolutionList = new ArrayList<>();
-        for (int i = 0; i < sizeList.size(); i++) {
-            Camera.Size size = sizeList.get(i);
+        List<Camera.Size> bestList = new ArrayList<>();
+        //scan sizeListFront
+        List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
+        for (int i = 0; i < sizeListFront.size(); i++) {
+            Camera.Size size = sizeListFront.get(i);
             float w = size.width;
             float h = size.height;
             float ratioWH = w / h;
-            //LLog.d(TAG, i + " -> " + w + "x" + h + " -> " + ratioWH);
+            LLog.d(TAG, "front " + i + " -> " + w + "x" + h + " -> " + ratioWH);
             if (ratioWH == 16f / 9f) {
-                bestResolutionList.add(size);
+                bestResolutionFrontList.add(size);
             }
         }
+        //scan sizeListBack
+        List<Camera.Size> bestResolutionBackList = new ArrayList<>();
+        for (int i = 0; i < sizeListFront.size(); i++) {
+            Camera.Size size = sizeListFront.get(i);
+            float w = size.width;
+            float h = size.height;
+            float ratioWH = w / h;
+            LLog.d(TAG, "back " + i + " -> " + w + "x" + h + " -> " + ratioWH);
+            if (ratioWH == 16f / 9f) {
+                bestResolutionBackList.add(size);
+            }
+        }
+        //get same size between front and back list
+        for (int i = 0; i < bestResolutionFrontList.size(); i++) {
+            Camera.Size sizeF = bestResolutionFrontList.get(i);
+            for (int j = 0; j < bestResolutionBackList.size(); j++) {
+                Camera.Size sizeB = bestResolutionBackList.get(j);
+                if (sizeF.width == sizeB.width && sizeF.height == sizeB.height) {
+                    bestList.add(sizeF);
+                }
+            }
+        }
+        for (int i = 0; i < bestList.size(); i++) {
+            LLog.d(TAG, "final " + bestList.get(i).width + "x" + bestList.get(i).height);
+        }
+        return bestList;
+    }
+
+    private Camera.Size getBestResolution() {
+        List<Camera.Size> bestResolutionList = getBestResolutionList();
         if (bestResolutionList.isEmpty()) {
             return null;
         }
