@@ -47,9 +47,9 @@ import com.pedro.encoder.utils.gl.TranslateTo;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizalivestream.uiza.PresetLiveStreamingFeed;
-import uizalivestream.uiza.UZLivestream;
-import uizalivestream.uiza.UZLivestreamCallback;
+import uizalivestream.interfaces.UZLivestreamCallback;
+import uizalivestream.model.PresetLiveStreamingFeed;
+import uizalivestream.view.UZLivestream;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;

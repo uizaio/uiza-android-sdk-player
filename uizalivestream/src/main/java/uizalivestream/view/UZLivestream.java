@@ -1,4 +1,4 @@
-package uizalivestream.uiza;
+package uizalivestream.view;
 
 import android.Manifest;
 import android.app.Activity;
@@ -48,6 +48,8 @@ import java.util.Locale;
 
 import retrofit2.HttpException;
 import uizalivestream.R;
+import uizalivestream.interfaces.UZLivestreamCallback;
+import uizalivestream.model.PresetLiveStreamingFeed;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
@@ -255,7 +257,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         int screenWidth = LScreenUtil.getScreenWidth();
         openGlView.getLayoutParams().width = screenWidth;
         openGlView.getLayoutParams().height = width * screenWidth / height;
-        LLog.d(TAG, "fuck updateUISurfaceView " + screenWidth + "x" + (width * screenWidth / height));
+        //LLog.d(TAG, "updateUISurfaceView " + screenWidth + "x" + (width * screenWidth / height));
         openGlView.requestLayout();
     }
 
@@ -265,7 +267,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onConnectionSuccessRtmp() {
-        LLog.d(TAG, "fuck onConnectionSuccessRtmp");
+        //LLog.d(TAG, "onConnectionSuccessRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -281,7 +283,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
-        LLog.d(TAG, "fuck onConnectionFailedRtmp " + reason);
+        //LLog.d(TAG, "onConnectionFailedRtmp " + reason);
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -297,7 +299,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onDisconnectRtmp() {
-        LLog.d(TAG, "fuck onDisconnectRtmp");
+        //LLog.d(TAG, "onDisconnectRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -314,7 +316,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onAuthErrorRtmp() {
-        LLog.d(TAG, "fuck onAuthErrorRtmp");
+        //LLog.d(TAG, "onAuthErrorRtmp");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onAuthErrorRtmp();
         }
@@ -322,7 +324,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onAuthSuccessRtmp() {
-        LLog.d(TAG, "fuck onAuthSuccessRtmp");
+        //LLog.d(TAG, "onAuthSuccessRtmp");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onAuthSuccessRtmp();
             LDialogUtil.hide(progressBar);
@@ -331,7 +333,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        LLog.d(TAG, "fuck surfaceCreated");
+        //LLog.d(TAG, "surfaceCreated");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.surfaceCreated();
         }
@@ -339,11 +341,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        if (rtmpCamera1 == null) {
-            LLog.d(TAG, "fuck surfaceChanged rtmpCamera1 null");
-        } else {
-            LLog.d(TAG, "fuck surfaceChanged rtmpCamera1 !null");
-        }
         //rtmpCamera1.startPreview();
         //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
         //rtmpCamera1.startPreview(1280, 720);
@@ -363,7 +360,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
                     rtmpCamera1.startPreview(CameraHelper.Facing.FRONT, width, height);
                     updateUISurfaceView(width, height);
-                    LLog.d(TAG, "fuck uzLivestreamCallback surfaceChanged " + width + "x" + height);
+                    //LLog.d(TAG, "uzLivestreamCallback surfaceChanged " + width + "x" + height);
                 }
             });
         }
@@ -661,7 +658,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     String responseBody = null;
                     try {
                         responseBody = error.response().errorBody().string();
-                        LLog.e(TAG, "fuck responseBody " + responseBody);
+                        LLog.e(TAG, "responseBody " + responseBody);
                         ErrorBody errorBody = gson.fromJson(responseBody, ErrorBody.class);
                         getDetailEntity(entityLiveId, true, errorBody.getMessage());
                     } catch (IOException e1) {
@@ -688,7 +685,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
                 String mainUrl = streamUrl + "/" + streamKey;
                 mainStreamUrl = mainUrl;
-                LLog.d(TAG, "fuck>>>>mainStreamUrl: " + mainStreamUrl);
+                LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
@@ -736,12 +733,12 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     }
                 }
                 LUIUtil.hideProgressBar(progressBar);
-                LLog.d(TAG, "fuck ===================finish");
+                //LLog.d(TAG, "===================finish");
             }
 
             @Override
             public void onError(Throwable e) {
-                LLog.e(TAG, "fuck setId onError " + e.toString());
+                //LLog.e(TAG, "setId onError " + e.toString());
                 LUIUtil.hideProgressBar(progressBar);
                 if (uzLivestreamCallback != null) {
                     uzLivestreamCallback.onError(e.getMessage());

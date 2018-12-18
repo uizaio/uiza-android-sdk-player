@@ -1,4 +1,4 @@
-package uizalivestream.uiza;
+package uizalivestream.util;
 
 import android.content.Context;
 

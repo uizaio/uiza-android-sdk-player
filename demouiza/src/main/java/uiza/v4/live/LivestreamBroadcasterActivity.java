@@ -46,9 +46,9 @@ import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 
 import uiza.R;
-import uizalivestream.uiza.PresetLiveStreamingFeed;
-import uizalivestream.uiza.UZLivestream;
-import uizalivestream.uiza.UZLivestreamCallback;
+import uizalivestream.interfaces.UZLivestreamCallback;
+import uizalivestream.model.PresetLiveStreamingFeed;
+import uizalivestream.view.UZLivestream;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;

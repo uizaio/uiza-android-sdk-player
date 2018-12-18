@@ -1,5 +1,7 @@
-package uizalivestream.uiza;
+package uizalivestream.interfaces;
 
+import uizalivestream.model.PresetLiveStreamingFeed;
+import uizalivestream.view.UZLivestream;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public interface UZLivestreamCallback {

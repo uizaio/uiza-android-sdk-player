@@ -1,4 +1,4 @@
-package uizalivestream.uiza;
+package uizalivestream.model;
 
 public class PresetLiveStreamingFeed {
     private boolean isTranscode;

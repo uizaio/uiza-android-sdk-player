@@ -45,9 +45,9 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 
-import uizalivestream.uiza.PresetLiveStreamingFeed;
-import uizalivestream.uiza.UZLivestream;
-import uizalivestream.uiza.UZLivestreamCallback;
+import uizalivestream.interfaces.UZLivestreamCallback;
+import uizalivestream.model.PresetLiveStreamingFeed;
+import uizalivestream.view.UZLivestream;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -331,8 +331,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             bStartStopStore.setEnabled(true);
             btSwitchCamera.setEnabled(true);
             btFilter.setEnabled(true);
-            uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-            //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+            //uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+            uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
         } else {
             LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
             onBackPressed();

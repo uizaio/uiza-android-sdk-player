@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/Black">
 
-    <!--<uizalivestream.uiza.rtplibrary.view.OpenGlView
-        android:id="@+id/surfaceView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />-->
-
     <com.pedro.rtplibrary.view.OpenGlView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
