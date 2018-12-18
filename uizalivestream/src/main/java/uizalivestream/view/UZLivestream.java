@@ -468,9 +468,9 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             Log.e(TAG, "prepareVideoHD false -> bestResolutionList null or empty");
             return false;
         }
-        for (int i = 0; i < bestResolutionList.size(); i++) {
+        /*for (int i = 0; i < bestResolutionList.size(); i++) {
             LLog.d(TAG, "prepareVideoHD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
-        }
+        }*/
         int sizeList = bestResolutionList.size();
         int index;
         if (sizeList > 2) {
@@ -892,5 +892,18 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 }
             }
         });
+    }
+
+    public int[] getBestSizePreview() {
+        List<Camera.Size> sizeList = getBestResolutionList();
+        int[] result = new int[2];
+        if (sizeList == null || sizeList.isEmpty()) {
+            result[0] = LScreenUtil.getScreenWidth();
+            result[1] = LScreenUtil.getScreenHeight();
+        } else {
+            result[0] = sizeList.get(0).width;
+            result[1] = sizeList.get(0).height;
+        }
+        return result;
     }
 }

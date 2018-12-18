@@ -140,7 +140,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if ( uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
@@ -181,11 +181,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void startStopStore() {
         if (!uzLivestream.isStreaming()) {
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+            //AUTO
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
-                LToast.show(activity, "Cannot start");
+                LToast.show(activity, "Error preparing stream, This device cant do it");
             }
+
+            //SD
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+                uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
+            } else {
+                LToast.show(activity, "Error preparing stream, This device cant do it");
+            }*/
+
+            //HD
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
+            } else {
+                LToast.show(activity, "Error preparing stream, This device cant do it");
+            }*/
+
+            //FULL HD
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD(false)) {
+                uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
+            } else {
+                LToast.show(activity, "Error preparing stream, This device cant do it");
+            }*/
         } else {
             bStartStopStore.setText(R.string.start_button);
             uzLivestream.stopStream();
@@ -406,6 +428,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void surfaceChanged(UZLivestream.StartPreview startPreview) {
-        startPreview.onSizeStartPreview(1280, 720);
+        int[] result = uzLivestream.getBestSizePreview();
+        int width = result[0];
+        int height = result[1];
+        startPreview.onSizeStartPreview(width, height);
     }
 }
