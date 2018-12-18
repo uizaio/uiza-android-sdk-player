@@ -906,4 +906,11 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         }
         return result;
     }
+
+    public Boolean isFrontCamera() {
+        if (rtmpCamera1 != null) {
+            return rtmpCamera1.isFrontCamera();
+        }
+        return null;
+    }
 }

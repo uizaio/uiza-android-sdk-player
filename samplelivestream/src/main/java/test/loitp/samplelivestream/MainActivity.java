@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Button btSwitchCamera;
     private Button btFilter;
     private TextView tvMainUrl;
+    private TextView tvInfo;
 
     @Override
     protected boolean setFullScreen() {
@@ -96,6 +97,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = (Button) findViewById(R.id.b_filter);
         tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
+        tvInfo = (TextView) findViewById(R.id.tv_info);
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         btSwitchCamera.setEnabled(false);
@@ -393,6 +395,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onConnectionSuccessRtmp() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvInfo.setText("isFrontCamera " + uzLivestream.isFrontCamera());
+            }
+        });
     }
 
     @Override
