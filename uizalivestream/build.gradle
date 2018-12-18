@@ -40,5 +40,5 @@ dependencies {
     //implementation project(path:':uizabase', configuration: 'default')
 
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
-    api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.8'
+    api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.9'
 }

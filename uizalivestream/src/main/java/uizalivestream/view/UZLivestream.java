@@ -953,5 +953,43 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return result;
     }
 
+    public void enableLantern() {
+        if (rtmpCamera1 == null) {
+            return;
+        }
+        try {
+            rtmpCamera1.enableLantern();
+        } catch (Exception e) {
+            LLog.e(TAG, "toggleFlash " + e.toString());
+        }
+    }
 
+    public void disableLantern() {
+        if (rtmpCamera1 == null) {
+            return;
+        }
+        rtmpCamera1.disableLantern();
+    }
+
+    public void toggleLantern() {
+        if (rtmpCamera1 == null) {
+            return;
+        }
+        Boolean isLanternEnabled = isLanternEnabled();
+        if (isLanternEnabled == null) {
+            return;
+        }
+        if (isLanternEnabled) {
+            disableLantern();
+        } else {
+            enableLantern();
+        }
+    }
+
+    public Boolean isLanternEnabled() {
+        if (rtmpCamera1 == null) {
+            return null;
+        }
+        return rtmpCamera1.isLanternEnabled();
+    }
 }

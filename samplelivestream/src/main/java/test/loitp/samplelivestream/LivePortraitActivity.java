@@ -40,9 +40,9 @@ import com.pedro.encoder.input.gl.render.filters.RotationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SaturationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SepiaFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SharpnessFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SurfaceFilterRender;
 import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
+import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 
 import uizalivestream.interfaces.CameraCallback;
@@ -364,7 +364,7 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void toggleFlash() {
-        //TODO
+        uzLivestream.toggleLantern();
     }
 
     @Override
