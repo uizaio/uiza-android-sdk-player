@@ -157,21 +157,21 @@ public class LiveLandscapeActivity extends BaseActivity implements View.OnClickL
             }
 
             //SD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //HD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //FULL HD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
@@ -199,21 +199,21 @@ public class LiveLandscapeActivity extends BaseActivity implements View.OnClickL
             }
 
             //SD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //HD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //FULL HD
-            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHD()) {
+            /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");

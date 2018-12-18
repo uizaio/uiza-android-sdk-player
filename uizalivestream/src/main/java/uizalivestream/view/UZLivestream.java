@@ -450,7 +450,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
-    public boolean prepareVideoFullHD(boolean isLandscape) {
+    public boolean prepareVideoFullHDPortrait() {
+        return prepareVideoFullHD(false);
+    }
+
+    public boolean prepareVideoFullHDLandscape() {
+        return prepareVideoFullHD(true);
+    }
+
+    private boolean prepareVideoFullHD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
@@ -469,7 +477,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
-    public boolean prepareVideoHD(boolean isLandscape) {
+    public boolean prepareVideoHDPortrait() {
+        return prepareVideoHD(false);
+    }
+
+    public boolean prepareVideoHDLandscape() {
+        return prepareVideoHD(true);
+    }
+
+    private boolean prepareVideoHD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoHD false with presetLiveStreamingFeed null");
             return false;
@@ -498,7 +514,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
-    public boolean prepareVideoSD(boolean isLandscape) {
+    public boolean prepareVideoSDPortrait() {
+        return prepareVideoSD(false);
+    }
+
+    public boolean prepareVideoSDLandscape() {
+        return prepareVideoSD(true);
+    }
+
+    private boolean prepareVideoSD(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoSD false with presetLiveStreamingFeed null");
             return false;
