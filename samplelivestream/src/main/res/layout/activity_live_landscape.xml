@@ -55,13 +55,6 @@
                 android:layout_weight="1"
                 android:text="@string/start_button_saved"
                 android:textSize="@dimen/txt_10" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/b_switch_camera"
@@ -78,21 +71,15 @@
                 android:layout_weight="1"
                 android:text="Filter (Beta)"
                 android:textSize="@dimen/txt_10" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/b_flash"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/flash"
-                android:textSize="@dimen/txt_10"
-                android:visibility="gone" />
+                android:textSize="@dimen/txt_10" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

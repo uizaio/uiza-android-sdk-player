@@ -37,7 +37,7 @@ public class MenuActivity extends BaseActivity {
         findViewById(R.id.bt_landscape).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, LivePortraitActivity.class);
+                Intent intent = new Intent(activity, LiveLandscapeActivity.class);
                 startActivity(intent);
             }
         });

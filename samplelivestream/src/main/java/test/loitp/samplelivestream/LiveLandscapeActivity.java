@@ -54,7 +54,7 @@ import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class LivePortraitActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
+public class LiveLandscapeActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -76,7 +76,7 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected int setLayoutResourceId() {
-        return R.layout.activity_live_portrait;
+        return R.layout.activity_live_landscape;
     }
 
     @Override
@@ -150,7 +150,7 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
@@ -192,7 +192,7 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
     private void startStopStore() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
