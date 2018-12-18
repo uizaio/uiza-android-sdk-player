@@ -517,6 +517,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
     }
 
+    public boolean prepareVideo() {
+        return prepareVideo(false);
+    }
+
     public boolean prepareVideo(boolean isLandscape) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideo false with presetLiveStreamingFeed null");
