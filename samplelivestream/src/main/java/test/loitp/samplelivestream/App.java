@@ -16,7 +16,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Constants.setDebugMode(true);
+        Constants.setDebugMode(false);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 }
