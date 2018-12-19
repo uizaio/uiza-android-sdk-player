@@ -1,4 +1,15 @@
-### 3.0.0 (2018-17-10)
+### 3.0.3 (2018-12-19)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.3'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.3'
+
+- Update UZLivestream view.
+- Add sample [landscape live broadcaster](https://github.com/uizaio/uiza-android-sdk-player/blob/master/samplelivestream/src/main/java/test/loitp/samplelivestream/LiveLandscapeActivity.java).
+
+### 3.0.0 (2018-12-17)
 
     //for playing video VOD, LIVE  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.0'
