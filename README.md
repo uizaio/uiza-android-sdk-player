@@ -233,14 +233,14 @@ It's very easy, plz follow these steps below to implement:
 
 XML:
 
-    <uizalivestream.uiza.UZLivestream
+    <uizalivestream.view.UZLivestream
       android:id="@+id/uiza_livestream"  
       android:layout_width="match_parent"  
       android:layout_height="match_parent" />
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestream.Callback {
+    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestreamCallback {
     ...
     }
 

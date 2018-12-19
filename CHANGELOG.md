@@ -49,7 +49,7 @@
 - Removed unused resources.
 - Iplm DVR, Timeshift (The UZTimebar will be display, user  can seeks in live HLS content).
 - Update UI (default skin).
-- Fixed callback isInitResult() is called more times.
+- Fixed uzLivestreamCallback isInitResult() is called more times.
 
 ### 2.9.1 (2018-11-30)
 
@@ -81,7 +81,7 @@
 
 - Update sample customize skin like [Youtube](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarUTubeActivity.java).
 - Add func `uzVideo.addCallbackUZTimebar();`
-- Remove some callback in `UZCallback` such as `onClickBack`,  `onClickListEntityRelation`,   `onClickPip`. Use this func `addItemClick();` instead.
+- Remove some uzLivestreamCallback in `UZCallback` such as `onClickBack`,  `onClickListEntityRelation`,   `onClickPip`. Use this func `addItemClick();` instead.
 - Ex:
 - 
 

@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".v4.helper.cannotslide.LoginActivity" />
         <activity android:name=".v4.SplashActivity" />
         <activity
             android:name=".v4.HomeV4CanSlideActivity"
@@ -30,6 +29,7 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".v4.live.LivestreamBroadcasterActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
     </application>
 </manifest>

@@ -10,51 +10,53 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
+import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
+import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
+import com.pedro.encoder.input.gl.render.filters.BlurFilterRender;
+import com.pedro.encoder.input.gl.render.filters.BrightnessFilterRender;
+import com.pedro.encoder.input.gl.render.filters.CartoonFilterRender;
+import com.pedro.encoder.input.gl.render.filters.ColorFilterRender;
+import com.pedro.encoder.input.gl.render.filters.ContrastFilterRender;
+import com.pedro.encoder.input.gl.render.filters.DuotoneFilterRender;
+import com.pedro.encoder.input.gl.render.filters.EarlyBirdFilterRender;
+import com.pedro.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
+import com.pedro.encoder.input.gl.render.filters.ExposureFilterRender;
+import com.pedro.encoder.input.gl.render.filters.FireFilterRender;
+import com.pedro.encoder.input.gl.render.filters.GammaFilterRender;
+import com.pedro.encoder.input.gl.render.filters.GreyScaleFilterRender;
+import com.pedro.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
+import com.pedro.encoder.input.gl.render.filters.Image70sFilterRender;
+import com.pedro.encoder.input.gl.render.filters.LamoishFilterRender;
+import com.pedro.encoder.input.gl.render.filters.MoneyFilterRender;
+import com.pedro.encoder.input.gl.render.filters.NegativeFilterRender;
+import com.pedro.encoder.input.gl.render.filters.NoFilterRender;
+import com.pedro.encoder.input.gl.render.filters.PixelatedFilterRender;
+import com.pedro.encoder.input.gl.render.filters.PolygonizationFilterRender;
+import com.pedro.encoder.input.gl.render.filters.RGBSaturationFilterRender;
+import com.pedro.encoder.input.gl.render.filters.RainbowFilterRender;
+import com.pedro.encoder.input.gl.render.filters.RippleFilterRender;
+import com.pedro.encoder.input.gl.render.filters.RotationFilterRender;
+import com.pedro.encoder.input.gl.render.filters.SaturationFilterRender;
+import com.pedro.encoder.input.gl.render.filters.SepiaFilterRender;
+import com.pedro.encoder.input.gl.render.filters.SharpnessFilterRender;
+import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
+import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
+import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
+import com.pedro.encoder.utils.gl.TranslateTo;
+
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizalivestream.uiza.PresetLiveStreamingFeed;
-import uizalivestream.uiza.UZLivestream;
-import uizalivestream.uiza.encoder.input.gl.render.filters.AndroidViewFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.BasicDeformationFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.BeautyFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.BlurFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.BrightnessFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.CartoonFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.ColorFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.ContrastFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.DuotoneFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.EarlyBirdFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.EdgeDetectionFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.ExposureFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.FireFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.GammaFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.GreyScaleFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.HalftoneLinesFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.Image70sFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.LamoishFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.MoneyFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.NegativeFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.NoFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.PixelatedFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.PolygonizationFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.RGBSaturationFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.RainbowFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.RippleFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.RotationFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.SaturationFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.SepiaFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.SharpnessFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.SurfaceFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.TemperatureFilterRender;
-import uizalivestream.uiza.encoder.input.gl.render.filters.ZebraFilterRender;
-import uizalivestream.uiza.encoder.utils.gl.TranslateTo;
+import uizalivestream.interfaces.UZLivestreamCallback;
+import uizalivestream.model.PresetLiveStreamingFeed;
+import uizalivestream.view.UZLivestream;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UZLivestream.Callback {
+public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback {
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -82,21 +84,17 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        //LActivityUtil.changeScreenLandscape(activity);
-
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
-        uzLivestream.setCallback(this);
+        uzLivestream.setUzLivestreamCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
         btFilter = (Button) findViewById(R.id.b_filter);
         tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
-
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         btSwitchCamera.setEnabled(false);
         btFilter.setEnabled(false);
-
         bStartStop.setOnClickListener(this);
         bStartStopStore.setOnClickListener(this);
         btSwitchCamera.setOnClickListener(this);
@@ -226,7 +224,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 mediaPlayer.start();
                 //Video is 360x240 so select a percent to keep aspect ratio (50% x 33.3% screen)
                 surfaceFilterRender.setScale(50f, 33.3f);
-                surfaceFilterRender.setListeners(uzLivestream.getOpenGlView()); //Optional
+                uzLivestream.getSpriteGestureController().setBaseObjectFilterRender(surfaceFilterRender); //Optional
                 break;
             case R.id.temperature:
                 uzLivestream.setFilter(new TemperatureFilterRender());
@@ -245,10 +243,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl());
                     } else {
-                        LToast.show(activity, getString(R.string.err_dont_support));
+                        LToast.show(activity, "Error preparing stream, This device cant do it");
                     }
                 } else {
                     bStartStop.setText(R.string.start_button);
@@ -264,7 +262,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -366,6 +364,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void surfaceChanged(UZLivestream.StartPreview startPreview) {
-        startPreview.onSizeStartPreview(1280, 720);
+        int[] result = uzLivestream.getBestSizePreview();
+        int width = result[0];
+        int height = result[1];
+        startPreview.onSizeStartPreview(width, height);
     }
 }
