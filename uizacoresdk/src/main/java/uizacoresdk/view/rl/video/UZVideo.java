@@ -1284,8 +1284,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         subtitleList.add(subtitle);*/
 
         //ima ad
-        /*urlIMAAd = activity.getString(R.string.ad_tag_url);
-        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);*/
+        //urlIMAAd = activity.getString(R.string.ad_tag_url);
+        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
 
         //thumbnail seekbar
         /*urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);*/
