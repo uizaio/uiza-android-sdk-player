@@ -1,6 +1,7 @@
 
 
 
+
 # Welcome to UizaSDK
 
 Simple Streaming at scale.
@@ -262,7 +263,10 @@ onResume():
 
 Then put this line on surfaceChanged(UZLivestream.StartPreview startPreview);
 
-    startPreview.onSizeStartPreview(1280, 720);
+    int[] result = uzLivestream.getBestSizePreview();  
+    int width = result[0];  
+    int height = result[1];  
+    startPreview.onSizeStartPreview(width, height);
 
 onPermission():
 
