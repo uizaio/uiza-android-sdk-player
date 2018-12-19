@@ -49,6 +49,6 @@ android {
 }
 
 dependencies {
-    //api project(':uizalivestream')
-    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.2'
+    api project(':uizalivestream')
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.2'
 }
