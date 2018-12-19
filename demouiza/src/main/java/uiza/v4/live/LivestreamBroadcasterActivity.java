@@ -243,7 +243,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDPortrait()) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl());
                     } else {
                         LDialogUtil.showDialog1(activity, "Error preparing stream, This device cant do it", new LDialogUtil.Callback1() {
@@ -272,7 +272,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDPortrait()) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Error preparing stream, This device cant do it");

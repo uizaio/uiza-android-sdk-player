@@ -40,9 +40,9 @@ import com.pedro.encoder.input.gl.render.filters.RotationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SaturationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SepiaFilterRender;
 import com.pedro.encoder.input.gl.render.filters.SharpnessFilterRender;
-import com.pedro.encoder.input.gl.render.filters.SurfaceFilterRender;
 import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
+import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 
 import testlibuiza.R;
@@ -243,10 +243,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
         switch (view.getId()) {
             case R.id.b_start_stop:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl());
                     } else {
-                        LToast.show(activity, getString(R.string.err_dont_support));
+                        LToast.show(activity, "Error preparing stream, This device cant do it");
                     }
                 } else {
                     bStartStop.setText(R.string.start_button);
@@ -262,7 +262,7 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
                 break;
             case R.id.b_start_stop_store:
                 if (!uzLivestream.isStreaming()) {
-                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSD(false)) {
+                    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
                         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
                     } else {
                         LToast.show(activity, "Cannot start");
@@ -364,6 +364,9 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
 
     @Override
     public void surfaceChanged(UZLivestream.StartPreview startPreview) {
-        startPreview.onSizeStartPreview(1280, 720);
+        int[] result = uzLivestream.getBestSizePreview();
+        int width = result[0];
+        int height = result[1];
+        startPreview.onSizeStartPreview(width, height);
     }
 }
