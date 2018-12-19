@@ -57,6 +57,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        //uzVideo.setDefaultUseController(false);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
         tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
@@ -67,7 +68,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
