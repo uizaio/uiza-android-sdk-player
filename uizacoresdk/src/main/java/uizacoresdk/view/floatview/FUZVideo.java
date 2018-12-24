@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,6 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenSt
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.views.LToast;
 
 public class FUZVideo extends RelativeLayout {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -52,7 +50,7 @@ public class FUZVideo extends RelativeLayout {
     private ProgressBar progressBar;
     private RelativeLayout rootView;
     private ImageView ivVideoCover;
-    private Gson gson = new Gson();//TODO remove later
+    //private Gson gson = new Gson();
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -241,7 +239,7 @@ public class FUZVideo extends RelativeLayout {
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought100(getContext())) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
                 trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -257,7 +255,7 @@ public class FUZVideo extends RelativeLayout {
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought75(getContext())) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
                 trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -273,7 +271,7 @@ public class FUZVideo extends RelativeLayout {
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought50(getContext())) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
                 trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -289,7 +287,7 @@ public class FUZVideo extends RelativeLayout {
                 return;
             }
             if (UZTrackingUtil.isTrackedEventTypePlayThrought25(getContext())) {
-                LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
+                //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
                 trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
@@ -364,10 +362,7 @@ public class FUZVideo extends RelativeLayout {
         ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "<------------------------pip track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
-                if (Constants.IS_DEBUG) {
-                    LToast.show(getContext(), "Pip Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
-                }
+                //LLog.d(TAG, "<------------------------pip track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
                 }

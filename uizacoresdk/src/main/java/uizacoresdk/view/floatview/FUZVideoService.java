@@ -25,7 +25,6 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoListener;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,7 +38,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
@@ -61,7 +59,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private FUZVideo fuzVideo;
     private WindowManager.LayoutParams params;
     private String linkPlay;
-    private Gson gson = new Gson();
+    //private Gson gson = new Gson();
     private boolean isLivestream;
     private int screenWidth;
     private int screenHeight;
@@ -77,7 +75,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (isInitCustomLinkplay) {
         } else {
             if (UZData.getInstance().getData() == null) {
-                LLog.e(TAG, "onStartCommand data == null");
+                //LLog.e(TAG, "onStartCommand data == null");
                 return super.onStartCommand(intent, flags, startId);
             }
         }
@@ -635,21 +633,21 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void onPlayerStateEnded() {
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
+            //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
             fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
                 @Override
                 public void onSuccess(String lp) {
                     linkPlay = lp;
                     if (linkPlay == null) {
-                        LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
+                        //LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
                         stopSelf();
                     }
-                    LLog.d(TAG, "next linkPlay " + linkPlay);
+                    //LLog.d(TAG, "next linkPlay " + linkPlay);
                     setupVideo();
                 }
             });
         } else {
-            LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
+            //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
             stopSelf();
         }
     }
@@ -663,6 +661,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
+            isUpdatedUIVideoSize = false;
             fuzVideo.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);
         } else {
