@@ -2122,11 +2122,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-            //LLog.d(TAG, "handleClickPictureInPicture if");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
             activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
-            //LLog.d(TAG, "handleClickPictureInPicture else");
+            initializePiP();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //LLog.d(TAG, "onActivityResult " + requestCode + " - " + resultCode);
+        if (activity == null) {
+            return;
+        }
+        if (isCastingChromecast()) {
+            LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
+            //LLog.d(TAG, "onActivityResult !canDrawOverlays");
+        } else {
             initializePiP();
         }
     }
