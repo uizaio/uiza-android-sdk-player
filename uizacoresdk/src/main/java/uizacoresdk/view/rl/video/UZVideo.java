@@ -174,7 +174,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private TextView tvEndScreenMsg;
     private ResultGetLinkPlay mResultGetLinkPlay;
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
-    private final int DELAY_TO_GET_LIVE_INFORMATION = 4000;//original 15000
+    private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton uzMediaRouteButton;
@@ -2357,7 +2357,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void callAPIUpdateLiveInfoCurrentView(final int durationDelay) {
-        if (!isLivestream) {
+        if (!isLivestream || activity == null || activityIsPausing) {
+            //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView return");
             return;
         }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
@@ -2374,7 +2375,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
-                            LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                            //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 if (tvLiveView != null) {
                                     tvLiveView.setText(result.getData().getWatchnow() + "");
