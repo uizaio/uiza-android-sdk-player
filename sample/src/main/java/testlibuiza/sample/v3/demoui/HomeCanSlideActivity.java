@@ -28,6 +28,7 @@ public class HomeCanSlideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
+        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
