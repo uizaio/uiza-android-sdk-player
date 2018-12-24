@@ -174,7 +174,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private TextView tvEndScreenMsg;
     private ResultGetLinkPlay mResultGetLinkPlay;
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
-    private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
+    private final int DELAY_TO_GET_LIVE_INFORMATION = 4000;//original 15000
     private boolean isTV;//current device is TV or not (smartphone, tablet)
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton uzMediaRouteButton;
@@ -268,7 +268,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isHasError;
 
     protected void handleError(UZException e) {
-        //TODO if has error, should clear all variable, flag to default?
         if (e == null) {
             return;
         }
@@ -276,10 +275,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzCallback.onError(e);
         }
         if (isHasError) {
-            LLog.e(TAG, "handleError isHasError=true -> return");
+            //LLog.e(TAG, "handleError isHasError=true -> return -> isLivestream: " + isLivestream);
             return;
         }
-        LLog.e(TAG, "handleError " + e.toString());
+        //LLog.e(TAG, "handleError " + e.toString());
         isHasError = true;
         UZData.getInstance().setSettingPlayer(false);
     }
@@ -627,7 +626,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         isHasError = false;
         this.isLivestream = isLivestream;
-
+        if (isLivestream) {
+            startTime = Constants.UNKNOW;
+        }
         setDefautValueForFlagIsTracked();
 
         if (uzPlayerManager != null) {
@@ -2367,16 +2368,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     return;
                 }
                 if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing");
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing -> call API to get View count");
                     UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
-                            if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "callAPIUpdateLiveInfoCurrentView onSuccess");
-                            }
-                            //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
+                            LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 if (tvLiveView != null) {
                                     tvLiveView.setText(result.getData().getWatchnow() + "");
@@ -2400,55 +2398,63 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void callAPIUpdateLiveInfoTimeStartLive(final int durationDelay) {
-        if (!isLivestream) {
+        if (!isLivestream || activity == null || activityIsPausing) {
+            //LLog.d(TAG, "callAPIUpdateLiveInfoTimeStartLive return");
             return;
         }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
-
             @Override
             public void doAfter(int mls) {
-                if (!isLivestream) {
+                if (!isLivestream || activity == null || activityIsPausing) {
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoTimeStartLive return");
                     return;
                 }
                 if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    UZService service = UZRestClient.createService(UZService.class);
-                    String entityId = UZData.getInstance().getEntityId();
-                    String feedId = UZData.getInstance().getLastFeedId();
-                    activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
-                        @Override
-                        public void onSuccess(ResultTimeStartLive result) {
-                            if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "callAPIUpdateLiveInfoTimeStartLive onSuccess");
-                            }
-                            //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
-                            if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
-                                //LLog.d(TAG, "startTime " + result.getData().getStartTime());
-                                long startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
-                                //LLog.d(TAG, "startTime " + startTime);
-                                long now = System.currentTimeMillis();
-                                //LLog.d(TAG, "now: " + now);
-                                long duration = now - startTime;
-                                //LLog.d(TAG, "duration " + duration);
-                                String s = LDateUtils.convertMlsecondsToHMmSs(duration);
-                                //LLog.d(TAG, "s " + s);
-                                if (tvLiveTime != null) {
-                                    tvLiveTime.setText(s);
+                    if (startTime == Constants.UNKNOW) {
+                        UZService service = UZRestClient.createService(UZService.class);
+                        String entityId = UZData.getInstance().getEntityId();
+                        String feedId = UZData.getInstance().getLastFeedId();
+                        activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
+                            @Override
+                            public void onSuccess(ResultTimeStartLive result) {
+                                //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
+                                if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
+                                    startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
+                                    updateLiveInfoTimeStartLive();
                                 }
                             }
-                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
-                        }
 
-                        @Override
-                        public void onFail(Throwable e) {
-                            LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
-                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
-                        }
-                    });
+                            @Override
+                            public void onFail(Throwable e) {
+                                LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
+                                callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                            }
+                        });
+                    } else {
+                        updateLiveInfoTimeStartLive();
+                    }
                 } else {
                     callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                 }
             }
         });
+    }
+
+    private long startTime = Constants.UNKNOW;
+
+    private void updateLiveInfoTimeStartLive() {
+        if (!isLivestream || activity == null) {
+            //LLog.d(TAG, "updateLiveInfoTimeStartLive return");
+            return;
+        }
+        //LLog.d(TAG, "updateLiveInfoTimeStartLive -> startTime: " + startTime);
+        long now = System.currentTimeMillis();
+        long duration = now - startTime;
+        String s = LDateUtils.convertMlsecondsToHMmSs(duration);
+        if (tvLiveTime != null) {
+            tvLiveTime.setText(s);
+        }
+        callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
     }
 
     //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
