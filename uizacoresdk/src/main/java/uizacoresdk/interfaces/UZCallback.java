@@ -10,11 +10,8 @@ public interface UZCallback {
     //isGetDataSuccess da co data ResultGetLinkPlay va Data
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
-    //user click button pip in controller
-    //public void onClickPip(Intent intent);
-
     //when pip video is inited success
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess);
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess);
 
     //when skin is changed
     public void onSkinChange();

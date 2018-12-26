@@ -147,7 +147,7 @@ public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCal
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override

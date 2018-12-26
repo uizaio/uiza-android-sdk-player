@@ -176,8 +176,8 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             onBackPressed();
         }
     }

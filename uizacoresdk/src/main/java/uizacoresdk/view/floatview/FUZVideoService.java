@@ -573,23 +573,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         return null;
     }
 
-    private long lastCurrentPosition;
-
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
             if (mFloatingView == null) {
                 return;
             }
-            LLog.d(TAG, "fuck isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
+            LLog.d(TAG, "fuck isInitResult");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
             updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
-            if (lastCurrentPosition > 0) {
-                fuzVideo.getPlayer().seekTo(lastCurrentPosition);
-            }
             if (!isSendMsgToActivity) {
-                LLog.d(TAG, "fuck isPiPInitResult isSendMsgToActivity false -> send msg to UZVideo");
+                LLog.d(TAG, "fuck state finish loading PIP -> send msg to UZVideo");
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -629,8 +624,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         LLog.e(TAG, "onPlayerError " + error.getMessage());
-        lastCurrentPosition = fuzVideo.getPlayer().getCurrentPosition();
-        setupVideo();
+        stopSelf();
     }
 
     private boolean isSendMsgToActivity;

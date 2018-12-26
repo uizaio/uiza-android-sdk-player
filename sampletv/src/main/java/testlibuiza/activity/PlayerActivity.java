@@ -132,7 +132,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override

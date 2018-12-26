@@ -96,8 +96,8 @@ public class EventActivity extends BaseActivity {
             }
 
             @Override
-            public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-                if (isInitSuccess) {
+            public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+                if (isInitMiniPlayerSuccess) {
                     onBackPressed();
                 }
             }

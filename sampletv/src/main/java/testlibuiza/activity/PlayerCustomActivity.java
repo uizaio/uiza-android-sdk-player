@@ -141,7 +141,7 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override

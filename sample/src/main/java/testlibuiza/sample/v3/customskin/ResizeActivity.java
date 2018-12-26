@@ -150,8 +150,8 @@ public class ResizeActivity extends BaseActivity implements UZCallback, UZItemCl
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             onBackPressed();
         }
     }

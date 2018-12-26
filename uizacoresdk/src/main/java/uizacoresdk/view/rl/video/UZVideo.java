@@ -2113,8 +2113,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickPictureInPicture() {
-        //LLog.d(TAG, "handleClickPictureInPicture");
         if (activity == null) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
+            return;
+        }
+        if (!isInitMiniPlayerSuccess) {
+            //dang init 1 instance mini player roi, khong cho init nua
+            LLog.d(TAG, "fuck !isInitMiniPlayerSuccess -> return");
             if (uzCallback != null) {
                 uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
             }
@@ -2148,12 +2155,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private boolean isInitMiniPlayerSuccess = true;
+
     public void initializePiP() {
         if (activity == null || uzPlayerManager == null || uzPlayerManager.getLinkPlay() == null) {
             if (uzCallback != null) {
                 uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
             }
             return;
+        }
+        if (ibPictureInPictureIcon != null) {
+            ibPictureInPictureIcon.setVisibility(View.GONE);
+        }
+        if (uzCallback != null) {
+            isInitMiniPlayerSuccess = false;
+            uzCallback.onStateMiniPlayer(isInitMiniPlayerSuccess);
         }
         UZUtil.setVideoWidth(activity, getVideoW());
         UZUtil.setVideoHeight(activity, getVideoH());
@@ -2267,7 +2283,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uzPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
-            uzCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            isInitMiniPlayerSuccess = true;
+            uzCallback.onStateMiniPlayer(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
             //FUZVideoServiceV1 truoc khi huy da gui position cua pip toi day
             //Nhan duoc vi tru tu FUZVideoService roi seek toi vi tri nay

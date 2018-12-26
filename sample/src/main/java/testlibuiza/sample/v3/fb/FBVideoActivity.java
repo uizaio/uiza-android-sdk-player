@@ -130,9 +130,13 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
+            //mini player is init success
             onBackPressed();
+        } else {
+            //open mini player
+            btMini.setVisibility(View.INVISIBLE);
         }
     }
 
