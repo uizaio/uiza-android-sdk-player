@@ -579,7 +579,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (mFloatingView == null) {
                 return;
             }
-            LLog.d(TAG, "fuck 2 isInitResult true");
+            //LLog.d(TAG, "miniplayer 2 isInitResult true");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
             updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
@@ -744,7 +744,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //work fine
             long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
             long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
-            LLog.d(TAG, "fuck 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
+            //LLog.d(TAG, "miniplayer 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
             /*if (contentPosition >= contentBufferedPosition) {
                 fuzVideo.seekTo(contentBufferedPosition);
             } else {

@@ -2121,7 +2121,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (!isInitMiniPlayerSuccess) {
             //dang init 1 instance mini player roi, khong cho init nua
-            LLog.d(TAG, "fuck !isInitMiniPlayerSuccess -> return");
+            //LLog.d(TAG, "!isInitMiniPlayerSuccess -> return");
             if (uzCallback != null) {
                 uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
             }
@@ -2278,7 +2278,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
             //Ham nay duoc goi khi player o FUZVideoService da init xong
             //Nhiem vu la minh se gui vi tri hien tai sang cho FUZVideoService no biet
-            LLog.d(TAG, "fuck 3 UZVideo biet FUZVideoService da init xong -> gui lai content position cua UZVideo cho FUZVideoService");
+            //LLog.d(TAG, "miniplayer STEP 3 UZVideo biet FUZVideoService da init xong -> gui lai content position cua UZVideo cho FUZVideoService");
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uzPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
