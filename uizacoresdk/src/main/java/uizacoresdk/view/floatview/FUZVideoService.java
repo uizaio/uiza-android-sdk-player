@@ -237,7 +237,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
-        LLog.d(TAG, "fuck updateUIVideoSizeOneTime " + videoW + "x" + videoH);
+        //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
         int vW = screenWidth / 2;
         int vH = vW * videoH / videoW;
         int newPosX = vW;
@@ -579,12 +579,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (mFloatingView == null) {
                 return;
             }
-            LLog.d(TAG, "fuck isInitResult");
+            LLog.d(TAG, "fuck 2 isInitResult true");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
             updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
             if (!isSendMsgToActivity) {
-                LLog.d(TAG, "fuck state finish loading PIP -> send msg to UZVideo");
+                //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -725,11 +725,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            //Nhận được vị trí từ UZVideo, tiến hành seek tới vị trí này
-            LLog.d(TAG, "fuck MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            /*if (fuzVideo != null) {
+            //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
+            LLog.d(TAG, "fuck 4 MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            if (fuzVideo != null) {
                 fuzVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            }*/
+            }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());

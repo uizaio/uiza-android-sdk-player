@@ -2271,15 +2271,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //listen msg from service FUZVideoService
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
-        //LLog.d(TAG, "get event from service");
-        if (msg == null) {
+        if (msg == null || uzPlayerManager == null) {
             return;
         }
         //when pip float view init success
         if (uzCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
-            //Ham nay duoc goi khi player o FUZVideoService da init xong (no dang play o vi tri 0)
+            //Ham nay duoc goi khi player o FUZVideoService da init xong
             //Nhiem vu la minh se gui vi tri hien tai sang cho FUZVideoService no biet
-            //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            LLog.d(TAG, "fuck 3 UZVideo biet FUZVideoService da init xong -> gui lai content position cua UZVideo cho FUZVideoService");
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uzPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);

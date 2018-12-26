@@ -132,7 +132,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     public void init(boolean isLivestream, long contentPosition) {
-        LLog.d(TAG, "fuck FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
+        LLog.d(TAG, "fuck 1 FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
