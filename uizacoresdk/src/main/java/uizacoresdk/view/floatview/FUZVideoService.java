@@ -130,7 +130,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         EventBus.getDefault().register(this);
         videoW = UZUtil.getVideoWidth(getBaseContext());
         videoH = UZUtil.getVideoHeight(getBaseContext());
-        LLog.d(TAG, "fuck onCreate videoWxvideoH " + videoW + "x" + videoH);
+        //LLog.d(TAG, "onCreate videoWxvideoH " + videoW + "x" + videoH);
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
         statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
@@ -341,7 +341,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void dragAndMove() {
         mTapDetector = new GestureDetector(getBaseContext(), new GestureTap());
-
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
@@ -714,7 +713,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (w != 0 && h != 0) {
             moveView.getLayoutParams().width = w;
             moveView.getLayoutParams().height = h;
-            LLog.d(TAG, "fuck setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
+            //LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
             moveView.requestLayout();
         }
     }
