@@ -153,6 +153,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             adsLoader.addCallback(FUZVideoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
+        //setVolumeOff();
         if (isLivestream) {
             player.seekToDefaultPosition();
         } else {
@@ -432,6 +433,24 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         public boolean isEnded() {
             return isEnded;
+        }
+    }
+
+    protected void setVolume(float volume) {
+        if (player != null) {
+            player.setVolume(volume);
+        }
+    }
+
+    protected void setVolumeOn() {
+        if (player != null) {
+            player.setVolume(1f);
+        }
+    }
+
+    protected void setVolumeOff() {
+        if (player != null) {
+            player.setVolume(0f);
         }
     }
 }
