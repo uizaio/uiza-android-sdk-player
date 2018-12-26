@@ -32,7 +32,6 @@ import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
@@ -387,13 +386,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
             pos = tmpPos;
-            LLog.d(TAG, "fuck notiPos: " + pos);
+            //LLog.d(TAG, "notiPos: " + pos);
             switch (pos) {
                 case TOP_LEFT:
                 case TOP_RIGHT:
                 case BOTTOM_LEFT:
                 case BOTTOM_RIGHT:
-                    LDeviceUtil.vibrate(getBaseContext());
+                case CENTER_LEFT:
+                case CENTER_RIGHT:
+                case CENTER_TOP:
+                case CENTER_BOTTOM:
+                    //LDeviceUtil.vibrate(getBaseContext());
                     viewDestroy.setVisibility(View.VISIBLE);
                     break;
                 default:
@@ -482,48 +485,36 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             case TOP_RIGHT:
             case BOTTOM_LEFT:
             case BOTTOM_RIGHT:
+            case CENTER_LEFT:
+            case CENTER_RIGHT:
+            case CENTER_TOP:
+            case CENTER_BOTTOM:
                 stopSelf();
                 break;
             case TOP:
-            case CENTER_TOP:
-                posX = params.x;
-                centerPosX = posX + getMoveViewWidth() / 2;
-                if (centerPosX < screenWidth / 2) {
-                    slideToPosition(0, 0);
-                } else {
-                    slideToPosition(screenWidth - getMoveViewWidth(), 0);
-                }
+                slideToTop();
                 break;
+            /*case CENTER_TOP:
+                slideToTop();
+                break;*/
             case BOTTOM:
-            case CENTER_BOTTOM:
-                posX = params.x;
-                centerPosX = posX + getMoveViewWidth() / 2;
-                if (centerPosX < screenWidth / 2) {
-                    slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
-                } else {
-                    slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
-                }
+                slideToBottom();
                 break;
+            /*case CENTER_BOTTOM:
+                slideToBottom();
+                break;*/
             case LEFT:
-            case CENTER_LEFT:
-                posY = params.y;
-                centerPosY = posY + getMoveViewHeight() / 2;
-                if (centerPosY < screenHeight / 2) {
-                    slideToPosition(0, 0);
-                } else {
-                    slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
-                }
+                slideToLeft();
                 break;
+            /*case CENTER_LEFT:
+                slideToLeft();
+                break;*/
             case RIGHT:
-            case CENTER_RIGHT:
-                posY = params.y;
-                centerPosY = posY + getMoveViewHeight() / 2;
-                if (centerPosY < screenHeight / 2) {
-                    slideToPosition(screenWidth - getMoveViewWidth(), 0);
-                } else {
-                    slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
-                }
+                slideToRight();
                 break;
+            /*case CENTER_RIGHT:
+                slideToRight();
+                break;*/
             case CENTER:
                 posX = params.x;
                 posY = params.y;
@@ -548,6 +539,46 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     }
                 }
                 break;
+        }
+    }
+
+    private void slideToTop() {
+        int posX = params.x;
+        int centerPosX = posX + getMoveViewWidth() / 2;
+        if (centerPosX < screenWidth / 2) {
+            slideToPosition(0, 0);
+        } else {
+            slideToPosition(screenWidth - getMoveViewWidth(), 0);
+        }
+    }
+
+    private void slideToBottom() {
+        int posX = params.x;
+        int centerPosX = posX + getMoveViewWidth() / 2;
+        if (centerPosX < screenWidth / 2) {
+            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+        } else {
+            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+        }
+    }
+
+    private void slideToLeft() {
+        int posY = params.y;
+        int centerPosY = posY + getMoveViewHeight() / 2;
+        if (centerPosY < screenHeight / 2) {
+            slideToPosition(0, 0);
+        } else {
+            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+        }
+    }
+
+    private void slideToRight() {
+        int posY = params.y;
+        int centerPosY = posY + getMoveViewHeight() / 2;
+        if (centerPosY < screenHeight / 2) {
+            slideToPosition(screenWidth - getMoveViewWidth(), 0);
+        } else {
+            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
         }
     }
 
