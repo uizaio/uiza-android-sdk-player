@@ -145,9 +145,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         //IMA ADS
         // Compose the content media source into a new AdsMediaSource with both ads and content.
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
-        // Prepare the player with the source.
+        //Prepare the player with the source.
+        //TODO
         //player.seekTo(contentPosition);
-        //LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
         if (adsLoader != null) {
@@ -239,7 +239,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     public void reset() {
         if (player != null) {
-            //contentPosition = player.getContentPosition();
             player.release();
             player = null;
             handler = null;
@@ -292,11 +291,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                         new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory)
                         .createMediaSource(uri);
             case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri);
+                return new HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri);
+                return new ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }
@@ -407,7 +404,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     private class FUZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
-        private final String TAG = FUZVideoAdPlayerListerner.class.getSimpleName();
         private boolean isPlayingAd;
         private boolean isEnded;
 

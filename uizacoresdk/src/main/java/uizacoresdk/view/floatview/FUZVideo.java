@@ -65,6 +65,9 @@ public class FUZVideo extends RelativeLayout {
 
     //Lấy vị trí của pip player
     public long getCurrentPosition() {
+        if (getPlayer() == null) {
+            return 0;
+        }
         return getPlayer().getCurrentPosition();
     }
 
@@ -78,7 +81,7 @@ public class FUZVideo extends RelativeLayout {
 
     public void init(String linkPlay, boolean isLivestream, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
-            //LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
+            LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
         LUIUtil.showProgressBar(progressBar);
@@ -102,7 +105,6 @@ public class FUZVideo extends RelativeLayout {
                 }
             });
         }
-
         //track event plays_requested
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
             //da track roi ko can track nua
@@ -218,20 +220,16 @@ public class FUZVideo extends RelativeLayout {
                 });
             }
         }
-
         //if current link play is livestream link play
         //we dont track progress play throught 25, 50, 75, 100
         if (isLivestream) {
             LLog.d(TAG, "isLivestream true -> we dont track progress play throught 25, 50, 75, 100");
             return;
         }
-
         if (oldPercent == percent) {
             return;
         }
-
         oldPercent = percent;
-
         //LLog.d(TAG, "trackProgress percent: " + percent);
         if (percent >= Constants.PLAYTHROUGH_100) {
             if (isTracked100) {

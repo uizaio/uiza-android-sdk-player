@@ -18,7 +18,7 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 12/10/2018.
+ * Created by loitp on 12/26/2018.
  */
 
 public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {
@@ -57,7 +57,6 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
                 uzVideo.showPip();
             }
         });
-
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);

@@ -16,7 +16,6 @@ import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -42,7 +41,6 @@ public class FBListVideoActivity extends BaseActivity {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
 
@@ -52,7 +50,6 @@ public class FBListVideoActivity extends BaseActivity {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

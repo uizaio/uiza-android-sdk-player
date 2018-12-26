@@ -17,8 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- for v3 -->
         <activity android:name=".sample.v3.api.UZTestAPIActivity" />
         <activity
             android:name=".sample.v3.uzv3.SetEntityIdActivity"
@@ -26,13 +24,10 @@
         <activity
             android:name=".sample.v3.uzv3.UZPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <!-- end for v3 -->
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".sample.guidecallapi.TestAPI" />
-
-        <!--for livestream-->
         <activity
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
             android:windowSoftInputMode="stateHidden" />
