@@ -81,7 +81,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
-            LLog.d(TAG, "fuck onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition);
+            //LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -160,20 +160,31 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         setSizeMoveView(true, false);
 
         //Specify the view position
+        //OPTION 1
         //Initially view will be added to top-left corner
         //params.gravity = Gravity.TOP | Gravity.LEFT;
         //params.x = 0;
         //params.y = 0;
 
+        //OPTION 2
         //right-bottom corner
         /*params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = screenWidth - getMoveViewWidth();
         params.y = screenHeight - getMoveViewHeight();*/
 
-        params.gravity = Gravity.TOP | Gravity.LEFT;
+        //OPTION 3
+        //init lan dau tien se neo vao canh BOTTOM_RIGHT cua man hinh
+        /*params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = screenWidth - getMoveViewWidth();
         //params.y = screenHeight - getMoveViewHeight();
-        params.y = screenHeight - getMoveViewHeight() - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
+        params.y = screenHeight - getMoveViewHeight() - statusBarHeight;
+        //LLog.d(TAG, "first position: " + params.x + "-" + params.y);*/
+
+        //OPTION 3
+        //float view o ben ngoai screen cua device
+        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.x = screenWidth + getMoveViewWidth();
+        params.y = screenHeight - getMoveViewHeight() - statusBarHeight;
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
@@ -225,19 +236,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         });
     }
 
-    private boolean isUpdatedUIVideoSize;
-
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
-        if (!isUpdatedUIVideoSize) {
-            //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
-            int vW = screenWidth / 2;
-            int vH = vW * videoH / videoW;
-            //LLog.d(TAG, "-> " + vW + "x" + vH);
-            int newPosX = params.x;
-            int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-            updateUISlide(newPosX, newPosY);
-            isUpdatedUIVideoSize = true;
-        }
+        LLog.d(TAG, "fuck updateUIVideoSizeOneTime " + videoW + "x" + videoH);
+        int vW = screenWidth / 2;
+        int vH = vW * videoH / videoW;
+        int newPosX = vW;
+        int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
+        updateUISlide(newPosX, newPosY);
     }
 
     private void openApp(String packageNameReceived) {
@@ -263,22 +268,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         }
     }
-
-    //only update 1 one time
-    /*private boolean isUpdatedUIVideoSize;
-
-    private void updateUIVideoSizeOneTime(int videoW, int videoH) {
-        if (!isUpdatedUIVideoSize) {
-            //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
-            int vW = screenWidth / 2;
-            int vH = vW * videoH / videoW;
-            //LLog.d(TAG, "-> " + vW + "x" + vH);
-            int newPosX = params.x;
-            int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-            updateUISlide(newPosX, newPosY);
-            isUpdatedUIVideoSize = true;
-        }
-    }*/
 
     private CountDownTimer countDownTimer;
 
@@ -589,8 +578,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
-            //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
+            if (mFloatingView == null) {
+                return;
+            }
+            LLog.d(TAG, "fuck isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
             editSizeOfMoveView();
+            //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
+            updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
             if (lastCurrentPosition > 0) {
                 fuzVideo.getPlayer().seekTo(lastCurrentPosition);
             }
@@ -630,7 +624,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void onVideoSizeChanged(int width, int height) {
-        updateUIVideoSizeOneTime(width, height);
     }
 
     @Override
@@ -650,7 +643,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            isUpdatedUIVideoSize = false;
             fuzVideo.init(linkPlay, isLivestream, contentPosition, this);
             tvMsg.setVisibility(View.GONE);
         } else {

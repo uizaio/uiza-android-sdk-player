@@ -2115,17 +2115,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void handleClickPictureInPicture() {
         //LLog.d(TAG, "handleClickPictureInPicture");
         if (activity == null) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
             return;
         }
         if (isCastingChromecast()) {
-            LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
+        if (LDeviceUtil.isCanOverlay(activity)) {
+            initializePiP();
+        } else {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
             activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-        } else {
-            initializePiP();
         }
     }
 
@@ -2138,9 +2143,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-            //LLog.d(TAG, "onActivityResult !canDrawOverlays");
-        } else {
+        if (LDeviceUtil.isCanOverlay(activity)) {
             initializePiP();
         }
     }

@@ -165,7 +165,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         if (player == null) {
             return;
         }
-        LLog.d(TAG, "fuck seekTo " + position);
+        //LLog.d(TAG, "fuck seekTo " + position);
         player.seekTo(position);
     }
 
