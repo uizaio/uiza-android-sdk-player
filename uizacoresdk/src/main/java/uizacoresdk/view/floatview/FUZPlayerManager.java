@@ -381,7 +381,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onRenderedFirstFrame() {
-            fuzVideo.removeVideoCover();
         }
     }
 

@@ -13,12 +13,12 @@
         android:keepScreenOn="true"
         app:use_controller="false" />
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/iv_cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop" />-->
 
     <ProgressBar
         android:id="@id/pb"

@@ -9,7 +9,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -27,7 +26,6 @@ import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.ApiMaster;
@@ -50,7 +48,6 @@ public class FUZVideo extends RelativeLayout {
     private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
     private RelativeLayout rootView;
-    private ImageView ivVideoCover;
     //private Gson gson = new Gson();
 
     public PlayerView getPlayerView() {
@@ -90,6 +87,7 @@ public class FUZVideo extends RelativeLayout {
         this.linkPlay = linkPlay;
         this.isLivestream = isLivestream;
         this.contentPosition = contentPosition;
+        isFirstStateReady = false;
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
         this.callback = callback;
         if (fuzUizaPlayerManager != null) {
@@ -122,7 +120,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        setVideoCover();
+        //setVideoCover();
         initData(linkPlay, null, null, null);
         onResume();
     }
@@ -149,12 +147,11 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void onCreate() {
-        inflate(getContext(), R.layout.v1_uiza_float_ima_video, this);
+        inflate(getContext(), R.layout.float_uiza_video, this);
         findViews();
     }
 
     private void findViews() {
-        ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.White));
@@ -301,13 +298,6 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    public void onStateReadyFirst() {
-        //LLog.d(TAG, "onStateReadyFirst");
-        if (callback != null) {
-            callback.isInitResult(true);
-        }
-    }
-
     public void onDestroy() {
         //LLog.d(TAG, "trackUiza onDestroy");
         if (fuzUizaPlayerManager != null) {
@@ -344,6 +334,15 @@ public class FUZVideo extends RelativeLayout {
         public void onPlayerError(ExoPlaybackException error);
     }
 
+    private boolean isFirstStateReady;
+
+    private void onFirstStateReady() {
+        //LLog.d(TAG, ">>>>>>>>>> onFirstStateReady");
+        if (callback != null) {
+            callback.isInitResult(true);
+        }
+    }
+
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
@@ -356,6 +355,10 @@ public class FUZVideo extends RelativeLayout {
                 showProgress();
                 break;
             case Player.STATE_READY:
+                if (!isFirstStateReady) {
+                    onFirstStateReady();
+                    isFirstStateReady = true;
+                }
                 hideProgress();
                 break;
         }
@@ -406,7 +409,7 @@ public class FUZVideo extends RelativeLayout {
         });
     }
 
-    private void setVideoCover() {
+    /*private void setVideoCover() {
         //LLog.d(TAG, "setVideoCover");
         if (ivVideoCover.getVisibility() != VISIBLE) {
             ivVideoCover.setVisibility(VISIBLE);
@@ -418,15 +421,15 @@ public class FUZVideo extends RelativeLayout {
             urlImg = UZData.getInstance().getUzInput().getData().getThumbnail();
         }
         LImageUtil.load(getContext(), urlImg, ivVideoCover, R.drawable.uiza);
-    }
+    }*/
 
-    protected void removeVideoCover() {
+    /*protected void removeVideoCover() {
         if (ivVideoCover.getVisibility() != GONE) {
             //LLog.d(TAG, "removeVideoCover");
             ivVideoCover.setVisibility(GONE);
             onStateReadyFirst();
         }
-    }
+    }*/
 
     protected void seekTo(long position) {
         if (fuzUizaPlayerManager != null) {
