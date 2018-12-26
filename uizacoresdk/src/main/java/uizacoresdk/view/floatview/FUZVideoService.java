@@ -183,8 +183,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //OPTION 3
         //float view o ben ngoai screen cua device
         params.gravity = Gravity.TOP | Gravity.LEFT;
-        params.x = screenWidth + getMoveViewWidth();
-        params.y = screenHeight - getMoveViewHeight() - statusBarHeight;
+        params.x = screenWidth - 1;
+        params.y = screenHeight - 1;
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
@@ -242,7 +242,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int vH = vW * videoH / videoW;
         int newPosX = vW;
         int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-        updateUISlide(newPosX, newPosY);
+        slideToPosition(newPosX, newPosY);
     }
 
     private void openApp(String packageNameReceived) {
@@ -387,7 +387,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
             pos = tmpPos;
-            //LLog.d(TAG, "notiPos: " + pos);
+            LLog.d(TAG, "fuck notiPos: " + pos);
             switch (pos) {
                 case TOP_LEFT:
                 case TOP_RIGHT:
