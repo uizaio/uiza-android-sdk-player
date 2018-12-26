@@ -41,8 +41,6 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.Utils;
@@ -711,63 +709,19 @@ public class UZUtil {
 
     //=============================================================================START PREF
     private final static String PREFERENCES_FILE_NAME = "loitp";
-    private final static String CHECK_APP_READY = "CHECK_APP_READY";
-    private final static String PRE_LOAD = "PRE_LOAD";
-    private final static String INDEX = "INDEX";
     private final static String AUTH = "AUTH";
-    public final static String API_END_POINT = "API_END_POINT";
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
-    private final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
     private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
-    private final static String PREF_CAMERA_ID = "pref_camera_id";
-    private final static String PREF_STATE_FILTER = "state_filter";
 
     //for api v3
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
-    private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
-    private final static String V3UIZATOKEN = "V3UIZATOKEN";
-    private final static String V3DATA = "V3DATA";
-    //private final static String ENTITY_ID = "ENTITY_ID";
-    //private final static String METADATA_ID = "METADATA_ID";
+    private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
+    private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
     //end for api v3
 
-    //object
-    public static UizaWorkspaceInfo getUizaWorkspaceInfo(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return new Gson().fromJson(pref.getString(V3UIZAWORKSPACEINFO, ""), UizaWorkspaceInfo.class);
-    }
-
-    public static void setUizaWorkspaceInfo(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3UIZAWORKSPACEINFO, new Gson().toJson(uizaWorkspaceInfo));
-        editor.apply();
-    }
-
-    public static ResultGetToken getResultGetToken(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return new Gson().fromJson(pref.getString(V3UIZATOKEN, ""), ResultGetToken.class);
-    }
-
-    public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3UIZATOKEN, new Gson().toJson(resultGetToken));
-        editor.apply();
-    }
-
     /////////////////////////////////STRING
-    public static String getApiEndPoint(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(API_END_POINT, null);
-    }
-
-    public static void setApiEndPoint(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(API_END_POINT, value);
-        editor.apply();
-    }
-
     public static String getApiTrackEndPoint(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(API_TRACK_END_POINT, null);
@@ -801,29 +755,7 @@ public class UZUtil {
         editor.apply();
     }
 
-    /*public static String getEntityId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(ENTITY_ID, null);
-    }
-
-    public static void setEntityId(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(ENTITY_ID, value);
-        editor.apply();
-    }
-
-    public static String getMetadataId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(METADATA_ID, null);
-    }
-
-    public static void setMetadataId(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(METADATA_ID, value);
-        editor.apply();
-    }*/
     /////////////////////////////////BOOLEAN
-
     public static Boolean isInitPlaylistFolder(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(IS_INIT_PLAYLIST_FOLDER, false);
@@ -834,39 +766,6 @@ public class UZUtil {
         editor.putBoolean(IS_INIT_PLAYLIST_FOLDER, value);
         editor.apply();
     }
-
-    public static Boolean getCheckAppReady(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(CHECK_APP_READY, false);
-    }
-
-    public static void setCheckAppReady(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(CHECK_APP_READY, value);
-        editor.apply();
-    }
-
-    public static Boolean getPreLoad(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(PRE_LOAD, false);
-    }
-
-    public static void setPreLoad(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(PRE_LOAD, value);
-        editor.apply();
-    }
-
-    /*public static Boolean getSlideUizaVideoEnabled(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(SLIDE_UIZA_VIDEO_ENABLED, false);
-    }
-
-    public static void setSlideUizaVideoEnabled(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
-        editor.apply();
-    }*/
 
     public static Boolean getClickedPip(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -879,30 +778,30 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static Boolean getAcitivityCanSlideIsRunning(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, false);
-    }
-
-    public static void setAcitivityCanSlideIsRunning(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, value);
-        editor.apply();
-    }
-
     /////////////////////////////////INT
-    public static int getIndex(Context context) {
+    public static int getVideoWidth(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getInt(INDEX, Constants.NOT_FOUND);
+        return prefs.getInt(VIDEO_WIDTH, 16);
     }
 
-    public static void setIndex(Context context, int value) {
+    public static void setVideoWidth(Context context, int value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putInt(INDEX, value);
+        editor.putInt(VIDEO_WIDTH, value);
         editor.apply();
     }
 
-    //Object
+    public static int getVideoHeight(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(VIDEO_HEIGHT, 9);
+    }
+
+    public static void setVideoHeight(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(VIDEO_HEIGHT, value);
+        editor.apply();
+    }
+
+    /////////////////////////////////OBJECT
     public static Auth getAuth(Context context, Gson gson) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(AUTH, null);
@@ -913,38 +812,6 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(AUTH, gson.toJson(auth));
         editor.apply();
-    }
-
-    /*public static Data getData(Context context, Gson gson) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        String json = pref.getString(V3DATA, null);
-        return gson.fromJson(json, Data.class);
-    }
-
-    public static void setData(Context context, Data data, Gson gson) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3DATA, gson.toJson(data));
-        editor.apply();
-    }*/
-
-    public static String getStoredCameraId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(PREF_CAMERA_ID, "");
-    }
-
-    public static void storeCameraId(Context context, String id) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        pref.edit().putString(PREF_CAMERA_ID, id).apply();
-    }
-
-    public static boolean getStoredFilterState(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getBoolean(PREF_STATE_FILTER, false);
-    }
-
-    public static void storeFilterState(Context context, boolean on) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        pref.edit().putBoolean(PREF_STATE_FILTER, on).apply();
     }
 
     //=============================================================================END PREF

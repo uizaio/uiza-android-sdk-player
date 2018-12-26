@@ -81,10 +81,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
         userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
-        mediaDataSourceFactory = new DefaultDataSourceFactory(
-                context,
-                userAgent,
-                new DefaultBandwidthMeter());
+        mediaDataSourceFactory = new DefaultDataSourceFactory(context, userAgent, new DefaultBandwidthMeter());
         //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
@@ -245,10 +242,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             //contentPosition = player.getContentPosition();
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
-
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -260,10 +255,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         if (player != null) {
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
-
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;

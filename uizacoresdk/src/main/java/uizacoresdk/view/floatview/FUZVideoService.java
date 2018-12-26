@@ -24,7 +24,6 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +64,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int screenWidth;
     private int screenHeight;
     private int statusBarHeight;
+    private int videoW = 16;
+    private int videoH = 9;
 
     public FUZVideoService() {
     }
@@ -127,10 +128,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
+        videoW = UZUtil.getVideoWidth(getBaseContext());
+        videoH = UZUtil.getVideoHeight(getBaseContext());
+        LLog.d(TAG, "fuck onCreate videoWxvideoH " + videoW + "x" + videoH);
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
         statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
-        //LLog.d(TAG, "statusBarHeight " + statusBarHeight);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
@@ -177,12 +180,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
-        fuzVideo.addVideoListener(new VideoListener() {
-            @Override
-            public void onVideoSizeChanged(int videoW, int videoH, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                updateUIVideoSizeOneTime(videoW, videoH);
-            }
-        });
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
@@ -256,7 +253,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     //only update 1 one time
-    private boolean isUpdatedUIVideoSize;
+    /*private boolean isUpdatedUIVideoSize;
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
         if (!isUpdatedUIVideoSize) {
@@ -269,7 +266,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             updateUISlide(newPosX, newPosY);
             isUpdatedUIVideoSize = true;
         }
-    }
+    }*/
 
     private CountDownTimer countDownTimer;
 
@@ -682,7 +679,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            isUpdatedUIVideoSize = false;
+            //isUpdatedUIVideoSize = false;
             fuzVideo.init(linkPlay, isLivestream, this);
             tvMsg.setVisibility(View.GONE);
         } else {
@@ -699,7 +696,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int h = 0;
         if (isFirstSizeInit) {
             w = screenWidth / 2;
-            h = w * 9 / 16;
+            h = w * videoH / videoW;
         } else {
             //works fine
             //OPTION 1: isLarger->mini player se to hon 1 chut
@@ -717,7 +714,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (w != 0 && h != 0) {
             moveView.getLayoutParams().width = w;
             moveView.getLayoutParams().height = h;
-            //LLog.d(TAG, "setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
+            LLog.d(TAG, "fuck setSizeMoveView isFirstSizeInit:" + isFirstSizeInit + ",isLarger: " + isLarger + ", " + w + "x" + h);
             moveView.requestLayout();
         }
     }
