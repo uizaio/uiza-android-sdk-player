@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -604,30 +605,27 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     @Override
-    public void onPlayerStateEnded() {
-        if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
-            fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
-                @Override
-                public void onSuccess(String lp) {
-                    linkPlay = lp;
-                    if (linkPlay == null) {
-                        //LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
-                        stopSelf();
-                    }
-                    //LLog.d(TAG, "next linkPlay " + linkPlay);
-                    setupVideo();
-                }
-            });
-        } else {
-            //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
-            stopSelf();
-        }
-    }
-
-    @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
+        if (playbackState == Player.STATE_ENDED) {
+            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+                //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
+                fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
+                    @Override
+                    public void onSuccess(String lp) {
+                        linkPlay = lp;
+                        if (linkPlay == null) {
+                            //LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
+                            stopSelf();
+                        }
+                        //LLog.d(TAG, "next linkPlay " + linkPlay);
+                        setupVideo();
+                    }
+                });
+            } else {
+                //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
+                stopSelf();
+            }
+        }
     }
 
     @Override

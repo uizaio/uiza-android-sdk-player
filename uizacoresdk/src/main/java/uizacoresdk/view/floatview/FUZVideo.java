@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 
@@ -85,7 +86,7 @@ public class FUZVideo extends RelativeLayout {
             LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
-        LUIUtil.showProgressBar(progressBar);
+        showProgress();
         this.linkPlay = linkPlay;
         this.isLivestream = isLivestream;
         this.contentPosition = contentPosition;
@@ -307,13 +308,6 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    protected void onPlayerStateEnded() {
-        setDefautValueForFlagIsTracked();
-        if (callback != null) {
-            callback.onPlayerStateEnded();
-        }
-    }
-
     public void onDestroy() {
         //LLog.d(TAG, "trackUiza onDestroy");
         if (fuzUizaPlayerManager != null) {
@@ -343,8 +337,6 @@ public class FUZVideo extends RelativeLayout {
     public interface Callback {
         public void isInitResult(boolean isInitSuccess);
 
-        public void onPlayerStateEnded();
-
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState);
 
         public void onVideoSizeChanged(int width, int height);
@@ -353,6 +345,20 @@ public class FUZVideo extends RelativeLayout {
     }
 
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        switch (playbackState) {
+            case Player.STATE_BUFFERING:
+                showProgress();
+                break;
+            case Player.STATE_ENDED:
+                setDefautValueForFlagIsTracked();
+                break;
+            case Player.STATE_IDLE:
+                showProgress();
+                break;
+            case Player.STATE_READY:
+                hideProgress();
+                break;
+        }
         if (callback != null) {
             callback.onPlayerStateChanged(playWhenReady, playbackState);
         }
@@ -364,7 +370,7 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    protected void onPlayerError(ExoPlaybackException error){
+    protected void onPlayerError(ExoPlaybackException error) {
         if (callback != null) {
             callback.onPlayerError(error);
         }
@@ -585,5 +591,13 @@ public class FUZVideo extends RelativeLayout {
             String lp = listLinkPlay.get(0);
             callbackGetLinkPlay.onSuccess(lp);
         }
+    }
+
+    protected void hideProgress() {
+        LUIUtil.hideProgressBar(progressBar);
+    }
+
+    protected void showProgress() {
+        LUIUtil.showProgressBar(progressBar);
     }
 }

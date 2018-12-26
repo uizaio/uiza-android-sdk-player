@@ -44,7 +44,6 @@ import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
 
@@ -88,11 +87,11 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (fuzVideo.getPlayerView() != null) {
+                if (fuzVideo != null && fuzVideo.getPlayerView() != null) {
                     boolean isPlayingAd = FUZVideoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
-                        hideProgress();
+                        fuzVideo.hideProgress();
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
                             int duration = (int) videoProgressUpdate.getDuration();
@@ -305,14 +304,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
     }
 
-    private void hideProgress() {
-        LUIUtil.hideProgressBar(fuzVideo.getProgressBar());
-    }
-
-    private void showProgress() {
-        LUIUtil.showProgressBar(fuzVideo.getProgressBar());
-    }
-
     private class FUZPlayerEventListener implements Player.EventListener {
 
         @Override
@@ -329,23 +320,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            switch (playbackState) {
-                case Player.STATE_BUFFERING:
-                    showProgress();
-                    break;
-                case Player.STATE_ENDED:
-                    if (fuzVideo != null) {
-                        fuzVideo.onPlayerStateEnded();
-                    }
-                    hideProgress();
-                    break;
-                case Player.STATE_IDLE:
-                    showProgress();
-                    break;
-                case Player.STATE_READY:
-                    hideProgress();
-                    break;
-            }
             if (fuzVideo != null) {
                 fuzVideo.onPlayerStateChanged(playWhenReady, playbackState);
             }
