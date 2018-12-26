@@ -2155,6 +2155,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZUtil.setVideoWidth(activity, getVideoW());
         UZUtil.setVideoHeight(activity, getVideoH());
         Intent intent = new Intent(activity, FUZVideoService.class);
+        intent.putExtra(Constants.FLOAT_CONTENT_POSITION, getCurrentPosition());
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);

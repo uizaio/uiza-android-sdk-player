@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
@@ -131,7 +132,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         return trackSelector;
     }
 
-    public void init() {
+    public void init(boolean isLivestream, long contentPosition) {
+        LLog.d(TAG, "fuck FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -146,14 +148,17 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         // Compose the content media source into a new AdsMediaSource with both ads and content.
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
         //Prepare the player with the source.
-        //TODO
-        //player.seekTo(contentPosition);
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
         if (adsLoader != null) {
             adsLoader.addCallback(FUZVideoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
+        if (isLivestream) {
+            player.seekToDefaultPosition();
+        } else {
+            seekTo(contentPosition);
+        }
         player.setPlayWhenReady(true);
     }
 
@@ -161,6 +166,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         if (player == null) {
             return;
         }
+        LLog.d(TAG, "fuck seekTo " + position);
         player.seekTo(position);
     }
 

@@ -61,6 +61,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private String linkPlay;
     //private Gson gson = new Gson();
     private boolean isLivestream;
+    private boolean isInitCustomLinkplay;
+    private long contentPosition;
     private int screenWidth;
     private int screenHeight;
     private int statusBarHeight;
@@ -72,19 +74,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
-        //LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay);
+        isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
+        contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
         if (isInitCustomLinkplay) {
         } else {
             if (UZData.getInstance().getData() == null) {
-                //LLog.e(TAG, "onStartCommand data == null");
                 return super.onStartCommand(intent, flags, startId);
             }
         }
         if (intent.getExtras() != null) {
             linkPlay = intent.getStringExtra(Constants.FLOAT_LINK_PLAY);
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
-            //LLog.d(TAG, "linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
+            LLog.d(TAG, "fuck onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition);
             setupVideo();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -606,9 +607,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                //LLog.e(TAG, "onPlayerError " + error.getMessage());
+                LLog.e(TAG, "onPlayerError " + error.getMessage());
                 lastCurrentPosition = fuzVideo.getPlayer().getCurrentPosition();
-                //LLog.d(TAG, "onPlayerError lastCurrentPosition " + lastCurrentPosition);
                 setupVideo();
             }
 
@@ -636,8 +636,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 fuzVideo.getPlayer().seekTo(lastCurrentPosition);
             }
             if (!isSendMsgToActivity) {
-                //LLog.d(TAG, "isPiPInitResult isSendMsgToActivity false -> send msg to UZVideo");
-                //bắn cho UZVideo nhận
+                LLog.d(TAG, "fuck isPiPInitResult isSendMsgToActivity false -> send msg to UZVideo");
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
                 msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
@@ -679,7 +678,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
             //isUpdatedUIVideoSize = false;
-            fuzVideo.init(linkPlay, isLivestream, this);
+            fuzVideo.init(linkPlay, isLivestream, contentPosition, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
@@ -768,7 +767,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhận được vị trí từ UZVideo, tiến hành seek tới vị trí này
-            //LLog.d(TAG, "MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
+            LLog.d(TAG, "fuck MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             if (fuzVideo != null) {
                 fuzVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
             }

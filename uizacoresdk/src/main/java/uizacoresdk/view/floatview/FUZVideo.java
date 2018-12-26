@@ -62,6 +62,7 @@ public class FUZVideo extends RelativeLayout {
 
     private String linkPlay;
     private boolean isLivestream;
+    private long contentPosition;
 
     //Lấy vị trí của pip player
     public long getCurrentPosition() {
@@ -79,7 +80,7 @@ public class FUZVideo extends RelativeLayout {
         isTracked100 = false;
     }
 
-    public void init(String linkPlay, boolean isLivestream, Callback callback) {
+    public void init(String linkPlay, boolean isLivestream, long contentPosition, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
@@ -87,6 +88,7 @@ public class FUZVideo extends RelativeLayout {
         LUIUtil.showProgressBar(progressBar);
         this.linkPlay = linkPlay;
         this.isLivestream = isLivestream;
+        this.contentPosition = contentPosition;
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
         this.callback = callback;
         if (fuzUizaPlayerManager != null) {
@@ -321,7 +323,7 @@ public class FUZVideo extends RelativeLayout {
 
     public void onResume() {
         if (fuzUizaPlayerManager != null) {
-            fuzUizaPlayerManager.init();
+            fuzUizaPlayerManager.init(isLivestream, contentPosition);
         }
     }
 
