@@ -742,10 +742,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
             //work fine
-            /*long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
+            long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
             long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
             LLog.d(TAG, "fuck 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
-            if (contentPosition >= contentBufferedPosition) {
+            /*if (contentPosition >= contentBufferedPosition) {
                 fuzVideo.seekTo(contentBufferedPosition);
             } else {
                 fuzVideo.seekTo(contentPosition);
