@@ -19,12 +19,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.video.VideoListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -182,12 +176,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);
 
         fuzVideo = (FUZVideo) mFloatingView.findViewById(R.id.uiza_video);
-        fuzVideo.addVideoListener(new VideoListener() {
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                updateUIVideoSizeOneTime(width, height);
-            }
-        });
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
@@ -235,6 +223,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         });
     }
+
     private boolean isUpdatedUIVideoSize;
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
@@ -249,6 +238,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             isUpdatedUIVideoSize = true;
         }
     }
+
     private void openApp(String packageNameReceived) {
         String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
         //LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getBaseContext()) + ", classNameOfPlayer " + classNameOfPlayer);
@@ -595,63 +585,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private long lastCurrentPosition;
 
-    private void setListener() {
-        //LLog.d(TAG, TAG + " addListener");
-        if (fuzVideo == null || fuzVideo.getPlayer() == null) {
-            return;
-        }
-        fuzVideo.getPlayer().addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-            }
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                LLog.e(TAG, "onPlayerError " + error.getMessage());
-                lastCurrentPosition = fuzVideo.getPlayer().getCurrentPosition();
-                setupVideo();
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-            }
-
-            @Override
-            public void onSeekProcessed() {
-            }
-        });
-    }
-
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
             //LLog.d(TAG, "isInitResult seekTo lastCurrentPosition: " + lastCurrentPosition + ", isSendMsgToActivity: " + isSendMsgToActivity);
             editSizeOfMoveView();
-            setListener();
             if (lastCurrentPosition > 0) {
                 fuzVideo.getPlayer().seekTo(lastCurrentPosition);
             }
@@ -685,6 +623,23 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
             stopSelf();
         }
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height) {
+        updateUIVideoSizeOneTime(width, height);
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+        LLog.e(TAG, "onPlayerError " + error.getMessage());
+        lastCurrentPosition = fuzVideo.getPlayer().getCurrentPosition();
+        setupVideo();
     }
 
     private boolean isSendMsgToActivity;
@@ -788,9 +743,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhận được vị trí từ UZVideo, tiến hành seek tới vị trí này
             LLog.d(TAG, "fuck MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            if (fuzVideo != null) {
+            /*if (fuzVideo != null) {
                 fuzVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            }
+            }*/
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());

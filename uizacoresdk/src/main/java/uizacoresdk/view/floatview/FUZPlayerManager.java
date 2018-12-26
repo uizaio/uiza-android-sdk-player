@@ -346,6 +346,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                     hideProgress();
                     break;
             }
+            if (fuzVideo != null) {
+                fuzVideo.onPlayerStateChanged(playWhenReady, playbackState);
+            }
         }
 
         @Override
@@ -358,6 +361,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
+            if (fuzVideo != null) {
+                fuzVideo.onPlayerError(error);
+            }
         }
 
         @Override
@@ -390,8 +396,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             videoW = width;
             videoH = height;
             //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
-            if (fuzVideo != null && fuzVideo.videoListener != null) {
-                fuzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            if (fuzVideo != null) {
+                fuzVideo.onVideoSizeChanged(width, height);
             }
         }
 

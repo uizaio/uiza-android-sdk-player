@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -344,6 +344,30 @@ public class FUZVideo extends RelativeLayout {
         public void isInitResult(boolean isInitSuccess);
 
         public void onPlayerStateEnded();
+
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState);
+
+        public void onVideoSizeChanged(int width, int height);
+
+        public void onPlayerError(ExoPlaybackException error);
+    }
+
+    protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (callback != null) {
+            callback.onPlayerStateChanged(playWhenReady, playbackState);
+        }
+    }
+
+    protected void onVideoSizeChanged(int width, int height) {
+        if (callback != null) {
+            callback.onVideoSizeChanged(width, height);
+        }
+    }
+
+    protected void onPlayerError(ExoPlaybackException error){
+        if (callback != null) {
+            callback.onPlayerError(error);
+        }
     }
 
     private Callback callback;
@@ -425,12 +449,6 @@ public class FUZVideo extends RelativeLayout {
             return 0;
         }
         return fuzUizaPlayerManager.getVideoH();
-    }
-
-    protected VideoListener videoListener;
-
-    public void addVideoListener(VideoListener videoListener) {
-        this.videoListener = videoListener;
     }
 
     protected void getLinkPlayOfNextItem(CallbackGetLinkPlay callbackGetLinkPlay) {
