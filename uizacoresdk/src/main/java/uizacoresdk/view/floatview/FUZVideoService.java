@@ -721,26 +721,29 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     //listen msg from UZVideo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
-        if (msg == null) {
+        if (msg == null || fuzVideo == null) {
             return;
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
-            LLog.d(TAG, "fuck 4 MsgFromActivityPosition position " + ((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            if (fuzVideo != null) {
-                fuzVideo.seekTo(((ComunicateMng.MsgFromActivityPosition) msg).getPosition());
-            }
+            //work fine
+            /*long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
+            long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
+            LLog.d(TAG, "fuck 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
+            if (contentPosition >= contentBufferedPosition) {
+                fuzVideo.seekTo(contentBufferedPosition - 100);
+            } else {
+                fuzVideo.seekTo(contentPosition);
+            }*/
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
-            if (fuzVideo != null) {
-                //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
-                //lấy vị trí của pip hiện tại để bắn cho UZVideo
-                ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
-                msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
-                ComunicateMng.postFromService(msgFromServicePosition);
-                stopSelf();
-            }
+            //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
+            //lấy vị trí của pip hiện tại để bắn cho UZVideo
+            ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
+            msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
+            ComunicateMng.postFromService(msgFromServicePosition);
+            stopSelf();
         }
     }
 }

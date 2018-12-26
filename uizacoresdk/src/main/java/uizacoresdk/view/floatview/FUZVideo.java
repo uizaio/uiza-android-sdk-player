@@ -70,6 +70,13 @@ public class FUZVideo extends RelativeLayout {
         return getPlayer().getCurrentPosition();
     }
 
+    public long getContentBufferedPosition() {
+        if (getPlayer() == null) {
+            return 0;
+        }
+        return getPlayer().getContentBufferedPosition();
+    }
+
     protected void setDefautValueForFlagIsTracked() {
         UZTrackingUtil.clearAllValues(getContext());
         isTracked25 = false;
