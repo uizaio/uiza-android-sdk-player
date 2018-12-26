@@ -8,15 +8,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <receiver
-            android:name=".FloatClickFullScreenReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="FLOAT_CLICKED_FULLSCREEN" />
-            </intent-filter>
-        </receiver>
-
         <!--START CHROMECAST-->
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

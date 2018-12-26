@@ -38,6 +38,7 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
@@ -210,13 +211,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 LUIUtil.showProgressBar(fuzVideo.getProgressBar());
                 moveView.setOnTouchListener(null);//disabled move view
 
-                //bắn cho FloatClickFullScreenReceiver
                 UZUtil.setClickedPip(getApplicationContext(), true);
-                Intent intent = new Intent();
-                intent.putExtra(Constants.FLOAT_CLICKED_PACKAGE_NAME, getPackageName());
-                intent.setAction(Constants.FLOAT_CLICKED_FULLSCREEN);
-                intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-                sendBroadcast(intent);
+                openApp(getPackageName());
             }
         });
         btPlayPause.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +229,30 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             }
         });
+    }
+
+    private void openApp(String packageNameReceived) {
+        String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
+        //LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getBaseContext()) + ", classNameOfPlayer " + classNameOfPlayer);
+        if (UZUtil.getClickedPip(getBaseContext())) {
+        } else {
+            if (UZData.getInstance().getData() == null || classNameOfPlayer == null) {
+                return;
+            }
+        }
+        //LLog.d(TAG, "onReceive classNameOfPlayer " + classNameOfPlayer);
+        if (packageNameReceived != null && packageNameReceived.equals(getBaseContext().getPackageName())) {
+            try {
+                Class classNamePfPlayer = Class.forName(classNameOfPlayer);
+                Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
+                UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getBaseContext().startActivity(intent);
+            } catch (ClassNotFoundException e) {
+                LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
+            }
+        }
     }
 
     //only update 1 one time
@@ -657,6 +677,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
             //LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
+            stopSelf();
             return;
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
