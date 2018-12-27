@@ -105,9 +105,9 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
 
     private void setSwVibrateDestroy(boolean isChecked) {
         if (isChecked) {
-            swEzDestroy.setText("On");
+            swVibrateDestroy.setText("On");
         } else {
-            swEzDestroy.setText("Off");
+            swVibrateDestroy.setText("Off");
         }
         UZUtil.setMiniPlayerEnableVibration(activity, isChecked);
     }

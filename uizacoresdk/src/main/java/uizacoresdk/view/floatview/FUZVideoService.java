@@ -203,7 +203,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopMiniPlayer();
+                stopSelf();
             }
         });
         btFullScreen.setOnClickListener(new View.OnClickListener() {
@@ -518,7 +518,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 case CENTER_RIGHT:
                 case CENTER_TOP:
                 case CENTER_BOTTOM:
-                    stopMiniPlayer();
+                    stopSelf();
                     break;
                 case TOP:
                     slideToTop();
@@ -563,7 +563,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 case TOP_RIGHT:
                 case BOTTOM_LEFT:
                 case BOTTOM_RIGHT:
-                    stopMiniPlayer();
+                    stopSelf();
                     break;
                 case TOP:
                 case CENTER_TOP:
@@ -718,7 +718,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     linkPlay = lp;
                     if (linkPlay == null) {
                         //LLog.d(TAG, "isPlaySuccess false -> stopSelf()");
-                        stopMiniPlayer();
+                        stopSelf();
                     }
                     //LLog.d(TAG, "next linkPlay " + linkPlay);
                     setupVideo();
@@ -726,7 +726,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             });
         } else {
             //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
-            stopMiniPlayer();
+            stopSelf();
         }
     }
 
@@ -737,7 +737,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         LLog.e(TAG, "onPlayerError " + error.getMessage());
-        stopMiniPlayer();
+        stopSelf();
     }
 
     private boolean isSendMsgToActivity;
@@ -745,7 +745,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
             //LLog.d(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty()");
-            stopMiniPlayer();
+            stopSelf();
             return;
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
@@ -856,14 +856,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
             msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
             ComunicateMng.postFromService(msgFromServicePosition);
-            stopMiniPlayer();
+            stopSelf();
         }
-    }
-
-    private void stopMiniPlayer() {
-        if (isEnableVibration) {
-            LDeviceUtil.vibrate(getBaseContext());
-        }
-        stopSelf();
     }
 }

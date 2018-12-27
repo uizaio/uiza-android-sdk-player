@@ -69,8 +69,8 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
 
             <TextView
                 android:layout_width="match_parent"
-                android:text="Enable vibratiton when mini player is detroyed"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Enable vibratiton when view destroy appears on screen" />
 
             <Switch
                 android:id="@+id/sw_vibrate_destroy"
