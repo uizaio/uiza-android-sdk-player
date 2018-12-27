@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
-import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.Utils;
@@ -363,11 +362,11 @@ public class UZUtil {
     }*/
 
     //stop service pip FUZVideoService
-    public static void stopServicePiPIfRunning(Activity activity) {
+    public static void stopMiniPlayer(Activity activity) {
         if (activity == null) {
             return;
         }
-        //LLog.d(TAG, "stopServicePiPIfRunning");
+        //LLog.d(TAG, "stopMiniPlayer");
         boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
@@ -443,10 +442,10 @@ public class UZUtil {
             return false;
         }
         if (UZUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "called from pip enter fullscreen");
+            LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
@@ -468,11 +467,11 @@ public class UZUtil {
             return;
         }
         if (UZUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "called from pip enter fullscreen");
+            LLog.d(TAG, "miniplayer STEP 6 initEntity");
             UZUtil.play(uzVideo, null);
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             if (entityId != null) {
                 //LLog.d(TAG, "initEntity entityId: " + entityId);
                 UZUtil.play(uzVideo, entityId);
@@ -500,12 +499,12 @@ public class UZUtil {
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                //LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                LLog.d(TAG, "miniplayer STEP 6 initPlaylistFolder");
                 playPlaylist(uzVideo, null);
             }
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }
@@ -711,63 +710,21 @@ public class UZUtil {
 
     //=============================================================================START PREF
     private final static String PREFERENCES_FILE_NAME = "loitp";
-    private final static String CHECK_APP_READY = "CHECK_APP_READY";
-    private final static String PRE_LOAD = "PRE_LOAD";
-    private final static String INDEX = "INDEX";
     private final static String AUTH = "AUTH";
-    public final static String API_END_POINT = "API_END_POINT";
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
-    private final static String ACITIVITY_CAN_SLIDE_IS_RUNNING = "ACITIVITY_CAN_SLIDE_IS_RUNNING";
     private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
-    private final static String PREF_CAMERA_ID = "pref_camera_id";
-    private final static String PREF_STATE_FILTER = "state_filter";
-
-    //for api v3
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
-    private final static String V3UIZAWORKSPACEINFO = "V3UIZAWORKSPACEINFO";
-    private final static String V3UIZATOKEN = "V3UIZATOKEN";
-    private final static String V3DATA = "V3DATA";
-    //private final static String ENTITY_ID = "ENTITY_ID";
-    //private final static String METADATA_ID = "METADATA_ID";
-    //end for api v3
-
-    //object
-    public static UizaWorkspaceInfo getUizaWorkspaceInfo(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return new Gson().fromJson(pref.getString(V3UIZAWORKSPACEINFO, ""), UizaWorkspaceInfo.class);
-    }
-
-    public static void setUizaWorkspaceInfo(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3UIZAWORKSPACEINFO, new Gson().toJson(uizaWorkspaceInfo));
-        editor.apply();
-    }
-
-    public static ResultGetToken getResultGetToken(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return new Gson().fromJson(pref.getString(V3UIZATOKEN, ""), ResultGetToken.class);
-    }
-
-    public static void setResultGetToken(Context context, ResultGetToken resultGetToken) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3UIZATOKEN, new Gson().toJson(resultGetToken));
-        editor.apply();
-    }
+    private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
+    private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
+    private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
+    private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
+    private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
+    private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
+    private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
 
     /////////////////////////////////STRING
-    public static String getApiEndPoint(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(API_END_POINT, null);
-    }
-
-    public static void setApiEndPoint(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(API_END_POINT, value);
-        editor.apply();
-    }
-
     public static String getApiTrackEndPoint(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(API_TRACK_END_POINT, null);
@@ -801,29 +758,7 @@ public class UZUtil {
         editor.apply();
     }
 
-    /*public static String getEntityId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(ENTITY_ID, null);
-    }
-
-    public static void setEntityId(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(ENTITY_ID, value);
-        editor.apply();
-    }
-
-    public static String getMetadataId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(METADATA_ID, null);
-    }
-
-    public static void setMetadataId(Context context, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(METADATA_ID, value);
-        editor.apply();
-    }*/
     /////////////////////////////////BOOLEAN
-
     public static Boolean isInitPlaylistFolder(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(IS_INIT_PLAYLIST_FOLDER, false);
@@ -834,39 +769,6 @@ public class UZUtil {
         editor.putBoolean(IS_INIT_PLAYLIST_FOLDER, value);
         editor.apply();
     }
-
-    public static Boolean getCheckAppReady(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(CHECK_APP_READY, false);
-    }
-
-    public static void setCheckAppReady(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(CHECK_APP_READY, value);
-        editor.apply();
-    }
-
-    public static Boolean getPreLoad(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(PRE_LOAD, false);
-    }
-
-    public static void setPreLoad(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(PRE_LOAD, value);
-        editor.apply();
-    }
-
-    /*public static Boolean getSlideUizaVideoEnabled(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(SLIDE_UIZA_VIDEO_ENABLED, false);
-    }
-
-    public static void setSlideUizaVideoEnabled(Context context, Boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(SLIDE_UIZA_VIDEO_ENABLED, value);
-        editor.apply();
-    }*/
 
     public static Boolean getClickedPip(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -879,30 +781,74 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static Boolean getAcitivityCanSlideIsRunning(Context context) {
+    public static Boolean getMiniPlayerEzDestroy(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, false);
+        return prefs.getBoolean(MINI_PLAYER_EZ_DESTROY, false);
     }
 
-    public static void setAcitivityCanSlideIsRunning(Context context, Boolean value) {
+    public static void setMiniPlayerEzDestroy(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putBoolean(ACITIVITY_CAN_SLIDE_IS_RUNNING, value);
+        editor.putBoolean(MINI_PLAYER_EZ_DESTROY, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerEnableVibration(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_ENABLE_VIBRATION, true);
+    }
+
+    public static void setMiniPlayerEnableVibration(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_ENABLE_VIBRATION, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerEnableSmoothSwitch(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, true);
+    }
+
+    public static void setMiniPlayerEnableSmoothSwitch(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, value);
         editor.apply();
     }
 
     /////////////////////////////////INT
-    public static int getIndex(Context context) {
+    public static int getVideoWidth(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return prefs.getInt(INDEX, Constants.NOT_FOUND);
+        return prefs.getInt(VIDEO_WIDTH, 16);
     }
 
-    public static void setIndex(Context context, int value) {
+    public static void setVideoWidth(Context context, int value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putInt(INDEX, value);
+        editor.putInt(VIDEO_WIDTH, value);
         editor.apply();
     }
 
-    //Object
+    public static int getVideoHeight(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(VIDEO_HEIGHT, 9);
+    }
+
+    public static void setVideoHeight(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(VIDEO_HEIGHT, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerColorViewDestroy(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_COLOR_VIEW_DESTROY, ContextCompat.getColor(context, R.color.black_65));
+    }
+
+    public static void setMiniPlayerColorViewDestroy(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_COLOR_VIEW_DESTROY, value);
+        editor.apply();
+    }
+
+    /////////////////////////////////OBJECT
     public static Auth getAuth(Context context, Gson gson) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(AUTH, null);
@@ -915,36 +861,16 @@ public class UZUtil {
         editor.apply();
     }
 
-    /*public static Data getData(Context context, Gson gson) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        String json = pref.getString(V3DATA, null);
-        return gson.fromJson(json, Data.class);
+    /////////////////////////////////LONG
+    public static long getMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, Constants.UNKNOW);
     }
 
-    public static void setData(Context context, Data data, Gson gson) {
+    public static void setMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context, long value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
-        editor.putString(V3DATA, gson.toJson(data));
+        editor.putLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, value);
         editor.apply();
-    }*/
-
-    public static String getStoredCameraId(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getString(PREF_CAMERA_ID, "");
-    }
-
-    public static void storeCameraId(Context context, String id) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        pref.edit().putString(PREF_CAMERA_ID, id).apply();
-    }
-
-    public static boolean getStoredFilterState(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        return pref.getBoolean(PREF_STATE_FILTER, false);
-    }
-
-    public static void storeFilterState(Context context, boolean on) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        pref.edit().putBoolean(PREF_STATE_FILTER, on).apply();
     }
 
     //=============================================================================END PREF

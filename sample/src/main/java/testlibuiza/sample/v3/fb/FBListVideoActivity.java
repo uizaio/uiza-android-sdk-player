@@ -16,7 +16,6 @@ import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -42,17 +41,21 @@ public class FBListVideoActivity extends BaseActivity {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
-
+        findViewById(R.id.bt_setting_mini_player).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, MiniPlayerSettingActivity.class);
+                startActivity(intent);
+            }
+        });
         fbVideoAdapter = new FBVideoAdapter(activity, dataList, new FBVideoAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -100,7 +103,7 @@ public class FBListVideoActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        UZUtil.stopServicePiPIfRunning(activity);//stop mini player
+        UZUtil.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }
 }

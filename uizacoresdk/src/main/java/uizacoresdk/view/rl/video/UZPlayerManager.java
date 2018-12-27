@@ -94,6 +94,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private String linkPlay;
     private List<Subtitle> subtitleList;
     private FrameworkMediaDrm mediaDrm;
+    private boolean isFirstStateReady;
 
     public List<Subtitle> getSubtitleList() {
         return subtitleList;
@@ -127,6 +128,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.uzVideo = uzVideo;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
+        this.isFirstStateReady = false;
 
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             //do nothing
@@ -273,7 +275,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     private void initSource() {
         isOnAdEnded = false;
-
         //TODO DRM
         //Exo Player Initialization
         String drmScheme = Constants.DRM_SCHEME_NULL;
@@ -300,28 +301,21 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 return;
             }
         }
-
         @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(context, extensionRendererMode);
-
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-
         player = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector, drmSessionManager);
         //player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-
         uzVideo.getUzPlayerView().setPlayer(player);
         MediaSource mediaSourceVideo = createMediaSourceVideo();
-
         //merge title to media source video
         //SUBTITLE
         MediaSource mediaSourceWithSubtitle = createMediaSourceWithSubtitle(mediaSourceVideo);
-
         //merge ads to media source subtitle
         //IMA ADS
         // Compose the content media source into a new AdsMediaSource with both ads and content.
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
-
         // Prepare the player with the source.
         player.addListener(new UZPlayerEventListener());
         player.addAudioListener(new UZAudioEventListener());
@@ -331,16 +325,22 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (adsLoader != null) {
             adsLoader.addCallback(uzVideoAdPlayerListerner);
         }
-
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(uzVideo.isAutoStart());
         //LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
         if (uzVideo.isLivestream()) {
             player.seekToDefaultPosition();
         } else {
+            long miniPlayerContentPosition = UZUtil.getMiniPlayerContentPositionWhenSwitchToFullPlayer(context);
+            if (miniPlayerContentPosition == Constants.UNKNOW) {
+                //do nothing
+            } else {
+                LLog.d(TAG, "miniplayer STEP 7 miniPlayerContentPosition: " + miniPlayerContentPosition);
+                contentPosition = miniPlayerContentPosition;
+                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(context, Constants.UNKNOW);
+            }
             seekTo(contentPosition);
         }
-
         if (debugCallback != null) {
             debugCallback.onUpdateButtonVisibilities();
         }
@@ -550,6 +550,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return exoPlaybackException;
     }
 
+    private void onFirstStateReady() {
+        //LLog.d(TAG, ">>>>>>>>>> onFirstStateReady");
+        if (uzVideo != null) {
+            uzVideo.removeVideoCover(false);
+        }
+    }
+
     private class UZPlayerEventListener implements Player.EventListener {
         //This is called when the current playlist changes
         @Override
@@ -614,6 +621,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                         if (uzTimebar != null) {
                             uzTimebar.hidePreview();
                         }
+                    }
+                    if (!isFirstStateReady) {
+                        onFirstStateReady();
+                        isFirstStateReady = true;
                     }
                     break;
             }
@@ -767,9 +778,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         public void onRenderedFirstFrame() {
             //LLog.d(TAG, "onRenderedFirstFrame");
             exoPlaybackException = null;
-            if (uzVideo != null) {
-                uzVideo.removeVideoCover(false);
-            }
             if (uzVideo != null && uzVideo.videoListener != null) {
                 uzVideo.videoListener.onRenderedFirstFrame();
             }

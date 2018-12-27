@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.uzv3;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 7/16/2018.
@@ -57,6 +55,7 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        //uzVideo.setDefaultUseController(false);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
         tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
@@ -67,7 +66,6 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        uzVideo.setControllerShowTimeoutMs(8000);
 
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
@@ -227,15 +225,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setListener() {
@@ -299,8 +290,8 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             onBackPressed();
         }
     }

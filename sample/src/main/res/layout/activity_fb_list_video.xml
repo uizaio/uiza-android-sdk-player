@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
-    tools:context="testlibuiza.sample.MainActivity">
+    android:background="@color/WhiteSmoke">
 
     <LinearLayout
         android:id="@+id/ll_demo_0"
@@ -57,38 +56,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/bt_setting_mini_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5"
-                android:background="@color/White"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_5">
+                android:text="Setting mini player" />
 
-                <ImageView
-                    android:layout_width="@dimen/w_40"
-                    android:layout_height="@dimen/w_40"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:src="@drawable/uiza_logo_512" />
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Gray"
-                    android:hint="What do you think?"
-                    android:textColor="@color/Black"
-                    android:textColorHint="@color/Gray" />
-
-                <ImageView
-                    android:layout_width="@dimen/w_40"
-                    android:layout_height="@dimen/w_40"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:src="@drawable/uiza_logo_mini" />
-            </LinearLayout>
-
-            <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView
                 android:id="@+id/cv_playlist_folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

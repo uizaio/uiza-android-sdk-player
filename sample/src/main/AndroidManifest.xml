@@ -8,7 +8,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".sample.MainActivity">
@@ -18,8 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- for v3 -->
         <activity android:name=".sample.v3.api.UZTestAPIActivity" />
         <activity
             android:name=".sample.v3.uzv3.SetEntityIdActivity"
@@ -27,13 +24,10 @@
         <activity
             android:name=".sample.v3.uzv3.UZPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
-        <!-- end for v3 -->
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".sample.guidecallapi.TestAPI" />
-
-        <!--for livestream-->
         <activity
             android:name=".sample.livestream.LivestreamBroadcasterActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -76,6 +70,9 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".sample.v3.fb.FBVideoActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name=".sample.v3.fb.MiniPlayerSettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     </application>
 

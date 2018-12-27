@@ -368,6 +368,10 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
+    public void onUICreate() {
+    }
+
+    @Override
     public void onPermission(boolean areAllPermissionsGranted) {
         if (areAllPermissionsGranted) {
             bStartStop.setEnabled(true);

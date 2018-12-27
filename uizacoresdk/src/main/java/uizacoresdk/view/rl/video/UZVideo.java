@@ -62,6 +62,7 @@ import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.SensorOrientationChangeNotifier;
@@ -180,6 +181,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZMediaRouteButton uzMediaRouteButton;
     private RelativeLayout rlChromeCast;
     private UZImageButton ibsCast;
+    private UZLiveContentCallback uzLiveContentCallback;
+
+    public void addUZLiveContentCallback(UZLiveContentCallback uzLiveContentCallback) {
+        this.uzLiveContentCallback = uzLiveContentCallback;
+    }
 
     public void setTintMediaRouteButton(final int color) {
         if (uzMediaRouteButton != null) {
@@ -268,7 +274,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isHasError;
 
     protected void handleError(UZException e) {
-        //TODO if has error, should clear all variable, flag to default?
         if (e == null) {
             return;
         }
@@ -276,10 +281,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzCallback.onError(e);
         }
         if (isHasError) {
-            LLog.e(TAG, "handleError isHasError=true -> return");
+            //LLog.e(TAG, "handleError isHasError=true -> return -> isLivestream: " + isLivestream);
             return;
         }
-        LLog.e(TAG, "handleError " + e.toString());
+        //LLog.e(TAG, "handleError " + e.toString());
         isHasError = true;
         UZData.getInstance().setSettingPlayer(false);
     }
@@ -330,10 +335,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
-
         isOnPlayerEnded = false;
         updateUIEndScreen();
-
         //called api parallel here
         if (!LConnectivityUtil.isConnected(activity)) {
             if (uzCallback != null) {
@@ -627,7 +630,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         isHasError = false;
         this.isLivestream = isLivestream;
-
+        if (isLivestream) {
+            startTime = Constants.UNKNOW;
+        }
         setDefautValueForFlagIsTracked();
 
         if (uzPlayerManager != null) {
@@ -1284,8 +1289,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         subtitleList.add(subtitle);*/
 
         //ima ad
-        /*urlIMAAd = activity.getString(R.string.ad_tag_url);
-        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);*/
+        //urlIMAAd = activity.getString(R.string.ad_tag_url);
+        //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
 
         //thumbnail seekbar
         /*urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);*/
@@ -2112,7 +2117,36 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickPictureInPicture() {
-        //LLog.d(TAG, "handleClickPictureInPicture");
+        if (activity == null) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
+            return;
+        }
+        if (!isInitMiniPlayerSuccess) {
+            //dang init 1 instance mini player roi, khong cho init nua
+            //LLog.d(TAG, "!isInitMiniPlayerSuccess -> return");
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
+            return;
+        }
+        if (isCastingChromecast()) {
+            if (uzCallback != null) {
+                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
+            }
+            return;
+        }
+        if (LDeviceUtil.isCanOverlay(activity)) {
+            initializePiP();
+        } else {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
+            activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //LLog.d(TAG, "onActivityResult " + requestCode + " - " + resultCode);
         if (activity == null) {
             return;
         }
@@ -2120,15 +2154,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-            //LLog.d(TAG, "handleClickPictureInPicture if");
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivityForResult(intent, Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-        } else {
-            //LLog.d(TAG, "handleClickPictureInPicture else");
+        if (LDeviceUtil.isCanOverlay(activity)) {
             initializePiP();
         }
     }
+
+    private boolean isInitMiniPlayerSuccess = true;
 
     public void initializePiP() {
         if (activity == null || uzPlayerManager == null || uzPlayerManager.getLinkPlay() == null) {
@@ -2137,7 +2168,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return;
         }
+        if (ibPictureInPictureIcon != null) {
+            ibPictureInPictureIcon.setVisibility(View.GONE);
+        }
+        if (uzCallback != null) {
+            isInitMiniPlayerSuccess = false;
+            uzCallback.onStateMiniPlayer(isInitMiniPlayerSuccess);
+        }
+        UZUtil.setVideoWidth(activity, getVideoW());
+        UZUtil.setVideoHeight(activity, getVideoH());
         Intent intent = new Intent(activity, FUZVideoService.class);
+        intent.putExtra(Constants.FLOAT_CONTENT_POSITION, getCurrentPosition());
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
@@ -2234,26 +2275,26 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //listen msg from service FUZVideoService
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
-        //LLog.d(TAG, "get event from service");
-        if (msg == null) {
+        if (msg == null || uzPlayerManager == null) {
             return;
         }
         //when pip float view init success
         if (uzCallback != null && msg instanceof ComunicateMng.MsgFromServiceIsInitSuccess) {
-            //Ham nay duoc goi khi player o FUZVideoService da init xong (no dang play o vi tri 0)
+            //Ham nay duoc goi khi player o FUZVideoService da init xong
             //Nhiem vu la minh se gui vi tri hien tai sang cho FUZVideoService no biet
-            //LLog.d(TAG, "get event from service isInitSuccess: " + ((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            LLog.d(TAG, "miniplayer STEP 3 UZVideo biet FUZVideoService da init xong -> gui lai content position cua UZVideo cho FUZVideoService");
             ComunicateMng.MsgFromActivityPosition msgFromActivityPosition = new ComunicateMng.MsgFromActivityPosition(null);
             msgFromActivityPosition.setPosition(uzPlayerManager.getCurrentPosition());
             ComunicateMng.postFromActivity(msgFromActivityPosition);
-            uzCallback.onClickPipVideoInitSuccess(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
+            isInitMiniPlayerSuccess = true;
+            uzCallback.onStateMiniPlayer(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
-            //FUZVideoServiceV1 truoc khi huy da gui position cua pip toi day
+            //FUZVideo truoc khi huy da gui position cua pip toi day
             //Nhan duoc vi tru tu FUZVideoService roi seek toi vi tri nay
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
-            if (uzPlayerManager != null) {
+            /*if (uzPlayerManager != null) {
                 uzPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
-            }
+            }*/
         }
     }
 
@@ -2356,7 +2397,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void callAPIUpdateLiveInfoCurrentView(final int durationDelay) {
-        if (!isLivestream) {
+        if (!isLivestream || activity == null || activityIsPausing) {
+            //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView return");
             return;
         }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
@@ -2367,19 +2409,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     return;
                 }
                 if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing");
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing -> call API to get View count");
                     UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
                     activity.subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
-                            if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "callAPIUpdateLiveInfoCurrentView onSuccess");
-                            }
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
                             if (result != null && result.getData() != null) {
                                 if (tvLiveView != null) {
                                     tvLiveView.setText(result.getData().getWatchnow() + "");
+                                }
+                                if (uzLiveContentCallback != null) {
+                                    uzLiveContentCallback.onUpdateLiveInfoCurrentView(result.getData().getWatchnow());
                                 }
                             }
                             callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
@@ -2400,50 +2442,41 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void callAPIUpdateLiveInfoTimeStartLive(final int durationDelay) {
-        if (!isLivestream) {
+        if (!isLivestream || activity == null || activityIsPausing) {
+            //LLog.d(TAG, "callAPIUpdateLiveInfoTimeStartLive return");
             return;
         }
         LUIUtil.setDelay(durationDelay, new LUIUtil.DelayCallback() {
-
             @Override
             public void doAfter(int mls) {
-                if (!isLivestream) {
+                if (!isLivestream || activity == null || activityIsPausing) {
+                    //LLog.d(TAG, "callAPIUpdateLiveInfoTimeStartLive return");
                     return;
                 }
                 if (uzPlayerManager != null && uzPlayerView != null && (uzPlayerView.isControllerVisible() || durationDelay == DELAY_FIRST_TO_GET_LIVE_INFORMATION)) {
-                    UZService service = UZRestClient.createService(UZService.class);
-                    String entityId = UZData.getInstance().getEntityId();
-                    String feedId = UZData.getInstance().getLastFeedId();
-                    activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
-                        @Override
-                        public void onSuccess(ResultTimeStartLive result) {
-                            if (Constants.IS_DEBUG) {
-                                LToast.show(activity, "callAPIUpdateLiveInfoTimeStartLive onSuccess");
-                            }
-                            //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
-                            if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
-                                //LLog.d(TAG, "startTime " + result.getData().getStartTime());
-                                long startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
-                                //LLog.d(TAG, "startTime " + startTime);
-                                long now = System.currentTimeMillis();
-                                //LLog.d(TAG, "now: " + now);
-                                long duration = now - startTime;
-                                //LLog.d(TAG, "duration " + duration);
-                                String s = LDateUtils.convertMlsecondsToHMmSs(duration);
-                                //LLog.d(TAG, "s " + s);
-                                if (tvLiveTime != null) {
-                                    tvLiveTime.setText(s);
+                    if (startTime == Constants.UNKNOW) {
+                        UZService service = UZRestClient.createService(UZService.class);
+                        String entityId = UZData.getInstance().getEntityId();
+                        String feedId = UZData.getInstance().getLastFeedId();
+                        activity.subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
+                            @Override
+                            public void onSuccess(ResultTimeStartLive result) {
+                                //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
+                                if (result != null && result.getData() != null && result.getData().getStartTime() != null) {
+                                    startTime = LDateUtils.convertDateToTimeStamp(result.getData().getStartTime(), LDateUtils.FORMAT_1);
+                                    updateLiveInfoTimeStartLive();
                                 }
                             }
-                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
-                        }
 
-                        @Override
-                        public void onFail(Throwable e) {
-                            LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
-                            callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
-                        }
-                    });
+                            @Override
+                            public void onFail(Throwable e) {
+                                LLog.e(TAG, "getTimeStartLive onFail " + e.getMessage());
+                                callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+                            }
+                        });
+                    } else {
+                        updateLiveInfoTimeStartLive();
+                    }
                 } else {
                     callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
                 }
@@ -2451,11 +2484,30 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         });
     }
 
-    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
-    //receiver FUZVideoService de truyen current position
+    private long startTime = Constants.UNKNOW;
+
+    private void updateLiveInfoTimeStartLive() {
+        if (!isLivestream || activity == null) {
+            //LLog.d(TAG, "updateLiveInfoTimeStartLive return");
+            return;
+        }
+        //LLog.d(TAG, "updateLiveInfoTimeStartLive -> startTime: " + startTime);
+        long now = System.currentTimeMillis();
+        long duration = now - startTime;
+        String s = LDateUtils.convertMlsecondsToHMmSs(duration);
+        if (tvLiveTime != null) {
+            tvLiveTime.setText(s);
+        }
+        if (uzLiveContentCallback != null) {
+            uzLiveContentCallback.onUpdateLiveInfoTimeStartLive(duration, s);
+        }
+        callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
+    }
+
+    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao miniplayer -> openApp() thi se ban 1 eventbus bao rang da init success
     public void setEventBusMsgFromActivityIsInitSuccess() {
-        LLog.d(TAG, "setEventBusMsgFromActivityIsInitSuccess getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "miniplayer STEP 7 OPEN APP SUCCESS setEventBusMsgFromActivityIsInitSuccess");
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);
             ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

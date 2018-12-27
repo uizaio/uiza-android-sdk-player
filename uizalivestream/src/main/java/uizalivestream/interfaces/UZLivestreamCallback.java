@@ -5,6 +5,8 @@ import uizalivestream.view.UZLivestream;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public interface UZLivestreamCallback {
+    public void onUICreate();
+
     public void onPermission(boolean areAllPermissionsGranted);
 
     public void onError(String reason);

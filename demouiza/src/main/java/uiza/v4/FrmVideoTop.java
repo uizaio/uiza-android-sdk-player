@@ -4,7 +4,6 @@ package uiza.v4;
  * Created by www.muathu@gmail.com on 12/24/2017.
  */
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +17,10 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseFragment;
-import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
@@ -82,15 +79,8 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                uzVideo.initializePiP();
-            } else {
-                LToast.show(getActivity(), "Draw over other app permission not available");
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setListener() {
@@ -121,7 +111,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 
@@ -137,8 +127,8 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {

@@ -296,6 +296,10 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     }
 
     @Override
+    public void onUICreate() {
+    }
+
+    @Override
     public void onPermission(boolean b) {
         if (b) {
             bStartStop.setEnabled(true);

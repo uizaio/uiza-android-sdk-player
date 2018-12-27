@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/Black"
-    android:orientation="vertical">
+    android:background="@color/Gray">
 
     <uizacoresdk.view.rl.video.UZVideo
         android:id="@id/uiza_video"
@@ -14,7 +13,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uiza_video">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,4 +37,16 @@
                 android:textColor="@color/White" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_loading_mini_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/RedTrans"
+        android:gravity="center"
+        android:text="Loading mini player. Please wait..."
+        android:textColor="@color/White"
+        android:textSize="@dimen/txt_32"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</RelativeLayout>

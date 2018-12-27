@@ -368,6 +368,10 @@ public class LiveLandscapeActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
+    public void onUICreate() {
+    }
+
+    @Override
     public void onPermission(boolean areAllPermissionsGranted) {
         if (areAllPermissionsGranted) {
             bStartStop.setEnabled(true);

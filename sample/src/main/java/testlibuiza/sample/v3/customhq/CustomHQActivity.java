@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.customhq;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -32,7 +30,6 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 
 /**
@@ -170,15 +167,8 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -186,8 +176,8 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             onBackPressed();
         }
     }

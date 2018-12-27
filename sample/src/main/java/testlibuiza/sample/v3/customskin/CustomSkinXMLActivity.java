@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.customskin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -135,15 +134,8 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -162,8 +154,8 @@ public class CustomSkinXMLActivity extends BaseActivity implements UZCallback, U
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
-        if (isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+        if (isInitMiniPlayerSuccess) {
             onBackPressed();
         }
     }

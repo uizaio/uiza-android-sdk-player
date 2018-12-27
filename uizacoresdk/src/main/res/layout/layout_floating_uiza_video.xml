@@ -23,6 +23,11 @@
             android:background="@color/black_65"
             android:visibility="gone" />
 
+        <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Red" />-->
+
         <RelativeLayout
             android:id="@+id/rl_control"
             android:layout_width="match_parent"

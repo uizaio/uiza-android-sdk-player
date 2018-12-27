@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
-import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
 
@@ -81,20 +81,17 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
         userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
-        mediaDataSourceFactory = new DefaultDataSourceFactory(
-                context,
-                userAgent,
-                new DefaultBandwidthMeter());
+        mediaDataSourceFactory = new DefaultDataSourceFactory(context, userAgent, new DefaultBandwidthMeter());
         //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (fuzVideo.getPlayerView() != null) {
+                if (fuzVideo != null && fuzVideo.getPlayerView() != null) {
                     boolean isPlayingAd = FUZVideoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (isPlayingAd) {
-                        hideProgress();
+                        fuzVideo.hideProgress();
                         if (progressCallback != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
                             int duration = (int) videoProgressUpdate.getDuration();
@@ -134,7 +131,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         return trackSelector;
     }
 
-    public void init() {
+    public void init(boolean isLivestream, long contentPosition) {
+        LLog.d(TAG, "miniplayer STEP 1 FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -148,15 +146,19 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         //IMA ADS
         // Compose the content media source into a new AdsMediaSource with both ads and content.
         MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
-        // Prepare the player with the source.
-        //player.seekTo(contentPosition);
-        //LLog.d(TAG, "init seekTo contentPosition: " + contentPosition);
+        //Prepare the player with the source.
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
         if (adsLoader != null) {
             adsLoader.addCallback(FUZVideoAdPlayerListerner);
         }
         player.prepare(mediaSourceWithAds);
+        //setVolumeOff();
+        if (isLivestream) {
+            player.seekToDefaultPosition();
+        } else {
+            seekTo(contentPosition);
+        }
         player.setPlayWhenReady(true);
     }
 
@@ -242,13 +244,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     public void reset() {
         if (player != null) {
-            //contentPosition = player.getContentPosition();
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
-
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -260,10 +259,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         if (player != null) {
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
-
             if (debugTextViewHelper != null) {
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
@@ -299,22 +296,12 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                         new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory)
                         .createMediaSource(uri);
             case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri);
+                return new HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(uri);
+                return new ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }
-    }
-
-    private void hideProgress() {
-        LUIUtil.hideProgressBar(fuzVideo.getProgressBar());
-    }
-
-    private void showProgress() {
-        LUIUtil.showProgressBar(fuzVideo.getProgressBar());
     }
 
     private class FUZPlayerEventListener implements Player.EventListener {
@@ -333,22 +320,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            switch (playbackState) {
-                case Player.STATE_BUFFERING:
-                    showProgress();
-                    break;
-                case Player.STATE_ENDED:
-                    if (fuzVideo != null) {
-                        fuzVideo.onPlayerStateEnded();
-                    }
-                    hideProgress();
-                    break;
-                case Player.STATE_IDLE:
-                    showProgress();
-                    break;
-                case Player.STATE_READY:
-                    hideProgress();
-                    break;
+            if (fuzVideo != null) {
+                fuzVideo.onPlayerStateChanged(playWhenReady, playbackState);
             }
         }
 
@@ -362,6 +335,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onPlayerError(ExoPlaybackException error) {
+            if (fuzVideo != null) {
+                fuzVideo.onPlayerError(error);
+            }
         }
 
         @Override
@@ -394,8 +370,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             videoW = width;
             videoH = height;
             //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height);
-            if (fuzVideo != null && fuzVideo.videoListener != null) {
-                fuzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            if (fuzVideo != null) {
+                fuzVideo.onVideoSizeChanged(width, height);
             }
         }
 
@@ -405,7 +381,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         @Override
         public void onRenderedFirstFrame() {
-            fuzVideo.removeVideoCover();
         }
     }
 
@@ -414,7 +389,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     private class FUZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
-        private final String TAG = FUZVideoAdPlayerListerner.class.getSimpleName();
         private boolean isPlayingAd;
         private boolean isEnded;
 
@@ -458,6 +432,24 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
         public boolean isEnded() {
             return isEnded;
+        }
+    }
+
+    protected void setVolume(float volume) {
+        if (player != null) {
+            player.setVolume(volume);
+        }
+    }
+
+    protected void setVolumeOn() {
+        if (player != null) {
+            player.setVolume(1f);
+        }
+    }
+
+    protected void setVolumeOff() {
+        if (player != null) {
+            player.setVolume(0f);
         }
     }
 }

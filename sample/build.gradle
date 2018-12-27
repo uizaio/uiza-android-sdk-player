@@ -25,6 +25,7 @@ android {
     dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
+        //preDexLibraries false
     }
     productFlavors {
     }
@@ -52,6 +53,6 @@ dependencies {
     api project(':uizacoresdk')
     api project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.3'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.3'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.5'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.5'
 }

@@ -125,6 +125,13 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         return tvLiveStatus;
     }
 
+    public void hideTvLiveStatus() {
+        if (tvLiveStatus != null) {
+            tvLiveStatus.setVisibility(View.GONE);
+            tvLiveStatus = null;
+        }
+    }
+
     public RtmpCamera1 getRtmpCamera() {
         return rtmpCamera1;
     }
@@ -143,14 +150,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
         openGlView = (OpenGlView) findViewById(R.id.surfaceView);
-
         //Number of filters to use at same time.
         //You must modify it before create rtmp or rtsp object.
         //ManagerRender.numFilters = 2;
-
         rtmpCamera1 = new RtmpCamera1(openGlView, this);
         openGlView.getHolder().addCallback(this);
         openGlView.setOnTouchListener(this);
+        if (uzLivestreamCallback != null) {
+            uzLivestreamCallback.onUICreate();
+        }
     }
 
     @Override
@@ -279,8 +287,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvLiveStatus.setVisibility(VISIBLE);
-                LAnimationUtil.blinking(tvLiveStatus);
+                if (tvLiveStatus != null) {
+                    tvLiveStatus.setVisibility(View.VISIBLE);
+                    LAnimationUtil.blinking(tvLiveStatus);
+                }
                 LDialogUtil.hide(progressBar);
             }
         });
@@ -300,8 +310,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvLiveStatus.setVisibility(GONE);
-                tvLiveStatus.clearAnimation();
+                if (tvLiveStatus != null) {
+                    tvLiveStatus.setVisibility(View.GONE);
+                    tvLiveStatus.clearAnimation();
+                }
                 rtmpCamera1.stopStream();
             }
         });
@@ -316,8 +328,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvLiveStatus.setVisibility(GONE);
-                tvLiveStatus.clearAnimation();
+                if (tvLiveStatus != null) {
+                    tvLiveStatus.setVisibility(View.GONE);
+                    tvLiveStatus.clearAnimation();
+                }
                 //rtmpCamera1.stopStream();
                 LDialogUtil.hide(progressBar);
             }

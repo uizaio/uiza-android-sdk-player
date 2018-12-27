@@ -1,6 +1,5 @@
 package testlibuiza.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 
 public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
@@ -117,9 +115,9 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
+        /*if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
+        }*/
     }
 
     @Override
@@ -134,7 +132,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
     }
 
     @Override
-    public void onClickPipVideoInitSuccess(boolean isInitSuccess) {
+    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override
@@ -181,15 +179,8 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                uzVideo.initializePiP();
-            } else {
-                LToast.show(activity, "Draw over other app permission not available");
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
