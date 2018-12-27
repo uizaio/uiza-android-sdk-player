@@ -88,6 +88,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void findViews() {
         viewDestroy = (View) mFloatingView.findViewById(R.id.view_destroy);
+        int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
+        viewDestroy.setBackgroundColor(colorViewDestroy);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -375,6 +376,10 @@ public class UZUtil {
         }
     }
 
+    public static void stopMiniPlayer(Activity activity){
+        stopServicePiPIfRunning(activity);
+    }
+
     //=============================================================================START FOR UIZA V3
     /*public static void initUizaWorkspace(Context context, UizaWorkspaceInfo uizaWorkspaceInfo) {
         if (uizaWorkspaceInfo == null || uizaWorkspaceInfo.getUsername() == null || uizaWorkspaceInfo.getPassword() == null || uizaWorkspaceInfo.getUrlApi() == null) {
@@ -714,12 +719,10 @@ public class UZUtil {
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
     private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
-
-    //for api v3
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
-    //end for api v3
+    private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -798,6 +801,17 @@ public class UZUtil {
     public static void setVideoHeight(Context context, int value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(VIDEO_HEIGHT, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerColorViewDestroy(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_COLOR_VIEW_DESTROY, ContextCompat.getColor(context, R.color.black_65));
+    }
+
+    public static void setMiniPlayerColorViewDestroy(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_COLOR_VIEW_DESTROY, value);
         editor.apply();
     }
 

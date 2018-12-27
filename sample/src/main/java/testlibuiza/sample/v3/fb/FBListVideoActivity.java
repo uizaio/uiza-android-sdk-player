@@ -103,7 +103,7 @@ public class FBListVideoActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        UZUtil.stopServicePiPIfRunning(activity);//stop mini player
+        UZUtil.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }
 }
