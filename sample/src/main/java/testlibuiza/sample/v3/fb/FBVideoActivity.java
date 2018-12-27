@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -14,6 +15,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -24,6 +26,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private Button btMini;
+    private TextView tvLoadingMiniPlayer;
 
     @Override
     protected boolean setFullScreen() {
@@ -51,6 +54,8 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         btMini = (Button) findViewById(R.id.bt_mini);
+        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
+        LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         btMini.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,10 +138,12 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
             //mini player is init success
+            //tvLoadingMiniPlayer.setVisibility(View.GONE);
             onBackPressed();
         } else {
             //open mini player
             btMini.setVisibility(View.INVISIBLE);
+            tvLoadingMiniPlayer.setVisibility(View.VISIBLE);
         }
     }
 

@@ -43,7 +43,13 @@ public class FBListVideoActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
+        findViewById(R.id.bt_setting_mini_player).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, MiniPlayerSettingActivity.class);
+                startActivity(intent);
+            }
+        });
         fbVideoAdapter = new FBVideoAdapter(activity, dataList, new FBVideoAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {

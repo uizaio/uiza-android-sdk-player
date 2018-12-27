@@ -39,6 +39,7 @@
             android:textColorHint="@color/WhiteSmoke" />
 
         <ImageView
+            android:id="@+id/bt_setting_mini_player"
             android:layout_width="@dimen/w_25"
             android:layout_height="@dimen/w_25"
             android:layout_marginLeft="@dimen/margin_10"
