@@ -50,6 +50,18 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/w_50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Easy to destroy mini player
+On: Mini player will be destroyed if user drag it to any edge of device.
+Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT edge of device." />
+
+            <Switch
+                android:id="@+id/sw_ez_destroy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

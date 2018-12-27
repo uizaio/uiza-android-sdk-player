@@ -376,7 +376,7 @@ public class UZUtil {
         }
     }
 
-    public static void stopMiniPlayer(Activity activity){
+    public static void stopMiniPlayer(Activity activity) {
         stopServicePiPIfRunning(activity);
     }
 
@@ -723,6 +723,7 @@ public class UZUtil {
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
     private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
+    private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -778,6 +779,17 @@ public class UZUtil {
     public static void setClickedPip(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(CLICKED_PIP, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerEzDestroy(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_EZ_DESTROY, false);
+    }
+
+    public static void setMiniPlayerEzDestroy(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_EZ_DESTROY, value);
         editor.apply();
     }
 

@@ -63,6 +63,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int statusBarHeight;
     private int videoW = 16;
     private int videoH = 9;
+    private boolean isEZDestroy;
 
     public FUZVideoService() {
     }
@@ -90,6 +91,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         viewDestroy = (View) mFloatingView.findViewById(R.id.view_destroy);
         int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
         viewDestroy.setBackgroundColor(colorViewDestroy);
+        isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -389,23 +391,40 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (pos != tmpPos) {
             pos = tmpPos;
             //LLog.d(TAG, "notiPos: " + pos);
-            switch (pos) {
-                case TOP_LEFT:
-                case TOP_RIGHT:
-                case BOTTOM_LEFT:
-                case BOTTOM_RIGHT:
-                case CENTER_LEFT:
-                case CENTER_RIGHT:
-                case CENTER_TOP:
-                case CENTER_BOTTOM:
-                    //LDeviceUtil.vibrate(getBaseContext());
-                    viewDestroy.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    if (viewDestroy.getVisibility() != View.GONE) {
-                        viewDestroy.setVisibility(View.GONE);
-                    }
-                    break;
+            if (isEZDestroy) {
+                switch (pos) {
+                    case TOP_LEFT:
+                    case TOP_RIGHT:
+                    case BOTTOM_LEFT:
+                    case BOTTOM_RIGHT:
+                    case CENTER_LEFT:
+                    case CENTER_RIGHT:
+                    case CENTER_TOP:
+                    case CENTER_BOTTOM:
+                        //LDeviceUtil.vibrate(getBaseContext());
+                        viewDestroy.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        if (viewDestroy.getVisibility() != View.GONE) {
+                            viewDestroy.setVisibility(View.GONE);
+                        }
+                        break;
+                }
+            } else {
+                switch (pos) {
+                    case TOP_LEFT:
+                    case TOP_RIGHT:
+                    case BOTTOM_LEFT:
+                    case BOTTOM_RIGHT:
+                        //LDeviceUtil.vibrate(getBaseContext());
+                        viewDestroy.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        if (viewDestroy.getVisibility() != View.GONE) {
+                            viewDestroy.setVisibility(View.GONE);
+                        }
+                        break;
+                }
             }
         }
     }
@@ -482,65 +501,104 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int posY;
         int centerPosX;
         int centerPosY;
-        switch (pos) {
-            case TOP_LEFT:
-            case TOP_RIGHT:
-            case BOTTOM_LEFT:
-            case BOTTOM_RIGHT:
-            case CENTER_LEFT:
-            case CENTER_RIGHT:
-            case CENTER_TOP:
-            case CENTER_BOTTOM:
-                stopSelf();
-                break;
-            case TOP:
-                slideToTop();
-                break;
-            /*case CENTER_TOP:
-                slideToTop();
-                break;*/
-            case BOTTOM:
-                slideToBottom();
-                break;
-            /*case CENTER_BOTTOM:
-                slideToBottom();
-                break;*/
-            case LEFT:
-                slideToLeft();
-                break;
-            /*case CENTER_LEFT:
-                slideToLeft();
-                break;*/
-            case RIGHT:
-                slideToRight();
-                break;
-            /*case CENTER_RIGHT:
-                slideToRight();
-                break;*/
-            case CENTER:
-                posX = params.x;
-                posY = params.y;
-                centerPosX = posX + getMoveViewWidth() / 2;
-                centerPosY = posY + getMoveViewHeight() / 2;
-                //LLog.d(TAG, "CENTER " + centerPosX + "x" + centerPosY);
-                if (centerPosX < screenWidth / 2) {
-                    if (centerPosY < screenHeight / 2) {
-                        //LLog.d(TAG, "top left part");
-                        slideToPosition(0, 0);
+        if (isEZDestroy) {
+            switch (pos) {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                case CENTER_LEFT:
+                case CENTER_RIGHT:
+                case CENTER_TOP:
+                case CENTER_BOTTOM:
+                    stopSelf();
+                    break;
+                case TOP:
+                    slideToTop();
+                    break;
+                case BOTTOM:
+                    slideToBottom();
+                    break;
+                case LEFT:
+                    slideToLeft();
+                    break;
+                case RIGHT:
+                    slideToRight();
+                    break;
+                case CENTER:
+                    posX = params.x;
+                    posY = params.y;
+                    centerPosX = posX + getMoveViewWidth() / 2;
+                    centerPosY = posY + getMoveViewHeight() / 2;
+                    //LLog.d(TAG, "CENTER " + centerPosX + "x" + centerPosY);
+                    if (centerPosX < screenWidth / 2) {
+                        if (centerPosY < screenHeight / 2) {
+                            //LLog.d(TAG, "top left part");
+                            slideToPosition(0, 0);
+                        } else {
+                            //LLog.d(TAG, "bottom left part");
+                            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                        }
                     } else {
-                        //LLog.d(TAG, "bottom left part");
-                        slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                        if (centerPosY < screenHeight / 2) {
+                            //LLog.d(TAG, "top right part");
+                            slideToPosition(screenWidth - getMoveViewWidth(), 0);
+                        } else {
+                            //LLog.d(TAG, "bottom right part");
+                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                        }
                     }
-                } else {
-                    if (centerPosY < screenHeight / 2) {
-                        //LLog.d(TAG, "top right part");
-                        slideToPosition(screenWidth - getMoveViewWidth(), 0);
+                    break;
+            }
+        } else {
+            switch (pos) {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                    stopSelf();
+                    break;
+                case TOP:
+                case CENTER_TOP:
+                    slideToTop();
+                    break;
+                case BOTTOM:
+                case CENTER_BOTTOM:
+                    slideToBottom();
+                    break;
+                case LEFT:
+                case CENTER_LEFT:
+                    slideToLeft();
+                    break;
+                case RIGHT:
+                case CENTER_RIGHT:
+                    slideToRight();
+                    break;
+                case CENTER:
+                    posX = params.x;
+                    posY = params.y;
+                    centerPosX = posX + getMoveViewWidth() / 2;
+                    centerPosY = posY + getMoveViewHeight() / 2;
+                    //LLog.d(TAG, "CENTER " + centerPosX + "x" + centerPosY);
+                    if (centerPosX < screenWidth / 2) {
+                        if (centerPosY < screenHeight / 2) {
+                            //LLog.d(TAG, "top left part");
+                            slideToPosition(0, 0);
+                        } else {
+                            //LLog.d(TAG, "bottom left part");
+                            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                        }
                     } else {
-                        //LLog.d(TAG, "bottom right part");
-                        slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                        if (centerPosY < screenHeight / 2) {
+                            //LLog.d(TAG, "top right part");
+                            slideToPosition(screenWidth - getMoveViewWidth(), 0);
+                        } else {
+                            //LLog.d(TAG, "bottom right part");
+                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                        }
                     }
-                }
-                break;
+                    break;
+            }
         }
     }
 
