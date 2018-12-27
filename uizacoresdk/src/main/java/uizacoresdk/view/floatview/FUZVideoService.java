@@ -256,14 +256,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void openApp(String packageNameReceived) {
         String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
-        //LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(getBaseContext()) + ", classNameOfPlayer " + classNameOfPlayer);
         if (UZUtil.getClickedPip(getBaseContext())) {
         } else {
             if (UZData.getInstance().getData() == null || classNameOfPlayer == null) {
                 return;
             }
         }
-        //LLog.d(TAG, "onReceive classNameOfPlayer " + classNameOfPlayer);
+        LLog.d(TAG, "miniplayer STEP 5 getClickedPip " + UZUtil.getClickedPip(getBaseContext()) + ", classNameOfPlayer " + classNameOfPlayer);
         if (packageNameReceived != null && packageNameReceived.equals(getBaseContext().getPackageName())) {
             try {
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
@@ -680,7 +679,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (mFloatingView == null) {
                 return;
             }
-            //LLog.d(TAG, "miniplayer 2 isInitResult true");
+            LLog.d(TAG, "miniplayer STEP 2 isInitResult true");
             editSizeOfMoveView();
             //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
             updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
@@ -844,10 +843,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
+                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true");
             } else {
                 long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
-                //LLog.d(TAG, "miniplayer 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
+                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
                 if (contentPosition >= contentBufferedPosition) {
                     fuzVideo.seekTo(contentBufferedPosition);
                 } else {

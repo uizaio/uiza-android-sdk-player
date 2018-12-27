@@ -15,6 +15,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -68,8 +69,10 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
+                    LLog.d(TAG, "called from mini player -> playlist/folder");
                     UZUtil.initPlaylistFolder(activity, uzVideo, null);
                 } else {
+                    LLog.d(TAG, "called from mini player -> entity");
                     UZUtil.initEntity(activity, uzVideo, null);
                 }
             } else {

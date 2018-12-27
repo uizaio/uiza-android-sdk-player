@@ -362,11 +362,11 @@ public class UZUtil {
     }*/
 
     //stop service pip FUZVideoService
-    public static void stopServicePiPIfRunning(Activity activity) {
+    public static void stopMiniPlayer(Activity activity) {
         if (activity == null) {
             return;
         }
-        //LLog.d(TAG, "stopServicePiPIfRunning");
+        //LLog.d(TAG, "stopMiniPlayer");
         boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
@@ -374,10 +374,6 @@ public class UZUtil {
             Intent intent = new Intent(activity, FUZVideoService.class);
             activity.stopService(intent);
         }
-    }
-
-    public static void stopMiniPlayer(Activity activity) {
-        stopServicePiPIfRunning(activity);
     }
 
     //=============================================================================START FOR UIZA V3
@@ -446,10 +442,10 @@ public class UZUtil {
             return false;
         }
         if (UZUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "called from pip enter fullscreen");
+            LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
@@ -471,11 +467,11 @@ public class UZUtil {
             return;
         }
         if (UZUtil.getClickedPip(activity)) {
-            //LLog.d(TAG, "called from pip enter fullscreen");
+            LLog.d(TAG, "miniplayer STEP 6 initEntity");
             UZUtil.play(uzVideo, null);
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             if (entityId != null) {
                 //LLog.d(TAG, "initEntity entityId: " + entityId);
                 UZUtil.play(uzVideo, entityId);
@@ -503,12 +499,12 @@ public class UZUtil {
         if (UZUtil.getClickedPip(activity)) {
             //LLog.d(TAG, "called from pip enter fullscreen");
             if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-                //LLog.d(TAG, "called from pip enter fullscreen -> playlist folder");
+                LLog.d(TAG, "miniplayer STEP 6 initPlaylistFolder");
                 playPlaylist(uzVideo, null);
             }
         } else {
             //check if play entity
-            UZUtil.stopServicePiPIfRunning(activity);
+            UZUtil.stopMiniPlayer(activity);
             //setMetadataId(activity, metadataId);
             playPlaylist(uzVideo, metadataId);
         }

@@ -47,7 +47,6 @@ public class FUZVideo extends RelativeLayout {
     private PlayerView playerView;
     private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
-    private RelativeLayout rootView;
     //private Gson gson = new Gson();
 
     public PlayerView getPlayerView() {
@@ -159,7 +158,6 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void findViews() {
-        rootView = (RelativeLayout) findViewById(R.id.root_view);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.White));
         playerView = findViewById(R.id.player_view);

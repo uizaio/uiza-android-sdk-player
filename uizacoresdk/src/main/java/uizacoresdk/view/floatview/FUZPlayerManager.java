@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.util.AppUtils;
 
@@ -131,7 +132,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     public void init(boolean isLivestream, long contentPosition) {
-        //LLog.d(TAG, "miniplayer  1 FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
+        LLog.d(TAG, "miniplayer STEP 1 FUZPLayerManager init isLivestream " + isLivestream + ", contentPosition " + contentPosition);
         reset();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
