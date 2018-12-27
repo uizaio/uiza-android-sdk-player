@@ -16,6 +16,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Button btColor1;
     private Button btColor2;
     private Switch swEzDestroy;
+    private Switch swVibrateDestroy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btColor1 = (Button) findViewById(R.id.bt_color_1);
         btColor2 = (Button) findViewById(R.id.bt_color_2);
         swEzDestroy = (Switch) findViewById(R.id.sw_ez_destroy);
+        swVibrateDestroy = (Switch) findViewById(R.id.sw_vibrate_destroy);
         int currentViewDestroyColor = UZUtil.getMiniPlayerColorViewDestroy(activity);
         if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.black_65)) {
             btColor0.setText("Default");
@@ -41,6 +43,14 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         swEzDestroy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setSwEzDestroy(isChecked);
+            }
+        });
+        boolean isEnableVibration = UZUtil.getMiniPlayerEnableVibration(activity);
+        swVibrateDestroy.setChecked(isEnableVibration);
+        setSwVibrateDestroy(isEnableVibration);
+        swVibrateDestroy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setSwVibrateDestroy(isChecked);
             }
         });
     }
@@ -91,5 +101,14 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             swEzDestroy.setText("Off");
         }
         UZUtil.setMiniPlayerEzDestroy(activity, isChecked);
+    }
+
+    private void setSwVibrateDestroy(boolean isChecked) {
+        if (isChecked) {
+            swEzDestroy.setText("On");
+        } else {
+            swEzDestroy.setText("Off");
+        }
+        UZUtil.setMiniPlayerEnableVibration(activity, isChecked);
     }
 }

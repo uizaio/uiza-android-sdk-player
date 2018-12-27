@@ -724,6 +724,7 @@ public class UZUtil {
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
     private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
     private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
+    private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -790,6 +791,17 @@ public class UZUtil {
     public static void setMiniPlayerEzDestroy(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_EZ_DESTROY, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerEnableVibration(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_ENABLE_VIBRATION, true);
+    }
+
+    public static void setMiniPlayerEnableVibration(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_ENABLE_VIBRATION, value);
         editor.apply();
     }
 
