@@ -1,3 +1,21 @@
+### 3.0.8 (2018-12-27)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.0.8'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.0.8'
+
+- Update logic livestreaming.
+- Add permission draw over other app for mini player.
+- Update func [uzVide.onActivityResult();](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/uzv3/UZPlayerActivity.java#L227)
+- Update logic mini player.
+- Change name of func onClickPipVideoInitSuccess(boolean isInitSuccess) to void onStateMiniPlayer(boolean isInitMiniPlayerSuccess), check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/uzv3/UZPlayerActivity.java#L293).
+- Add setting mini player, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java).
+- Add callback onUICreate() for livestreaming, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/samplelivestream/src/main/java/test/loitp/samplelivestream/LivePortraitActivity.java#L371).
+- Add func uzLivestream.hideTvLiveStatus().
+- Update screen EventActivity help you understand how to use func [uzVideo.addUZLiveContentCallback()](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java#L331).
+
 ### 3.0.3 (2018-12-19)
 
     //for playing video VOD, LIVE  
