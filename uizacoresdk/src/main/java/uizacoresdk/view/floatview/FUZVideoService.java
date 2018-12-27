@@ -827,7 +827,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void editSizeOfMoveView() {
-        if (fuzVideo == null || moveView == null) {
+        if (fuzVideo == null || moveView == null || videoW == 0) {
             return;
         }
         int videoW = fuzVideo.getVideoW();
