@@ -725,6 +725,7 @@ public class UZUtil {
     private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
     private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
+    private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -802,6 +803,17 @@ public class UZUtil {
     public static void setMiniPlayerEnableVibration(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_ENABLE_VIBRATION, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerEnableSmoothSwitch(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, true);
+    }
+
+    public static void setMiniPlayerEnableSmoothSwitch(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, value);
         editor.apply();
     }
 

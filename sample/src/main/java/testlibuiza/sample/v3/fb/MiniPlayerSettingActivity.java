@@ -17,6 +17,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Button btColor2;
     private Switch swEzDestroy;
     private Switch swVibrateDestroy;
+    private Switch swSmoothSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btColor2 = (Button) findViewById(R.id.bt_color_2);
         swEzDestroy = (Switch) findViewById(R.id.sw_ez_destroy);
         swVibrateDestroy = (Switch) findViewById(R.id.sw_vibrate_destroy);
+        swSmoothSwitch = (Switch) findViewById(R.id.sw_smooth_switch);
         int currentViewDestroyColor = UZUtil.getMiniPlayerColorViewDestroy(activity);
         if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.black_65)) {
             btColor0.setText("Default");
@@ -51,6 +53,14 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         swVibrateDestroy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setSwVibrateDestroy(isChecked);
+            }
+        });
+        boolean isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(activity);
+        swSmoothSwitch.setChecked(isEnableSmoothSwitch);
+        setSwSmoothSwitch(isEnableVibration);
+        swSmoothSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setSwSmoothSwitch(isChecked);
             }
         });
     }
@@ -110,5 +120,14 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             swVibrateDestroy.setText("Off");
         }
         UZUtil.setMiniPlayerEnableVibration(activity, isChecked);
+    }
+
+    private void setSwSmoothSwitch(boolean isChecked) {
+        if (isChecked) {
+            swSmoothSwitch.setText("On");
+        } else {
+            swSmoothSwitch.setText("Off");
+        }
+        UZUtil.setMiniPlayerEnableSmoothSwitch(activity, isChecked);
     }
 }

@@ -66,6 +66,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int videoH = 9;
     private boolean isEZDestroy;
     private boolean isEnableVibration;
+    private boolean isEnableSmoothSwitch;
 
     public FUZVideoService() {
     }
@@ -95,6 +96,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         viewDestroy.setBackgroundColor(colorViewDestroy);
         isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
         isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
+        isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
+        //LLog.d(TAG, "isEZDestroy " + isEZDestroy + ", isEnableVibration " + isEnableVibration + ", isEnableSmoothSwitch " + isEnableSmoothSwitch);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
         btExit = (ImageButton) mFloatingView.findViewById(R.id.bt_exit);
@@ -839,15 +842,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
             //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
-            //work fine
-            long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
-            long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
-            //LLog.d(TAG, "miniplayer 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
-            /*if (contentPosition >= contentBufferedPosition) {
-                fuzVideo.seekTo(contentBufferedPosition);
+            if (isEnableSmoothSwitch) {
+                //smooth but content position is delay
             } else {
-                fuzVideo.seekTo(contentPosition);
-            }*/
+                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
+                long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
+                //LLog.d(TAG, "miniplayer 4 MsgFromActivityPosition -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
+                if (contentPosition >= contentBufferedPosition) {
+                    fuzVideo.seekTo(contentBufferedPosition);
+                } else {
+                    fuzVideo.seekTo(contentPosition);
+                }
+            }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
             //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
