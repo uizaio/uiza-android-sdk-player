@@ -27,6 +27,7 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
@@ -54,6 +55,7 @@ public class EventActivity extends BaseActivity {
     private TextView tvProgress;
     private TextView tvTouch;
     private TextView tvItemClick;
+    private TextView tvLiveInfo;
 
     @Override
     protected boolean setFullScreen() {
@@ -87,6 +89,7 @@ public class EventActivity extends BaseActivity {
         tvProgress = (TextView) findViewById(R.id.tv_progress);
         tvTouch = (TextView) findViewById(R.id.tv_touch);
         tvItemClick = (TextView) findViewById(R.id.tv_item_click);
+        tvLiveInfo = (TextView) findViewById(R.id.tv_live_info);
         uzVideo.setControllerShowTimeoutMs(5000);
 
         uzVideo.addUZCallback(new UZCallback() {
@@ -325,8 +328,30 @@ public class EventActivity extends BaseActivity {
             public void onSurfaceSizeChanged(int width, int height) {
             }
         });
-        final String entityId = LSApplication.entityIdDefaultVOD;
-        UZUtil.initEntity(activity, uzVideo, entityId);
+        uzVideo.addUZLiveContentCallback(new UZLiveContentCallback() {
+            @Override
+            public void onUpdateLiveInfoTimeStartLive(long duration, String hhmmss) {
+            }
+
+            @Override
+            public void onUpdateLiveInfoCurrentView(long watchnow) {
+                tvLiveInfo.setText("onUpdateLiveInfoCurrentView watchnow: " + watchnow);
+            }
+        });
+        findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String entityId = LSApplication.entityIdDefaultVOD;
+                UZUtil.initEntity(activity, uzVideo, entityId);
+            }
+        });
+        findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String entityId = LSApplication.entityIdDefaultLIVE;
+                UZUtil.initEntity(activity, uzVideo, entityId);
+            }
+        });
     }
 
     @Override

@@ -62,6 +62,7 @@ import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.SensorOrientationChangeNotifier;
@@ -180,6 +181,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private UZMediaRouteButton uzMediaRouteButton;
     private RelativeLayout rlChromeCast;
     private UZImageButton ibsCast;
+    private UZLiveContentCallback uzLiveContentCallback;
+
+    public void addUZLiveContentCallback(UZLiveContentCallback uzLiveContentCallback) {
+        this.uzLiveContentCallback = uzLiveContentCallback;
+    }
 
     public void setTintMediaRouteButton(final int color) {
         if (uzMediaRouteButton != null) {
@@ -2414,6 +2420,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                                 if (tvLiveView != null) {
                                     tvLiveView.setText(result.getData().getWatchnow() + "");
                                 }
+                                if (uzLiveContentCallback != null) {
+                                    uzLiveContentCallback.onUpdateLiveInfoCurrentView(result.getData().getWatchnow());
+                                }
                             }
                             callAPIUpdateLiveInfoCurrentView(DELAY_TO_GET_LIVE_INFORMATION);
                         }
@@ -2488,6 +2497,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         String s = LDateUtils.convertMlsecondsToHMmSs(duration);
         if (tvLiveTime != null) {
             tvLiveTime.setText(s);
+        }
+        if (uzLiveContentCallback != null) {
+            uzLiveContentCallback.onUpdateLiveInfoTimeStartLive(duration, s);
         }
         callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
     }
