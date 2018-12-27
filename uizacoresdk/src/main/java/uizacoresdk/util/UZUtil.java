@@ -722,6 +722,7 @@ public class UZUtil {
     private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
+    private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -857,6 +858,18 @@ public class UZUtil {
     public static void setAuth(Context context, Auth auth, Gson gson) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(AUTH, gson.toJson(auth));
+        editor.apply();
+    }
+
+    /////////////////////////////////LONG
+    public static long getMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, Constants.UNKNOW);
+    }
+
+    public static void setMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context, long value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, value);
         editor.apply();
     }
 

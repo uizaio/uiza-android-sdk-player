@@ -111,7 +111,7 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
             setListener();
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
+            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
     }
 

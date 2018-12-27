@@ -329,10 +329,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isHasError = false;
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
-
         isOnPlayerEnded = false;
         updateUIEndScreen();
-
         //called api parallel here
         if (!LConnectivityUtil.isConnected(activity)) {
             if (uzCallback != null) {
@@ -2285,12 +2283,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             isInitMiniPlayerSuccess = true;
             uzCallback.onStateMiniPlayer(((ComunicateMng.MsgFromServiceIsInitSuccess) msg).isInitSuccess());
         } else if (msg instanceof ComunicateMng.MsgFromServicePosition) {
-            //FUZVideoServiceV1 truoc khi huy da gui position cua pip toi day
+            //FUZVideo truoc khi huy da gui position cua pip toi day
             //Nhan duoc vi tru tu FUZVideoService roi seek toi vi tri nay
             //LLog.d(TAG, "seek to: " + ((ComunicateMng.MsgFromServicePosition) msg).getPosition());
-            if (uzPlayerManager != null) {
+            /*if (uzPlayerManager != null) {
                 uzPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
-            }
+            }*/
         }
     }
 
@@ -2494,11 +2492,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
     }
 
-    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao pip thi se ban 1 eventbus bao rang da init success
-    //receiver FUZVideoService de truyen current position
+    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao miniplayer -> openApp() thi se ban 1 eventbus bao rang da init success
     public void setEventBusMsgFromActivityIsInitSuccess() {
-        LLog.d(TAG, "setEventBusMsgFromActivityIsInitSuccess getClickedPip: " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
+            LLog.d(TAG, "miniplayer STEP 7 OPEN APP SUCCESS setEventBusMsgFromActivityIsInitSuccess");
             ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
             msgFromActivityIsInitSuccess.setInitSuccess(true);
             ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);

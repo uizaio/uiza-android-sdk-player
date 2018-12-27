@@ -124,9 +124,6 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
     }
 
     @Override

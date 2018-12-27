@@ -212,20 +212,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set UI
-                int screenHeight = screenWidth * 9 / 16;
-                moveView.getLayoutParams().width = screenWidth;
-                moveView.getLayoutParams().height = screenHeight;
-                moveView.requestLayout();
-                updateUISlide(0, 0);
-                rlControl.setVisibility(View.GONE);
-
-                //stop video
-                fuzVideo.getPlayer().setPlayWhenReady(false);
-                LUIUtil.showProgressBar(fuzVideo.getProgressBar());
-                moveView.setOnTouchListener(null);//disabled move view
-
-                UZUtil.setClickedPip(getApplicationContext(), true);
                 openApp(getPackageName());
             }
         });
@@ -255,6 +241,26 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void openApp(String packageNameReceived) {
+        if (fuzVideo == null || fuzVideo.getPlayer() == null) {
+            return;
+        }
+        //set UI
+        rlControl.setVisibility(View.GONE);
+        int screenHeight = screenWidth * videoH / videoW;
+        moveView.getLayoutParams().width = screenWidth;
+        moveView.getLayoutParams().height = screenHeight;
+        moveView.requestLayout();
+        updateUISlide(0, 0);
+        //stop video
+        if (isEnableSmoothSwitch) {
+            //do nothing
+        } else {
+            fuzVideo.getPlayer().setPlayWhenReady(false);
+            LUIUtil.showProgressBar(fuzVideo.getProgressBar());
+        }
+        moveView.setOnTouchListener(null);//disabled move view
+        UZUtil.setClickedPip(getApplicationContext(), true);
+        //event bus
         String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
         if (UZUtil.getClickedPip(getBaseContext())) {
         } else {
@@ -262,12 +268,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 return;
             }
         }
-        LLog.d(TAG, "miniplayer STEP 5 getClickedPip " + UZUtil.getClickedPip(getBaseContext()) + ", classNameOfPlayer " + classNameOfPlayer);
+        LLog.d(TAG, "miniplayer STEP 5 START OPEN APP -> classNameOfPlayer " + classNameOfPlayer + ", miniplayer content position " + fuzVideo.getCurrentPosition());
         if (packageNameReceived != null && packageNameReceived.equals(getBaseContext().getPackageName())) {
             try {
                 Class classNamePfPlayer = Class.forName(classNameOfPlayer);
                 Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
                 UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
+                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getBaseContext().startActivity(intent);
@@ -856,12 +863,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //lắng nghe UZVideo đã init success hay chưa
-            //LLog.d(TAG, "MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
-            //LLog.d(TAG, "getCurrentPosition: " + floatUizaIMAVideo.getCurrentPosition());
-            //lấy vị trí của pip hiện tại để bắn cho UZVideo
-            ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
-            msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
-            ComunicateMng.postFromService(msgFromServicePosition);
+            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
+            if (isEnableSmoothSwitch) {
+                //get current content position and pass it to UZVideo
+                /*ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
+                msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
+                ComunicateMng.postFromService(msgFromServicePosition);
+                */
+            } else {
+                //do nothing
+            }
             stopSelf();
         }
     }

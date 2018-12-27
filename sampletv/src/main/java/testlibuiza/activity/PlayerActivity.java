@@ -115,9 +115,9 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
+        /*if (isInitSuccess) {
             uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }
+        }*/
     }
 
     @Override
