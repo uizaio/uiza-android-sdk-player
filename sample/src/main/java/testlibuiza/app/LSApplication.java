@@ -15,12 +15,12 @@ public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
     //TODO input information of your workspace
-    public static final String DF_DOMAIN_API = "teamplayer.uiza.co";
-    public static final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";
-    public static final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
+    public static final String DF_DOMAIN_API = "azui.uiza.co";
+    public static final String DF_TOKEN = "uap-598eff5dfedd434d99d8b957488aa7d3-42115bd5";
+    public static final String DF_APP_ID = "598eff5dfedd434d99d8b957488aa7d3";
     public static final int currentPlayerId = R.layout.uz_player_skin_1;
     public static final String entityIdDefaultVODLongtime = "85527b12-ae9a-4102-af60-c83054ffa213";
-    public static final String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
+    public static final String entityIdDefaultVOD = "678cbc03-dad2-461d-ab25-8c3c9d0e2611";
     public static final String entityIdDefaultVOD_21_9 = "85527b12-ae9a-4102-af60-c83054ffa213";
     public static final String entityIdDefaultVODportrait = "2732b570-6dc2-42df-bd58-3f7a0cac5683";
     public static final String entityIdDefaultLIVE = "1759f642-e062-4e88-b5f2-e3022bd03b57";
