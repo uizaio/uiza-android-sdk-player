@@ -36,6 +36,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Button btPause;
     private Button btPlayPause;
     private Button btFullScreen;
+    private Button bt_stop_mini_player;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -59,6 +60,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btPause = (Button) findViewById(R.id.bt_pause);
         btPlayPause = (Button) findViewById(R.id.bt_play_pause);
         btFullScreen = (Button) findViewById(R.id.bt_full_screen);
+        bt_stop_mini_player = (Button) findViewById(R.id.bt_stop_mini_player);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
@@ -71,6 +73,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btPause.setOnClickListener(this);
         btPlayPause.setOnClickListener(this);
         btFullScreen.setOnClickListener(this);
+        bt_stop_mini_player.setOnClickListener(this);
     }
 
     @Override
@@ -171,50 +174,29 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 saveConfigMargin();
                 break;
             case R.id.bt_show_controller:
-                setBtShowController();
+                UZUtil.showMiniPlayerController(activity);
                 break;
             case R.id.bt_hide_controller:
-                setBtHideController();
+                UZUtil.hideMiniPlayerController(activity);
                 break;
             case R.id.bt_toggle_controller:
-                setBtToggleController();
+                UZUtil.toggleMiniPlayerController(activity);
                 break;
             case R.id.bt_play:
-                setBtPlay();
+                UZUtil.resumeVideo(activity);
                 break;
             case R.id.bt_pause:
-                setBtPause();
+                UZUtil.pauseVideo(activity);
                 break;
             case R.id.bt_play_pause:
-                setBtPlayPause();
+                UZUtil.toggleResumePauseVideo(activity);
                 break;
             case R.id.bt_full_screen:
                 break;
+            case R.id.bt_stop_mini_player:
+                UZUtil.stopMiniPlayer(activity);
+                break;
         }
-    }
-
-    private void setBtShowController() {
-        UZUtil.showMiniPlayerController(activity);
-    }
-
-    private void setBtHideController() {
-        UZUtil.hideMiniPlayerController(activity);
-    }
-
-    private void setBtToggleController() {
-        UZUtil.toggleMiniPlayerController(activity);
-    }
-
-    private void setBtPlay() {
-        UZUtil.resumeVideo(activity);
-    }
-
-    private void setBtPause() {
-        UZUtil.pauseVideo(activity);
-    }
-
-    private void setBtPlayPause() {
-        UZUtil.toggleResumePauseVideo(activity);
     }
 
     private void setSwEzDestroy(boolean isChecked) {

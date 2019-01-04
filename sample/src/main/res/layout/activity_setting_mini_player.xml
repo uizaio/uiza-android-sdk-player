@@ -241,6 +241,11 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                     android:text="Fullscreen" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/bt_stop_mini_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stop mini player" />
         </LinearLayout>
     </ScrollView>
 
