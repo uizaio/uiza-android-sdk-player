@@ -30,6 +30,7 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
+import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -44,6 +45,7 @@ import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
+import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.Utils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -367,13 +369,20 @@ public class UZUtil {
             return;
         }
         //LLog.d(TAG, "stopMiniPlayer");
-        boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
+        boolean isSvPipRunning = isMiniPlayerRunning(activity);
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
             Intent intent = new Intent(activity, FUZVideoService.class);
             activity.stopService(intent);
         }
+    }
+
+    public static boolean isMiniPlayerRunning(Context context) {
+        if (context == null) {
+            return false;
+        }
+        return UZUtil.checkServiceRunning(context, FUZVideoService.class.getName());
     }
 
     //=============================================================================START FOR UIZA V3
@@ -723,6 +732,12 @@ public class UZUtil {
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
     private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
+    private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
+    private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
+    private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";
+    private final static String MINI_PLAYER_MARGIN_T = "MINI_PLAYER_MARGIN_T";
+    private final static String MINI_PLAYER_MARGIN_R = "MINI_PLAYER_MARGIN_R";
+    private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -848,6 +863,115 @@ public class UZUtil {
         editor.apply();
     }
 
+    public static int getMiniPlayerFirstPositionX(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_FIRST_POSITION_X, Constants.NOT_FOUND);
+    }
+
+    private static void setMiniPlayerFirstPositionX(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_FIRST_POSITION_X, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerFirstPositionY(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_FIRST_POSITION_Y, Constants.NOT_FOUND);
+    }
+
+    private static void setMiniPlayerFirstPositionY(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_FIRST_POSITION_Y, value);
+        editor.apply();
+    }
+
+    public static void setMiniPlayerFirstPosition(Context context, int firstPositionX, int firstPositionY) {
+        setMiniPlayerFirstPositionX(context, firstPositionX);
+        setMiniPlayerFirstPositionY(context, firstPositionY);
+    }
+
+    public static int getMiniPlayerMarginL(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_L, 0);
+    }
+
+    private static void setMiniPlayerMarginL(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_L, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginT(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_T, 0);
+    }
+
+    private static void setMiniPlayerMarginT(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_T, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginR(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_R, 0);
+    }
+
+    private static void setMiniPlayerMarginR(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_R, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginB(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_B, 0);
+    }
+
+    private static void setMiniPlayerMarginB(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_B, value);
+        editor.apply();
+    }
+
+    public static boolean setMiniPlayerMarginDp(Context context, float marginL, float marginT, float marginR, float marginB) {
+        if (context == null) {
+            return false;
+        }
+        int pxL = ConvertUtils.dp2px(marginL);
+        int pxT = ConvertUtils.dp2px(marginT);
+        int pxR = ConvertUtils.dp2px(marginR);
+        int pxB = ConvertUtils.dp2px(marginB);
+        return setMiniPlayerMarginPixel(context, pxL, pxT, pxR, pxB);
+    }
+
+    public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
+        if (context == null) {
+            return false;
+        }
+        int screenW = LScreenUtil.getScreenWidth();
+        int screenH = LScreenUtil.getScreenHeight();
+        int rangeMarginW = screenW / 5;
+        int rangeMarginH = screenH / 5;
+        if (marginL < 0 || marginL > rangeMarginW) {
+            throw new IllegalArgumentException("Error: marginL is invalid, the right value must from 0px to " + rangeMarginW + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginW) + "dp");
+        }
+        if (marginT < 0 || marginT > rangeMarginH) {
+            throw new IllegalArgumentException("Error: marginT is invalid, the right value must from 0px to " + rangeMarginH + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginH) + "dp");
+        }
+        if (marginR < 0 || marginR > rangeMarginW) {
+            throw new IllegalArgumentException("Error: marginR is invalid, the right value must from 0px to " + rangeMarginW + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginW) + "dp");
+        }
+        if (marginB < 0 || marginB > rangeMarginH) {
+            throw new IllegalArgumentException("Error: marginB is invalid, the right value must from 0px to " + rangeMarginH + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginH) + "dp");
+        }
+        setMiniPlayerMarginL(context, marginL);
+        setMiniPlayerMarginT(context, marginT);
+        setMiniPlayerMarginR(context, marginR);
+        setMiniPlayerMarginB(context, marginB);
+        return true;
+    }
+
     /////////////////////////////////OBJECT
     public static Auth getAuth(Context context, Gson gson) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -874,4 +998,53 @@ public class UZUtil {
     }
 
     //=============================================================================END PREF
+
+    public static void showMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void hideMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void toggleMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void pauseVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.PAUSE_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void resumeVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.RESUME_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void toggleResumePauseVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void openAppFromMiniPlayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }

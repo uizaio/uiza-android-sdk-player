@@ -38,7 +38,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
- * Created by loitp on 12/12/2018.
+ * Created by loitp on 1/4/2019.
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
@@ -67,6 +67,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private boolean isEZDestroy;
     private boolean isEnableVibration;
     private boolean isEnableSmoothSwitch;
+    private int marginL;
+    private int marginT;
+    private int marginR;
+    private int marginB;
 
     public FUZVideoService() {
     }
@@ -140,6 +144,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
         statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
+        marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
+        marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
+        marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
+        marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
+        //LLog.d(TAG, "onCreate " + marginL + " - " + marginT + " - " + marginR + " - " + marginB);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
@@ -212,35 +221,60 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openApp(getPackageName());
+                openApp();
             }
         });
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fuzVideo == null) {
-                    return;
-                }
-                boolean isToggleResume = fuzVideo.togglePauseResume();
-                if (isToggleResume) {
-                    btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
-                } else {
-                    btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
-                }
+                toggleResumePause();
             }
         });
+    }
+
+    private void toggleResumePause() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        boolean isToggleResume = fuzVideo.togglePauseResume();
+        if (isToggleResume) {
+            btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+        } else {
+            btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+        }
+    }
+
+    private void pauseVideo() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        fuzVideo.pauseVideo();
+        btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+    }
+
+    private void resumeVideo() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        fuzVideo.resumeVideo();
+        btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
     }
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
         //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
         int vW = screenWidth / 2;
         int vH = vW * videoH / videoW;
-        int newPosX = vW;
-        int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-        slideToPosition(newPosX, newPosY);
+        int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
+        int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(getBaseContext());
+        if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
+            firstPositionX = vW;
+            firstPositionY = screenHeight - vH - statusBarHeight;
+        }
+        //LLog.d(TAG, "updateUIVideoSizeOneTime " + firstPositionX + "x" + firstPositionY);
+        slideToPosition(firstPositionX, firstPositionY);
     }
 
-    private void openApp(String packageNameReceived) {
+    private void openApp() {
         if (fuzVideo == null || fuzVideo.getPlayer() == null) {
             return;
         }
@@ -269,38 +303,55 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         }
         LLog.d(TAG, "miniplayer STEP 5 START OPEN APP -> classNameOfPlayer " + classNameOfPlayer + ", miniplayer content position " + fuzVideo.getCurrentPosition());
-        if (packageNameReceived != null && packageNameReceived.equals(getBaseContext().getPackageName())) {
-            try {
-                Class classNamePfPlayer = Class.forName(classNameOfPlayer);
-                Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
-                UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
-                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getBaseContext().startActivity(intent);
-            } catch (ClassNotFoundException e) {
-                LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
-            }
+        try {
+            Class classNamePfPlayer = Class.forName(classNameOfPlayer);
+            Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
+            UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
+            UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getBaseContext().startActivity(intent);
+        } catch (ClassNotFoundException e) {
+            LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
         }
     }
 
     private CountDownTimer countDownTimer;
 
-    private void slideToPosition(final int goToPosX, final int goToPosY) {
+    private void slideToPosition(int goToPosX, int goToPosY) {
         final int currentPosX = params.x;
         final int currentPosY = params.y;
         //LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
-        final int a = (int) Math.abs(goToPosX - currentPosX);
-        final int b = (int) Math.abs(goToPosY - currentPosY);
-        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b);
 
+        final int mGoToPosX;
+        final int mGoToPosY;
+        int videoW = getVideoW();
+        int videoH = getVideoH();
+        if (goToPosX <= 0) {
+            mGoToPosX = marginL;
+        } else if (goToPosX >= screenWidth - videoW) {
+            mGoToPosX = goToPosX - marginR;
+        } else {
+            mGoToPosX = goToPosX;
+        }
+        if (goToPosY <= 0) {
+            mGoToPosY = marginT;
+        } else if (goToPosY >= screenHeight - videoH) {
+            mGoToPosY = goToPosY - marginB;
+        } else {
+            mGoToPosY = goToPosY;
+        }
+
+        final int a = (int) Math.abs(mGoToPosX - currentPosX);
+        final int b = (int) Math.abs(mGoToPosY - currentPosY);
+        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
                 float step = (300 - t) / 3;
                 int tmpX;
                 int tmpY;
-                if (currentPosX > goToPosX) {
-                    if (currentPosY > goToPosY) {
+                if (currentPosX > mGoToPosX) {
+                    if (currentPosY > mGoToPosY) {
                         tmpX = currentPosX - (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -308,7 +359,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 } else {
-                    if (currentPosY > goToPosY) {
+                    if (currentPosY > mGoToPosY) {
                         tmpX = currentPosX + (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -322,7 +373,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             public void onFinish() {
                 //LLog.d(TAG, "slideToLeft onFinish " + goToPosX + " x " + goToPosY);
-                updateUISlide(goToPosX, goToPosY);
+                updateUISlide(mGoToPosX, mGoToPosY);
             }
         }.start();
     }
@@ -344,14 +395,43 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             //LLog.d(TAG, "onSingleTapConfirmed");
-            if (rlControl.getVisibility() == View.VISIBLE) {
-                rlControl.setVisibility(View.GONE);
-                setSizeMoveView(false, false);
-            } else {
-                rlControl.setVisibility(View.VISIBLE);
-                setSizeMoveView(false, true);
-            }
+            toggleController();
             return true;
+        }
+    }
+
+    private boolean isControllerShowing() {
+        if (rlControl == null) {
+            return false;
+        }
+        return rlControl.getVisibility() == View.VISIBLE;
+    }
+
+    private void showController() {
+        if (rlControl == null) {
+            return;
+        }
+        if (!isControllerShowing()) {
+            rlControl.setVisibility(View.VISIBLE);
+            setSizeMoveView(false, true);
+        }
+    }
+
+    private void hideController() {
+        if (rlControl == null) {
+            return;
+        }
+        if (isControllerShowing()) {
+            rlControl.setVisibility(View.GONE);
+            setSizeMoveView(false, false);
+        }
+    }
+
+    private void toggleController() {
+        if (isControllerShowing()) {
+            hideController();
+        } else {
+            showController();
         }
     }
 
@@ -842,17 +922,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     //listen msg from UZVideo
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
-        if (msg == null || fuzVideo == null) {
+    public void onMessageEvent(ComunicateMng.MsgFromActivity msgFromActivity) {
+        if (msgFromActivity == null || fuzVideo == null) {
             return;
         }
-        if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
+        if (msgFromActivity instanceof ComunicateMng.MsgFromActivityPosition) {
+            //LLog.d(TAG, "Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
                 LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true");
             } else {
-                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
+                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
                 LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
                 if (contentPosition >= contentBufferedPosition) {
@@ -861,9 +941,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     fuzVideo.seekTo(contentPosition);
                 }
             }
-        } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            //lắng nghe UZVideo đã init success hay chưa
-            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
+        } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
+            //LLog.d(TAG, "lang nghe UZVideo da init success hay chua");
+            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             if (isEnableSmoothSwitch) {
                 //get current content position and pass it to UZVideo
                 /*ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
@@ -874,6 +954,23 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //do nothing
             }
             stopSelf();
+        }
+        String msg = msgFromActivity.getMsg();
+        //LLog.d(TAG, "msg " + msg);
+        if (msg.equals(ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER)) {
+            showController();
+        } else if (msg.equals(ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER)) {
+            hideController();
+        } else if (msg.equals(ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER)) {
+            toggleController();
+        } else if (msg.equals(ComunicateMng.PAUSE_MINI_PLAYER)) {
+            pauseVideo();
+        } else if (msg.equals(ComunicateMng.RESUME_MINI_PLAYER)) {
+            resumeVideo();
+        } else if (msg.equals(ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER)) {
+            toggleResumePause();
+        } else if (msg.equals(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER)) {
+            openApp();
         }
     }
 }
