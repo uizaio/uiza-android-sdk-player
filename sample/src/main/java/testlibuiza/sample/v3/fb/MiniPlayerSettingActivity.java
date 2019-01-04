@@ -206,7 +206,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     }
 
     private void setBtPlay() {
-
+        UZUtil.resumeVideo(activity);
     }
 
     private void setBtPause() {
@@ -214,7 +214,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     }
 
     private void setBtPlayPause() {
-
+        UZUtil.toggleResumePauseVideo(activity);
     }
 
     private void setSwEzDestroy(boolean isChecked) {

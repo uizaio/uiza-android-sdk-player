@@ -227,12 +227,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                togglePauseResume();
+                toggleResumePause();
             }
         });
     }
 
-    private void togglePauseResume() {
+    private void toggleResumePause() {
         if (fuzVideo == null || btPlayPause == null) {
             return;
         }
@@ -967,6 +967,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             toggleController();
         } else if (msg.equals(ComunicateMng.PAUSE_MINI_PLAYER)) {
             pauseVideo();
+        } else if (msg.equals(ComunicateMng.RESUME_MINI_PLAYER)) {
+            resumeVideo();
+        } else if (msg.equals(ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER)) {
+            toggleResumePause();
         }
     }
 }

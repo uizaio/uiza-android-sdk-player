@@ -1006,4 +1006,18 @@ public class UZUtil {
             ComunicateMng.postFromActivity(msgFromActivity);
         }
     }
+
+    public static void resumeVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.RESUME_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void toggleResumePauseVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }
