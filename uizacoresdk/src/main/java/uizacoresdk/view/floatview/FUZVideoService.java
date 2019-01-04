@@ -265,7 +265,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int vW = screenWidth / 2;
         int vH = vW * videoH / videoW;
         int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
-        int firstPositionY = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
+        int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(getBaseContext());
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
             firstPositionX = vW;
             firstPositionY = screenHeight - vH - statusBarHeight;
@@ -344,7 +344,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
         final int a = (int) Math.abs(mGoToPosX - currentPosX);
         final int b = (int) Math.abs(mGoToPosY - currentPosY);
-        LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
+        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
                 float step = (300 - t) / 3;
