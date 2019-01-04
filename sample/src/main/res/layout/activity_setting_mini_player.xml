@@ -86,7 +86,7 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
-                android:text="First position of mini player" />
+                android:text="First position of mini player (pixel)" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,7 +123,7 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
-                android:text="Set margin" />
+                android:text="Set margin (dp)" />
 
             <LinearLayout
                 android:layout_width="match_parent"

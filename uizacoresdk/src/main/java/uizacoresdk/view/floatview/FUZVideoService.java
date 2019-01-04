@@ -344,7 +344,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
         final int a = (int) Math.abs(mGoToPosX - currentPosX);
         final int b = (int) Math.abs(mGoToPosY - currentPosY);
-        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
+        LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
                 float step = (300 - t) / 3;

@@ -45,6 +45,7 @@ import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
+import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.Utils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -933,23 +934,42 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static void setMiniPlayerMargin(Context context, int marginL, int marginT, int marginR, int marginB) {
-        if (marginL < 0) {
-            marginL = 0;
+    public static boolean setMiniPlayerMarginDp(Context context, float marginL, float marginT, float marginR, float marginB) {
+        if (context == null) {
+            return false;
         }
-        if (marginT < 0) {
-            marginT = 0;
+        int pxL = ConvertUtils.dp2px(marginL);
+        int pxT = ConvertUtils.dp2px(marginT);
+        int pxR = ConvertUtils.dp2px(marginR);
+        int pxB = ConvertUtils.dp2px(marginB);
+        return setMiniPlayerMarginPixel(context, pxL, pxT, pxR, pxB);
+    }
+
+    public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
+        if (context == null) {
+            return false;
         }
-        if (marginR < 0) {
-            marginR = 0;
+        int screenW = LScreenUtil.getScreenWidth();
+        int screenH = LScreenUtil.getScreenHeight();
+        int rangeMarginW = screenW / 5;
+        int rangeMarginH = screenH / 5;
+        if (marginL < 0 || marginL > rangeMarginW) {
+            throw new IllegalArgumentException("Error: marginL is invalid, the right value must from 0px to " + rangeMarginW + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginW) + "dp");
         }
-        if (marginB < 0) {
-            marginB = 0;
+        if (marginT < 0 || marginT > rangeMarginH) {
+            throw new IllegalArgumentException("Error: marginT is invalid, the right value must from 0px to " + rangeMarginH + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginH) + "dp");
+        }
+        if (marginR < 0 || marginR > rangeMarginW) {
+            throw new IllegalArgumentException("Error: marginR is invalid, the right value must from 0px to " + rangeMarginW + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginW) + "dp");
+        }
+        if (marginB < 0 || marginB > rangeMarginH) {
+            throw new IllegalArgumentException("Error: marginB is invalid, the right value must from 0px to " + rangeMarginH + "px or 0dp to " + ConvertUtils.px2dp(rangeMarginH) + "dp");
         }
         setMiniPlayerMarginL(context, marginL);
         setMiniPlayerMarginT(context, marginT);
         setMiniPlayerMarginR(context, marginR);
         setMiniPlayerMarginB(context, marginB);
+        return true;
     }
 
     /////////////////////////////////OBJECT

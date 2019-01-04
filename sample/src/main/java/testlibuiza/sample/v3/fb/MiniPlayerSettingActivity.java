@@ -171,7 +171,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 saveConfigFirstPosition();
                 break;
             case R.id.bt_save_margin:
-                saveConfigMargin();
+                saveConfigMarginDp();
                 break;
             case R.id.bt_show_controller:
                 UZUtil.showMiniPlayerController(activity);
@@ -240,20 +240,24 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         LToast.show(activity, "First position of mini player: " + firstPositionX + "x" + firstPositionY);
     }
 
-    private void saveConfigMargin() {
-        String l = etMarginLeft.getText().toString();
-        String t = etMarginTop.getText().toString();
-        String r = etMarginRight.getText().toString();
-        String b = etMarginBottom.getText().toString();
-        if (l.isEmpty() || t.isEmpty() || r.isEmpty() || b.isEmpty()) {
-            LToast.show(activity, "Cannot set property margin.");
-            return;
+    private void saveConfigMarginDp() {
+        try {
+            String l = etMarginLeft.getText().toString();
+            String t = etMarginTop.getText().toString();
+            String r = etMarginRight.getText().toString();
+            String b = etMarginBottom.getText().toString();
+            if (l.isEmpty() || t.isEmpty() || r.isEmpty() || b.isEmpty()) {
+                LToast.show(activity, "Cannot set property margin.");
+                return;
+            }
+            int marginL = Integer.parseInt(l);
+            int marginT = Integer.parseInt(t);
+            int marginR = Integer.parseInt(r);
+            int marginB = Integer.parseInt(b);
+            boolean isSuccess = UZUtil.setMiniPlayerMarginDp(activity, marginL, marginT, marginR, marginB);
+            LToast.show(activity, "Set margin: " + isSuccess);
+        } catch (Exception e) {
+            LToast.show(activity, "Invalid value, check logcat to get right value.");
         }
-        int marginL = Integer.parseInt(l);
-        int marginT = Integer.parseInt(t);
-        int marginR = Integer.parseInt(r);
-        int marginB = Integer.parseInt(b);
-        UZUtil.setMiniPlayerMargin(activity, marginL, marginT, marginR, marginB);
-        LToast.show(activity, "Set margin " + marginL + " - " + marginT + " - " + marginR + " - " + marginB);
     }
 }
