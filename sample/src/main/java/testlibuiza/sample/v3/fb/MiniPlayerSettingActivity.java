@@ -32,6 +32,10 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Button btShowController;
     private Button btHideController;
     private Button btToggleController;
+    private Button btPlay;
+    private Button btPause;
+    private Button btPlayPause;
+    private Button btFullScreen;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -51,6 +55,10 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btShowController = (Button) findViewById(R.id.bt_show_controller);
         btHideController = (Button) findViewById(R.id.bt_hide_controller);
         btToggleController = (Button) findViewById(R.id.bt_toggle_controller);
+        btPlay = (Button) findViewById(R.id.bt_play);
+        btPause = (Button) findViewById(R.id.bt_pause);
+        btPlayPause = (Button) findViewById(R.id.bt_play_pause);
+        btFullScreen = (Button) findViewById(R.id.bt_full_screen);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
@@ -59,6 +67,10 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btShowController.setOnClickListener(this);
         btHideController.setOnClickListener(this);
         btToggleController.setOnClickListener(this);
+        btPlay.setOnClickListener(this);
+        btPause.setOnClickListener(this);
+        btPlayPause.setOnClickListener(this);
+        btFullScreen.setOnClickListener(this);
     }
 
     @Override
@@ -167,6 +179,17 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             case R.id.bt_toggle_controller:
                 setBtToggleController();
                 break;
+            case R.id.bt_play:
+                setBtPlay();
+                break;
+            case R.id.bt_pause:
+                setBtPause();
+                break;
+            case R.id.bt_play_pause:
+                setBtPlayPause();
+                break;
+            case R.id.bt_full_screen:
+                break;
         }
     }
 
@@ -180,6 +203,18 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
 
     private void setBtToggleController() {
         UZUtil.toggleMiniPlayerController(activity);
+    }
+
+    private void setBtPlay() {
+
+    }
+
+    private void setBtPause() {
+        UZUtil.pauseVideo(activity);
+    }
+
+    private void setBtPlayPause() {
+
     }
 
     private void setSwEzDestroy(boolean isChecked) {

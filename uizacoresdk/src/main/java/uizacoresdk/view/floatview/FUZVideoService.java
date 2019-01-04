@@ -227,17 +227,37 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fuzVideo == null) {
-                    return;
-                }
-                boolean isToggleResume = fuzVideo.togglePauseResume();
-                if (isToggleResume) {
-                    btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
-                } else {
-                    btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
-                }
+                togglePauseResume();
             }
         });
+    }
+
+    private void togglePauseResume() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        boolean isToggleResume = fuzVideo.togglePauseResume();
+        if (isToggleResume) {
+            btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+        } else {
+            btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+        }
+    }
+
+    private void pauseVideo() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        fuzVideo.pauseVideo();
+        btPlayPause.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+    }
+
+    private void resumeVideo() {
+        if (fuzVideo == null || btPlayPause == null) {
+            return;
+        }
+        fuzVideo.resumeVideo();
+        btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
     }
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
@@ -945,6 +965,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             hideController();
         } else if (msg.equals(ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER)) {
             toggleController();
+        } else if (msg.equals(ComunicateMng.PAUSE_MINI_PLAYER)) {
+            pauseVideo();
         }
     }
 }

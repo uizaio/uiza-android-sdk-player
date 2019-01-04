@@ -999,4 +999,11 @@ public class UZUtil {
             ComunicateMng.postFromActivity(msgFromActivity);
         }
     }
+
+    public static void pauseVideo(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.PAUSE_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }

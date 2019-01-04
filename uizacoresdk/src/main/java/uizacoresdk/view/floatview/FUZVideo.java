@@ -451,6 +451,20 @@ public class FUZVideo extends RelativeLayout {
         return fuzUizaPlayerManager.togglePauseResume();
     }
 
+    protected void pauseVideo() {
+        if (fuzUizaPlayerManager == null) {
+            return;
+        }
+        fuzUizaPlayerManager.pauseVideo();
+    }
+
+    protected void resumeVideo() {
+        if (fuzUizaPlayerManager == null) {
+            return;
+        }
+        fuzUizaPlayerManager.resumeVideo();
+    }
+
     protected int getVideoW() {
         if (fuzUizaPlayerManager == null) {
             return 0;

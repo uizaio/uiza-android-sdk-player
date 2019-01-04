@@ -11,6 +11,7 @@ public class ComunicateMng {
     public final static String SHOW_MINI_PLAYER_CONTROLLER = "SHOW_MINI_PLAYER_CONTROLLER";
     public final static String HIDE_MINI_PLAYER_CONTROLLER = "HIDE_MINI_PLAYER_CONTROLLER";
     public final static String TOGGLE_MINI_PLAYER_CONTROLLER = "TOGGLE_MINI_PLAYER_CONTROLLER";
+    public final static String PAUSE_MINI_PLAYER = "PAUSE_MINI_PLAYER";
 
     public static class MsgFromActivity {
         private String msg;
