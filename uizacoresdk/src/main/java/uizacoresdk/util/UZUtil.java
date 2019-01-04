@@ -725,6 +725,10 @@ public class UZUtil {
     private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
     private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
     private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
+    private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";
+    private final static String MINI_PLAYER_MARGIN_T = "MINI_PLAYER_MARGIN_T";
+    private final static String MINI_PLAYER_MARGIN_R = "MINI_PLAYER_MARGIN_R";
+    private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -875,6 +879,69 @@ public class UZUtil {
     public static void setMiniPlayerFirstPosition(Context context, int firstPositionX, int firstPositionY) {
         setMiniPlayerFirstPositionX(context, firstPositionX);
         setMiniPlayerFirstPositionY(context, firstPositionY);
+    }
+
+    public static int getMiniPlayerMarginL(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_L, 0);
+    }
+
+    private static void setMiniPlayerMarginL(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_L, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginT(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_T, 0);
+    }
+
+    private static void setMiniPlayerMarginT(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_T, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginR(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_R, 0);
+    }
+
+    private static void setMiniPlayerMarginR(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_R, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerMarginB(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_MARGIN_B, 0);
+    }
+
+    private static void setMiniPlayerMarginB(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_MARGIN_B, value);
+        editor.apply();
+    }
+
+    public static void setMiniPlayerMargin(Context context, int marginL, int marginT, int marginR, int marginB) {
+        if (marginL < 0) {
+            marginL = 0;
+        }
+        if (marginT < 0) {
+            marginT = 0;
+        }
+        if (marginR < 0) {
+            marginR = 0;
+        }
+        if (marginB < 0) {
+            marginB = 0;
+        }
+        setMiniPlayerMarginL(context, marginL);
+        setMiniPlayerMarginT(context, marginT);
+        setMiniPlayerMarginR(context, marginR);
+        setMiniPlayerMarginB(context, marginB);
     }
 
     /////////////////////////////////OBJECT

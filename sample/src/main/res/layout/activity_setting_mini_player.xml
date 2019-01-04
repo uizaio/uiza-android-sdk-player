@@ -47,13 +47,10 @@
                     android:background="@color/GreenTran" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_50" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
                 android:text="Easy to destroy mini player
 On: Mini player will be destroyed if user drag it to any edge of device.
 Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT edge of device." />
@@ -63,13 +60,10 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_50" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
                 android:text="Enable vibratiton when view destroy appears on screen" />
 
             <Switch
@@ -77,13 +71,10 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_50" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
                 android:text="Smooth switch state (full-player || mini-player)" />
 
             <Switch
@@ -91,13 +82,10 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_50" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
                 android:text="First position of mini player" />
 
             <LinearLayout
@@ -131,6 +119,59 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                     android:text="Save" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="Set margin" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_margin_left"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="L"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/et_margin_top"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="T"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/et_margin_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="R"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/et_margin_bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="B"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <Button
+                    android:id="@+id/bt_save_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

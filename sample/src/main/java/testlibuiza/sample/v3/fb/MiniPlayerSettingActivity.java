@@ -24,6 +24,11 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Switch swSmoothSwitch;
     private EditText etPositionX;
     private EditText etPositionY;
+    private EditText etMarginLeft;
+    private EditText etMarginTop;
+    private EditText etMarginRight;
+    private EditText etMarginBottom;
+    private Button btSaveMargin;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -34,11 +39,17 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         swSmoothSwitch = (Switch) findViewById(R.id.sw_smooth_switch);
         etPositionX = (EditText) findViewById(R.id.et_position_x);
         etPositionY = (EditText) findViewById(R.id.et_position_y);
+        etMarginLeft = (EditText) findViewById(R.id.et_margin_left);
+        etMarginTop = (EditText) findViewById(R.id.et_margin_top);
+        etMarginRight = (EditText) findViewById(R.id.et_margin_right);
+        etMarginBottom = (EditText) findViewById(R.id.et_margin_bottom);
         btSaveFirstPosition = (Button) findViewById(R.id.bt_save_first_position);
+        btSaveMargin = (Button) findViewById(R.id.bt_save_margin);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
         btSaveFirstPosition.setOnClickListener(this);
+        btSaveMargin.setOnClickListener(this);
     }
 
     @Override
@@ -85,6 +96,15 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             etPositionX.setText(firstPositionX + "");
             etPositionY.setText(firstPositionY + "");
         }
+        int marginL = UZUtil.getMiniPlayerMarginL(activity);
+        int marginT = UZUtil.getMiniPlayerMarginT(activity);
+        int marginR = UZUtil.getMiniPlayerMarginR(activity);
+        int marginB = UZUtil.getMiniPlayerMarginB(activity);
+        etMarginLeft.setText(marginL + "");
+        etMarginTop.setText(marginT + "");
+        etMarginRight.setText(marginR + "");
+        etMarginBottom.setText(marginB + "");
+
     }
 
     @Override
@@ -125,6 +145,9 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.bt_save_first_position:
                 saveConfigFirstPosition();
+                break;
+            case R.id.bt_save_margin:
+                saveConfigMargin();
                 break;
         }
     }
@@ -167,5 +190,22 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         int firstPositionY = Integer.parseInt(y);
         UZUtil.setMiniPlayerFirstPosition(activity, firstPositionX, firstPositionY);
         LToast.show(activity, "First position of mini player: " + firstPositionX + "x" + firstPositionY);
+    }
+
+    private void saveConfigMargin() {
+        String l = etMarginLeft.getText().toString();
+        String t = etMarginTop.getText().toString();
+        String r = etMarginRight.getText().toString();
+        String b = etMarginBottom.getText().toString();
+        if (l.isEmpty() || t.isEmpty() || r.isEmpty() || b.isEmpty()) {
+            LToast.show(activity, "Cannot set property margin.");
+            return;
+        }
+        int marginL = Integer.parseInt(l);
+        int marginT = Integer.parseInt(t);
+        int marginR = Integer.parseInt(r);
+        int marginB = Integer.parseInt(b);
+        UZUtil.setMiniPlayerMargin(activity, marginL, marginT, marginR, marginB);
+        LToast.show(activity, "Set margin " + marginL + " - " + marginT + " - " + marginR + " - " + marginB);
     }
 }

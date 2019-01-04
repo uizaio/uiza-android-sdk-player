@@ -67,6 +67,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private boolean isEZDestroy;
     private boolean isEnableVibration;
     private boolean isEnableSmoothSwitch;
+    private int marginL;
+    private int marginT;
+    private int marginR;
+    private int marginB;
 
     public FUZVideoService() {
     }
@@ -140,6 +144,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
         statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
+        marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
+        marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
+        marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
+        marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
+        //LLog.d(TAG, "onCreate " + marginL + " - " + marginT + " - " + marginR + " - " + marginB);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
         findViews();
         //Add the view to the window.
@@ -291,21 +300,40 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private CountDownTimer countDownTimer;
 
-    private void slideToPosition(final int goToPosX, final int goToPosY) {
+    private void slideToPosition(int goToPosX, int goToPosY) {
         final int currentPosX = params.x;
         final int currentPosY = params.y;
         //LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
-        final int a = (int) Math.abs(goToPosX - currentPosX);
-        final int b = (int) Math.abs(goToPosY - currentPosY);
-        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b);
 
+        final int mGoToPosX;
+        final int mGoToPosY;
+        int videoW = getVideoW();
+        int videoH = getVideoH();
+        if (goToPosX <= 0) {
+            mGoToPosX = marginL;
+        } else if (goToPosX >= screenWidth - videoW) {
+            mGoToPosX = goToPosX - marginR;
+        } else {
+            mGoToPosX = goToPosX;
+        }
+        if (goToPosY <= 0) {
+            mGoToPosY = marginT;
+        } else if (goToPosY >= screenHeight - videoH) {
+            mGoToPosY = goToPosY - marginB;
+        } else {
+            mGoToPosY = goToPosY;
+        }
+
+        final int a = (int) Math.abs(mGoToPosX - currentPosX);
+        final int b = (int) Math.abs(mGoToPosY - currentPosY);
+        //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
                 float step = (300 - t) / 3;
                 int tmpX;
                 int tmpY;
-                if (currentPosX > goToPosX) {
-                    if (currentPosY > goToPosY) {
+                if (currentPosX > mGoToPosX) {
+                    if (currentPosY > mGoToPosY) {
                         tmpX = currentPosX - (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -313,7 +341,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 } else {
-                    if (currentPosY > goToPosY) {
+                    if (currentPosY > mGoToPosY) {
                         tmpX = currentPosX + (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -327,7 +355,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             public void onFinish() {
                 //LLog.d(TAG, "slideToLeft onFinish " + goToPosX + " x " + goToPosY);
-                updateUISlide(goToPosX, goToPosY);
+                updateUISlide(mGoToPosX, mGoToPosY);
             }
         }.start();
     }
