@@ -21,7 +21,7 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 12/26/2018.
+ * Created by loitp on 4/1/2019.
  */
 
 public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {

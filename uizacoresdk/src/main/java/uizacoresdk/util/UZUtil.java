@@ -723,6 +723,8 @@ public class UZUtil {
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
     private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
+    private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
+    private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -846,6 +848,33 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_COLOR_VIEW_DESTROY, value);
         editor.apply();
+    }
+
+    public static int getMiniPlayerFirstPositionX(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_FIRST_POSITION_X, Constants.NOT_FOUND);
+    }
+
+    private static void setMiniPlayerFirstPositionX(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_FIRST_POSITION_X, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerFirstPositionY(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_FIRST_POSITION_Y, Constants.NOT_FOUND);
+    }
+
+    private static void setMiniPlayerFirstPositionY(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_FIRST_POSITION_Y, value);
+        editor.apply();
+    }
+
+    public static void setMiniPlayerFirstPosition(Context context, int firstPositionX, int firstPositionY) {
+        setMiniPlayerFirstPositionX(context, firstPositionX);
+        setMiniPlayerFirstPositionY(context, firstPositionY);
     }
 
     /////////////////////////////////OBJECT

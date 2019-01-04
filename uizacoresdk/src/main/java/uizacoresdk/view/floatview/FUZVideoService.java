@@ -38,7 +38,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
- * Created by loitp on 12/12/2018.
+ * Created by loitp on 1/4/2019.
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
@@ -235,9 +235,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
         int vW = screenWidth / 2;
         int vH = vW * videoH / videoW;
-        int newPosX = vW;
-        int newPosY = screenHeight - vH - statusBarHeight;//dell hieu sao phai tru getBottomBarHeight thi moi dung position :(
-        slideToPosition(newPosX, newPosY);
+        int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
+        int firstPositionY = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
+        if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
+            firstPositionX = vW;
+            firstPositionY = screenHeight - vH - statusBarHeight;
+        }
+        //LLog.d(TAG, "updateUIVideoSizeOneTime " + firstPositionX + "x" + firstPositionY);
+        slideToPosition(firstPositionX, firstPositionY);
     }
 
     private void openApp(String packageNameReceived) {

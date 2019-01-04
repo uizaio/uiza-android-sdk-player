@@ -5,29 +5,46 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.common.Constants;
+import vn.uiza.views.LToast;
 
 public class MiniPlayerSettingActivity extends BaseActivity implements View.OnClickListener {
     private Button btColor0;
     private Button btColor1;
     private Button btColor2;
+    private Button btSaveFirstPosition;
     private Switch swEzDestroy;
     private Switch swVibrateDestroy;
     private Switch swSmoothSwitch;
+    private EditText etPositionX;
+    private EditText etPositionY;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
         btColor1 = (Button) findViewById(R.id.bt_color_1);
         btColor2 = (Button) findViewById(R.id.bt_color_2);
         swEzDestroy = (Switch) findViewById(R.id.sw_ez_destroy);
         swVibrateDestroy = (Switch) findViewById(R.id.sw_vibrate_destroy);
         swSmoothSwitch = (Switch) findViewById(R.id.sw_smooth_switch);
+        etPositionX = (EditText) findViewById(R.id.et_position_x);
+        etPositionY = (EditText) findViewById(R.id.et_position_y);
+        btSaveFirstPosition = (Button) findViewById(R.id.bt_save_first_position);
+        btColor0.setOnClickListener(this);
+        btColor1.setOnClickListener(this);
+        btColor2.setOnClickListener(this);
+        btSaveFirstPosition.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        findViews();
         int currentViewDestroyColor = UZUtil.getMiniPlayerColorViewDestroy(activity);
         if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.black_65)) {
             btColor0.setText("Default");
@@ -36,9 +53,6 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         } else if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.GreenTran)) {
             btColor2.setText("GreenTran");
         }
-        btColor0.setOnClickListener(this);
-        btColor1.setOnClickListener(this);
-        btColor2.setOnClickListener(this);
         boolean isEZDestroy = UZUtil.getMiniPlayerEzDestroy(activity);
         swEzDestroy.setChecked(isEZDestroy);
         setSwEzDestroy(isEZDestroy);
@@ -63,6 +77,14 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 setSwSmoothSwitch(isChecked);
             }
         });
+        int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(activity);
+        int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(activity);
+        if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
+            //default: BOTTOM_RIGHT of device screen
+        } else {
+            etPositionX.setText(firstPositionX + "");
+            etPositionY.setText(firstPositionY + "");
+        }
     }
 
     @Override
@@ -101,6 +123,9 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 btColor1.setText("");
                 btColor2.setText("GreenTran");
                 break;
+            case R.id.bt_save_first_position:
+                saveConfigFirstPosition();
+                break;
         }
     }
 
@@ -129,5 +154,18 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             swSmoothSwitch.setText("Off");
         }
         UZUtil.setMiniPlayerEnableSmoothSwitch(activity, isChecked);
+    }
+
+    private void saveConfigFirstPosition() {
+        String x = etPositionX.getText().toString();
+        String y = etPositionY.getText().toString();
+        if (x.isEmpty() || y.isEmpty()) {
+            LToast.show(activity, "Cannot set first position of mini player");
+            return;
+        }
+        int firstPositionX = Integer.parseInt(x);
+        int firstPositionY = Integer.parseInt(y);
+        UZUtil.setMiniPlayerFirstPosition(activity, firstPositionX, firstPositionY);
+        LToast.show(activity, "First position of mini player: " + firstPositionX + "x" + firstPositionY);
     }
 }
