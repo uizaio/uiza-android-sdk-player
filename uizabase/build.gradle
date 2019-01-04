@@ -42,7 +42,7 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.3.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     api 'com.j256.ormlite:ormlite-core:4.48'
     api 'com.j256.ormlite:ormlite-android:4.48'
 
@@ -62,8 +62,6 @@ dependencies {
     api 'com.daimajia.androidanimations:library:2.2@aar'
 
     //glide
-    //implementation 'com.github.bumptech.glide:glide:3.7.0'
-    //implementation 'com.github.bumptech.glide:glide:4.4.0'
     api('com.github.bumptech.glide:glide:4.5.0@aar') {
         //transitive = true;
         exclude group: "com.android.support"
@@ -76,10 +74,6 @@ dependencies {
 
     //compile 'com.daasuu:EasingInterpolator:1.0.0'//need for shine button
     api 'com.nineoldandroids:library:2.4.0'//for draggable view
-
-    //for livestream
-    //https://github.com/tplloi/rtmp-rtsp-stream-client-java
-    //compile 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.1'
 
     //compile 'com.nshmura:snappysmoothscroller:1.0.0'
 
