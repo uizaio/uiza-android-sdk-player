@@ -192,6 +192,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
                 UZUtil.toggleResumePauseVideo(activity);
                 break;
             case R.id.bt_full_screen:
+                UZUtil.openAppFromMiniPlayer(activity);
                 break;
             case R.id.bt_stop_mini_player:
                 UZUtil.stopMiniPlayer(activity);

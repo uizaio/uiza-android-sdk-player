@@ -1020,4 +1020,11 @@ public class UZUtil {
             ComunicateMng.postFromActivity(msgFromActivity);
         }
     }
+
+    public static void openAppFromMiniPlayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }

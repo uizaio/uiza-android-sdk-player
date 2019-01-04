@@ -221,7 +221,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openApp(getPackageName());
+                openApp();
             }
         });
         btPlayPause.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +274,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         slideToPosition(firstPositionX, firstPositionY);
     }
 
-    private void openApp(String packageNameReceived) {
+    private void openApp() {
         if (fuzVideo == null || fuzVideo.getPlayer() == null) {
             return;
         }
@@ -303,18 +303,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         }
         LLog.d(TAG, "miniplayer STEP 5 START OPEN APP -> classNameOfPlayer " + classNameOfPlayer + ", miniplayer content position " + fuzVideo.getCurrentPosition());
-        if (packageNameReceived != null && packageNameReceived.equals(getBaseContext().getPackageName())) {
-            try {
-                Class classNamePfPlayer = Class.forName(classNameOfPlayer);
-                Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
-                UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
-                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getBaseContext().startActivity(intent);
-            } catch (ClassNotFoundException e) {
-                LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
-            }
+        try {
+            Class classNamePfPlayer = Class.forName(classNameOfPlayer);
+            Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
+            UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
+            UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getBaseContext().startActivity(intent);
+        } catch (ClassNotFoundException e) {
+            LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
         }
     }
 
@@ -929,7 +927,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         if (msgFromActivity instanceof ComunicateMng.MsgFromActivityPosition) {
-            LLog.d(TAG, "fuck Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
+            //LLog.d(TAG, "Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
                 LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true");
@@ -944,7 +942,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             }
         } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            LLog.d(TAG, "fuck lang nghe UZVideo da init success hay chua");
+            //LLog.d(TAG, "lang nghe UZVideo da init success hay chua");
             LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             if (isEnableSmoothSwitch) {
                 //get current content position and pass it to UZVideo
@@ -958,7 +956,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             stopSelf();
         }
         String msg = msgFromActivity.getMsg();
-        LLog.d(TAG, "fuck msg " + msg);
+        //LLog.d(TAG, "msg " + msg);
         if (msg.equals(ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER)) {
             showController();
         } else if (msg.equals(ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER)) {
@@ -971,6 +969,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             resumeVideo();
         } else if (msg.equals(ComunicateMng.TOGGLE_RESUME_PAUSE_MINI_PLAYER)) {
             toggleResumePause();
+        } else if (msg.equals(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER)) {
+            openApp();
         }
     }
 }

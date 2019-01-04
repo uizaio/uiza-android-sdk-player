@@ -14,6 +14,7 @@ public class ComunicateMng {
     public final static String PAUSE_MINI_PLAYER = "PAUSE_MINI_PLAYER";
     public final static String RESUME_MINI_PLAYER = "RESUME_MINI_PLAYER";
     public final static String TOGGLE_RESUME_PAUSE_MINI_PLAYER = "TOGGLE_RESUME_PAUSE_MINI_PLAYER";
+    public final static String OPEN_APP_FROM_MINI_PLAYER = "OPEN_APP_FROM_MINI_PLAYER";
 
     public static class MsgFromActivity {
         private String msg;
