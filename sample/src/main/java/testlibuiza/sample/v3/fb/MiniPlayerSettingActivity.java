@@ -36,7 +36,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private Button btPause;
     private Button btPlayPause;
     private Button btFullScreen;
-    private Button bt_stop_mini_player;
+    private Button btStopMiniPlayer;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -60,7 +60,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btPause = (Button) findViewById(R.id.bt_pause);
         btPlayPause = (Button) findViewById(R.id.bt_play_pause);
         btFullScreen = (Button) findViewById(R.id.bt_full_screen);
-        bt_stop_mini_player = (Button) findViewById(R.id.bt_stop_mini_player);
+        btStopMiniPlayer = (Button) findViewById(R.id.bt_stop_mini_player);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
@@ -73,7 +73,7 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         btPause.setOnClickListener(this);
         btPlayPause.setOnClickListener(this);
         btFullScreen.setOnClickListener(this);
-        bt_stop_mini_player.setOnClickListener(this);
+        btStopMiniPlayer.setOnClickListener(this);
     }
 
     @Override
