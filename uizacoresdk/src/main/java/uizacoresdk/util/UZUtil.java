@@ -30,6 +30,7 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
+import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -367,13 +368,20 @@ public class UZUtil {
             return;
         }
         //LLog.d(TAG, "stopMiniPlayer");
-        boolean isSvPipRunning = UZUtil.checkServiceRunning(activity, FUZVideoService.class.getName());
+        boolean isSvPipRunning = isMiniPlayerRunning(activity);
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
             Intent intent = new Intent(activity, FUZVideoService.class);
             activity.stopService(intent);
         }
+    }
+
+    public static boolean isMiniPlayerRunning(Context context) {
+        if (context == null) {
+            return false;
+        }
+        return UZUtil.checkServiceRunning(context, FUZVideoService.class.getName());
     }
 
     //=============================================================================START FOR UIZA V3
@@ -970,4 +978,25 @@ public class UZUtil {
     }
 
     //=============================================================================END PREF
+
+    public static void showMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void hideMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void toggleMiniPlayerController(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }

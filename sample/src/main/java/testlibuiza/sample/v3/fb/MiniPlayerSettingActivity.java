@@ -29,6 +29,9 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
     private EditText etMarginRight;
     private EditText etMarginBottom;
     private Button btSaveMargin;
+    private Button btShowController;
+    private Button btHideController;
+    private Button btToggleController;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -45,11 +48,17 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         etMarginBottom = (EditText) findViewById(R.id.et_margin_bottom);
         btSaveFirstPosition = (Button) findViewById(R.id.bt_save_first_position);
         btSaveMargin = (Button) findViewById(R.id.bt_save_margin);
+        btShowController = (Button) findViewById(R.id.bt_show_controller);
+        btHideController = (Button) findViewById(R.id.bt_hide_controller);
+        btToggleController = (Button) findViewById(R.id.bt_toggle_controller);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
         btSaveFirstPosition.setOnClickListener(this);
         btSaveMargin.setOnClickListener(this);
+        btShowController.setOnClickListener(this);
+        btHideController.setOnClickListener(this);
+        btToggleController.setOnClickListener(this);
     }
 
     @Override
@@ -149,7 +158,28 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
             case R.id.bt_save_margin:
                 saveConfigMargin();
                 break;
+            case R.id.bt_show_controller:
+                setBtShowController();
+                break;
+            case R.id.bt_hide_controller:
+                setBtHideController();
+                break;
+            case R.id.bt_toggle_controller:
+                setBtToggleController();
+                break;
         }
+    }
+
+    private void setBtShowController() {
+        UZUtil.showMiniPlayerController(activity);
+    }
+
+    private void setBtHideController() {
+        UZUtil.hideMiniPlayerController(activity);
+    }
+
+    private void setBtToggleController() {
+        UZUtil.toggleMiniPlayerController(activity);
     }
 
     private void setSwEzDestroy(boolean isChecked) {

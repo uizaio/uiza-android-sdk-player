@@ -3,11 +3,15 @@ package uizacoresdk.view;
 import org.greenrobot.eventbus.EventBus;
 
 /**
- * Created by LENOVO on 6/1/2018.
+ * Created by loitp on 1/4/2019.
  */
 
 public class ComunicateMng {
     //================================== ACTIVITY TO SERVICE
+    public final static String SHOW_MINI_PLAYER_CONTROLLER = "SHOW_MINI_PLAYER_CONTROLLER";
+    public final static String HIDE_MINI_PLAYER_CONTROLLER = "HIDE_MINI_PLAYER_CONTROLLER";
+    public final static String TOGGLE_MINI_PLAYER_CONTROLLER = "TOGGLE_MINI_PLAYER_CONTROLLER";
+
     public static class MsgFromActivity {
         private String msg;
 

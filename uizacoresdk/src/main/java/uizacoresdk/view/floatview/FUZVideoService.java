@@ -383,10 +383,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private boolean isControllerShowing() {
+        if (rlControl == null) {
+            return false;
+        }
         return rlControl.getVisibility() == View.VISIBLE;
     }
 
     private void showController() {
+        if (rlControl == null) {
+            return;
+        }
         if (!isControllerShowing()) {
             rlControl.setVisibility(View.VISIBLE);
             setSizeMoveView(false, true);
@@ -394,6 +400,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void hideController() {
+        if (rlControl == null) {
+            return;
+        }
         if (isControllerShowing()) {
             rlControl.setVisibility(View.GONE);
             setSizeMoveView(false, false);
@@ -895,17 +904,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     //listen msg from UZVideo
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ComunicateMng.MsgFromActivity msg) {
-        if (msg == null || fuzVideo == null) {
+    public void onMessageEvent(ComunicateMng.MsgFromActivity msgFromActivity) {
+        if (msgFromActivity == null || fuzVideo == null) {
             return;
         }
-        if (msg instanceof ComunicateMng.MsgFromActivityPosition) {
-            //Nhan duoc content position moi cua UZVideo va tien hanh seek toi day
+        if (msgFromActivity instanceof ComunicateMng.MsgFromActivityPosition) {
+            LLog.d(TAG, "fuck Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
                 LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true");
             } else {
-                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msg).getPosition();
+                long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
                 LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch false -> contentBufferedPosition " + contentBufferedPosition + ", position: " + contentPosition);
                 if (contentPosition >= contentBufferedPosition) {
@@ -914,9 +923,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     fuzVideo.seekTo(contentPosition);
                 }
             }
-        } else if (msg instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
-            //lắng nghe UZVideo đã init success hay chưa
-            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msg).isInitSuccess());
+        } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
+            LLog.d(TAG, "fuck lang nghe UZVideo da init success hay chua");
+            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             if (isEnableSmoothSwitch) {
                 //get current content position and pass it to UZVideo
                 /*ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
@@ -927,6 +936,15 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //do nothing
             }
             stopSelf();
+        }
+        String msg = msgFromActivity.getMsg();
+        LLog.d(TAG, "fuck msg " + msg);
+        if (msg.equals(ComunicateMng.SHOW_MINI_PLAYER_CONTROLLER)) {
+            showController();
+        } else if (msg.equals(ComunicateMng.HIDE_MINI_PLAYER_CONTROLLER)) {
+            hideController();
+        } else if (msg.equals(ComunicateMng.TOGGLE_MINI_PLAYER_CONTROLLER)) {
+            toggleController();
         }
     }
 }

@@ -120,7 +120,7 @@ import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
- * Created by loitp on 1/3/2018.
+ * Created by loitp on 1/4/2019.
  */
 
 public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, UZPlayerView.ControllerStateCallback, SensorOrientationChangeNotifier.Listener {
@@ -2234,6 +2234,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private boolean isCalledFromConnectionEventBus = false;
 
+    //listen connnection
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
