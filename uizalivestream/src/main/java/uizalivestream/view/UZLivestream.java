@@ -74,7 +74,7 @@ import vn.uiza.utils.util.AppUtils;
 import vn.uiza.views.LToast;
 
 /**
- * Created by loitp on 12/17/2018.
+ * Created by loitp on 4/1/2019.
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback, View.OnTouchListener {
