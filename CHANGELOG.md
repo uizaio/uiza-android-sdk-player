@@ -1,3 +1,15 @@
+### 3.1.1 (2019-1-4)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.1.1'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.1.1'
+
+- Add first position config for mini player, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java#L230).
+- Add func set property margin for mini player, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java#L243).
+- Add func control mini player, check [here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java).
+
 ### 3.0.8 (2018-12-27)
 
     //for playing video VOD, LIVE  
