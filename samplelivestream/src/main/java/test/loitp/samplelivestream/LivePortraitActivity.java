@@ -50,6 +50,7 @@ import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
 import vn.uiza.core.base.BaseActivity;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
@@ -378,8 +379,8 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
             bStartStopStore.setEnabled(true);
             btSwitchCamera.setEnabled(true);
             btFilter.setEnabled(true);
-            //uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-            uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
+            uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
+            //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
         } else {
             LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
             onBackPressed();
@@ -407,6 +408,7 @@ public class LivePortraitActivity extends BaseActivity implements View.OnClickLi
         btSwitchCamera.setEnabled(true);
         btFilter.setEnabled(true);
         tvMainUrl.setText(mainUrl);
+        LLog.d(TAG, "mainUrl " + mainUrl);
     }
 
     @Override

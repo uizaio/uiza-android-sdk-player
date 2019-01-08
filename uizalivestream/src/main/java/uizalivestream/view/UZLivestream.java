@@ -79,7 +79,6 @@ import vn.uiza.views.LToast;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback, View.OnTouchListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
-    //TODO remove gson later
     private Gson gson = new Gson();
     private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
@@ -399,6 +398,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        //LLog.d(TAG, "surfaceDestroyed");
         if (rtmpCamera1.isRecording()) {
             rtmpCamera1.stopRecord();
             LToast.show(getContext(), "File " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
