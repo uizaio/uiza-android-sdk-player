@@ -33,7 +33,6 @@ import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.floatview.FUZVideoService;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
@@ -429,7 +428,7 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final BaseActivity activity, final String entityId, final CallbackGetDetailEntity callback) {
+    public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callback) {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 

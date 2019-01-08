@@ -1,32 +1,21 @@
 package test.loitp.samplelivestream;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import vn.uiza.core.base.BaseActivity;
-
-public class MenuActivity extends BaseActivity {
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_menu;
-    }
+public class MenuActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
+        setContentView(R.layout.activity_menu);
         findViewById(R.id.bt_portrait).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,9 +1,11 @@
 package test.loitp.samplelivestream;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -49,12 +51,13 @@ import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class LiveLandscapeActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
+public class LiveLandscapeActivity extends AppCompatActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -65,25 +68,12 @@ public class LiveLandscapeActivity extends BaseActivity implements View.OnClickL
     private TextView tvInfo;
 
     @Override
-    protected boolean setFullScreen() {
-        return true;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_live_landscape;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        setContentView(R.layout.activity_live_landscape);
+        activity = this;
         if (App.DF_DOMAIN_API.equals("input")) {
             LToast.show(activity, "Please configure your workspace's information in App.java");
             return;

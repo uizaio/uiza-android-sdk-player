@@ -53,7 +53,6 @@ import uizalivestream.R;
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
@@ -62,6 +61,7 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
@@ -850,7 +850,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        ((BaseActivity) getContext()).subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
+        ApiMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
                 //LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
@@ -881,7 +881,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
-        UZUtilBase.getDataFromEntityIdLIVE((BaseActivity) getContext(), entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));

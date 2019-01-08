@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.fb;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,7 +14,6 @@ import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LLog;
@@ -24,30 +25,19 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 4/1/2019.
  */
 
-public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZVideo uzVideo;
     private Button btMini;
     private TextView tvLoadingMiniPlayer;
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_fb;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = this;
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fb);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);

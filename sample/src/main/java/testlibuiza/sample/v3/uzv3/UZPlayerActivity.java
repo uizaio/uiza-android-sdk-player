@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.uzv3;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +17,6 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -25,7 +26,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class UZPlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private Activity activity;
+    private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
     private TextView tvProgressAd;
     private TextView tvProgressVideo;
@@ -35,24 +38,11 @@ public class UZPlayerActivity extends BaseActivity implements UZCallback, UZItem
     private TextView tvScreenRotate;
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v3_cannot_slide_player;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = this;
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.v3_cannot_slide_player);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         //uzVideo.setDefaultUseController(false);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);

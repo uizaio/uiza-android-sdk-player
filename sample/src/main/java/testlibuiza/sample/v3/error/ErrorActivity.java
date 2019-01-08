@@ -1,17 +1,18 @@
 package testlibuiza.sample.v3.error;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 
-public class ErrorActivity extends BaseActivity {
+public class ErrorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_error);
         TextView tvErr = (TextView) findViewById(R.id.tv_err);
         String s = UZException.ERR_CODE_0 + " - " + UZException.ERR_0 + "\n"
                 + UZException.ERR_CODE_1 + " - " + UZException.ERR_1 + "\n"
@@ -46,20 +47,5 @@ public class ErrorActivity extends BaseActivity {
                 + UZException.ERR_CODE_503 + " - " + UZException.ERR_503 + "\n";
 
         tvErr.setText(s);
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_error;
     }
 }

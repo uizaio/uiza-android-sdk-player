@@ -1,10 +1,12 @@
 package testlibuiza.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,13 +16,14 @@ import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.views.LToast;
 
-public class MainActivity extends BaseActivity implements View.OnFocusChangeListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private EditText etInput;
     private Button btVod;
     private Button btLive;
@@ -33,6 +36,8 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
+        setContentView(R.layout.activity_main);
         etInput = (EditText) findViewById(R.id.et_input);
         btVod = (Button) findViewById(R.id.bt_vod);
         btLive = (Button) findViewById(R.id.bt_live);
@@ -80,7 +85,7 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
         LUIUtil.setTextShadow(tvVs);
         tvVs.setText("© 2018 Uiza. All rights reserved.\nVersion " + BuildConfig.VERSION_NAME);
 
-        if(LSApplication.getInstance().DF_DOMAIN_API.equals("input")){
+        if (LSApplication.getInstance().DF_DOMAIN_API.equals("input")) {
             showDialogInitWorkspace();
         }
     }
@@ -99,21 +104,6 @@ public class MainActivity extends BaseActivity implements View.OnFocusChangeList
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_main;
     }
 
     @Override

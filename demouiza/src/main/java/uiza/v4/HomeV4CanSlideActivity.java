@@ -1,5 +1,6 @@
 package uiza.v4;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +25,6 @@ import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -37,7 +37,9 @@ import vn.uiza.views.LToast;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
-public class HomeV4CanSlideActivity extends BaseActivity {
+public class HomeV4CanSlideActivity extends AppCompatActivity {
+    private Activity activity;
+    private final String TAG = getClass().getSimpleName();
     private DraggablePanel draggablePanel;
     private FrmVideoTop frmVideoTop;
     private FrmVideoBottom frmVideoBottom;
@@ -60,8 +62,9 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.v4_home_canslide_activity);
         llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close);
@@ -198,28 +201,13 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     private boolean doubleBackToExitPressedOnce = false;
 
-    public void replaceFragment(BaseFragment baseFragment) {
-        if (baseFragment instanceof FrmEntities) {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
+    public void replaceFragment(Fragment fragment) {
+        if (fragment instanceof FrmEntities) {
+            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, fragment, false);
         } else {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
+            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, fragment, true);
         }
-        tvTitle.setText(baseFragment.TAG);
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_home_canslide_activity;
+        tvTitle.setText(fragment.getClass().getSimpleName());
     }
 
     private void initializeDraggablePanel() {
@@ -328,8 +316,8 @@ public class HomeV4CanSlideActivity extends BaseActivity {
                 super.onBackPressed();
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
                 LLog.d(TAG, "onBackPressed after " + currentFragment.getClass().getSimpleName());
-                if (currentFragment instanceof BaseFragment) {
-                    tvTitle.setText(((BaseFragment) currentFragment).TAG);
+                if (currentFragment instanceof Fragment) {
+                    tvTitle.setText(((Fragment) currentFragment).getClass().getSimpleName());
                 }
             }
         }

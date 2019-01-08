@@ -1,8 +1,10 @@
 package testlibuiza.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +24,6 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
@@ -32,7 +33,9 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.autosize.UZImageButton;
 
-public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
+public class PlayerActivity extends AppCompatActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZVideo uzVideo;
     private UZImageButton uzibCustomHq;
     private UZImageButton uzibCustomAudio;
@@ -41,6 +44,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         //init skin
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
@@ -50,6 +54,7 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player);
         sv = (ScrollView) findViewById(R.id.sv);
         llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
@@ -94,21 +99,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
                 displayUI(uzVideo.getAudioList());
             }
         });
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_player;
     }
 
     @Override

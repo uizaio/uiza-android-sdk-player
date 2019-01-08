@@ -1,7 +1,9 @@
 package testlibuiza.sample.v3.fb;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -10,11 +12,11 @@ import android.widget.Switch;
 
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.views.LToast;
 
-public class MiniPlayerSettingActivity extends BaseActivity implements View.OnClickListener {
+public class MiniPlayerSettingActivity extends AppCompatActivity implements View.OnClickListener {
+    private Activity activity;
     private Button btColor0;
     private Button btColor1;
     private Button btColor2;
@@ -78,7 +80,9 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setting_mini_player);
         findViews();
         int currentViewDestroyColor = UZUtil.getMiniPlayerColorViewDestroy(activity);
         if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.black_65)) {
@@ -129,21 +133,6 @@ public class MiniPlayerSettingActivity extends BaseActivity implements View.OnCl
         etMarginRight.setText(marginR + "");
         etMarginBottom.setText(marginB + "");
 
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_setting_mini_player;
     }
 
     @Override

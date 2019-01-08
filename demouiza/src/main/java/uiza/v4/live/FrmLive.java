@@ -9,9 +9,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,12 +27,12 @@ import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
@@ -37,7 +40,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
-public class FrmLive extends BaseFragment implements IOnBackPressed {
+public class FrmLive extends Fragment implements IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
     private final int limit = 50;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
@@ -51,11 +55,6 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
     private ProgressBar pb;
 
     @Override
-    protected String setTag() {
-        return "Livestreaming";
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (UZUtil.getClickedPip(getActivity())) {
@@ -67,9 +66,9 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(null);
             }
         }
-        tvMsg = (TextView) frmRootView.findViewById(R.id.tv_msg);
-        recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
-        pb = (ProgressBar) frmRootView.findViewById(R.id.pb);
+        tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
+        pb = (ProgressBar) view.findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(pb, Color.WHITE);
         LDialogUtil.hide(pb);
 
@@ -80,7 +79,17 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
                     UZUtil.setClickedPip(getActivity(), false);
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
                 } else {
-                    showDialogError("This content is not streaming now");
+                    LDialogUtil.showDialog1(getActivity(), "This content is not streaming now", new LDialogUtil.Callback1() {
+                        @Override
+                        public void onClick1() {
+                            getActivity().onBackPressed();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            getActivity().onBackPressed();
+                        }
+                    });
                 }
             }
 
@@ -107,9 +116,10 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         getListAllEntities();
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_live;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_live, container, false);
     }
 
     @Override
@@ -133,7 +143,7 @@ public class FrmLive extends BaseFragment implements IOnBackPressed {
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UZService service = UZRestClient.createService(UZService.class);
-        subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+        ApiMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {
                 LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));

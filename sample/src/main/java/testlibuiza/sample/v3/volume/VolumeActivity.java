@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.volume;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -15,7 +17,6 @@ import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -26,7 +27,8 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by loitp on 7/16/2018.
  */
 
-public class VolumeActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class VolumeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private Activity activity;
     private UZVideo uzVideo;
     private SeekBar sb;
     private UZVerticalSeekBar sb1;
@@ -34,24 +36,11 @@ public class VolumeActivity extends BaseActivity implements UZCallback, UZItemCl
     private TextView tv;
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_volume;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = this;
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_volume);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         sb = (SeekBar) findViewById(R.id.sb);
         sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);

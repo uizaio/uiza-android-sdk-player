@@ -1,11 +1,13 @@
 package testlibuiza.sample.v3.customskin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -17,7 +19,6 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -29,29 +30,16 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 7/16/2018.
  */
 
-public class CustomSkinCodeSeekbarActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private Activity activity;
     private UZVideo uzVideo;
     private SeekBar seekBar;
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_skin_code_seekbar;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_uiza_custom_skin_code_seekbar);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         seekBar = (SeekBar) findViewById(R.id.sb);
         uzVideo.setAutoStart(true);
