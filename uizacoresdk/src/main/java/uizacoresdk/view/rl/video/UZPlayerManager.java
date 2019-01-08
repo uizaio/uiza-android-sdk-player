@@ -7,8 +7,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
-import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
-import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -28,7 +26,6 @@ import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
 import com.google.android.exoplayer2.drm.HttpMediaDrmCallback;
 import com.google.android.exoplayer2.drm.UnsupportedDrmException;
-import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -85,7 +82,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
-    private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
@@ -104,8 +100,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return linkPlay;
     }
 
-    private UZVideoAdPlayerListerner uzVideoAdPlayerListerner = new UZVideoAdPlayerListerner();
-
     private UZTimebar uzTimebar;
     private String thumbnailsUrl;
     private ImageView imageView;
@@ -118,7 +112,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.progressCallback = progressCallback;
     }
 
-    public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = uzVideo.getContext();
         this.videoW = 0;
         this.videoH = 0;
@@ -129,16 +123,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
         this.isFirstStateReady = false;
-
-        if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-            //do nothing
-        } else {
-            if (UZUtil.getClickedPip(context)) {
-                LLog.e(TAG, "UZPlayerManager don't init urlIMAAd because called from PIP again");
-            } else {
-                adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
-            }
-        }
 
         userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
 
@@ -184,13 +168,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
-    protected boolean isPlayingAd() {
-        if (uzVideoAdPlayerListerner == null) {
-            return false;
-        }
-        return uzVideoAdPlayerListerner.isPlayingAd();
-    }
-
     public void setRunnable() {
         //LLog.d(TAG, "runnable setRunnable");
         handler = new Handler();
@@ -199,50 +176,24 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             public void run() {
                 //LLog.d(TAG, "runnable run");
                 if (uzVideo != null && uzVideo.getUzPlayerView() != null) {
-                    boolean isPlayingAd = uzVideoAdPlayerListerner.isPlayingAd();
-                    if (uzVideoAdPlayerListerner.isEnded()) {
-                        onAdEnded();
-                    }
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd + ", isEnded " + isEnded);
-                    if (isPlayingAd) {
-                        hideProgress();
-                        uzVideo.setUseController(false);
-                        if (progressCallback != null) {
-                            VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            duration = (int) videoProgressUpdate.getDuration();
-                            s = (int) (videoProgressUpdate.getCurrentTime()) + 1;//add 1 second
-                            if (duration != 0) {
-                                percent = (int) (s * 100 / duration);
+                    if (progressCallback != null) {
+                        if (player != null) {
+                            mls = player.getCurrentPosition();
+                            duration = player.getDuration();
+                            if (mls >= duration) {
+                                mls = duration;
                             }
-                            //LLog.d(TAG, "runnable ad s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                            progressCallback.onAdProgress(s, (int) duration, percent);
+                            percent = (int) (mls * 100 / duration);
+                            s = Math.round(mls / 1000);
+                            //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            progressCallback.onVideoProgress(mls, s, duration, percent);
 
                             //buffer changing
-                                /*if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
-                                    bufferPosition = uzVideo.getBufferedPosition();
-                                    bufferPercentage = uzVideo.getBufferedPercentage();
-                                    progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage());
-                                }*/
-                        }
-                    } else {
-                        if (progressCallback != null) {
-                            if (player != null) {
-                                mls = player.getCurrentPosition();
-                                duration = player.getDuration();
-                                if (mls >= duration) {
-                                    mls = duration;
-                                }
-                                percent = (int) (mls * 100 / duration);
-                                s = Math.round(mls / 1000);
-                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                                progressCallback.onVideoProgress(mls, s, duration, percent);
-
-                                //buffer changing
-                                if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
-                                    bufferPosition = uzVideo.getBufferedPosition();
-                                    bufferPercentage = uzVideo.getBufferedPercentage();
-                                    progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage(), duration);
-                                }
+                            if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
+                                bufferPosition = uzVideo.getBufferedPosition();
+                                bufferPercentage = uzVideo.getBufferedPercentage();
+                                progressCallback.onBufferProgress(uzVideo.getBufferedPosition(), uzVideo.getBufferedPercentage(), duration);
                             }
                         }
                     }
@@ -313,19 +264,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //SUBTITLE
         MediaSource mediaSourceWithSubtitle = createMediaSourceWithSubtitle(mediaSourceVideo);
         //merge ads to media source subtitle
-        //IMA ADS
-        // Compose the content media source into a new AdsMediaSource with both ads and content.
-        MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
         // Prepare the player with the source.
         player.addListener(new UZPlayerEventListener());
         player.addAudioListener(new UZAudioEventListener());
         player.addVideoListener(new UZVideoEventListener());
         player.addMetadataOutput(new UZMetadataOutputListener());
         player.addTextOutput(new UZTextOutputListener());
-        if (adsLoader != null) {
-            adsLoader.addCallback(uzVideoAdPlayerListerner);
-        }
-        player.prepare(mediaSourceWithAds);
+        player.prepare(mediaSourceWithSubtitle);
         player.setPlayWhenReady(uzVideo.isAutoStart());
         //LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
         if (uzVideo.isLivestream()) {
@@ -441,20 +386,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return mediaSourceWithSubtitle;*/
     }
 
-    private MediaSource createMediaSourceWithAds(MediaSource mediaSource) {
-        if (adsLoader == null) {
-            return mediaSource;
-        }
-        MediaSource mediaSourceWithAds = new AdsMediaSource(
-                mediaSource,
-                this,
-                adsLoader,
-                uzVideo.getUzPlayerView().getOverlayFrameLayout(),
-                null,
-                null);
-        return mediaSourceWithAds;
-    }
-
     protected void resumeVideo() {
         if (player != null) {
             player.setPlayWhenReady(true);
@@ -485,9 +416,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
             handler = null;
             runnable = null;
-        }
-        if (adsLoader != null) {
-            adsLoader.release();
         }
     }
 
@@ -801,61 +729,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo != null && uzVideo.textOutput != null) {
                 uzVideo.textOutput.onCues(cues);
             }
-        }
-    }
-
-    private class UZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
-        private final String TAG = UZVideoAdPlayerListerner.class.getSimpleName();
-        private boolean isPlayingAd;
-        private boolean isEnded;
-
-        @Override
-        public void onPlay() {
-            //LLog.d(TAG, "onPlay");
-            isPlayingAd = true;
-        }
-
-        @Override
-        public void onVolumeChanged(int i) {
-            //LLog.d(TAG, "onVolumeChanged");
-        }
-
-        @Override
-        public void onPause() {
-            //LLog.d(TAG, "onPause");
-            isPlayingAd = false;
-        }
-
-        @Override
-        public void onLoaded() {
-            //LLog.d(TAG, "onLoaded");
-        }
-
-        @Override
-        public void onResume() {
-            //LLog.d(TAG, "onResume");
-            isPlayingAd = true;
-        }
-
-        @Override
-        public void onEnded() {
-            //LLog.d(TAG, "onEnded");
-            isPlayingAd = false;
-            isEnded = true;
-        }
-
-        @Override
-        public void onError() {
-            //LLog.d(TAG, "onError");
-            isPlayingAd = false;
-        }
-
-        public boolean isPlayingAd() {
-            return isPlayingAd;
-        }
-
-        public boolean isEnded() {
-            return isEnded;
         }
     }
 

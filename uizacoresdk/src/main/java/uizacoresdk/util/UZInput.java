@@ -9,17 +9,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class UZInput {
     private final String TAG = getClass().getSimpleName();
-    private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
     private Data data;
-
-    public String getUrlIMAAd() {
-        return urlIMAAd;
-    }
-
-    public void setUrlIMAAd(String urlIMAAd) {
-        this.urlIMAAd = urlIMAAd;
-    }
 
     public String getUrlThumnailsPreviewSeekbar() {
         return urlThumnailsPreviewSeekbar;

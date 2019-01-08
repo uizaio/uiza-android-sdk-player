@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.github.rubensousa.previewseekbar.PreviewView;
-import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -93,8 +92,6 @@ import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.restapi.uiza.model.v3.ad.Ad;
-import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
@@ -301,9 +298,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isCalledFromChangeSkin = false;
         isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;
-        isCalledAPIGetUrlIMAAdTag = false;
         isCalledAPIGetTokenStreaming = false;
-        urlIMAAd = null;
         tokenStreaming = null;
         this.entityId = entityId;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
@@ -321,13 +316,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         callAPIGetDetailEntity();
-        callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
         //TODO api setting config here
     }
 
     private boolean isCalledApiGetDetailEntity;
-    private boolean isCalledAPIGetUrlIMAAdTag;
     private boolean isCalledAPIGetTokenStreaming;
 
     private void callAPIGetDetailEntity() {
@@ -378,36 +371,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "callAPIGetDetailEntity else getClickedPip " + UZUtil.getClickedPip(activity) + ", isPlayPlaylistFolder " + isPlayPlaylistFolder());
             handleDataCallAPI();
         }
-    }
-
-    private String urlIMAAd = null;
-
-    private void callAPIGetUrlIMAAdTag() {
-        UZService service = UZRestClient.createService(UZService.class);
-        String id = entityId == null ? UZData.getInstance().getEntityId() : entityId;
-        ApiMaster.getInstance().subscribe(service.getCuePoint(id), new ApiSubscriber<AdWrapper>() {
-            @Override
-            public void onSuccess(AdWrapper result) {
-                isCalledAPIGetUrlIMAAdTag = true;
-                if (result == null || result.getData() == null || result.getData().isEmpty()) {
-                    LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has no ad");
-                    urlIMAAd = null;
-                } else {
-                    //Hien tai chi co the play ima ad o item thu 0
-                    Ad ad = result.getData().get(0);
-                    if (ad != null) {
-                        urlIMAAd = ad.getLink();
-                    }
-                    LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has ad -> play ad urlIMAAd " + urlIMAAd);
-                }
-                handleDataCallAPI();
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "callAPIGetUrlIMAAdTag onFail but ignored (dont care): " + e.getMessage());
-            }
-        });
     }
 
     private String tokenStreaming;
@@ -510,11 +473,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void handleDataCallAPI() {
         //LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
-        if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
+        if (isCalledApiGetDetailEntity  && isCalledAPIGetTokenStreaming) {
             //LLog.d(TAG, "______________________________handleDataCallAPI ->>>>>>>>>>>>>>>>> READY");
             UZInput uzInput = new UZInput();
             uzInput.setData(UZData.getInstance().getData());
-            uzInput.setUrlIMAAd(urlIMAAd);
 
             //TODO iplm url thumnail
             uzInput.setUrlThumnailsPreviewSeekbar(null);
@@ -584,9 +546,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isCalledFromChangeSkin = false;
         setVisibilityOfPlaylistFolderController(View.GONE);
         isCalledApiGetDetailEntity = false;
-        isCalledAPIGetUrlIMAAdTag = false;
         isCalledAPIGetTokenStreaming = false;
-        urlIMAAd = null;
         tokenStreaming = null;
         this.entityId = null;
         this.isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed = false;
@@ -598,7 +558,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIEndScreen();
 
         UZInput uzInput = new UZInput();
-        uzInput.setUrlIMAAd(urlIMAAd);
         uzInput.setUrlThumnailsPreviewSeekbar(null);
 
         UZData.getInstance().setUizaInput(uzInput, false);
@@ -638,7 +597,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
 
-        initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+        initDataSource(linkPlay,  UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
         if (uzCallback != null) {
             uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
         }
@@ -786,9 +745,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             if (isCalledFromChangeSkin) {
                 //if called from func changeSkin(), dont initDataSource with uilIMA Ad.
-                initDataSource(linkPlay, null, UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                initDataSource(linkPlay,  UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
             } else {
-                initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
+                initDataSource(linkPlay,  UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
             }
             if (uzCallback != null) {
                 uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
@@ -912,12 +871,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public boolean changeSkin(int skinId) {
         //LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
-            return false;
-        }
-        if (uzPlayerManager.isPlayingAd()) {
-            if (uzCallback != null) {
-                uzCallback.onError(UZExceptionUtil.getExceptionChangeSkin());
-            }
             return false;
         }
         UZData.getInstance().setCurrentPlayerId(skinId);
@@ -1173,7 +1126,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         this.progressCallback = progressCallback;
     }
 
-    private void initDataSource(String linkPlay, String urlIMAAd, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    private void initDataSource(String linkPlay, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         //hardcode to test
 
         //subtitleList
@@ -1191,7 +1144,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);*/
 
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
-        uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumbnailsPreviewSeekbar, subtitleList);
+        uzPlayerManager = new UZPlayerManager(this, linkPlay, urlThumbnailsPreviewSeekbar, subtitleList);
         if (uzTimebar != null) {
             if (urlThumbnailsPreviewSeekbar == null || urlThumbnailsPreviewSeekbar.isEmpty()) {
                 uzTimebar.setPreviewEnabled(false);
@@ -3101,10 +3054,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return entityId;
     }
 
-    public String getUrlIMAAd() {
-        return urlIMAAd;
-    }
-
     public String getTokenStreaming() {
         return tokenStreaming;
     }
@@ -3399,12 +3348,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void addTextOutput(TextOutput textOutput) {
         this.textOutput = textOutput;
-    }
-
-    protected VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback;
-
-    public void addVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
-        this.videoAdPlayerCallback = videoAdPlayerCallback;
     }
 
     private boolean isPlayerControllerAlwayVisible;

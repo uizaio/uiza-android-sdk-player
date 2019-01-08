@@ -126,8 +126,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        //setVideoCover();
-        initData(linkPlay, null, null, null);
+        initData(linkPlay,  null, null);
         onResume();
     }
 
@@ -169,9 +168,9 @@ public class FUZVideo extends RelativeLayout {
         this.progressCallback = progressCallback;
     }
 
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+    public void initData(String linkPlay, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
         //LLog.d(TAG, "initData linkPlay " + linkPlay);
-        fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlThumnailsPreviewSeekbar, subtitleList);
         fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {

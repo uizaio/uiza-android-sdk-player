@@ -216,13 +216,6 @@ public class UZData {
         return uzInput.getData().getChannelName();
     }
 
-    public String getUrlIMAAd() {
-        if (uzInput == null) {
-            return null;
-        }
-        return uzInput.getUrlIMAAd();
-    }
-
     public String getUrlThumnailsPreviewSeekbar() {
         if (uzInput == null) {
             return null;

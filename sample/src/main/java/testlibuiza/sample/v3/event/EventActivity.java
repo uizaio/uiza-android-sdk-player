@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -52,7 +51,6 @@ public class EventActivity extends AppCompatActivity {
     private TextView tvPlayerListener;
     private TextView tvMetadataOutput;
     private TextView tvTextOutput;
-    private TextView tvAd;
     private TextView tvController;
     private TextView tvProgress;
     private TextView tvTouch;
@@ -73,7 +71,6 @@ public class EventActivity extends AppCompatActivity {
         tvMetadataOutput = (TextView) findViewById(R.id.tv_metadata_output);
         tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
         tvController = (TextView) findViewById(R.id.tv_controller);
-        tvAd = (TextView) findViewById(R.id.tv_ad);
         tvProgress = (TextView) findViewById(R.id.tv_progress);
         tvTouch = (TextView) findViewById(R.id.tv_touch);
         tvItemClick = (TextView) findViewById(R.id.tv_item_click);
@@ -200,42 +197,6 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onCues(List<Cue> cues) {
                 tvTextOutput.setText("onCues");
-            }
-        });
-        uzVideo.addVideoAdPlayerCallback(new VideoAdPlayer.VideoAdPlayerCallback() {
-            @Override
-            public void onPlay() {
-                tvAd.setText("onPlay");
-            }
-
-            @Override
-            public void onVolumeChanged(int i) {
-                tvAd.setText("onVolumeChanged " + i);
-            }
-
-            @Override
-            public void onPause() {
-                tvAd.setText("onPause");
-            }
-
-            @Override
-            public void onLoaded() {
-                tvAd.setText("onLoaded");
-            }
-
-            @Override
-            public void onResume() {
-                tvAd.setText("onResume");
-            }
-
-            @Override
-            public void onEnded() {
-                tvAd.setText("onEnded");
-            }
-
-            @Override
-            public void onError() {
-                tvAd.setText("onError");
             }
         });
         uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {

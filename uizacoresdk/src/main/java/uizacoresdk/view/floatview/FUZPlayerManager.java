@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 
-import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
-import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -15,7 +13,6 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -52,14 +49,12 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     private Context context;
     private FUZVideo fuzVideo;
     private DebugTextViewHelper debugTextViewHelper;
-    private ImaAdsLoader adsLoader = null;
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
     private SimpleExoPlayer player;
     private String userAgent;
     private String linkPlay;
     private List<Subtitle> subtitleList;
-    private FUZVideoAdPlayerListerner FUZVideoAdPlayerListerner = new FUZVideoAdPlayerListerner();
     private Handler handler;
     private Runnable runnable;
     private ProgressCallback progressCallback;
@@ -68,17 +63,13 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         this.progressCallback = progressCallback;
     }
 
-    public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.context = fuzVideo.getContext();
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
         this.videoW = 0;
         this.videoH = 0;
-        if (urlIMAAd == null || urlIMAAd.isEmpty()) {
-        } else {
-            adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
-        }
         userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
         manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(context, userAgent, new DefaultBandwidthMeter());
@@ -88,31 +79,15 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             @Override
             public void run() {
                 if (fuzVideo != null && fuzVideo.getPlayerView() != null) {
-                    boolean isPlayingAd = FUZVideoAdPlayerListerner.isPlayingAd();
                     //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
-                    if (isPlayingAd) {
-                        fuzVideo.hideProgress();
-                        if (progressCallback != null) {
-                            VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
-                            int duration = (int) videoProgressUpdate.getDuration();
-                            int s = (int) videoProgressUpdate.getCurrentTime();
-                            int percent = 0;
-                            if (duration != 0) {
-                                percent = (int) (s * 100 / duration);
-                            }
-                            //LLog.d(TAG, "runnable ad mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                            progressCallback.onAdProgress(s, duration, percent);
-                        }
-                    } else {
-                        if (progressCallback != null) {
-                            if (player != null) {
-                                long mls = (long) player.getCurrentPosition();
-                                long duration = (long) player.getDuration();
-                                int percent = (int) (mls * 100 / duration);
-                                int s = Math.round(mls / 1000);
-                                //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
-                                progressCallback.onVideoProgress(mls, s, duration, percent);
-                            }
+                    if (progressCallback != null) {
+                        if (player != null) {
+                            long mls = (long) player.getCurrentPosition();
+                            long duration = (long) player.getDuration();
+                            int percent = (int) (mls * 100 / duration);
+                            int s = Math.round(mls / 1000);
+                            //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                            progressCallback.onVideoProgress(mls, s, duration, percent);
                         }
                     }
                     if (handler != null && runnable != null) {
@@ -145,14 +120,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         //merge ads to media source subtitle
         //IMA ADS
         // Compose the content media source into a new AdsMediaSource with both ads and content.
-        MediaSource mediaSourceWithAds = createMediaSourceWithAds(mediaSourceWithSubtitle);
         //Prepare the player with the source.
         player.addListener(new FUZPlayerEventListener());
         player.addVideoListener(new FUZVideoListener());
-        if (adsLoader != null) {
-            adsLoader.addCallback(FUZVideoAdPlayerListerner);
-        }
-        player.prepare(mediaSourceWithAds);
+        player.prepare(mediaSourceWithSubtitle);
         //setVolumeOff();
         if (isLivestream) {
             player.seekToDefaultPosition();
@@ -205,20 +176,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         return mediaSourceWithSubtitle;
     }
 
-    private MediaSource createMediaSourceWithAds(MediaSource mediaSource) {
-        if (adsLoader == null) {
-            return mediaSource;
-        }
-        MediaSource mediaSourceWithAds = new AdsMediaSource(
-                mediaSource,
-                this,
-                adsLoader,
-                fuzVideo.getPlayerView().getOverlayFrameLayout(),
-                null,
-                null);
-        return mediaSourceWithAds;
-    }
-
     //return true if toggleResume
     //return false if togglePause
     public boolean togglePauseResume() {
@@ -265,9 +222,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                 debugTextViewHelper.stop();
                 debugTextViewHelper = null;
             }
-        }
-        if (adsLoader != null) {
-            adsLoader.release();
         }
     }
 
@@ -386,53 +340,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     public SimpleExoPlayer getPlayer() {
         return player;
-    }
-
-    private class FUZVideoAdPlayerListerner implements VideoAdPlayer.VideoAdPlayerCallback {
-        private boolean isPlayingAd;
-        private boolean isEnded;
-
-        @Override
-        public void onPlay() {
-            isPlayingAd = true;
-        }
-
-        @Override
-        public void onVolumeChanged(int i) {
-        }
-
-        @Override
-        public void onPause() {
-            isPlayingAd = false;
-        }
-
-        @Override
-        public void onLoaded() {
-        }
-
-        @Override
-        public void onResume() {
-            isPlayingAd = true;
-        }
-
-        @Override
-        public void onEnded() {
-            isPlayingAd = false;
-            isEnded = true;
-        }
-
-        @Override
-        public void onError() {
-            isPlayingAd = false;
-        }
-
-        public boolean isPlayingAd() {
-            return isPlayingAd;
-        }
-
-        public boolean isEnded() {
-            return isEnded;
-        }
     }
 
     protected void setVolume(float volume) {

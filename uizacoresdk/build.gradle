@@ -51,7 +51,7 @@ dependencies {
 
     //exoplayer
     api 'com.google.android.exoplayer:exoplayer:2.9.2'
-    api 'com.google.android.exoplayer:extension-ima:2.9.2'
+    //api 'com.google.android.exoplayer:extension-ima:2.9.2'
     api 'com.google.android.exoplayer:exoplayer-dash:2.9.2'
     api 'com.google.android.exoplayer:exoplayer-ui:2.9.2'
 
