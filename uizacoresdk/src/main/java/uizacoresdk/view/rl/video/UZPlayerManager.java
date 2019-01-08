@@ -534,9 +534,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected void hideProgress() {
-        if (uzVideo.isCastingChromecast()) {
-            return;
-        }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());
     }
 

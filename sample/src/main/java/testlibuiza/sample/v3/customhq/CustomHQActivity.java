@@ -59,7 +59,6 @@ public class CustomHQActivity extends BaseActivity implements UZCallback, UZItem
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_hq_custom_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);

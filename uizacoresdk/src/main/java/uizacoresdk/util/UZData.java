@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 
-import com.google.android.gms.cast.MediaTrack;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
@@ -51,25 +47,6 @@ public class UZData {
     private String mDomainAPITracking;
     private String mToken;
     private String mAppId;
-
-    private Casty casty;
-
-    public void setCasty(Casty casty) {
-        this.casty = casty;
-    }
-
-    public Casty getCasty() {
-        /*if (casty == null) {
-            //TODO bug if use mini controller
-            //casty = Casty.create(baseActivity).withMiniController();
-            casty = Casty.create(baseActivity);
-        }*/
-        if (casty == null) {
-            LLog.e(TAG, "getCasty null");
-            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UZUtil.setCasty(this);' to your onStart() or onCreate()");
-        }
-        return casty;
-    }
 
     public void initSDK(String domainAPI, String token, String appId, int environment) {
         mDomainAPI = domainAPI;
@@ -359,32 +336,6 @@ public class UZData {
 
     public void setSettingPlayer(boolean settingPlayer) {
         isSettingPlayer = settingPlayer;
-    }
-
-    public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
-        int trackType = MediaTrack.TYPE_UNKNOWN;
-        if ("text".equals(type)) {
-            trackType = MediaTrack.TYPE_TEXT;
-        } else if ("video".equals(type)) {
-            trackType = MediaTrack.TYPE_VIDEO;
-        } else if ("audio".equals(type)) {
-            trackType = MediaTrack.TYPE_AUDIO;
-        }
-
-        int trackSubType = MediaTrack.SUBTYPE_NONE;
-        if (subType != null) {
-            if ("captions".equals(type)) {
-                trackSubType = MediaTrack.SUBTYPE_CAPTIONS;
-            } else if ("subtitle".equals(type)) {
-                trackSubType = MediaTrack.SUBTYPE_SUBTITLES;
-            }
-        }
-
-        return new MediaTrack.Builder(id, trackType)
-                .setName(name)
-                .setSubtype(trackSubType)
-                .setContentId(contentId)
-                .setLanguage(language).build();
     }
 
     //start singleton data if play entity

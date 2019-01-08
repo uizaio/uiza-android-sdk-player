@@ -46,7 +46,6 @@ public class FBVideoActivity extends BaseActivity implements UZCallback, UZItemC
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);

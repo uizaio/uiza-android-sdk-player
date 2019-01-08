@@ -7,15 +7,6 @@
             android:name=".view.floatview.FUZVideoService"
             android:enabled="true"
             android:exported="false" />
-
-        <!--START CHROMECAST-->
-        <meta-data
-            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="uizacoresdk.chromecast.CastOptionsProvider" />
-        <activity
-            android:name=".chromecast.ExpandedControlsActivity"
-            android:theme="@style/Theme.CastVideosDark" />
-        <!--STOP CHROMECAST-->
     </application>
 
 </manifest>

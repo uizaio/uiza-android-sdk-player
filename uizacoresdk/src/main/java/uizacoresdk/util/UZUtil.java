@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.dlg.hq.UZItem;
@@ -38,7 +37,6 @@ import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LConnectivityUtil;
-import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
@@ -577,16 +575,6 @@ public class UZUtil {
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId) {
         initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
-    }
-
-    public static void setCasty(Activity activity) {
-        if (activity == null) {
-            throw new NullPointerException(UZException.ERR_12);
-        }
-        if (LDeviceUtil.isTV(activity)) {
-            return;
-        }
-        UZData.getInstance().setCasty(Casty.create(activity));
     }
 
     public static void setCurrentPlayerId(int resLayoutMain) {

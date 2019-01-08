@@ -47,7 +47,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends BaseActivity 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
-        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {

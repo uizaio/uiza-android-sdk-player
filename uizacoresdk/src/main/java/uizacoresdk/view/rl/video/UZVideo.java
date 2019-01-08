@@ -10,7 +10,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -41,14 +40,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoListener;
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.MediaTrack;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.cast.framework.CastState;
-import com.google.android.gms.cast.framework.CastStateListener;
-import com.google.android.gms.cast.framework.media.RemoteMediaClient;
-import com.google.android.gms.common.images.WebImage;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZLiveContentCallback;
@@ -177,25 +167,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    //chromecast https://github.com/DroidsOnRoids/Casty
-    private UZMediaRouteButton uzMediaRouteButton;
-    private RelativeLayout rlChromeCast;
-    private UZImageButton ibsCast;
     private UZLiveContentCallback uzLiveContentCallback;
 
     public void addUZLiveContentCallback(UZLiveContentCallback uzLiveContentCallback) {
         this.uzLiveContentCallback = uzLiveContentCallback;
-    }
-
-    public void setTintMediaRouteButton(final int color) {
-        if (uzMediaRouteButton != null) {
-            uzMediaRouteButton.post(new Runnable() {
-                @Override
-                public void run() {
-                    uzMediaRouteButton.applyTint(color);
-                }
-            });
-        }
     }
 
     private boolean isAutoStart = true;
@@ -899,16 +874,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
-
-        //setup chromecast
-        if (!isTV) {
-            uzMediaRouteButton = new UZMediaRouteButton(activity);
-            if (llTop != null) {
-                llTop.addView(uzMediaRouteButton);
-            }
-            setUpMediaRouteButton();
-            addUIChromecastLayer();
-        }
         updateUISizeThumnail();
     }
 
@@ -971,15 +936,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
-        //setup chromecast
-        if (!isTV) {
-            uzMediaRouteButton = new UZMediaRouteButton(activity);
-            if (llTop != null) {
-                llTop.addView(uzMediaRouteButton);
-            }
-            setUpMediaRouteButton();
-            addUIChromecastLayer();
-        }
         LLog.d(TAG, "changeSkin getCurrentPosition " + uzPlayerManager.getCurrentPosition());
         currentPositionBeforeChangeSkin = uzPlayerManager.getCurrentPosition();
 
@@ -1207,68 +1163,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ibSpeedIcon != null) {
             ibSpeedIcon.setOnClickListener(this);
             ibSpeedIcon.setOnFocusChangeListener(this);
-        }
-    }
-
-    //tự tạo layout chromecast và background đen
-    private void addUIChromecastLayer() {
-        //listener check state of chromecast
-        CastContext castContext = null;
-        try {
-            castContext = CastContext.getSharedInstance(activity);
-        } catch (Exception e) {
-            LLog.e(TAG, "addUIChromecastLayer error " + e.toString());
-        }
-        if (castContext == null) {
-            uzMediaRouteButton.setVisibility(View.GONE);
-            return;
-        }
-        if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
-            //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-            uzMediaRouteButton.setVisibility(View.GONE);
-        } else {
-            //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-            uzMediaRouteButton.setVisibility(View.VISIBLE);
-        }
-        castContext.addCastStateListener(new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                if (state == CastState.NO_DEVICES_AVAILABLE) {
-                    //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
-                    uzMediaRouteButton.setVisibility(View.GONE);
-                } else {
-                    if (uzMediaRouteButton.getVisibility() != View.VISIBLE) {
-                        //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
-                        uzMediaRouteButton.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-        rlChromeCast = new RelativeLayout(activity);
-        RelativeLayout.LayoutParams rlChromeCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        rlChromeCast.setLayoutParams(rlChromeCastParams);
-        rlChromeCast.setVisibility(GONE);
-        rlChromeCast.setBackgroundColor(ContextCompat.getColor(activity, R.color.Black));
-        ibsCast = new UZImageButton(activity);
-        ibsCast.setBackgroundColor(Color.TRANSPARENT);
-        ibsCast.setImageResource(R.drawable.cast);
-        RelativeLayout.LayoutParams ibsCastParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ibsCastParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        ibsCast.setLayoutParams(ibsCastParams);
-        ibsCast.setRatioPort(5);
-        ibsCast.setRatioLand(5);
-        ibsCast.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ibsCast.setColorFilter(Color.WHITE);
-        rlChromeCast.addView(ibsCast);
-        rlChromeCast.setOnClickListener(this);
-        if (llTop != null) {
-            if (llTop.getParent() instanceof ViewGroup) {
-                ((RelativeLayout) llTop.getParent()).addView(rlChromeCast, 0);
-            }
-        } else if (rlLiveInfo != null) {
-            if (rlLiveInfo.getParent() instanceof ViewGroup) {
-                ((RelativeLayout) rlLiveInfo.getParent()).addView(rlChromeCast, 0);
-            }
         }
     }
 
@@ -1512,12 +1406,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
         }
-        if (isCastingChromecast) {
-            //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
-            lastCurrentPosition = 0;
-            handleConnectedChromecast();
-            showController();
-        }
         trackUizaEventVideoStarts();
         UZData.getInstance().setSettingPlayer(false);
     }
@@ -1542,16 +1430,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //UZData.getInstance().clearDataForEntity();
         LDialogUtil.clearAll();
         activityIsPausing = true;
-        isCastingChromecast = false;
         isCastPlayerPlayingFirst = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
     public void onResume() {
-        if (isCastingChromecast) {
-            //LLog.d(TAG, "onResume isCastingChromecast true => return");
-            return;
-        }
         //LLog.d(TAG, "onResume getUZInputList().size " + UZData.getInstance().getUZInputList().size());
         activityIsPausing = false;
         SensorOrientationChangeNotifier.getInstance(activity).addListener(this);
@@ -1646,9 +1529,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());\
         isOnPreview = true;
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().seek(progress);
-        }
         updateUIIbRewIconDependOnProgress(progress, true);
         if (callbackUZTimebar != null) {
             callbackUZTimebar.onPreview(previewView, progress, fromUser);
@@ -1760,36 +1640,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleClickShare();
         } else if (v.getParent() == debugRootView) {
             showUZTrackSelectionDialog(((Button) v), true);
-        } else if (v == rlChromeCast) {
-            //dangerous to remove
-            //LLog.d(TAG, "do nothing click rl_chrome_cast");
         } else if (v == ibFfwdIcon) {
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                }
+            if (uzPlayerManager != null) {
+                uzPlayerManager.seekToForward(DEFAULT_VALUE_BACKWARD_FORWARD);
             }
         } else if (v == ibRewIcon) {
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
-                    if (isPlaying()) {
-                        isOnPlayerEnded = false;
-                        updateUIEndScreen();
-                    }
+            if (uzPlayerManager != null) {
+                uzPlayerManager.seekToBackward(DEFAULT_VALUE_BACKWARD_FORWARD);
+                if (isPlaying()) {
+                    isOnPlayerEnded = false;
+                    updateUIEndScreen();
                 }
             }
         } else if (v == ibPauseIcon) {
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().pause();
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.pauseVideo();
-                }
+            if (uzPlayerManager != null) {
+                uzPlayerManager.pauseVideo();
             }
             ibPauseIcon.setVisibility(GONE);
             if (ibPlayIcon != null) {
@@ -1802,12 +1667,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPauseIcon.setVisibility(VISIBLE);
                 ibPauseIcon.requestFocus();
             }
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().play();
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.resumeVideo();
-                }
+            if (uzPlayerManager != null) {
+                uzPlayerManager.resumeVideo();
             }
         } else if (v == ibReplayIcon) {
             replay();
@@ -1956,10 +1817,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
-                if (!isCastingChromecast()) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(VISIBLE);
-                    }
+                if (ibPictureInPictureIcon != null) {
+                    ibPictureInPictureIcon.setVisibility(VISIBLE);
                 }
             }
         }
@@ -2016,16 +1875,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIDependOnLivetream() {
-        if (isCastingChromecast) {
+        if (isTablet && isTV) {
+            //only hide ibPictureInPictureIcon if device is TV
             if (ibPictureInPictureIcon != null) {
                 ibPictureInPictureIcon.setVisibility(GONE);
-            }
-        } else {
-            if (isTablet && isTV) {
-                //only hide ibPictureInPictureIcon if device is TV
-                if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(GONE);
-                }
             }
         }
         //LLog.d(TAG, "updateUIDependOnLivetream isLivestream " + isLivestream);
@@ -2131,12 +1984,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return;
         }
-        if (isCastingChromecast()) {
-            if (uzCallback != null) {
-                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
-            }
-            return;
-        }
         if (LDeviceUtil.isCanOverlay(activity)) {
             initializePiP();
         } else {
@@ -2148,10 +1995,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //LLog.d(TAG, "onActivityResult " + requestCode + " - " + resultCode);
         if (activity == null) {
-            return;
-        }
-        if (isCastingChromecast()) {
-            LLog.e(TAG, "Error: handleClickPictureInPicture isCastingChromecast -> return");
             return;
         }
         if (LDeviceUtil.isCanOverlay(activity)) {
@@ -2351,12 +2194,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         //LLog.d(TAG, "hideController");
-        if (isCastingChromecast) {
-            //dont hide if is casting chromecast
-        } else {
-            if (uzPlayerView != null) {
-                uzPlayerView.hideController();
-            }
+        if (uzPlayerView != null) {
+            uzPlayerView.hideController();
         }
     }
 
@@ -2515,218 +2354,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    /*START CHROMECAST*/
-    @UiThread
-    private void setUpMediaRouteButton() {
-        if (isTV) {
-            return;
-        }
-        UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
-        UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
-            @Override
-            public void onConnected() {
-                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
-                if (uzPlayerManager != null) {
-                    lastCurrentPosition = uzPlayerManager.getCurrentPosition();
-                }
-                handleConnectedChromecast();
-            }
-
-            @Override
-            public void onDisconnected() {
-                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
-                handleDisconnectedChromecast();
-            }
-        });
-        /*casty.setOnCastSessionUpdatedListener(new Casty.OnCastSessionUpdatedListener() {
-            @Override
-            public void onCastSessionUpdated(CastSession castSession) {
-                if (castSession != null) {
-                    LLog.d(TAG, "onCastSessionUpdated " + castSession.getSessionRemainingTimeMs());
-                    RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
-                }
-            }
-        });*/
-    }
-
-    private void handleConnectedChromecast() {
-        isCastingChromecast = true;
-        isCastPlayerPlayingFirst = false;
-        playChromecast();
-        updateUIChromecast();
-    }
-
-    private void handleDisconnectedChromecast() {
-        isCastingChromecast = false;
-        isCastPlayerPlayingFirst = false;
-        updateUIChromecast();
-    }
-
-    private boolean isCastingChromecast;
-
-    public boolean isCastingChromecast() {
-        return isCastingChromecast;
-    }
-
     //last current position lúc từ exoplayer switch sang cast player
     private long lastCurrentPosition;
 
-    private void playChromecast() {
-        if (UZData.getInstance().getData() == null || uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
-            return;
-        }
-        if (uzPlayerManager != null) {
-            uzPlayerManager.showProgress();
-        }
-        //LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
-
-        MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
-
-        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, UZData.getInstance().getData().getDescription());
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, UZData.getInstance().getData().getEntityName());
-        movieMetadata.addImage(new WebImage(Uri.parse(UZData.getInstance().getData().getThumbnail())));
-
-        //TODO add subtitle vtt to chromecast
-        List<MediaTrack> mediaTrackList = new ArrayList<>();
-        /*MediaTrack mediaTrack = UZData.getInstance().buildTrack(
-                1,
-                "text",
-                "captions",
-                "http://112.78.4.162/sub.vtt",
-                "English Subtitle",
-                "en-US");
-        mediaTrackList.add(mediaTrack);
-        mediaTrack = UZData.getInstance().buildTrack(
-                2,
-                "text",
-                "captions",
-                "http://112.78.4.162/sub.vtt",
-                "XYZ Subtitle",
-                "en-US");
-        mediaTrackList.add(mediaTrack);*/
-
-        long duration = getDuration();
-        //LLog.d(TAG, "duration " + duration);
-        if (duration < 0) {
-            LLog.e(TAG, "invalid duration -> cannot play chromecast");
-            return;
-        }
-
-        MediaInfo mediaInfo = new MediaInfo.Builder(
-                uzPlayerManager.getLinkPlay())
-                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                .setContentType("videos/mp4")
-                .setMetadata(movieMetadata)
-                .setMediaTracks(mediaTrackList)
-                .setStreamDuration(duration)
-                .build();
-
-        //play chromecast with full screen control
-        //UZData.getInstance().getCasty().getPlayer().loadMediaAndPlay(mediaInfo, true, lastCurrentPosition);
-
-        //play chromecast without screen control
-        UZData.getInstance().getCasty().getPlayer().loadMediaAndPlayInBackground(mediaInfo, true, lastCurrentPosition);
-
-        UZData.getInstance().getCasty().getPlayer().getRemoteMediaClient().addProgressListener(new RemoteMediaClient.ProgressListener() {
-            @Override
-            public void onProgressUpdated(long currentPosition, long duration) {
-                //LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
-                if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
-                    //LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
-                    uzPlayerManager.hideProgress();
-                    isCastPlayerPlayingFirst = true;
-                }
-
-                if (currentPosition > 0) {
-                    uzPlayerManager.seekTo(currentPosition);
-                }
-            }
-        }, 1000);
-
-    }
-
     private boolean isCastPlayerPlayingFirst;
-
-    /*STOP CHROMECAST*/
-
-    /*khi click vào biểu tượng casting
-     * thì sẽ pause local player và bắt đầu loading lên cast player
-     * khi disconnet thì local player sẽ resume*/
-    private void updateUIChromecast() {
-        if (uzPlayerManager == null || rlChromeCast == null || isTV) {
-            return;
-        }
-        LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
-        if (isCastingChromecast) {
-            uzPlayerManager.pauseVideo();
-            uzPlayerManager.setVolume(0f);
-            rlChromeCast.setVisibility(VISIBLE);
-            if (ibSettingIcon != null) {
-                ibSettingIcon.setVisibility(GONE);
-            }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(GONE);
-            }
-            if (ibBackScreenIcon != null) {
-                ibBackScreenIcon.setVisibility(GONE);
-            }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
-            if (ibVolumeIcon != null) {
-                ibVolumeIcon.setVisibility(GONE);
-            }
-
-            //casting player luôn play first với volume not mute
-            //ibVolumeIcon.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            //UZData.getInstance().getCasty().setVolume(0.99);
-
-            //double volumeOfExoPlayer = uzPlayerManager.getVolume();
-            //LLog.d(TAG, "volumeOfExoPlayer " + volumeOfExoPlayer);
-            //UZData.getInstance().getCasty().setVolume(volumeOfExoPlayer);
-
-            if (uzPlayerView != null) {
-                uzPlayerView.setControllerShowTimeoutMs(0);
-            }
-        } else {
-            uzPlayerManager.resumeVideo();
-            uzPlayerManager.setVolume(0.99f);
-            rlChromeCast.setVisibility(GONE);
-            if (ibSettingIcon != null) {
-                ibSettingIcon.setVisibility(VISIBLE);
-            }
-            if (ibCcIcon != null) {
-                ibCcIcon.setVisibility(VISIBLE);
-            }
-            if (ibBackScreenIcon != null) {
-                ibBackScreenIcon.setVisibility(VISIBLE);
-            }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
-            //TODO iplm volume mute on/off o cast player
-            if (ibVolumeIcon != null) {
-                ibVolumeIcon.setVisibility(VISIBLE);
-            }
-            //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
-            //ibVolumeIcon.setImageResource(R.drawable.ic_volume_up_black_48dp);
-            //uzPlayerManager.setVolume(0.99f);
-
-            /*double volumeOfCastPlayer = UZData.getInstance().getCasty().getVolume();
-            LLog.d(TAG, "volumeOfCastPlayer " + volumeOfCastPlayer);
-            uzPlayerManager.setVolume((float) volumeOfCastPlayer);*/
-
-            if (uzPlayerView != null) {
-                uzPlayerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
-            }
-        }
-    }
 
     //===================================================================START FOR PLAYLIST/FOLDER
     private final int pfLimit = 100;
@@ -3067,21 +2698,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     /*Nếu đang casting thì button này sẽ handle volume on/off ở cast player
      * Ngược lại, sẽ handle volume on/off ở exo player*/
     private void handleClickBtVolume() {
-        if (isCastingChromecast) {
-            LLog.d(TAG, "handleClickBtVolume isCastingChromecast");
-            boolean isMute = UZData.getInstance().getCasty().toggleMuteVolume();
-            if (ibVolumeIcon != null) {
-                if (isMute) {
-                    ibVolumeIcon.setImageResource(R.drawable.ic_volume_off_black_48dp);
-                } else {
-                    ibVolumeIcon.setImageResource(R.drawable.baseline_volume_up_white_48);
-                }
-            }
-        } else {
-            LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
-            if (uzPlayerManager != null) {
-                uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
-            }
+        LLog.d(TAG, "handleClickBtVolume !isCastingChromecast");
+        if (uzPlayerManager != null) {
+            uzPlayerManager.toggleVolumeMute(ibVolumeIcon);
         }
     }
 
@@ -3271,15 +2890,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * Device phải là tablet
      */
     public void showPip() {
-        if (isCastingChromecast()) {
-            LLog.e(TAG, UZException.ERR_19);
-            if (uzCallback != null) {
-                uzCallback.onError(UZExceptionUtil.getExceptionShowPip());
-            }
-        } else {
-            if (ibPictureInPictureIcon != null) {
-                ibPictureInPictureIcon.performClick();
-            }
+        if (ibPictureInPictureIcon != null) {
+            ibPictureInPictureIcon.performClick();
         }
     }
 
@@ -3482,18 +3094,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public TextView getTvLiveTime() {
         return tvLiveTime;
-    }
-
-    public UZMediaRouteButton getUzMediaRouteButton() {
-        return uzMediaRouteButton;
-    }
-
-    public RelativeLayout getRlChromeCast() {
-        return rlChromeCast;
-    }
-
-    public UZImageButton getIbsCast() {
-        return ibsCast;
     }
 
     public String getEntityId() {

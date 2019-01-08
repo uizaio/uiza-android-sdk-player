@@ -33,7 +33,6 @@ public class HomeCanSlideActivity extends BaseActivity {
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
-        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {

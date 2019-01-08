@@ -23,7 +23,6 @@ import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
@@ -61,7 +60,6 @@ public class HomeV4CanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
 
         llActionBar = (RelativeLayout) findViewById(R.id.ll_action_bar);
@@ -266,9 +264,7 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
-                    draggablePanel.setEnableSlide(true);
-                }
+                draggablePanel.setEnableSlide(true);
             }
         }
     }
@@ -292,13 +288,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
+                    if (frmVideoTop.getUZVideo().isLandscape()) {
+                        frmVideoTop.getUZVideo().toggleFullscreen();
                     } else {
-                        if (frmVideoTop.getUZVideo().isLandscape()) {
-                            frmVideoTop.getUZVideo().toggleFullscreen();
-                        } else {
-                            draggablePanel.minimize();
-                        }
+                        draggablePanel.minimize();
                     }
                     return;
                 }
@@ -324,13 +317,10 @@ public class HomeV4CanSlideActivity extends BaseActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo().isCastingChromecast()) {
+                        if (frmVideoTop.getUZVideo().isLandscape()) {
+                            frmVideoTop.getUZVideo().toggleFullscreen();
                         } else {
-                            if (frmVideoTop.getUZVideo().isLandscape()) {
-                                frmVideoTop.getUZVideo().toggleFullscreen();
-                            } else {
-                                draggablePanel.minimize();
-                            }
+                            draggablePanel.minimize();
                         }
                         return;
                     }

@@ -68,12 +68,6 @@ or
     public class YourFragment extends BaseFragment{
     }
 
-**make sure add this line below**
-
-    UZUtil.setCasty(this);
-
-before super.onCreate(savedInstanceState);  in onCreate() of your activity.
-
 **Step 2: Call api by using this function**
 
     UZService service = UZRestClient.createService(UZService.class);
@@ -202,7 +196,6 @@ Ex:
 
     @Override  
     protected void onCreate(@Nullable Bundle savedInstanceState) {  
-        UZUtil.setCasty(this);  
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
         super.onCreate(savedInstanceState);
     }

@@ -46,7 +46,7 @@ dependencies {
     //compile 'com.github.bumptech.glide:annotations:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 
-    api 'com.google.android.gms:play-services-ads:17.1.2'
+    //api 'com.google.android.gms:play-services-ads:17.1.2'
     //need for ima Ad https://stackoverflow.com/questions/31833479/didnt-find-class-com-google-android-gms-ads-identifier-advertisingidclient
 
     //exoplayer
@@ -55,8 +55,8 @@ dependencies {
     api 'com.google.android.exoplayer:exoplayer-dash:2.9.2'
     api 'com.google.android.exoplayer:exoplayer-ui:2.9.2'
 
-    api 'com.android.support:mediarouter-v7:28.0.0'
-    api 'com.google.android.gms:play-services-cast-framework:16.1.2'
+    //api 'com.android.support:mediarouter-v7:28.0.0'
+    //api 'com.google.android.gms:play-services-cast-framework:16.1.2'
 
     //https://github.com/rubensousa/PreviewSeekBar
     api 'com.github.rubensousa:previewseekbar:2.0.0'

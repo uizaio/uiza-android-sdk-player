@@ -41,8 +41,6 @@ public class PlayerActivity extends BaseActivity implements UZCallback, UZTVCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
-
         //init skin
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
