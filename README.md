@@ -8,7 +8,7 @@ Simple Streaming at scale.
 
 Uiza is the complete toolkit for building a powerful video streaming application with unlimited scalability. We design Uiza so simple that you only need a few lines of codes to start streaming, but sophisticated enough for you to build complex products on top of it.
 
-Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
+Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/tk/CHANGELOG.md).
 
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**
@@ -31,7 +31,7 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
         implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'  
     }
 
-Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
+Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/tk/CHANGELOG.md).
 
 # Init SDK
 
@@ -58,20 +58,11 @@ Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-play
 
 
 # How to call API?:
-**Step1: You need to extend your activity/fragment like this**
 
-    public class YourActivity extends BaseActivity{
-    }
-
-or
-
-    public class YourFragment extends BaseFragment{
-    }
-
-**Step 2: Call api by using this function**
+Call api by using this function**
 
     UZService service = UZRestClient.createService(UZService.class);
-    subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+    UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
       public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
         }
@@ -100,7 +91,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements UZCallback{
+    public class MainActivity extends AppCompatActivity implements UZCallback{
        ...
     }
 Manifest
@@ -162,26 +153,26 @@ Dont forget to add in activity life cycle event:
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
+If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/tk/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
 
-This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
+This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/tk/sample/src/main/java/testlibuiza/sample)
 
 **More informations for AndroidTV, AndroidBox:**
 You can use this SDK for AndroidTV, AndroidBox as well, but limited some features.
 We also provide some functions for AndroidTV like:
 
     uzVideo.addUZTVCallback(this);//listen event onFocusChange of components.
-Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sampletv) for more details.
+Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/tk/sampletv) for more details.
 # How to customize your skin?:
 Only 3 steps, you can customize everything about player skin.
 
 **Step 1:**
-Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/tk/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
 
 Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
 
 **Step 2:**
-Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/tk/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
 - In this xml file, you can edit anything you like: position, color, drawable resouces...
 - You can add more view (TextView, Button, ImageView...).
 - You can remove any component which you dont like.
@@ -229,7 +220,7 @@ XML:
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestreamCallback {
+    public class LivestreamBroadcasterActivity extends AppCompatActivity implements UZLivestreamCallback {
     ...
     }
 
