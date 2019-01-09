@@ -169,13 +169,6 @@ public class FrmEntitiesOfCategory extends Fragment implements IOnBackPressed {
     }
 
     private void loadMore() {
-        LLog.d(TAG, "loadMore");
         getListAllEntities();
-    }
-
-    @Override
-    public void onDestroyView() {
-        UZAPIMaster.getInstance().destroy();
-        super.onDestroyView();
     }
 }

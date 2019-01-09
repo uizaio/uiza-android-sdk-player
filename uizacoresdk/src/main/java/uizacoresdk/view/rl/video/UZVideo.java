@@ -1386,7 +1386,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         activityIsPausing = true;
         isCastPlayerPlayingFirst = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
-        UZAPIMaster.getInstance().destroy();
     }
 
     public void onResume() {

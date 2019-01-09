@@ -93,7 +93,6 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        UZAPIMaster.getInstance().destroy();
         UZUtil.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }

@@ -26,11 +26,11 @@ public class UZAPIMaster {
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    public void destroy() {
+    /*public void destroy() {
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
-    }
+    }*/
 
     @SuppressWarnings("unchecked")
     public void subscribe(Observable observable, Subscriber subscriber) {

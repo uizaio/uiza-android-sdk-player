@@ -199,7 +199,6 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
 
     @Override
     public void onDestroyView() {
-        UZAPIMaster.getInstance().destroy();
         ((HomeV4CanSlideActivity) getActivity()).llActionBar.setVisibility(View.VISIBLE);
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();

@@ -162,10 +162,4 @@ public class FrmEntities extends Fragment implements IOnBackPressed {
         LLog.d(TAG, "loadMore");
         getListAllEntities();
     }
-
-    @Override
-    public void onDestroyView() {
-        UZAPIMaster.getInstance().destroy();
-        super.onDestroyView();
-    }
 }

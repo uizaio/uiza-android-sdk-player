@@ -307,7 +307,6 @@ public class FUZVideo extends RelativeLayout {
         if (fuzUizaPlayerManager != null) {
             fuzUizaPlayerManager.release();
         }
-        UZAPIMaster.getInstance().destroy();
     }
 
     public void onResume() {

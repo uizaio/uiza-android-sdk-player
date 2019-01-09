@@ -140,10 +140,4 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
         currentPage++;
         getListMetadata();
     }
-
-    @Override
-    public void onDestroyView() {
-        UZAPIMaster.getInstance().destroy();
-        super.onDestroyView();
-    }
 }

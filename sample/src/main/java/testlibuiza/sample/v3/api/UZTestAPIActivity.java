@@ -680,10 +680,4 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-
-    @Override
-    protected void onDestroy() {
-        UZAPIMaster.getInstance().destroy();
-        super.onDestroy();
-    }
 }

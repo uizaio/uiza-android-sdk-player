@@ -180,14 +180,7 @@ public class FrmLive extends Fragment implements IOnBackPressed {
     }
 
     private void loadMore() {
-        LLog.d(TAG, "loadMore");
         page++;
         getListAllEntities();
-    }
-
-    @Override
-    public void onDestroyView() {
-        UZAPIMaster.getInstance().destroy();
-        super.onDestroyView();
     }
 }
