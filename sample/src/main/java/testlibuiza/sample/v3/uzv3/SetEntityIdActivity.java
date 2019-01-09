@@ -1,7 +1,9 @@
 package testlibuiza.sample.v3.uzv3;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,13 +13,14 @@ import android.widget.EditText;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
-public class SetEntityIdActivity extends BaseActivity {
+public class SetEntityIdActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     //for entity id
     private EditText etInputEntityId;
     private Button btStart;
@@ -28,7 +31,9 @@ public class SetEntityIdActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.v3_player_input_entity_id_activity);
         findViews();
         initUIEntity();
         initUIPlaylistFolder();
@@ -49,22 +54,6 @@ public class SetEntityIdActivity extends BaseActivity {
                 LActivityUtil.tranIn(activity);
             }
         });
-    }
-
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v3_player_input_entity_id_activity;
     }
 
     @Override

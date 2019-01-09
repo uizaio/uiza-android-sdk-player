@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import uiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -16,22 +19,17 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick {
+public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
         return uzVideo;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
     }
 
     @Override
@@ -42,9 +40,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo.addItemClick(this);
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_top;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_top, container, false);
     }
 
     @Override

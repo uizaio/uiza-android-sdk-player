@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.event;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,17 +34,17 @@ import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 7/16/2018.
+ * Created by loitp on 1/9/2019.
  */
 
-public class EventActivity extends BaseActivity {
+public class EventActivity extends AppCompatActivity {
+    private Activity activity;
     private UZVideo uzVideo;
     private TextView tvUzCallback;
     private TextView tvAudioListener;
@@ -58,25 +60,12 @@ public class EventActivity extends BaseActivity {
     private TextView tvLiveInfo;
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_event;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCasty(this);
+        activity = this;
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         tvUzCallback = (TextView) findViewById(R.id.tv_uz_callback);
         tvAudioListener = (TextView) findViewById(R.id.tv_audio_listener);

@@ -1,15 +1,15 @@
 package testlibuiza.sample.v3.demoui;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
@@ -18,7 +18,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
-public class HomeCanSlideActivity extends BaseActivity {
+public class HomeCanSlideActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private DraggablePanel draggablePanel;
 
     public DraggablePanel getDraggablePanel() {
@@ -27,6 +29,7 @@ public class HomeCanSlideActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         //UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
@@ -35,6 +38,7 @@ public class HomeCanSlideActivity extends BaseActivity {
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
         UZUtil.setCasty(this);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.v4_home_canslide_activity);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
         draggablePanel.setDraggableListener(new DraggableListener() {
             @Override
@@ -75,27 +79,12 @@ public class HomeCanSlideActivity extends BaseActivity {
         replaceFragment(new FrmHome());
     }
 
-    public void replaceFragment(BaseFragment baseFragment) {
+    public void replaceFragment(Fragment baseFragment) {
         if (baseFragment instanceof FrmHome) {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, false);
+            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, false);
         } else {
-            LScreenUtil.replaceFragment(activity, R.id.fl_container, baseFragment, true);
+            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, true);
         }
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_home_canslide_activity;
     }
 
     private FrmVideoTop frmVideoTop;

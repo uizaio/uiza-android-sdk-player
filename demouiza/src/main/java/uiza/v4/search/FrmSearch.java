@@ -7,11 +7,14 @@ package uiza.v4.search;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,15 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uiza.R;
-import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -37,7 +39,8 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
-public class FrmSearch extends BaseFragment implements View.OnClickListener, IOnBackPressed {
+public class FrmSearch extends Fragment implements View.OnClickListener, IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
     private ImageView ivBack;
     private ImageView ivClearText;
     private EditText etSearch;
@@ -53,17 +56,17 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     private int page = 0;
     private int totalPage = Integer.MAX_VALUE;
 
+    @Nullable
     @Override
-    protected String setTag() {
-        return "Search";
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_search, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        LLog.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
-        recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         ivClearText = (ImageView) view.findViewById(R.id.iv_clear_text);
         etSearch = (EditText) view.findViewById(R.id.et_search);
@@ -120,11 +123,6 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
     }
 
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_search;
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -151,10 +149,9 @@ public class FrmSearch extends BaseFragment implements View.OnClickListener, IOn
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
         UZService service = UZRestClient.createService(UZService.class);
-        subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
+        ApiMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
-                LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(result));
                 if (result == null || result.getData().isEmpty()) {
                     tv.setText(getString(R.string.empty_list));
                     tv.setVisibility(View.VISIBLE);

@@ -12,9 +12,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class ApiMaster {
-    private static final ApiMaster ourInstance = new ApiMaster();
+    private static ApiMaster ourInstance;
 
     public static ApiMaster getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new ApiMaster();
+        }
         return ourInstance;
     }
 

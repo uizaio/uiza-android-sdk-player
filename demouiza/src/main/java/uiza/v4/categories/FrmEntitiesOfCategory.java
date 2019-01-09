@@ -8,9 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,11 +27,11 @@ import uiza.v4.entities.EntitiesAdapter;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.ApiMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -36,7 +39,8 @@ import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
-public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPressed {
+public class FrmEntitiesOfCategory extends Fragment implements IOnBackPressed {
+    private String TAG = getClass().getSimpleName();
     private final int limit = 20;
     private final String orderBy = "createdAt";
     private final String orderType = "DESC";
@@ -49,11 +53,6 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
     private int totalPage = Integer.MAX_VALUE;
     private ProgressBar pb;
     private String metadataId = "";
-
-    @Override
-    protected String setTag() {
-        return "";
-    }
 
     public void setTag(String tag) {
         TAG = tag;
@@ -75,9 +74,9 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(null);
             }
         }
-        tvMsg = (TextView) frmRootView.findViewById(R.id.tv_msg);
-        recyclerView = (RecyclerView) frmRootView.findViewById(R.id.rv);
-        pb = (ProgressBar) frmRootView.findViewById(R.id.pb);
+        tvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
+        pb = (ProgressBar) view.findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(pb, Color.WHITE);
         LDialogUtil.hide(pb);
 
@@ -103,9 +102,10 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
         getListAllEntities();
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_entities;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_entities, container, false);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class FrmEntitiesOfCategory extends BaseFragment implements IOnBackPresse
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UZService service = UZRestClient.createService(UZService.class);
-        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
+        ApiMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));

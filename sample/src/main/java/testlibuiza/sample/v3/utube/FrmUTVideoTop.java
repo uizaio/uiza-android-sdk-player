@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -23,7 +26,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -31,17 +33,12 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemClick {
+public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
     private View shadow;
 
     public UZVideo getUZVideo() {
         return uzVideo;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -111,9 +108,10 @@ public class FrmUTVideoTop extends BaseFragment implements UZCallback, UZItemCli
         uzVideo.setUzTimebarBottom();
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.ut_frm_top;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.ut_frm_top, container, false);
     }
 
     @Override

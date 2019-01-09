@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.linkplay;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,7 +18,6 @@ import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -25,34 +26,23 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
 /**
- * Created by loitp on 7/16/2018.
+ * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class PlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZVideo uzVideo;
     private EditText etLinkPlay;
     private Button btPlay;
 
     @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.player_activity;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setCasty(this);
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.player_activity);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         etLinkPlay = (EditText) findViewById(R.id.et_link_play);
         btPlay = (Button) findViewById(R.id.bt_play);
