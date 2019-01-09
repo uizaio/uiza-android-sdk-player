@@ -28,7 +28,7 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
@@ -126,7 +126,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        initData(linkPlay,  null, null);
+        initData(linkPlay, null, null);
         onResume();
     }
 
@@ -307,6 +307,7 @@ public class FUZVideo extends RelativeLayout {
         if (fuzUizaPlayerManager != null) {
             fuzUizaPlayerManager.release();
         }
+        UZAPIMaster.getInstance().destroy();
     }
 
     public void onResume() {
@@ -396,7 +397,7 @@ public class FUZVideo extends RelativeLayout {
             RestClientTracking.init(currentApiTrackingEndPoint);
         }
         UZService service = RestClientTracking.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
                 //LLog.d(TAG, "<------------------------pip track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
@@ -514,7 +515,7 @@ public class FUZVideo extends RelativeLayout {
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityId);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        ApiMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
                 //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
@@ -550,7 +551,7 @@ public class FUZVideo extends RelativeLayout {
         //LLog.d(TAG, "========appId: " + appId);
         //LLog.d(TAG, "========entityId: " + entityId);
         //LLog.d(TAG, "===================================");
-        ApiMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+        UZAPIMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
             @Override
             public void onSuccess(ResultGetLinkPlay result) {
                 //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));

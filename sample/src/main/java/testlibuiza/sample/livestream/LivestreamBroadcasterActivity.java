@@ -96,6 +96,14 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
         super.onResume();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (uzLivestream != null) {
+            uzLivestream.onDestroy();
+        }
+        super.onDestroy();
+    }
+
     private void handleFilterClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.e_d_fxaa:

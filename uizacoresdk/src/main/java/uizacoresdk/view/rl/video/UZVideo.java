@@ -85,7 +85,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.data.EventBusData;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
@@ -383,7 +383,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         sendGetTokenStreaming.setEntityId(id);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
         //LLog.d(TAG, ">>>callAPIGetTokenStreaming " + gson.toJson(sendGetTokenStreaming));
-        ApiMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
                 //LLog.d(TAG, "callAPIGetTokenStreaming onSuccess: " + gson.toJson(result));
@@ -423,7 +423,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "========name: " + channelName);
             //LLog.d(TAG, "========appId: " + appId);
             //LLog.d(TAG, "===================================");
-            ApiMaster.getInstance().subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
+            UZAPIMaster.getInstance().subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
                     LLog.d(TAG, "getLinkPlayLive onSuccess");
@@ -446,7 +446,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "========appId: " + appId);
             //LLog.d(TAG, "========entityId: " + entityId);
             //LLog.d(TAG, "===================================");
-            ApiMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
+            UZAPIMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
                 @Override
                 public void onSuccess(ResultGetLinkPlay result) {
                     if (Constants.IS_DEBUG) {
@@ -1386,6 +1386,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         activityIsPausing = true;
         isCastPlayerPlayingFirst = false;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
+        UZAPIMaster.getInstance().destroy();
     }
 
     public void onResume() {
@@ -1999,7 +2000,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         UZService service = RestClientTracking.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
                 //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
@@ -2206,7 +2207,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing -> call API to get View count");
                     UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
-                    ApiMaster.getInstance().subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+                    UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
@@ -2252,7 +2253,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         UZService service = UZRestClient.createService(UZService.class);
                         String entityId = UZData.getInstance().getEntityId();
                         String feedId = UZData.getInstance().getLastFeedId();
-                        ApiMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
+                        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
                             @Override
                             public void onSuccess(ResultTimeStartLive result) {
                                 //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));
@@ -2328,7 +2329,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZData.getInstance().getDataList() == null) {
             LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() == null -> call api lấy data list");
             UZService service = UZRestClient.createService(UZService.class);
-            ApiMaster.getInstance().subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
+            UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (Constants.IS_DEBUG) {

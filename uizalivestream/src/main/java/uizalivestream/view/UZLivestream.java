@@ -61,7 +61,7 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.ErrorBody;
@@ -181,6 +181,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         if (!isShowDialogCheck) {
             checkPermission();
         }
+    }
+
+    public void onDestroy(){
+        UZAPIMaster.getInstance().destroy();
     }
 
     private boolean isShowDialogCheck;
@@ -850,7 +854,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        ApiMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
                 //LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));

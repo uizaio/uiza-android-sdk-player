@@ -112,6 +112,14 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
+    protected void onDestroy() {
+        if (uzLivestream != null) {
+            uzLivestream.onDestroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b_start_stop:

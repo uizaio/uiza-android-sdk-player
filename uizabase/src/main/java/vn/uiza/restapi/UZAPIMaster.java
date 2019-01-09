@@ -8,17 +8,20 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by loitp on 5/11/2018.
+ * Created by loitp on 9/1/2019.
  */
 
-public class ApiMaster {
-    private static final ApiMaster ourInstance = new ApiMaster();
+public class UZAPIMaster {
+    private static UZAPIMaster ourInstance;
 
-    public static ApiMaster getInstance() {
+    public static UZAPIMaster getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new UZAPIMaster();
+        }
         return ourInstance;
     }
 
-    private ApiMaster() {
+    private UZAPIMaster() {
     }
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();

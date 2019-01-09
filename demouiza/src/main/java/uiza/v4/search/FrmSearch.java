@@ -31,7 +31,7 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -151,7 +151,7 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
         UZService service = UZRestClient.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "onSuccess " + LSApplication.getInstance().getGson().toJson(result));
@@ -199,6 +199,7 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
 
     @Override
     public void onDestroyView() {
+        UZAPIMaster.getInstance().destroy();
         ((HomeV4CanSlideActivity) getActivity()).llActionBar.setVisibility(View.VISIBLE);
         KeyboardUtils.hideSoftInput(getActivity());
         super.onDestroyView();
