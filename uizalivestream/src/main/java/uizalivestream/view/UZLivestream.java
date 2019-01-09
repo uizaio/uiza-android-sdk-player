@@ -1006,4 +1006,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         }
         return rtmpCamera1.isLanternEnabled();
     }
+
+    public void stopPreview() {
+        if (rtmpCamera1 != null) {
+            rtmpCamera1.stopPreview();
+        }
+    }
 }
