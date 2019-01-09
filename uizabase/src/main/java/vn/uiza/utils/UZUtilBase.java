@@ -3,7 +3,7 @@ package vn.uiza.utils;
 import android.app.Activity;
 
 import vn.uiza.core.exception.UZException;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealive.ResultRetrieveALive;
@@ -14,7 +14,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 public class UZUtilBase {
     public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(entityId), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
@@ -38,7 +38,7 @@ public class UZUtilBase {
 
     public static void getDataFromEntityIdLIVE(final Activity activity, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(entityId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override
             public void onSuccess(ResultRetrieveALive result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {

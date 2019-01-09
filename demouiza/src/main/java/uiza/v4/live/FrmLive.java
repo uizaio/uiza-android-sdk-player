@@ -32,7 +32,7 @@ import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.ResultRetrieveALiveEvent;
@@ -143,7 +143,7 @@ public class FrmLive extends Fragment implements IOnBackPressed {
         LDialogUtil.show(pb);
         tvMsg.setVisibility(View.GONE);
         UZService service = UZRestClient.createService(UZService.class);
-        ApiMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {
                 LLog.d(TAG, "getListAllEntities " + LSApplication.getInstance().getGson().toJson(result));

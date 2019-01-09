@@ -17,7 +17,7 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.restapi.ApiMaster;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -76,7 +76,7 @@ public class FBListVideoActivity extends AppCompatActivity {
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        ApiMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 dataList.addAll(result.getData());
