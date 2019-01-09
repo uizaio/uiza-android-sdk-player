@@ -297,7 +297,7 @@ public class LUIUtil {
             return;
         }
         swipeRefreshLayout.setColorSchemeResources(
-                R.color.colorPrimary,
+                R.color.Gray,
                 R.color.vip1,
                 R.color.vip2,
                 R.color.vip3,

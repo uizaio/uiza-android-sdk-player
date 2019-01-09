@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
@@ -40,7 +39,7 @@ public class UZDlgInfoV1 extends Dialog {
         setContentView(R.layout.dlg_info);
 
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
+        //LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
 
         tvTitle = (TextView) findViewById(R.id.tv_title);
         final TextView tvContent = (TextView) findViewById(R.id.tv_content);

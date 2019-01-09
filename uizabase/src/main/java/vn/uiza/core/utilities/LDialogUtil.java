@@ -72,7 +72,7 @@ public class LDialogUtil {
             }
         });
         dialog.show();
-        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+        int color = ContextCompat.getColor(context, R.color.Black);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         alertDialogList.add(dialog);
     }
@@ -119,7 +119,7 @@ public class LDialogUtil {
         if (isFullScreen) {
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
-        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+        int color = ContextCompat.getColor(context, R.color.Black);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         alertDialogList.add(dialog);
     }
@@ -162,7 +162,7 @@ public class LDialogUtil {
         }
         AlertDialog dialog = builder.create();
         dialog.show();
-        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+        int color = ContextCompat.getColor(context, R.color.Black);
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         alertDialogList.add(dialog);
@@ -216,7 +216,7 @@ public class LDialogUtil {
         }
         AlertDialog dialog = builder.create();
         dialog.show();
-        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+        int color = ContextCompat.getColor(context, R.color.Black);
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(color);
