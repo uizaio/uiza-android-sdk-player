@@ -183,8 +183,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         }
     }
 
-    public void onDestroy(){
-        UZAPIMaster.getInstance().destroy();
+    public void stopPreview() {
+        if (rtmpCamera1 != null) {
+            rtmpCamera1.stopPreview();
+        }
     }
 
     private boolean isShowDialogCheck;

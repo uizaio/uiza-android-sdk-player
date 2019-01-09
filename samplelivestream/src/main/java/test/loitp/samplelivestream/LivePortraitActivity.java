@@ -112,14 +112,6 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    protected void onDestroy() {
-        if (uzLivestream != null) {
-            uzLivestream.onDestroy();
-        }
-        super.onDestroy();
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b_start_stop:
