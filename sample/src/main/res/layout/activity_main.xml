@@ -37,26 +37,25 @@
                     android:id="@+id/bt_test_api_v3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Test API V3" />
+                    android:text="1. Test API V3" />
 
                 <Button
                     android:id="@+id/bt_sdk_v3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_5"
-                    android:text="Test UizaSDK V3" />
+                    android:text="2. Test UizaSDK V3" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_xml"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom skin by xml" />
+                    android:text="3. Custom skin by xml" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_code_seekbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom skin by code (seekbar) - deprecated"
+                    android:text="4. Custom skin by code (seekbar) - deprecated"
                     android:textSize="@dimen/txt_10"
                     android:textStyle="italic" />
 
@@ -64,55 +63,55 @@
                     android:id="@+id/bt_uiza_custom_skin_code_uz_timebar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom skin by code (UZTimebar)" />
+                    android:text="5. Custom skin by code (UZTimebar)" />
 
                 <Button
                     android:id="@+id/bt_mini_fb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mini player like Facebook" />
+                    android:text="6. Mini player like Facebook" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_u_tube"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom skin like Youtube" />
+                    android:text="7. Custom skin like Youtube" />
 
                 <Button
                     android:id="@+id/bt_uiza_custom_skin_u_tube_with_slide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom skin like Youtube With Slide" />
+                    android:text="8. Custom skin like Youtube With Slide" />
 
                 <Button
                     android:id="@+id/bt_resize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Resize" />
+                    android:text="9. Resize" />
 
                 <Button
                     android:id="@+id/bt_custom_hq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Custom HQ" />
+                    android:text="10. Custom HQ" />
 
                 <Button
                     android:id="@+id/bt_play_any_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Play any link" />
+                    android:text="11. Play any link" />
 
                 <Button
                     android:id="@+id/bt_volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Volume controller" />
+                    android:text="12. Volume controller" />
 
                 <Button
                     android:id="@+id/bt_event"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event" />
+                    android:text="13. Event" />
             </LinearLayout>
 
             <LinearLayout
@@ -133,7 +132,7 @@
                     android:id="@+id/bt_guide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Guide" />
+                    android:text="14. Guide" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,7 +153,7 @@
                     android:id="@+id/bt_livestream_broadcaster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Livestream (deprecated -  run module samplelivestream instead)" />
+                    android:text="15. Livestream (deprecated -  run module samplelivestream instead)" />
             </LinearLayout>
 
             <LinearLayout
@@ -175,7 +174,7 @@
                     android:id="@+id/bt_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Error" />
+                    android:text="16. Error" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
