@@ -1,9 +1,11 @@
 package testlibuiza.sample.v3.customhq;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
@@ -21,7 +23,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -36,32 +37,21 @@ import vn.uiza.views.autosize.UZImageButton;
  * Created by loitp on 12/10/2018.
  */
 
-public class CustomHQActivity extends BaseActivity implements UZCallback, UZItemClick {
+public class CustomHQActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private Activity activity;
     private UZVideo uzVideo;
     private Button btCustomHq;
     private UZImageButton uzibCustomAudio;
     private LinearLayout llListHq;
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_uiza_custom_hq;
-    }
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = this;
         UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_hq_custom_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_uiza_custom_hq);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         btCustomHq = (Button) uzVideo.findViewById(R.id.uzib_custom_hq);
         uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);

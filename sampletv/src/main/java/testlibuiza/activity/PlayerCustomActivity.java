@@ -1,7 +1,9 @@
 package testlibuiza.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -22,7 +24,6 @@ import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LDialogUtil;
@@ -32,7 +33,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnapType;
 import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager;
 
-public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZTVCallback, UZItemClick {
+public class PlayerCustomActivity extends AppCompatActivity implements UZCallback, UZTVCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZVideo uzVideo;
     private RelativeLayout rl;
     private RecyclerView recyclerView;
@@ -42,9 +45,11 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         UZUtil.setCasty(this);
+        activity = this;
         //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player_custom);
         rl = (RelativeLayout) findViewById(R.id.rl);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
@@ -105,21 +110,6 @@ public class PlayerCustomActivity extends BaseActivity implements UZCallback, UZ
         UZUtil.initEntity(activity, uzVideo, LSApplication.getInstance().entityIdDefaultVOD);
         setupUI();
         setupData();
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_player_custom;
     }
 
     @Override

@@ -7,31 +7,35 @@ package uiza.v4.login;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
-public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnBackPressed {
+public class FrmLogin extends Fragment implements View.OnClickListener, IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
     private EditText etId;
     private EditText etPw;
     private TextView tvForgotPw;
     private TextView tvDontHaveAcc;
     private TextView tvLogin;
 
+    @Nullable
     @Override
-    protected String setTag() {
-        return "Login";
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_login, container, false);
     }
 
     @Override
@@ -90,11 +94,6 @@ public class FrmLogin extends BaseFragment implements View.OnClickListener, IOnB
             tvLogin.setBackgroundResource(R.drawable.bt_login_disabled);
             tvLogin.setClickable(false);
         }
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_login;
     }
 
     private void login() {

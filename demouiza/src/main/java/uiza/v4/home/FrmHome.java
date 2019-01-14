@@ -7,21 +7,19 @@ package uiza.v4.home;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;
 
-public class FrmHome extends BaseFragment implements IOnBackPressed {
-
-    @Override
-    protected String setTag() {
-        return "Home";
-    }
+public class FrmHome extends Fragment implements IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -30,9 +28,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         LImageUtil.load(getActivity(), Constants.URL_IMG_THUMBNAIL_2, iv);
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_home;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_home, container, false);
     }
 
     @Override

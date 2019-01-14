@@ -1,14 +1,17 @@
 package testlibuiza.sample.v3.demoui;
 
 /**
- * Created by www.muathu@gmail.com on 12/24/2017.
+ * Created by www.muathu@gmail.com on 9/1/2018.
  */
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -18,7 +21,6 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -26,16 +28,11 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick {
+public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
         return uzVideo;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
     }
 
     @Override
@@ -53,9 +50,10 @@ public class FrmVideoTop extends BaseFragment implements UZCallback, UZItemClick
         uzVideo.addItemClick(this);
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_top;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_top, container, false);
     }
 
     @Override

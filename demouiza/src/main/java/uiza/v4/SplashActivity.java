@@ -1,8 +1,10 @@
 package uiza.v4;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,13 +19,14 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.views.LToast;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private int currentPlayerId = R.layout.uz_player_skin_1;
     private EditText etApiDomain;
     private EditText etKey;
@@ -35,7 +38,9 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.v3_uiza_splash_activity);
         llInputInfo = (LinearLayout) findViewById(R.id.ll_input_info);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         progressBar.setVisibility(View.GONE);
@@ -161,20 +166,5 @@ public class SplashActivity extends BaseActivity {
             btStart.setClickable(true);
             btStart.setBackgroundResource(R.drawable.bt_login_enable);
         }
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v3_uiza_splash_activity;
     }
 }

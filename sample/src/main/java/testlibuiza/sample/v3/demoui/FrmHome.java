@@ -7,19 +7,20 @@ package testlibuiza.sample.v3.demoui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.views.LToast;
 
-public class FrmHome extends BaseFragment implements IOnBackPressed {
+public class FrmHome extends Fragment implements IOnBackPressed {
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
     private final String entityIdDefaultVOD219 = LSApplication.entityIdDefaultVOD_21_9;
     private final String entityIdDefaultVODPortrait = LSApplication.entityIdDefaultVODportrait;
@@ -27,44 +28,39 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
     private final String metadataId = LSApplication.metadataDefault0;
 
     @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frmRootView.findViewById(R.id.bt_entity_vod).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_entity_vod).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD);
             }
         });
-        frmRootView.findViewById(R.id.bt_entity_vod_21_9).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_entity_vod_21_9).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVOD219);
             }
         });
-        frmRootView.findViewById(R.id.bt_entity_vod_portrait).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_entity_vod_portrait).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultVODPortrait);
             }
         });
-        frmRootView.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_entity_live).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playEntityId(entityIdDefaultLIVE);
             }
         });
-        frmRootView.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_playlist_folder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).playPlaylistFolder(metadataId);
             }
         });
-        frmRootView.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_switch_screen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeCanSlideActivity) getActivity()).replaceFragment(new FrmLogin());
@@ -80,9 +76,10 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         }
     }
 
+    @Nullable
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_home;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_home, container, false);
     }
 
     private long backPressed;
@@ -95,7 +92,7 @@ public class FrmHome extends BaseFragment implements IOnBackPressed {
         } else {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
             if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOritation((BaseActivity) getContext());
+                LActivityUtil.toggleScreenOritation(getActivity());
             } else {
                 if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                     if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {

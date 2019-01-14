@@ -58,26 +58,10 @@ Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-play
 
 
 # How to call API?:
-**Step1: You need to extend your activity/fragment like this**
-
-    public class YourActivity extends BaseActivity{
-    }
-
-or
-
-    public class YourFragment extends BaseFragment{
-    }
-
-**make sure add this line below**
-
-    UZUtil.setCasty(this);
-
-before super.onCreate(savedInstanceState);  in onCreate() of your activity.
-
-**Step 2: Call api by using this function**
+Call api by using this function**
 
     UZService service = UZRestClient.createService(UZService.class);
-    subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+    UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
       public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
         }
@@ -106,7 +90,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends BaseActivity implements UZCallback{
+    public class MainActivity extends AppCompatActivity implements UZCallback{
        ...
     }
 Manifest
@@ -236,7 +220,7 @@ XML:
 
 In class LivestreamBroadcasterActivity:
 
-    public class LivestreamBroadcasterActivity extends BaseActivity implements UZLivestreamCallback {
+    public class LivestreamBroadcasterActivity extends AppCompatActivity implements UZLivestreamCallback {
     ...
     }
 

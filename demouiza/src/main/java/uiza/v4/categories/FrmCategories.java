@@ -8,9 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,10 +24,10 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
-import vn.uiza.core.base.BaseFragment;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -32,7 +35,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getlistmetadata.ResultGetListMetad
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.views.LToast;
 
-public class FrmCategories extends BaseFragment implements IOnBackPressed {
+public class FrmCategories extends Fragment implements IOnBackPressed {
+    private final String TAG = getClass().getSimpleName();
     private RecyclerView recyclerView;
     private TextView tvMsg;
     private ProgressBar pb;
@@ -43,19 +47,14 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
     private final int limit = 100;
 
     @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_categories;
-    }
-
-    @Override
     public boolean onBackPressed() {
         return false;
-        //return ((HomeV4CanSlideActivity) getActivity()).handleOnbackpressFrm();
     }
 
+    @Nullable
     @Override
-    protected String setTag() {
-        return "Categories";
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_categories, container, false);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class FrmCategories extends BaseFragment implements IOnBackPressed {
         tvMsg.setVisibility(View.GONE);
         LUIUtil.showProgressBar(pb);
         UZService service = UZRestClient.createService(UZService.class);
-        subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
                 if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty() || resultGetListMetadata.getMetadata() == null) {

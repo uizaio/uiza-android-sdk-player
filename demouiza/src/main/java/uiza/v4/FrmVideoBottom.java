@@ -7,25 +7,24 @@ package uiza.v4;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import uiza.R;
-import vn.uiza.core.base.BaseFragment;
+import uizacoresdk.view.rl.videoinfo.UZVideoInfo;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.view.rl.videoinfo.UZVideoInfo;
 
-public class FrmVideoBottom extends BaseFragment {
+public class FrmVideoBottom extends Fragment {
+    private final String TAG = getClass().getSimpleName();
     private UZVideoInfo uizaIMAVideoInfo;
 
+    @Nullable
     @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.v4_frm_bottom;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.v4_frm_bottom, container, false);
     }
 
     @Override

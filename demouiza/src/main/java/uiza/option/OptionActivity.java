@@ -1,10 +1,12 @@
 package uiza.option;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +22,15 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.SplashActivity;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
-public class OptionActivity extends BaseActivity {
+public class OptionActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     public static final String KEY_SKIN = "KEY_SKIN";
     public static final String KEY_CAN_SLIDE = "KEY_CAN_SLIDE";
     public static final String KEY_API_END_POINT = "KEY_API_END_POINT";
@@ -72,7 +75,9 @@ public class OptionActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.uiza_option_activity);
         genListSkin();
         findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,21 +127,6 @@ public class OptionActivity extends BaseActivity {
         intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
         startActivity(intent);
         LActivityUtil.tranIn(activity);
-    }
-
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.uiza_option_activity;
     }
 
     private void setupSkin() {

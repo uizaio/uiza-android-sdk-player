@@ -1,9 +1,11 @@
 package testlibuiza.sample.livestream;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -50,13 +52,14 @@ import testlibuiza.app.LSApplication;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class LivestreamBroadcasterActivity extends BaseActivity implements View.OnClickListener, UZLivestreamCallback {
+public class LivestreamBroadcasterActivity extends AppCompatActivity implements View.OnClickListener, UZLivestreamCallback {
+    private final String TAG = getClass().getSimpleName();
+    private Activity activity;
     private UZLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
@@ -65,25 +68,12 @@ public class LivestreamBroadcasterActivity extends BaseActivity implements View.
     private TextView tvMainUrl;
 
     @Override
-    protected boolean setFullScreen() {
-        return true;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_livestream_video_broadcaster;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        setContentView(R.layout.activity_livestream_video_broadcaster);
         uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
         uzLivestream.setUzLivestreamCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);

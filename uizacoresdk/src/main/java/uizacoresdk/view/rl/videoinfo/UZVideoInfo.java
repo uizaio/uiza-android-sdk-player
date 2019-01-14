@@ -17,14 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
-import vn.uiza.core.base.BaseActivity;
+import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.util.UZData;
 
 /**
  * Created by www.muathu@gmail.com on 7/26/2017.
@@ -93,7 +92,7 @@ public class UZVideoInfo extends RelativeLayout {
 
     private void onCreate() {
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_info_rl, this);
-        activity = ((BaseActivity) getContext());
+        activity = (Activity) getContext();
         findViews();
     }
 

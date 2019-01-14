@@ -11,14 +11,17 @@ import rx.subscriptions.CompositeSubscription;
  * Created by loitp on 5/11/2018.
  */
 
-public class ApiMaster {
-    private static final ApiMaster ourInstance = new ApiMaster();
+public class UZAPIMaster {
+    private static UZAPIMaster ourInstance;
 
-    public static ApiMaster getInstance() {
+    public static UZAPIMaster getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new UZAPIMaster();
+        }
         return ourInstance;
     }
 
-    private ApiMaster() {
+    private UZAPIMaster() {
     }
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();

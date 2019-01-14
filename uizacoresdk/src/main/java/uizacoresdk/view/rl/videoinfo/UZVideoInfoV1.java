@@ -22,7 +22,6 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.view.util.UizaDataV1;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
@@ -92,7 +91,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
 
     private void onCreate() {
         inflate(getContext(), R.layout.uiza_ima_video_core_info_rl, this);
-        activity = ((BaseActivity) getContext());
+        activity = (Activity) getContext();
         findViews();
     }
 

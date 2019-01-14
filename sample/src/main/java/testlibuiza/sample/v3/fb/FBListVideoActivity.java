@@ -1,8 +1,10 @@
 package testlibuiza.sample.v3.fb;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +16,16 @@ import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.base.BaseActivity;
 import vn.uiza.core.common.Constants;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 
-public class FBListVideoActivity extends BaseActivity {
+public class FBListVideoActivity extends AppCompatActivity {
+    private Activity activity;
     private List<Data> dataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;
@@ -30,7 +33,9 @@ public class FBListVideoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fb_list_video);
         NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
         nsv.setNestedScrollingEnabled(false);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
@@ -64,21 +69,6 @@ public class FBListVideoActivity extends BaseActivity {
         listAllEntity();
     }
 
-    @Override
-    protected boolean setFullScreen() {
-        return false;
-    }
-
-    @Override
-    protected String setTag() {
-        return "TAG" + getClass().getSimpleName();
-    }
-
-    @Override
-    protected int setLayoutResourceId() {
-        return R.layout.activity_fb_list_video;
-    }
-
     private void listAllEntity() {
         UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "";
@@ -86,7 +76,7 @@ public class FBListVideoActivity extends BaseActivity {
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 dataList.addAll(result.getData());
