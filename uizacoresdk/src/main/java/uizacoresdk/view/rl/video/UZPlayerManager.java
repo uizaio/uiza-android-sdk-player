@@ -184,7 +184,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             if (mls >= duration) {
                                 mls = duration;
                             }
-                            percent = (int) (mls * 100 / duration);
+                            if (duration != 0) {
+                                percent = (int) (mls * 100 / duration);
+                            }
                             s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onVideoProgress(mls, s, duration, percent);
@@ -209,10 +211,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         handler.postDelayed(runnable, 0);
     }
 
-    private long mls;
-    private long duration;
-    private int percent;
-    private int s;
+    private long mls = 0;
+    private long duration = 0;
+    private int percent = 0;
+    private int s = 0;
     private long bufferPosition = 0;
     private int bufferPercentage = 0;
 
