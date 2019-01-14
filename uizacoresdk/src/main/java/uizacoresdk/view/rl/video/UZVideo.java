@@ -58,6 +58,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
@@ -97,9 +98,10 @@ import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.data.EventBusData;
 import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
+import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
+import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -304,10 +306,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     private String entityId;
     private boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed;
+    private UUID uuid;
 
     protected void init(@NonNull String entityId, final boolean isTryToPlayPreviousUizaInputIfPlayCurrentUizaInputFailed, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
+        uuid = UUID.randomUUID();
+        LLog.d(TAG, "fuck uuid " + uuid);
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
         }
@@ -1512,6 +1517,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
+            pingHeartBeat();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -2202,14 +2208,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitCustomLinkPlay");
             return;
         }
-        UZService service = RestClientTracking.createService(UZService.class);
+        UZService service = UZRestClientTracking.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
-                if (Constants.IS_DEBUG) {
-                    LToast.show(getContext(), "Track success!\n" + uizaTracking.getEntityName() + "\n" + uizaTracking.getEventType() + "\n" + uizaTracking.getPlayThrough());
-                }
+                LLog.d(TAG, "fuck <------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "callAPITrackUiza <------------------------track success: " + gson.toJson(tracking));
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
                 }
@@ -3875,5 +3879,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void setFreeSize(boolean isFreeSize) {
         this.isFreeSize = isFreeSize;
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
+    }
+
+    private void pingHeartBeat() {
+        LLog.d(TAG, "fuck pingHeartBeat uuid: " + uuid);
+        UZService service = UZRestClientHeartBeat.createService(UZService.class);
+        String cdnName = "teamplayer-vod.uizadev.io";
+        String session = uuid.toString();
+        UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "fuck pingHeartBeat onSuccess: " + gson.toJson(result));
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
+            }
+        });
     }
 }

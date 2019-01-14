@@ -339,7 +339,7 @@ public class UZUtil {
     }
 
     /*public static void setupRestClientV2(Activity activity) {
-        if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
+        if (RestClientV2.getRetrofit() == null && UZRestClientTracking.getRetrofit() == null) {
             String currentApi = getApiEndPoint(activity);
             if (currentApi == null || currentApi.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
@@ -358,7 +358,7 @@ public class UZUtil {
 
             RestClientV2.init(currentApi);
             RestClientV2.addAuthorization(token);
-            RestClientTracking.init(currentTrackApi);
+            UZRestClientTracking.init(currentTrackApi);
 
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);

@@ -8,19 +8,14 @@ package vn.uiza.core.common;
 
 public class Constants {
     public static boolean IS_DEBUG = false;
-    public static final String PLAYER_SDK_VERSION = "2.4.7";
+    public static final String PLAYER_SDK_VERSION = "3.1.9";
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;
     }
 
-    public final static String LOITP = "LoitpDebug";
-
     public static final int NOT_FOUND = -404;
     public static final int UNKNOW = -400;
-
-    //public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
-    //public final static String URL_IMG_LONG = "https://c2.staticflickr.com/6/5476/29412311793_8067369e64_b.jpg";
 
     public static int TYPE_ACTIVITY_TRANSITION_NO_ANIM = -1;
     public static int TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT = 0;
@@ -42,8 +37,6 @@ public class Constants {
     public final static String TEST_5 = "A1EC01C33BD69CD589C2AF605778C2E6";
     public final static String TEST_6 = "13308851AEDCA44443112D80A8D182CA";
 
-    //public static String ASSET_FILE_GIFT = "img/ic_gift.png";
-    //public final static String KEY_UIZA_IS_PLAYLIST_FOLDER = "KEY_UIZA_IS_PLAYLIST_FOLDER";
     public final static String KEY_UIZA_ENTITY_ID = "KEY_UIZA_ENTITY_ID";
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
@@ -76,7 +69,9 @@ public class Constants {
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
 
-    public final static String URL_DEV_UIZA_VERSION_1 = "https://demo-api.uiza.io/";
+    public final static String URL_HEART_BEAT_DEV = "https://dev-heartbeat.uizadev.io/";
+    public final static String URL_HEART_BEAT_STAG = "https://stag-heartbeat.uizadev.io/";
+    public final static String URL_HEART_BEAT_PROD = "https://heartbeat.uiza.io/";
 
     public final static String URL_DEV_UIZA_VERSION_2 = "http://dev-api.uiza.io/";
     public final static String URL_DEV_UIZA_VERSION_2_STAG = "https://uqc-api.uiza.io/";
@@ -86,16 +81,6 @@ public class Constants {
     public final static int ENVIRONMENT_DEV = 1;
     public final static int ENVIRONMENT_STAG = 2;
     public final static int ENVIRONMENT_PROD = 3;
-
-    /*public final static String PLAYER_ID_SKIN_0 = "PLAYER_ID_SKIN_0";
-    public final static String PLAYER_ID_SKIN_1 = "b825c07e-2ed2-48a8-a8ee-012baf8614e8";
-    public final static String PLAYER_ID_SKIN_2 = "29c2bb31-e1f9-4992-ac89-e7d2759a2d6b";
-    public final static String PLAYER_ID_SKIN_3 = "d1a9eca0-8bef-4985-8260-af3300191200";*/
-
-    /*public final static int PLAYER_ID_SKIN_0 = 0;
-    public final static int PLAYER_ID_SKIN_1 = 1;
-    public final static int PLAYER_ID_SKIN_2 = 2;
-    public final static int PLAYER_ID_SKIN_3 = 3;*/
 
     public final static String T = "true";
     public final static String F = "false";
