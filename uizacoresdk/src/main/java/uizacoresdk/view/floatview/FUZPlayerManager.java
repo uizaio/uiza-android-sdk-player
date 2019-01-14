@@ -84,7 +84,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                         if (player != null) {
                             long mls = (long) player.getCurrentPosition();
                             long duration = (long) player.getDuration();
-                            int percent = (int) (mls * 100 / duration);
+                            int percent = 0;
+                            if (duration != 0) {
+                                percent = (int) (mls * 100 / duration);
+                            }
                             int s = Math.round(mls / 1000);
                             //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onVideoProgress(mls, s, duration, percent);
