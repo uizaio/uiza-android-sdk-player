@@ -50,7 +50,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -133,7 +132,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private Activity activity;
     private boolean isLivestream;
     private boolean isTablet;
-    private Gson gson = new Gson();
+    //private Gson gson = new Gson();
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -2201,6 +2200,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         Intent intent = new Intent(activity, FUZVideoService.class);
         intent.putExtra(Constants.FLOAT_CONTENT_POSITION, getCurrentPosition());
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
+        intent.putExtra(Constants.FLOAT_CDN_HOST, cdnHost);
+        intent.putExtra(Constants.FLOAT_UUID, uuid.toString());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         activity.startService(intent);
@@ -3897,7 +3898,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void pingHeartBeat() {
         if (uzPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
-            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
+            LLog.e(TAG, "fuck Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
         if (activityIsPausing) {
@@ -3907,7 +3908,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     pingHeartBeat();
                 }
             });
-            LLog.e(TAG, "Error cannot call API pingHeartBeat() because activity is pausing");
+            LLog.e(TAG, "fuck Error cannot call API pingHeartBeat() because activity is pausing");
             return;
         }
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
@@ -3918,7 +3919,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "pingHeartBeat onSuccess: " + gson.toJson(result));
+                LLog.d(TAG, "fuck pingHeartBeat onSuccess");
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {

@@ -58,6 +58,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     //private Gson gson = new Gson();
     private boolean isLivestream;
     private boolean isInitCustomLinkplay;
+    private String cdnHost;
+    private String uuid;
     private long contentPosition;
     private int screenWidth;
     private int screenHeight;
@@ -79,6 +81,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
+        cdnHost = intent.getStringExtra(Constants.FLOAT_CDN_HOST);
+        uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (isInitCustomLinkplay) {
         } else {
             if (UZData.getInstance().getData() == null) {
@@ -839,7 +843,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            fuzVideo.init(linkPlay, isLivestream, contentPosition, this);
+            fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
