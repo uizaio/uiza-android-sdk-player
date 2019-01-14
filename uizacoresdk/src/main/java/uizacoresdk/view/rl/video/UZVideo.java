@@ -177,6 +177,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private RelativeLayout rlEndScreen;
     private TextView tvEndScreenMsg;
     private ResultGetLinkPlay mResultGetLinkPlay;
+    private String cdnHost;
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
@@ -312,7 +313,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         uuid = UUID.randomUUID();
-        LLog.d(TAG, "fuck uuid " + uuid);
+        //LLog.d(TAG, "uuid " + uuid);
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
         }
@@ -495,6 +496,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 public void onSuccess(ResultGetLinkPlay result) {
                     LLog.d(TAG, "getLinkPlayLive onSuccess");
                     mResultGetLinkPlay = result;
+                    try {
+                        cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
+                        //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
+                    } catch (NullPointerException e) {
+                        LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                    }
                     checkToSetUpResouce();
                 }
 
@@ -522,6 +529,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess: " + gson.toJson(result));
                     //LLog.d(TAG, "getLinkPlayVOD onSuccess");
                     mResultGetLinkPlay = result;
+                    try {
+                        cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
+                        //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
+                    } catch (NullPointerException e) {
+                        LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                    }
                     checkToSetUpResouce();
                 }
 
@@ -1551,6 +1564,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         activityIsPausing = true;
         isCastingChromecast = false;
         isCastPlayerPlayingFirst = false;
+        cdnHost = null;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
     }
 
@@ -2212,7 +2226,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "fuck <------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 //LLog.d(TAG, "callAPITrackUiza <------------------------track success: " + gson.toJson(tracking));
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
@@ -3882,19 +3896,46 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void pingHeartBeat() {
-        LLog.d(TAG, "fuck pingHeartBeat uuid: " + uuid);
+        if (uzPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
+            return;
+        }
+        if (activityIsPausing) {
+            LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    pingHeartBeat();
+                }
+            });
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() because activity is pausing");
+            return;
+        }
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
-        String cdnName = "teamplayer-vod.uizadev.io";
+        String cdnName = cdnHost;
         String session = uuid.toString();
+        //LLog.d(TAG, "pingHeartBeat cdnName " + cdnName);
+        //LLog.d(TAG, "pingHeartBeat session " + session);
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "fuck pingHeartBeat onSuccess: " + gson.toJson(result));
+                LLog.d(TAG, "pingHeartBeat onSuccess: " + gson.toJson(result));
+                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        pingHeartBeat();
+                    }
+                });
             }
 
             @Override
             public void onFail(Throwable e) {
                 LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
+                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        pingHeartBeat();
+                    }
+                });
             }
         });
     }
