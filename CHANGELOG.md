@@ -1,3 +1,15 @@
+### 3.1.9 (2019-1-14)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.1.9'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.1.9'
+
+- Add func uzLivestream.stopPreview();
+- Add UZAPIMaster.
+- Remove BaseActivity and BaseFragment, use AppCompatActivity and Fragment instead.
+- Fixed bug divide by zero.
 ### 3.1.1 (2019-1-4)
 
     //for playing video VOD, LIVE  
