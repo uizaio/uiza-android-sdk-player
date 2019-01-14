@@ -69,7 +69,7 @@ public class UZUtil {
         }
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH) {
+    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
         if (viewGroup == null) {
             return;
         }
@@ -91,9 +91,13 @@ public class UZUtil {
                     //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
                     heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                 } else {
-                    //LLog.d(TAG, "video source is portrait -> scale 9-16");
-                    //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
-                    heightSurfaceView = widthSurfaceView;
+                    if (isFreeSize) {
+                        heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    } else {
+                        //LLog.d(TAG, "video source is portrait -> scale 1-1");
+                        heightSurfaceView = widthSurfaceView;
+                        //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    }
                 }
             }
         }

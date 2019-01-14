@@ -359,7 +359,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call api lay detail entity lam gi nua
         if (UZData.getInstance().getData() == null) {
             //LLog.d(TAG, "init UZData.getInstance().getData() == null -> call api lấy detail entity if");
-            UZUtil.getDetailEntity( activity, entityId, new CallbackGetDetailEntity() {
+            UZUtil.getDetailEntity(activity, entityId, new CallbackGetDetailEntity() {
                 @Override
                 public void onSuccess(Data d) {
                     //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
@@ -886,7 +886,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void onCreate() {
-        activity =  (Activity) getContext();
+        activity = (Activity) getContext();
         UZUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
 
@@ -896,7 +896,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -968,7 +968,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         rootView.requestLayout();
 
         findViews();
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         updateUIEachSkin();
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
@@ -1490,7 +1490,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom && uzPlayerView != null) {
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
@@ -1968,7 +1968,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH());
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom) {
             View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
             setMarginDependOnUZTimeBar(videoSurfaceView);
@@ -3867,6 +3867,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void setSize(int width, int height) {
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), width, height);
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), width, height, isFreeSize);
+    }
+
+    private boolean isFreeSize;
+
+    public void setFreeSize(boolean isFreeSize) {
+        this.isFreeSize = isFreeSize;
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
     }
 }
