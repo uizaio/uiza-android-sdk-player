@@ -3898,7 +3898,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void pingHeartBeat() {
         if (uzPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
-            LLog.e(TAG, "fuck Error cannot call API pingHeartBeat() -> destroy");
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
         if (activityIsPausing) {
@@ -3908,7 +3908,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     pingHeartBeat();
                 }
             });
-            LLog.e(TAG, "fuck Error cannot call API pingHeartBeat() because activity is pausing");
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() because activity is pausing");
             return;
         }
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
@@ -3919,7 +3919,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "fuck pingHeartBeat onSuccess");
+                LLog.d(TAG, "pingHeartBeat onSuccess");
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {

@@ -632,7 +632,7 @@ public class FUZVideo extends RelativeLayout {
 
     private void pingHeartBeat() {
         if (fuzUizaPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
-            LLog.e(TAG, "fuck Error cannot call API pingHeartBeat() -> destroy");
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
@@ -643,7 +643,7 @@ public class FUZVideo extends RelativeLayout {
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "fuck pingHeartBeat onSuccess");
+                LLog.d(TAG, "pingHeartBeat onSuccess");
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
