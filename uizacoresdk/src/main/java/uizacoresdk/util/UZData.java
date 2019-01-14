@@ -90,10 +90,7 @@ public class UZData {
             initTracking(Constants.URL_TRACKING_STAG);
         } else if (environment == Constants.ENVIRONMENT_PROD) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
-            //TODO revert to PROD
-            //UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
-            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
-
+            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
             initTracking(Constants.URL_TRACKING_PROD);
         } else {
             throw new IllegalArgumentException("Please init correct environment.");
