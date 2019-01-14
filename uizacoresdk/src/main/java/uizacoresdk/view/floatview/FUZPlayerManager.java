@@ -79,7 +79,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             @Override
             public void run() {
                 if (fuzVideo != null && fuzVideo.getPlayerView() != null) {
-                    //LLog.d(TAG, "isPlayingAd " + isPlayingAd);
                     if (progressCallback != null) {
                         if (player != null) {
                             long mls = (long) player.getCurrentPosition();
