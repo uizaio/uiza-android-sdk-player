@@ -21,6 +21,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
     private Button btColor1;
     private Button btColor2;
     private Button btSaveFirstPosition;
+    private Switch swTapToFullPlayer;
     private Switch swEzDestroy;
     private Switch swVibrateDestroy;
     private Switch swSmoothSwitch;
@@ -44,6 +45,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         btColor0 = (Button) findViewById(R.id.bt_color_0);
         btColor1 = (Button) findViewById(R.id.bt_color_1);
         btColor2 = (Button) findViewById(R.id.bt_color_2);
+        swTapToFullPlayer = (Switch) findViewById(R.id.sw_tap_to_full_player);
         swEzDestroy = (Switch) findViewById(R.id.sw_ez_destroy);
         swVibrateDestroy = (Switch) findViewById(R.id.sw_vibrate_destroy);
         swSmoothSwitch = (Switch) findViewById(R.id.sw_smooth_switch);
@@ -92,6 +94,16 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         } else if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.GreenTran)) {
             btColor2.setText("GreenTran");
         }
+
+        boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(activity);
+        swTapToFullPlayer.setChecked(isTapToFullPlayer);
+        setSwTapToFullPlayer(isTapToFullPlayer);
+        swTapToFullPlayer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setSwTapToFullPlayer(isChecked);
+            }
+        });
+
         boolean isEZDestroy = UZUtil.getMiniPlayerEzDestroy(activity);
         swEzDestroy.setChecked(isEZDestroy);
         setSwEzDestroy(isEZDestroy);
@@ -100,6 +112,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 setSwEzDestroy(isChecked);
             }
         });
+
         boolean isEnableVibration = UZUtil.getMiniPlayerEnableVibration(activity);
         swVibrateDestroy.setChecked(isEnableVibration);
         setSwVibrateDestroy(isEnableVibration);
@@ -108,6 +121,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 setSwVibrateDestroy(isChecked);
             }
         });
+
         boolean isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(activity);
         swSmoothSwitch.setChecked(isEnableSmoothSwitch);
         setSwSmoothSwitch(isEnableVibration);
@@ -116,6 +130,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 setSwSmoothSwitch(isChecked);
             }
         });
+
         int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(activity);
         int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(activity);
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
@@ -187,6 +202,15 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 UZUtil.stopMiniPlayer(activity);
                 break;
         }
+    }
+
+    private void setSwTapToFullPlayer(boolean isChecked) {
+        if (isChecked) {
+            swTapToFullPlayer.setText("On");
+        } else {
+            swTapToFullPlayer.setText("Off");
+        }
+        UZUtil.setMiniPlayerTapToFullPlayer(activity, isChecked);
     }
 
     private void setSwEzDestroy(boolean isChecked) {

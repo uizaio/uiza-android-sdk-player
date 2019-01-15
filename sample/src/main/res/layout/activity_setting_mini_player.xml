@@ -51,6 +51,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
+                android:text="Tap to full-player" />
+
+            <Switch
+                android:id="@+id/sw_tap_to_full_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
                 android:text="Easy to destroy mini player
 On: Mini player will be destroyed if user drag it to any edge of device.
 Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT edge of device." />
