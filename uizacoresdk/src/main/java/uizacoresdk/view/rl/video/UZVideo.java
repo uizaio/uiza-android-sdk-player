@@ -1529,7 +1529,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
-            pingHeartBeat();
+            //TODO enable pingHeartBeat
+            //pingHeartBeat();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);

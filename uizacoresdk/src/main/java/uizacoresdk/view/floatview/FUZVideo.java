@@ -352,7 +352,8 @@ public class FUZVideo extends RelativeLayout {
         if (callback != null) {
             callback.isInitResult(true);
         }
-        pingHeartBeat();
+        //TODO enable pingHeartBeat
+        //pingHeartBeat();
     }
 
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
