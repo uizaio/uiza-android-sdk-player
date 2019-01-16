@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import testlibuiza.R;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.utils.util.Encryptor;
 
 public class DummyActivity extends AppCompatActivity {
@@ -44,20 +43,16 @@ public class DummyActivity extends AppCompatActivity {
         }
         input = input.trim();
         String hexIv = strIn.substring(0, 16);
-        LLog.d(TAG, "hexIv: " + hexIv);
+        //LLog.d(TAG, "hexIv: " + hexIv);
         String hexText = strIn.substring(16, input.length());
-        LLog.d(TAG, "hexText: " + hexText);
+        //LLog.d(TAG, "hexText: " + hexText);
 
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
         String base64 = android.util.Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
-        LLog.d(TAG, "base64 " + base64);
+        //LLog.d(TAG, "base64 " + base64);
 
         String decrypt = Encryptor.decrypt(key, hexIv, base64);
-        LLog.d(TAG, "decrypt " + decrypt);
+        //LLog.d(TAG, "decrypt " + decrypt);
         tvOut.setText(decrypt);
-
-        if (decrypt.equals("{\"licenseAcquisitionUrl\":\"https://wv.service.expressplay.com/hms/wv/rights/?ExpressPlayToken=BAAzsz04KdYAAACQC0WYhaELSFCcPbc4O6vJXP3nPB7qnN9sL9boHHnvCDLzb6J4p_jh-x5FLWbHuk86vjnHAyY4LqTFZta0OTVB0tHcC87HAsxQWNPfVS0qV8pDxiDHa5ZYx6iz1vvoWlvRiMedIr8b5Q-aIaPehlE-MeiXtJHN6_wqZFrzR6Pw_PapWK4ENINrq1E-6iu6pEnGIozZrO9vbUS30B6grmQs_yciCXM\"}")) {
-            LLog.d(TAG, "okkkkkkkkkkkkk");
-        }
     }
 }
