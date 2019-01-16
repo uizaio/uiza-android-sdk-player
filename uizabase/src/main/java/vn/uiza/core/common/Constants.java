@@ -145,4 +145,7 @@ public class Constants {
     public static final String DRM_SCHEME_NULL = null;
     public static final String DRM_SCHEME_PLAYREADY = "playready";
     public static final String DRM_SCHEME_WIDEVINE = "widevine";
+
+    public static final int W_320 = 320;
+    public static final int W_180 = 180;
 }

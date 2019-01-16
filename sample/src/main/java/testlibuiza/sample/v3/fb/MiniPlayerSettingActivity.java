@@ -25,12 +25,15 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
     private Switch swEzDestroy;
     private Switch swVibrateDestroy;
     private Switch swSmoothSwitch;
+    private Switch swAutoSize;
     private EditText etPositionX;
     private EditText etPositionY;
     private EditText etMarginLeft;
     private EditText etMarginTop;
     private EditText etMarginRight;
     private EditText etMarginBottom;
+    private EditText etSizeW;
+    private EditText etSizeH;
     private Button btSaveMargin;
     private Button btShowController;
     private Button btHideController;
@@ -40,6 +43,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
     private Button btPlayPause;
     private Button btFullScreen;
     private Button btStopMiniPlayer;
+    private Button btSaveSizeConfig;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -49,12 +53,15 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         swEzDestroy = (Switch) findViewById(R.id.sw_ez_destroy);
         swVibrateDestroy = (Switch) findViewById(R.id.sw_vibrate_destroy);
         swSmoothSwitch = (Switch) findViewById(R.id.sw_smooth_switch);
+        swAutoSize = (Switch) findViewById(R.id.sw_auto_size);
         etPositionX = (EditText) findViewById(R.id.et_position_x);
         etPositionY = (EditText) findViewById(R.id.et_position_y);
         etMarginLeft = (EditText) findViewById(R.id.et_margin_left);
         etMarginTop = (EditText) findViewById(R.id.et_margin_top);
         etMarginRight = (EditText) findViewById(R.id.et_margin_right);
         etMarginBottom = (EditText) findViewById(R.id.et_margin_bottom);
+        etSizeW = (EditText) findViewById(R.id.et_size_w);
+        etSizeH = (EditText) findViewById(R.id.et_size_h);
         btSaveFirstPosition = (Button) findViewById(R.id.bt_save_first_position);
         btSaveMargin = (Button) findViewById(R.id.bt_save_margin);
         btShowController = (Button) findViewById(R.id.bt_show_controller);
@@ -65,6 +72,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         btPlayPause = (Button) findViewById(R.id.bt_play_pause);
         btFullScreen = (Button) findViewById(R.id.bt_full_screen);
         btStopMiniPlayer = (Button) findViewById(R.id.bt_stop_mini_player);
+        btSaveSizeConfig = (Button) findViewById(R.id.bt_save_size_config);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
@@ -78,6 +86,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         btPlayPause.setOnClickListener(this);
         btFullScreen.setOnClickListener(this);
         btStopMiniPlayer.setOnClickListener(this);
+        btSaveSizeConfig.setOnClickListener(this);
     }
 
     @Override
@@ -131,6 +140,25 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
+        boolean isAutoSize = UZUtil.getMiniPlayerAutoSize(activity);
+        swAutoSize.setChecked(isAutoSize);
+        etSizeW.setText("" + UZUtil.getMiniPlayerSizeWidth(activity));
+        etSizeH.setText("" + UZUtil.getMiniPlayerSizeHeight(activity));
+        if (isAutoSize) {
+            swAutoSize.setText("Auto: Value width and height will be ignored");
+        } else {
+            swAutoSize.setText("Manual: Type your custom size (Dp)");
+        }
+        swAutoSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    swAutoSize.setText("Auto: Value width and height will be ignored");
+                } else {
+                    swAutoSize.setText("Manual: Type your custom size (Dp)");
+                }
+            }
+        });
+
         int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(activity);
         int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(activity);
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
@@ -147,7 +175,6 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         etMarginTop.setText(marginT + "");
         etMarginRight.setText(marginR + "");
         etMarginBottom.setText(marginB + "");
-
     }
 
     @Override
@@ -200,6 +227,9 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 break;
             case R.id.bt_stop_mini_player:
                 UZUtil.stopMiniPlayer(activity);
+                break;
+            case R.id.bt_save_size_config:
+                saveConfigSize();
                 break;
         }
     }
@@ -270,7 +300,27 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             boolean isSuccess = UZUtil.setMiniPlayerMarginDp(activity, marginL, marginT, marginR, marginB);
             LToast.show(activity, "Set margin: " + isSuccess);
         } catch (Exception e) {
-            LToast.show(activity, "Invalid value, check logcat to get right value.");
+            LToast.show(activity, "Invalid value: " + e.toString());
+        }
+    }
+
+    private void saveConfigSize() {
+        try {
+            boolean isAutoSize = swAutoSize.isChecked();
+            String width = etSizeW.getText().toString();
+            String height = etSizeH.getText().toString();
+            if (!isAutoSize) {
+                if (width.isEmpty() || height.isEmpty()) {
+                    LToast.show(activity, "Cannot set property size: width or height is empty!");
+                    return;
+                }
+            }
+            int widthVideo = Integer.parseInt(width);
+            int heightVideo = Integer.parseInt(height);
+            boolean isSuccess = UZUtil.setMiniPlayerSizePixel(activity, isAutoSize, widthVideo, heightVideo);
+            LToast.show(activity, "saveConfigSize isSuccess: " + isSuccess);
+        } catch (Exception e) {
+            LToast.show(activity, "Invalid value: " + e.toString());
         }
     }
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/WhiteSmoke">
 
     <ScrollView
@@ -47,6 +48,13 @@
                     android:background="@color/GreenTran" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +65,13 @@
                 android:id="@+id/sw_tap_to_full_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -71,6 +86,13 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,6 +104,13 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,6 +121,13 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                 android:id="@+id/sw_smooth_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -129,6 +165,13 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                     android:layout_height="wrap_content"
                     android:text="Save" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -183,6 +226,61 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                     android:layout_height="wrap_content"
                     android:text="Save" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="Set Auto/Manual size" />
+
+            <Switch
+                android:id="@+id/sw_auto_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_size_w"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Width"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/et_size_h"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Height"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_save_size_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save size config" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/w_1"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:background="@color/Black" />
 
             <TextView
                 android:layout_width="match_parent"

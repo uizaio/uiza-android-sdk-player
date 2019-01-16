@@ -69,6 +69,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private boolean isEZDestroy;
     private boolean isEnableVibration;
     private boolean isEnableSmoothSwitch;
+    private boolean isAutoSize;
+    private int videoWidthFromSettingConfig;
+    private int videoHeightFromSettingConfig;
     private int marginL;
     private int marginT;
     private int marginR;
@@ -105,6 +108,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
         isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
         isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
+        isAutoSize = UZUtil.getMiniPlayerAutoSize(getBaseContext());
+        if (!isAutoSize) {
+            videoWidthFromSettingConfig = UZUtil.getMiniPlayerSizeWidth(getBaseContext());
+            videoHeightFromSettingConfig = UZUtil.getMiniPlayerSizeHeight(getBaseContext());
+        }
         //LLog.d(TAG, "isEZDestroy " + isEZDestroy + ", isEnableVibration " + isEnableVibration + ", isEnableSmoothSwitch " + isEnableSmoothSwitch);
         rlControl = (RelativeLayout) mFloatingView.findViewById(R.id.rl_control);
         moveView = (RelativeLayout) mFloatingView.findViewById(R.id.move_view);
@@ -266,8 +274,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
         //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
-        int vW = screenWidth / 2;
-        int vH = vW * videoH / videoW;
+        int vW;
+        int vH;
+        if (isAutoSize) {
+            vW = screenWidth / 2;
+            vH = vW * videoH / (videoW == 0 ? 1 : videoW);
+        } else {
+            vW = videoWidthFromSettingConfig;
+            vH = videoHeightFromSettingConfig;
+            //LLog.d(TAG, "updateUIVideoSizeOneTime vW x vH: " + vW + " x " + vH);
+        }
         int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
         int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(getBaseContext());
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
@@ -927,8 +943,18 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         int videoW = fuzVideo.getVideoW();
         int videoH = fuzVideo.getVideoH();
-        int moveW = getMoveViewWidth();
-        int moveH = moveW * videoH / videoW;
+        int moveW;
+        int moveH;
+
+        if (isAutoSize) {
+            moveW = getMoveViewWidth();
+            moveH = moveW * videoH / (videoW == 0 ? 1 : videoW);
+        } else {
+            moveW = videoWidthFromSettingConfig;
+            moveH = videoHeightFromSettingConfig;
+            //LLog.d(TAG, "editSizeOfMoveView moveW x moveH: " + moveW + " x " + moveH);
+        }
+
         //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
         moveView.getLayoutParams().width = moveW;
         moveView.getLayoutParams().height = moveH;
@@ -969,6 +995,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 //do nothing
             }
             stopSelf();
+        }
+        if (msgFromActivity.getMsg() == null) {
+            return;
         }
         String msg = msgFromActivity.getMsg();
         //LLog.d(TAG, "msg " + msg);

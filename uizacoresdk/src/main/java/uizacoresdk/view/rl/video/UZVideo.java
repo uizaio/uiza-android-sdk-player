@@ -1553,6 +1553,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void onDestroy() {
         //LLog.d(TAG, "onDestroy");
+        activity = null;
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
         }
