@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.codec.DecoderException;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
+import vn.uiza.utils.util.Encryptor;
 import vn.uiza.utils.util.Utils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -52,7 +55,7 @@ import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIB
 import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
- * Created by loitp on 4/11/2018.
+ * Created by loitp on 16/1/2019.
  */
 
 public class UZUtil {
@@ -1061,5 +1064,24 @@ public class UZUtil {
             ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER);
             ComunicateMng.postFromActivity(msgFromActivity);
         }
+    }
+
+    public static String decrypt(String input, String key) throws DecoderException {
+        if (input == null || input.isEmpty() || input.length() <= 16) {
+            return null;
+        }
+        input = input.trim();
+        String hexIv = input.substring(0, 16);
+        //LLog.d(TAG, "hexIv: " + hexIv);
+        String hexText = input.substring(16, input.length());
+        //LLog.d(TAG, "hexText: " + hexText);
+
+        byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
+        String base64 = android.util.Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
+        //LLog.d(TAG, "base64 " + base64);
+
+        String decrypt = Encryptor.decrypt(key, hexIv, base64);
+        //LLog.d(TAG, "decrypt " + decrypt);
+        return decrypt;
     }
 }

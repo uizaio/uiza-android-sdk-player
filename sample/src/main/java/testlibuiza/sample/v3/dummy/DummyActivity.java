@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.commons.codec.DecoderException;
+
 import testlibuiza.R;
-import vn.uiza.utils.util.Encryptor;
+import uizacoresdk.util.UZUtil;
 
 public class DummyActivity extends AppCompatActivity {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -29,30 +31,12 @@ public class DummyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    test(strIn);
-                } catch (Exception e) {
+                    String s = UZUtil.decrypt(strIn, key);
+                    tvOut.setText(s);
+                } catch (DecoderException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
-
-    private void test(String input) throws Exception {
-        if (input == null || input.isEmpty() || input.length() <= 16) {
-            return;
-        }
-        input = input.trim();
-        String hexIv = strIn.substring(0, 16);
-        //LLog.d(TAG, "hexIv: " + hexIv);
-        String hexText = strIn.substring(16, input.length());
-        //LLog.d(TAG, "hexText: " + hexText);
-
-        byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
-        String base64 = android.util.Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
-        //LLog.d(TAG, "base64 " + base64);
-
-        String decrypt = Encryptor.decrypt(key, hexIv, base64);
-        //LLog.d(TAG, "decrypt " + decrypt);
-        tvOut.setText(decrypt);
     }
 }
