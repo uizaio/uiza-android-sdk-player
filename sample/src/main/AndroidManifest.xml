@@ -75,6 +75,10 @@
             android:name=".sample.v3.fb.MiniPlayerSettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".sample.v3.dummy.DummyActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

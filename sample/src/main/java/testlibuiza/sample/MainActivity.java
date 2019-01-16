@@ -18,6 +18,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
+import testlibuiza.sample.v3.dummy.DummyActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.fb.FBListVideoActivity;
@@ -163,6 +164,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBListVideoActivity.class);
+                startActivity(intent);
+                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_dummy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, DummyActivity.class);
                 startActivity(intent);
                 LActivityUtil.tranIn(activity);
             }
