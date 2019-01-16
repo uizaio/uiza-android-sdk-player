@@ -44,6 +44,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
@@ -1066,9 +1067,16 @@ public class UZUtil {
         }
     }
 
-    public static String decrypt(String input, String key) throws DecoderException {
+    public static LicenseAcquisitionUrl decrypt(String input, String key) throws DecoderException {
+        return decrypt(input, key, new Gson());
+    }
+
+    public static LicenseAcquisitionUrl decrypt(String input, String key, Gson gson) throws DecoderException {
         if (input == null || input.isEmpty() || input.length() <= 16) {
             return null;
+        }
+        if (gson == null) {
+            gson = new Gson();
         }
         input = input.trim();
         String hexIv = input.substring(0, 16);
@@ -1079,9 +1087,8 @@ public class UZUtil {
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
         String base64 = android.util.Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
         //LLog.d(TAG, "base64 " + base64);
-
         String decrypt = Encryptor.decrypt(key, hexIv, base64);
         //LLog.d(TAG, "decrypt " + decrypt);
-        return decrypt;
+        return gson.fromJson(decrypt, LicenseAcquisitionUrl.class);
     }
 }

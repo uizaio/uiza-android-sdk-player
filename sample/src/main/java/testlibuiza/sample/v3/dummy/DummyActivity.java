@@ -10,6 +10,7 @@ import org.apache.commons.codec.DecoderException;
 
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
+import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 
 public class DummyActivity extends AppCompatActivity {
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -31,8 +32,10 @@ public class DummyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    String s = UZUtil.decrypt(strIn, key);
-                    tvOut.setText(s);
+                    LicenseAcquisitionUrl licenseAcquisitionUrl = UZUtil.decrypt(strIn, key);
+                    if (licenseAcquisitionUrl != null) {
+                        tvOut.setText(licenseAcquisitionUrl.getLicenseAcquisitionUrl());
+                    }
                 } catch (DecoderException e) {
                     e.printStackTrace();
                 }
