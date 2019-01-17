@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="MiniPlayer"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -143,7 +143,6 @@ public class SplashActivity extends AppCompatActivity {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
-                            UZUtil.setClickedPip(activity, false);
                             startActivity(intent);
                             finish();
                         }

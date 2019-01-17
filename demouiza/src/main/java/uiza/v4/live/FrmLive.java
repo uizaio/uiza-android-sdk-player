@@ -81,7 +81,6 @@ public class FrmLive extends Fragment implements IOnBackPressed {
             @Override
             public void onClick(Data data, int position) {
                 if (data != null && data.getLastProcess() != null && data.getLastProcess().trim().equals(Constants.LAST_PROCESS_START)) {
-                    UZUtil.setClickedPip(getActivity(), false);
                     ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
                 } else {
                     LDialogUtil.showDialog1(getActivity(), "This content is not streaming now", new LDialogUtil.Callback1() {

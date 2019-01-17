@@ -19,7 +19,6 @@ import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -126,7 +125,6 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
                 }
             }
         });
-        LLog.d(TAG, "getClickedPip " + UZUtil.getClickedPip(activity));
         if (UZUtil.getClickedPip(activity)) {
             btPlay.performClick();
         }
