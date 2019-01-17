@@ -404,7 +404,6 @@ public class LScreenUtil {
                     intent.setData(Uri.parse("package:" + context.getPackageName()));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
-                    LActivityUtil.tranIn(context);
                 }
 
                 @Override

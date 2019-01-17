@@ -23,7 +23,6 @@ import uiza.app.LSApplication;
 import uiza.v4.SplashActivity;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
@@ -126,7 +125,6 @@ public class OptionActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, SplashActivity.class);
         intent.putExtra(KEY_SKIN, skinObjectList.get(viewPager.getCurrentItem()).getSkinId());
         startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 
     private void setupSkin() {

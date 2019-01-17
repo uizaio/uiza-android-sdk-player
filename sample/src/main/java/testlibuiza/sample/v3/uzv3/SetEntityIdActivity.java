@@ -14,7 +14,6 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.v3.demoui.HomeCanSlideActivity;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LUIUtil;
 
@@ -48,10 +47,8 @@ public class SetEntityIdActivity extends AppCompatActivity {
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //UZUtil.setClickedPip(activity, false);
                 Intent intent = new Intent(activity, HomeCanSlideActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
     }
@@ -91,7 +88,6 @@ public class SetEntityIdActivity extends AppCompatActivity {
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
@@ -144,7 +140,6 @@ public class SetEntityIdActivity extends AppCompatActivity {
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_play_list_0).setOnClickListener(new View.OnClickListener() {

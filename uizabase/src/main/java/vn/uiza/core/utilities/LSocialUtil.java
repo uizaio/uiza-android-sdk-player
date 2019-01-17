@@ -28,10 +28,8 @@ public class LSocialUtil {
     public static void rateApp(Activity activity, String packageName) {
         try {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
-            LActivityUtil.tranIn(activity);
         } catch (android.content.ActivityNotFoundException anfe) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
-            LActivityUtil.tranIn(activity);
         }
     }
 
@@ -40,7 +38,6 @@ public class LSocialUtil {
         String uri = "https://play.google.com/store/apps/developer?id=" + nameOfDeveloper;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         activity.startActivity(intent);
-        LActivityUtil.tranIn(activity);
     }
 
     public static void share(Activity activity, boolean isLandscape, String msg) {
@@ -50,7 +47,6 @@ public class LSocialUtil {
             intent.putExtra(Intent.EXTRA_SUBJECT, AppUtils.getAppName());
             intent.putExtra(Intent.EXTRA_TEXT, msg);
             activity.startActivity(Intent.createChooser(intent, "Share via"));
-            LActivityUtil.tranIn(activity);
         } catch (Exception e) {
             LLog.d(TAG, "Exception shareApp: " + e.toString());
         }
@@ -114,7 +110,6 @@ public class LSocialUtil {
         String facebookUrl = getFacebookPageURL(activity);
         facebookIntent.setData(Uri.parse(facebookUrl));
         activity.startActivity(facebookIntent);
-        LActivityUtil.tranIn(activity);
     }
 
     /*
@@ -156,7 +151,6 @@ public class LSocialUtil {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             try {
                 activity.startActivity(intent);
-                LActivityUtil.tranIn(activity);
             } catch (Exception e) {
                 LDialogUtil.showDialog1(activity, UZException.ERR_20, UZException.ERR_22, activity.getString(R.string.ok), null);
             }
@@ -184,7 +178,6 @@ public class LSocialUtil {
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
-            LActivityUtil.tranIn(context);
         }
     }
 }

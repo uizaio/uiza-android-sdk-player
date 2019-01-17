@@ -28,7 +28,6 @@ import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -104,7 +103,6 @@ public class FrmLive extends Fragment implements IOnBackPressed {
                 Intent intent = new Intent(getActivity(), LivestreamBroadcasterActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
                 startActivity(intent);
-                LActivityUtil.tranIn(getActivity());
             }
 
             @Override
