@@ -44,6 +44,8 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
     private Button btFullScreen;
     private Button btStopMiniPlayer;
     private Button btSaveSizeConfig;
+    private Button btAppear;
+    private Button btDisapper;
 
     private void findViews() {
         btColor0 = (Button) findViewById(R.id.bt_color_0);
@@ -73,6 +75,8 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         btFullScreen = (Button) findViewById(R.id.bt_full_screen);
         btStopMiniPlayer = (Button) findViewById(R.id.bt_stop_mini_player);
         btSaveSizeConfig = (Button) findViewById(R.id.bt_save_size_config);
+        btAppear = (Button) findViewById(R.id.bt_appear);
+        btDisapper = (Button) findViewById(R.id.bt_disapper);
         btColor0.setOnClickListener(this);
         btColor1.setOnClickListener(this);
         btColor2.setOnClickListener(this);
@@ -87,6 +91,8 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         btFullScreen.setOnClickListener(this);
         btStopMiniPlayer.setOnClickListener(this);
         btSaveSizeConfig.setOnClickListener(this);
+        btAppear.setOnClickListener(this);
+        btDisapper.setOnClickListener(this);
     }
 
     @Override
@@ -230,6 +236,12 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 break;
             case R.id.bt_save_size_config:
                 saveConfigSize();
+                break;
+            case R.id.bt_appear:
+                UZUtil.appearMiniplayer(activity);
+                break;
+            case R.id.bt_disapper:
+                UZUtil.disappearMiniplayer(activity);
                 break;
         }
     }

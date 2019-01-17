@@ -272,6 +272,27 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         btPlayPause.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
     }
 
+    private int positionBeforeDisappearX = Constants.UNKNOW;
+    private int positionBeforeDisappearY = Constants.UNKNOW;
+
+    private void disappear() {
+        if (fuzVideo == null) {
+            return;
+        }
+        positionBeforeDisappearX = params.x;
+        positionBeforeDisappearY = params.y;
+        updateUISlide(screenWidth, screenHeight);
+    }
+
+    private void appear() {
+        if (positionBeforeDisappearX == Constants.UNKNOW || positionBeforeDisappearY == Constants.UNKNOW) {
+            return;
+        }
+        updateUISlide(positionBeforeDisappearX, positionBeforeDisappearY);
+        positionBeforeDisappearX = Constants.UNKNOW;
+        positionBeforeDisappearY = Constants.UNKNOW;
+    }
+
     private void updateUIVideoSizeOneTime(int videoW, int videoH) {
         //LLog.d(TAG, "updateUIVideoSizeOneTime " + videoW + "x" + videoH);
         int vW;
@@ -1015,6 +1036,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             toggleResumePause();
         } else if (msg.equals(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER)) {
             openApp();
+        } else if (msg.equals(ComunicateMng.DISAPPEAR)) {
+            disappear();
+        } else if (msg.equals(ComunicateMng.APPEAR)) {
+            appear();
         }
     }
 }

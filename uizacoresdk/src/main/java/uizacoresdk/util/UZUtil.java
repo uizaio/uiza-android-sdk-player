@@ -1131,4 +1131,18 @@ public class UZUtil {
             ComunicateMng.postFromActivity(msgFromActivity);
         }
     }
+
+    public static void disappearMiniplayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.DISAPPEAR);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void appearMiniplayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.APPEAR);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
 }
