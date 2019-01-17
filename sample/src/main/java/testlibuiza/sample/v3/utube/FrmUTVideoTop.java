@@ -21,6 +21,7 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.video.VideoListener;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
@@ -83,7 +84,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
             public void onSwipeTop() {
             }
         });
-        uzVideo.addCallbackUZTimebar(new UZVideo.CallbackUZTimebar() {
+        uzVideo.addCallbackUZTimebar(new CallbackUZTimebar() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
             }

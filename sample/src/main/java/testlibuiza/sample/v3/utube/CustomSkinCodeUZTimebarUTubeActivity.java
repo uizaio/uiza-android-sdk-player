@@ -15,6 +15,7 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
@@ -74,7 +75,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
             public void onSwipeTop() {
             }
         });
-        uzVideo.addCallbackUZTimebar(new UZVideo.CallbackUZTimebar() {
+        uzVideo.addCallbackUZTimebar(new CallbackUZTimebar() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
             }
