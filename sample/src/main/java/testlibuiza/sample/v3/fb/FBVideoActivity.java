@@ -133,6 +133,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             //mini player is init success
             //tvLoadingMiniPlayer.setVisibility(View.GONE);
             onBackPressed();
+            //moveTaskToBack(true);
         } else {
             //open mini player
             btMini.setVisibility(View.INVISIBLE);

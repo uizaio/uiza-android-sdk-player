@@ -2678,7 +2678,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager == null || rlChromeCast == null || isTV) {
             return;
         }
-        LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
+        //LLog.d(TAG, "updateUIChromecast " + isCastingChromecast);
         if (isCastingChromecast) {
             uzPlayerManager.pauseVideo();
             uzPlayerManager.setVolume(0f);
@@ -2763,15 +2763,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.showProgress();
         }
         if (UZData.getInstance().getDataList() == null) {
-            LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() == null -> call api lấy data list");
+            //LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() == null -> call api lấy data list");
             UZService service = UZRestClient.createService(UZService.class);
             UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
-                    if (Constants.IS_DEBUG) {
-                        LToast.show(activity, "callAPIGetListAllEntity onSuccess");
-                    }
-                    LLog.d(TAG, "callAPIGetListAllEntity onSuccess");
+                    //LLog.d(TAG, "callAPIGetListAllEntity onSuccess");
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
                         if (uzCallback != null) {
                             handleError(UZExceptionUtil.getExceptionListAllEntity());
@@ -2789,7 +2786,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             pfTotalPage = (int) ratio;
                         }
                     }
-                    LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage + " ->>>>>>> setDataList");
+                    //LLog.d(TAG, "<<<callAPIGetListAllEntity pfPage/pfTotalPage: " + pfPage + "/" + pfTotalPage + " ->>>>>>> setDataList");
                     UZData.getInstance().setDataList(result.getData());
                     if (UZData.getInstance().getDataList() == null || UZData.getInstance().getDataList().isEmpty()) {
                         LLog.e(TAG, "callAPIGetListAllEntity success but no data");
@@ -2818,7 +2815,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             });
         } else {
             LLog.d(TAG, "callAPIGetListAllEntity UZData.getInstance().getDataList() != null -> không cần call api lấy data list nữa mà lấy dữ liệu có sẵn play luôn");
-            //LLog.d(TAG, "list size: " + UZData.getInstance().getDataList().size());
             playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
             if (uzPlayerManager != null) {
                 uzPlayerManager.hideProgress();
@@ -2967,7 +2963,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZDlgPlaylistFolder UZDlgPlaylistFolder = new UZDlgPlaylistFolder(activity, isLandscape, UZData.getInstance().getDataList(), UZData.getInstance().getCurrentPositionOfDataList(), new CallbackPlaylistFolder() {
             @Override
             public void onClickItem(Data data, int position) {
-                //LLog.d(TAG, "UZDlgPlaylistFolder onClickItem " + gson.toJson(data));
                 UZData.getInstance().setCurrentPositionOfDataList(position);
                 playPlaylistPosition(position);
             }
@@ -2984,7 +2979,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void setVisibilityOfPlayPauseReplay(boolean isShowReplay) {
-        LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
+        //LLog.d(TAG, "setVisibilityOfPlayPauseReplay isShowReplay " + isShowReplay);
         if (isShowReplay) {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
@@ -3249,10 +3244,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (getPlayer().getPlayWhenReady()) {
-            //getPlayer().setPlayWhenReady(false);
             pauseVideo();
         } else {
-            //getPlayer().setPlayWhenReady(true);
             resumeVideo();
         }
     }
