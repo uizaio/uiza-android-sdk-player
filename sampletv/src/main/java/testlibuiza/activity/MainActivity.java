@@ -17,7 +17,6 @@ import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.views.LToast;
 
@@ -141,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, etInput.getText().toString());
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         } else if (view == btStartPlaylistFolder) {
             if (etInput.getText().toString().isEmpty()) {
@@ -150,12 +148,10 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, etInput.getText().toString());
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         } else if (view == btCustom) {
             Intent intent = new Intent(activity, PlayerCustomActivity.class);
             startActivity(intent);
-            LActivityUtil.tranIn(activity);
         }
     }
 

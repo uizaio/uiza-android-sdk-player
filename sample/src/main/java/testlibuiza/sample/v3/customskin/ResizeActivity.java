@@ -85,6 +85,15 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
                 uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             }
         });
+        findViewById(R.id.bt_5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (uzVideo == null) {
+                    return;
+                }
+                uzVideo.setFreeSize(true);
+            }
+        });
     }
 
     @Override

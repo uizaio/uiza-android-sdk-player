@@ -14,9 +14,10 @@ import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
+import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
+import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.utils.util.Utils;
@@ -81,12 +82,15 @@ public class UZData {
 
         if (environment == Constants.ENVIRONMENT_DEV) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
+            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
             initTracking(Constants.URL_TRACKING_DEV);
         } else if (environment == Constants.ENVIRONMENT_STAG) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
+            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_STAG);
             initTracking(Constants.URL_TRACKING_STAG);
         } else if (environment == Constants.ENVIRONMENT_PROD) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
+            UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
             initTracking(Constants.URL_TRACKING_PROD);
         } else {
             throw new IllegalArgumentException("Please init correct environment.");
@@ -111,7 +115,7 @@ public class UZData {
 
     private void initTracking(String domainAPITracking) {
         mDomainAPITracking = domainAPITracking;
-        RestClientTracking.init(domainAPITracking);
+        UZRestClientTracking.init(domainAPITracking);
         UZUtil.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
     }
 

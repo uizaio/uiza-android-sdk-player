@@ -1,7 +1,7 @@
 package uizacoresdk.view.floatview;
 
 /**
- * Created by www.muathu@gmail.com on 12/11/2018.
+ * Created by www.muathu@gmail.com on 14/1/2019.
  */
 
 import android.content.Context;
@@ -29,9 +29,10 @@ import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.UZAPIMaster;
-import vn.uiza.restapi.restclient.RestClientTracking;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
+import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
+import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -48,6 +49,8 @@ public class FUZVideo extends RelativeLayout {
     private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
     //private Gson gson = new Gson();
+    private String cdnHost;
+    private String uuid;
 
     public PlayerView getPlayerView() {
         return playerView;
@@ -84,16 +87,18 @@ public class FUZVideo extends RelativeLayout {
         isTracked100 = false;
     }
 
-    public void init(String linkPlay, boolean isLivestream, long contentPosition, Callback callback) {
+    public void init(String linkPlay, String cdnHost, String uuid, boolean isLivestream, long contentPosition, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
         }
         showProgress();
         this.linkPlay = linkPlay;
+        this.cdnHost = cdnHost;
+        this.uuid = uuid;
         this.isLivestream = isLivestream;
         this.contentPosition = contentPosition;
-        isFirstStateReady = false;
+        isOnStateReadyFirst = false;
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream);
         this.callback = callback;
         if (fuzUizaPlayerManager != null) {
@@ -308,6 +313,7 @@ public class FUZVideo extends RelativeLayout {
         if (fuzUizaPlayerManager != null) {
             fuzUizaPlayerManager.release();
         }
+        cdnHost = null;
     }
 
     public void onResume() {
@@ -339,13 +345,15 @@ public class FUZVideo extends RelativeLayout {
         public void onPlayerError(ExoPlaybackException error);
     }
 
-    private boolean isFirstStateReady;
+    private boolean isOnStateReadyFirst;
 
-    private void onFirstStateReady() {
-        //LLog.d(TAG, ">>>>>>>>>> onFirstStateReady");
+    private void onStateReadyFirst() {
+        //LLog.d(TAG, ">>>>>>>>>> onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true);
         }
+        //TODO enable pingHeartBeat
+        //pingHeartBeat();
     }
 
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -360,9 +368,9 @@ public class FUZVideo extends RelativeLayout {
                 showProgress();
                 break;
             case Player.STATE_READY:
-                if (!isFirstStateReady) {
-                    onFirstStateReady();
-                    isFirstStateReady = true;
+                if (!isOnStateReadyFirst) {
+                    onStateReadyFirst();
+                    isOnStateReadyFirst = true;
                 }
                 hideProgress();
                 break;
@@ -388,15 +396,15 @@ public class FUZVideo extends RelativeLayout {
 
     private void trackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------->trackUiza  getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
-        if (RestClientTracking.getRetrofit() == null) {
+        if (UZRestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getContext());
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
                 LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");
                 return;
             }
-            RestClientTracking.init(currentApiTrackingEndPoint);
+            UZRestClientTracking.init(currentApiTrackingEndPoint);
         }
-        UZService service = RestClientTracking.createService(UZService.class);
+        UZService service = UZRestClientTracking.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
@@ -621,5 +629,40 @@ public class FUZVideo extends RelativeLayout {
 
     protected void showProgress() {
         LUIUtil.showProgressBar(progressBar);
+    }
+
+    private void pingHeartBeat() {
+        if (fuzUizaPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
+            return;
+        }
+        UZService service = UZRestClientHeartBeat.createService(UZService.class);
+        String cdnName = cdnHost;
+        String session = uuid.toString();
+        //LLog.d(TAG, "pingHeartBeat cdnName " + cdnName);
+        //LLog.d(TAG, "pingHeartBeat session " + session);
+        UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "pingHeartBeat onSuccess");
+                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        pingHeartBeat();
+                    }
+                });
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
+                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        pingHeartBeat();
+                    }
+                });
+            }
+        });
     }
 }

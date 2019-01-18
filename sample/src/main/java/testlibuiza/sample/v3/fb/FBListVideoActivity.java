@@ -26,6 +26,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FBListVideoActivity extends AppCompatActivity {
     private Activity activity;
+    private final String TAG = getClass().getSimpleName();
     private List<Data> dataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;

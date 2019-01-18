@@ -20,7 +20,6 @@ import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.views.LToast;
 
@@ -144,9 +143,7 @@ public class SplashActivity extends AppCompatActivity {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {
                         @Override
                         public void doAfter(int mls) {
-                            UZUtil.setClickedPip(activity, false);
                             startActivity(intent);
-                            LActivityUtil.tranIn(activity);
                             finish();
                         }
                     });

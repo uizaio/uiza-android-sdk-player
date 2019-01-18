@@ -170,4 +170,9 @@ public interface UZService {
     @POST("/analytic-tracking/v1/tracking/mobile")
     Observable<Object> track(@Body UizaTracking uizaTracking);
     //end =====================================================tracking
+
+    //=====================================================heartbeat
+    @GET("/v1/cdn/ccu/ping")
+    Observable<Object> pingHeartBeat(@Query("cdn_name") String cdnName, @Query("session") String session);
+    //end =====================================================heartbeat
 }

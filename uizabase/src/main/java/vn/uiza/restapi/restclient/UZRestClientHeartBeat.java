@@ -17,8 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.DateTypeDeserializer;
 
-public class RestClientV2 {
-    private static final String TAG = RestClientV2.class.getSimpleName();
+public class UZRestClientHeartBeat {
+    private static final String TAG = UZRestClientHeartBeat.class.getSimpleName();
     private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";
@@ -85,7 +85,7 @@ public class RestClientV2 {
     public static void addAuthorization(String token) {
         //addHeader(AUTHORIZATION, "Token token=" + token);
         addHeader(AUTHORIZATION, token);
-        LLog.d(TAG, "Add token: " + token);
+        //LLog.d(TAG, "Add token: " + token);
     }
 
     public static void removeAuthorization() {

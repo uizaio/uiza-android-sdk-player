@@ -6,10 +6,10 @@
     android:background="@color/WhiteSmoke"
     android:orientation="vertical">
 
-    <uizacoresdk.view.rl.video.UZVideo
+    <!--<uizacoresdk.view.rl.video.UZVideo
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,6 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <uizacoresdk.view.rl.video.UZVideo
+                android:id="@id/uiza_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/bt_bkg_ran"
@@ -61,6 +66,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="RESIZE_MODE_FIT" />
+
+            <Button
+                android:id="@+id/bt_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Free size" />
         </LinearLayout>
     </ScrollView>
 

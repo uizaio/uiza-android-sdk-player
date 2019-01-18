@@ -17,8 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.DateTypeDeserializer;
 
-public class RestClientTracking {
-    private static final String TAG = RestClientTracking.class.getSimpleName();
+public class UZRestClientTracking {
+    private static final String TAG = UZRestClientTracking.class.getSimpleName();
     private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";

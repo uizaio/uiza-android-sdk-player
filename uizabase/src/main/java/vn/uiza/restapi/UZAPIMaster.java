@@ -8,7 +8,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by loitp on 5/11/2018.
+ * Created by loitp on 14/1/2019.
  */
 
 public class UZAPIMaster {

@@ -153,7 +153,7 @@
                     android:id="@+id/bt_livestream_broadcaster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15. Livestream (deprecated -  run module samplelivestream instead)" />
+                    android:text="Livestream (deprecated -  run module samplelivestream instead)" />
             </LinearLayout>
 
             <LinearLayout
@@ -174,7 +174,12 @@
                     android:id="@+id/bt_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="16. Error" />
+                    android:text="Error" />
+                <Button
+                    android:id="@+id/bt_dummy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dummy" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

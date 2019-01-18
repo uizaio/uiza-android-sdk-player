@@ -26,7 +26,6 @@ import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
 import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -77,7 +76,6 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
             }
 

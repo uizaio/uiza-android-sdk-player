@@ -18,6 +18,7 @@ import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
+import testlibuiza.sample.v3.dummy.DummyActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.fb.FBListVideoActivity;
@@ -27,7 +28,6 @@ import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LActivityUtil;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(activity, UZTestAPIActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_sdk_v3).setOnClickListener(new View.OnClickListener() {
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(activity, SetEntityIdActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_guide).setOnClickListener(new View.OnClickListener() {
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, TestAPI.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_livestream_broadcaster).setOnClickListener(new View.OnClickListener() {
@@ -67,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, LivestreamBroadcasterActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_custom_skin_xml).setOnClickListener(new View.OnClickListener() {
@@ -76,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(activity, CustomSkinXMLActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_custom_skin_code_seekbar).setOnClickListener(new View.OnClickListener() {
@@ -84,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_custom_skin_code_uz_timebar).setOnClickListener(new View.OnClickListener() {
@@ -92,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeUZTimebarActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_custom_skin_u_tube).setOnClickListener(new View.OnClickListener() {
@@ -100,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeUZTimebarUTubeActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_uiza_custom_skin_u_tube_with_slide).setOnClickListener(new View.OnClickListener() {
@@ -108,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_custom_hq).setOnClickListener(new View.OnClickListener() {
@@ -116,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomHQActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_play_any_link).setOnClickListener(new View.OnClickListener() {
@@ -124,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_error).setOnClickListener(new View.OnClickListener() {
@@ -132,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ErrorActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_volume).setOnClickListener(new View.OnClickListener() {
@@ -140,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, VolumeActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_event).setOnClickListener(new View.OnClickListener() {
@@ -148,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, EventActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_resize).setOnClickListener(new View.OnClickListener() {
@@ -156,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ResizeActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
             }
         });
         findViewById(R.id.bt_mini_fb).setOnClickListener(new View.OnClickListener() {
@@ -164,7 +149,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBListVideoActivity.class);
                 startActivity(intent);
-                LActivityUtil.tranIn(activity);
+            }
+        });
+        findViewById(R.id.bt_dummy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, DummyActivity.class);
+                startActivity(intent);
             }
         });
 

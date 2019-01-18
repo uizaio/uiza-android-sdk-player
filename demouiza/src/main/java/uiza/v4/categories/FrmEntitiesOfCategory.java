@@ -83,7 +83,6 @@ public class FrmEntitiesOfCategory extends Fragment implements IOnBackPressed {
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
             @Override
             public void onClick(Data data, int position) {
-                UZUtil.setClickedPip(getActivity(), false);
                 ((HomeV4CanSlideActivity) getActivity()).playEntityId(data.getId());
             }
 

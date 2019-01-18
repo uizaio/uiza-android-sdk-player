@@ -52,7 +52,7 @@ import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIB
 import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
- * Created by loitp on 4/11/2018.
+ * Created by loitp on 16/1/2019.
  */
 
 public class UZUtil {
@@ -69,7 +69,7 @@ public class UZUtil {
         }
     }
 
-    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH) {
+    public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
         if (viewGroup == null) {
             return;
         }
@@ -91,9 +91,13 @@ public class UZUtil {
                     //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
                     heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                 } else {
-                    //LLog.d(TAG, "video source is portrait -> scale 9-16");
-                    //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
-                    heightSurfaceView = widthSurfaceView;
+                    if (isFreeSize) {
+                        heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    } else {
+                        //LLog.d(TAG, "video source is portrait -> scale 1-1");
+                        heightSurfaceView = widthSurfaceView;
+                        //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    }
                 }
             }
         }
@@ -335,7 +339,7 @@ public class UZUtil {
     }
 
     /*public static void setupRestClientV2(Activity activity) {
-        if (RestClientV2.getRetrofit() == null && RestClientTracking.getRetrofit() == null) {
+        if (RestClientV2.getRetrofit() == null && UZRestClientTracking.getRetrofit() == null) {
             String currentApi = getApiEndPoint(activity);
             if (currentApi == null || currentApi.isEmpty()) {
                 LLog.e(TAG, "setupRestClientV2 trackUiza currentApi == null || currentApi.isEmpty()");
@@ -354,7 +358,7 @@ public class UZUtil {
 
             RestClientV2.init(currentApi);
             RestClientV2.addAuthorization(token);
-            RestClientTracking.init(currentTrackApi);
+            UZRestClientTracking.init(currentTrackApi);
 
             if (Constants.IS_DEBUG) {
                 LToast.show(activity, "setupRestClientV2 with currentApi: " + currentApi + "\ntoken:" + token + "\ncurrentTrackApi: " + currentTrackApi);
@@ -727,9 +731,11 @@ public class UZUtil {
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
     private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
+    private final static String MINI_PLAYER_TAP_TO_FULL_PLAYER = "MINI_PLAYER_TAP_TO_FULL_PLAYER";
     private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
+    private final static String MINI_PLAYER_AUTO_SIZE = "MINI_PLAYER_AUTO_SIZE";
     private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
     private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
     private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
@@ -737,6 +743,8 @@ public class UZUtil {
     private final static String MINI_PLAYER_MARGIN_T = "MINI_PLAYER_MARGIN_T";
     private final static String MINI_PLAYER_MARGIN_R = "MINI_PLAYER_MARGIN_R";
     private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
+    private final static String MINI_PLAYER_SIZE_WIDTH = "MINI_PLAYER_SIZE_WIDTH";
+    private final static String MINI_PLAYER_SIZE_HEIGHT = "MINI_PLAYER_SIZE_HEIGHT";
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
@@ -817,6 +825,17 @@ public class UZUtil {
         editor.apply();
     }
 
+    public static Boolean getMiniPlayerTapToFullPlayer(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_TAP_TO_FULL_PLAYER, true);
+    }
+
+    public static void setMiniPlayerTapToFullPlayer(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_TAP_TO_FULL_PLAYER, value);
+        editor.apply();
+    }
+
     public static Boolean getMiniPlayerEnableSmoothSwitch(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, true);
@@ -825,6 +844,17 @@ public class UZUtil {
     public static void setMiniPlayerEnableSmoothSwitch(Context context, Boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, value);
+        editor.apply();
+    }
+
+    public static Boolean getMiniPlayerAutoSize(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getBoolean(MINI_PLAYER_AUTO_SIZE, true);
+    }
+
+    private static void setMiniPlayerAutoSize(Context context, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putBoolean(MINI_PLAYER_AUTO_SIZE, value);
         editor.apply();
     }
 
@@ -933,6 +963,28 @@ public class UZUtil {
         editor.apply();
     }
 
+    public static int getMiniPlayerSizeWidth(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_SIZE_WIDTH, Constants.W_320);
+    }
+
+    private static void setMiniPlayerSizeWidth(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_SIZE_WIDTH, value);
+        editor.apply();
+    }
+
+    public static int getMiniPlayerSizeHeight(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return prefs.getInt(MINI_PLAYER_SIZE_HEIGHT, Constants.W_180);
+    }
+
+    private static void setMiniPlayerSizeHeight(Context context, int value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
+        editor.putInt(MINI_PLAYER_SIZE_HEIGHT, value);
+        editor.apply();
+    }
+
     public static boolean setMiniPlayerMarginDp(Context context, float marginL, float marginT, float marginR, float marginB) {
         if (context == null) {
             return false;
@@ -968,6 +1020,39 @@ public class UZUtil {
         setMiniPlayerMarginT(context, marginT);
         setMiniPlayerMarginR(context, marginR);
         setMiniPlayerMarginB(context, marginB);
+        return true;
+    }
+
+    public static boolean setMiniPlayerSizeDp(Context context, boolean isAutoSize, int videoWidthDp, int videoHeightDp) {
+        if (context == null) {
+            return false;
+        }
+        int pxW = ConvertUtils.dp2px(videoWidthDp);
+        int pxH = ConvertUtils.dp2px(videoHeightDp);
+        return setMiniPlayerSizePixel(context, isAutoSize, pxW, pxH);
+    }
+
+    public static boolean setMiniPlayerSizePixel(Context context, boolean isAutoSize, int videoWidthPx, int videoHeightPx) {
+        if (context == null) {
+            return false;
+        }
+        //LLog.d(TAG, "setMiniPlayerSizePixel " + isAutoSize + " -> " + videoWidthPx + " x " + videoHeightPx);
+        setMiniPlayerAutoSize(context, isAutoSize);
+        if (isAutoSize) {
+            setMiniPlayerSizeWidth(context, Constants.W_320);
+            setMiniPlayerSizeHeight(context, Constants.W_180);
+            return true;
+        }
+        int screenWPx = LScreenUtil.getScreenWidth();
+        int screenHPx = LScreenUtil.getScreenHeight();
+        if (videoWidthPx < 0 || videoWidthPx > screenWPx) {
+            throw new IllegalArgumentException("Error: videoWidthPx is invalid, the right value must from 0px to " + screenWPx + "px or 0dp to " + ConvertUtils.px2dp(screenWPx) + "dp");
+        }
+        if (videoHeightPx < 0 || videoHeightPx > screenHPx) {
+            throw new IllegalArgumentException("Error: videoHeightPx is invalid, the right value must from 0px to " + screenHPx + "px or 0dp to " + ConvertUtils.px2dp(screenHPx) + "dp");
+        }
+        setMiniPlayerSizeWidth(context, videoWidthPx);
+        setMiniPlayerSizeHeight(context, videoHeightPx);
         return true;
     }
 
@@ -1043,6 +1128,20 @@ public class UZUtil {
     public static void openAppFromMiniPlayer(Context context) {
         if (isMiniPlayerRunning(context)) {
             ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.OPEN_APP_FROM_MINI_PLAYER);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void disappearMiniplayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.DISAPPEAR);
+            ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void appearMiniplayer(Context context) {
+        if (isMiniPlayerRunning(context)) {
+            ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.APPEAR);
             ComunicateMng.postFromActivity(msgFromActivity);
         }
     }

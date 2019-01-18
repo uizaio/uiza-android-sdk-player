@@ -9,7 +9,6 @@ import android.util.TypedValue;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
@@ -43,7 +42,7 @@ public class UZTextView extends AppCompatTextView {
     private void init(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZTextView);
         isUseDefault = a.getBoolean(R.styleable.UZTextView_useDefaultTV, true);
-        LLog.d(TAG, "init isUseDefault " + isUseDefault);
+        //LLog.d(TAG, "init isUseDefault " + isUseDefault);
         LUIUtil.setTextShadow(this);
         updateSize();
         setSingleLine();
