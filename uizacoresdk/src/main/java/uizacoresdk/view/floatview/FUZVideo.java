@@ -131,7 +131,6 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        //setVideoCover();
         initData(linkPlay, null, null, null);
         onResume();
     }
@@ -399,7 +398,7 @@ public class FUZVideo extends RelativeLayout {
         if (UZRestClientTracking.getRetrofit() == null) {
             String currentApiTrackingEndPoint = UZUtil.getApiTrackEndPoint(getContext());
             if (currentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()) {
-                LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.isEmpty()");
+                LLog.e(TAG, "trackUiza failed pip urrentApiTrackingEndPoint == null || currentApiTrackingEndPoint.iuizacoresdk/view/floatview/FUZVideo.java:419sEmpty()");
                 return;
             }
             UZRestClientTracking.init(currentApiTrackingEndPoint);

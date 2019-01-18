@@ -1,7 +1,7 @@
 package vn.uiza.restapi.uiza.model.tracking;
 
 /**
- * Created by LENOVO on 3/12/2018.
+ * Created by loitp on 18/1/2019.
  */
 
 import com.google.gson.annotations.Expose;

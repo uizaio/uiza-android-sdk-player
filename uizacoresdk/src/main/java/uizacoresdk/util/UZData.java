@@ -83,15 +83,15 @@ public class UZData {
         if (environment == Constants.ENVIRONMENT_DEV) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
-            initTracking(Constants.URL_TRACKING_DEV);
+            initTracking(Constants.URL_TRACKING_DEV, Constants.TRACKING_ACCESS_TOKEN_DEV);
         } else if (environment == Constants.ENVIRONMENT_STAG) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_STAG);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_STAG);
-            initTracking(Constants.URL_TRACKING_STAG);
+            initTracking(Constants.URL_TRACKING_STAG, Constants.TRACKING_ACCESS_TOKEN_STAG);
         } else if (environment == Constants.ENVIRONMENT_PROD) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_PROD);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
-            initTracking(Constants.URL_TRACKING_PROD);
+            initTracking(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD);
         } else {
             throw new IllegalArgumentException("Please init correct environment.");
         }
@@ -113,9 +113,10 @@ public class UZData {
         return mAppId;
     }
 
-    private void initTracking(String domainAPITracking) {
+    private void initTracking(String domainAPITracking, String accessToken) {
         mDomainAPITracking = domainAPITracking;
         UZRestClientTracking.init(domainAPITracking);
+        UZRestClientTracking.addAccessToken(accessToken);
         UZUtil.setApiTrackEndPoint(Utils.getContext(), domainAPITracking);
     }
 
@@ -290,7 +291,7 @@ public class UZData {
         //TODO viewer_user_id
         uizaTracking.setViewerUserId("");
         //user_agent
-        uizaTracking.setUserAgent(context.getPackageName());
+        uizaTracking.setUserAgent(Constants.USER_AGENT);
         //referrer
         uizaTracking.setReferrer("");
         //device_id
@@ -301,7 +302,7 @@ public class UZData {
         //player_id
         uizaTracking.setPlayerId(currentPlayerId + "");
         //TODO player_name
-        uizaTracking.setPlayerName("UizaAndroidSDKV3");
+        uizaTracking.setPlayerName("UizaAndroidSDK");
         //TODO player_version
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
         //entity_id, entity_name

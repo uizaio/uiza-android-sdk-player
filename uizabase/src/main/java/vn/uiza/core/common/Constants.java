@@ -8,6 +8,7 @@ package vn.uiza.core.common;
 
 public class Constants {
     public static boolean IS_DEBUG = false;
+    public static final String USER_AGENT = "Loitp93";
     public static final String PLAYER_SDK_VERSION = "3.1.9";
 
     public static void setDebugMode(boolean isDebugEnable) {
@@ -68,6 +69,10 @@ public class Constants {
     public final static String URL_TRACKING_DEV = "https://dev-tracking.uizadev.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
+
+    public final static String TRACKING_ACCESS_TOKEN_DEV = "kv8O7hLkeDtN3EBviXLD01gzNz2RP2nA";
+    public final static String TRACKING_ACCESS_TOKEN_STAG = "082c2cbf515648db96069fa660523247";
+    public final static String TRACKING_ACCESS_TOKEN_PROD = "27cdc337bd65420f8a88cfbd9cf8577a";
 
     public final static String URL_HEART_BEAT_DEV = "https://dev-heartbeat.uizadev.io/";
     public final static String URL_HEART_BEAT_STAG = "https://stag-heartbeat.uizadev.io/";

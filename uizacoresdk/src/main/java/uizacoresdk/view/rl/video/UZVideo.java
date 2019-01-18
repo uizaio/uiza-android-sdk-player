@@ -50,6 +50,7 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,6 +105,7 @@ import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.ad.Ad;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
@@ -137,7 +139,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    //private Gson gson = new Gson();
+    //TODO remove gson
+    private Gson gson = new Gson();
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -3334,6 +3337,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             showController();
         }
         trackUizaEventVideoStarts();
+        trackUizaCCUForLivestream();
         UZData.getInstance().setSettingPlayer(false);
     }
 
@@ -3483,7 +3487,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onSuccess(Object tracking) {
                 //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
-                //LLog.d(TAG, "callAPITrackUiza <------------------------track success: " + gson.toJson(tracking));
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
                 }
@@ -3548,13 +3551,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private final int INTERVAL_HEART_BEAT = 10000;
+
     private void pingHeartBeat() {
-        if (uzPlayerManager == null || cdnHost == null || cdnHost.isEmpty()) {
+        if (activity == null || cdnHost == null || cdnHost.isEmpty()) {
             LLog.e(TAG, "Error cannot call API pingHeartBeat() -> destroy");
             return;
         }
         if (activityIsPausing) {
-            LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+            LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     pingHeartBeat();
@@ -3572,7 +3577,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onSuccess(Object result) {
                 //LLog.d(TAG, "pingHeartBeat onSuccess");
-                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         pingHeartBeat();
@@ -3583,10 +3588,60 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onFail(Throwable e) {
                 //LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
-                LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
+                LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
                         pingHeartBeat();
+                    }
+                });
+            }
+        });
+    }
+
+    private final int INTERVAL_TRACK_CCU = 3000;
+
+    private void trackUizaCCUForLivestream() {
+        if (activity == null || !isLivestream || isInitCustomLinkPlay) {
+            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() -> destroy");
+            return;
+        }
+        if (activityIsPausing) {
+            LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
+                @Override
+                public void doAfter(int mls) {
+                    trackUizaCCUForLivestream();
+                }
+            });
+            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() because activity is pausing");
+            return;
+        }
+        UZService service = UZRestClientTracking.createService(UZService.class);
+        UizaTrackingCCU uizaTrackingCCU = new UizaTrackingCCU();
+        uizaTrackingCCU.setDt(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        uizaTrackingCCU.setHo(cdnHost);
+        uizaTrackingCCU.setAi(UZData.getInstance().getAppId());
+        uizaTrackingCCU.setSn(UZData.getInstance().getEntityName());
+        uizaTrackingCCU.setDi(Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTrackingCCU.setUa(Constants.USER_AGENT);
+        //LLog.d(TAG, "trackUizaCCUForLivestream " + gson.toJson(uizaTrackingCCU));
+        UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                //LLog.d(TAG, "trackCCU success: " + gson.toJson(result));
+                LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        trackUizaCCUForLivestream();
+                    }
+                });
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
+                    @Override
+                    public void doAfter(int mls) {
+                        trackUizaCCUForLivestream();
                     }
                 });
             }

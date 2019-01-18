@@ -9,6 +9,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import rx.Observable;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -169,6 +170,10 @@ public interface UZService {
     //@Headers("Content-Type: application/json")
     @POST("/analytic-tracking/v1/tracking/mobile")
     Observable<Object> track(@Body UizaTracking uizaTracking);
+
+    //@Headers("Content-Type: application/json")
+    @POST("/analytic-tracking/v1/ccu/mobile")
+    Observable<Object> trackCCU(@Body UizaTrackingCCU uizaTrackingCCU);
     //end =====================================================tracking
 
     //=====================================================heartbeat

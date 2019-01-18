@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
-import uizacoresdk.util.UZUtil;
 
 /**
  * Created by loitp on 4/28/2018.
@@ -133,7 +133,7 @@ public class UizaDataV1 {
         uizaTracking.setPageType("app");
         uizaTracking.setViewerUserId("");
         //user_agent
-        uizaTracking.setUserAgent(context.getPackageName());
+        uizaTracking.setUserAgent(Constants.USER_AGENT);
         //referrer
         uizaTracking.setReferrer("");
         //device_id
