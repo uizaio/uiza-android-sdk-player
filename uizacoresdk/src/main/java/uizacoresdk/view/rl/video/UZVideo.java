@@ -3325,8 +3325,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
-            //TODO enable pingHeartBeat
-            //pingHeartBeat();
+            pingHeartBeat();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -3572,7 +3571,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "pingHeartBeat onSuccess");
+                //LLog.d(TAG, "pingHeartBeat onSuccess");
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
@@ -3583,7 +3582,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
+                //LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
