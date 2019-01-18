@@ -26,7 +26,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by www.muathu@gmail.com on 7/26/2017.
+ * Created by www.muathu@gmail.com on 18/1/2019.
  */
 
 public class UZVideoInfo extends RelativeLayout {
@@ -43,8 +43,6 @@ public class UZVideoInfo extends RelativeLayout {
     private TextView tvDebug;
     private TextView tvMoreLikeThisMsg;
     private NestedScrollView nestedScrollView;
-    //private Data data;
-
     private List<Item> itemList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ItemAdapterV1 mAdapter;
@@ -144,17 +142,13 @@ public class UZVideoInfo extends RelativeLayout {
     }
 
     public void setup(Data data) {
-        LLog.d(TAG, "setup");
         if (data == null) {
-            LLog.d(TAG, "setup resultRetrieveAnEntity == null");
+            LLog.e(TAG, "setup resultRetrieveAnEntity == null");
             return;
         }
-        //this.data = data;
         if (UZData.getInstance().getData() == null || UZData.getInstance().getData().getId() == null || UZData.getInstance().getData().getId() == null) {
             LLog.e(TAG, "setup data is null");
-            //this.data = UZUtil.getData(activity, gson);
         }
-        //LLog.d(TAG, "setup " + gson.toJson(UZData.getInstance().getData()));
         updateUI();
     }
 
@@ -173,7 +167,6 @@ public class UZVideoInfo extends RelativeLayout {
         }
         //TODO
         tvVideoRate.setText("12+");
-
         try {
             tvVideoDescription.setText(UZData.getInstance().getData().getDescription().isEmpty() ? UZData.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UZData.getInstance().getData().getShortDescription() : UZData.getInstance().getData().getDescription());
         } catch (NullPointerException e) {
@@ -195,49 +188,6 @@ public class UZVideoInfo extends RelativeLayout {
 
     private void getListAllEntityRelation() {
         //TODO
-        /*UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
-        //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
-
-        JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaDataV1.getInstance().getUzInput().getEntityId());
-
-        ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
-            @Override
-            public void onSuccess(ListAllEntityRelation listAllEntityRelation) {
-                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
-                if (listAllEntityRelation == null || listAllEntityRelation.getItemList().isEmpty()) {
-                    tvMoreLikeThisMsg.setText(R.string.no_data);
-                    tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
-                } else {
-                    tvMoreLikeThisMsg.setVisibility(View.GONE);
-                    setupUIMoreLikeThis(listAllEntityRelation.getItemList());
-                }
-                LUIUtil.hideProgressBar(progressBar);
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LDialogUtil.showDialog1(activity, activity.getString(R.string.cannot_get_list_relation), new LDialogUtil.Callback1() {
-                    @Override
-                    public void onClick1() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        if (activity != null) {
-                            activity.onBackPressed();
-                        }
-                    }
-                });
-                LUIUtil.hideProgressBar(progressBar);
-            }
-        });*/
-
-        //TODO remove hardcode
         tvMoreLikeThisMsg.setText(R.string.no_data);
         tvMoreLikeThisMsg.setVisibility(View.VISIBLE);
         LUIUtil.hideProgressBar(progressBar);

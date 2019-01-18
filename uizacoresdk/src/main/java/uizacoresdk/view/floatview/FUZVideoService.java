@@ -82,7 +82,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
+        //TODO
+        /*isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
         cdnHost = intent.getStringExtra(Constants.FLOAT_CDN_HOST);
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
@@ -97,7 +98,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             isLivestream = intent.getBooleanExtra(Constants.FLOAT_IS_LIVESTREAM, false);
             //LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition);
             setupVideo();
-        }
+        }*/
         return super.onStartCommand(intent, flags, startId);
     }
 
