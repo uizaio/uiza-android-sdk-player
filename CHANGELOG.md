@@ -1,3 +1,16 @@
+### 3.2.9 (2019-1-18)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.2.3'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.2.3'
+
+- Update icon launcher.
+- Iplm ping HeartBeat.
+- Add func [set size](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java#L319) of mini player.
+- Add func make mini player [appear/disappear](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java#L241)
+- Add func make mini player switch to full-player by [tapping.](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/fb/MiniPlayerSettingActivity.java#L255)
 ### 3.1.9 (2019-1-14)
 
     //for playing video VOD, LIVE  
