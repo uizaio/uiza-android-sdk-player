@@ -77,7 +77,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginT;
     private int marginR;
     private int marginB;
-
+    private boolean isFreeSize;
     private ResultGetLinkPlay mResultGetLinkPlay;
 
     public FUZVideoService() {
@@ -87,6 +87,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
+        isFreeSize = intent.getBooleanExtra(Constants.FLOAT_IS_FREE_SIZE, false);
         try {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
@@ -311,9 +312,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         //set UI
         rlControl.setVisibility(View.GONE);
-        int screenHeight = screenWidth * videoH / videoW;
-        moveView.getLayoutParams().width = screenWidth;
-        moveView.getLayoutParams().height = screenHeight;
+        //LLog.d(TAG, "videoW x videoH: " + videoW + "x" + videoH);
+        int widthSurfaceView = screenWidth;
+        int heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16);
+        //LLog.d(TAG, "widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView);
+        moveView.getLayoutParams().width = widthSurfaceView;
+        moveView.getLayoutParams().height = heightSurfaceView;
         moveView.requestLayout();
         updateUISlide(0, 0);
         //stop video

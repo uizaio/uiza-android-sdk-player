@@ -1024,6 +1024,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         intent.putExtra(Constants.FLOAT_UUID, uuid.toString());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
+        intent.putExtra(Constants.FLOAT_IS_FREE_SIZE, isFreeSize);
         activity.startService(intent);
     }
 
