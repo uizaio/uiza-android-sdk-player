@@ -229,7 +229,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                     mls = duration;
                                 }
                                 if (duration != 0) {
-                                    percent = (int) (s * 100 / duration);
+                                    percent = (int) (mls * 100 / duration);
                                 }
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
