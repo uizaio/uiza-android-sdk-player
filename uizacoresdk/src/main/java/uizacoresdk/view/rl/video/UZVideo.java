@@ -579,11 +579,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void initPlaylistFolder(String metadataId) {
-        LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId);
         if (metadataId == null) {
-            LLog.e(TAG, "Error initPlaylistFolder metadataId == null -> return");
-            return;
+            LLog.d(TAG, "initPlaylistFolder metadataId null -> called from PIP: " + UZUtil.getClickedPip(activity));
         } else {
+            LLog.d(TAG, "initPlaylistFolder metadataId " + metadataId + ", -> called from PIP: " + UZUtil.getClickedPip(activity));
             UZData.getInstance().clearDataForPlaylistFolder();
         }
         isHasError = false;
@@ -1824,8 +1823,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-        //uzPlayerView = findViewById(R.id.player_view);
+        //LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
         if (uzPlayerView != null) {
             uzPlayerView.setControllerStateCallback(UZVideo.this);
         }

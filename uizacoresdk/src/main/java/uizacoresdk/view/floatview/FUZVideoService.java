@@ -906,6 +906,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         stopSelf();
                     }
                     //LLog.d(TAG, "next linkPlay " + linkPlay);
+                    contentPosition = 0;
                     setupVideo();
                 }
             });
@@ -935,7 +936,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay,this);
+            fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
