@@ -510,7 +510,7 @@ public class FUZVideo extends RelativeLayout {
         UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "fuck <------------------------pip track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "<------------------------pip track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
                 }
@@ -519,7 +519,7 @@ public class FUZVideo extends RelativeLayout {
             @Override
             public void onFail(Throwable e) {
                 //TODO iplm if track fail
-                LLog.e(TAG, "fuck Pip trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+                //LLog.e(TAG, "Pip trackUiza onFail from service PiP:" + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
     }

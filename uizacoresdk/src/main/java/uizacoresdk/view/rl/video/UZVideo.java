@@ -3384,7 +3384,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         //track event view (after video is played 5s)
-        //LLog.d(TAG, "fuck onVideoProgress -> track view s: " + s + ", percent " + percent);
+        //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
         if (s == (isLivestream ? 3 : 5)) {
             //LLog.d(TAG, "onVideoProgress -> track view s: " + s + ", percent " + percent);
             if (UZTrackingUtil.isTrackedEventTypeView(activity)) {
@@ -3479,14 +3479,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void callAPITrackUiza(final UizaTracking uizaTracking, final UZTrackingUtil.UizaTrackingCallback uizaTrackingCallback) {
         //LLog.d(TAG, "------------------------>callAPITrackUiza noPiP getEventType: " + uizaTracking.getEventType() + ", getEntityName:" + uizaTracking.getEntityName() + ", getPlayThrough: " + uizaTracking.getPlayThrough() + " ==> " + gson.toJson(uizaTracking));
         if (activity == null || isInitCustomLinkPlay) {
-            LLog.e(TAG, "fuck Error callAPITrackUiza return because activity == null || isInitCustomLinkPlay");
+            //LLog.e(TAG, "Error callAPITrackUiza return because activity == null || isInitCustomLinkPlay");
             return;
         }
         UZService service = UZRestClientTracking.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.track(uizaTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object tracking) {
-                LLog.d(TAG, "fuck <------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
+                //LLog.d(TAG, "<------------------------track success: " + uizaTracking.getEventType() + " : " + uizaTracking.getPlayThrough() + " : " + uizaTracking.getEntityName());
                 if (uizaTrackingCallback != null) {
                     uizaTrackingCallback.onTrackingSuccess();
                 }
@@ -3495,7 +3495,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onFail(Throwable e) {
                 //TODO iplm if track fail
-                LLog.e(TAG, "fuck callAPITrackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
+                //LLog.e(TAG, "callAPITrackUiza onFail " + e.toString() + "\n->>>" + uizaTracking.getEntityName() + ", getEventType: " + uizaTracking.getEventType() + ", getPlayThrough: " + uizaTracking.getPlayThrough());
             }
         });
     }
