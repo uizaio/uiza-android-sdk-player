@@ -121,6 +121,10 @@ public class UZData {
 
     private UZInput uzInput;
 
+    public UZInput getUzInput() {
+        return uzInput;
+    }
+
     public void setUizaInput(UZInput uzInput) {
         this.uzInput = uzInput;
     }
@@ -196,14 +200,10 @@ public class UZData {
     }
 
     public ResultGetLinkPlay getResultGetLinkPlay() {
-        if (uzInput == null) {
-            return null;
-        }
         return uzInput.getResultGetLinkPlay();
     }
 
     public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
-        //dont need to check null
         uzInput.setResultGetLinkPlay(resultGetLinkPlay);
     }
 

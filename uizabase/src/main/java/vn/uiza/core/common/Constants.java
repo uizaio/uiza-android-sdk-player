@@ -101,7 +101,6 @@ public class Constants {
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
     public final static String FLOAT_CONTENT_POSITION = "FLOAT_CONTENT_POSITION";
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
-    public final static String FLOAT_CDN_HOST = "FLOAT_CDN_HOST";
     public final static String FLOAT_UUID = "FLOAT_UUID";
     public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
     public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";

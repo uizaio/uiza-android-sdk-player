@@ -50,6 +50,7 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -137,7 +138,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();//TODO remove
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -442,13 +443,29 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZData.getInstance().clearDataForPlaylistFolder();
         }
         if (entityId == null) {
-            LLog.e(TAG, "init error because entityId == null");
-            if (uzCallback != null) {
-                uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
+            LLog.e(TAG, "init error because entityId == null -> called from PIP");
+            try {
+                if (UZData.getInstance().getData().getId() == null || UZData.getInstance().getData().getId().isEmpty()) {
+                    if (uzCallback != null) {
+                        uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
+                    }
+                    LLog.e(TAG, "init error: entityId null or empty");
+                    return;
+                } else {
+                    entityId = UZData.getInstance().getEntityId();
+                }
+                LLog.d(TAG, "get entityId: " + entityId);
+            } catch (NullPointerException e) {
+                if (uzCallback != null) {
+                    uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
+                }
+                LLog.e(TAG, "init NullPointerException: " + e.toString());
+                return;
             }
-            return;
+        } else {
+            UZData.getInstance().clearUizaInput();
+            LLog.d(TAG, "clearUizaInput");
         }
-        UZData.getInstance().clearUizaInput();
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
             setVisibilityOfPlaylistFolderController(View.VISIBLE);
@@ -514,11 +531,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isOnPlayerEnded = false;
         updateUIEndScreen();
 
-        UZInput uzInput = new UZInput();
-        uzInput.setUrlIMAAd(urlIMAAd);
-        uzInput.setUrlThumnailsPreviewSeekbar(null);
-
-        UZData.getInstance().setUizaInput(uzInput);
+        //UZInput uzInput = new UZInput();
+        //uzInput.setUrlIMAAd(urlIMAAd);
+        //uzInput.setUrlThumnailsPreviewSeekbar(null);
+        //UZData.getInstance().setUizaInput(uzInput);
         UZData.getInstance().setSettingPlayer(true);
 
         isHasError = false;
@@ -1006,7 +1022,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         Intent intent = new Intent(activity, FUZVideoService.class);
         intent.putExtra(Constants.FLOAT_CONTENT_POSITION, getCurrentPosition());
         intent.putExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, isInitCustomLinkPlay);
-        intent.putExtra(Constants.FLOAT_CDN_HOST, cdnHost);
         intent.putExtra(Constants.FLOAT_UUID, uuid.toString());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
@@ -2810,6 +2825,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //init player khi user click vào fullscreen của floating view (pic)
             LLog.d(TAG, "isDataExist -> dont callAPIGetDetailEntity");
             isCalledApiGetDetailEntity = true;
+            data = UZData.getInstance().getData();
             handleDataCallAPI();
         } else {
             UZUtil.getDetailEntity(activity, entityId, new CallbackGetDetailEntity() {
@@ -2862,7 +2878,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     isCalledAPIGetUrlIMAAdTag = true;
                     if (result == null || result.getData() == null || result.getData().isEmpty()) {
                         //LLog.d(TAG, "callAPIGetUrlIMAAdTag onSuccess -> this content has no ad");
-                        urlIMAAd = null;
+                        urlIMAAd = "";
                     } else {
                         //Hien tai chi co the play ima ad o item thu 0
                         Ad ad = result.getData().get(0);
@@ -2885,7 +2901,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void callAPIGetTokenStreaming() {
         boolean isGetTokenStreamingExist = UZData.getInstance().getResultGetTokenStreaming() != null;
         if (isGetTokenStreamingExist) {
-            LLog.d(TAG, "isGetTokenStreamingExist");
+            LLog.d(TAG, "isGetTokenStreamingExist -> dont call getTokenStreaming");
             mResultGetTokenStreaming = UZData.getInstance().getResultGetTokenStreaming();
             isCalledAPIGetTokenStreaming = true;
             handleDataCallAPI();
@@ -2923,6 +2939,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleError(UZExceptionUtil.getExceptionNoTokenStreaming());
             return;
         }
+        LLog.d(TAG, "callAPIGetLinkPlay " + gson.toJson(UZData.getInstance().getUzInput()));
         boolean isResultGetLinkPlayExist = UZData.getInstance().getResultGetLinkPlay() != null;
         if (isResultGetLinkPlayExist) {
             LLog.d(TAG, "isResultGetLinkPlayExist -> dont call API GetLinkPlay");
@@ -2944,9 +2961,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 UZAPIMaster.getInstance().subscribe(service.getLinkPlayLive(appId, channelName), new ApiSubscriber<ResultGetLinkPlay>() {
                     @Override
                     public void onSuccess(ResultGetLinkPlay resultGetLinkPlay) {
-                        //LLog.d(TAG, "getLinkPlayLive onSuccess");
                         mResultGetLinkPlay = resultGetLinkPlay;
-                        UZData.getInstance().setResultGetLinkPlay(mResultGetLinkPlay);
+                        UZData.getInstance().setResultGetLinkPlay(resultGetLinkPlay);
+                        LLog.d(TAG, "getLinkPlayLive onSuccess -> save mResultGetLinkPlay to UZData");
+                        LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
@@ -2967,10 +2985,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 String typeContent = SendGetTokenStreaming.STREAM;
                 UZAPIMaster.getInstance().subscribe(service.getLinkPlay(appId, entityId, typeContent), new ApiSubscriber<ResultGetLinkPlay>() {
                     @Override
-                    public void onSuccess(ResultGetLinkPlay result) {
-                        //LLog.d(TAG, "getLinkPlayVOD onSuccess");
-                        mResultGetLinkPlay = result;
-                        UZData.getInstance().setResultGetLinkPlay(mResultGetLinkPlay);
+                    public void onSuccess(ResultGetLinkPlay resultGetLinkPlay) {
+                        mResultGetLinkPlay = resultGetLinkPlay;
+                        UZData.getInstance().setResultGetLinkPlay(resultGetLinkPlay);
+                        LLog.d(TAG, "getLinkPlayVOD onSuccess -> save mResultGetLinkPlay to UZData");
+                        LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
@@ -3082,13 +3101,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void handleDataCallAPI() {
         //LLog.d(TAG, "______________________________handleDataCallAPI isCalledApiGetDetailEntity: " + isCalledApiGetDetailEntity + ", isCalledAPIGetUrlIMAAdTag: " + isCalledAPIGetUrlIMAAdTag + ", isCalledAPIGetTokenStreaming: " + isCalledAPIGetTokenStreaming);
         if (isCalledApiGetDetailEntity && isCalledAPIGetUrlIMAAdTag && isCalledAPIGetTokenStreaming) {
-            UZInput uzInput = new UZInput();
-            uzInput.setData(data);
-            uzInput.setUrlIMAAd(urlIMAAd);
-            uzInput.setResultGetTokenStreaming(mResultGetTokenStreaming);
-            //TODO iplm url thumnail
-            uzInput.setUrlThumnailsPreviewSeekbar(null);
-            UZData.getInstance().setUizaInput(uzInput);
+            if (UZData.getInstance().getUzInput() == null) {
+                UZInput uzInput = new UZInput();
+                uzInput.setData(data);
+                uzInput.setUrlIMAAd(urlIMAAd);
+                uzInput.setResultGetTokenStreaming(mResultGetTokenStreaming);
+                //TODO iplm url thumnail seekbar
+                uzInput.setUrlThumnailsPreviewSeekbar(null);
+                UZData.getInstance().setUizaInput(uzInput);
+            } else {
+                //do nothing
+            }
             checkData();
         }
     }
@@ -3104,7 +3127,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         isLivestream = UZData.getInstance().isLivestream();
         boolean isGetClickedPip = UZUtil.getClickedPip(activity);
-        //LLog.d(TAG, "checkData isLivestream " + isLivestream + ", isGetClickedPip: " + isGetClickedPip);
+        LLog.d(TAG, "checkData isLivestream " + isLivestream + ", isGetClickedPip: " + isGetClickedPip);
         if (isGetClickedPip) {
             //LLog.d(TAG, "__________trackUiza getClickedPip true -> dont setDefautValueForFlagIsTracked");
         } else {
@@ -3309,7 +3332,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
             setEventBusMsgFromActivityIsInitSuccess();
-            pingHeartBeat();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -3319,6 +3341,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
+        pingHeartBeat();
         UZData.getInstance().setSettingPlayer(false);
     }
 

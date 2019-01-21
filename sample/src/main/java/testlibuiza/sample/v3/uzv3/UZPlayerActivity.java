@@ -62,9 +62,9 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
-                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                    UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
                 } else {
-                    UZUtil.initEntity(activity, uzVideo, null);
+                    UZUtil.initEntity(activity, uzVideo, entityId);
                 }
             } else {
                 UZUtil.initEntity(activity, uzVideo, entityId);

@@ -1,6 +1,5 @@
 package uizacoresdk.util;
 
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -10,7 +9,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  */
 
 public class UZInput {
-    private final String TAG = getClass().getSimpleName();
+    //private final String TAG = getClass().getSimpleName();
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
     private Data data;
@@ -34,9 +33,6 @@ public class UZInput {
     }
 
     public Data getData() {
-        if (data == null) {
-            LLog.e(TAG, "getData data == null");
-        }
         return data;
     }
 
