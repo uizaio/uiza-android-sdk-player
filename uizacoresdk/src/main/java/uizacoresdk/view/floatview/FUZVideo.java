@@ -535,7 +535,7 @@ public class FUZVideo extends RelativeLayout {
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "pingHeartBeat onSuccess");
+                LLog.d(TAG, "pingHeartBeat onSuccess " + UZData.getInstance().getEntityName());
                 LUIUtil.setDelay(10000, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {

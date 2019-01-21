@@ -50,7 +50,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -138,7 +137,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    private Gson gson = new Gson();//TODO remove
+    //private Gson gson = new Gson();
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -2938,7 +2937,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleError(UZExceptionUtil.getExceptionNoTokenStreaming());
             return;
         }
-        LLog.d(TAG, "callAPIGetLinkPlay " + gson.toJson(UZData.getInstance().getUzInput()));
+        //LLog.d(TAG, "callAPIGetLinkPlay " + gson.toJson(UZData.getInstance().getUzInput()));
         boolean isResultGetLinkPlayExist = UZData.getInstance().getResultGetLinkPlay() != null;
         if (isResultGetLinkPlayExist) {
             LLog.d(TAG, "isResultGetLinkPlayExist -> dont call API GetLinkPlay");
@@ -2963,7 +2962,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         mResultGetLinkPlay = resultGetLinkPlay;
                         UZData.getInstance().setResultGetLinkPlay(resultGetLinkPlay);
                         LLog.d(TAG, "getLinkPlayLive onSuccess -> save mResultGetLinkPlay to UZData");
-                        LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
+                        //LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
@@ -2988,7 +2987,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         mResultGetLinkPlay = resultGetLinkPlay;
                         UZData.getInstance().setResultGetLinkPlay(resultGetLinkPlay);
                         LLog.d(TAG, "getLinkPlayVOD onSuccess -> save mResultGetLinkPlay to UZData");
-                        LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
+                        //LLog.d(TAG, "-> " + gson.toJson(UZData.getInstance().getUzInput()));
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
@@ -3577,7 +3576,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.pingHeartBeat(cdnName, session), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                //LLog.d(TAG, "pingHeartBeat onSuccess " + UZData.getInstance().getEntityName());
+                LLog.d(TAG, "pingHeartBeat onSuccess " + UZData.getInstance().getEntityName());
                 LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
@@ -3588,7 +3587,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onFail(Throwable e) {
-                //LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
+                LLog.e(TAG, "pingHeartBeat onFail: " + e.toString());
                 LUIUtil.setDelay(INTERVAL_HEART_BEAT, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
