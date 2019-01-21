@@ -118,7 +118,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
-import vn.uiza.views.LToast;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
@@ -584,9 +583,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (countTryLinkPlayError >= 5) {
                 showTvMsg(activity.getString(R.string.err_live_is_stopped));
             }
-
             //if entity is livestreaming, dont try to next link play
-            LLog.d(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
+            LLog.e(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
             if (uzPlayerManager != null) {
                 uzPlayerManager.initWithoutReset();
                 uzPlayerManager.setRunnable();
@@ -595,10 +593,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         countTryLinkPlayError++;
-        if (Constants.IS_DEBUG) {
-            LToast.show(activity, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
-        }
-        //LLog.d(TAG, "tryNextLinkPlay countTryLinkPlayError " + countTryLinkPlayError);
+        LLog.e(TAG, activity.getString(R.string.cannot_play_will_try) + "\n" + countTryLinkPlayError);
         uzPlayerManager.release();
         checkToSetUpResouce();
     }
@@ -2048,7 +2043,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 urlCover = data.getThumbnail();
             }
-            LLog.d(TAG, "setVideoCover urlCover " + urlCover);
+            //LLog.d(TAG, "setVideoCover urlCover " + urlCover);
             LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.background_black);
         }
     }
@@ -2954,7 +2949,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         UZData.getInstance().setResultGetLinkPlay(mResultGetLinkPlay);
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
-                            LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
+                            //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }
@@ -2978,7 +2973,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         UZData.getInstance().setResultGetLinkPlay(mResultGetLinkPlay);
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
-                            LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
+                            //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }
@@ -3539,7 +3534,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void pingHeartBeat() {
         if (activity == null || cdnHost == null || cdnHost.isEmpty()) {
-            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> cdnHost: " + cdnHost + " -> return");
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() -> cdnHost: " + cdnHost + ", entityName: " + UZData.getInstance().getEntityName() + " -> return");
             return;
         }
         if (activityIsPausing) {
@@ -3549,7 +3544,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     pingHeartBeat();
                 }
             });
-            LLog.e(TAG, "Error cannot call API pingHeartBeat() because activity is pausing");
+            LLog.e(TAG, "Error cannot call API pingHeartBeat() because activity is pausing " + UZData.getInstance().getEntityName());
             return;
         }
         UZService service = UZRestClientHeartBeat.createService(UZService.class);
@@ -3586,7 +3581,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void trackUizaCCUForLivestream() {
         if (activity == null || !isLivestream || isInitCustomLinkPlay) {
-            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() -> return");
+            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() -> return " + UZData.getInstance().getEntityName());
             return;
         }
         if (activityIsPausing) {
@@ -3596,7 +3591,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     trackUizaCCUForLivestream();
                 }
             });
-            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() because activity is pausing");
+            LLog.e(TAG, "Error cannot trackUizaCCUForLivestream() because activity is pausing " + UZData.getInstance().getEntityName());
             return;
         }
         UZService service = UZRestClientTracking.createService(UZService.class);
@@ -3611,7 +3606,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "trackCCU success: " + UZData.getInstance().getEntityName());
+                //LLog.d(TAG, "trackCCU success: " + UZData.getInstance().getEntityName());
                 LUIUtil.setDelay(INTERVAL_TRACK_CCU, new LUIUtil.DelayCallback() {
                     @Override
                     public void doAfter(int mls) {
