@@ -56,6 +56,7 @@ public class Constants {
     public final static String URL_IMG_POSTER_SPIDER_MAN = "https://ksassets.timeincuk.net/wp/uploads/sites/54/2018/06/Marvels-Spider-Man_2018_06-11-18_003-1024x576.jpg";
     public final static String URL_IMG_POSTER_MOMO = "https://kenh14cdn.com/2018/4/27/photo-15-15248224863571678048157.jpg";
     public final static String URL_IMG_POSTER = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
+    public final static String URL_IMG_THUMBNAIL_BLACK = "https://static.uiza.io/black_1px.jpg";
     public final static String URL_IMG_THUMBNAIL = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
     public final static String URL_IMG_THUMBNAIL_2 = "https://static.uiza.io/2017/11/27/uiza-logo-1511755911349_1511755913189.png";
 

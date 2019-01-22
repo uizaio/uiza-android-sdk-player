@@ -530,10 +530,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isOnPlayerEnded = false;
         updateUIEndScreen();
 
-        //UZInput uzInput = new UZInput();
-        //uzInput.setUrlIMAAd(urlIMAAd);
-        //uzInput.setUrlThumnailsPreviewSeekbar(null);
-        //UZData.getInstance().setUizaInput(uzInput);
         UZData.getInstance().setSettingPlayer(true);
 
         isHasError = false;
@@ -2052,7 +2048,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ivVideoCover.invalidate();
             String urlCover;
             if (data == null) {
-                urlCover = Constants.URL_IMG_THUMBNAIL;
+                urlCover = Constants.URL_IMG_THUMBNAIL_BLACK;
             } else {
                 urlCover = data.getThumbnail();
             }
@@ -2730,6 +2726,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void setProgressBarColor(int color) {
+        if (progressBar != null) {
+            LUIUtil.setColorProgressBar(progressBar, color);
+        }
+    }
+
     //=============================================================================================END UI
     //=============================================================================================START EVENT
     private UZLiveContentCallback uzLiveContentCallback;
@@ -3237,7 +3239,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //urlIMAAd = activity.getString(R.string.ad_tag_url_uiza);
 
         //thumbnail seekbar
-        /*urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);*/
+        //urlThumbnailsPreviewSeekbar = activity.getString(R.string.url_thumbnails);
 
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumbnailsPreviewSeekbar, subtitleList);
