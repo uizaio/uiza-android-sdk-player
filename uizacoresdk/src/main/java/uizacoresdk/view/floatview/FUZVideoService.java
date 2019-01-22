@@ -850,7 +850,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        UZUtil.setClickedPip(getApplicationContext(), false);
+        UZUtil.setClickedPip(getApplicationContext(), false);;
         super.onDestroy();
     }
 
