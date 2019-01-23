@@ -72,6 +72,12 @@ public class FBListVideoActivity extends AppCompatActivity {
         listAllEntity();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LLog.d(TAG, "fuck onNewIntent");
+    }
+
     private void listAllEntity() {
         UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "";

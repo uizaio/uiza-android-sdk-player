@@ -346,8 +346,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
             UZUtil.setClassNameOfPlayer(getBaseContext(), null);//clear class name of player
             UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getBaseContext().startActivity(intent);
