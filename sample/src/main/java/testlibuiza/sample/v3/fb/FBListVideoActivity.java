@@ -17,6 +17,7 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
@@ -34,6 +35,7 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LLog.d(TAG, "fuck onCreate");
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_list_video);

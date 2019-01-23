@@ -5,6 +5,7 @@ package uizacoresdk.view.floatview;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
@@ -58,6 +59,7 @@ public class FUZVideo extends RelativeLayout {
     private long contentPosition;
     private boolean isOnStateReadyFirst;
     private boolean isInitCustomLinkPlay;
+    private int progressBarColor = Color.WHITE;
 
     public FUZVideo(Context context) {
         super(context);
@@ -87,8 +89,15 @@ public class FUZVideo extends RelativeLayout {
 
     private void findViews() {
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        //LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(getContext(), R.color.White));
+        LUIUtil.setColorProgressBar(progressBar, progressBarColor);
         playerView = findViewById(R.id.player_view);
+    }
+
+    public void setProgressBarColor(int progressBarColor) {
+        if (progressBar != null) {
+            this.progressBarColor = progressBarColor;
+            LUIUtil.setColorProgressBar(progressBar, progressBarColor);
+        }
     }
 
     //=============================================================================================================START CONFIG
@@ -181,7 +190,7 @@ public class FUZVideo extends RelativeLayout {
     }
     //=============================================================================================================END VIEW
 
-    public void init(String linkPlay, String cdnHost, String uuid, boolean isLivestream, long contentPosition, boolean isInitCustomLinkPlay, Callback callback) {
+    public void init(String linkPlay, String cdnHost, String uuid, boolean isLivestream, long contentPosition, boolean isInitCustomLinkPlay, int progressBarColor, Callback callback) {
         if (linkPlay == null || linkPlay.isEmpty()) {
             LLog.e(TAG, "init failed: linkPlay == null || linkPlay.isEmpty()");
             return;
@@ -193,6 +202,8 @@ public class FUZVideo extends RelativeLayout {
         this.isLivestream = isLivestream;
         this.contentPosition = contentPosition;
         this.isInitCustomLinkPlay = isInitCustomLinkPlay;
+        this.progressBarColor = progressBarColor;
+        LUIUtil.setColorProgressBar(progressBar, this.progressBarColor);
         isOnStateReadyFirst = false;
         LLog.d(TAG, "init linkPlay: " + linkPlay + ", isLivestream: " + isLivestream + ", isInitCustomLinkPlay: " + isInitCustomLinkPlay);
         this.callback = callback;

@@ -1022,6 +1022,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         intent.putExtra(Constants.FLOAT_IS_FREE_SIZE, isFreeSize);
+        intent.putExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, progressBarColor);
         activity.startService(intent);
     }
 
@@ -1821,7 +1822,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        //LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        LUIUtil.setColorProgressBar(progressBar, progressBarColor);
         if (uzPlayerView != null) {
             uzPlayerView.setControllerStateCallback(UZVideo.this);
         }
@@ -2475,8 +2476,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     protected void updateUIButtonVisibilities() {
-        debugRootView.removeAllViews();
-        if (uzPlayerManager.getPlayer() == null) {
+        if (debugRootView != null) {
+            debugRootView.removeAllViews();
+        }
+        if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
             return;
         }
         MappingTrackSelector.MappedTrackInfo mappedTrackInfo = uzPlayerManager.getTrackSelector().getCurrentMappedTrackInfo();
@@ -2486,6 +2489,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
             if (trackGroups.length != 0) {
+                if (activity == null) {
+                    return;
+                }
                 Button button = new Button(activity);
                 button.setSoundEffectsEnabled(false);
                 int label;
@@ -2505,7 +2511,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 button.setText(label);
                 button.setTag(i);
                 button.setOnClickListener(this);
-                debugRootView.addView(button);
+                if (debugRootView != null) {
+                    debugRootView.addView(button);
+                }
             }
         }
     }
@@ -2728,9 +2736,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void setProgressBarColor(int color) {
+    private int progressBarColor = Color.WHITE;
+
+    public void setProgressBarColor(int progressBarColor) {
         if (progressBar != null) {
-            LUIUtil.setColorProgressBar(progressBar, color);
+            this.progressBarColor = progressBarColor;
+            LUIUtil.setColorProgressBar(progressBar, progressBarColor);
         }
     }
 

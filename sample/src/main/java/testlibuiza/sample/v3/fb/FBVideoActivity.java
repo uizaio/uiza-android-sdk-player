@@ -43,6 +43,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        LLog.d(TAG, "fuck onCreate");
         UZUtil.setCasty(this);
         activity = this;
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
@@ -144,10 +145,9 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         if (isInitMiniPlayerSuccess) {
             //mini player is init success
             tvLoadingMiniPlayer.setVisibility(View.GONE);
-            onBackPressed();
-            //Intent intent = new Intent(activity, FBListVideoActivity.class);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            //startActivity(intent);
+            Intent intent = new Intent(activity, FBListVideoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         } else {
             //open mini player
             btMini.setVisibility(View.INVISIBLE);

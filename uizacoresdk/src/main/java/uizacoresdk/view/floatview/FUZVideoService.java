@@ -2,6 +2,7 @@ package uizacoresdk.view.floatview;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -78,6 +79,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginR;
     private int marginB;
     private boolean isFreeSize;
+    private int progressBarColor;
     private ResultGetLinkPlay mResultGetLinkPlay;
 
     public FUZVideoService() {
@@ -87,6 +89,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
+        progressBarColor = intent.getIntExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, Color.WHITE);
         isFreeSize = intent.getBooleanExtra(Constants.FLOAT_IS_FREE_SIZE, false);
         try {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
@@ -345,6 +348,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(getBaseContext(), fuzVideo.getCurrentPosition());//save content position for full player seek to
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getBaseContext().startActivity(intent);
         } catch (ClassNotFoundException e) {
             LLog.e(TAG, "Error FloatClickFullScreenReceiver ClassNotFoundException " + e.toString());
@@ -850,7 +855,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        UZUtil.setClickedPip(getApplicationContext(), false);;
+        UZUtil.setClickedPip(getApplicationContext(), false);
+        ;
         super.onDestroy();
     }
 
@@ -940,7 +946,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         LLog.d(TAG, "setupVideo linkPlay " + linkPlay + ", isLivestream: " + isLivestream);
         if (LConnectivityUtil.isConnected(this)) {
-            fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, this);
+            fuzVideo.init(linkPlay, cdnHost, uuid, isLivestream, contentPosition, isInitCustomLinkplay, progressBarColor, this);
             tvMsg.setVisibility(View.GONE);
         } else {
             tvMsg.setVisibility(View.VISIBLE);
