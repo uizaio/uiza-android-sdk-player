@@ -153,8 +153,15 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             //mini player is init success
             tvLoadingMiniPlayer.setVisibility(View.GONE);
             LLog.d(TAG, "fuck onStateMiniPlayer isInitMiniPlayerSuccess: " + isInitMiniPlayerSuccess);
-            Intent intent = new Intent(activity, FBListVideoActivity.class);
+            /*Intent intent = new Intent(activity, FBListVideoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            overridePendingTransition(0, 0);//disable aniamtion activity transition*/
+
+            //moveTaskToBack (true);
+
+            Intent intent = new Intent(activity, FBListVideoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } else {
             //open mini player
@@ -177,6 +184,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onBackPressed() {
+        LLog.d(TAG, "fuck onBackPressed");
         if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
@@ -184,6 +192,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         }
     }
 
+    //only for testing
     private void getDummyData() {
         UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "";

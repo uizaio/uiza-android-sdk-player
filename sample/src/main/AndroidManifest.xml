@@ -67,7 +67,6 @@
         <activity
             android:name=".sample.v3.fb.FBListVideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".sample.v3.fb.FBVideoActivity"

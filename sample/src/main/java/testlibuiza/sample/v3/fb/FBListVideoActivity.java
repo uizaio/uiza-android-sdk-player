@@ -102,6 +102,7 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        LLog.d(TAG, "fuck onDestroy");
         UZUtil.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }
