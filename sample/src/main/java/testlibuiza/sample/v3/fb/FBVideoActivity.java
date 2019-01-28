@@ -125,6 +125,8 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             initDone();
+        } else {
+            btMini.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -146,11 +148,13 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        btMini.setVisibility(View.INVISIBLE);
         String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
         if (uzVideo.isInitNewItem(thumb)) {
             checkId(intent);
+        } else {
+            initDone();
         }
-        initDone();
         if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
             mIsRestoredToTop = true;
         }

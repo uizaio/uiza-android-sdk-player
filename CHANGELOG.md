@@ -1,4 +1,16 @@
-### 3.2.9 (2019-1-18)
+### 3.2.5 (2019-1-28)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.2.5'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.2.5'
+
+- UZVideo removed onStart() and onStop().
+- Optimize mini player.
+- Optimize Muiza tracking.
+
+### 3.2.3 (2019-1-18)
 
     //for playing video VOD, LIVE  
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.2.3'
