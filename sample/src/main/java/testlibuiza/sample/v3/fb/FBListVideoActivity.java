@@ -47,6 +47,7 @@ public class FBListVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
                 startActivity(intent);
             }
@@ -62,6 +63,7 @@ public class FBListVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(Data data, int position) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
                 startActivity(intent);
             }
@@ -72,10 +74,23 @@ public class FBListVideoActivity extends AppCompatActivity {
         listAllEntity();
     }
 
+    private boolean isMiniPlayerInitSuccess;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        LLog.d(TAG, "fuck onNewIntent");
+        isMiniPlayerInitSuccess = intent.getBooleanExtra(FBVideoActivity.TAG_IS_MINI_PLAYER_INIT_SUCCESS, false);
+        LLog.d(TAG, "fuck onNewIntent isMiniPlayerInitSuccess: " + isMiniPlayerInitSuccess);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isMiniPlayerInitSuccess) {
+            //in this example, I use static FBVideoActivity instance for faster calling.
+            //you must find a better way to finish FBVideoActivity in your production
+            FBVideoActivity.getInstance().finish();
+        }
+        super.onBackPressed();
     }
 
     private void listAllEntity() {

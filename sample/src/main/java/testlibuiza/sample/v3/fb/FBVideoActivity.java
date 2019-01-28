@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.fb;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,12 +33,17 @@ import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    public final static String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
+    private static FBVideoActivity activity;
     private UZVideo uzVideo;
     private Button btMini;
     private TextView tvLoadingMiniPlayer;
     private TextView tv;
     private ImageView iv;
+
+    public static FBVideoActivity getInstance() {
+        return activity;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,12 +122,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             btMini.setVisibility(View.VISIBLE);
@@ -141,6 +139,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         }
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -153,14 +152,8 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             //mini player is init success
             tvLoadingMiniPlayer.setVisibility(View.GONE);
             LLog.d(TAG, "fuck onStateMiniPlayer isInitMiniPlayerSuccess: " + isInitMiniPlayerSuccess);
-            /*Intent intent = new Intent(activity, FBListVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            overridePendingTransition(0, 0);//disable aniamtion activity transition*/
-
-            //moveTaskToBack (true);
-
             Intent intent = new Intent(activity, FBListVideoActivity.class);
+            intent.putExtra(TAG_IS_MINI_PLAYER_INIT_SUCCESS, true);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } else {
@@ -168,6 +161,12 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             btMini.setVisibility(View.INVISIBLE);
             tvLoadingMiniPlayer.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -184,7 +183,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onBackPressed() {
-        LLog.d(TAG, "fuck onBackPressed");
         if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {

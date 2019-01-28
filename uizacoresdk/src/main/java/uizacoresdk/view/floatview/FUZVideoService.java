@@ -332,7 +332,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
-        //event bus
         String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
         if (UZUtil.getClickedPip(getBaseContext())) {
         } else {
