@@ -3724,7 +3724,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private long positionMiniPlayer;
 
     public boolean isInitNewItem(String urlImgThumbnail) {
-        LLog.d(TAG, "fuck onNewIntent positionMiniPlayer: " + positionMiniPlayer);
+        //LLog.d(TAG, "onNewIntent positionMiniPlayer: " + positionMiniPlayer);
         if (positionMiniPlayer != 0) {
             seekTo(positionMiniPlayer);
             resumeVideo();
@@ -3752,7 +3752,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             LLog.d(TAG, "miniplayer STEP 6");
-            LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
+            //LLog.d(TAG, "onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
             try {
                 positionMiniPlayer = ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer();
                 Class classNamePfPlayer = Class.forName(activity.getLocalClassName());

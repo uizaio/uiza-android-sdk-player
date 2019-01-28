@@ -56,7 +56,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        LLog.d(TAG, "fuck onCreate");
         UZUtil.setCasty(this);
         activity = this;
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
@@ -106,7 +105,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onDestroy() {
-        LLog.d(TAG, "fuck onDestroy");
         super.onDestroy();
         uzVideo.onDestroy();
     }
@@ -169,7 +167,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         if (isInitMiniPlayerSuccess) {
             //mini player is init success
             tvLoadingMiniPlayer.setVisibility(View.GONE);
-            LLog.d(TAG, "fuck onStateMiniPlayer isInitMiniPlayerSuccess: " + isInitMiniPlayerSuccess);
             Intent intent = new Intent(activity, FBListVideoActivity.class);
             intent.putExtra(TAG_IS_MINI_PLAYER_INIT_SUCCESS, true);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

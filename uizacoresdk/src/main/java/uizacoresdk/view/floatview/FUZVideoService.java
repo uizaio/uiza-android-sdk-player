@@ -1033,15 +1033,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //LLog.d(TAG, "lang nghe UZVideo da init success hay chua");
             LLog.d(TAG, "miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
-            if (isEnableSmoothSwitch) {
-                //get current content position and pass it to UZVideo
-                /*ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);
-                msgFromServicePosition.setPosition(fuzVideo.getCurrentPosition());
-                ComunicateMng.postFromService(msgFromServicePosition);
-                */
-            } else {
-                //do nothing
-            }
             stopSelf();
         }
         if (msgFromActivity.getMsg() == null) {

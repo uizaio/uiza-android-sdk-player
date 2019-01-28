@@ -17,7 +17,6 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
@@ -36,7 +35,6 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LLog.d(TAG, "fuck onCreate");
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_list_video);
@@ -88,7 +86,6 @@ public class FBListVideoActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         isMiniPlayerInitSuccess = intent.getBooleanExtra(FBVideoActivity.TAG_IS_MINI_PLAYER_INIT_SUCCESS, false);
-        LLog.d(TAG, "fuck onNewIntent isMiniPlayerInitSuccess: " + isMiniPlayerInitSuccess);
         if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
             mIsRestoredToTop = true;
         }
@@ -134,7 +131,6 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        LLog.d(TAG, "fuck onDestroy");
         UZUtil.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }
