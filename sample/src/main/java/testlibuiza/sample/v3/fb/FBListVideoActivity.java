@@ -1,7 +1,6 @@
 package testlibuiza.sample.v3.fb;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -33,6 +32,7 @@ public class FBListVideoActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;
     private CardView cvPlaylistFolder;
+    private NestedScrollView nsv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +40,8 @@ public class FBListVideoActivity extends AppCompatActivity {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_list_video);
-        NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
+        findViews();
         nsv.setNestedScrollingEnabled(false);
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        cvPlaylistFolder = (CardView) findViewById(R.id.cv_playlist_folder);
         cvPlaylistFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +73,14 @@ public class FBListVideoActivity extends AppCompatActivity {
         listAllEntity();
     }
 
+    private void findViews() {
+        nsv = (NestedScrollView) findViewById(R.id.nsv);
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        cvPlaylistFolder = (CardView) findViewById(R.id.cv_playlist_folder);
+    }
+
     private boolean isMiniPlayerInitSuccess;
+    private boolean mIsRestoredToTop;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -83,21 +88,14 @@ public class FBListVideoActivity extends AppCompatActivity {
         isMiniPlayerInitSuccess = intent.getBooleanExtra(FBVideoActivity.TAG_IS_MINI_PLAYER_INIT_SUCCESS, false);
         LLog.d(TAG, "fuck onNewIntent isMiniPlayerInitSuccess: " + isMiniPlayerInitSuccess);
         if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
-            mIsRestoredToTop  = true;
+            mIsRestoredToTop = true;
         }
     }
-    private boolean mIsRestoredToTop;
 
     @Override
     public void finish() {
         super.finish();
-        if (android.os.Build.VERSION.SDK_INT >= 19 && !isTaskRoot() && mIsRestoredToTop) {
-            // 4.4.2 platform issues for FLAG_ACTIVITY_REORDER_TO_FRONT,
-            // reordered activity back press will go to home unexpectly,
-            // Workaround: move reordered activity current task to front when it's finished.
-            ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            tasksManager.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
-        }
+        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.fb;
 
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -192,13 +191,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     public void finish() {
         super.finish();
-        if (android.os.Build.VERSION.SDK_INT >= 19 && !isTaskRoot() && mIsRestoredToTop) {
-            // 4.4.2 platform issues for FLAG_ACTIVITY_REORDER_TO_FRONT,
-            // reordered activity back press will go to home unexpectly,
-            // Workaround: move reordered activity current task to front when it's finished.
-            ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            tasksManager.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
-        }
+        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
     }
 
     @Override
