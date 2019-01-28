@@ -45,9 +45,18 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     private TextView tvLoadingMiniPlayer;
     private TextView tv;
     private ImageView iv;
+    private boolean mIsRestoredToTop;
 
     public static FBVideoActivity getInstance() {
         return activity;
+    }
+
+    private void findViews() {
+        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
+        tv = (TextView) findViewById(R.id.tv);
+        iv = (ImageView) findViewById(R.id.iv);
+        btMini = (Button) findViewById(R.id.bt_mini);
     }
 
     @Override
@@ -59,15 +68,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
-        tv = (TextView) findViewById(R.id.tv);
-        iv = (ImageView) findViewById(R.id.iv);
+        findViews();
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        btMini = (Button) findViewById(R.id.bt_mini);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         btMini.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +143,12 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            btMini.setVisibility(View.VISIBLE);
+            initDone();
         }
+    }
+
+    private void initDone() {
+        btMini.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -180,13 +189,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             }
             checkId(intent);
         }
-        btMini.setVisibility(View.VISIBLE);
+        initDone();
         if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
             mIsRestoredToTop = true;
         }
     }
-
-    private boolean mIsRestoredToTop;
 
     @Override
     public void finish() {
