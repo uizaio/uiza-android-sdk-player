@@ -273,14 +273,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
     public void onStop() {
-        uzVideo.onStop();
         cancelAutoHideController();
         super.onStop();
     }

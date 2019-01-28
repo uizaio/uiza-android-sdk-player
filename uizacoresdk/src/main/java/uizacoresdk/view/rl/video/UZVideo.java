@@ -215,8 +215,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void onCreate() {
+        EventBus.getDefault().register(this);
         activity = (Activity) getContext();
-        UZUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
+        //UZUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
@@ -653,6 +654,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isCastPlayerPlayingFirst = false;
         cdnHost = null;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
+        EventBus.getDefault().unregister(this);
     }
 
     public void onResume() {
@@ -695,14 +697,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager != null) {
             uzPlayerManager.pauseVideo();
         }
-    }
-
-    public void onStart() {
-        EventBus.getDefault().register(this);
-    }
-
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -3716,6 +3710,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
         if (msg == null || uzPlayerManager == null) {
+            return;
+        }
+        //click open app of mini player
+        if (msg instanceof ComunicateMng.MsgFromServiceOpenApp) {
+            if (activity == null) {
+                return;
+            }
+            LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer() + ", entityId: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getId());
+            try {
+                Class classNamePfPlayer = Class.forName(activity.getLocalClassName());
+                Intent intent = new Intent(activity, classNamePfPlayer);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, ((ComunicateMng.MsgFromServiceOpenApp) msg).getId());
+                intent.putExtra(Constants.FLOAT_CONTENT_POSITION, ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
+                activity.startActivity(intent);
+            } catch (ClassNotFoundException e) {
+                LLog.e(TAG, "onMessageEvent open app ClassNotFoundException " + e.toString());
+            }
             return;
         }
         //when pip float view init success

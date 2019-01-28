@@ -9,15 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.ComunicateMng;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
@@ -62,7 +57,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         LLog.d(TAG, "fuck onCreate");
-        EventBus.getDefault().register(this);
         UZUtil.setCasty(this);
         activity = this;
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
@@ -111,7 +105,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     public void onDestroy() {
         LLog.d(TAG, "fuck onDestroy");
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
         uzVideo.onDestroy();
     }
@@ -126,18 +119,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     public void onPause() {
         super.onPause();
         uzVideo.onPause();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        uzVideo.onStop();
     }
 
     @Override
@@ -160,16 +141,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
                 }
                 break;
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ComunicateMng.MsgFromServiceOpenApp event) {
-        LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + event.getPositionMiniPlayer() + ", entityId: " + event.getId());
-        Intent intent = new Intent(activity, FBVideoActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, event.getId());
-        intent.putExtra(Constants.FLOAT_CONTENT_POSITION, event.getPositionMiniPlayer());
-        startActivity(intent);
     }
 
     @Override

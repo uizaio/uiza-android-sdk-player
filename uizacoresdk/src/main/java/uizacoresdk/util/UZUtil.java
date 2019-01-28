@@ -726,7 +726,7 @@ public class UZUtil {
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
-    private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
+    //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
@@ -769,7 +769,7 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static String getClassNameOfPlayer(Context context) {
+    /*public static String getClassNameOfPlayer(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(CLASS_NAME_OF_PLAYER, null);
     }
@@ -778,7 +778,7 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(CLASS_NAME_OF_PLAYER, value);
         editor.apply();
-    }
+    }*/
 
     /////////////////////////////////BOOLEAN
     public static Boolean isInitPlaylistFolder(Context context) {

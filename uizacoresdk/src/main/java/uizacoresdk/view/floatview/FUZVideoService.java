@@ -332,14 +332,17 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
-        String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
+        /*String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
         if (UZUtil.getClickedPip(getBaseContext())) {
         } else {
             if (UZData.getInstance().getData() == null || classNameOfPlayer == null) {
                 return;
             }
+        }*/
+        if (UZData.getInstance().getData() == null) {
+            return;
         }
-        LLog.d(TAG, "miniplayer STEP 5 START OPEN APP -> classNameOfPlayer " + classNameOfPlayer + ", miniplayer content position " + fuzVideo.getCurrentPosition());
+        LLog.d(TAG, "miniplayer STEP 5 START OPEN APP, miniplayer content position " + fuzVideo.getCurrentPosition());
         /*try {
             Class classNamePfPlayer = Class.forName(classNameOfPlayer);
             Intent intent = new Intent(getBaseContext(), classNamePfPlayer);
