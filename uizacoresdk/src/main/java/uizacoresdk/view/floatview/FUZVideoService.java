@@ -313,24 +313,21 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (fuzVideo == null || fuzVideo.getPlayer() == null) {
             return;
         }
-        //set UI
-        rlControl.setVisibility(View.GONE);
-        //LLog.d(TAG, "videoW x videoH: " + videoW + "x" + videoH);
-        int widthSurfaceView = screenWidth;
-        int heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16);
-        //LLog.d(TAG, "widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView);
-        moveView.getLayoutParams().width = widthSurfaceView;
-        moveView.getLayoutParams().height = heightSurfaceView;
-        moveView.requestLayout();
-        updateUISlide(0, 0);
+        //rlControl.setVisibility(View.GONE);
+        //int widthSurfaceView = screenWidth;
+        //int heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16);
+        //moveView.getLayoutParams().width = widthSurfaceView;
+        //moveView.getLayoutParams().height = heightSurfaceView;
+        //moveView.requestLayout();
+        //updateUISlide(0, 0);
         //stop video
         if (isEnableSmoothSwitch) {
             //do nothing
         } else {
             fuzVideo.getPlayer().setPlayWhenReady(false);
-            LUIUtil.showProgressBar(fuzVideo.getProgressBar());
+            //LUIUtil.showProgressBar(fuzVideo.getProgressBar());
         }
-        moveView.setOnTouchListener(null);//disabled move view
+        //moveView.setOnTouchListener(null);//disabled move view
         UZUtil.setClickedPip(getApplicationContext(), true);
         /*String classNameOfPlayer = UZUtil.getClassNameOfPlayer(getBaseContext());
         if (UZUtil.getClickedPip(getBaseContext())) {
