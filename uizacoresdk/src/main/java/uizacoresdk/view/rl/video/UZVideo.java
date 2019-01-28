@@ -1201,6 +1201,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return;
         }
+        urlImgThumbnail = null;
         pauseVideo();
         hideController();
         //update UI for skip next and skip previous button
@@ -2039,6 +2040,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivVideoCover.getVisibility() != View.VISIBLE) {
             ivVideoCover.setVisibility(View.VISIBLE);
             LImageUtil.load(activity, urlImgThumbnail, ivVideoCover, R.drawable.background_black);
+            LLog.d(TAG, "fuck setUrlImgThumbnail " + urlImgThumbnail);
         }
     }
 
@@ -2057,7 +2059,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 urlCover = urlImgThumbnail;
             }
-            //LLog.d(TAG, "setVideoCover urlCover " + urlCover);
+            LLog.d(TAG, "fuck setVideoCover urlCover " + urlCover);
             LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.background_black);
         }
     }
