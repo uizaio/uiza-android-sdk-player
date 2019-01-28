@@ -200,6 +200,9 @@ public class UZData {
     }
 
     public ResultGetLinkPlay getResultGetLinkPlay() {
+        if (uzInput == null) {
+            return null;
+        }
         return uzInput.getResultGetLinkPlay();
     }
 
