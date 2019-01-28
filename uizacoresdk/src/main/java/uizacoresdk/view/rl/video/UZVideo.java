@@ -3739,13 +3739,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //Kiem tra xem neu activity duoc tao thanh cong neu user click vao miniplayer -> openApp() thi se ban 1 eventbus bao rang da init success
-    public void setEventBusMsgFromActivityIsInitSuccess() {
+    private void setEventBusMsgFromActivityIsInitSuccess() {
         if (isGetClickedPip) {
             LLog.d(TAG, "miniplayer STEP 7 OPEN APP SUCCESS setEventBusMsgFromActivityIsInitSuccess");
-            ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
-            msgFromActivityIsInitSuccess.setInitSuccess(true);
-            ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
+            sendEventInitSuccess();
         }
+    }
+
+    public void sendEventInitSuccess() {
+        ComunicateMng.MsgFromActivityIsInitSuccess msgFromActivityIsInitSuccess = new ComunicateMng.MsgFromActivityIsInitSuccess(null);
+        msgFromActivityIsInitSuccess.setInitSuccess(true);
+        ComunicateMng.postFromActivity(msgFromActivityIsInitSuccess);
     }
     //=============================================================================================END EVENTBUS
 

@@ -126,6 +126,32 @@ public class ComunicateMng {
         }
     }
 
+    public static class MsgFromServiceOpenApp extends MsgFromService {
+
+        public MsgFromServiceOpenApp(String msg) {
+            super(msg);
+        }
+
+        private long positionMiniPlayer;
+        private String id;
+
+        public long getPositionMiniPlayer() {
+            return positionMiniPlayer;
+        }
+
+        public void setPositionMiniPlayer(long positionMiniPlayer) {
+            this.positionMiniPlayer = positionMiniPlayer;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+
     public static void postFromService(MsgFromService msg) {
         EventBus.getDefault().post(msg);
     }
