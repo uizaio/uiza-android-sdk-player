@@ -726,7 +726,7 @@ public class UZUtil {
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
-    private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
+    //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
@@ -736,7 +736,7 @@ public class UZUtil {
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
     private final static String MINI_PLAYER_AUTO_SIZE = "MINI_PLAYER_AUTO_SIZE";
-    private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
+    //private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
     private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
     private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
     private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";
@@ -769,7 +769,7 @@ public class UZUtil {
         editor.apply();
     }
 
-    public static String getClassNameOfPlayer(Context context) {
+    /*public static String getClassNameOfPlayer(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(CLASS_NAME_OF_PLAYER, null);
     }
@@ -778,7 +778,7 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(CLASS_NAME_OF_PLAYER, value);
         editor.apply();
-    }
+    }*/
 
     /////////////////////////////////BOOLEAN
     public static Boolean isInitPlaylistFolder(Context context) {
@@ -1070,7 +1070,7 @@ public class UZUtil {
     }
 
     /////////////////////////////////LONG
-    public static long getMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context) {
+    /*public static long getMiniPlayerContentPositionWhenSwitchToFullPlayer(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, Constants.UNKNOW);
     }
@@ -1079,7 +1079,7 @@ public class UZUtil {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putLong(MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER, value);
         editor.apply();
-    }
+    }*/
 
     //=============================================================================END PREF
 
@@ -1143,6 +1143,19 @@ public class UZUtil {
         if (isMiniPlayerRunning(context)) {
             ComunicateMng.MsgFromActivity msgFromActivity = new ComunicateMng.MsgFromActivity(ComunicateMng.APPEAR);
             ComunicateMng.postFromActivity(msgFromActivity);
+        }
+    }
+
+    public static void moveTaskToFront(Activity activity, boolean mIsRestoredToTop) {
+        if (activity == null) {
+            return;
+        }
+        if (android.os.Build.VERSION.SDK_INT >= 19 && !activity.isTaskRoot() && mIsRestoredToTop) {
+            // 4.4.2 platform issues for FLAG_ACTIVITY_REORDER_TO_FRONT,
+            // reordered activity back press will go to home unexpectly,
+            // Workaround: move reordered activity current task to front when it's finished.
+            ActivityManager tasksManager = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+            tasksManager.moveTaskToFront(activity.getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
         }
     }
 }

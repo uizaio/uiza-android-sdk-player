@@ -22,6 +22,7 @@ public class UZRestClientTracking {
     private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";
+    private static final String ACCESSTOKEN = "AccessToken";
     private static Retrofit retrofit;
     private static RestRequestInterceptor restRequestInterceptor;
 
@@ -90,6 +91,14 @@ public class UZRestClientTracking {
 
     public static void removeAuthorization() {
         removeHeader(AUTHORIZATION);
+    }
+
+    public static void addAccessToken(String accessToken) {
+        addHeader(ACCESSTOKEN, accessToken);
+    }
+
+    public static void removeAccessToken() {
+        removeHeader(ACCESSTOKEN);
     }
 
     public static void removeHeader(String name) {

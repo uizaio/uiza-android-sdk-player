@@ -62,9 +62,9 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
-                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                    UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
                 } else {
-                    UZUtil.initEntity(activity, uzVideo, null);
+                    UZUtil.initEntity(activity, uzVideo, entityId);
                 }
             } else {
                 UZUtil.initEntity(activity, uzVideo, entityId);
@@ -198,18 +198,6 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
     public void onPause() {
         super.onPause();
         uzVideo.onPause();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        uzVideo.onStop();
     }
 
     @Override

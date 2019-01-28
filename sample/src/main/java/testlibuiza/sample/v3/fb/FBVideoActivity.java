@@ -1,6 +1,5 @@
 package testlibuiza.sample.v3.fb;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,12 +33,26 @@ import vn.uiza.rxandroid.ApiSubscriber;
 
 public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    public final static String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
+    private static FBVideoActivity activity;
     private UZVideo uzVideo;
     private Button btMini;
     private TextView tvLoadingMiniPlayer;
     private TextView tv;
     private ImageView iv;
+    private boolean mIsRestoredToTop;
+
+    public static FBVideoActivity getInstance() {
+        return activity;
+    }
+
+    private void findViews() {
+        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
+        tv = (TextView) findViewById(R.id.tv);
+        iv = (ImageView) findViewById(R.id.iv);
+        btMini = (Button) findViewById(R.id.bt_mini);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,15 +61,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
-        tv = (TextView) findViewById(R.id.tv);
-        iv = (ImageView) findViewById(R.id.iv);
+        findViews();
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        btMini = (Button) findViewById(R.id.bt_mini);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         btMini.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +73,19 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
                 uzVideo.showPip();
             }
         });
-        String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+        checkId(getIntent());
+        getDummyData();
+    }
+
+    private void checkId(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        uzVideo.setUrlImgThumbnail(thumb);
+        String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
-            String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
@@ -82,7 +101,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         } else {
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         }
-        getDummyData();
     }
 
     @Override
@@ -104,28 +122,14 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        uzVideo.onStop();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            btMini.setVisibility(View.VISIBLE);
+            initDone();
         }
+    }
+
+    private void initDone() {
+        btMini.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -140,19 +144,44 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        if (uzVideo.isInitNewItem(thumb)) {
+            checkId(intent);
+        }
+        initDone();
+        if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
+            mIsRestoredToTop = true;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
             //mini player is init success
             tvLoadingMiniPlayer.setVisibility(View.GONE);
-            onBackPressed();
-            //Intent intent = new Intent(activity, FBListVideoActivity.class);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            //startActivity(intent);
+            Intent intent = new Intent(activity, FBListVideoActivity.class);
+            intent.putExtra(TAG_IS_MINI_PLAYER_INIT_SUCCESS, true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
         } else {
             //open mini player
             btMini.setVisibility(View.INVISIBLE);
             tvLoadingMiniPlayer.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        uzVideo.onActivityResult(resultCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -176,6 +205,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         }
     }
 
+    //only for testing
     private void getDummyData() {
         UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "";

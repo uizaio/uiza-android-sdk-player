@@ -43,9 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.utils.util.AppUtils;
 
 public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
     private final String TAG = getClass().getSimpleName();
@@ -56,7 +56,6 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
     private SimpleExoPlayer player;
-    private String userAgent;
     private String linkPlay;
     private List<Subtitle> subtitleList;
     private FUZVideoAdPlayerListerner FUZVideoAdPlayerListerner = new FUZVideoAdPlayerListerner();
@@ -79,9 +78,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         } else {
             adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
         }
-        userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
-        manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
-        mediaDataSourceFactory = new DefaultDataSourceFactory(context, userAgent, new DefaultBandwidthMeter());
+        manifestDataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT);
+        mediaDataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT, new DefaultBandwidthMeter());
         //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         handler = new Handler();
         runnable = new Runnable() {
@@ -190,7 +188,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                 continue;
             }
             DefaultBandwidthMeter bandwidthMeter2 = new DefaultBandwidthMeter();
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, bandwidthMeter2);
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter2);
             //Text Format Initialization
             Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
             SingleSampleMediaSource textMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(subtitle.getUrl()), textFormat, C.TIME_UNSET);

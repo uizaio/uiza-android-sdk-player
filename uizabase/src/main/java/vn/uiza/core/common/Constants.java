@@ -8,6 +8,8 @@ package vn.uiza.core.common;
 
 public class Constants {
     public static boolean IS_DEBUG = false;
+    public static final String PLAYER_NAME = "UZSDK";
+    public static final String USER_AGENT = "Loitp93";
     public static final String PLAYER_SDK_VERSION = "3.1.9";
 
     public static void setDebugMode(boolean isDebugEnable) {
@@ -41,6 +43,7 @@ public class Constants {
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
     public final static String KEY_UIZA_METADATA_ENTITY_ID = "KEY_UIZA_METADATA_ENTITY_ID";
+    public final static String KEY_UIZA_THUMBNAIL = "KEY_UIZA_THUMBNAIL";
 
     public final static String URL_IMG = "https://c1.staticflickr.com/9/8438/28818520263_c7ea1b3e3f_b.jpg";
     public final static String URL_IMG_16x9 = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
@@ -54,6 +57,7 @@ public class Constants {
     public final static String URL_IMG_POSTER_SPIDER_MAN = "https://ksassets.timeincuk.net/wp/uploads/sites/54/2018/06/Marvels-Spider-Man_2018_06-11-18_003-1024x576.jpg";
     public final static String URL_IMG_POSTER_MOMO = "https://kenh14cdn.com/2018/4/27/photo-15-15248224863571678048157.jpg";
     public final static String URL_IMG_POSTER = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
+    public final static String URL_IMG_THUMBNAIL_BLACK = "https://static.uiza.io/black_1px.jpg";
     public final static String URL_IMG_THUMBNAIL = "https://static.uiza.io/2017/11/27/uiza-logo-demo-mobile.png";
     public final static String URL_IMG_THUMBNAIL_2 = "https://static.uiza.io/2017/11/27/uiza-logo-1511755911349_1511755913189.png";
 
@@ -68,6 +72,10 @@ public class Constants {
     public final static String URL_TRACKING_DEV = "https://dev-tracking.uizadev.io/analytic-tracking/";
     public final static String URL_TRACKING_STAG = "https://stag-tracking.uiza.io/analytic-tracking/";
     public final static String URL_TRACKING_PROD = "https://tracking.uiza.io/analytic-tracking/";
+
+    public final static String TRACKING_ACCESS_TOKEN_DEV = "kv8O7hLkeDtN3EBviXLD01gzNz2RP2nA";
+    public final static String TRACKING_ACCESS_TOKEN_STAG = "082c2cbf515648db96069fa660523247";
+    public final static String TRACKING_ACCESS_TOKEN_PROD = "27cdc337bd65420f8a88cfbd9cf8577a";
 
     public final static String URL_HEART_BEAT_DEV = "https://dev-heartbeat.uizadev.io/";
     public final static String URL_HEART_BEAT_STAG = "https://stag-heartbeat.uizadev.io/";
@@ -94,15 +102,10 @@ public class Constants {
     public final static String FLOAT_USER_USE_CUSTOM_LINK_PLAY = "FLOAT_USER_USE_CUSTOM_LINK_PLAY";
     public final static String FLOAT_LINK_PLAY = "FLOAT_LINK_PLAY";
     public final static String FLOAT_CONTENT_POSITION = "FLOAT_CONTENT_POSITION";
+    public final static String FLOAT_PROGRESS_BAR_COLOR = "FLOAT_PROGRESS_BAR_COLOR";
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
-    public final static String FLOAT_CDN_HOST = "FLOAT_CDN_HOST";
     public final static String FLOAT_UUID = "FLOAT_UUID";
-    public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
-    public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
-    public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
-    public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
-    public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
-    public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
+    //public final static String FLOAT_IS_FREE_SIZE = "FLOAT_IS_FREE_SIZE";
 
     public static final String EVENT_TYPE_DISPLAY = "display";
     public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";

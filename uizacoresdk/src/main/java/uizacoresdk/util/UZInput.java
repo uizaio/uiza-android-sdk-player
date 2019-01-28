@@ -1,17 +1,20 @@
 package uizacoresdk.util;
 
-import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 5/18/2018.
+ * Created by loitp on 18/1/2019.
  */
 
 public class UZInput {
-    private final String TAG = getClass().getSimpleName();
+    //private final String TAG = getClass().getSimpleName();
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
     private Data data;
+    private ResultGetTokenStreaming resultGetTokenStreaming;
+    private ResultGetLinkPlay resultGetLinkPlay;
 
     public String getUrlIMAAd() {
         return urlIMAAd;
@@ -30,9 +33,6 @@ public class UZInput {
     }
 
     public Data getData() {
-        if (data == null) {
-            LLog.d(TAG, "getData data == null");
-        }
         return data;
     }
 
@@ -45,5 +45,21 @@ public class UZInput {
             return false;
         }
         return true;
+    }
+
+    public ResultGetTokenStreaming getResultGetTokenStreaming() {
+        return resultGetTokenStreaming;
+    }
+
+    public void setResultGetTokenStreaming(ResultGetTokenStreaming resultGetTokenStreaming) {
+        this.resultGetTokenStreaming = resultGetTokenStreaming;
+    }
+
+    public ResultGetLinkPlay getResultGetLinkPlay() {
+        return resultGetLinkPlay;
+    }
+
+    public void setResultGetLinkPlay(ResultGetLinkPlay resultGetLinkPlay) {
+        this.resultGetLinkPlay = resultGetLinkPlay;
     }
 }

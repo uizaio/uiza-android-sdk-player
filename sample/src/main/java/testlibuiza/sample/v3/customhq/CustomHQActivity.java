@@ -144,18 +144,6 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        uzVideo.onStop();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         uzVideo.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);

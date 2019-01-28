@@ -134,16 +134,9 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
     public void onStop() {
         cancelAutoHideController();
         super.onStop();
-        uzVideo.onStop();
     }
 
     @Override

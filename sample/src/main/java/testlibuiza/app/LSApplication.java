@@ -26,7 +26,6 @@ public class LSApplication extends MultiDexApplication {
     public static String entityIdDefaultLIVE_TRANSCODE = "58240424-62f6-4f2b-9ddb-b3a49a3074a5";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "8ae1be2b-3cd5-478c-94c0-6598d5cad4f8";
 
-
     @Override
     public void onCreate() {
         super.onCreate();

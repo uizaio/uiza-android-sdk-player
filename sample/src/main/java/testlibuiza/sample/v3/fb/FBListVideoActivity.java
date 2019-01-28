@@ -31,20 +31,21 @@ public class FBListVideoActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FBVideoAdapter fbVideoAdapter;
     private CardView cvPlaylistFolder;
+    private NestedScrollView nsv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_list_video);
-        NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
+        findViews();
         nsv.setNestedScrollingEnabled(false);
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        cvPlaylistFolder = (CardView) findViewById(R.id.cv_playlist_folder);
         cvPlaylistFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, Constants.URL_IMG_THUMBNAIL);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
                 startActivity(intent);
             }
@@ -60,7 +61,9 @@ public class FBListVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(Data data, int position) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
+                intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, data.getThumbnail());
                 startActivity(intent);
             }
         });
@@ -68,6 +71,40 @@ public class FBListVideoActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(fbVideoAdapter);
         listAllEntity();
+    }
+
+    private void findViews() {
+        nsv = (NestedScrollView) findViewById(R.id.nsv);
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        cvPlaylistFolder = (CardView) findViewById(R.id.cv_playlist_folder);
+    }
+
+    private boolean isMiniPlayerInitSuccess;
+    private boolean mIsRestoredToTop;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        isMiniPlayerInitSuccess = intent.getBooleanExtra(FBVideoActivity.TAG_IS_MINI_PLAYER_INIT_SUCCESS, false);
+        if ((intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT) > 0) {
+            mIsRestoredToTop = true;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isMiniPlayerInitSuccess) {
+            //in this example, I use static FBVideoActivity instance for faster calling.
+            //you must find a better way to finish FBVideoActivity in your production
+            FBVideoActivity.getInstance().finish();
+        }
+        super.onBackPressed();
     }
 
     private void listAllEntity() {

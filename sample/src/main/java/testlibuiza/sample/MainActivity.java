@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        findViewById(R.id.bt_dummy).setVisibility(View.GONE);
         findViewById(R.id.bt_dummy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

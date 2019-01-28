@@ -74,7 +74,6 @@ import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
-import vn.uiza.utils.util.AppUtils;
 import vn.uiza.views.autosize.UZImageButton;
 
 /**
@@ -90,7 +89,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private final DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
     private SimpleExoPlayer player;
-    private String userAgent;
     private String linkPlay;
     private List<Subtitle> subtitleList;
     private FrameworkMediaDrm mediaDrm;
@@ -140,8 +138,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
-        userAgent = Util.getUserAgent(context, AppUtils.getAppPackageName());
-
         //OPTION 1 OK
         /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
@@ -152,7 +148,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //OPTION 2 PLAY LINK REDIRECT
         // Default parameters, except allowCrossProtocolRedirects is true
         manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
-                userAgent,
+                Constants.USER_AGENT,
                 null /* listener */,
                 DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
@@ -233,7 +229,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                     mls = duration;
                                 }
                                 if (duration != 0) {
-                                    percent = (int) (s * 100 / duration);
+                                    percent = (int) (mls * 100 / duration);
                                 }
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
@@ -333,14 +329,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (uzVideo.isLivestream()) {
             player.seekToDefaultPosition();
         } else {
-            long miniPlayerContentPosition = UZUtil.getMiniPlayerContentPositionWhenSwitchToFullPlayer(context);
-            if (miniPlayerContentPosition == Constants.UNKNOW) {
-                //do nothing
-            } else {
-                LLog.d(TAG, "miniplayer STEP 7 miniPlayerContentPosition: " + miniPlayerContentPosition);
-                contentPosition = miniPlayerContentPosition;
-                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(context, Constants.UNKNOW);
-            }
             seekTo(contentPosition);
         }
         if (debugCallback != null) {
@@ -364,7 +352,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private HttpDataSource.Factory buildHttpDataSourceFactory() {
-        return new DefaultHttpDataSourceFactory(userAgent);
+        return new DefaultHttpDataSourceFactory(Constants.USER_AGENT);
     }
 
     private DefaultDrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManagerV18(UUID uuid, String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession) throws UnsupportedDrmException {
@@ -402,7 +390,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (subtitle == null || subtitle.getLanguage() == null || subtitle.getUrl() == null || subtitle.getUrl().isEmpty()) {
                 continue;
             }
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent, bandwidthMeter);
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter);
             //Text Format Initialization
             Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
             SingleSampleMediaSource textMediaSource = new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(subtitle.getUrl()), textFormat, C.TIME_UNSET);

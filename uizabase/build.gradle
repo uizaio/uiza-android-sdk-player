@@ -56,13 +56,15 @@ dependencies {
     api 'org.greenrobot:eventbus:3.0.0'
     api 'com.daimajia.easing:library:2.0@aar'
     api 'com.daimajia.androidanimations:library:2.2@aar'
-    //glide
-    api('com.github.bumptech.glide:glide:4.5.0@aar') {
+
+    /*api('com.github.bumptech.glide:glide:4.5.0@aar') {
         //transitive = true;
         exclude group: "com.android.support"
     }
-    //compile 'com.github.bumptech.glide:annotations:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'*/
+    api 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
     api 'jp.wasabeef:glide-transformations:2.0.2'
     api 'com.google.code.gson:gson:2.8.2'
     //compile 'com.daasuu:EasingInterpolator:1.0.0'//need for shine button

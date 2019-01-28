@@ -136,4 +136,22 @@ public class UZExceptionUtil {
         uzException.setException(exception);
         return uzException;
     }
+
+    public static UZException getExceptionPlaylistFolderItemFirst() {
+        Exception exception = new Exception(UZException.ERR_25);
+
+        UZException uzException = new UZException();
+        uzException.setErrorCode(UZException.ERR_CODE_25);
+        uzException.setException(exception);
+        return uzException;
+    }
+
+    public static UZException getExceptionPlaylistFolderItemLast() {
+        Exception exception = new Exception(UZException.ERR_26);
+
+        UZException uzException = new UZException();
+        uzException.setErrorCode(UZException.ERR_CODE_26);
+        uzException.setException(exception);
+        return uzException;
+    }
 }
