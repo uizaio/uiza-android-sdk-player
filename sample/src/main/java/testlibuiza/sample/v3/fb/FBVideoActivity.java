@@ -82,6 +82,8 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         if (intent == null) {
             return;
         }
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        uzVideo.setUrlImgThumbnail(thumb);
         String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
@@ -146,19 +148,8 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        long positionMiniPlayer = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
-        LLog.d(TAG, "fuck onNewIntent positionMiniPlayer: " + positionMiniPlayer);
-        if (positionMiniPlayer != 0) {
-            if (uzVideo != null) {
-                uzVideo.seekTo(positionMiniPlayer);
-                uzVideo.resumeVideo();
-                uzVideo.sendEventInitSuccess();
-            }
-        } else {
-            if (uzVideo != null) {
-                uzVideo.pauseVideo();
-                uzVideo.showProgress();
-            }
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        if (uzVideo.isInitNewItem(thumb)) {
             checkId(intent);
         }
         initDone();

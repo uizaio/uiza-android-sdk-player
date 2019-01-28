@@ -47,6 +47,7 @@ public class FBListVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, Constants.URL_IMG_THUMBNAIL);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, LSApplication.metadataDefault0);
                 startActivity(intent);
             }
@@ -64,6 +65,7 @@ public class FBListVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(activity, FBVideoActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, data.getId());
+                intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, data.getThumbnail());
                 startActivity(intent);
             }
         });

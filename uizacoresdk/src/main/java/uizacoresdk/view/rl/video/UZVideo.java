@@ -2029,16 +2029,33 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private String urlImgThumbnail;
+
+    public void setUrlImgThumbnail(String urlImgThumbnail) {
+        this.urlImgThumbnail = urlImgThumbnail;
+        if (ivVideoCover == null) {
+            return;
+        }
+        if (ivVideoCover.getVisibility() != View.VISIBLE) {
+            ivVideoCover.setVisibility(View.VISIBLE);
+            LImageUtil.load(activity, urlImgThumbnail, ivVideoCover, R.drawable.background_black);
+        }
+    }
+
     private void setVideoCover() {
         if (ivVideoCover.getVisibility() != View.VISIBLE) {
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
             String urlCover;
-            if (data == null) {
-                urlCover = Constants.URL_IMG_THUMBNAIL_BLACK;
+            if (urlImgThumbnail == null || urlImgThumbnail.isEmpty()) {
+                if (data == null) {
+                    urlCover = Constants.URL_IMG_THUMBNAIL_BLACK;
+                } else {
+                    urlCover = data.getThumbnail();
+                }
             } else {
-                urlCover = data.getThumbnail();
+                urlCover = urlImgThumbnail;
             }
             //LLog.d(TAG, "setVideoCover urlCover " + urlCover);
             LImageUtil.load(activity, urlCover, ivVideoCover, R.drawable.background_black);
@@ -3704,6 +3721,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private long positionMiniPlayer;
+
+    public boolean isInitNewItem(String urlImgThumbnail) {
+        LLog.d(TAG, "fuck onNewIntent positionMiniPlayer: " + positionMiniPlayer);
+        if (positionMiniPlayer != 0) {
+            seekTo(positionMiniPlayer);
+            resumeVideo();
+            sendEventInitSuccess();
+            positionMiniPlayer = 0;
+            return false;
+        } else {
+            setUrlImgThumbnail(urlImgThumbnail);
+            pauseVideo();
+            showProgress();
+            positionMiniPlayer = 0;
+            return true;
+        }
+    }
+
     //listen msg from service FUZVideoService
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ComunicateMng.MsgFromService msg) {
@@ -3716,13 +3752,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
             LLog.d(TAG, "miniplayer STEP 6");
-            LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer() + ", entityId: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getId());
+            LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
             try {
+                positionMiniPlayer = ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer();
                 Class classNamePfPlayer = Class.forName(activity.getLocalClassName());
                 Intent intent = new Intent(activity, classNamePfPlayer);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, ((ComunicateMng.MsgFromServiceOpenApp) msg).getId());
-                intent.putExtra(Constants.FLOAT_CONTENT_POSITION, ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, UZData.getInstance().getEntityId());
+                //intent.putExtra(Constants.FLOAT_CONTENT_POSITION, ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer());
                 activity.startActivity(intent);
             } catch (ClassNotFoundException e) {
                 LLog.e(TAG, "onMessageEvent open app ClassNotFoundException " + e.toString());

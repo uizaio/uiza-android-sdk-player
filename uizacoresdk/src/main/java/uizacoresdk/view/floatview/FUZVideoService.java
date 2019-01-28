@@ -354,7 +354,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }*/
         ComunicateMng.MsgFromServiceOpenApp msgFromServiceOpenApp = new ComunicateMng.MsgFromServiceOpenApp(null);
         msgFromServiceOpenApp.setPositionMiniPlayer(fuzVideo.getCurrentPosition());
-        msgFromServiceOpenApp.setId(UZData.getInstance().getEntityId());
         ComunicateMng.postFromService(msgFromServiceOpenApp);
     }
 

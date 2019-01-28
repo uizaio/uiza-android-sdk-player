@@ -133,7 +133,6 @@ public class ComunicateMng {
         }
 
         private long positionMiniPlayer;
-        private String id;
 
         public long getPositionMiniPlayer() {
             return positionMiniPlayer;
@@ -141,14 +140,6 @@ public class ComunicateMng {
 
         public void setPositionMiniPlayer(long positionMiniPlayer) {
             this.positionMiniPlayer = positionMiniPlayer;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
         }
     }
 
