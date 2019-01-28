@@ -40,7 +40,7 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 
 /**
- * Created by loitp on 1/4/2019.
+ * Created by loitp on 1/28/2019.
  */
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
@@ -78,11 +78,16 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginT;
     private int marginR;
     private int marginB;
-    private boolean isFreeSize;
     private int progressBarColor;
     private ResultGetLinkPlay mResultGetLinkPlay;
 
     public FUZVideoService() {
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
@@ -90,7 +95,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
         progressBarColor = intent.getIntExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, Color.WHITE);
-        isFreeSize = intent.getBooleanExtra(Constants.FLOAT_IS_FREE_SIZE, false);
         try {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
@@ -185,7 +189,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
-
         //OPTION 1: floatview se neo vao 1 goc cua device
         /*params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -193,7 +196,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 LAYOUT_FLAG,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);*/
-
         //OPTION 2: floatview se ko neo vao 1 goc cua device
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -210,13 +212,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //params.gravity = Gravity.TOP | Gravity.LEFT;
         //params.x = 0;
         //params.y = 0;
-
         //OPTION 2
         //right-bottom corner
         /*params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = screenWidth - getMoveViewWidth();
         params.y = screenHeight - getMoveViewHeight();*/
-
         //OPTION 3
         //init lan dau tien se neo vao canh BOTTOM_RIGHT cua man hinh
         /*params.gravity = Gravity.TOP | Gravity.LEFT;
@@ -224,8 +224,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         //params.y = screenHeight - getMoveViewHeight();
         params.y = screenHeight - getMoveViewHeight() - statusBarHeight;
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);*/
-
-        //OPTION 3
+        //OPTION 4
         //float view o ben ngoai screen cua device
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = screenWidth - 1;
@@ -452,7 +451,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         final int currentPosX = params.x;
         final int currentPosY = params.y;
         //LLog.d(TAG, "slideToPosition current Point: " + currentPosX + " x " + currentPosY);
-
         final int mGoToPosX;
         final int mGoToPosY;
         int videoW = getVideoW();
@@ -471,7 +469,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         } else {
             mGoToPosY = goToPosY;
         }
-
         final int a = (int) Math.abs(mGoToPosX - currentPosX);
         final int b = (int) Math.abs(mGoToPosY - currentPosY);
         //LLog.d(TAG, "slideToPosition " + goToPosX + " x " + goToPosY + " -> a x b: " + a + " x " + b + " -> mGoToPosX x mGoToPosY: " + mGoToPosX + "x" + mGoToPosY);
@@ -862,12 +859,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         super.onDestroy();
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
     @Override
     public void isInitResult(boolean isInitSuccess) {
         if (isInitSuccess && fuzVideo != null) {
@@ -881,7 +872,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (!isSendMsgToActivity) {
                 //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
                 ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
-                msgFromServiceIsInitSuccess.setInitSuccess(isInitSuccess);
+                msgFromServiceIsInitSuccess.setInitSuccess(true);
                 ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
                 isSendMsgToActivity = true;
             }
@@ -908,6 +899,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void onStateEnded() {
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+            if (fuzVideo == null) {
+                return;
+            }
             //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
             fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
                 @Override
@@ -1026,7 +1020,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //LLog.d(TAG, "Nhan duoc content position moi cua UZVideo va tien hanh seek toi day");
             if (isEnableSmoothSwitch) {
                 //smooth but content position is delay
-                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true");
+                LLog.d(TAG, "miniplayer STEP 4 MsgFromActivityPosition -> isEnableSmoothSwitch true -> do nothing");
             } else {
                 long contentPosition = ((ComunicateMng.MsgFromActivityPosition) msgFromActivity).getPosition();
                 long contentBufferedPosition = fuzVideo.getContentBufferedPosition();
@@ -1039,7 +1033,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         } else if (msgFromActivity instanceof ComunicateMng.MsgFromActivityIsInitSuccess) {
             //LLog.d(TAG, "lang nghe UZVideo da init success hay chua");
-            LLog.d(TAG, "miniplayer STEP 8 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
+            LLog.d(TAG, "miniplayer STEP 7 MsgFromActivityIsInitSuccess isInitSuccess: " + ((ComunicateMng.MsgFromActivityIsInitSuccess) msgFromActivity).isInitSuccess());
             if (isEnableSmoothSwitch) {
                 //get current content position and pass it to UZVideo
                 /*ComunicateMng.MsgFromServicePosition msgFromServicePosition = new ComunicateMng.MsgFromServicePosition(null);

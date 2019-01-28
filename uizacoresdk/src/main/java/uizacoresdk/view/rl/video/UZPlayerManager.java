@@ -329,14 +329,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (uzVideo.isLivestream()) {
             player.seekToDefaultPosition();
         } else {
-            long miniPlayerContentPosition = UZUtil.getMiniPlayerContentPositionWhenSwitchToFullPlayer(context);
-            if (miniPlayerContentPosition == Constants.UNKNOW) {
-                //do nothing
-            } else {
-                LLog.d(TAG, "miniplayer STEP 7 miniPlayerContentPosition: " + miniPlayerContentPosition);
-                contentPosition = miniPlayerContentPosition;
-                UZUtil.setMiniPlayerContentPositionWhenSwitchToFullPlayer(context, Constants.UNKNOW);
-            }
             seekTo(contentPosition);
         }
         if (debugCallback != null) {

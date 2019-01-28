@@ -1015,7 +1015,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         intent.putExtra(Constants.FLOAT_UUID, uuid.toString());
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
-        intent.putExtra(Constants.FLOAT_IS_FREE_SIZE, isFreeSize);
         intent.putExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, progressBarColor);
         activity.startService(intent);
     }
@@ -3344,7 +3343,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
-            setEventBusMsgFromActivityIsInitSuccess();
         }
         if (isCastingChromecast) {
             //LLog.d(TAG, "onStateReadyFirst init new play check isCastingChromecast: " + isCastingChromecast);
@@ -3717,6 +3715,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (activity == null) {
                 return;
             }
+            LLog.d(TAG, "miniplayer STEP 6");
             LLog.d(TAG, "fuck onMessageEvent getPositionMiniPlayer: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer() + ", entityId: " + ((ComunicateMng.MsgFromServiceOpenApp) msg).getId());
             try {
                 Class classNamePfPlayer = Class.forName(activity.getLocalClassName());
@@ -3747,14 +3746,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             /*if (uzPlayerManager != null) {
                 uzPlayerManager.seekTo(((ComunicateMng.MsgFromServicePosition) msg).getPosition());
             }*/
-        }
-    }
-
-    //Kiem tra xem neu activity duoc tao thanh cong neu user click vao miniplayer -> openApp() thi se ban 1 eventbus bao rang da init success
-    private void setEventBusMsgFromActivityIsInitSuccess() {
-        if (isGetClickedPip) {
-            LLog.d(TAG, "miniplayer STEP 7 OPEN APP SUCCESS setEventBusMsgFromActivityIsInitSuccess");
-            sendEventInitSuccess();
         }
     }
 

@@ -104,13 +104,7 @@ public class Constants {
     public final static String FLOAT_PROGRESS_BAR_COLOR = "FLOAT_PROGRESS_BAR_COLOR";
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public final static String FLOAT_UUID = "FLOAT_UUID";
-    public final static String FLOAT_IS_FREE_SIZE = "FLOAT_IS_FREE_SIZE";
-    public final static String FLOAT_LINK_ENTITY_ID = "FLOAT_LINK_ENTITY_ID";
-    public final static String FLOAT_LINK_ENTITY_COVER = "FLOAT_LINK_ENTITY_COVER";
-    public final static String FLOAT_LINK_ENTITY_TITLE = "FLOAT_LINK_ENTITY_TITLE";
-    public final static String FLOAT_CLICKED_FULLSCREEN = "FLOAT_CLICKED_FULLSCREEN";
-    public final static String FLOAT_CLICKED_PACKAGE_NAME = "FLOAT_CLICKED_PACKAGE_NAME";
-    public final static String FLOAT_VIDEO_INIT_RESULT = "FLOAT_VIDEO_INIT_RESULT";
+    //public final static String FLOAT_IS_FREE_SIZE = "FLOAT_IS_FREE_SIZE";
 
     public static final String EVENT_TYPE_DISPLAY = "display";
     public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";

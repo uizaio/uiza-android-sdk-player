@@ -150,6 +150,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         LLog.d(TAG, "fuck onNewIntent positionMiniPlayer: " + positionMiniPlayer);
         if (positionMiniPlayer != 0) {
             if (uzVideo != null) {
+                uzVideo.seekTo(positionMiniPlayer);
                 uzVideo.resumeVideo();
                 uzVideo.sendEventInitSuccess();
             }
