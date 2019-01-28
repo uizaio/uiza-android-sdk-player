@@ -964,7 +964,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int h = 0;
         if (isFirstSizeInit) {
             w = screenWidth / 2;
-            h = w * videoH / videoW;
+            if (videoW == 0) {
+                //fixed java.lang.ArithmeticException: divide by zero
+                h = w * 9 / 16;
+            } else {
+                h = w * videoH / videoW;
+            }
         } else {
             //works fine
             //OPTION 1: isLarger->mini player se to hon 1 chut
