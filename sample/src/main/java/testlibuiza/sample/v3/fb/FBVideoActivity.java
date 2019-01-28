@@ -69,9 +69,17 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
                 uzVideo.showPip();
             }
         });
-        String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+        checkId(getIntent());
+        getDummyData();
+    }
+
+    private void checkId(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
-            String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
@@ -87,7 +95,6 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         } else {
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         }
-        getDummyData();
     }
 
     @Override
@@ -144,6 +151,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         LLog.d(TAG, "fuck onNewIntent");
+        if (uzVideo != null) {
+            uzVideo.pauseVideo();
+            uzVideo.showProgress();
+        }
+        checkId(intent);
     }
 
     @Override

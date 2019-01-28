@@ -543,7 +543,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.release();
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
-            uzPlayerManager.showProgress();
+            showProgress();
         }
         updateUIDependOnLivetream();
 
@@ -1125,16 +1125,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private final String publishToCdn = "success";
 
     private void callAPIGetListAllEntity(String metadataId) {
-        if (uzPlayerManager != null) {
-            uzPlayerManager.showProgress();
-        }
+        showProgress();
         boolean isDataListExist = UZData.getInstance().getDataList() != null;
         if (isDataListExist) {
             LLog.d(TAG, "isDataListExist -> dont call getListAllEntity()");
             playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
-            if (uzPlayerManager != null) {
-                uzPlayerManager.hideProgress();
-            }
+            hideProgress();
         } else {
             LLog.d(TAG, "!isDataListExist -> call getListAllEntity()");
             UZService service = UZRestClient.createService(UZService.class);
@@ -1170,9 +1166,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                     //LLog.d(TAG, "list size: " + UZData.getInstance().getDataList().size());
                     playPlaylistPosition(UZData.getInstance().getCurrentPositionOfDataList());
-                    if (uzPlayerManager != null) {
-                        uzPlayerManager.hideProgress();
-                    }
+                    hideProgress();
                 }
 
                 @Override
@@ -1181,9 +1175,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     if (uzCallback != null) {
                         uzCallback.onError(UZExceptionUtil.getExceptionListAllEntity());
                     }
-                    if (uzPlayerManager != null) {
-                        uzPlayerManager.hideProgress();
-                    }
+                    hideProgress();
                 }
             });
         }
@@ -2745,6 +2737,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void hideProgress() {
+        if (uzPlayerManager != null) {
+            uzPlayerManager.hideProgress();
+        }
+    }
+
+    public void showProgress() {
+        if (uzPlayerManager != null) {
+            uzPlayerManager.showProgress();
+        }
+    }
+
     //=============================================================================================END UI
     //=============================================================================================START EVENT
     private UZLiveContentCallback uzLiveContentCallback;
@@ -3153,7 +3157,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.release();
             mResultGetLinkPlay = null;
             resetCountTryLinkPlayError();
-            uzPlayerManager.showProgress();
+            showProgress();
         }
         setTitle();
         callAPIGetLinkPlay();
@@ -3805,9 +3809,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZData.getInstance().getData() == null || uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
             return;
         }
-        if (uzPlayerManager != null) {
-            uzPlayerManager.showProgress();
-        }
+        showProgress();
         //LLog.d(TAG, "playChromecast exo stop lastCurrentPosition: " + lastCurrentPosition);
 
         MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
@@ -3863,7 +3865,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "onProgressUpdated " + currentPosition + " - " + duration + " >>> max " + previewTimeBar.getMax());
                 if (currentPosition >= lastCurrentPosition && !isCastPlayerPlayingFirst) {
                     //LLog.d(TAG, "onProgressUpdated PLAYING FIRST");
-                    uzPlayerManager.hideProgress();
+                    hideProgress();
                     isCastPlayerPlayingFirst = true;
                 }
 
