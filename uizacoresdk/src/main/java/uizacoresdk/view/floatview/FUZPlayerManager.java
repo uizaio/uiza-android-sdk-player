@@ -427,6 +427,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             isPlayingAd = false;
         }
 
+        @Override
+        public void onBuffering() {
+        }
+
         public boolean isPlayingAd() {
             return isPlayingAd;
         }

@@ -238,6 +238,11 @@ public class EventActivity extends AppCompatActivity {
             public void onError() {
                 tvAd.setText("onError");
             }
+
+            @Override
+            public void onBuffering() {
+                tvAd.setText("onBuffering");
+            }
         });
         uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
             @Override

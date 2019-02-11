@@ -843,6 +843,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             isPlayingAd = false;
         }
 
+        @Override
+        public void onBuffering() {
+        }
+
         public boolean isPlayingAd() {
             return isPlayingAd;
         }

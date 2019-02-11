@@ -38,7 +38,6 @@ android {
 dependencies {
     //api fileTree(include: ['*.jar'], dir: 'libs')
     api 'commons-codec:commons-codec:1.10'
-
     api 'com.squareup.retrofit2:retrofit:2.3.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
@@ -53,25 +52,15 @@ dependencies {
     api 'io.reactivex:rxandroid:1.2.1'
     api 'io.reactivex:rxjava:1.3.8'
     api 'com.android.support:multidex:1.0.3'
-    api 'org.greenrobot:eventbus:3.0.0'
+    api 'org.greenrobot:eventbus:3.1.1'
     api 'com.daimajia.easing:library:2.0@aar'
     api 'com.daimajia.androidanimations:library:2.2@aar'
-
-    /*api('com.github.bumptech.glide:glide:4.5.0@aar') {
-        //transitive = true;
-        exclude group: "com.android.support"
-    }
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'*/
     api 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-
     api 'jp.wasabeef:glide-transformations:2.0.2'
     api 'com.google.code.gson:gson:2.8.2'
-    //compile 'com.daasuu:EasingInterpolator:1.0.0'//need for shine button
-    api 'com.nineoldandroids:library:2.4.0'
-    //for draggable view
+    api 'com.nineoldandroids:library:2.4.0'//for draggable view
     //compile 'com.nshmura:snappysmoothscroller:1.0.0'
-    //runtime permission https://github.com/Karumi/Dexter
-    api 'com.karumi:dexter:4.2.0'
+    api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
 }
 
