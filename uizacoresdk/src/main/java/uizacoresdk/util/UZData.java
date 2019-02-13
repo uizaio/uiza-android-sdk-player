@@ -5,6 +5,7 @@ import android.provider.Settings;
 
 import com.google.android.gms.cast.MediaTrack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
@@ -17,6 +18,7 @@ import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -257,6 +259,31 @@ public class UZData {
         uizaTracking.setPlayThrough(playThrough);
         uizaTracking.setEventType(eventType);
         return uizaTracking;
+    }
+
+    private List<Muiza> muizaList = new ArrayList<>();
+
+    public void clearMuizaList() {
+        muizaList.clear();
+    }
+
+    public void addTrackingMuiza(String event) {
+        //TODO correct Muiza
+        Muiza muiza = new Muiza();
+        muiza.setEvent(event);
+        muizaList.add(muiza);
+        //TODO remove later
+        printMuizaList();
+    }
+
+    public void printMuizaList() {
+        if (!Constants.IS_DEBUG) {
+            return;
+        }
+        LLog.d(TAG, "fuck------------------------------------");
+        for (int i = 0; i < muizaList.size(); i++) {
+            LLog.d(TAG, "fuck printMuizaList " + i + " -> " + muizaList.get(i).getEvent());
+        }
     }
     //==================================================================================================================END TRACKING
 

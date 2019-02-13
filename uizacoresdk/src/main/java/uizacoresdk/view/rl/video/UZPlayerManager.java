@@ -212,7 +212,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             }
                             //LLog.d(TAG, "runnable ad s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                             progressCallback.onAdProgress(s, (int) duration, percent);
-
                             //buffer changing
                             /*if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
                                 bufferPosition = uzVideo.getBufferedPosition();

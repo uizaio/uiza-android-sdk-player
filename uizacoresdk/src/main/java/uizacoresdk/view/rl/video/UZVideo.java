@@ -526,19 +526,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().setSettingPlayer(true);
         hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
-
         isOnPlayerEnded = false;
         updateUIEndScreen();
-
-        UZData.getInstance().setSettingPlayer(true);
-
         isHasError = false;
         this.isLivestream = isLivestream;
         if (isLivestream) {
             startTime = Constants.UNKNOW;
         }
         setDefautValueForFlagIsTracked();
-
         if (uzPlayerManager != null) {
             //LLog.d(TAG, "init uizaPlayerManager != null");
             uzPlayerManager.release();
@@ -547,7 +542,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             showProgress();
         }
         updateUIDependOnLivetream();
-
         List<Subtitle> subtitleList = null;
         //TODO iplm init linkplay chua co subtitle
         /*subtitleList = new ArrayList<>();
@@ -565,7 +559,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return;
         }
-
         initDataSource(linkPlay, UZData.getInstance().getUrlIMAAd(), UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
         if (uzCallback != null) {
             uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
@@ -1262,17 +1255,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isOnPlayerEnded;
 
     protected void onPlayerEnded() {
-        //LLog.d(TAG, "onPlayerEnded");
         LLog.d(TAG, ">>>onPlayerEnded isPlaying " + isPlaying());
         if (isPlaying()) {
             isOnPlayerEnded = true;
             if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
-                //LLog.d(TAG, "onPlayerEnded");
                 hideController();
                 autoSwitchNextVideo();
             } else {
                 updateUIEndScreen();
             }
+            UZData.getInstance().addTrackingMuiza(Constants.MUIZA_EVENT_ENDED);
         }
     }
 
@@ -1812,10 +1804,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerView != null) {
             uzPlayerView.setControllerStateCallback(UZVideo.this);
         }
-
         updateUIPositionOfProgressBar();
-
-        //rlTimeBar = uzPlayerView.findViewById(R.id.rl_time_bar);
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
         previewFrameLayout = uzPlayerView.findViewById(R.id.preview_frame_layout);
         if (uzTimebar != null) {
@@ -2102,8 +2091,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibReplayIcon.setRatioLand(7);
                 ibReplayIcon.setRatioPort(5);
             }
-        } else {
-            //LLog.d(TAG, "updateUIEachSkin !uz_player_skin_2 || !uz_player_skin_3");
         }
     }
 
@@ -3303,6 +3290,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
                 updateUIIbRewIconDependOnProgress(currentMls, false);
                 trackProgress(s, percent);
+                trackMuiza(s);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
@@ -3428,7 +3416,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 });
             }
         }
-
         //dont track play_throught if entity is live
         if (isLivestream) {
             //LLog.d(TAG, "trackProgress percent: " + percent + "% -> dont track play_throught if entity is live");
@@ -3676,6 +3663,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 });
             }
         });
+    }
+
+    private void trackMuiza(int s) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        if (s <= 0 || s % 10 != 0) {
+            return;
+        }
+        LLog.d(TAG, "fuck trackMuiza s: " + s);
+        //TODO can dat them 1 bien isTrackingMuiza de dam bao trong vong 10s chi co 1 luot request api
+        //do param s co the trung nhau
     }
     //=============================================================================================END TRACKING
 
