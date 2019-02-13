@@ -85,8 +85,10 @@ public class Constants {
     public final static String URL_DEV_UIZA_VERSION_2_STAG = "https://uqc-api.uiza.io/";
     public final static String URL_DEV_UIZA_VERSION_2_DEMO = "https://demo-api.uiza.io/";
 
-    public final static String MUIZA_EVENT_READY = "ready";
-    public final static String MUIZA_EVENT_LOADSTART = "loadstart";
+    public final static String MUIZA_EVENT_READY = "ready";//là thời điểm player init xong
+    public final static String MUIZA_EVENT_LOADSTART = "loadstart";//là thời điểm player bắt đầu tải video
+    public final static String MUIZA_EVENT_VIEWSTART = "viewstart";//là thời điểm frame đầu tiên của video được play
+    public final static String MUIZA_EVENT_PAUSE = "pause";//là thời điểm user nhấn pause / khách hàng của mình gọi function pause
     public final static String MUIZA_EVENT_ENDED = "ended";
     public final static String MUIZA_EVENT_ERROR = "error";
 
