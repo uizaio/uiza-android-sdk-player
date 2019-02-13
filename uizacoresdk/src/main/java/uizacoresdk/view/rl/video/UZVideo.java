@@ -420,6 +420,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             uzCallback.onError(e);
         }
+        UZData.getInstance().addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
         if (isHasError) {
             //LLog.e(TAG, "handleError isHasError=true -> return -> isLivestream: " + isLivestream);
             return;
