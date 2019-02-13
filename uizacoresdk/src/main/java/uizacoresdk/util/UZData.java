@@ -211,11 +211,11 @@ public class UZData {
     }
 
     //==================================================================================================================START TRACKING
-    public UizaTracking createTrackingInputV3(Context context, String eventType) {
-        return createTrackingInputV3(context, "0", eventType);
+    public UizaTracking createTrackingInput(Context context, String eventType) {
+        return createTrackingInput(context, "0", eventType);
     }
 
-    public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
+    public UizaTracking createTrackingInput(Context context, String playThrough, String eventType) {
         UizaTracking uizaTracking = new UizaTracking();
         //app_id
         uizaTracking.setAppId(UZData.getInstance().getAppId());
@@ -250,7 +250,7 @@ public class UZData {
         uizaTracking.setEntityVariantName("");
         uizaTracking.setEntityVariantId("");
         //TODO setEntityDuration
-        uizaTracking.setEntityDuration("0");
+        uizaTracking.setEntityDuration("-");
         uizaTracking.setEntityStreamType("on-demand");
         uizaTracking.setEntityEncodingVariant("");
         uizaTracking.setEntityCdn("");

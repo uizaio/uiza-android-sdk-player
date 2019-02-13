@@ -3420,7 +3420,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (UZTrackingUtil.isTrackedEventTypeView(activity)) {
                 //da track roi ko can track nua
             } else {
-                callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypeView(activity, true);
@@ -3448,7 +3448,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
-                callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(activity, true);
@@ -3464,7 +3464,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
-                callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(activity, true);
@@ -3480,7 +3480,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
-                callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(activity, true);
@@ -3496,7 +3496,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
-                callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(activity, true);
@@ -3538,7 +3538,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZTrackingUtil.isTrackedEventTypeVideoStarts(activity)) {
             //da track roi ko can track nua
         } else {
-            callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UZTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_VIDEO_STARTS), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypeVideoStarts(activity, true);
@@ -3555,7 +3555,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZTrackingUtil.isTrackedEventTypeDisplay(activity)) {
             //da track roi ko can track nua
         } else {
-            callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(activity, true);
@@ -3572,7 +3572,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(activity)) {
             //da track roi ko can track nua
         } else {
-            callAPITrackUiza(UZData.getInstance().createTrackingInputV3(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
+            callAPITrackUiza(UZData.getInstance().createTrackingInput(activity, Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(activity, true);

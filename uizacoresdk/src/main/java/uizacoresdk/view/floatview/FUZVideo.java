@@ -215,7 +215,7 @@ public class FUZVideo extends RelativeLayout {
         if (UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
+            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
@@ -226,7 +226,7 @@ public class FUZVideo extends RelativeLayout {
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
+            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
@@ -413,7 +413,7 @@ public class FUZVideo extends RelativeLayout {
             if (UZTrackingUtil.isTrackedEventTypeView(getContext())) {
                 //da track roi ko can track nua
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
@@ -441,7 +441,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(getContext(), true);
@@ -457,7 +457,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(getContext(), true);
@@ -473,7 +473,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(getContext(), true);
@@ -489,7 +489,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(getContext(), true);
