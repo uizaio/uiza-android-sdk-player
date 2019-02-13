@@ -3224,7 +3224,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             //List<Subtitle> subtitleList = mResultRetrieveAnEntity.getData().get(0).getSubtitle();
             //LLog.d(TAG, "subtitleList toJson: " + gson.toJson(subtitleList));
-
+            addTrackingMuiza(Constants.MUIZA_EVENT_READY);
             if (isCalledFromChangeSkin) {
                 //if called from func changeSkin(), dont initDataSource with uilIMA Ad.
                 initDataSource(linkPlay, null, UZData.getInstance().getUrlThumnailsPreviewSeekbar(), subtitleList);
@@ -3365,7 +3365,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void initUizaPlayerManager() {
         if (uzPlayerManager != null) {
             uzPlayerManager.init();
-            addTrackingMuiza(Constants.MUIZA_EVENT_READY);
+            addTrackingMuiza(Constants.MUIZA_EVENT_LOADSTART);
             if (isGetClickedPip && !isPlayPlaylistFolder()) {
                 uzPlayerManager.getPlayer().setPlayWhenReady(false);
             } else {

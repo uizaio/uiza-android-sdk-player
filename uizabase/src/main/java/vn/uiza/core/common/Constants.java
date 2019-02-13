@@ -86,6 +86,7 @@ public class Constants {
     public final static String URL_DEV_UIZA_VERSION_2_DEMO = "https://demo-api.uiza.io/";
 
     public final static String MUIZA_EVENT_READY = "ready";
+    public final static String MUIZA_EVENT_LOADSTART = "loadstart";
     public final static String MUIZA_EVENT_ENDED = "ended";
     public final static String MUIZA_EVENT_ERROR = "error";
 
