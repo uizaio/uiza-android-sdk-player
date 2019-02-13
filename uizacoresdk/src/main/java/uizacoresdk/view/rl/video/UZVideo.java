@@ -420,7 +420,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             uzCallback.onError(e);
         }
-        UZData.getInstance().addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
+        addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
         if (isHasError) {
             //LLog.e(TAG, "handleError isHasError=true -> return -> isLivestream: " + isLivestream);
             return;
@@ -512,7 +512,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return isInitCustomLinkPlay;
     }
 
-    public void initLinkPlay(@NonNull String linkPlay, boolean isLivestream) {
+    public void initCustomLinkPlay(@NonNull String linkPlay, boolean isLivestream) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "init linkPlay " + linkPlay);
         isInitCustomLinkPlay = true;
@@ -1265,7 +1265,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 updateUIEndScreen();
             }
-            UZData.getInstance().addTrackingMuiza(Constants.MUIZA_EVENT_ENDED);
+            addTrackingMuiza(Constants.MUIZA_EVENT_ENDED);
         }
     }
 
@@ -3291,7 +3291,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
                 updateUIIbRewIconDependOnProgress(currentMls, false);
                 trackProgress(s, percent);
-                trackMuiza(s);
+                callAPITrackMuiza(s);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
@@ -3365,6 +3365,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void initUizaPlayerManager() {
         if (uzPlayerManager != null) {
             uzPlayerManager.init();
+            addTrackingMuiza(Constants.MUIZA_EVENT_READY);
             if (isGetClickedPip && !isPlayPlaylistFolder()) {
                 uzPlayerManager.getPlayer().setPlayWhenReady(false);
             } else {
@@ -3666,7 +3667,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         });
     }
 
-    private void trackMuiza(int s) {
+    private void addTrackingMuiza(String event){
+        if(isInitCustomLinkPlay){
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(event);
+    }
+
+    private void callAPITrackMuiza(int s) {
         if (isInitCustomLinkPlay) {
             return;
         }

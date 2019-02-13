@@ -438,7 +438,7 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {
+    public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {
         if (activity == null) {
             throw new NullPointerException(UZException.ERR_12);
         }
@@ -455,10 +455,10 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
-            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
             UZUtil.stopMiniPlayer(activity);
-            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
         return true;
@@ -524,12 +524,12 @@ public class UZUtil {
         UZDataCLP.getInstance().clearData();
     }
 
-    private static void playLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
+    private static void playCustomLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
+                uzVideo.initCustomLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
             }
         });
     }
