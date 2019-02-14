@@ -904,33 +904,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         } else if (v == ibPauseIcon) {
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().pause();
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.pauseVideo();
-                }
-            }
-            ibPauseIcon.setVisibility(GONE);
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(VISIBLE);
-                ibPlayIcon.requestFocus();
-            }
-            addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+            pauseVideo();
         } else if (v == ibPlayIcon) {
-            ibPlayIcon.setVisibility(GONE);
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-                ibPauseIcon.requestFocus();
-            }
-            if (isCastingChromecast) {
-                UZData.getInstance().getCasty().getPlayer().play();
-            } else {
-                if (uzPlayerManager != null) {
-                    uzPlayerManager.resumeVideo();
-                }
-            }
-            addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
+            resumeVideo();
         } else if (v == ibReplayIcon) {
             replay();
         } else if (v == ibSkipNextIcon) {
@@ -1428,15 +1404,39 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void resumeVideo() {
-        if (ibPlayIcon != null) {
-            ibPlayIcon.performClick();
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().play();
+        } else {
+            if (uzPlayerManager != null) {
+                uzPlayerManager.resumeVideo();
+            }
         }
+        if (ibPlayIcon != null) {
+            ibPlayIcon.setVisibility(GONE);
+        }
+        if (ibPauseIcon != null) {
+            ibPauseIcon.setVisibility(VISIBLE);
+            ibPauseIcon.requestFocus();
+        }
+        addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
     }
 
     public void pauseVideo() {
-        if (ibPauseIcon != null) {
-            ibPauseIcon.performClick();
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().pause();
+        } else {
+            if (uzPlayerManager != null) {
+                uzPlayerManager.pauseVideo();
+            }
         }
+        if (ibPauseIcon != null) {
+            ibPauseIcon.setVisibility(GONE);
+        }
+        if (ibPlayIcon != null) {
+            ibPlayIcon.setVisibility(VISIBLE);
+            ibPlayIcon.requestFocus();
+        }
+        addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
     }
 
     /*
@@ -3670,8 +3670,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         });
     }
 
-    private void addTrackingMuiza(String event){
-        if(isInitCustomLinkPlay){
+    private void addTrackingMuiza(String event) {
+        if (isInitCustomLinkPlay) {
             return;
         }
         UZData.getInstance().addTrackingMuiza(event);
