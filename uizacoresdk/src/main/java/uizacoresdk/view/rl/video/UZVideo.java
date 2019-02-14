@@ -710,6 +710,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
+        addTrackingMuiza(Constants.MUIZA_EVENT_SEEKING);
         if (callbackUZTimebar != null) {
             callbackUZTimebar.onStartPreview(previewView, progress);
         }
@@ -738,6 +739,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (callbackUZTimebar != null) {
             callbackUZTimebar.onStopPreview(previewView, progress);
         }
+        addTrackingMuiza(Constants.MUIZA_EVENT_SEEKED);
     }
 
     public void onStopPreview(int progress) {
