@@ -30,7 +30,7 @@ public class TmpParamData {
     private String entitySourceMimeType;//TODO correct
     private String entitySourceUrl;//TODO correct
     private long entitySourceWidth;//TODO correct
-    private String entityStreamType;//TODO correct
+    private String entityStreamType = "on-demand";
     private String entityVariantId;//TODO correct
     private String entityVariantName;//TODO correct
     private String pageUrl;//TODO correct
@@ -39,13 +39,11 @@ public class TmpParamData {
     private boolean playerIsFullscreen;//TODO correct
     private boolean playerIsPaused;//TODO correct
     private String playerLanguageCode;//TODO correct
-    private String playerName;//TODO correct
     private long playerPlayheadTime;//TODO correct
     private String playerPreloadOn;//TODO correct
     private int playerSequenceNumber;//TODO correct
     private String playerSoftwareName;//TODO correct
     private String playerSoftwareVersion;//TODO correct
-    private String playerVersion;//TODO correct
     private long playerWidth;//TODO correct
     private long sessionExpires;//TODO correct
     private String sessionId;//TODO correct
@@ -64,7 +62,6 @@ public class TmpParamData {
     private String viewerUserId;//TODO correct
     private String referrer;//TODO correct
     private long pageLoadTime;//TODO correct
-    private String playerId;//TODO correct
     private long playerInitTime;//TODO correct
     private long playerStartupTime;//TODO correct
     private long sessionStart;//TODO correct
@@ -83,6 +80,7 @@ public class TmpParamData {
     private String viewRebufferDuration;//TODO correct
     private String viewRebufferFrequency;//TODO correct
     private String viewRebufferPercentage;//TODO correct
+
     public String getEntityCnd() {
         return entityCnd;
     }
@@ -283,14 +281,6 @@ public class TmpParamData {
         this.playerLanguageCode = playerLanguageCode;
     }
 
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
     public long getPlayerPlayheadTime() {
         return playerPlayheadTime;
     }
@@ -329,14 +319,6 @@ public class TmpParamData {
 
     public void setPlayerSoftwareVersion(String playerSoftwareVersion) {
         this.playerSoftwareVersion = playerSoftwareVersion;
-    }
-
-    public String getPlayerVersion() {
-        return playerVersion;
-    }
-
-    public void setPlayerVersion(String playerVersion) {
-        this.playerVersion = playerVersion;
     }
 
     public long getPlayerWidth() {
@@ -481,14 +463,6 @@ public class TmpParamData {
 
     public void setPageLoadTime(long pageLoadTime) {
         this.pageLoadTime = pageLoadTime;
-    }
-
-    public String getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
     }
 
     public long getPlayerInitTime() {
