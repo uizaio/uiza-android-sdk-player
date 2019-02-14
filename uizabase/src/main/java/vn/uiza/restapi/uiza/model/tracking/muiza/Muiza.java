@@ -199,6 +199,62 @@ public class Muiza {
     @Expose
     private String entitySourceUrl;
 
+    @SerializedName("player_view_count")
+    @Expose
+    private int playerViewCount;
+
+    @SerializedName("view_start")
+    @Expose
+    private String viewStart;
+
+    @SerializedName("view_time_to_first_frame")
+    @Expose
+    private String viewTimeToFirstFrame;
+
+    @SerializedName("view_aggregate_startup_time")
+    @Expose
+    private String viewAggregateStartupTime;
+
+    @SerializedName("view_aggregate_startup_total_time")
+    @Expose
+    private String viewAggregateStartupTotalTime;
+
+    @SerializedName("player_error_code")
+    @Expose
+    private int playerErrorCode;
+
+    @SerializedName("player_error_message")
+    @Expose
+    private String playerErrorMessage;
+
+    @SerializedName("view_seek_count")
+    @Expose
+    private String viewSeekCount;
+
+    @SerializedName("view_seek_duration")
+    @Expose
+    private String viewSeekDuration;
+
+    @SerializedName("view_max_seek_time")
+    @Expose
+    private String viewMaxSeekTime;
+
+    @SerializedName("view_rebuffer_count")
+    @Expose
+    private String viewRebufferCount;
+
+    @SerializedName("view_rebuffer_duration")
+    @Expose
+    private String viewRebufferDuration;
+
+    @SerializedName("view_rebuffer_frequency")
+    @Expose
+    private String viewRebufferFrequency;
+
+    @SerializedName("view_rebuffer_percentage")
+    @Expose
+    private String viewRebufferPercentage;
+
     public String getBeaconDomain() {
         return beaconDomain;
     }
@@ -711,4 +767,115 @@ public class Muiza {
         this.entitySourceUrl = entitySourceUrl;
     }
 
+    public int getPlayerViewCount() {
+        return playerViewCount;
+    }
+
+    public void setPlayerViewCount(int playerViewCount) {
+        this.playerViewCount = playerViewCount;
+    }
+
+    public String getViewStart() {
+        return viewStart;
+    }
+
+    public void setViewStart(String viewStart) {
+        this.viewStart = viewStart;
+    }
+
+    public String getViewTimeToFirstFrame() {
+        return viewTimeToFirstFrame;
+    }
+
+    public void setViewTimeToFirstFrame(String viewTimeToFirstFrame) {
+        this.viewTimeToFirstFrame = viewTimeToFirstFrame;
+    }
+
+    public String getViewAggregateStartupTime() {
+        return viewAggregateStartupTime;
+    }
+
+    public void setViewAggregateStartupTime(String viewAggregateStartupTime) {
+        this.viewAggregateStartupTime = viewAggregateStartupTime;
+    }
+
+    public String getViewAggregateStartupTotalTime() {
+        return viewAggregateStartupTotalTime;
+    }
+
+    public void setViewAggregateStartupTotalTime(String viewAggregateStartupTotalTime) {
+        this.viewAggregateStartupTotalTime = viewAggregateStartupTotalTime;
+    }
+
+    public int getPlayerErrorCode() {
+        return playerErrorCode;
+    }
+
+    public void setPlayerErrorCode(int playerErrorCode) {
+        this.playerErrorCode = playerErrorCode;
+    }
+
+    public String getPlayerErrorMessage() {
+        return playerErrorMessage;
+    }
+
+    public void setPlayerErrorMessage(String playerErrorMessage) {
+        this.playerErrorMessage = playerErrorMessage;
+    }
+
+    public String getViewSeekCount() {
+        return viewSeekCount;
+    }
+
+    public void setViewSeekCount(String viewSeekCount) {
+        this.viewSeekCount = viewSeekCount;
+    }
+
+    public String getViewSeekDuration() {
+        return viewSeekDuration;
+    }
+
+    public void setViewSeekDuration(String viewSeekDuration) {
+        this.viewSeekDuration = viewSeekDuration;
+    }
+
+    public String getViewMaxSeekTime() {
+        return viewMaxSeekTime;
+    }
+
+    public void setViewMaxSeekTime(String viewMaxSeekTime) {
+        this.viewMaxSeekTime = viewMaxSeekTime;
+    }
+
+    public String getViewRebufferCount() {
+        return viewRebufferCount;
+    }
+
+    public void setViewRebufferCount(String viewRebufferCount) {
+        this.viewRebufferCount = viewRebufferCount;
+    }
+
+    public String getViewRebufferDuration() {
+        return viewRebufferDuration;
+    }
+
+    public void setViewRebufferDuration(String viewRebufferDuration) {
+        this.viewRebufferDuration = viewRebufferDuration;
+    }
+
+    public String getViewRebufferFrequency() {
+        return viewRebufferFrequency;
+    }
+
+    public void setViewRebufferFrequency(String viewRebufferFrequency) {
+        this.viewRebufferFrequency = viewRebufferFrequency;
+    }
+
+    public String getViewRebufferPercentage() {
+        return viewRebufferPercentage;
+    }
+
+    public void setViewRebufferPercentage(String viewRebufferPercentage) {
+        this.viewRebufferPercentage = viewRebufferPercentage;
+    }
 }

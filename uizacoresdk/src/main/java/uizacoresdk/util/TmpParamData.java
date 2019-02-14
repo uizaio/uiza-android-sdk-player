@@ -67,6 +67,8 @@ public class TmpParamData {
     private String playerId;//TODO correct
     private long playerInitTime;//TODO correct
     private long playerStartupTime;//TODO correct
+    private long sessionStart;//TODO correct
+    private int playerViewCount;//TODO correct
 
     public String getEntityCnd() {
         return entityCnd;
@@ -490,5 +492,21 @@ public class TmpParamData {
 
     public void setPlayerStartupTime(long playerStartupTime) {
         this.playerStartupTime = playerStartupTime;
+    }
+
+    public long getSessionStart() {
+        return sessionStart;
+    }
+
+    public void setSessionStart(long sessionStart) {
+        this.sessionStart = sessionStart;
+    }
+
+    public int getPlayerViewCount() {
+        return playerViewCount;
+    }
+
+    public void setPlayerViewCount(int playerViewCount) {
+        this.playerViewCount = playerViewCount;
     }
 }

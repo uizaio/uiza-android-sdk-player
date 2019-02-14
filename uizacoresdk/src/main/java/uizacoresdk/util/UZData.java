@@ -337,6 +337,8 @@ public class UZData {
         muiza.setPlayerId(TmpParamData.getInstance().getPlayerId());
         muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
         muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
+        muiza.setSessionStart(TmpParamData.getInstance().getSessionStart());
+        muiza.setPlayerViewCount(TmpParamData.getInstance().getPlayerViewCount());
         muiza.setEvent(event);
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
