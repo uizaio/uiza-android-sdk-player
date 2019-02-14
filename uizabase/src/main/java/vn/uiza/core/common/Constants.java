@@ -96,7 +96,8 @@ public class Constants {
     public final static String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
     public final static String MUIZA_EVENT_RATECHANGE = "ratechange";//là thời điểm rate được thay đổi
     public final static String MUIZA_EVENT_VOLUMECHANGE = "volumechange";//là thời điểm user thay đổi âm lượng
-    public final static String MUIZA_EVENT_ENDED = "ended";
+    public final static String MUIZA_EVENT_FULLSCREENCHANGE = "fullscreenchange";//là thời điểm user thay đổi chế độ fullscreen
+    public final static String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video
     public final static String MUIZA_EVENT_ERROR = "error";
 
     public final static int ENVIRONMENT_DEV = 1;

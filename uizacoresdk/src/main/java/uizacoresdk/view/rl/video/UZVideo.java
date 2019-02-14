@@ -863,7 +863,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (v == rlMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ibFullscreenIcon) {
-            LActivityUtil.toggleScreenOritation(activity);
+            toggleFullscreen();
         } else if (v == ibBackScreenIcon) {
             handleClickBackScreen();
         } else if (v == ibVolumeIcon) {
@@ -1245,7 +1245,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 updateUIEndScreen();
             }
-            addTrackingMuiza(Constants.MUIZA_EVENT_ENDED);
+            addTrackingMuiza(Constants.MUIZA_EVENT_VIEWENDED);
         }
     }
 
@@ -1351,9 +1351,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             hideController();
         }
         if (isLandscape) {
-            if (ibFullscreenIcon != null) {
-                ibFullscreenIcon.performClick();
-            }
+            toggleFullscreen();
         }
     }
 
@@ -1480,9 +1478,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void toggleFullscreen() {
-        if (ibFullscreenIcon != null) {
-            ibFullscreenIcon.performClick();
-        }
+        addTrackingMuiza(Constants.MUIZA_EVENT_FULLSCREENCHANGE);
+        LActivityUtil.toggleScreenOritation(activity);
     }
 
     public void showCCPopup() {
@@ -1829,7 +1826,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (tvDuration != null) {
             tvDuration.setText("-:-");
         }
-
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
         ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
