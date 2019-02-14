@@ -1784,6 +1784,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (getPlayer() != null) {
             getPlayer().setPlaybackParameters(playbackParameters);
         }
+        addTrackingMuiza(Constants.MUIZA_EVENT_RATECHANGE);
     }
 
     //=============================================================================================START UI
