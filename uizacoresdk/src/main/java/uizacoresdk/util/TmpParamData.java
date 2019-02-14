@@ -21,6 +21,8 @@ public class TmpParamData {
     private String entityLanguageCode = "";//TODO correct
     private String entityPosterUrl;
     private String entityProducer;//TODO correct
+    private String entitySeries;//TODO correct
+    private String entitySourceDomain;//TODO correct
 
     public String getEntityCnd() {
         return entityCnd;
@@ -76,5 +78,21 @@ public class TmpParamData {
 
     public void setEntityProducer(String entityProducer) {
         this.entityProducer = entityProducer;
+    }
+
+    public String getEntitySeries() {
+        return entitySeries;
+    }
+
+    public void setEntitySeries(String entitySeries) {
+        this.entitySeries = entitySeries;
+    }
+
+    public String getEntitySourceDomain() {
+        return entitySourceDomain;
+    }
+
+    public void setEntitySourceDomain(String entitySourceDomain) {
+        this.entitySourceDomain = entitySourceDomain;
     }
 }

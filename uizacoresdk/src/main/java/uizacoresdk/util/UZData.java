@@ -289,6 +289,8 @@ public class UZData {
         muiza.setEntityName(getEntityName());
         muiza.setEntityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl());
         muiza.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
+        muiza.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
+        muiza.setEntitySourceDomain(TmpParamData.getInstance().getEntitySourceDomain());
         muiza.setEvent(event);
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
