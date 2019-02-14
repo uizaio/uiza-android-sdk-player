@@ -68,6 +68,7 @@ import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.SensorOrientationChangeNotifier;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZInput;
 import uizacoresdk.util.UZTrackingUtil;
@@ -472,6 +473,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
+        TmpParamData.getInstance().clearAll();
         isCalledFromChangeSkin = false;
         isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;
@@ -2978,6 +2980,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
+                            TmpParamData.getInstance().setEntityCnd(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }
@@ -3003,6 +3006,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         try {
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
+                            TmpParamData.getInstance().setEntityCnd(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }

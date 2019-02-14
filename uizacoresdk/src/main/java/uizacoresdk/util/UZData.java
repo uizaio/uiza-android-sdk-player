@@ -49,10 +49,10 @@ public class UZData {
         this.currentPlayerId = currentPlayerId;
     }
 
-    private String mDomainAPI;
-    private String mDomainAPITracking;
-    private String mToken;
-    private String mAppId;
+    private String mDomainAPI = "";
+    private String mDomainAPITracking = "";
+    private String mToken = "";
+    private String mAppId = "";
 
     private Casty casty;
 
@@ -268,8 +268,9 @@ public class UZData {
     }
 
     public void addTrackingMuiza(String event) {
-        //TODO correct Muiza
         Muiza muiza = new Muiza();
+        muiza.setBeaconDomain(mDomainAPITracking);
+        muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
         muiza.setEvent(event);
         muizaList.add(muiza);
     }
