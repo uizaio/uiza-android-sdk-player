@@ -56,6 +56,17 @@ public class TmpParamData {
     private String viewerApplicationName;//TODO correct
     private String viewerApplicationVersion;//TODO correct
     private String viewerDeviceManufacturer;//TODO correct
+    private String viewerDeviceName;//TODO correct
+    private long viewerOsArchitecture;//TODO correct
+    private String viewerOsFamily;//TODO correct
+    private String viewerOsVersion;//TODO correct
+    private long viewerTime;//TODO correct
+    private String viewerUserId;//TODO correct
+    private String referrer;//TODO correct
+    private long pageLoadTime;//TODO correct
+    private String playerId;//TODO correct
+    private long playerInitTime;//TODO correct
+    private long playerStartupTime;//TODO correct
 
     public String getEntityCnd() {
         return entityCnd;
@@ -391,5 +402,93 @@ public class TmpParamData {
 
     public void setViewerDeviceManufacturer(String viewerDeviceManufacturer) {
         this.viewerDeviceManufacturer = viewerDeviceManufacturer;
+    }
+
+    public String getViewerDeviceName() {
+        return viewerDeviceName;
+    }
+
+    public void setViewerDeviceName(String viewerDeviceName) {
+        this.viewerDeviceName = viewerDeviceName;
+    }
+
+    public long getViewerOsArchitecture() {
+        return viewerOsArchitecture;
+    }
+
+    public void setViewerOsArchitecture(long viewerOsArchitecture) {
+        this.viewerOsArchitecture = viewerOsArchitecture;
+    }
+
+    public String getViewerOsFamily() {
+        return viewerOsFamily;
+    }
+
+    public void setViewerOsFamily(String viewerOsFamily) {
+        this.viewerOsFamily = viewerOsFamily;
+    }
+
+    public String getViewerOsVersion() {
+        return viewerOsVersion;
+    }
+
+    public void setViewerOsVersion(String viewerOsVersion) {
+        this.viewerOsVersion = viewerOsVersion;
+    }
+
+    public long getViewerTime() {
+        return viewerTime;
+    }
+
+    public void setViewerTime(long viewerTime) {
+        this.viewerTime = viewerTime;
+    }
+
+    public String getViewerUserId() {
+        return viewerUserId;
+    }
+
+    public void setViewerUserId(String viewerUserId) {
+        this.viewerUserId = viewerUserId;
+    }
+
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
+    }
+
+    public long getPageLoadTime() {
+        return pageLoadTime;
+    }
+
+    public void setPageLoadTime(long pageLoadTime) {
+        this.pageLoadTime = pageLoadTime;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
+    }
+
+    public long getPlayerInitTime() {
+        return playerInitTime;
+    }
+
+    public void setPlayerInitTime(long playerInitTime) {
+        this.playerInitTime = playerInitTime;
+    }
+
+    public long getPlayerStartupTime() {
+        return playerStartupTime;
+    }
+
+    public void setPlayerStartupTime(long playerStartupTime) {
+        this.playerStartupTime = playerStartupTime;
     }
 }

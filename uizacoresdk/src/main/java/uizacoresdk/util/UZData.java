@@ -325,6 +325,18 @@ public class UZData {
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
         muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
         muiza.setViewerDeviceManufacturer(TmpParamData.getInstance().getViewerDeviceManufacturer());
+        muiza.setViewerDeviceName(TmpParamData.getInstance().getViewerDeviceName());
+        muiza.setViewerOsArchitecture(TmpParamData.getInstance().getViewerOsArchitecture());
+        muiza.setViewerOsFamily(TmpParamData.getInstance().getViewerOsFamily());
+        muiza.setViewerOsVersion(TmpParamData.getInstance().getViewerOsVersion());
+        muiza.setViewerTime(TmpParamData.getInstance().getViewerTime());
+        muiza.setViewerUserId(TmpParamData.getInstance().getViewerUserId());
+        muiza.setAppId(getAppId());
+        muiza.setReferrer(TmpParamData.getInstance().getReferrer());
+        muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
+        muiza.setPlayerId(TmpParamData.getInstance().getPlayerId());
+        muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
+        muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
         muiza.setEvent(event);
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
