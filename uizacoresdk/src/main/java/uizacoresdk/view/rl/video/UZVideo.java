@@ -107,6 +107,7 @@ import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.ad.Ad;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
@@ -3686,15 +3687,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         LLog.d(TAG, "fuck trackMuiza s: " + s);
         if (UZData.getInstance().isMuizaListEmpty()) {
+            LLog.d(TAG, "fuck no tracking muiza");
             return;
         }
         if (isTrackingMuiza) {
             return;
         }
         isTrackingMuiza = true;
-        LLog.d(TAG, "fuck -> call api trackMuiza");
+        final List<Muiza> muizaListToTracking = new ArrayList<>();
+        muizaListToTracking.addAll(UZData.getInstance().getMuizaList());
+        LLog.d(TAG, "fuck -> call api trackMuiza -> muizaListToTracking.size(): " + muizaListToTracking.size());
+        UZData.getInstance().clearMuizaList();
         UZService service = UZRestClientTracking.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.trackMuiza(UZData.getInstance().getMuizaList()), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
                 LLog.d(TAG, "fuck trackMuiza onSuccess " + gson.toJson(result));
@@ -3703,9 +3708,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onFail(Throwable e) {
-                //TODO iplm if track fail
                 LLog.e(TAG, "fuck trackMuiza failed: " + e.toString());
                 isTrackingMuiza = false;
+                UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
             }
         });
     }

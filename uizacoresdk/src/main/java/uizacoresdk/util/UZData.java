@@ -279,6 +279,10 @@ public class UZData {
         muizaList.clear();
     }
 
+    public void addListTrackingMuiza(List<Muiza> muizas) {
+        this.muizaList.addAll(muizas);
+    }
+
     public void addTrackingMuiza(String event) {
         Muiza muiza = new Muiza();
         muiza.setBeaconDomain(mDomainAPITracking);
