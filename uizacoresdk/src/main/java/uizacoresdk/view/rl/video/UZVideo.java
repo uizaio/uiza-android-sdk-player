@@ -1388,6 +1388,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void resumeVideo() {
+        addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().play();
         } else {
@@ -1402,7 +1403,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibPauseIcon.setVisibility(VISIBLE);
             ibPauseIcon.requestFocus();
         }
-        addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
     }
 
     public void pauseVideo() {

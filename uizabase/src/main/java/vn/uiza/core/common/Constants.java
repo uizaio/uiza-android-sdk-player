@@ -95,6 +95,8 @@ public class Constants {
     public final static String MUIZA_EVENT_SEEKED = "seeked";//là thời điểm video bắt đầu play sau khi click seek
     public final static String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
     public final static String MUIZA_EVENT_RATECHANGE = "ratechange";//là thời điểm rate được thay đổi
+    public final static String MUIZA_EVENT_REBUFFERSTART = "rebufferstart";//là thời điểm sau khi play hết đoạn buffer, và player bắt đầu tạm dừng để tải tiếp buffer từ server
+    public final static String MUIZA_EVENT_REBUFFEREND = "rebufferend";//là thời điểm sau khi rebufferstart xảy ra, lượng buffer tải về đủ để play và player bắt đầu play tiếp
     public final static String MUIZA_EVENT_VOLUMECHANGE = "volumechange";//là thời điểm user thay đổi âm lượng
     public final static String MUIZA_EVENT_FULLSCREENCHANGE = "fullscreenchange";//là thời điểm user thay đổi chế độ fullscreen
     public final static String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video

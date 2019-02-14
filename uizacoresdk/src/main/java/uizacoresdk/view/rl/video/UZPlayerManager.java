@@ -233,7 +233,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
-
                                 //buffer changing
                                 if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
                                     bufferPosition = uzVideo.getBufferedPosition();
@@ -589,8 +588,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 case Player.STATE_BUFFERING:
                     //LLog.d(TAG, "onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
                     showProgress();
-                    if (uzVideo != null && !playWhenReady) {
-                        uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
+                    if (uzVideo != null) {
+                        if (playWhenReady) {
+                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
+                        } else {
+                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
+                        }
                     }
                     break;
                 case Player.STATE_ENDED:
