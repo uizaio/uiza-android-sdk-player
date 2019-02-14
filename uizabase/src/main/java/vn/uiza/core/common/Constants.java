@@ -95,6 +95,7 @@ public class Constants {
     public final static String MUIZA_EVENT_SEEKED = "seeked";//là thời điểm video bắt đầu play sau khi click seek
     public final static String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
     public final static String MUIZA_EVENT_RATECHANGE = "ratechange";//là thời điểm rate được thay đổi
+    public final static String MUIZA_EVENT_VOLUMECHANGE = "volumechange";//là thời điểm user thay đổi âm lượng
     public final static String MUIZA_EVENT_ENDED = "ended";
     public final static String MUIZA_EVENT_ERROR = "error";
 

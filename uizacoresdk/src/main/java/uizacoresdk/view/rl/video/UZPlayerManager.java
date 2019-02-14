@@ -891,11 +891,14 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     protected void setVolume(float volume) {
         if (player != null) {
             player.setVolume(volume);
-            if (uzVideo != null && uzVideo.getIbVolumeIcon() != null) {
-                if (player.getVolume() != 0f) {
-                    uzVideo.getIbVolumeIcon().setSrcDrawableEnabled();
-                } else {
-                    uzVideo.getIbVolumeIcon().setSrcDrawableDisabledCanTouch();
+            if (uzVideo != null) {
+                uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_VOLUMECHANGE);
+                if (uzVideo.getIbVolumeIcon() != null) {
+                    if (player.getVolume() != 0f) {
+                        uzVideo.getIbVolumeIcon().setSrcDrawableEnabled();
+                    } else {
+                        uzVideo.getIbVolumeIcon().setSrcDrawableDisabledCanTouch();
+                    }
                 }
             }
         }
