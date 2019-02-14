@@ -77,10 +77,8 @@ public class UZData {
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
-
         UZRestClient.init(Constants.PREFIXS + domainAPI, token);
         UZUtil.setToken(Utils.getContext(), token);
-
         if (environment == Constants.ENVIRONMENT_DEV) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
@@ -263,6 +261,20 @@ public class UZData {
 
     private List<Muiza> muizaList = new ArrayList<>();
 
+    public List<Muiza> getMuizaList() {
+        return muizaList;
+    }
+    /*public Muiza[] getMuizas() {
+        if (muizaList == null) {
+            return null;
+        }
+        return muizaList.toArray(new Muiza[0]);
+    }*/
+
+    public boolean isMuizaListEmpty() {
+        return muizaList.isEmpty();
+    }
+
     public void clearMuizaList() {
         muizaList.clear();
     }
@@ -273,6 +285,7 @@ public class UZData {
         muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
         muiza.setEvent(event);
         muizaList.add(muiza);
+        LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
     }
 
     public void printMuizaList() {

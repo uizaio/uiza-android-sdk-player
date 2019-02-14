@@ -50,6 +50,7 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -138,7 +139,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -3674,6 +3675,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().addTrackingMuiza(event);
     }
 
+    private boolean isTrackingMuiza;
+
     private void callAPITrackMuiza(int s) {
         if (isInitCustomLinkPlay) {
             return;
@@ -3682,9 +3685,29 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         LLog.d(TAG, "fuck trackMuiza s: " + s);
-        //TODO can dat them 1 bien isTrackingMuiza de dam bao trong vong 10s chi co 1 luot request api
-        //do param s co the trung nhau
-        UZData.getInstance().printMuizaList();
+        if (UZData.getInstance().isMuizaListEmpty()) {
+            return;
+        }
+        if (isTrackingMuiza) {
+            return;
+        }
+        isTrackingMuiza = true;
+        LLog.d(TAG, "fuck -> call api trackMuiza");
+        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZAPIMaster.getInstance().subscribe(service.trackMuiza(UZData.getInstance().getMuizaList()), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "fuck trackMuiza onSuccess " + gson.toJson(result));
+                isTrackingMuiza = false;
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                //TODO iplm if track fail
+                LLog.e(TAG, "fuck trackMuiza failed: " + e.toString());
+                isTrackingMuiza = false;
+            }
+        });
     }
     //=============================================================================================END TRACKING
 
