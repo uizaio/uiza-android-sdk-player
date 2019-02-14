@@ -914,7 +914,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == ibSkipPreviousIcon) {
             handleClickSkipPrevious();
         } else if (v == ibSpeedIcon) {
-            handleClickSpeed();
+            showSpeed();
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         }
@@ -1274,22 +1274,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZUtil.showUizaDialog(activity, UZDlgPlaylistFolder);
     }
 
-    private void handleClickSpeed() {
-        if (getPlayer() == null) {
-            return;
-        }
-        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(activity, getPlayer().getPlaybackParameters().speed, new UZDlgSpeed.Callback() {
-            @Override
-            public void onSelectItem(UZDlgSpeed.Speed speed) {
-                //LLog.d(TAG, "select " + speed.getName() + " - " + speed.getValue());
-                if (speed != null) {
-                    setSpeed(speed.getValue());
-                }
-            }
-        });
-        UZUtil.showUizaDialog(activity, uzDlgSpeed);
-    }
-
     private boolean isClickedSkipNextOrSkipPrevious;
 
     private void handleClickSkipNext() {
@@ -1536,9 +1520,19 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void showSpeed() {
-        if (ibSpeedIcon != null) {
-            ibSpeedIcon.performClick();
+        if (getPlayer() == null) {
+            return;
         }
+        final UZDlgSpeed uzDlgSpeed = new UZDlgSpeed(activity, getPlayer().getPlaybackParameters().speed, new UZDlgSpeed.Callback() {
+            @Override
+            public void onSelectItem(UZDlgSpeed.Speed speed) {
+                //LLog.d(TAG, "select " + speed.getName() + " - " + speed.getValue());
+                if (speed != null) {
+                    setSpeed(speed.getValue());
+                }
+            }
+        });
+        UZUtil.showUizaDialog(activity, uzDlgSpeed);
     }
 
     /*
