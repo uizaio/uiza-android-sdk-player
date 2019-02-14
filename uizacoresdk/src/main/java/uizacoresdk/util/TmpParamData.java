@@ -15,7 +15,12 @@ public class TmpParamData {
     }
 
     private String entityCnd = "";
-    private String entityContentType = "";
+    private String entityContentType = "video";//TODO correct
+    private String entityDuration = "";//TODO correct
+    private String entityEncodingVariant = "";//TODO correct
+    private String entityLanguageCode = "";//TODO correct
+    private String entityPosterUrl;
+    private String entityProducer;//TODO correct
 
     public String getEntityCnd() {
         return entityCnd;
@@ -31,5 +36,45 @@ public class TmpParamData {
 
     public void setEntityContentType(String entityContentType) {
         this.entityContentType = entityContentType;
+    }
+
+    public String getEntityDuration() {
+        return entityDuration;
+    }
+
+    public void setEntityDuration(String entityDuration) {
+        this.entityDuration = entityDuration;
+    }
+
+    public String getEntityEncodingVariant() {
+        return entityEncodingVariant;
+    }
+
+    public void setEntityEncodingVariant(String entityEncodingVariant) {
+        this.entityEncodingVariant = entityEncodingVariant;
+    }
+
+    public String getEntityLanguageCode() {
+        return entityLanguageCode;
+    }
+
+    public void setEntityLanguageCode(String entityLanguageCode) {
+        this.entityLanguageCode = entityLanguageCode;
+    }
+
+    public String getEntityPosterUrl() {
+        return entityPosterUrl;
+    }
+
+    public void setEntityPosterUrl(String entityPosterUrl) {
+        this.entityPosterUrl = entityPosterUrl;
+    }
+
+    public String getEntityProducer() {
+        return entityProducer;
+    }
+
+    public void setEntityProducer(String entityProducer) {
+        this.entityProducer = entityProducer;
     }
 }

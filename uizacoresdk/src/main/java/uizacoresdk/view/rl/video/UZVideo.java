@@ -2028,6 +2028,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         if (ivVideoCover.getVisibility() != View.VISIBLE) {
             ivVideoCover.setVisibility(View.VISIBLE);
+            TmpParamData.getInstance().setEntityPosterUrl(urlImgThumbnail);
             LImageUtil.load(activity, urlImgThumbnail, ivVideoCover, R.drawable.background_black);
         }
     }

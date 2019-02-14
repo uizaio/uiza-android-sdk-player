@@ -152,7 +152,7 @@ public class UZData {
 
     public String getEntityName() {
         if (uzInput == null || uzInput.getData() == null) {
-            return " - ";
+            return "";
         }
         return uzInput.getData().getName();
     }
@@ -264,12 +264,6 @@ public class UZData {
     public List<Muiza> getMuizaList() {
         return muizaList;
     }
-    /*public Muiza[] getMuizas() {
-        if (muizaList == null) {
-            return null;
-        }
-        return muizaList.toArray(new Muiza[0]);
-    }*/
 
     public boolean isMuizaListEmpty() {
         return muizaList.isEmpty();
@@ -287,6 +281,14 @@ public class UZData {
         Muiza muiza = new Muiza();
         muiza.setBeaconDomain(mDomainAPITracking);
         muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
+        muiza.setEntityContentType(TmpParamData.getInstance().getEntityContentType());
+        muiza.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
+        muiza.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
+        muiza.setEntityId(getEntityId());
+        muiza.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
+        muiza.setEntityName(getEntityName());
+        muiza.setEntityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl());
+        muiza.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
         muiza.setEvent(event);
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
