@@ -345,6 +345,11 @@ public class UZData {
         muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewAggregateStartupTime());
         muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewAggregateStartupTotalTime());
         muiza.setEvent(event);
+        //TODO
+        /*switch (event){
+            case Constants.MUIZA_EVENT_ERROR:
+                break;
+        }*/
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
     }
