@@ -339,6 +339,11 @@ public class UZData {
         muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
         muiza.setSessionStart(TmpParamData.getInstance().getSessionStart());
         muiza.setPlayerViewCount(TmpParamData.getInstance().getPlayerViewCount());
+        muiza.setViewStart(TmpParamData.getInstance().getViewStart());
+        muiza.setViewWatchTime(TmpParamData.getInstance().getViewWatchTime());
+        muiza.setViewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame());
+        muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewAggregateStartupTime());
+        muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewAggregateStartupTotalTime());
         muiza.setEvent(event);
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);

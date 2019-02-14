@@ -69,7 +69,20 @@ public class TmpParamData {
     private long playerStartupTime;//TODO correct
     private long sessionStart;//TODO correct
     private int playerViewCount;//TODO correct
-
+    private String viewStart;//TODO correct
+    private String viewTimeToFirstFrame;//TODO correct
+    private long viewWatchTime;//TODO correct
+    private String viewAggregateStartupTime;//TODO correct
+    private String viewAggregateStartupTotalTime;//TODO correct
+    private int playerErrorCode;//TODO correct
+    private String playerErrorMessage;//TODO correct
+    private String viewSeekCount;//TODO correct
+    private String viewSeekDuration;//TODO correct
+    private String viewMaxSeekTime;//TODO correct
+    private String viewRebufferCount;//TODO correct
+    private String viewRebufferDuration;//TODO correct
+    private String viewRebufferFrequency;//TODO correct
+    private String viewRebufferPercentage;//TODO correct
     public String getEntityCnd() {
         return entityCnd;
     }
@@ -508,5 +521,117 @@ public class TmpParamData {
 
     public void setPlayerViewCount(int playerViewCount) {
         this.playerViewCount = playerViewCount;
+    }
+
+    public String getViewStart() {
+        return viewStart;
+    }
+
+    public void setViewStart(String viewStart) {
+        this.viewStart = viewStart;
+    }
+
+    public String getViewTimeToFirstFrame() {
+        return viewTimeToFirstFrame;
+    }
+
+    public void setViewTimeToFirstFrame(String viewTimeToFirstFrame) {
+        this.viewTimeToFirstFrame = viewTimeToFirstFrame;
+    }
+
+    public String getViewAggregateStartupTime() {
+        return viewAggregateStartupTime;
+    }
+
+    public void setViewAggregateStartupTime(String viewAggregateStartupTime) {
+        this.viewAggregateStartupTime = viewAggregateStartupTime;
+    }
+
+    public String getViewAggregateStartupTotalTime() {
+        return viewAggregateStartupTotalTime;
+    }
+
+    public void setViewAggregateStartupTotalTime(String viewAggregateStartupTotalTime) {
+        this.viewAggregateStartupTotalTime = viewAggregateStartupTotalTime;
+    }
+
+    public int getPlayerErrorCode() {
+        return playerErrorCode;
+    }
+
+    public void setPlayerErrorCode(int playerErrorCode) {
+        this.playerErrorCode = playerErrorCode;
+    }
+
+    public String getPlayerErrorMessage() {
+        return playerErrorMessage;
+    }
+
+    public void setPlayerErrorMessage(String playerErrorMessage) {
+        this.playerErrorMessage = playerErrorMessage;
+    }
+
+    public String getViewSeekCount() {
+        return viewSeekCount;
+    }
+
+    public void setViewSeekCount(String viewSeekCount) {
+        this.viewSeekCount = viewSeekCount;
+    }
+
+    public String getViewSeekDuration() {
+        return viewSeekDuration;
+    }
+
+    public void setViewSeekDuration(String viewSeekDuration) {
+        this.viewSeekDuration = viewSeekDuration;
+    }
+
+    public String getViewMaxSeekTime() {
+        return viewMaxSeekTime;
+    }
+
+    public void setViewMaxSeekTime(String viewMaxSeekTime) {
+        this.viewMaxSeekTime = viewMaxSeekTime;
+    }
+
+    public String getViewRebufferCount() {
+        return viewRebufferCount;
+    }
+
+    public void setViewRebufferCount(String viewRebufferCount) {
+        this.viewRebufferCount = viewRebufferCount;
+    }
+
+    public String getViewRebufferDuration() {
+        return viewRebufferDuration;
+    }
+
+    public void setViewRebufferDuration(String viewRebufferDuration) {
+        this.viewRebufferDuration = viewRebufferDuration;
+    }
+
+    public String getViewRebufferFrequency() {
+        return viewRebufferFrequency;
+    }
+
+    public void setViewRebufferFrequency(String viewRebufferFrequency) {
+        this.viewRebufferFrequency = viewRebufferFrequency;
+    }
+
+    public String getViewRebufferPercentage() {
+        return viewRebufferPercentage;
+    }
+
+    public void setViewRebufferPercentage(String viewRebufferPercentage) {
+        this.viewRebufferPercentage = viewRebufferPercentage;
+    }
+
+    public long getViewWatchTime() {
+        return viewWatchTime;
+    }
+
+    public void setViewWatchTime(long viewWatchTime) {
+        this.viewWatchTime = viewWatchTime;
     }
 }
