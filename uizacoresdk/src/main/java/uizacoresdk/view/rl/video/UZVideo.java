@@ -1236,7 +1236,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isOnPlayerEnded;
 
     protected void onPlayerEnded() {
-        LLog.d(TAG, ">>>onPlayerEnded isPlaying " + isPlaying());
+        //LLog.d(TAG, ">>>onPlayerEnded isPlaying " + isPlaying());
         if (isPlaying()) {
             isOnPlayerEnded = true;
             if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
@@ -3683,6 +3683,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "fuck trackMuiza s: " + s);
         //TODO can dat them 1 bien isTrackingMuiza de dam bao trong vong 10s chi co 1 luot request api
         //do param s co the trung nhau
+        UZData.getInstance().printMuizaList();
     }
     //=============================================================================================END TRACKING
 

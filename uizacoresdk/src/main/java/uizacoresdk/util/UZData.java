@@ -272,8 +272,6 @@ public class UZData {
         Muiza muiza = new Muiza();
         muiza.setEvent(event);
         muizaList.add(muiza);
-        //TODO remove later
-        printMuizaList();
     }
 
     public void printMuizaList() {

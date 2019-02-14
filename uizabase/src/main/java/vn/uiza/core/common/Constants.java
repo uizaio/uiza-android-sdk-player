@@ -93,6 +93,7 @@ public class Constants {
     public final static String MUIZA_EVENT_PLAYING = "playing";//là thời điểm video bắt đầu play (ngay sau khi play)
     public final static String MUIZA_EVENT_SEEKING = "seeking";//là thời điểm user bắt đầu click để seek
     public final static String MUIZA_EVENT_SEEKED = "seeked";//là thời điểm video bắt đầu play sau khi click seek
+    public final static String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
     public final static String MUIZA_EVENT_ENDED = "ended";
     public final static String MUIZA_EVENT_ERROR = "error";
 
