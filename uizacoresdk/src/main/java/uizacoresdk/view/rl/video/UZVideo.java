@@ -3664,7 +3664,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         });
     }
 
-    private void addTrackingMuiza(String event) {
+    protected void addTrackingMuiza(String event) {
         if (isInitCustomLinkPlay) {
             return;
         }

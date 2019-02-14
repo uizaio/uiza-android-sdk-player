@@ -90,6 +90,7 @@ public class Constants {
     public final static String MUIZA_EVENT_VIEWSTART = "viewstart";//là thời điểm frame đầu tiên của video được play
     public final static String MUIZA_EVENT_PAUSE = "pause";//là thời điểm user nhấn pause / khách hàng của mình gọi function pause
     public final static String MUIZA_EVENT_PLAY = "play";//là thời điểm user nhấn play / khách hàng của mình gọi function play
+    public final static String MUIZA_EVENT_PLAYING = "playing";//là thời điểm video bắt đầu play (ngay sau khi play)
     public final static String MUIZA_EVENT_ENDED = "ended";
     public final static String MUIZA_EVENT_ERROR = "error";
 

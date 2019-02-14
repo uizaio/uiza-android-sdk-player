@@ -585,25 +585,29 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         //This is called when either playWhenReady or playbackState changes
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            //LLog.d(TAG, "onPlayerStateChanged playWhenReady: " + playWhenReady);
             switch (playbackState) {
                 case Player.STATE_BUFFERING:
+                    //LLog.d(TAG, "onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
                     showProgress();
                     break;
                 case Player.STATE_ENDED:
-                    //LLog.d(TAG, "onPlayerStateChanged STATE_ENDED");
+                    //LLog.d(TAG, "onPlayerStateChanged STATE_ENDED, playWhenReady: " + playWhenReady);
                     if (uzVideo != null) {
                         uzVideo.onPlayerEnded();
                     }
                     hideProgress();
                     break;
                 case Player.STATE_IDLE:
+                    //LLog.d(TAG, "onPlayerStateChanged STATE_IDLE, playWhenReady: " + playWhenReady);
                     showProgress();
                     break;
                 case Player.STATE_READY:
+                    //LLog.d(TAG, "onPlayerStateChanged STATE_READY, playWhenReady: " + playWhenReady);
                     hideProgress();
                     if (playWhenReady) {
+                        // media actually playing
                         if (uzVideo != null) {
+                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_PLAYING);
                             uzVideo.hideLayoutMsg();
                             uzVideo.resetCountTryLinkPlayError();
                         }
