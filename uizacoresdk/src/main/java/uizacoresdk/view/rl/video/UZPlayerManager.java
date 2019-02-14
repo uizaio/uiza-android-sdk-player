@@ -589,7 +589,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 case Player.STATE_BUFFERING:
                     //LLog.d(TAG, "onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
                     showProgress();
-                    if (uzVideo != null) {
+                    if (uzVideo != null && !playWhenReady) {
                         uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
                     }
                     break;
