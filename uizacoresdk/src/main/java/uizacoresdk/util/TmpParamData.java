@@ -28,8 +28,8 @@ public class TmpParamData {
     private String entitySourceDuration = "";
     private int entitySourceHeight = 0;
     private String entitySourceHostname = "";
-    private String entitySourceMimeType;//TODO correct
-    private String entitySourceUrl;//TODO correct
+    private String entitySourceMimeType = "";//TODO correct
+    private String entitySourceUrl = "";
     private long entitySourceWidth;//TODO correct
     private String entityStreamType = "on-demand";
     private String entityVariantId;//TODO correct
