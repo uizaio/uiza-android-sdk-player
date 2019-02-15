@@ -367,6 +367,8 @@ public class UZData {
             case Constants.MUIZA_EVENT_SEEKING:
             case Constants.MUIZA_EVENT_SEEKED:
                 muiza.setViewSeekCount(TmpParamData.getInstance().getViewSeekCount());
+                muiza.setViewSeekDuration(TmpParamData.getInstance().getViewSeekDuration());
+                muiza.setViewMaxSeekTime(TmpParamData.getInstance().getViewMaxSeekTime());
                 break;
         }
         muizaList.add(muiza);

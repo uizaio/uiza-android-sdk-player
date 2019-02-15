@@ -233,11 +233,11 @@ public class Muiza {
 
     @SerializedName("view_seek_duration")
     @Expose
-    private String viewSeekDuration;
+    private long viewSeekDuration;
 
     @SerializedName("view_max_seek_time")
     @Expose
-    private String viewMaxSeekTime;
+    private long viewMaxSeekTime;
 
     @SerializedName("view_rebuffer_count")
     @Expose
@@ -831,19 +831,19 @@ public class Muiza {
         this.viewSeekCount = viewSeekCount;
     }
 
-    public String getViewSeekDuration() {
+    public long getViewSeekDuration() {
         return viewSeekDuration;
     }
 
-    public void setViewSeekDuration(String viewSeekDuration) {
+    public void setViewSeekDuration(long viewSeekDuration) {
         this.viewSeekDuration = viewSeekDuration;
     }
 
-    public String getViewMaxSeekTime() {
+    public long getViewMaxSeekTime() {
         return viewMaxSeekTime;
     }
 
-    public void setViewMaxSeekTime(String viewMaxSeekTime) {
+    public void setViewMaxSeekTime(long viewMaxSeekTime) {
         this.viewMaxSeekTime = viewMaxSeekTime;
     }
 

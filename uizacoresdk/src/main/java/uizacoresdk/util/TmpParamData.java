@@ -44,6 +44,7 @@ public class TmpParamData {
         timeFromInitEntityIdToAllApiCalledSuccess = 0;
         viewSeekCount = 0;
         viewSeekDuration = 0;
+        viewMaxSeekTime = 0;
     }
 
     private String entityCnd = "";
@@ -93,7 +94,7 @@ public class TmpParamData {
     private long timeFromInitEntityIdToAllApiCalledSuccess = 0;
     private int viewSeekCount = 0;
     private long viewSeekDuration = 0;
-    private String viewMaxSeekTime;//TODO correct
+    private long viewMaxSeekTime = 0;
     private String viewRebufferCount;//TODO correct
     private String viewRebufferDuration;//TODO correct
     private String viewRebufferFrequency;//TODO correct
@@ -467,11 +468,11 @@ public class TmpParamData {
         this.viewSeekDuration = viewSeekDuration;
     }
 
-    public String getViewMaxSeekTime() {
+    public long getViewMaxSeekTime() {
         return viewMaxSeekTime;
     }
 
-    public void setViewMaxSeekTime(String viewMaxSeekTime) {
+    public void setViewMaxSeekTime(long viewMaxSeekTime) {
         this.viewMaxSeekTime = viewMaxSeekTime;
     }
 

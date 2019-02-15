@@ -732,8 +732,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
-        long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
-        TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
         isOnPreview = true;
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
@@ -744,9 +742,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private long maxSeekLastDuration;
+
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
+        long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
+        if (maxSeekLastDuration < seekLastDuration) {
+            maxSeekLastDuration = seekLastDuration;
+            TmpParamData.getInstance().setViewMaxSeekTime(maxSeekLastDuration);
+        }
+        TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
         TmpParamData.getInstance().addViewSeekCount();
         isOnPreview = false;
         onStopPreview(progress);
