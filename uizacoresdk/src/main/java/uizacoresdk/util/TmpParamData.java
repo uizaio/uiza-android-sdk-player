@@ -1,8 +1,10 @@
 package uizacoresdk.util;
 
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.utilities.LLog;
 
 public class TmpParamData {
+    private final String TAG = getClass().getSimpleName();
     private static final TmpParamData ourInstance = new TmpParamData();
 
     public static TmpParamData getInstance() {
@@ -16,6 +18,29 @@ public class TmpParamData {
         //TODO correct
         entityCnd = "";
         entityDuration = "0";
+        entityPosterUrl = "";
+        entitySourceDomain = "";
+        entitySourceDuration = "";
+        entitySourceHeight = 0;
+        entitySourceHostname = "";
+        entitySourceUrl = "";
+        entitySourceWidth = 0;
+        playerAutoplayOn = Constants.DF_PLAYER_IS_AUTO_START;
+        playerHeight = 0;
+        playerIsFullscreen = false;
+        playerIsPaused = false;
+        playerSequenceNumber = 0;
+        playerWidth = 0;
+        sessionId = "";
+        viewSequenceNumber = 0;
+        pageLoadTime = 0;
+        playerInitTime = 0;
+        playerStartupTime = 0;
+        sessionStart = 0;
+        playerViewCount = 0;
+        viewStart = 0;
+        viewWatchTime = 0;
+        viewTimeToFirstFrame = 0;
     }
 
     private String entityCnd = "";
@@ -39,8 +64,8 @@ public class TmpParamData {
     private String pageUrl;//TODO correct
     private boolean playerAutoplayOn = Constants.DF_PLAYER_IS_AUTO_START;
     private int playerHeight = 0;
-    private boolean playerIsFullscreen;
-    private boolean playerIsPaused;
+    private boolean playerIsFullscreen = false;
+    private boolean playerIsPaused = false;
     private String playerLanguageCode = "en-us";
     private long playerPlayheadTime;//TODO correct
     private String playerPreloadOn = "metadata";//TODO correct
@@ -494,5 +519,6 @@ public class TmpParamData {
 
     public void addViewWatchTime(long addViewWatchTime) {
         this.viewWatchTime += addViewWatchTime;
+        LLog.d(TAG, "fuckk addViewWatchTime " + addViewWatchTime + " - > total watched: " + viewWatchTime);
     }
 }
