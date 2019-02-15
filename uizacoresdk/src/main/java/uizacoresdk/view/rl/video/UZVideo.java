@@ -440,6 +440,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      */
     private String entityId;
     private UUID uuid;
+    private long timestampBeforeInit;
 
     protected void init(@NonNull String entityId, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
@@ -470,6 +471,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
         } else {
+            timestampBeforeInit = System.currentTimeMillis();
             UZData.getInstance().clearUizaInput();
             TmpParamData.getInstance().clearAll();
         }
@@ -3373,6 +3375,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleConnectedChromecast();
             showController();
         }
+        long pageLoadTime = System.currentTimeMillis() - timestampBeforeInit;
+        TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
         pingHeartBeat();

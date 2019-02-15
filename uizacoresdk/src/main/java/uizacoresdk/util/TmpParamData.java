@@ -53,7 +53,7 @@ public class TmpParamData {
     private String viewerApplicationEngine = "";
     private String viewerApplicationName = "";
     private String viewerApplicationVersion = "";
-    private String referrer;//TODO correct
+    private String referrer = "";//TODO correct
     private long pageLoadTime;//TODO correct
     private long playerInitTime;//TODO correct
     private long playerStartupTime;//TODO correct
