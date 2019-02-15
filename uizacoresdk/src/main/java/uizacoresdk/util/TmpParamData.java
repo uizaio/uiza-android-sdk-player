@@ -48,7 +48,7 @@ public class TmpParamData {
     private String playerSoftwareName = Constants.PLAYER_NAME;
     private String playerSoftwareVersion = Constants.PLAYER_SDK_VERSION;
     private long playerWidth = 0;
-    private String sessionId;//TODO correct
+    private String sessionId = "";
     private String timestamp;//TODO correct
     private String viewId;//TODO correct
     private int viewSequenceNumber;//TODO correct
