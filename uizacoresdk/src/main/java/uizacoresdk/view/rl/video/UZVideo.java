@@ -446,7 +446,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
         uuid = UUID.randomUUID();
-        TmpParamData.getInstance().setSessionId(uuid.toString());
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
         }
@@ -477,6 +476,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZData.getInstance().clearUizaInput();
             TmpParamData.getInstance().clearAll();
             TmpParamData.getInstance().addPlayerViewCount();
+            TmpParamData.getInstance().setSessionId(uuid.toString());
         }
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
