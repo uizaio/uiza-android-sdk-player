@@ -43,8 +43,8 @@ public class TmpParamData {
     private boolean playerIsPaused;
     private String playerLanguageCode = "en-us";
     private long playerPlayheadTime;//TODO correct
-    private String playerPreloadOn;//TODO correct
-    private int playerSequenceNumber;//TODO correct
+    private String playerPreloadOn = "metadata";//TODO correct
+    private int playerSequenceNumber = 0;//TODO correct
     private String playerSoftwareName;//TODO correct
     private String playerSoftwareVersion;//TODO correct
     private long playerWidth;//TODO correct
@@ -296,8 +296,8 @@ public class TmpParamData {
         return playerSequenceNumber;
     }
 
-    public void setPlayerSequenceNumber(int playerSequenceNumber) {
-        this.playerSequenceNumber = playerSequenceNumber;
+    public void addPlayerSequenceNumber() {
+        this.playerSequenceNumber++;
     }
 
     public String getPlayerSoftwareName() {

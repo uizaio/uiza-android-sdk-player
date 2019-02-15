@@ -271,6 +271,7 @@ public class UZData {
     }
 
     public void addTrackingMuiza(String event) {
+        TmpParamData.getInstance().addPlayerSequenceNumber();
         Muiza muiza = new Muiza();
         muiza.setBeaconDomain(mDomainAPITracking);
         muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
