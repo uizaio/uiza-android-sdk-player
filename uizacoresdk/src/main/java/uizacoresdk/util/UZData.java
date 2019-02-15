@@ -374,8 +374,13 @@ public class UZData {
             case Constants.MUIZA_EVENT_REBUFFEREND:
                 muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
                 muiza.setViewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
-                muiza.setViewRebufferFrequency((float) ((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
-                muiza.setViewRebufferPercentage((float) ((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                if (TmpParamData.getInstance().getViewWatchTime() == 0) {
+                    muiza.setViewRebufferFrequency(0);
+                    muiza.setViewRebufferPercentage(0);
+                } else {
+                    muiza.setViewRebufferFrequency((float) ((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                    muiza.setViewRebufferPercentage((float) ((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                }
                 break;
         }
         muizaList.add(muiza);
