@@ -52,7 +52,7 @@ public class TmpParamData {
     private String entityContentType = "video";
     private String entityDuration = "0";
     private String entityEncodingVariant = "";//TODO correct
-    private String entityLanguageCode = "";//TODO correct
+    private String entityLanguageCode = "en-us";//TODO correct
     private String entityPosterUrl = "";
     private String entityProducer = "";//TODO correct
     private String entitySeries = "";//TODO correct
