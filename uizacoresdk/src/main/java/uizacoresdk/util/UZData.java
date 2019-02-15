@@ -349,7 +349,7 @@ public class UZData {
         muiza.setViewStart(TmpParamData.getInstance().getViewStart());
         muiza.setViewWatchTime(TmpParamData.getInstance().getViewWatchTime());
         muiza.setViewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame());
-        muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewAggregateStartupTime());
+        muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewStart() + TmpParamData.getInstance().getViewWatchTime());
         muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewAggregateStartupTotalTime());
         muiza.setEvent(event);
         //TODO

@@ -213,7 +213,7 @@ public class Muiza {
 
     @SerializedName("view_aggregate_startup_time")
     @Expose
-    private String viewAggregateStartupTime;
+    private long viewAggregateStartupTime;
 
     @SerializedName("view_aggregate_startup_total_time")
     @Expose
@@ -791,11 +791,11 @@ public class Muiza {
         this.viewTimeToFirstFrame = viewTimeToFirstFrame;
     }
 
-    public String getViewAggregateStartupTime() {
+    public long getViewAggregateStartupTime() {
         return viewAggregateStartupTime;
     }
 
-    public void setViewAggregateStartupTime(String viewAggregateStartupTime) {
+    public void setViewAggregateStartupTime(long viewAggregateStartupTime) {
         this.viewAggregateStartupTime = viewAggregateStartupTime;
     }
 
