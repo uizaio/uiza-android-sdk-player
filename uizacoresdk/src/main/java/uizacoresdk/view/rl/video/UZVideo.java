@@ -472,6 +472,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             timestampBeforeInitNewSession = System.currentTimeMillis();
+            timestampOnStartPreview = 0;
+            maxSeekLastDuration = 0;
             UZData.getInstance().clearUizaInput();
             TmpParamData.getInstance().clearAll();
             TmpParamData.getInstance().addPlayerViewCount();
@@ -747,13 +749,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
+        TmpParamData.getInstance().addViewSeekCount();
         long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
+        TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
         if (maxSeekLastDuration < seekLastDuration) {
             maxSeekLastDuration = seekLastDuration;
             TmpParamData.getInstance().setViewMaxSeekTime(maxSeekLastDuration);
         }
-        TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
-        TmpParamData.getInstance().addViewSeekCount();
         isOnPreview = false;
         onStopPreview(progress);
         if (callbackUZTimebar != null) {
