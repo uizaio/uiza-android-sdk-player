@@ -86,7 +86,7 @@ public class Muiza {
     private boolean playerAutoplayOn;
     @SerializedName("player_height")
     @Expose
-    private long playerHeight;
+    private int playerHeight;
     @SerializedName("player_is_fullscreen")
     @Expose
     private boolean playerIsFullscreen;
@@ -463,11 +463,11 @@ public class Muiza {
         this.playerAutoplayOn = playerAutoplayOn;
     }
 
-    public long getPlayerHeight() {
+    public int getPlayerHeight() {
         return playerHeight;
     }
 
-    public void setPlayerHeight(long playerHeight) {
+    public void setPlayerHeight(int playerHeight) {
         this.playerHeight = playerHeight;
     }
 

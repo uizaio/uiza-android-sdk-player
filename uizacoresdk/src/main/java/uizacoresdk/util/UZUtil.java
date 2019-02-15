@@ -102,6 +102,7 @@ public class UZUtil {
             }
         }
         //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        TmpParamData.getInstance().setPlayerHeight(heightSurfaceView);
         viewGroup.getLayoutParams().width = widthSurfaceView;
         viewGroup.getLayoutParams().height = heightSurfaceView;
         viewGroup.requestLayout();

@@ -38,7 +38,7 @@ public class TmpParamData {
     private String entityVariantName;//TODO correct
     private String pageUrl;//TODO correct
     private boolean playerAutoplayOn = Constants.DF_PLAYER_IS_AUTO_START;
-    private long playerHeight;//TODO correct
+    private int playerHeight = 0;
     private boolean playerIsFullscreen;//TODO correct
     private boolean playerIsPaused;//TODO correct
     private String playerLanguageCode;//TODO correct
@@ -244,11 +244,11 @@ public class TmpParamData {
         this.playerAutoplayOn = playerAutoplayOn;
     }
 
-    public long getPlayerHeight() {
+    public int getPlayerHeight() {
         return playerHeight;
     }
 
-    public void setPlayerHeight(long playerHeight) {
+    public void setPlayerHeight(int playerHeight) {
         this.playerHeight = playerHeight;
     }
 

@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import uizacoresdk.R;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
@@ -1004,6 +1005,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
 
         //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
+        TmpParamData.getInstance().setPlayerHeight(moveH);
         moveView.getLayoutParams().width = moveW;
         moveView.getLayoutParams().height = moveH;
         moveView.requestLayout();
