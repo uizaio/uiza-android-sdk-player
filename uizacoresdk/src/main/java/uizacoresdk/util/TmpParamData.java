@@ -13,6 +13,7 @@ public class TmpParamData {
     public void clearAll() {
         //TODO correct
         entityCnd = "";
+        entityDuration = "0";
     }
 
     private String entityCnd = "";
