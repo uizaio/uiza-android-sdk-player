@@ -3380,6 +3380,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
+        TmpParamData.getInstance().setSessionStart(System.currentTimeMillis());
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
         TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);

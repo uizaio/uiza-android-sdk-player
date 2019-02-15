@@ -56,8 +56,8 @@ public class TmpParamData {
     private String referrer = "";//TODO correct
     private long pageLoadTime = 0;
     private long playerInitTime = 0;
-    private long playerStartupTime;//TODO correct
-    private long sessionStart;//TODO correct
+    private long playerStartupTime;
+    private long sessionStart;
     private int playerViewCount;//TODO correct
     private String viewStart;//TODO correct
     private String viewTimeToFirstFrame;//TODO correct
