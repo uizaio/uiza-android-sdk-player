@@ -2984,9 +2984,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlayLive cdnHost " + cdnHost);
 
-                            //setEntityCnd and setEntitySourceDomain has the same value
+                            //setEntityCnd, setEntitySourceDomain, setEntitySourceHostname has the same value
                             TmpParamData.getInstance().setEntityCnd(cdnHost);
                             TmpParamData.getInstance().setEntitySourceDomain(cdnHost);
+                            TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }
@@ -3013,9 +3014,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
                             //LLog.d(TAG, "getLinkPlay cdnHost " + cdnHost);
 
-                            //setEntityCnd and setEntitySourceDomain has the same value
+                            //setEntityCnd, setEntitySourceDomain, setEntitySourceHostname has the same value
                             TmpParamData.getInstance().setEntityCnd(cdnHost);
                             TmpParamData.getInstance().setEntitySourceDomain(cdnHost);
+                            TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
                         }
