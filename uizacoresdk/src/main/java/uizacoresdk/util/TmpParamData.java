@@ -24,7 +24,7 @@ public class TmpParamData {
     private String entityPosterUrl;
     private String entityProducer;//TODO correct
     private String entitySeries;//TODO correct
-    private String entitySourceDomain;//TODO correct
+    private String entitySourceDomain;
     private String entitySourceDuration;//TODO correct
     private long entitySourceHeight;//TODO correct
     private String entitySourceHostname;//TODO correct
