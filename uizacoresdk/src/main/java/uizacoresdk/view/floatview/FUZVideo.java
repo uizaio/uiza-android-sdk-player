@@ -39,6 +39,7 @@ import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
@@ -261,6 +262,7 @@ public class FUZVideo extends RelativeLayout {
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
                 trackProgress(s, percent);
+                callAPITrackMuiza(s);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
@@ -614,6 +616,46 @@ public class FUZVideo extends RelativeLayout {
             return;
         }
         UZData.getInstance().addTrackingMuiza(event);
+    }
+
+    private boolean isTrackingMuiza;
+
+    private void callAPITrackMuiza(int s) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        if (s <= 0 || s % 10 != 0) {
+            return;
+        }
+        LLog.d(TAG, "fuck trackMuiza s: " + s + "s");
+        if (isTrackingMuiza) {
+            LLog.d(TAG, "fuck isTrackingMuiza -> return");
+            return;
+        }
+        if (UZData.getInstance().isMuizaListEmpty()) {
+            LLog.d(TAG, "fuck no tracking muiza -> return");
+            return;
+        }
+        isTrackingMuiza = true;
+        final List<Muiza> muizaListToTracking = new ArrayList<>();
+        muizaListToTracking.addAll(UZData.getInstance().getMuizaList());
+        LLog.d(TAG, "fuck -> call api trackMuiza -> muizaListToTracking.size(): " + muizaListToTracking.size());
+        UZData.getInstance().clearMuizaList();
+        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                LLog.d(TAG, "fuck trackMuiza onSuccess " + gson.toJson(result));
+                isTrackingMuiza = false;
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "fuck trackMuiza failed: " + e.toString());
+                isTrackingMuiza = false;
+                UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
+            }
+        });
     }
 
     //=============================================================================================================END TRACKING
