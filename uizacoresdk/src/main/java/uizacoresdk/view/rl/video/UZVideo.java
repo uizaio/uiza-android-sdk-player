@@ -1399,7 +1399,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void resumeVideo() {
         TmpParamData.getInstance().setPlayerIsPaused(false);
-        TmpParamData.getInstance().setViewStart(System.currentTimeMillis());
         addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().play();
@@ -3349,6 +3348,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
         addTrackingMuiza(Constants.MUIZA_EVENT_VIEWSTART);
+        TmpParamData.getInstance().setViewStart(System.currentTimeMillis());
+        TmpParamData.getInstance().setViewTimeToFirstFrame(System.currentTimeMillis());
         updateTvDuration();
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();

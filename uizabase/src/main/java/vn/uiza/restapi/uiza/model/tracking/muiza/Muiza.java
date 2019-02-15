@@ -209,7 +209,7 @@ public class Muiza {
 
     @SerializedName("view_time_to_first_frame")
     @Expose
-    private String viewTimeToFirstFrame;
+    private long viewTimeToFirstFrame;
 
     @SerializedName("view_aggregate_startup_time")
     @Expose
@@ -783,11 +783,11 @@ public class Muiza {
         this.viewStart = viewStart;
     }
 
-    public String getViewTimeToFirstFrame() {
+    public long getViewTimeToFirstFrame() {
         return viewTimeToFirstFrame;
     }
 
-    public void setViewTimeToFirstFrame(String viewTimeToFirstFrame) {
+    public void setViewTimeToFirstFrame(long viewTimeToFirstFrame) {
         this.viewTimeToFirstFrame = viewTimeToFirstFrame;
     }
 
