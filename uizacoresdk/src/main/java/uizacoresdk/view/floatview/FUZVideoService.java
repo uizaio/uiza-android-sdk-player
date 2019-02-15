@@ -1003,6 +1003,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             //LLog.d(TAG, "editSizeOfMoveView moveW x moveH: " + moveW + " x " + moveH);
         }
         //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
+        TmpParamData.getInstance().setPlayerWidth(moveW);
         TmpParamData.getInstance().setPlayerHeight(moveH);
         moveView.getLayoutParams().width = moveW;
         moveView.getLayoutParams().height = moveH;
