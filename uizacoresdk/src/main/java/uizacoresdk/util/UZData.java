@@ -370,6 +370,10 @@ public class UZData {
                 muiza.setViewSeekDuration(TmpParamData.getInstance().getViewSeekDuration());
                 muiza.setViewMaxSeekTime(TmpParamData.getInstance().getViewMaxSeekTime());
                 break;
+            case Constants.MUIZA_EVENT_REBUFFERSTART:
+            case Constants.MUIZA_EVENT_REBUFFEREND:
+                muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
+                break;
         }
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);

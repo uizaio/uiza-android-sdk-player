@@ -611,6 +611,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
                         } else {
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                            TmpParamData.getInstance().addViewRebufferCount();
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
                         }
                     }

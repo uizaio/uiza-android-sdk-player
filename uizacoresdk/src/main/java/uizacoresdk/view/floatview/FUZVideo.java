@@ -693,6 +693,7 @@ public class FUZVideo extends RelativeLayout {
                     addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
                 } else {
                     addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                    TmpParamData.getInstance().addViewRebufferCount();
                     addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
                 }
                 break;
