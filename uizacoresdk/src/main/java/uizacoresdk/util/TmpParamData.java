@@ -21,11 +21,11 @@ public class TmpParamData {
     private String entityDuration = "0";
     private String entityEncodingVariant = "";//TODO correct
     private String entityLanguageCode = "";//TODO correct
-    private String entityPosterUrl;
-    private String entityProducer;//TODO correct
-    private String entitySeries;//TODO correct
-    private String entitySourceDomain;
-    private String entitySourceDuration;//TODO correct
+    private String entityPosterUrl = "";
+    private String entityProducer = "";//TODO correct
+    private String entitySeries = "";//TODO correct
+    private String entitySourceDomain = "";
+    private String entitySourceDuration = "";
     private long entitySourceHeight;//TODO correct
     private String entitySourceHostname;//TODO correct
     private boolean entitySourceIsLive;//TODO correct

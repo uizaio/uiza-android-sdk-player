@@ -544,6 +544,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (uzVideo != null) {
             long durationInS = uzVideo.getDuration() / 1000;
             TmpParamData.getInstance().setEntityDuration(durationInS + "");
+            TmpParamData.getInstance().setEntitySourceDuration(durationInS + "");
             uzVideo.removeVideoCover(false);
         }
     }
