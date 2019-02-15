@@ -327,9 +327,9 @@ public class UZData {
         muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
         muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
-        muiza.setViewerDeviceManufacturer(TmpParamData.getInstance().getViewerDeviceManufacturer());
-        muiza.setViewerDeviceName(TmpParamData.getInstance().getViewerDeviceName());
-        muiza.setViewerOsArchitecture(TmpParamData.getInstance().getViewerOsArchitecture());
+        muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
+        muiza.setViewerDeviceName(android.os.Build.MODEL);
+        muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
         muiza.setViewerOsFamily(TmpParamData.getInstance().getViewerOsFamily());
         muiza.setViewerOsVersion(TmpParamData.getInstance().getViewerOsVersion());
         muiza.setViewerTime(TmpParamData.getInstance().getViewerTime());

@@ -50,12 +50,9 @@ public class TmpParamData {
     private long playerWidth = 0;
     private String sessionId = "";
     private int viewSequenceNumber = 0;
-    private String viewerApplicationEngine;//TODO correct
-    private String viewerApplicationName;//TODO correct
-    private String viewerApplicationVersion;//TODO correct
-    private String viewerDeviceManufacturer;//TODO correct
-    private String viewerDeviceName;//TODO correct
-    private long viewerOsArchitecture;//TODO correct
+    private String viewerApplicationEngine = "";
+    private String viewerApplicationName = "";
+    private String viewerApplicationVersion = "";
     private String viewerOsFamily;//TODO correct
     private String viewerOsVersion;//TODO correct
     private long viewerTime;//TODO correct
@@ -359,30 +356,6 @@ public class TmpParamData {
 
     public void setViewerApplicationVersion(String viewerApplicationVersion) {
         this.viewerApplicationVersion = viewerApplicationVersion;
-    }
-
-    public String getViewerDeviceManufacturer() {
-        return viewerDeviceManufacturer;
-    }
-
-    public void setViewerDeviceManufacturer(String viewerDeviceManufacturer) {
-        this.viewerDeviceManufacturer = viewerDeviceManufacturer;
-    }
-
-    public String getViewerDeviceName() {
-        return viewerDeviceName;
-    }
-
-    public void setViewerDeviceName(String viewerDeviceName) {
-        this.viewerDeviceName = viewerDeviceName;
-    }
-
-    public long getViewerOsArchitecture() {
-        return viewerOsArchitecture;
-    }
-
-    public void setViewerOsArchitecture(long viewerOsArchitecture) {
-        this.viewerOsArchitecture = viewerOsArchitecture;
     }
 
     public String getViewerOsFamily() {

@@ -158,7 +158,7 @@ public class Muiza {
     private Object viewerDeviceName;
     @SerializedName("viewer_os_architecture")
     @Expose
-    private long viewerOsArchitecture;
+    private int viewerOsArchitecture;
     @SerializedName("viewer_os_family")
     @Expose
     private String viewerOsFamily;
@@ -655,11 +655,11 @@ public class Muiza {
         this.viewerDeviceName = viewerDeviceName;
     }
 
-    public long getViewerOsArchitecture() {
+    public int getViewerOsArchitecture() {
         return viewerOsArchitecture;
     }
 
-    public void setViewerOsArchitecture(long viewerOsArchitecture) {
+    public void setViewerOsArchitecture(int viewerOsArchitecture) {
         this.viewerOsArchitecture = viewerOsArchitecture;
     }
 
