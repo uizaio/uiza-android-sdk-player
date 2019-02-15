@@ -474,6 +474,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             timestampBeforeInitNewSession = System.currentTimeMillis();
             UZData.getInstance().clearUizaInput();
             TmpParamData.getInstance().clearAll();
+            TmpParamData.getInstance().addPlayerViewCount();
         }
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
@@ -1311,6 +1312,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager == null) {
             return false;
         }
+        TmpParamData.getInstance().addPlayerViewCount();
         //TODO Chỗ này đáng lẽ chỉ clear value của tracking khi đảm bảo rằng seekTo(0) true
         setDefautValueForFlagIsTracked();
         boolean result = uzPlayerManager.seekTo(0);

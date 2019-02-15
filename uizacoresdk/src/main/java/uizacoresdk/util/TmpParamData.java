@@ -56,9 +56,9 @@ public class TmpParamData {
     private String referrer = "";//TODO correct
     private long pageLoadTime = 0;
     private long playerInitTime = 0;
-    private long playerStartupTime;
-    private long sessionStart;
-    private int playerViewCount;//TODO correct
+    private long playerStartupTime = 0;
+    private long sessionStart = 0;
+    private int playerViewCount = 0;
     private String viewStart;//TODO correct
     private String viewTimeToFirstFrame;//TODO correct
     private long viewWatchTime;//TODO correct
@@ -398,8 +398,8 @@ public class TmpParamData {
         return playerViewCount;
     }
 
-    public void setPlayerViewCount(int playerViewCount) {
-        this.playerViewCount = playerViewCount;
+    public void addPlayerViewCount() {
+        this.playerViewCount++;
     }
 
     public String getViewStart() {
