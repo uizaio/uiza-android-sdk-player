@@ -3377,6 +3377,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInit;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
+        TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
         pingHeartBeat();
