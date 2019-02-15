@@ -140,7 +140,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    private Gson gson = new Gson();
+    private Gson gson = new Gson();//TODO remove gson later
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -3686,12 +3686,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (s <= 0 || s % 10 != 0) {
             return;
         }
-        LLog.d(TAG, "fuck trackMuiza s: " + s);
-        if (UZData.getInstance().isMuizaListEmpty()) {
-            LLog.d(TAG, "fuck no tracking muiza");
+        LLog.d(TAG, "fuck trackMuiza s: " + s + "s");
+        if (isTrackingMuiza) {
+            LLog.d(TAG, "fuck isTrackingMuiza -> return");
             return;
         }
-        if (isTrackingMuiza) {
+        if (UZData.getInstance().isMuizaListEmpty()) {
+            LLog.d(TAG, "fuck no tracking muiza -> return");
             return;
         }
         isTrackingMuiza = true;

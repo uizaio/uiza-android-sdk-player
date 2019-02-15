@@ -13,10 +13,10 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -51,7 +52,7 @@ public class FUZVideo extends RelativeLayout {
     private PlayerView playerView;
     private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();//TODO remove gson later
     private String cdnHost;
     private String uuid;
     private String linkPlay;
@@ -608,6 +609,13 @@ public class FUZVideo extends RelativeLayout {
         });
     }
 
+    protected void addTrackingMuiza(String event) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(event);
+    }
+
     //=============================================================================================================END TRACKING
     //=============================================================================================================START CALLBACK
     private ProgressCallback progressCallback;
@@ -623,16 +631,23 @@ public class FUZVideo extends RelativeLayout {
 
         public void onVideoSizeChanged(int width, int height);
 
-        public void onPlayerError(ExoPlaybackException error);
+        public void onPlayerError(UZException error);
     }
 
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
                 showProgress();
+                if (playWhenReady) {
+                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
+                } else {
+                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                    addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
+                }
                 break;
             case Player.STATE_ENDED:
                 setDefautValueForFlagIsTracked();
+                addTrackingMuiza(Constants.MUIZA_EVENT_VIEWENDED);
                 break;
             case Player.STATE_IDLE:
                 showProgress();
@@ -650,7 +665,8 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    protected void onPlayerError(ExoPlaybackException error) {
+    protected void onPlayerError(UZException error) {
+        addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
         if (callback != null) {
             callback.onPlayerError(error);
         }
@@ -659,7 +675,7 @@ public class FUZVideo extends RelativeLayout {
     private Callback callback;
 
     private void onStateReadyFirst() {
-        LLog.d(TAG, ">>>>>>>>>> onStateReadyFirst");
+        //LLog.d(TAG, ">>>>>>>>>> onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true);
         }

@@ -44,6 +44,7 @@ import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
@@ -337,7 +338,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(error);
+                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
             }
         }
 
