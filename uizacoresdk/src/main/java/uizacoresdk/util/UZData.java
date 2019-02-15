@@ -1,7 +1,6 @@
 package uizacoresdk.util;
 
 import android.content.Context;
-import android.provider.Settings;
 
 import com.google.android.gms.cast.MediaTrack;
 
@@ -222,7 +221,7 @@ public class UZData {
         uizaTracking.setViewerUserId(TmpParamData.getInstance().getViewerUserId());
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
-        uizaTracking.setDeviceId(Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTracking.setDeviceId(Loitp.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
@@ -270,7 +269,10 @@ public class UZData {
         this.muizaList.addAll(muizas);
     }
 
-    public void addTrackingMuiza(String event) {
+    public void addTrackingMuiza(Context context, String event) {
+        if (context == null || event == null || event.isEmpty()) {
+            return;
+        }
         TmpParamData.getInstance().addPlayerSequenceNumber();
         Muiza muiza = new Muiza();
         muiza.setBeaconDomain(mDomainAPITracking);
@@ -317,8 +319,9 @@ public class UZData {
         muiza.setPlayerWidth(TmpParamData.getInstance().getPlayerWidth());
         muiza.setSessionExpires(System.currentTimeMillis() + 5 * 60 * 1000);
         muiza.setSessionId(TmpParamData.getInstance().getSessionId());
-        muiza.setTimestamp(TmpParamData.getInstance().getTimestamp());
-        muiza.setViewId(TmpParamData.getInstance().getViewId());
+        muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
+        muiza.setViewId(Loitp.getDeviceId(context));
         muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
         muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());

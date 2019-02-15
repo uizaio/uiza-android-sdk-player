@@ -7,7 +7,6 @@ package uizacoresdk.view.floatview;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
@@ -23,6 +22,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.Loitp;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZTrackingUtil;
@@ -586,7 +586,7 @@ public class FUZVideo extends RelativeLayout {
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setAi(UZData.getInstance().getAppId());
         uizaTrackingCCU.setSn(UZData.getInstance().getEntityName());
-        uizaTrackingCCU.setDi(Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTrackingCCU.setDi(Loitp.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         //LLog.d(TAG, "trackUizaCCUForLivestream " + gson.toJson(uizaTrackingCCU));
         UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
@@ -617,7 +617,7 @@ public class FUZVideo extends RelativeLayout {
         if (isInitCustomLinkPlay) {
             return;
         }
-        UZData.getInstance().addTrackingMuiza(event);
+        UZData.getInstance().addTrackingMuiza(getContext(), event);
     }
 
     private boolean isTrackingMuiza;

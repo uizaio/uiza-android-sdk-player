@@ -49,8 +49,6 @@ public class TmpParamData {
     private String playerSoftwareVersion = Constants.PLAYER_SDK_VERSION;
     private long playerWidth = 0;
     private String sessionId = "";
-    private String timestamp;//TODO correct
-    private String viewId;//TODO correct
     private int viewSequenceNumber;//TODO correct
     private String viewerApplicationEngine;//TODO correct
     private String viewerApplicationName;//TODO correct
@@ -329,22 +327,6 @@ public class TmpParamData {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getViewId() {
-        return viewId;
-    }
-
-    public void setViewId(String viewId) {
-        this.viewId = viewId;
     }
 
     public int getViewSequenceNumber() {

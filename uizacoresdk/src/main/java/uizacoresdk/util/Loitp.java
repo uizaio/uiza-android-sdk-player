@@ -1,6 +1,8 @@
 package uizacoresdk.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.Settings;
 
 import com.google.gson.Gson;
 
@@ -39,5 +41,13 @@ public class Loitp {
 
     private static String loitp(String loitp) {
         return loitp.replace("loitp", "");
+    }
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId(Context context) {
+        if (context == null) {
+            return "";
+        }
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

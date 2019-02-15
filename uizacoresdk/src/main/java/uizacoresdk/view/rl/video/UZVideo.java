@@ -68,6 +68,7 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.interfaces.UZTVCallback;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.Loitp;
 import uizacoresdk.util.SensorOrientationChangeNotifier;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
@@ -3656,7 +3657,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setAi(UZData.getInstance().getAppId());
         uizaTrackingCCU.setSn(UZData.getInstance().getEntityName());
-        uizaTrackingCCU.setDi(Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTrackingCCU.setDi(Loitp.getDeviceId(activity));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         //LLog.d(TAG, "trackUizaCCUForLivestream " + gson.toJson(uizaTrackingCCU));
         UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
@@ -3687,7 +3688,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isInitCustomLinkPlay) {
             return;
         }
-        UZData.getInstance().addTrackingMuiza(event);
+        UZData.getInstance().addTrackingMuiza(activity, event);
     }
 
     private boolean isTrackingMuiza;
