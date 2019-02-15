@@ -666,7 +666,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "onResume isCastingChromecast true => return");
             return;
         }
-        //LLog.d(TAG, "onResume getUZInputList().size " + UZData.getInstance().getUZInputList().size());
         activityIsPausing = false;
         SensorOrientationChangeNotifier.getInstance(activity).addListener(this);
         if (uzPlayerManager != null) {
@@ -695,7 +694,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void onPause() {
-        //LLog.d(TAG, "onPause " + isExoShareClicked);
         activityIsPausing = true;
         SensorOrientationChangeNotifier.getInstance(activity).remove(this);
         if (uzPlayerManager != null) {

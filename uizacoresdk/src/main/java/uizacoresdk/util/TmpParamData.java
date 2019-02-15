@@ -60,7 +60,7 @@ public class TmpParamData {
     private long sessionStart = 0;
     private int playerViewCount = 0;
     private long viewStart = 0;
-    private long viewWatchTime = 0;//TODO correct
+    private long viewWatchTime = 0;
     private long viewTimeToFirstFrame = 0;
     private int playerErrorCode;//TODO correct
     private String playerErrorMessage;//TODO correct
@@ -492,7 +492,7 @@ public class TmpParamData {
         return viewWatchTime;
     }
 
-    public void setViewWatchTime(long viewWatchTime) {
-        this.viewWatchTime = viewWatchTime;
+    public void addViewWatchTime(long addViewWatchTime) {
+        this.viewWatchTime += addViewWatchTime;
     }
 }
