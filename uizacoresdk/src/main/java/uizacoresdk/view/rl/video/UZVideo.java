@@ -245,10 +245,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //========================================================================START CONFIG
-    private boolean isAutoStart = true;
+    private boolean isAutoStart = Constants.DF_PLAYER_IS_AUTO_START;
 
     public void setAutoStart(boolean isAutoStart) {
         this.isAutoStart = isAutoStart;
+        TmpParamData.getInstance().setPlayerAutoplayOn(isAutoStart);
         updateUIButtonPlayPauseDependOnIsAutoStart();
     }
 

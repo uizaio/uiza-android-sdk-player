@@ -1,5 +1,7 @@
 package uizacoresdk.util;
 
+import vn.uiza.core.common.Constants;
+
 public class TmpParamData {
     private static final TmpParamData ourInstance = new TmpParamData();
 
@@ -31,11 +33,11 @@ public class TmpParamData {
     private String entitySourceMimeType = "";//TODO correct
     private String entitySourceUrl = "";
     private int entitySourceWidth = 0;
-    private String entityStreamType = "on-demand";
+    private String entityStreamType = "";//TODO correct
     private String entityVariantId;//TODO correct
     private String entityVariantName;//TODO correct
     private String pageUrl;//TODO correct
-    private boolean playerAutoplayOn;//TODO correct
+    private boolean playerAutoplayOn = Constants.DF_PLAYER_IS_AUTO_START;
     private long playerHeight;//TODO correct
     private boolean playerIsFullscreen;//TODO correct
     private boolean playerIsPaused;//TODO correct

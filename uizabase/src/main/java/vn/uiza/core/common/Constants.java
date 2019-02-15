@@ -167,4 +167,6 @@ public class Constants {
 
     public static final int W_320 = 320;
     public static final int W_180 = 180;
+
+    public static final boolean DF_PLAYER_IS_AUTO_START = true;
 }
