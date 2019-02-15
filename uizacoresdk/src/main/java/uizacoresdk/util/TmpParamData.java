@@ -30,7 +30,7 @@ public class TmpParamData {
     private String entitySourceHostname = "";
     private String entitySourceMimeType = "";//TODO correct
     private String entitySourceUrl = "";
-    private long entitySourceWidth;//TODO correct
+    private int entitySourceWidth = 0;
     private String entityStreamType = "on-demand";
     private String entityVariantId;//TODO correct
     private String entityVariantName;//TODO correct
@@ -194,11 +194,11 @@ public class TmpParamData {
         this.entitySourceUrl = entitySourceUrl;
     }
 
-    public long getEntitySourceWidth() {
+    public int getEntitySourceWidth() {
         return entitySourceWidth;
     }
 
-    public void setEntitySourceWidth(long entitySourceWidth) {
+    public void setEntitySourceWidth(int entitySourceWidth) {
         this.entitySourceWidth = entitySourceWidth;
     }
 

@@ -59,7 +59,7 @@ public class Muiza {
     private String entitySourceMimeType;
     @SerializedName("entity_source_width")
     @Expose
-    private long entitySourceWidth;
+    private int entitySourceWidth;
     @SerializedName("entity_stream_type")
     @Expose
     private String entityStreamType;
@@ -391,11 +391,11 @@ public class Muiza {
         this.entitySourceMimeType = entitySourceMimeType;
     }
 
-    public long getEntitySourceWidth() {
+    public int getEntitySourceWidth() {
         return entitySourceWidth;
     }
 
-    public void setEntitySourceWidth(long entitySourceWidth) {
+    public void setEntitySourceWidth(int entitySourceWidth) {
         this.entitySourceWidth = entitySourceWidth;
     }
 
