@@ -59,7 +59,7 @@ public class TmpParamData {
     private long playerStartupTime = 0;
     private long sessionStart = 0;
     private int playerViewCount = 0;
-    private String viewStart;//TODO correct
+    private long viewStart;
     private String viewTimeToFirstFrame;//TODO correct
     private long viewWatchTime;//TODO correct
     private String viewAggregateStartupTime;//TODO correct
@@ -402,11 +402,11 @@ public class TmpParamData {
         this.playerViewCount++;
     }
 
-    public String getViewStart() {
+    public long getViewStart() {
         return viewStart;
     }
 
-    public void setViewStart(String viewStart) {
+    public void setViewStart(long viewStart) {
         this.viewStart = viewStart;
     }
 

@@ -205,7 +205,7 @@ public class Muiza {
 
     @SerializedName("view_start")
     @Expose
-    private String viewStart;
+    private long viewStart;
 
     @SerializedName("view_time_to_first_frame")
     @Expose
@@ -775,11 +775,11 @@ public class Muiza {
         this.playerViewCount = playerViewCount;
     }
 
-    public String getViewStart() {
+    public long getViewStart() {
         return viewStart;
     }
 
-    public void setViewStart(String viewStart) {
+    public void setViewStart(long viewStart) {
         this.viewStart = viewStart;
     }
 
