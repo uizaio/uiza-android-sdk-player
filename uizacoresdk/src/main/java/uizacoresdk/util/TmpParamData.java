@@ -89,8 +89,6 @@ public class TmpParamData {
     private long viewWatchTime = 0;
     private long viewTimeToFirstFrame = 0;
     private long timeFromInitEntityIdToAllApiCalledSuccess = 0;
-    private int playerErrorCode;//TODO correct
-    private String playerErrorMessage;//TODO correct
     private String viewSeekCount;//TODO correct
     private String viewSeekDuration;//TODO correct
     private String viewMaxSeekTime;//TODO correct
@@ -449,22 +447,6 @@ public class TmpParamData {
 
     public void setTimeFromInitEntityIdToAllApiCalledSuccess(long timeFromInitEntityIdToAllApiCalledSuccess) {
         this.timeFromInitEntityIdToAllApiCalledSuccess = timeFromInitEntityIdToAllApiCalledSuccess;
-    }
-
-    public int getPlayerErrorCode() {
-        return playerErrorCode;
-    }
-
-    public void setPlayerErrorCode(int playerErrorCode) {
-        this.playerErrorCode = playerErrorCode;
-    }
-
-    public String getPlayerErrorMessage() {
-        return playerErrorMessage;
-    }
-
-    public void setPlayerErrorMessage(String playerErrorMessage) {
-        this.playerErrorMessage = playerErrorMessage;
     }
 
     public String getViewSeekCount() {

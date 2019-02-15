@@ -11,6 +11,7 @@ import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -274,6 +275,10 @@ public class UZData {
     }
 
     public void addTrackingMuiza(Context context, String event) {
+        addTrackingMuiza(context, event, null);
+    }
+
+    public void addTrackingMuiza(Context context, String event, UZException e) {
         if (context == null || event == null || event.isEmpty()) {
             return;
         }
@@ -352,10 +357,14 @@ public class UZData {
         muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewStart() + TmpParamData.getInstance().getViewWatchTime());
         muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewTimeToFirstFrame() + (TmpParamData.getInstance().getPlayerInitTime() - TmpParamData.getInstance().getTimeFromInitEntityIdToAllApiCalledSuccess()));
         muiza.setEvent(event);
-        /*switch (event){
+        switch (event) {
             case Constants.MUIZA_EVENT_ERROR:
+                if (e != null) {
+                    muiza.setPlayerErrorCode(e.getErrorCode());
+                    muiza.setPlayerErrorMessage(e.getMessage());
+                }
                 break;
-        }*/
+        }
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
     }

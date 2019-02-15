@@ -425,7 +425,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             uzCallback.onError(e);
         }
-        addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
+        addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, e);
         if (isHasError) {
             //LLog.e(TAG, "handleError isHasError=true -> return -> isLivestream: " + isLivestream);
             return;
@@ -3695,6 +3695,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 });
             }
         });
+    }
+
+    protected void addTrackingMuizaError(String event, UZException e) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(activity, event, e);
     }
 
     protected void addTrackingMuiza(String event) {

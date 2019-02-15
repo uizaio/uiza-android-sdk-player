@@ -613,6 +613,13 @@ public class FUZVideo extends RelativeLayout {
         });
     }
 
+    protected void addTrackingMuizaError(String event, UZException e) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(getContext(), event, e);
+    }
+
     protected void addTrackingMuiza(String event) {
         if (isInitCustomLinkPlay) {
             return;
@@ -710,7 +717,7 @@ public class FUZVideo extends RelativeLayout {
     }
 
     protected void onPlayerError(UZException error) {
-        addTrackingMuiza(Constants.MUIZA_EVENT_ERROR);
+        addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, error);
         if (callback != null) {
             callback.onPlayerError(error);
         }
