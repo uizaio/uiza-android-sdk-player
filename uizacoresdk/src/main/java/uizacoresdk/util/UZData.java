@@ -1,6 +1,7 @@
 package uizacoresdk.util;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.google.android.gms.cast.MediaTrack;
 
@@ -330,8 +331,8 @@ public class UZData {
         muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
         muiza.setViewerDeviceName(android.os.Build.MODEL);
         muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
-        muiza.setViewerOsFamily(TmpParamData.getInstance().getViewerOsFamily());
-        muiza.setViewerOsVersion(TmpParamData.getInstance().getViewerOsVersion());
+        muiza.setViewerOsFamily("Android " + Build.VERSION.RELEASE);
+        muiza.setViewerOsVersion("Api level: " + Build.VERSION.SDK_INT);
         muiza.setViewerTime(TmpParamData.getInstance().getViewerTime());
         muiza.setViewerUserId(TmpParamData.getInstance().getViewerUserId());
         muiza.setAppId(getAppId());

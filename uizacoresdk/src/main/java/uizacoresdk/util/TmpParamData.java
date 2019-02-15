@@ -53,8 +53,6 @@ public class TmpParamData {
     private String viewerApplicationEngine = "";
     private String viewerApplicationName = "";
     private String viewerApplicationVersion = "";
-    private String viewerOsFamily;//TODO correct
-    private String viewerOsVersion;//TODO correct
     private long viewerTime;//TODO correct
     private String viewerUserId;//TODO correct
     private String referrer;//TODO correct
@@ -356,22 +354,6 @@ public class TmpParamData {
 
     public void setViewerApplicationVersion(String viewerApplicationVersion) {
         this.viewerApplicationVersion = viewerApplicationVersion;
-    }
-
-    public String getViewerOsFamily() {
-        return viewerOsFamily;
-    }
-
-    public void setViewerOsFamily(String viewerOsFamily) {
-        this.viewerOsFamily = viewerOsFamily;
-    }
-
-    public String getViewerOsVersion() {
-        return viewerOsVersion;
-    }
-
-    public void setViewerOsVersion(String viewerOsVersion) {
-        this.viewerOsVersion = viewerOsVersion;
     }
 
     public long getViewerTime() {
