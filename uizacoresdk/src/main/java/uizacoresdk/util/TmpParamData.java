@@ -44,9 +44,9 @@ public class TmpParamData {
     private String playerLanguageCode = "en-us";
     private long playerPlayheadTime;//TODO correct
     private String playerPreloadOn = "metadata";//TODO correct
-    private int playerSequenceNumber = 0;//TODO correct
-    private String playerSoftwareName;//TODO correct
-    private String playerSoftwareVersion;//TODO correct
+    private int playerSequenceNumber = 0;
+    private String playerSoftwareName = Constants.PLAYER_NAME;
+    private String playerSoftwareVersion = Constants.PLAYER_SDK_VERSION;
     private long playerWidth;//TODO correct
     private long sessionExpires;//TODO correct
     private String sessionId;//TODO correct
