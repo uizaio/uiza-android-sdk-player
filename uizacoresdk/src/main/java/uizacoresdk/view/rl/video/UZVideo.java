@@ -830,7 +830,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         super.onConfigurationChanged(newConfig);
         if (activity != null) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                //LLog.d(TAG, "onConfigurationChanged ORIENTATION_LANDSCAPE");
                 LScreenUtil.hideDefaultControls(activity);
                 isLandscape = true;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
@@ -838,7 +837,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     ibPictureInPictureIcon.setVisibility(GONE);
                 }
             } else {
-                //LLog.d(TAG, "onConfigurationChanged !ORIENTATION_LANDSCAPE");
                 LScreenUtil.showDefaultControls(activity);
                 isLandscape = false;
                 UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
@@ -849,6 +847,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
+        TmpParamData.getInstance().setPlayerIsFullscreen(isLandscape);
         setMarginPreviewTimeBar();
         setMarginRlLiveInfo();
         updateUISizeThumnail();
