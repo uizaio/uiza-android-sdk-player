@@ -994,7 +994,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int videoH = fuzVideo.getVideoH();
         int moveW;
         int moveH;
-
         if (isAutoSize) {
             moveW = getMoveViewWidth();
             moveH = moveW * videoH / (videoW == 0 ? 1 : videoW);
@@ -1003,7 +1002,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             moveH = videoHeightFromSettingConfig;
             //LLog.d(TAG, "editSizeOfMoveView moveW x moveH: " + moveW + " x " + moveH);
         }
-
         //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
         TmpParamData.getInstance().setPlayerHeight(moveH);
         moveView.getLayoutParams().width = moveW;
