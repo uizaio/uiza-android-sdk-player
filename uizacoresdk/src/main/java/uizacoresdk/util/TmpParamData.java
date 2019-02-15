@@ -49,7 +49,7 @@ public class TmpParamData {
     private String playerSoftwareVersion = Constants.PLAYER_SDK_VERSION;
     private long playerWidth = 0;
     private String sessionId = "";
-    private int viewSequenceNumber;//TODO correct
+    private int viewSequenceNumber = 0;
     private String viewerApplicationEngine;//TODO correct
     private String viewerApplicationName;//TODO correct
     private String viewerApplicationVersion;//TODO correct
@@ -333,8 +333,8 @@ public class TmpParamData {
         return viewSequenceNumber;
     }
 
-    public void setViewSequenceNumber(int viewSequenceNumber) {
-        this.viewSequenceNumber = viewSequenceNumber;
+    public void addViewSequenceNumber() {
+        this.viewSequenceNumber++;
     }
 
     public String getViewerApplicationEngine() {
