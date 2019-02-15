@@ -123,7 +123,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         this.timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
-        LLog.d(TAG, "fuckk timestampPlayed: " + timestampPlayed);
+        //LLog.d(TAG, "timestampPlayed: " + timestampPlayed);
         this.context = uzVideo.getContext();
         this.videoW = 0;
         this.videoH = 0;
@@ -456,7 +456,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
         timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
-        LLog.d(TAG, "fuckk resumeVideo timestampPlayed: " + timestampPlayed);
+        //LLog.d(TAG, "resumeVideo timestampPlayed: " + timestampPlayed);
     }
 
     protected void pauseVideo() {
@@ -464,7 +464,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             player.setPlayWhenReady(false);
             if (isCanAddViewWatchTime) {
                 long durationWatched = System.currentTimeMillis() - timestampPlayed;
-                LLog.d(TAG, "fuckk pauseVideo durationWatched " + durationWatched);
+                //LLog.d(TAG, "pauseVideo durationWatched " + durationWatched);
                 TmpParamData.getInstance().addViewWatchTime(durationWatched);
                 isCanAddViewWatchTime = false;
             }

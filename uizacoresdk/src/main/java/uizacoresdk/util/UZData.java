@@ -374,21 +374,12 @@ public class UZData {
             case Constants.MUIZA_EVENT_REBUFFEREND:
                 muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
                 muiza.setViewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
+                muiza.setViewRebufferFrequency((float) ((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                muiza.setViewRebufferPercentage((float) ((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
                 break;
         }
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
-    }
-
-    public void printMuizaList() {
-        if (!Constants.IS_DEBUG) {
-            return;
-        }
-        LLog.d(TAG, "fuck------------------------------------");
-        for (int i = 0; i < muizaList.size(); i++) {
-            LLog.d(TAG, "fuck printMuizaList " + i + " -> " + muizaList.get(i).getEvent());
-        }
-        LLog.d(TAG, "fuck------------------------------------");
     }
     //==================================================================================================================END TRACKING
 

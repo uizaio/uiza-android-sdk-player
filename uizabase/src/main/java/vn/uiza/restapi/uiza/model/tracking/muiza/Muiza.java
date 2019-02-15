@@ -249,11 +249,11 @@ public class Muiza {
 
     @SerializedName("view_rebuffer_frequency")
     @Expose
-    private String viewRebufferFrequency;
+    private float viewRebufferFrequency;
 
     @SerializedName("view_rebuffer_percentage")
     @Expose
-    private String viewRebufferPercentage;
+    private float viewRebufferPercentage;
 
     public String getBeaconDomain() {
         return beaconDomain;
@@ -863,19 +863,19 @@ public class Muiza {
         this.viewRebufferDuration = viewRebufferDuration;
     }
 
-    public String getViewRebufferFrequency() {
+    public float getViewRebufferFrequency() {
         return viewRebufferFrequency;
     }
 
-    public void setViewRebufferFrequency(String viewRebufferFrequency) {
+    public void setViewRebufferFrequency(float viewRebufferFrequency) {
         this.viewRebufferFrequency = viewRebufferFrequency;
     }
 
-    public String getViewRebufferPercentage() {
+    public float getViewRebufferPercentage() {
         return viewRebufferPercentage;
     }
 
-    public void setViewRebufferPercentage(String viewRebufferPercentage) {
+    public void setViewRebufferPercentage(float viewRebufferPercentage) {
         this.viewRebufferPercentage = viewRebufferPercentage;
     }
 }

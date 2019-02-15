@@ -74,7 +74,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
-        LLog.d(TAG, "fuckk timestampPlayed: " + timestampPlayed);
+        //LLog.d(TAG, "timestampPlayed: " + timestampPlayed);
         this.context = fuzVideo.getContext();
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
@@ -248,7 +248,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         }
         timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
-        LLog.d(TAG, "fuckk resumeVideo timestampPlayed: " + timestampPlayed);
+        //LLog.d(TAG, "resumeVideo timestampPlayed: " + timestampPlayed);
     }
 
     public void pauseVideo() {
@@ -256,7 +256,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
             player.setPlayWhenReady(false);
             if (isCanAddViewWatchTime) {
                 long durationWatched = System.currentTimeMillis() - timestampPlayed;
-                LLog.d(TAG, "fuckk pauseVideo durationWatched " + durationWatched);
+                //LLog.d(TAG, "pauseVideo durationWatched " + durationWatched);
                 TmpParamData.getInstance().addViewWatchTime(durationWatched);
                 isCanAddViewWatchTime = false;
             }
