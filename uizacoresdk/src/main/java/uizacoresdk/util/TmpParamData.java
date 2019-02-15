@@ -40,7 +40,7 @@ public class TmpParamData {
     private boolean playerAutoplayOn = Constants.DF_PLAYER_IS_AUTO_START;
     private int playerHeight = 0;
     private boolean playerIsFullscreen;
-    private boolean playerIsPaused;//TODO correct
+    private boolean playerIsPaused;
     private String playerLanguageCode;//TODO correct
     private long playerPlayheadTime;//TODO correct
     private String playerPreloadOn;//TODO correct

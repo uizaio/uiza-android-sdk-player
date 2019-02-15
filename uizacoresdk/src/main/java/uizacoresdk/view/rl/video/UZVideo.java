@@ -1392,6 +1392,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void resumeVideo() {
+        TmpParamData.getInstance().setPlayerIsPaused(false);
         addTrackingMuiza(Constants.MUIZA_EVENT_PLAY);
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().play();
@@ -1410,6 +1411,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void pauseVideo() {
+        TmpParamData.getInstance().setPlayerIsPaused(true);
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().pause();
         } else {
