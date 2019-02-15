@@ -784,9 +784,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             //LLog.d(TAG, "onVideoSizeChanged " + width + "x" + height + " - " + pixelWidthHeightRatio);
             videoW = width;
             videoH = height;
+            TmpParamData.getInstance().setEntitySourceWidth(width);
+            TmpParamData.getInstance().setEntitySourceHeight(height);
             if (uzVideo != null && uzVideo.videoListener != null) {
-                TmpParamData.getInstance().setEntitySourceWidth(width);
-                TmpParamData.getInstance().setEntitySourceHeight(height);
                 uzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
             }
         }
