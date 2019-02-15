@@ -3302,6 +3302,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, "progressCallback onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ", percent: " + percent + "%");
+                TmpParamData.getInstance().setPlayerPlayheadTime(s);
                 updateUIIbRewIconDependOnProgress(currentMls, false);
                 trackProgress(s, percent);
                 callAPITrackMuiza(s);

@@ -23,6 +23,7 @@ import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
@@ -261,6 +262,7 @@ public class FUZVideo extends RelativeLayout {
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                TmpParamData.getInstance().setPlayerPlayheadTime(s);
                 trackProgress(s, percent);
                 callAPITrackMuiza(s);
                 if (progressCallback != null) {
