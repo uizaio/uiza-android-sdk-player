@@ -715,9 +715,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private long timestampOnStartPreview;
+
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStartPreview");
+        timestampOnStartPreview = System.currentTimeMillis();
         addTrackingMuiza(Constants.MUIZA_EVENT_SEEKING);
         if (callbackUZTimebar != null) {
             callbackUZTimebar.onStartPreview(previewView, progress);
@@ -728,7 +731,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());\
+        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
+        long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
+        TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
         isOnPreview = true;
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
