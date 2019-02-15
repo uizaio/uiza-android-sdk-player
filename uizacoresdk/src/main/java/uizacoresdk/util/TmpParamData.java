@@ -27,8 +27,7 @@ public class TmpParamData {
     private String entitySourceDomain = "";
     private String entitySourceDuration = "";
     private int entitySourceHeight = 0;
-    private String entitySourceHostname;//TODO correct
-    private boolean entitySourceIsLive;//TODO correct
+    private String entitySourceHostname = "";
     private String entitySourceMimeType;//TODO correct
     private String entitySourceUrl;//TODO correct
     private long entitySourceWidth;//TODO correct
@@ -177,14 +176,6 @@ public class TmpParamData {
 
     public void setEntitySourceHostname(String entitySourceHostname) {
         this.entitySourceHostname = entitySourceHostname;
-    }
-
-    public boolean isEntitySourceIsLive() {
-        return entitySourceIsLive;
-    }
-
-    public void setEntitySourceIsLive(boolean entitySourceIsLive) {
-        this.entitySourceIsLive = entitySourceIsLive;
     }
 
     public String getEntitySourceMimeType() {

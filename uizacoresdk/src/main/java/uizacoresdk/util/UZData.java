@@ -292,7 +292,7 @@ public class UZData {
         muiza.setEntitySourceDuration(TmpParamData.getInstance().getEntitySourceDuration());
         muiza.setEntitySourceHeight(TmpParamData.getInstance().getEntitySourceHeight());
         muiza.setEntitySourceHostname(TmpParamData.getInstance().getEntitySourceHostname());
-        muiza.setEntitySourceIsLive(TmpParamData.getInstance().isEntitySourceIsLive());
+        muiza.setEntitySourceIsLive(isLivestream());
         muiza.setEntitySourceMimeType(TmpParamData.getInstance().getEntitySourceMimeType());
         muiza.setEntitySourceUrl(TmpParamData.getInstance().getEntitySourceUrl());
         muiza.setEntitySourceWidth(TmpParamData.getInstance().getEntitySourceWidth());
