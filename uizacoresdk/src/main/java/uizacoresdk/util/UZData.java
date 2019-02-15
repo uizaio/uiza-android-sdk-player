@@ -340,7 +340,7 @@ public class UZData {
         muiza.setViewerDeviceName(android.os.Build.MODEL);
         muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
         muiza.setViewerOsFamily("Android " + Build.VERSION.RELEASE);
-        muiza.setViewerOsVersion("Api level: " + Build.VERSION.SDK_INT);
+        muiza.setViewerOsVersion("Api level " + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
         muiza.setViewerUserId(Loitp.getDeviceId(context));
         muiza.setAppId(getAppId());
