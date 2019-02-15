@@ -47,7 +47,7 @@ public class Muiza {
     private String entitySourceDuration;
     @SerializedName("entity_source_height")
     @Expose
-    private long entitySourceHeight;
+    private int entitySourceHeight;
     @SerializedName("entity_source_hostname")
     @Expose
     private String entitySourceHostname;
@@ -359,11 +359,11 @@ public class Muiza {
         this.entitySourceDuration = entitySourceDuration;
     }
 
-    public long getEntitySourceHeight() {
+    public int getEntitySourceHeight() {
         return entitySourceHeight;
     }
 
-    public void setEntitySourceHeight(long entitySourceHeight) {
+    public void setEntitySourceHeight(int entitySourceHeight) {
         this.entitySourceHeight = entitySourceHeight;
     }
 

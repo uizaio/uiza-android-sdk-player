@@ -26,7 +26,7 @@ public class TmpParamData {
     private String entitySeries = "";//TODO correct
     private String entitySourceDomain = "";
     private String entitySourceDuration = "";
-    private long entitySourceHeight;//TODO correct
+    private int entitySourceHeight = 0;
     private String entitySourceHostname;//TODO correct
     private boolean entitySourceIsLive;//TODO correct
     private String entitySourceMimeType;//TODO correct
@@ -163,11 +163,11 @@ public class TmpParamData {
         this.entitySourceDuration = entitySourceDuration;
     }
 
-    public long getEntitySourceHeight() {
+    public int getEntitySourceHeight() {
         return entitySourceHeight;
     }
 
-    public void setEntitySourceHeight(long entitySourceHeight) {
+    public void setEntitySourceHeight(int entitySourceHeight) {
         this.entitySourceHeight = entitySourceHeight;
     }
 

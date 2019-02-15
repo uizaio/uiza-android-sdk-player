@@ -765,6 +765,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             videoW = width;
             videoH = height;
             if (uzVideo != null && uzVideo.videoListener != null) {
+                TmpParamData.getInstance().setEntitySourceHeight(height);
                 uzVideo.videoListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
             }
         }
