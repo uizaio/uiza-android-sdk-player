@@ -468,6 +468,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             UZData.getInstance().clearUizaInput();
+            TmpParamData.getInstance().clearAll();
         }
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
@@ -475,7 +476,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             setVisibilityOfPlaylistFolderController(View.GONE);
         }
-        TmpParamData.getInstance().clearAll();
         isCalledFromChangeSkin = false;
         isInitCustomLinkPlay = false;
         isCalledApiGetDetailEntity = false;

@@ -66,6 +66,7 @@ import java.util.UUID;
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.common.Constants;
@@ -541,6 +542,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private void onFirstStateReady() {
         //LLog.d(TAG, ">>>>>>>>>> onFirstStateReady");
         if (uzVideo != null) {
+            long durationInS = uzVideo.getDuration() / 1000;
+            TmpParamData.getInstance().setEntityDuration(durationInS + "");
             uzVideo.removeVideoCover(false);
         }
     }
