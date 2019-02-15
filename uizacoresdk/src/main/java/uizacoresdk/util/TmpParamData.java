@@ -48,7 +48,6 @@ public class TmpParamData {
     private String playerSoftwareName = Constants.PLAYER_NAME;
     private String playerSoftwareVersion = Constants.PLAYER_SDK_VERSION;
     private long playerWidth = 0;
-    private long sessionExpires;//TODO correct
     private String sessionId;//TODO correct
     private String timestamp;//TODO correct
     private String viewId;//TODO correct
@@ -322,14 +321,6 @@ public class TmpParamData {
 
     public void setPlayerWidth(long playerWidth) {
         this.playerWidth = playerWidth;
-    }
-
-    public long getSessionExpires() {
-        return sessionExpires;
-    }
-
-    public void setSessionExpires(long sessionExpires) {
-        this.sessionExpires = sessionExpires;
     }
 
     public String getSessionId() {

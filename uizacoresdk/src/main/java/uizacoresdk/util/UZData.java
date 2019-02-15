@@ -315,7 +315,7 @@ public class UZData {
         muiza.setPlayerSoftwareVersion(TmpParamData.getInstance().getPlayerSoftwareVersion());
         muiza.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
         muiza.setPlayerWidth(TmpParamData.getInstance().getPlayerWidth());
-        muiza.setSessionExpires(TmpParamData.getInstance().getSessionExpires());
+        muiza.setSessionExpires(System.currentTimeMillis() + 5 * 60 * 1000);
         muiza.setSessionId(TmpParamData.getInstance().getSessionId());
         muiza.setTimestamp(TmpParamData.getInstance().getTimestamp());
         muiza.setViewId(TmpParamData.getInstance().getViewId());
