@@ -3257,7 +3257,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private long timestampInitDataSource;
+
     private void initDataSource(String linkPlay, String urlIMAAd, String urlThumbnailsPreviewSeekbar, List<Subtitle> subtitleList) {
+        timestampInitDataSource = System.currentTimeMillis();
         //hardcode to test
 
         //subtitleList
@@ -3378,6 +3381,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
+        long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
+        TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
         pingHeartBeat();
