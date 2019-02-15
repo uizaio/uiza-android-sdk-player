@@ -373,6 +373,7 @@ public class UZData {
             case Constants.MUIZA_EVENT_REBUFFERSTART:
             case Constants.MUIZA_EVENT_REBUFFEREND:
                 muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
+                muiza.setViewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
                 break;
         }
         muizaList.add(muiza);

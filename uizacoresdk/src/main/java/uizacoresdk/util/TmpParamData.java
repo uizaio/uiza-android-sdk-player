@@ -46,6 +46,7 @@ public class TmpParamData {
         viewSeekDuration = 0;
         viewMaxSeekTime = 0;
         viewRebufferCount = 0;
+        viewRebufferDuration = 0;
     }
 
     private String entityCnd = "";
@@ -97,7 +98,7 @@ public class TmpParamData {
     private long viewSeekDuration = 0;
     private long viewMaxSeekTime = 0;
     private int viewRebufferCount = 0;
-    private String viewRebufferDuration;//TODO correct
+    private long viewRebufferDuration = 0;
     private String viewRebufferFrequency;//TODO correct
     private String viewRebufferPercentage;//TODO correct
 
@@ -485,11 +486,11 @@ public class TmpParamData {
         this.viewRebufferCount++;
     }
 
-    public String getViewRebufferDuration() {
+    public long getViewRebufferDuration() {
         return viewRebufferDuration;
     }
 
-    public void setViewRebufferDuration(String viewRebufferDuration) {
+    public void setViewRebufferDuration(long viewRebufferDuration) {
         this.viewRebufferDuration = viewRebufferDuration;
     }
 

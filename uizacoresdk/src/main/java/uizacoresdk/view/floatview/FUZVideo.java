@@ -685,13 +685,18 @@ public class FUZVideo extends RelativeLayout {
         public void onPlayerError(UZException error);
     }
 
+    private long timestampRebufferStart;
+
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
                 showProgress();
                 if (playWhenReady) {
+                    TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
+                    timestampRebufferStart = 0;
                     addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
                 } else {
+                    timestampRebufferStart = System.currentTimeMillis();
                     addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
                     TmpParamData.getInstance().addViewRebufferCount();
                     addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);

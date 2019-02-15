@@ -599,6 +599,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             }
         }
 
+        private long timestampRebufferStart;
+
         //This is called when either playWhenReady or playbackState changes
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -608,8 +610,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                     showProgress();
                     if (uzVideo != null) {
                         if (playWhenReady) {
+                            TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
+                            timestampRebufferStart = 0;
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
                         } else {
+                            timestampRebufferStart = System.currentTimeMillis();
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
                             TmpParamData.getInstance().addViewRebufferCount();
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);

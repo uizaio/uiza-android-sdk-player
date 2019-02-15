@@ -245,7 +245,7 @@ public class Muiza {
 
     @SerializedName("view_rebuffer_duration")
     @Expose
-    private String viewRebufferDuration;
+    private long viewRebufferDuration;
 
     @SerializedName("view_rebuffer_frequency")
     @Expose
@@ -855,11 +855,11 @@ public class Muiza {
         this.viewRebufferCount = viewRebufferCount;
     }
 
-    public String getViewRebufferDuration() {
+    public long getViewRebufferDuration() {
         return viewRebufferDuration;
     }
 
-    public void setViewRebufferDuration(String viewRebufferDuration) {
+    public void setViewRebufferDuration(long viewRebufferDuration) {
         this.viewRebufferDuration = viewRebufferDuration;
     }
 
