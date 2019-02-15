@@ -217,7 +217,7 @@ public class Muiza {
 
     @SerializedName("view_aggregate_startup_total_time")
     @Expose
-    private String viewAggregateStartupTotalTime;
+    private long viewAggregateStartupTotalTime;
 
     @SerializedName("player_error_code")
     @Expose
@@ -799,11 +799,11 @@ public class Muiza {
         this.viewAggregateStartupTime = viewAggregateStartupTime;
     }
 
-    public String getViewAggregateStartupTotalTime() {
+    public long getViewAggregateStartupTotalTime() {
         return viewAggregateStartupTotalTime;
     }
 
-    public void setViewAggregateStartupTotalTime(String viewAggregateStartupTotalTime) {
+    public void setViewAggregateStartupTotalTime(long viewAggregateStartupTotalTime) {
         this.viewAggregateStartupTotalTime = viewAggregateStartupTotalTime;
     }
 

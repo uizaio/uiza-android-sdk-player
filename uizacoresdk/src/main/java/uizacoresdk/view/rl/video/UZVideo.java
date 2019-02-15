@@ -3279,6 +3279,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
         LLog.d(TAG, "-------------------->initDataSource linkPlay " + linkPlay);
         TmpParamData.getInstance().setEntitySourceUrl(linkPlay);
+        TmpParamData.getInstance().setTimeFromInitEntityIdToAllApiCalledSuccess(System.currentTimeMillis() - timestampBeforeInitNewSession);
         uzPlayerManager = new UZPlayerManager(this, linkPlay, urlIMAAd, urlThumbnailsPreviewSeekbar, subtitleList);
         if (uzTimebar != null) {
             if (urlThumbnailsPreviewSeekbar == null || urlThumbnailsPreviewSeekbar.isEmpty()) {
@@ -3383,7 +3384,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         TmpParamData.getInstance().setSessionStart(System.currentTimeMillis());
-        TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
         TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);
         trackUizaEventVideoStarts();
