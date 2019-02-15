@@ -229,7 +229,7 @@ public class Muiza {
 
     @SerializedName("view_seek_count")
     @Expose
-    private String viewSeekCount;
+    private int viewSeekCount;
 
     @SerializedName("view_seek_duration")
     @Expose
@@ -823,11 +823,11 @@ public class Muiza {
         this.playerErrorMessage = playerErrorMessage;
     }
 
-    public String getViewSeekCount() {
+    public int getViewSeekCount() {
         return viewSeekCount;
     }
 
-    public void setViewSeekCount(String viewSeekCount) {
+    public void setViewSeekCount(int viewSeekCount) {
         this.viewSeekCount = viewSeekCount;
     }
 

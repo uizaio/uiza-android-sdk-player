@@ -364,6 +364,10 @@ public class UZData {
                     muiza.setPlayerErrorMessage(e.getMessage());
                 }
                 break;
+            case Constants.MUIZA_EVENT_SEEKING:
+            case Constants.MUIZA_EVENT_SEEKED:
+                muiza.setViewSeekCount(TmpParamData.getInstance().getViewSeekCount());
+                break;
         }
         muizaList.add(muiza);
         LLog.d(TAG, "fuck addTrackingMuiza event: " + event);

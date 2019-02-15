@@ -742,6 +742,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
         //LLog.d(TAG, "PreviewView onStopPreview");
+        TmpParamData.getInstance().addViewSeekCount();
         isOnPreview = false;
         onStopPreview(progress);
         if (callbackUZTimebar != null) {
