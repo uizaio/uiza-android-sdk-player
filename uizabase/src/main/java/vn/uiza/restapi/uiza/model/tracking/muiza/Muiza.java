@@ -221,7 +221,7 @@ public class Muiza {
 
     @SerializedName("player_error_code")
     @Expose
-    private int playerErrorCode;
+    private Integer playerErrorCode;
 
     @SerializedName("player_error_message")
     @Expose
@@ -229,31 +229,31 @@ public class Muiza {
 
     @SerializedName("view_seek_count")
     @Expose
-    private int viewSeekCount;
+    private Integer viewSeekCount;
 
     @SerializedName("view_seek_duration")
     @Expose
-    private long viewSeekDuration;
+    private Long viewSeekDuration;
 
     @SerializedName("view_max_seek_time")
     @Expose
-    private long viewMaxSeekTime;
+    private Long viewMaxSeekTime;
 
     @SerializedName("view_rebuffer_count")
     @Expose
-    private int viewRebufferCount;
+    private Integer viewRebufferCount;
 
     @SerializedName("view_rebuffer_duration")
     @Expose
-    private long viewRebufferDuration;
+    private Long viewRebufferDuration;
 
     @SerializedName("view_rebuffer_frequency")
     @Expose
-    private float viewRebufferFrequency;
+    private Float viewRebufferFrequency;
 
     @SerializedName("view_rebuffer_percentage")
     @Expose
-    private float viewRebufferPercentage;
+    private Float viewRebufferPercentage;
 
     public String getBeaconDomain() {
         return beaconDomain;

@@ -1,7 +1,6 @@
 package uizacoresdk.util;
 
 import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 
 public class TmpParamData {
     private final String TAG = getClass().getSimpleName();
@@ -498,6 +497,6 @@ public class TmpParamData {
 
     public void addViewWatchTime(long addViewWatchTime) {
         this.viewWatchTime += addViewWatchTime;
-        LLog.d(TAG, "fuckk addViewWatchTime " + addViewWatchTime + " - > total watched: " + viewWatchTime);
+        //LLog.d(TAG, "addViewWatchTime " + addViewWatchTime + " - > total watched: " + viewWatchTime);
     }
 }

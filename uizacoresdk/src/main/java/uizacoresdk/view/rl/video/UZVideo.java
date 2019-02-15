@@ -3734,31 +3734,31 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (s <= 0 || s % 10 != 0) {
             return;
         }
-        LLog.d(TAG, "fuck trackMuiza s: " + s + "s");
+        //LLog.d(TAG, "trackMuiza s: " + s + "s");
         if (isTrackingMuiza) {
-            LLog.d(TAG, "fuck isTrackingMuiza -> return");
+            //LLog.d(TAG, "isTrackingMuiza -> return");
             return;
         }
         if (UZData.getInstance().isMuizaListEmpty()) {
-            LLog.d(TAG, "fuck no tracking muiza -> return");
+            //LLog.d(TAG, "no tracking muiza -> return");
             return;
         }
         isTrackingMuiza = true;
         final List<Muiza> muizaListToTracking = new ArrayList<>();
         muizaListToTracking.addAll(UZData.getInstance().getMuizaList());
-        LLog.d(TAG, "fuck -> call api trackMuiza -> muizaListToTracking.size(): " + muizaListToTracking.size());
+        //LLog.d(TAG, "call api trackMuiza -> muizaListToTracking.size(): " + muizaListToTracking.size());
         UZData.getInstance().clearMuizaList();
         UZService service = UZRestClientTracking.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                LLog.d(TAG, "fuck trackMuiza onSuccess " + gson.toJson(result));
+                //LLog.d(TAG, "trackMuiza onSuccess " + gson.toJson(result));
                 isTrackingMuiza = false;
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "fuck trackMuiza failed: " + e.toString());
+                //LLog.e(TAG, "trackMuiza failed: " + e.toString());
                 isTrackingMuiza = false;
                 UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
             }

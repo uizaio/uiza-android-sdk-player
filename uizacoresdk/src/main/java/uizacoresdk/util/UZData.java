@@ -384,7 +384,7 @@ public class UZData {
                 break;
         }
         muizaList.add(muiza);
-        LLog.d(TAG, "fuck addTrackingMuiza event: " + event);
+        //LLog.d(TAG, "addTrackingMuiza event: " + event);
     }
     //==================================================================================================================END TRACKING
 
