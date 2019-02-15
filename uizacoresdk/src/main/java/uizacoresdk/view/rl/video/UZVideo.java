@@ -3360,6 +3360,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
+        long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
+        TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         addTrackingMuiza(Constants.MUIZA_EVENT_VIEWSTART);
         TmpParamData.getInstance().setViewStart(System.currentTimeMillis());
         TmpParamData.getInstance().setViewTimeToFirstFrame(System.currentTimeMillis());
@@ -3395,8 +3397,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleConnectedChromecast();
             showController();
         }
-        long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
-        TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         TmpParamData.getInstance().setSessionStart(System.currentTimeMillis());
         long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
         TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);

@@ -345,6 +345,7 @@ public class UZData {
         muiza.setViewerUserId(Loitp.getDeviceId(context));
         muiza.setAppId(getAppId());
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
+        LLog.d(TAG, "fuck " + TmpParamData.getInstance().getPageLoadTime());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
         muiza.setPlayerId(currentPlayerId + "");
         muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
