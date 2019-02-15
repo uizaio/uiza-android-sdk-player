@@ -216,10 +216,13 @@ public class UZData {
     }
 
     public UizaTracking createTrackingInput(Context context, String playThrough, String eventType) {
+        if (context == null) {
+            return null;
+        }
         UizaTracking uizaTracking = new UizaTracking();
         uizaTracking.setAppId(getAppId());
         uizaTracking.setPageType("app");
-        uizaTracking.setViewerUserId(TmpParamData.getInstance().getViewerUserId());
+        uizaTracking.setViewerUserId(Loitp.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
         uizaTracking.setDeviceId(Loitp.getDeviceId(context));
@@ -333,8 +336,8 @@ public class UZData {
         muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
         muiza.setViewerOsFamily("Android " + Build.VERSION.RELEASE);
         muiza.setViewerOsVersion("Api level: " + Build.VERSION.SDK_INT);
-        muiza.setViewerTime(TmpParamData.getInstance().getViewerTime());
-        muiza.setViewerUserId(TmpParamData.getInstance().getViewerUserId());
+        muiza.setViewerTime(System.currentTimeMillis());
+        muiza.setViewerUserId(Loitp.getDeviceId(context));
         muiza.setAppId(getAppId());
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());

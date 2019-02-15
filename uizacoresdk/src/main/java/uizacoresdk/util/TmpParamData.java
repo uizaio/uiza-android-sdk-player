@@ -53,8 +53,6 @@ public class TmpParamData {
     private String viewerApplicationEngine = "";
     private String viewerApplicationName = "";
     private String viewerApplicationVersion = "";
-    private long viewerTime;//TODO correct
-    private String viewerUserId;//TODO correct
     private String referrer;//TODO correct
     private long pageLoadTime;//TODO correct
     private long playerInitTime;//TODO correct
@@ -354,22 +352,6 @@ public class TmpParamData {
 
     public void setViewerApplicationVersion(String viewerApplicationVersion) {
         this.viewerApplicationVersion = viewerApplicationVersion;
-    }
-
-    public long getViewerTime() {
-        return viewerTime;
-    }
-
-    public void setViewerTime(long viewerTime) {
-        this.viewerTime = viewerTime;
-    }
-
-    public String getViewerUserId() {
-        return viewerUserId;
-    }
-
-    public void setViewerUserId(String viewerUserId) {
-        this.viewerUserId = viewerUserId;
     }
 
     public String getReferrer() {
