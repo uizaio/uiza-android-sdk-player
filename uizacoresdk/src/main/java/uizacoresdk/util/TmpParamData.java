@@ -45,7 +45,7 @@ public class TmpParamData {
     }
 
     private String entityCnd = "";
-    private String entityContentType = "video";//TODO correct
+    private String entityContentType = "video";
     private String entityDuration = "0";
     private String entityEncodingVariant = "";//TODO correct
     private String entityLanguageCode = "";//TODO correct
