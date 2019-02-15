@@ -110,6 +110,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private ImageView imageView;
     private Handler handler;
     private Runnable runnable;
+    private boolean isCanAddViewWatchTime;
     private long timestampPlayed;
 
     private ProgressCallback progressCallback;
@@ -456,8 +457,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         isCanAddViewWatchTime = true;
         LLog.d(TAG, "fuckk resumeVideo timestampPlayed: " + timestampPlayed);
     }
-
-    private boolean isCanAddViewWatchTime;
 
     protected void pauseVideo() {
         if (player != null) {
