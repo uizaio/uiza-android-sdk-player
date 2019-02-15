@@ -61,8 +61,7 @@ public class TmpParamData {
     private int playerViewCount = 0;
     private long viewStart = 0;
     private long viewWatchTime = 0;//TODO correct
-    private long viewTimeToFirstFrame;
-    private String viewAggregateStartupTotalTime;//TODO correct
+    private long viewTimeToFirstFrame = 0;
     private int playerErrorCode;//TODO correct
     private String playerErrorMessage;//TODO correct
     private String viewSeekCount;//TODO correct
@@ -415,14 +414,6 @@ public class TmpParamData {
 
     public void setViewTimeToFirstFrame(long viewTimeToFirstFrame) {
         this.viewTimeToFirstFrame = viewTimeToFirstFrame;
-    }
-
-    public String getViewAggregateStartupTotalTime() {
-        return viewAggregateStartupTotalTime;
-    }
-
-    public void setViewAggregateStartupTotalTime(String viewAggregateStartupTotalTime) {
-        this.viewAggregateStartupTotalTime = viewAggregateStartupTotalTime;
     }
 
     public int getPlayerErrorCode() {
