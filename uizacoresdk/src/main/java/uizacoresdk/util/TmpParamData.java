@@ -41,7 +41,7 @@ public class TmpParamData {
     private int playerHeight = 0;
     private boolean playerIsFullscreen;
     private boolean playerIsPaused;
-    private String playerLanguageCode;//TODO correct
+    private String playerLanguageCode = "en-us";
     private long playerPlayheadTime;//TODO correct
     private String playerPreloadOn;//TODO correct
     private int playerSequenceNumber;//TODO correct
