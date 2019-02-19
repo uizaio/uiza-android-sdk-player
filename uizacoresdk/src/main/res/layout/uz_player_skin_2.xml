@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     app:auto_show="false"
-    app:controller_layout_id="@layout/uz_controller_skin_2" />
+    app:controller_layout_id="@layout/uz_controller_skin_2"
+    app:surface_type="texture_view" />
