@@ -6,10 +6,10 @@ import rx.Observable;
 
 public interface Service {
     //https://docs.uiza.io/#retrieve-an-user
-    @GET("/api/public/v3/admin/user")
+    @GET("/api/public/v4/admin/user")
     Observable<Object> retrieveAnUser(@Query("id") String id);
 
     //https://docs.uiza.io/#list-all-users
-    @GET("/api/public/v3/admin/user")
+    @GET("/api/public/v4/admin/user")
     Observable<Object> listAllUser();
 }
