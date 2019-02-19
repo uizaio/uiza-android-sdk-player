@@ -402,7 +402,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -424,7 +424,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success"), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -442,7 +442,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void retrieveAnEntity() {
         UZService service = UZRestClient.createService(UZService.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
-        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(id), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -529,7 +529,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {
                 LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -595,7 +595,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getViewALiveFeed() {
         UZService service = UZRestClient.createService(UZService.class);
         String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
-        UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(id), new ApiSubscriber<ResultGetViewALiveFeed>() {
+        UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultGetViewALiveFeed>() {
             @Override
             public void onSuccess(ResultGetViewALiveFeed result) {
                 LLog.d(TAG, "getViewALiveFeed onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -614,7 +614,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UZService service = UZRestClient.createService(UZService.class);
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
-        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId), new ApiSubscriber<ResultTimeStartLive>() {
+        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId, UZData.getInstance().getAppId()), new ApiSubscriber<ResultTimeStartLive>() {
             @Override
             public void onSuccess(ResultTimeStartLive result) {
                 LLog.d(TAG, "getTimeStartLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -665,7 +665,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getIMAAd() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getCuePoint("0e8254fa-afa1-491f-849b-5aa8bc7cce52"), new ApiSubscriber<AdWrapper>() {
+        UZAPIMaster.getInstance().subscribe(service.getCuePoint("0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()), new ApiSubscriber<AdWrapper>() {
             @Override
             public void onSuccess(AdWrapper result) {
                 LLog.d(TAG, "getIMAAd onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
