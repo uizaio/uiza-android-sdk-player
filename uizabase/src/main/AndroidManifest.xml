@@ -32,7 +32,9 @@
         android:name="android.hardware.screen.portrait"
         android:required="true" />
 
-    <application android:allowBackup="true">
+    <application
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true">
         <!-- support 18:9 -->
         <meta-data
             android:name="android.max_aspect"
