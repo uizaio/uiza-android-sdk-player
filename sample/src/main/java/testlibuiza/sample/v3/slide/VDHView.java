@@ -367,12 +367,11 @@ public class VDHView extends LinearLayout {
     }
 
     public void maximize() {
-        smoothSlideTo(0, 0);
-        /*if (isEnableRevertMaxSize) {
+        if (isEnableRevertMaxSize) {
             smoothSlideTo(0, 0);
         } else {
             Log.e(TAG, "Error: cannot maximize because isEnableRevertMaxSize is true");
-        }*/
+        }
     }
 
     public void minimizeBottomLeft() {
