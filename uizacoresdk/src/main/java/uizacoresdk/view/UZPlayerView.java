@@ -82,13 +82,13 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public void showController() {
-        //LLog.d(TAG, "showController");
+        LLog.d(TAG, "showController");
         super.showController();
     }
 
     @Override
     public void hideController() {
-        //LLog.d(TAG, "hideController");
+        LLog.d(TAG, "hideController");
         super.hideController();
     }
 
@@ -98,6 +98,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        //LLog.d(TAG, "fuck onTouchEvent");
         /*switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 tapStartTimeMs = SystemClock.elapsedRealtime();
@@ -135,11 +136,23 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
                     }
                 }
         }*/
-        mDetector.onTouchEvent(ev);
-        return true;
+
+        if (isUseVDHView) {
+            return false;
+        } else {
+            mDetector.onTouchEvent(ev);
+            return true;
+        }
+
+        //mDetector.onTouchEvent(ev);
+        //return true;
     }
 
-    private boolean isFirstClickUZPlayerView = true;
+    private boolean isUseVDHView;
+
+    public void setIsUsedVDHView(boolean isUseVDHView) {
+        this.isUseVDHView = isUseVDHView;
+    }
 
     public interface OnTouchEvent {
         public void onSingleTapConfirmed(float x, float y);

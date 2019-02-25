@@ -9,11 +9,13 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import testlibuiza.R;
+import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
@@ -30,7 +32,7 @@ public class VDHView extends LinearLayout {
     private float mDragOffset;
     private boolean isEnableAlpha = true;
     private boolean isEnableRevertMaxSize = true;
-    private boolean isMinimized;//header view is scaled at least 1
+    private boolean isMinimizedAtLeastOneTime;//header view is scaled at least 1
     private int sizeWHeaderViewOriginal;
     private int sizeHHeaderViewOriginal;
     private int sizeWHeaderViewMin;
@@ -74,6 +76,7 @@ public class VDHView extends LinearLayout {
     private void initView() {
         mViewDragHelper = ViewDragHelper.create(this, 1.0f, mCallback);
         mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
+        mDetector = new GestureDetector(getContext(), new UizaGestureListener());
     }
 
     @Override
@@ -125,7 +128,7 @@ public class VDHView extends LinearLayout {
                 }
             }
 
-            if (isMinimized) {
+            if (isMinimizedAtLeastOneTime) {
                 if (isEnableRevertMaxSize) {
                     headerView.setPivotX(headerView.getWidth() / 2f);
                     headerView.setPivotY(headerView.getHeight());
@@ -170,7 +173,7 @@ public class VDHView extends LinearLayout {
                 } else {
                     changeState(State.BOTTOM);
                 }
-                isMinimized = true;
+                isMinimizedAtLeastOneTime = true;
             } else {
                 //mid_left, mid, mid_right
                 if (left <= -headerView.getWidth() / 2) {
@@ -282,7 +285,9 @@ public class VDHView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        LLog.d(TAG, "fuck onTouchEvent");
         mViewDragHelper.processTouchEvent(event);
+        mDetector.onTouchEvent(event);
         final float x = event.getX();
         final float y = event.getY();
         boolean isViewUnder = mViewDragHelper.isViewUnder(headerView, (int) x, (int) y);
@@ -312,7 +317,7 @@ public class VDHView extends LinearLayout {
                         if (isEnableRevertMaxSize) {
                             maximize();
                         } else {
-                            if (isMinimized) {
+                            if (isMinimizedAtLeastOneTime) {
                                 minimizeTopLeft();
                             }
                         }
@@ -320,7 +325,7 @@ public class VDHView extends LinearLayout {
                         if (isEnableRevertMaxSize) {
                             maximize();
                         } else {
-                            if (isMinimized) {
+                            if (isMinimizedAtLeastOneTime) {
                                 minimizeTopRight();
                             }
                         }
@@ -341,11 +346,11 @@ public class VDHView extends LinearLayout {
         //LLog.d(TAG, "onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
     }
 
-    public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT}
+    public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
 
     public enum Part {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT}
 
-    private State state;
+    private State state = State.NULL;
     private Part part;
 
     public State getState() {
@@ -383,8 +388,8 @@ public class VDHView extends LinearLayout {
             Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
-        if (!isMinimized) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimized is false. This function only works if the header view is scrolled BOTTOM");
+        if (!isMinimizedAtLeastOneTime) {
+            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = screenW - sizeWHeaderViewMin * 3 / 2;
@@ -398,8 +403,8 @@ public class VDHView extends LinearLayout {
             Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
-        if (!isMinimized) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimized is false. This function only works if the header view is scrolled BOTTOM");
+        if (!isMinimizedAtLeastOneTime) {
+            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = -sizeWHeaderViewMin / 2;
@@ -415,8 +420,8 @@ public class VDHView extends LinearLayout {
         }
     }
 
-    public boolean isMinimized() {
-        return isMinimized;
+    public boolean isMinimizedAtLeastOneTime() {
+        return isMinimizedAtLeastOneTime;
     }
 
     public boolean isEnableAlpha() {
@@ -465,5 +470,98 @@ public class VDHView extends LinearLayout {
 
     public void appear() {
 
+    }
+
+    private GestureDetector mDetector;
+    private UZPlayerView.OnTouchEvent onTouchEvent;
+
+    public void setOnTouchEvent(UZPlayerView.OnTouchEvent onTouchEvent) {
+        this.onTouchEvent = onTouchEvent;
+    }
+
+    private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            //LLog.d(TAG, "onDown");
+            // don't return false here or else none of the other
+            // gestures will work
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
+            if (onTouchEvent != null) {
+                onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
+            }
+            return true;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
+            if (onTouchEvent != null) {
+                onTouchEvent.onLongPress(e.getX(), e.getY());
+            }
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
+            if (onTouchEvent != null) {
+                onTouchEvent.onDoubleTap(e.getX(), e.getY());
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            LLog.d(TAG, "onScroll");
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            LLog.d(TAG, "onFling");
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            //LLog.d(TAG, "onSwipeRight");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeRight();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeLeft");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeLeft();
+                            }
+                        }
+                    }
+                } else {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            //LLog.d(TAG, "onSwipeBottom");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeBottom();
+                            }
+                        } else {
+                            //LLog.d(TAG, "onSwipeTop");
+                            if (onTouchEvent != null) {
+                                onTouchEvent.onSwipeTop();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return true;
+        }
     }
 }

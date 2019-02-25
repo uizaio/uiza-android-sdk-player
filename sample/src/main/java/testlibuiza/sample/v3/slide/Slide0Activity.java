@@ -15,14 +15,15 @@ import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
+import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick {
-    private final String TAG = getClass().getSimpleName();
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent {
+    private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
     private TextView tv0;
@@ -46,6 +47,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         tv1 = (TextView) findViewById(R.id.tv_1);
         tv2 = (TextView) findViewById(R.id.tv_2);
         vdhv.setCallback(this);
+        vdhv.setOnTouchEvent(this);
+        uzVideo.setIsUsedVDHView(true);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         findViewById(R.id.bt_toast).setOnClickListener(new View.OnClickListener() {
@@ -114,7 +117,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 if (vdhv.isEnableRevertMaxSize()) {
                     vdhv.setEnableRevertMaxSize(false);
                     findViewById(R.id.bt_maximize).setVisibility(View.GONE);
-                    if (vdhv.isMinimized()) {
+                    if (vdhv.isMinimizedAtLeastOneTime()) {
                         findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
                         findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
                     }
@@ -267,5 +270,38 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onSingleTapConfirmed(float x, float y) {
+        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+            //do nothing
+        } else {
+            uzVideo.toggleShowHideController();
+        }
+    }
+
+    @Override
+    public void onLongPress(float x, float y) {
+    }
+
+    @Override
+    public void onDoubleTap(float x, float y) {
+    }
+
+    @Override
+    public void onSwipeRight() {
+    }
+
+    @Override
+    public void onSwipeLeft() {
+    }
+
+    @Override
+    public void onSwipeBottom() {
+    }
+
+    @Override
+    public void onSwipeTop() {
     }
 }

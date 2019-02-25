@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/LightYellow"
+        android:background="@color/Green"
         android:orientation="vertical">
 
         <ScrollView
@@ -151,7 +151,7 @@
             android:id="@id/body_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/Gray">
+            android:background="@color/Blue">
 
             <TextView
                 android:layout_width="match_parent"

@@ -413,6 +413,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setControllerShowTimeoutMs(0);
         isPlayerControllerAlwayVisible = true;
     }
+
+    public void setIsUsedVDHView(boolean isUseVDHView) {
+        if (uzPlayerView != null) {
+            uzPlayerView.setIsUsedVDHView(isUseVDHView);
+        }
+    }
     //========================================================================END CONFIG
 
     private boolean isSetFirstRequestFocusDone;
