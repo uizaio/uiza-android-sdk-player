@@ -294,6 +294,9 @@ public class VDHView extends LinearLayout {
                 break;
             }*/
             case MotionEvent.ACTION_UP: {
+                if (state == null) {
+                    break;
+                }
                 LLog.d(TAG, "onTouchEvent ACTION_UP state:" + state.name() + ", mCenterX: " + mCenterX);
                 if (state == State.TOP_LEFT || state == State.TOP_RIGHT || state == State.BOTTOM_LEFT || state == State.BOTTOM_RIGHT) {
                     LLog.d(TAG, "destroy state: " + state.name());

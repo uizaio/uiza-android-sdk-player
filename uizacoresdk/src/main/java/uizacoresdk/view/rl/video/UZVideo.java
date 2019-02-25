@@ -1895,7 +1895,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivLiveTime != null) {
             ivLiveTime.setFocusable(false);
         }
-
         rlEndScreen = (RelativeLayout) uzPlayerView.findViewById(R.id.rl_end_screen);
         if (rlEndScreen != null) {
             rlEndScreen.setVisibility(GONE);
@@ -1905,9 +1904,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LUIUtil.setTextShadow(tvEndScreenMsg, Color.WHITE);
             tvEndScreenMsg.setOnClickListener(this);
         }
-
         setEventForView();
-
         //set visibility first, so scared if removed
         setVisibilityOfPlaylistFolderController(GONE);
     }
