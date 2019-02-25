@@ -99,7 +99,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        //LLog.d(TAG, "fuck onTouchEvent");
         /*switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 tapStartTimeMs = SystemClock.elapsedRealtime();

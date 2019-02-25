@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import testlibuiza.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -93,7 +92,7 @@ public class VDHView extends LinearLayout {
                 sizeHHeaderViewOriginal = headerView.getMeasuredHeight();
                 sizeWHeaderViewMin = sizeWHeaderViewOriginal / 2;
                 sizeHHeaderViewMin = sizeHHeaderViewOriginal / 2;
-                LLog.d(TAG, "fuck size original: " + sizeWHeaderViewOriginal + "x" + sizeHHeaderViewOriginal + " -> " + sizeWHeaderViewMin + "x" + sizeHHeaderViewMin);
+                //LLog.d(TAG, "size original: " + sizeWHeaderViewOriginal + "x" + sizeHHeaderViewOriginal + " -> " + sizeWHeaderViewMin + "x" + sizeHHeaderViewMin);
             }
         });
     }
@@ -307,9 +306,9 @@ public class VDHView extends LinearLayout {
                 if (state == null) {
                     break;
                 }
-                LLog.d(TAG, "onTouchEvent ACTION_UP state:" + state.name() + ", mCenterX: " + mCenterX);
+                //LLog.d(TAG, "onTouchEvent ACTION_UP state:" + state.name() + ", mCenterX: " + mCenterX);
                 if (state == State.TOP_LEFT || state == State.TOP_RIGHT || state == State.BOTTOM_LEFT || state == State.BOTTOM_RIGHT) {
-                    LLog.d(TAG, "destroy state: " + state.name());
+                    //LLog.d(TAG, "destroy state: " + state.name());
                     if (callback != null) {
                         callback.onOverScroll(state, part);
                     }
@@ -474,6 +473,9 @@ public class VDHView extends LinearLayout {
     }
 
     public void appear() {
+        if (headerView.getVisibility() == VISIBLE) {
+            return;
+        }
         minimizeBottomRight();
     }
 
@@ -504,7 +506,7 @@ public class VDHView extends LinearLayout {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }
@@ -513,7 +515,7 @@ public class VDHView extends LinearLayout {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onLongPress(e.getX(), e.getY());
             }
@@ -521,7 +523,7 @@ public class VDHView extends LinearLayout {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onDoubleTap(e.getX(), e.getY());
             }
@@ -530,13 +532,13 @@ public class VDHView extends LinearLayout {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            LLog.d(TAG, "onScroll");
+            //LLog.d(TAG, "onScroll");
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            LLog.d(TAG, "onFling");
+            //LLog.d(TAG, "onFling");
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
