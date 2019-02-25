@@ -251,10 +251,15 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
-            vdhv.maximize();
+        if (vdhv.isEnableRevertMaxSize()) {
+            if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+                vdhv.maximize();
+            } else {
+                uzVideo.toggleShowHideController();
+            }
         } else {
-            uzVideo.toggleShowHideController();
+            vdhv.setEnableRevertMaxSize(true);
+            vdhv.maximize();
         }
     }
 

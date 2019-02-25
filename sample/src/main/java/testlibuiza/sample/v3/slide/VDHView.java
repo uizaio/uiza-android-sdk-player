@@ -153,7 +153,7 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
+            //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
 
             if (mDragOffset == 0) {
                 //top_left, top, top_right
@@ -254,7 +254,7 @@ public class VDHView extends LinearLayout {
     private void changeState(State newState) {
         if (state != newState) {
             state = newState;
-            LLog.d(TAG, "changeState: " + newState);
+            //LLog.d(TAG, "changeState: " + newState);
             if (callback != null) {
                 callback.onStateChange(state);
             }
@@ -264,7 +264,7 @@ public class VDHView extends LinearLayout {
     private void changePart(Part newPart) {
         if (part != newPart) {
             part = newPart;
-            LLog.d(TAG, "changePart: " + part);
+            //LLog.d(TAG, "changePart: " + part);
             if (callback != null) {
                 callback.onPartChange(part);
             }
@@ -285,7 +285,7 @@ public class VDHView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LLog.d(TAG, "fuck onTouchEvent isEnableSlide: " + isEnableSlide);
+        //LLog.d(TAG, "onTouchEvent isEnableSlide: " + isEnableSlide);
         if (isEnableSlide) {
             mViewDragHelper.processTouchEvent(event);
         } else {
