@@ -64,6 +64,8 @@ public class VDHView extends LinearLayout {
         public void onViewPositionChanged(int left, int top, float dragOffset);
 
         public void onOverScroll(State state, Part part);
+
+        public void onEnableRevertMaxSize(boolean isEnableRevertMaxSize);
     }
 
     private Callback callback;
@@ -373,6 +375,11 @@ public class VDHView extends LinearLayout {
         }
     }
 
+    /*public void maximizeRevert() {
+        isEnableRevertMaxSize = true;
+        smoothSlideTo(0, 0);
+    }*/
+
     public void minimizeBottomLeft() {
         int posX = getWidth() - sizeWHeaderViewOriginal - sizeWHeaderViewMin / 2;
         int posY = getHeight() - sizeHHeaderViewOriginal;
@@ -441,7 +448,10 @@ public class VDHView extends LinearLayout {
     }
 
     public void setEnableRevertMaxSize(boolean enableRevertMaxSize) {
-        isEnableRevertMaxSize = enableRevertMaxSize;
+        this.isEnableRevertMaxSize = enableRevertMaxSize;
+        if (callback != null) {
+            callback.onEnableRevertMaxSize(isEnableRevertMaxSize);
+        }
     }
 
     public void toggleShowHideHeaderView() {
@@ -476,7 +486,7 @@ public class VDHView extends LinearLayout {
         if (headerView.getVisibility() == VISIBLE) {
             return;
         }
-        minimizeBottomRight();
+        maximize();
     }
 
     private boolean isEnableSlide;

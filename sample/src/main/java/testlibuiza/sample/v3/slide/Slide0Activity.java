@@ -109,19 +109,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_revert_max).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vdhv.isEnableRevertMaxSize()) {
-                    vdhv.setEnableRevertMaxSize(false);
-                    findViewById(R.id.bt_maximize).setVisibility(View.GONE);
-                    if (vdhv.isMinimizedAtLeastOneTime()) {
-                        findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
-                        findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    vdhv.setEnableRevertMaxSize(true);
-                    findViewById(R.id.bt_maximize).setVisibility(View.VISIBLE);
-                    findViewById(R.id.bt_minimize_top_right).setVisibility(View.GONE);
-                    findViewById(R.id.bt_minimize_top_left).setVisibility(View.GONE);
-                }
+                vdhv.setEnableRevertMaxSize(!vdhv.isEnableRevertMaxSize());
             }
         });
         findViewById(R.id.bt_appear).setOnClickListener(new View.OnClickListener() {
@@ -156,6 +144,20 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         }
     }
 
+    private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
+        if (isEnableRevertMaxSize) {
+            findViewById(R.id.bt_maximize).setVisibility(View.GONE);
+            if (vdhv.isMinimizedAtLeastOneTime()) {
+                findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
+                findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
+            }
+        } else {
+            findViewById(R.id.bt_maximize).setVisibility(View.VISIBLE);
+            findViewById(R.id.bt_minimize_top_right).setVisibility(View.GONE);
+            findViewById(R.id.bt_minimize_top_left).setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onStateChange(VDHView.State state) {
         tv0.setText("onStateChange: " + state.name());
@@ -175,6 +177,11 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     public void onOverScroll(VDHView.State state, VDHView.Part part) {
         uzVideo.pauseVideo();
         vdhv.dissappear();
+    }
+
+    @Override
+    public void onEnableRevertMaxSize(boolean isEnableRevertMaxSize) {
+        updateUIRevertMaxChange(!isEnableRevertMaxSize);
     }
 
     @Override
@@ -259,7 +266,12 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             }
         } else {
             vdhv.setEnableRevertMaxSize(true);
-            vdhv.maximize();
+            if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+                vdhv.maximize();
+            } else {
+                uzVideo.toggleShowHideController();
+            }
+            //vdhv.setEnableRevertMaxSize(false);
         }
     }
 
