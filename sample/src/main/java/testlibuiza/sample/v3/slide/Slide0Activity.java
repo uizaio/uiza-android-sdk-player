@@ -173,6 +173,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onOverScroll(VDHView.State state, VDHView.Part part) {
+        uzVideo.pauseVideo();
         vdhv.dissappear();
     }
 
@@ -242,7 +243,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onBackPressed() {
         if (uzVideo.isLandscape()) {
-            uzVideo.toggleFullscreen();
+            uzVideo.getIbBackScreenIcon().performClick();
         } else {
             super.onBackPressed();
         }
