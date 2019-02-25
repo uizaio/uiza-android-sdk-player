@@ -1,7 +1,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uizalivestream">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--<uses-permission android:name="android.permission.FLASHLIGHT" />-->
+
+    <!--some devices need it-->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera2.full" />
+    <uses-feature android:name="android.hardware.camera2.autofocus" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"></application>
+        android:usesCleartextTraffic="true">
+
+    </application>
 </manifest>
