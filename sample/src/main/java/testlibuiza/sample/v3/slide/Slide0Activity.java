@@ -19,7 +19,7 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent {
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -45,6 +45,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         vdhv.setOnTouchEvent(this);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        uzVideo.addControllerStateCallback(this);
         findViewById(R.id.bt_toast).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -278,5 +279,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSwipeTop() {
+    }
+
+    @Override
+    public void onVisibilityChange(boolean isShow) {
+        vdhv.setEnableSlide(!isShow);
     }
 }
