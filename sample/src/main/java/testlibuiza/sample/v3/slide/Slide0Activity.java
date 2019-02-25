@@ -49,7 +49,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_toast).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, "Click", Toast.LENGTH_SHORT);
+                Toast.makeText(activity, "Click", Toast.LENGTH_SHORT).show();
             }
         });
         findViewById(R.id.bt_maximize).setOnClickListener(new View.OnClickListener() {
