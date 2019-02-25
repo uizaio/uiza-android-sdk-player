@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import testlibuiza.R;
 import uizacoresdk.view.UZPlayerView;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -154,7 +155,7 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
+            LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
 
             if (mDragOffset == 0) {
                 //top_left, top, top_right
@@ -350,6 +351,7 @@ public class VDHView extends LinearLayout {
         mAutoBackViewX = headerView.getLeft();
         mAutoBackViewY = headerView.getTop();
         //LLog.d(TAG, "onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
+        //getLayoutParams().height += newSizeHHeaderView;
     }
 
     public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
@@ -464,7 +466,7 @@ public class VDHView extends LinearLayout {
 
     public void toggleShowHideBodyView() {
         if (bodyView.getVisibility() == VISIBLE) {
-            bodyView.setVisibility(INVISIBLE);
+            bodyView.setVisibility(GONE);
         } else {
             bodyView.setVisibility(VISIBLE);
         }
@@ -474,13 +476,13 @@ public class VDHView extends LinearLayout {
         if (!isEnableRevertMaxSize) {
             minimizeBottomRight();
             headerView.setVisibility(INVISIBLE);
-            bodyView.setVisibility(INVISIBLE);
+            bodyView.setVisibility(GONE);
         }
     }
 
     public void dissappear() {
         headerView.setVisibility(INVISIBLE);
-        bodyView.setVisibility(INVISIBLE);
+        bodyView.setVisibility(GONE);
         maximize();
     }
 
