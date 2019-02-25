@@ -46,4 +46,6 @@
     <item name="tv_end_screen_msg" type="id" />
     <item name="uz_position" type="id" />
     <item name="uz_duration" type="id" />
+    <item name="header_view" type="id" />
+    <item name="body_view" type="id" />
 </resources>

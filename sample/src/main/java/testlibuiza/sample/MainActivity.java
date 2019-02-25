@@ -106,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_slide_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, Slide0Activity.class);
+                String entityId = LSApplication.entityIdDefaultVOD;
+                final Intent intent = new Intent(activity, Slide0Activity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 startActivity(intent);
             }
         });
