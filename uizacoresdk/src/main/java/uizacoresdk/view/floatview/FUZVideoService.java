@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,10 +26,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import uizacoresdk.R;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.ComunicateMng;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LDeviceUtil;
@@ -926,7 +927,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
+    public void onPlayerError(UZException error) {
         LLog.e(TAG, "onPlayerError " + error.getMessage());
         stopSelf();
     }
@@ -993,7 +994,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int videoH = fuzVideo.getVideoH();
         int moveW;
         int moveH;
-
         if (isAutoSize) {
             moveW = getMoveViewWidth();
             moveH = moveW * videoH / (videoW == 0 ? 1 : videoW);
@@ -1002,8 +1002,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             moveH = videoHeightFromSettingConfig;
             //LLog.d(TAG, "editSizeOfMoveView moveW x moveH: " + moveW + " x " + moveH);
         }
-
         //LLog.d(TAG, "editSizeOfMoveView " + videoW + "x" + videoH + " -> " + moveW + "x" + moveH);
+        TmpParamData.getInstance().setPlayerWidth(moveW);
+        TmpParamData.getInstance().setPlayerHeight(moveH);
         moveView.getLayoutParams().width = moveW;
         moveView.getLayoutParams().height = moveH;
         moveView.requestLayout();

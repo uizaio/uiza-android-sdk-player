@@ -84,7 +84,23 @@ public class Constants {
     public final static String URL_DEV_UIZA_VERSION_2 = "http://dev-api.uiza.io/";
     public final static String URL_DEV_UIZA_VERSION_2_STAG = "https://uqc-api.uiza.io/";
     public final static String URL_DEV_UIZA_VERSION_2_DEMO = "https://demo-api.uiza.io/";
-    public final static String URL_WTT = "https://wtt-api.uiza.io";
+
+    public final static String MUIZA_EVENT_READY = "ready";//là thời điểm player init xong
+    public final static String MUIZA_EVENT_LOADSTART = "loadstart";//là thời điểm player bắt đầu tải video
+    public final static String MUIZA_EVENT_VIEWSTART = "viewstart";//là thời điểm frame đầu tiên của video được play
+    public final static String MUIZA_EVENT_PAUSE = "pause";//là thời điểm user nhấn pause / khách hàng của mình gọi function pause
+    public final static String MUIZA_EVENT_PLAY = "play";//là thời điểm user nhấn play / khách hàng của mình gọi function play
+    public final static String MUIZA_EVENT_PLAYING = "playing";//là thời điểm video bắt đầu play (ngay sau khi play)
+    public final static String MUIZA_EVENT_SEEKING = "seeking";//là thời điểm user bắt đầu click để seek
+    public final static String MUIZA_EVENT_SEEKED = "seeked";//là thời điểm video bắt đầu play sau khi click seek
+    public final static String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
+    public final static String MUIZA_EVENT_RATECHANGE = "ratechange";//là thời điểm rate được thay đổi
+    public final static String MUIZA_EVENT_REBUFFERSTART = "rebufferstart";//là thời điểm sau khi play hết đoạn buffer, và player bắt đầu tạm dừng để tải tiếp buffer từ server
+    public final static String MUIZA_EVENT_REBUFFEREND = "rebufferend";//là thời điểm sau khi rebufferstart xảy ra, lượng buffer tải về đủ để play và player bắt đầu play tiếp
+    public final static String MUIZA_EVENT_VOLUMECHANGE = "volumechange";//là thời điểm user thay đổi âm lượng
+    public final static String MUIZA_EVENT_FULLSCREENCHANGE = "fullscreenchange";//là thời điểm user thay đổi chế độ fullscreen
+    public final static String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video
+    public final static String MUIZA_EVENT_ERROR = "error";//là thời điểm player phải ngưng play hoàn toàn do lỗi
 
     public final static int ENVIRONMENT_DEV = 1;
     public final static int ENVIRONMENT_STAG = 2;
@@ -151,4 +167,6 @@ public class Constants {
 
     public static final int W_320 = 320;
     public static final int W_180 = 180;
+
+    public static final boolean DF_PLAYER_IS_AUTO_START = true;
 }

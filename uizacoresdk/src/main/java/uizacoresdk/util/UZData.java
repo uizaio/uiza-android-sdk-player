@@ -1,15 +1,17 @@
 package uizacoresdk.util;
 
 import android.content.Context;
-import android.provider.Settings;
+import android.os.Build;
 
 import com.google.android.gms.cast.MediaTrack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -17,6 +19,7 @@ import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -47,10 +50,10 @@ public class UZData {
         this.currentPlayerId = currentPlayerId;
     }
 
-    private String mDomainAPI;
-    private String mDomainAPITracking;
-    private String mToken;
-    private String mAppId;
+    private String mDomainAPI = "";
+    private String mDomainAPITracking = "";
+    private String mToken = "";
+    private String mAppId = "";
 
     private Casty casty;
 
@@ -75,10 +78,8 @@ public class UZData {
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
-
         UZRestClient.init(Constants.PREFIXS + domainAPI, token);
         UZUtil.setToken(Utils.getContext(), token);
-
         if (environment == Constants.ENVIRONMENT_DEV) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
@@ -152,7 +153,7 @@ public class UZData {
 
     public String getEntityName() {
         if (uzInput == null || uzInput.getData() == null) {
-            return " - ";
+            return "";
         }
         return uzInput.getData().getName();
     }
@@ -211,27 +212,24 @@ public class UZData {
     }
 
     //==================================================================================================================START TRACKING
-    public UizaTracking createTrackingInputV3(Context context, String eventType) {
-        return createTrackingInputV3(context, "0", eventType);
+    public UizaTracking createTrackingInput(Context context, String eventType) {
+        return createTrackingInput(context, "0", eventType);
     }
 
-    public UizaTracking createTrackingInputV3(Context context, String playThrough, String eventType) {
+    public UizaTracking createTrackingInput(Context context, String playThrough, String eventType) {
+        if (context == null) {
+            return null;
+        }
         UizaTracking uizaTracking = new UizaTracking();
-        //app_id
-        uizaTracking.setAppId(UZData.getInstance().getAppId());
-        //page_type
+        uizaTracking.setAppId(getAppId());
         uizaTracking.setPageType("app");
-        uizaTracking.setViewerUserId("");
-        //user_agent
+        uizaTracking.setViewerUserId(Loitp.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
-        //referrer
-        uizaTracking.setReferrer("");
-        //device_id
-        uizaTracking.setDeviceId(Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
+        uizaTracking.setDeviceId(Loitp.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
-        //player_id
         uizaTracking.setPlayerId(currentPlayerId + "");
         uizaTracking.setPlayerName(Constants.PLAYER_NAME);
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
@@ -243,20 +241,150 @@ public class UZData {
             uizaTracking.setEntityId(uzInput.getData().getId());
             uizaTracking.setEntityName(uzInput.getData().getName());
         }
-        uizaTracking.setEntitySeries("");
-        uizaTracking.setEntityProducer("");
-        uizaTracking.setEntityContentType("video");
-        uizaTracking.setEntityLanguageCode("");
-        uizaTracking.setEntityVariantName("");
-        uizaTracking.setEntityVariantId("");
-        //TODO setEntityDuration
-        uizaTracking.setEntityDuration("0");
-        uizaTracking.setEntityStreamType("on-demand");
-        uizaTracking.setEntityEncodingVariant("");
-        uizaTracking.setEntityCdn("");
+        uizaTracking.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
+        uizaTracking.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
+        uizaTracking.setEntityContentType(TmpParamData.getInstance().getEntityContentType());
+        uizaTracking.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
+        uizaTracking.setEntityVariantName(TmpParamData.getInstance().getEntityVariantName());
+        uizaTracking.setEntityVariantId(TmpParamData.getInstance().getEntityVariantId());
+        uizaTracking.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
+        uizaTracking.setEntityStreamType(TmpParamData.getInstance().getEntityStreamType());
+        uizaTracking.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
+        uizaTracking.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
         uizaTracking.setPlayThrough(playThrough);
         uizaTracking.setEventType(eventType);
         return uizaTracking;
+    }
+
+    private List<Muiza> muizaList = new ArrayList<>();
+
+    public List<Muiza> getMuizaList() {
+        return muizaList;
+    }
+
+    public boolean isMuizaListEmpty() {
+        return muizaList.isEmpty();
+    }
+
+    public void clearMuizaList() {
+        muizaList.clear();
+    }
+
+    public void addListTrackingMuiza(List<Muiza> muizas) {
+        this.muizaList.addAll(muizas);
+    }
+
+    public void addTrackingMuiza(Context context, String event) {
+        addTrackingMuiza(context, event, null);
+    }
+
+    public void addTrackingMuiza(Context context, String event, UZException e) {
+        if (context == null || event == null || event.isEmpty()) {
+            return;
+        }
+        TmpParamData.getInstance().addPlayerSequenceNumber();
+        TmpParamData.getInstance().addViewSequenceNumber();
+        Muiza muiza = new Muiza();
+        muiza.setBeaconDomain(mDomainAPITracking);
+        muiza.setEntityCdn(TmpParamData.getInstance().getEntityCnd());
+        muiza.setEntityContentType(TmpParamData.getInstance().getEntityContentType());
+        muiza.setEntityDuration(TmpParamData.getInstance().getEntityDuration());
+        muiza.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
+        muiza.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
+        if (uzInput == null || uzInput.getData() == null) {
+            muiza.setEntityId("null");
+            muiza.setEntityName("null");
+        } else {
+            muiza.setEntityId(uzInput.getData().getId());
+            muiza.setEntityName(uzInput.getData().getName());
+        }
+        muiza.setEntityPosterUrl(TmpParamData.getInstance().getEntityPosterUrl());
+        muiza.setEntityProducer(TmpParamData.getInstance().getEntityProducer());
+        muiza.setEntitySeries(TmpParamData.getInstance().getEntitySeries());
+        muiza.setEntitySourceDomain(TmpParamData.getInstance().getEntitySourceDomain());
+        muiza.setEntitySourceDuration(TmpParamData.getInstance().getEntitySourceDuration());
+        muiza.setEntitySourceHeight(TmpParamData.getInstance().getEntitySourceHeight());
+        muiza.setEntitySourceHostname(TmpParamData.getInstance().getEntitySourceHostname());
+        muiza.setEntitySourceIsLive(isLivestream());
+        muiza.setEntitySourceMimeType(TmpParamData.getInstance().getEntitySourceMimeType());
+        muiza.setEntitySourceUrl(TmpParamData.getInstance().getEntitySourceUrl());
+        muiza.setEntitySourceWidth(TmpParamData.getInstance().getEntitySourceWidth());
+        muiza.setEntityStreamType(TmpParamData.getInstance().getEntityStreamType());
+        muiza.setEntityVariantId(TmpParamData.getInstance().getEntityVariantId());
+        muiza.setEntityVariantName(TmpParamData.getInstance().getEntityVariantName());
+        muiza.setPageType("app");
+        muiza.setPageUrl(TmpParamData.getInstance().getPageUrl());
+        muiza.setPlayerAutoplayOn(TmpParamData.getInstance().isPlayerAutoplayOn());
+        muiza.setPlayerHeight(TmpParamData.getInstance().getPlayerHeight());
+        muiza.setPlayerIsFullscreen(TmpParamData.getInstance().isPlayerIsFullscreen());
+        muiza.setPlayerIsPaused(TmpParamData.getInstance().isPlayerIsPaused());
+        muiza.setPlayerLanguageCode(TmpParamData.getInstance().getPlayerLanguageCode());
+        muiza.setPlayerName(Constants.PLAYER_NAME);
+        muiza.setPlayerPlayheadTime(TmpParamData.getInstance().getPlayerPlayheadTime());
+        muiza.setPlayerPreloadOn(TmpParamData.getInstance().getPlayerPreloadOn());
+        muiza.setPlayerSequenceNumber(TmpParamData.getInstance().getPlayerSequenceNumber());
+        muiza.setPlayerSoftwareName(TmpParamData.getInstance().getPlayerSoftwareName());
+        muiza.setPlayerSoftwareVersion(TmpParamData.getInstance().getPlayerSoftwareVersion());
+        muiza.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
+        muiza.setPlayerWidth(TmpParamData.getInstance().getPlayerWidth());
+        muiza.setSessionExpires(System.currentTimeMillis() + 5 * 60 * 1000);
+        muiza.setSessionId(TmpParamData.getInstance().getSessionId());
+        muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
+        //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
+        muiza.setViewId(Loitp.getDeviceId(context));
+        muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
+        muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
+        muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
+        muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
+        muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
+        muiza.setViewerDeviceName(android.os.Build.MODEL);
+        muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
+        muiza.setViewerOsFamily("Android " + Build.VERSION.RELEASE);
+        muiza.setViewerOsVersion("Api level " + Build.VERSION.SDK_INT);
+        muiza.setViewerTime(System.currentTimeMillis());
+        muiza.setViewerUserId(Loitp.getDeviceId(context));
+        muiza.setAppId(getAppId());
+        muiza.setReferrer(TmpParamData.getInstance().getReferrer());
+        muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
+        muiza.setPlayerId(currentPlayerId + "");
+        muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
+        muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
+        muiza.setSessionStart(TmpParamData.getInstance().getSessionStart());
+        muiza.setPlayerViewCount(TmpParamData.getInstance().getPlayerViewCount());
+        muiza.setViewStart(TmpParamData.getInstance().getViewStart());
+        muiza.setViewWatchTime(TmpParamData.getInstance().getViewWatchTime());
+        muiza.setViewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame());
+        muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewStart() + TmpParamData.getInstance().getViewWatchTime());
+        muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewTimeToFirstFrame() + (TmpParamData.getInstance().getPlayerInitTime() - TmpParamData.getInstance().getTimeFromInitEntityIdToAllApiCalledSuccess()));
+        muiza.setEvent(event);
+        switch (event) {
+            case Constants.MUIZA_EVENT_ERROR:
+                if (e != null) {
+                    muiza.setPlayerErrorCode(e.getErrorCode());
+                    muiza.setPlayerErrorMessage(e.getMessage());
+                }
+                break;
+            case Constants.MUIZA_EVENT_SEEKING:
+            case Constants.MUIZA_EVENT_SEEKED:
+                muiza.setViewSeekCount(TmpParamData.getInstance().getViewSeekCount());
+                muiza.setViewSeekDuration(TmpParamData.getInstance().getViewSeekDuration());
+                muiza.setViewMaxSeekTime(TmpParamData.getInstance().getViewMaxSeekTime());
+                break;
+            case Constants.MUIZA_EVENT_REBUFFERSTART:
+            case Constants.MUIZA_EVENT_REBUFFEREND:
+                muiza.setViewRebufferCount(TmpParamData.getInstance().getViewRebufferCount());
+                muiza.setViewRebufferDuration(TmpParamData.getInstance().getViewRebufferDuration());
+                if (TmpParamData.getInstance().getViewWatchTime() == 0) {
+                    muiza.setViewRebufferFrequency(0);
+                    muiza.setViewRebufferPercentage(0);
+                } else {
+                    muiza.setViewRebufferFrequency((float) ((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                    muiza.setViewRebufferPercentage((float) ((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                }
+                break;
+        }
+        muizaList.add(muiza);
+        //LLog.d(TAG, "addTrackingMuiza event: " + event);
     }
     //==================================================================================================================END TRACKING
 
@@ -352,5 +480,15 @@ public class UZData {
             return null;
         }
         return uzInput.getData();
+    }
+
+    private boolean isUseWithVDHView;
+
+    public boolean isUseWithVDHView() {
+        return isUseWithVDHView;
+    }
+
+    public void setUseWithVDHView(boolean isUseWithVDHView) {
+        this.isUseWithVDHView = isUseWithVDHView;
     }
 }

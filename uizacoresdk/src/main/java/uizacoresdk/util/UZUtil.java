@@ -70,6 +70,13 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
+        /*boolean isUseWithVDHView = UZData.getInstance().isUseWithVDHView();
+        LLog.d(TAG, "resizeLayout isUseWithVDHView: " + isUseWithVDHView);
+        if (isUseWithVDHView) {
+            LLog.d(TAG, "resizeLayout isUseWithVDHView -> return");
+            return;
+        }*/
+        LLog.d(TAG, "resizeLayout");
         if (viewGroup == null) {
             return;
         }
@@ -102,10 +109,11 @@ public class UZUtil {
             }
         }
         //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        TmpParamData.getInstance().setPlayerWidth(widthSurfaceView);
+        TmpParamData.getInstance().setPlayerHeight(heightSurfaceView);
         viewGroup.getLayoutParams().width = widthSurfaceView;
         viewGroup.getLayoutParams().height = heightSurfaceView;
         viewGroup.requestLayout();
-
         //set size of parent view group of viewGroup
         RelativeLayout parentViewGroup = (RelativeLayout) viewGroup.getParent();
         if (parentViewGroup != null) {
@@ -113,13 +121,11 @@ public class UZUtil {
             parentViewGroup.getLayoutParams().height = heightSurfaceView;
             parentViewGroup.requestLayout();
         }
-
         if (ivVideoCover != null) {
             ivVideoCover.getLayoutParams().width = widthSurfaceView;
             ivVideoCover.getLayoutParams().height = heightSurfaceView;
             ivVideoCover.requestLayout();
         }
-
         //edit size of imageview thumnail
         FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.preview_frame_layout);
         if (flImgThumnailPreviewSeekbar != null) {
@@ -438,7 +444,7 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(activity, entityId, callback);
     }
 
-    public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {
+    public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {
         if (activity == null) {
             throw new NullPointerException(UZException.ERR_12);
         }
@@ -455,10 +461,10 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
-            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
             UZUtil.stopMiniPlayer(activity);
-            UZUtil.playLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
+            UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
         return true;
@@ -524,12 +530,12 @@ public class UZUtil {
         UZDataCLP.getInstance().clearData();
     }
 
-    private static void playLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
+    private static void playCustomLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.initLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
+                uzVideo.initCustomLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
             }
         });
     }
@@ -590,6 +596,10 @@ public class UZUtil {
             return;
         }
         UZData.getInstance().setCasty(Casty.create(activity));
+    }
+
+    public static void setUseWithVDHView(boolean isUseWithVDHView) {
+        UZData.getInstance().setUseWithVDHView(isUseWithVDHView);
     }
 
     public static void setCurrentPlayerId(int resLayoutMain) {
