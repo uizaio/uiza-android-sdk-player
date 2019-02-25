@@ -470,14 +470,11 @@ public class VDHView extends LinearLayout {
     }
 
     public void dissappear() {
-        minimizeBottomRight();
-        bodyView.setVisibility(INVISIBLE);
-        headerView.setVisibility(INVISIBLE);
+        smoothSlideTo(screenW, screenH);
     }
 
     public void appear() {
-        bodyView.setVisibility(VISIBLE);
-        headerView.setVisibility(VISIBLE);
+        minimizeBottomRight();
     }
 
     private boolean isEnableSlide;
