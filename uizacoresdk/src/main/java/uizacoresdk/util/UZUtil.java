@@ -70,6 +70,13 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
+        /*boolean isUseWithVDHView = UZData.getInstance().isUseWithVDHView();
+        LLog.d(TAG, "resizeLayout isUseWithVDHView: " + isUseWithVDHView);
+        if (isUseWithVDHView) {
+            LLog.d(TAG, "resizeLayout isUseWithVDHView -> return");
+            return;
+        }*/
+        LLog.d(TAG, "resizeLayout");
         if (viewGroup == null) {
             return;
         }
@@ -107,7 +114,6 @@ public class UZUtil {
         viewGroup.getLayoutParams().width = widthSurfaceView;
         viewGroup.getLayoutParams().height = heightSurfaceView;
         viewGroup.requestLayout();
-
         //set size of parent view group of viewGroup
         RelativeLayout parentViewGroup = (RelativeLayout) viewGroup.getParent();
         if (parentViewGroup != null) {
@@ -115,13 +121,11 @@ public class UZUtil {
             parentViewGroup.getLayoutParams().height = heightSurfaceView;
             parentViewGroup.requestLayout();
         }
-
         if (ivVideoCover != null) {
             ivVideoCover.getLayoutParams().width = widthSurfaceView;
             ivVideoCover.getLayoutParams().height = heightSurfaceView;
             ivVideoCover.requestLayout();
         }
-
         //edit size of imageview thumnail
         FrameLayout flImgThumnailPreviewSeekbar = viewGroup.findViewById(R.id.preview_frame_layout);
         if (flImgThumnailPreviewSeekbar != null) {
@@ -592,6 +596,10 @@ public class UZUtil {
             return;
         }
         UZData.getInstance().setCasty(Casty.create(activity));
+    }
+
+    public static void setUseWithVDHView(boolean isUseWithVDHView) {
+        UZData.getInstance().setUseWithVDHView(isUseWithVDHView);
     }
 
     public static void setCurrentPlayerId(int resLayoutMain) {

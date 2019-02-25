@@ -285,8 +285,13 @@ public class VDHView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LLog.d(TAG, "fuck onTouchEvent");
-        mViewDragHelper.processTouchEvent(event);
+        LLog.d(TAG, "fuck onTouchEvent isEnableSlide: " + isEnableSlide);
+        if (isEnableSlide) {
+            mViewDragHelper.processTouchEvent(event);
+        } else {
+            mViewDragHelper.cancel();
+        }
+        //mViewDragHelper.processTouchEvent(event);
         mDetector.onTouchEvent(event);
         final float x = event.getX();
         final float y = event.getY();
@@ -465,11 +470,19 @@ public class VDHView extends LinearLayout {
     }
 
     public void dissappear() {
-
+        bodyView.setVisibility(INVISIBLE);
+        headerView.setVisibility(INVISIBLE);
     }
 
     public void appear() {
+        bodyView.setVisibility(VISIBLE);
+        headerView.setVisibility(VISIBLE);
+    }
 
+    private boolean isEnableSlide;
+
+    public void setEnableSlide(boolean isEnableSlide) {
+        this.isEnableSlide = isEnableSlide;
     }
 
     private GestureDetector mDetector;

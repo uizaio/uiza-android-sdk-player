@@ -34,11 +34,17 @@ public class UZTrackingUtil {
 
     //Event type display
     public static boolean isTrackedEventTypeDisplay(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_DISPLAY, false);
     }
 
     public static void setTrackingDoneWithEventTypeDisplay(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_DISPLAY, isDone);
         editor.apply();
@@ -46,11 +52,17 @@ public class UZTrackingUtil {
 
     //Event type plays_requested
     public static boolean isTrackedEventTypePlaysRequested(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_PLAYS_REQUESTED, false);
     }
 
     public static void setTrackingDoneWithEventTypePlaysRequested(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_PLAYS_REQUESTED, isDone);
         editor.apply();
@@ -58,11 +70,17 @@ public class UZTrackingUtil {
 
     //Event type video_starts
     public static boolean isTrackedEventTypeVideoStarts(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_VIDEO_STARTS, false);
     }
 
     public static void setTrackingDoneWithEventTypeVideoStarts(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_VIDEO_STARTS, isDone);
         editor.apply();
@@ -70,11 +88,17 @@ public class UZTrackingUtil {
 
     //Event type view
     public static boolean isTrackedEventTypeView(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_VIEW, false);
     }
 
     public static void setTrackingDoneWithEventTypeView(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_VIEW, isDone);
         editor.apply();
@@ -82,11 +106,17 @@ public class UZTrackingUtil {
 
     //Event type replay
     public static boolean isTrackedEventTypeReplay(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_REPLAY, false);
     }
 
     public static void setTrackingDoneWithEventTypeReplay(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_REPLAY, isDone);
         editor.apply();
@@ -94,11 +124,17 @@ public class UZTrackingUtil {
 
     //Event type play_through 25
     public static boolean isTrackedEventTypePlayThrought25(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_PLAY_THROUGHT_25, false);
     }
 
     public static void setTrackingDoneWithEventTypePlayThrought25(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_PLAY_THROUGHT_25, isDone);
         editor.apply();
@@ -106,11 +142,17 @@ public class UZTrackingUtil {
 
     //Event type play_through 50
     public static boolean isTrackedEventTypePlayThrought50(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_PLAY_THROUGHT_50, false);
     }
 
     public static void setTrackingDoneWithEventTypePlayThrought50(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_PLAY_THROUGHT_50, isDone);
         editor.apply();
@@ -118,11 +160,17 @@ public class UZTrackingUtil {
 
     //Event type play_through 75
     public static boolean isTrackedEventTypePlayThrought75(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_PLAY_THROUGHT_75, false);
     }
 
     public static void setTrackingDoneWithEventTypePlayThrought75(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_PLAY_THROUGHT_75, isDone);
         editor.apply();
@@ -130,11 +178,17 @@ public class UZTrackingUtil {
 
     //Event type play_through 100
     public static boolean isTrackedEventTypePlayThrought100(Context context) {
+        if (context == null) {
+            return false;
+        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(E_PLAY_THROUGHT_100, false);
     }
 
     public static void setTrackingDoneWithEventTypePlayThrought100(Context context, boolean isDone) {
+        if (context == null) {
+            return;
+        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(E_PLAY_THROUGHT_100, isDone);
         editor.apply();

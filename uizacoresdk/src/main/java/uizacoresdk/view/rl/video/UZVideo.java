@@ -50,7 +50,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -141,7 +140,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    private Gson gson = new Gson();//TODO remove gson later
+    //private Gson gson = new Gson();
     private View bkg;
     private RelativeLayout rootView;
     private UZPlayerManager uzPlayerManager;
@@ -221,12 +220,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void onCreate() {
         EventBus.getDefault().register(this);
         activity = (Activity) getContext();
-        //UZUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
         isTV = LDeviceUtil.isTV(activity);
-        LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
@@ -413,12 +410,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setControllerShowTimeoutMs(0);
         isPlayerControllerAlwayVisible = true;
     }
-
-    public void setIsUsedVDHView(boolean isUseVDHView) {
-        if (uzPlayerView != null) {
-            uzPlayerView.setIsUsedVDHView(isUseVDHView);
-        }
-    }
     //========================================================================END CONFIG
 
     private boolean isSetFirstRequestFocusDone;
@@ -476,6 +467,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 return;
             }
         } else {
+            //UZData.getInstance().setFirstResizeLayout(true);
             timestampBeforeInitNewSession = System.currentTimeMillis();
             timestampOnStartPreview = 0;
             maxSeekLastDuration = 0;
@@ -533,6 +525,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void initCustomLinkPlay(@NonNull String linkPlay, boolean isLivestream) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "init linkPlay " + linkPlay);
+        //UZData.getInstance().setFirstResizeLayout(true);
         isInitCustomLinkPlay = true;
         isCalledFromChangeSkin = false;
         setVisibilityOfPlaylistFolderController(View.GONE);
@@ -2226,6 +2219,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * return true if success
      */
     public boolean changeSkin(int skinId) {
+        if (UZData.getInstance().isUseWithVDHView()) {
+            throw new IllegalArgumentException("You cannot change skin because you use UZVideo with VDHView.");
+        }
         //LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
             return false;
@@ -2247,7 +2243,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView.setLayoutParams(lp);
         rootView.addView(uzPlayerView);
         rootView.requestLayout();
-
         findViews();
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         updateUIEachSkin();

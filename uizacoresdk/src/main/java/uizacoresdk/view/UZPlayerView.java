@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.List;
 
+import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 
@@ -137,7 +138,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
                 }
         }*/
 
-        if (isUseVDHView) {
+        if (UZData.getInstance().isUseWithVDHView()) {
             return false;
         } else {
             mDetector.onTouchEvent(ev);
@@ -146,12 +147,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         //mDetector.onTouchEvent(ev);
         //return true;
-    }
-
-    private boolean isUseVDHView;
-
-    public void setIsUsedVDHView(boolean isUseVDHView) {
-        this.isUseVDHView = isUseVDHView;
     }
 
     public interface OnTouchEvent {

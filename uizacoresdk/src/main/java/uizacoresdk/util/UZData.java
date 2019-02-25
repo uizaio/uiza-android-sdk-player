@@ -481,4 +481,14 @@ public class UZData {
         }
         return uzInput.getData();
     }
+
+    private boolean isUseWithVDHView;
+
+    public boolean isUseWithVDHView() {
+        return isUseWithVDHView;
+    }
+
+    public void setUseWithVDHView(boolean isUseWithVDHView) {
+        this.isUseWithVDHView = isUseWithVDHView;
+    }
 }

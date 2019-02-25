@@ -1,8 +1,6 @@
 package testlibuiza.sample.v3.slide;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
@@ -36,11 +33,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         activity = this;
         UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        UZUtil.setUseWithVDHView(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_0);
-        if (LSApplication.DF_DOMAIN_API.equals("input")) {
-            showDialogInitWorkspace();
-        }
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         vdhv = (VDHView) findViewById(R.id.vdhv);
         tv0 = (TextView) findViewById(R.id.tv_0);
@@ -48,7 +43,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         tv2 = (TextView) findViewById(R.id.tv_2);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
-        uzVideo.setIsUsedVDHView(true);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         findViewById(R.id.bt_toast).setOnClickListener(new View.OnClickListener() {
@@ -132,12 +126,14 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_appear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                uzVideo.resumeVideo();
                 vdhv.appear();
             }
         });
         findViewById(R.id.bt_disappear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                uzVideo.pauseVideo();
                 vdhv.dissappear();
             }
         });
@@ -157,22 +153,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         } else {
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
         }
-    }
-
-    private void showDialogInitWorkspace() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Please correct your workspace's information first..");
-        builder.setCancelable(false);
-        builder.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        onBackPressed();
-                    }
-                });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     @Override
@@ -220,16 +200,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setListener() {
-        if (uzVideo == null || uzVideo.getPlayer() == null) {
-            return;
-        }
-    }
-
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
-            setListener();
+            vdhv.setEnableSlide(true);
         }
     }
 
@@ -257,6 +231,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
+        vdhv.setEnableSlide(!isLandscape);
     }
 
     @Override
@@ -275,7 +250,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onSingleTapConfirmed(float x, float y) {
         if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
-            //do nothing
+            vdhv.maximize();
         } else {
             uzVideo.toggleShowHideController();
         }
