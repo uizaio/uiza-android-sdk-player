@@ -23,6 +23,7 @@ import testlibuiza.sample.v3.error.ErrorActivity;
 import testlibuiza.sample.v3.event.EventActivity;
 import testlibuiza.sample.v3.fb.FBListVideoActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
+import testlibuiza.sample.v3.slide.Slide0Activity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
@@ -99,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.bt_slide_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, Slide0Activity.class);
                 startActivity(intent);
             }
         });
