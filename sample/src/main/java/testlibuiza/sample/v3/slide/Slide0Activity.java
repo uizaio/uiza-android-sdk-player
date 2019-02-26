@@ -10,6 +10,7 @@ import android.widget.TextView;
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -19,7 +20,7 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener {
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -39,6 +40,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
+        uzVideo.addProgressCallback(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -142,6 +144,18 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     public void onResume() {
         super.onResume();
         uzVideo.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        uzVideo.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        uzVideo.onStop();
     }
 
     @Override
@@ -251,5 +265,26 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 uzVideo.resumeVideo();
                 break;
         }
+    }
+
+    @Override
+    public void onAdProgress(int s, int duration, int percent) {
+    }
+
+    @Override
+    public void onAdEnded() {
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
     }
 }

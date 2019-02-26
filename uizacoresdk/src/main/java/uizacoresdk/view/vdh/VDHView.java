@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -448,7 +449,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
-            //LLog.d(TAG, "smoothSlideTo " + positionX + "x" + positionY);
+            LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 

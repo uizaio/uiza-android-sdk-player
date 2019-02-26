@@ -2,6 +2,9 @@ package uizacoresdk.view.rl.video;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -98,6 +101,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.core.utilities.connection.LConectifyService;
 import vn.uiza.data.EventBusData;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -240,6 +244,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             addUIChromecastLayer();
         }
         updateUISizeThumnail();
+        scheduleJob();
     }
 
     //========================================================================START CONFIG
@@ -678,6 +683,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         } else {
             //LLog.d(TAG, "onResume uzPlayerManager == null -> do nothing");
+        }
+    }
+
+    public void onStart() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent startServiceIntent = new Intent(activity, LConectifyService.class);
+            activity.startService(startServiceIntent);
+        }
+    }
+
+    public void onStop() {
+        if (activity == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.stopService(new Intent(activity, LConectifyService.class));
         }
     }
 
@@ -2053,6 +2074,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
+            LLog.d(TAG, "fuck setVideoCover invalidate");
             String urlCover;
             if (urlImgThumbnail == null || urlImgThumbnail.isEmpty()) {
                 if (data == null) {
@@ -2073,6 +2095,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
+            LLog.d(TAG, "fuck removeVideoCover invalidate");
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
@@ -3771,31 +3794,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            LLog.d(TAG, "fuck onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
                     if (uzPlayerManager.getExoPlaybackException() == null) {
-                        //LLog.d(TAG, "onMessageEventConnectEvent do nothing getControllerShowTimeoutMs: " + getControllerShowTimeoutMs());
                         hideController();
                         hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uzPlayerManager.setResumeIfConnectionError();
-                        //LLog.d(TAG, "onMessageEventConnectEvent activityIsPausing " + activityIsPausing);
                         if (!activityIsPausing) {
                             uzPlayerManager.init();
                             if (isCalledFromConnectionEventBus) {
                                 uzPlayerManager.setRunnable();
                                 isCalledFromConnectionEventBus = false;
                             }
-                        } else {
-                            //LLog.d(TAG, "onMessageEventConnectEvent auto call onResume() again");
                         }
                     }
                     resumeVideo();
-                } else {
-                    //LLog.d(TAG, "onMessageEventConnectEvent uzPlayerManager == null");
                 }
             } else {
                 showTvMsg(UZException.ERR_0);
@@ -4086,5 +4103,23 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
     }
+
     //=============================================================================================END CHROMECAST
+    private void scheduleJob() {
+        if (activity == null) {
+            return;
+        }
+        JobInfo myJob = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            myJob = new JobInfo.Builder(0, new ComponentName(activity, LConectifyService.class))
+                    .setRequiresCharging(true)
+                    .setMinimumLatency(1000)
+                    .setOverrideDeadline(2000)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .build();
+            JobScheduler jobScheduler = (JobScheduler) activity.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            jobScheduler.schedule(myJob);
+        }
+    }
 }
