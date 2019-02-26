@@ -407,19 +407,20 @@ public class VDHView extends LinearLayout {
 
     public void minimizeTopRight() {
         if (!isAppear) {
+            LLog.d(TAG, "fuck minimizeTopRight isAppear false -> return");
             return;
         }
         if (isEnableRevertMaxSize) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
+            Log.e(TAG, "fuck Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
         if (!isMinimizedAtLeastOneTime) {
-            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
+            Log.e(TAG, "fuck Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = screenW - sizeWHeaderViewMin * 3 / 2;
         int posY = -sizeHHeaderViewMin;
-        //LLog.d(TAG, "minimizeTopRight " + posX + "x" + posY);
+        //LLog.d(TAG, "fuck minimizeTopRight " + posX + "x" + posY);
         smoothSlideTo(posX, posY);
     }
 
@@ -437,7 +438,7 @@ public class VDHView extends LinearLayout {
         }
         int posX = -sizeWHeaderViewMin / 2;
         int posY = -sizeHHeaderViewMin;
-        LLog.d(TAG, "fuck minimizeTopLeft " + posX + "x" + posY);
+        //LLog.d(TAG, "fuck minimizeTopLeft " + posX + "x" + posY);
         smoothSlideTo(posX, posY);
     }
 
@@ -448,7 +449,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
-            //LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
+            LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 
@@ -503,37 +504,8 @@ public class VDHView extends LinearLayout {
     //private State stateBeforeDissappear;
 
     public void dissappear() {
-        if (state == null) {
-            return;
-        }
-        stateBeforeDissappear = state;
-        //LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeWHeaderView: " + newSizeWHeaderView + ", newSizeHHeaderView: " + newSizeHHeaderView);
-        switch (stateBeforeDissappear) {
-            case TOP:
-            case TOP_RIGHT:
-            case TOP_LEFT:
-                smoothSlideTo(newSizeWHeaderView * 3 / 2, -newSizeHHeaderView);
-                break;
-            case BOTTOM:
-            case BOTTOM_RIGHT:
-            case BOTTOM_LEFT:
-                //smoothSlideTo(getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2, getHeight() - sizeHHeaderViewOriginal);
-
-                //int x = screenW - newSizeWHeaderView * 3 / 2;
-                //int x = getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2;
-                //int x = getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin * 2;
-                int x = screenW;
-
-                //int y = screenH - newSizeHHeaderView * 2;
-                //int y = screenH - newSizeHHeaderView;
-                //int y = screenH - newSizeHHeaderView * 5 / 2;
-                //int y = screenH - sizeHHeaderViewOriginal;
-                //int y = getHeight() - sizeHHeaderViewOriginal;
-                int y = screenH - sizeHHeaderViewOriginal;
-                //LLog.d(TAG, "fuck " + x + " x " + y);
-                smoothSlideTo(x, y);
-                break;
-        }
+        headerView.setVisibility(GONE);
+        bodyView.setVisibility(GONE);
         isAppear = false;
         if (callback != null) {
             callback.onAppear(isAppear);
@@ -542,34 +514,15 @@ public class VDHView extends LinearLayout {
 
     private boolean isAppear = true;
 
-    private State stateBeforeDissappear;
-
     public void appear() {
-        if (stateBeforeDissappear == null) {
-            return;
+        headerView.setVisibility(VISIBLE);
+        bodyView.setVisibility(VISIBLE);
+        LLog.d(TAG, "fuck appear -> isEnableRevertMaxSize " + isEnableRevertMaxSize);
+        if (!isEnableRevertMaxSize) {
+            headerView.setScaleX(1f);
+            headerView.setScaleY(1f);
+            isEnableRevertMaxSize = true;
         }
-        LLog.d(TAG, "fuck appear: " + stateBeforeDissappear);
-        switch (stateBeforeDissappear) {
-            case TOP:
-            case TOP_LEFT:
-            case TOP_RIGHT:
-                if (isEnableRevertMaxSize) {
-                    maximize();
-                } else {
-                    minimizeTopRight();
-                }
-                break;
-            case BOTTOM:
-            case BOTTOM_LEFT:
-            case BOTTOM_RIGHT:
-                if (isEnableRevertMaxSize) {
-                    maximize();
-                } else {
-                    minimizeBottomRight();
-                }
-                break;
-        }
-        stateBeforeDissappear = null;
         isAppear = true;
         if (callback != null) {
             callback.onAppear(isAppear);
