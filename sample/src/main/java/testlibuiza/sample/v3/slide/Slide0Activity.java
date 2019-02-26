@@ -18,7 +18,7 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback {
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -27,14 +27,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private TextView tv2;
     private UZVideo uzVideo;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        UZUtil.setUseWithVDHView(true);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_slide_0);
+    private void findViews() {
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         vdhv = (VDHView) findViewById(R.id.vdhv);
         tv0 = (TextView) findViewById(R.id.tv_0);
@@ -45,37 +38,26 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
-        findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.minimizeBottomLeft();
-            }
-        });
-        findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.minimizeBottomRight();
-            }
-        });
-        findViewById(R.id.bt_minimize_top_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.minimizeTopRight();
-            }
-        });
-        findViewById(R.id.bt_minimize_top_left).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.minimizeTopLeft();
-            }
-        });
-        findViewById(R.id.bt_appear).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.appear();
-                uzVideo.resumeVideo();
-            }
-        });
+        findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
+        findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
+        findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
+        findViewById(R.id.bt_minimize_top_left).setOnClickListener(this);
+        findViewById(R.id.bt_appear).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
+        UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        UZUtil.setUseWithVDHView(true);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_slide_0);
+        findViews();
+        setupContent();
+    }
+
+    private void setupContent() {
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
@@ -95,7 +77,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
-        //LLog.d(TAG, "updateUIRevertMaxChange " + isEnableRevertMaxSize);
         if (isEnableRevertMaxSize) {
             if (vdhv.isMinimizedAtLeastOneTime()) {
                 findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
@@ -247,5 +228,27 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onVisibilityChange(boolean isShow) {
         vdhv.setEnableSlide(!isShow);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_minimize_bottom_left:
+                vdhv.minimizeBottomLeft();
+                break;
+            case R.id.bt_minimize_bottom_right:
+                vdhv.minimizeBottomRight();
+                break;
+            case R.id.bt_minimize_top_right:
+                vdhv.minimizeTopRight();
+                break;
+            case R.id.bt_minimize_top_left:
+                vdhv.minimizeTopLeft();
+                break;
+            case R.id.bt_appear:
+                vdhv.appear();
+                uzVideo.resumeVideo();
+                break;
+        }
     }
 }
