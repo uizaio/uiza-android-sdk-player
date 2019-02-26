@@ -94,14 +94,19 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
+        //LLog.d(TAG, "updateUIRevertMaxChange " + isEnableRevertMaxSize);
         if (isEnableRevertMaxSize) {
             if (vdhv.isMinimizedAtLeastOneTime()) {
                 findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
                 findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
+                findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.VISIBLE);
+                findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.VISIBLE);
             }
         } else {
             findViewById(R.id.bt_minimize_top_right).setVisibility(View.INVISIBLE);
             findViewById(R.id.bt_minimize_top_left).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -133,15 +138,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onAppear(boolean isAppear) {
-        if (isAppear) {
-            findViewById(R.id.bt_appear).setVisibility(View.INVISIBLE);
-        } else {
-            findViewById(R.id.bt_appear).setVisibility(View.VISIBLE);
-            findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.INVISIBLE);
-            findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.INVISIBLE);
-            findViewById(R.id.bt_minimize_top_left).setVisibility(View.INVISIBLE);
-            findViewById(R.id.bt_minimize_top_right).setVisibility(View.INVISIBLE);
-        }
+        findViewById(R.id.bt_appear).setVisibility(isAppear ? View.INVISIBLE : View.VISIBLE);
+        updateUIRevertMaxChange(vdhv.isEnableRevertMaxSize());
     }
 
     @Override
@@ -218,11 +216,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+        /*if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
         } else {
             uzVideo.toggleShowHideController();
-            //updateUIRevertMaxChange(vdhv.isEnableRevertMaxSize());
-        }
+        }*/
     }
 
     @Override

@@ -57,22 +57,20 @@
                     android:id="@+id/bt_minimize_top_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Minimize Top Right"
-                    android:visibility="invisible" />
+                    android:text="Minimize Top Right" />
 
                 <Button
                     android:id="@+id/bt_minimize_top_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Minimize Top Left"
-                    android:visibility="invisible" />
+                    android:text="Minimize Top Left" />
 
                 <Button
                     android:id="@+id/bt_appear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:text="Appear" />
+                    android:text="Appear"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:layout_width="match_parent"
