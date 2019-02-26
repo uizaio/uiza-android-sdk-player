@@ -599,9 +599,6 @@ public class VDHView extends LinearLayout {
             } else {
                 setEnableRevertMaxSize(true);
             }
-            /*if (state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT || state == VDHView.State.BOTTOM) {
-                maximize();
-            }*/
             maximize();
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());

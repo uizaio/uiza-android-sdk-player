@@ -217,10 +217,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
-        } else {
-            uzVideo.toggleShowHideController();
-        }
+        uzVideo.toggleShowHideController();
     }
 
     @Override
