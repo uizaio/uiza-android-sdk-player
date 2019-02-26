@@ -156,6 +156,12 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        uzVideo.onStart();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         uzVideo.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);

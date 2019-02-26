@@ -150,18 +150,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        uzVideo.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        uzVideo.onStop();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         uzVideo.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);

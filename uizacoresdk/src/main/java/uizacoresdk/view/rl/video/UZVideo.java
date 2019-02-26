@@ -223,8 +223,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void onCreate() {
-        EventBus.getDefault().register(this);
         activity = (Activity) getContext();
+        EventBus.getDefault().register(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent startServiceIntent = new Intent(activity, LConectifyService.class);
+            activity.startService(startServiceIntent);
+        }
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
@@ -666,6 +670,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         cdnHost = null;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
         EventBus.getDefault().unregister(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.stopService(new Intent(activity, LConectifyService.class));
+        }
     }
 
     public void onResume() {
@@ -687,7 +694,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    public void onStart() {
+    /*public void onStart() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent startServiceIntent = new Intent(activity, LConectifyService.class);
             activity.startService(startServiceIntent);
@@ -701,7 +708,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.stopService(new Intent(activity, LConectifyService.class));
         }
-    }
+    }*/
 
     public boolean isPlaying() {
         if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
@@ -3791,11 +3798,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //=============================================================================================START EVENTBUS
     private boolean isCalledFromConnectionEventBus = false;
 
-    //listen connnection
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
+            LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
