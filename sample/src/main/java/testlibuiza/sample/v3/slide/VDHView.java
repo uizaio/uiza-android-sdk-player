@@ -436,6 +436,11 @@ public class VDHView extends LinearLayout {
 
     public void setEnableRevertMaxSize(boolean enableRevertMaxSize) {
         this.isEnableRevertMaxSize = enableRevertMaxSize;
+        if (isEnableRevertMaxSize) {
+            setVisibilityBodyView(VISIBLE);
+        } else {
+            setVisibilityBodyView(INVISIBLE);
+        }
         if (callback != null) {
             callback.onEnableRevertMaxSize(isEnableRevertMaxSize);
         }
@@ -456,6 +461,10 @@ public class VDHView extends LinearLayout {
             bodyView.setVisibility(VISIBLE);
         }
     }*/
+
+    private void setVisibilityBodyView(int visibilityBodyView) {
+        bodyView.setVisibility(visibilityBodyView);
+    }
 
     public void onPause() {
         if (!isEnableRevertMaxSize) {
@@ -484,8 +493,6 @@ public class VDHView extends LinearLayout {
                 smoothSlideTo(-newSizeWHeaderView, screenH);
                 break;
         }
-        headerView.setVisibility(INVISIBLE);
-        bodyView.setVisibility(INVISIBLE);
     }
 
     public void appear() {
@@ -493,8 +500,6 @@ public class VDHView extends LinearLayout {
             return;
         }
         //LLog.d(TAG, "appear: " + partBeforeDissappear);
-        headerView.setVisibility(VISIBLE);
-        bodyView.setVisibility(VISIBLE);
         switch (partBeforeDissappear) {
             case TOP_RIGHT:
                 if (isEnableRevertMaxSize) {

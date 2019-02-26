@@ -122,21 +122,24 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
         if (isEnableRevertMaxSize) {
-            findViewById(R.id.bt_maximize).setVisibility(View.GONE);
+            findViewById(R.id.bt_maximize).setVisibility(View.INVISIBLE);
             if (vdhv.isMinimizedAtLeastOneTime()) {
                 findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
                 findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
             }
         } else {
             findViewById(R.id.bt_maximize).setVisibility(View.VISIBLE);
-            findViewById(R.id.bt_minimize_top_right).setVisibility(View.GONE);
-            findViewById(R.id.bt_minimize_top_left).setVisibility(View.GONE);
+            findViewById(R.id.bt_minimize_top_right).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_top_left).setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
     public void onStateChange(VDHView.State state) {
         tv0.setText("onStateChange: " + state.name());
+        if (state == VDHView.State.BOTTOM || state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT) {
+            vdhv.setEnableRevertMaxSize(false);
+        }
     }
 
     @Override
