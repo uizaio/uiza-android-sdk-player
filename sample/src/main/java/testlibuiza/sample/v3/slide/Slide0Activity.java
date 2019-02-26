@@ -73,6 +73,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             @Override
             public void onClick(View view) {
                 vdhv.appear();
+                uzVideo.resumeVideo();
             }
         });
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -216,10 +217,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        /*if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
         } else {
             uzVideo.toggleShowHideController();
-        }*/
+        }
     }
 
     @Override
