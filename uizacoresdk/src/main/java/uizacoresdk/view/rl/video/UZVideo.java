@@ -17,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -2074,7 +2075,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
-            LLog.d(TAG, "fuck setVideoCover invalidate");
+            //LLog.d(TAG, "setVideoCover invalidate");
             String urlCover;
             if (urlImgThumbnail == null || urlImgThumbnail.isEmpty()) {
                 if (data == null) {
@@ -2095,7 +2096,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
-            LLog.d(TAG, "fuck removeVideoCover invalidate");
+            //LLog.d(TAG, "removeVideoCover invalidate");
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
@@ -2411,13 +2412,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             layoutParams.height = (int) (widthIv * Constants.RATIO_9_16);
             previewFrameLayout.setLayoutParams(layoutParams);
             previewFrameLayout.requestLayout();
-            LLog.d(TAG, "fuck requestLayout updateUISizeThumnail");
+            //LLog.d(TAG, "requestLayout updateUISizeThumnail");
         }
     }
 
     private void setMarginPreviewTimeBar() {
         if (uzTimebar == null) {
-            LLog.e(TAG, "setMarginPreviewTimeBar uzTimebar == null");
+            Log.e(TAG, "setMarginPreviewTimeBar uzTimebar == null");
             return;
         }
         if (isLandscape) {
