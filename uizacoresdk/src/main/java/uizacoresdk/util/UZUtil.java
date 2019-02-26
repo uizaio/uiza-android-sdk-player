@@ -76,7 +76,7 @@ public class UZUtil {
             LLog.d(TAG, "resizeLayout isUseWithVDHView -> return");
             return;
         }*/
-        LLog.d(TAG, "resizeLayout");
+        LLog.d(TAG, "fuck resizeLayout");
         if (viewGroup == null) {
             return;
         }

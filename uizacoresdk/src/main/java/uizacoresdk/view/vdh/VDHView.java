@@ -1,4 +1,4 @@
-package testlibuiza.sample.v3.slide;
+package uizacoresdk.view.vdh;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import testlibuiza.R;
+import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
 

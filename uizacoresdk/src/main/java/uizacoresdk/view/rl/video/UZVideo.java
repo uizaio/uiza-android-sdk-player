@@ -2219,12 +2219,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
      * return true if success
      */
     public boolean changeSkin(int skinId) {
-        if (UZData.getInstance().isUseWithVDHView()) {
-            throw new IllegalArgumentException("You cannot change skin because you use UZVideo with VDHView.");
-        }
-        //LLog.d(TAG, "changeSkin skinId " + skinId);
         if (activity == null || uzPlayerManager == null) {
             return false;
+        }
+        if (UZData.getInstance().isUseWithVDHView()) {
+            throw new IllegalArgumentException(activity.getString(R.string.error_change_skin_with_vdhview));
         }
         if (uzPlayerManager.isPlayingAd()) {
             if (uzCallback != null) {
@@ -2389,6 +2388,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             layoutParams.height = (int) (widthIv * Constants.RATIO_9_16);
             previewFrameLayout.setLayoutParams(layoutParams);
             previewFrameLayout.requestLayout();
+            LLog.d(TAG, "fuck requestLayout updateUISizeThumnail");
         }
     }
 

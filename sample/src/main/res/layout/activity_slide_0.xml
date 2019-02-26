@@ -82,7 +82,7 @@
         </ScrollView>
     </LinearLayout>
 
-    <testlibuiza.sample.v3.slide.VDHView
+    <uizacoresdk.view.vdh.VDHView
         android:id="@+id/vdhv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -112,6 +112,6 @@
                 android:text="@string/large_text"
                 android:textColor="@color/White" />
         </ScrollView>
-    </testlibuiza.sample.v3.slide.VDHView>
+    </uizacoresdk.view.vdh.VDHView>
 </RelativeLayout>
 
