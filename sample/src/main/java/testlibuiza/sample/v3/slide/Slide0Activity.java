@@ -78,8 +78,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_appear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.resumeVideo();
                 vdhv.appear();
+                uzVideo.resumeVideo();
             }
         });
         findViewById(R.id.bt_disappear).setOnClickListener(new View.OnClickListener() {
@@ -221,7 +221,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        uzVideo.toggleShowHideController();
+        if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
+        } else {
+            uzVideo.toggleShowHideController();
+        }
     }
 
     @Override
