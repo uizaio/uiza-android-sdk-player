@@ -262,7 +262,7 @@ public class VDHView extends LinearLayout {
     private void changePart(Part newPart) {
         if (part != newPart) {
             part = newPart;
-            LLog.d(TAG, "fuck changePart: " + part);
+            //LLog.d(TAG, "changePart: " + part);
             if (callback != null) {
                 callback.onPartChange(part);
             }
@@ -484,13 +484,27 @@ public class VDHView extends LinearLayout {
             return;
         }
         stateBeforeDissappear = state;
-        LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeHHeaderView: " + newSizeHHeaderView);
+        LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeWHeaderView: " + newSizeWHeaderView + ", newSizeHHeaderView: " + newSizeHHeaderView);
         switch (stateBeforeDissappear) {
             case TOP:
                 smoothSlideTo(newSizeWHeaderView * 3 / 2, -newSizeHHeaderView);
                 break;
             case BOTTOM:
-                smoothSlideTo(newSizeWHeaderView, screenH - newSizeHHeaderView * 5 / 2);
+                //smoothSlideTo(getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2, getHeight() - sizeHHeaderViewOriginal);
+
+                //int x = screenW - newSizeWHeaderView * 3 / 2;
+                //int x = getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2;
+                //int x = getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin * 2;
+                int x = screenW;
+
+                //int y = screenH - newSizeHHeaderView * 2;
+                //int y = screenH - newSizeHHeaderView;
+                //int y = screenH - newSizeHHeaderView * 5 / 2;
+                //int y = screenH - sizeHHeaderViewOriginal;
+                //int y = getHeight() - sizeHHeaderViewOriginal;
+                int y = screenH - sizeHHeaderViewOriginal;
+                LLog.d(TAG, "fuck " + x + " x " + y);
+                smoothSlideTo(x, y);
                 break;
         }
     }

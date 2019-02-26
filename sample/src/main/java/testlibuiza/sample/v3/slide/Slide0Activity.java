@@ -85,8 +85,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_disappear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.pauseVideo();
                 vdhv.dissappear();
+                uzVideo.pauseVideo();
             }
         });
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
