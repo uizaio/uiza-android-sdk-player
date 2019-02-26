@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import testlibuiza.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -407,20 +406,20 @@ public class VDHView extends LinearLayout {
 
     public void minimizeTopRight() {
         if (!isAppear) {
-            LLog.d(TAG, "fuck minimizeTopRight isAppear false -> return");
+            //LLog.d(TAG, "minimizeTopRight isAppear false -> return");
             return;
         }
         if (isEnableRevertMaxSize) {
-            Log.e(TAG, "fuck Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
+            Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
         }
         if (!isMinimizedAtLeastOneTime) {
-            Log.e(TAG, "fuck Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
+            Log.e(TAG, "Error: cannot minimizeTopRight because isMinimizedAtLeastOneTime is false. This function only works if the header view is scrolled BOTTOM");
             return;
         }
         int posX = screenW - sizeWHeaderViewMin * 3 / 2;
         int posY = -sizeHHeaderViewMin;
-        //LLog.d(TAG, "fuck minimizeTopRight " + posX + "x" + posY);
+        //LLog.d(TAG, "minimizeTopRight " + posX + "x" + posY);
         smoothSlideTo(posX, posY);
     }
 
@@ -438,7 +437,7 @@ public class VDHView extends LinearLayout {
         }
         int posX = -sizeWHeaderViewMin / 2;
         int posY = -sizeHHeaderViewMin;
-        //LLog.d(TAG, "fuck minimizeTopLeft " + posX + "x" + posY);
+        //LLog.d(TAG, "minimizeTopLeft " + posX + "x" + posY);
         smoothSlideTo(posX, posY);
     }
 
@@ -449,7 +448,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
-            LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
+            //LLog.d(TAG, "smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 
@@ -517,7 +516,7 @@ public class VDHView extends LinearLayout {
     public void appear() {
         headerView.setVisibility(VISIBLE);
         bodyView.setVisibility(VISIBLE);
-        LLog.d(TAG, "fuck appear -> isEnableRevertMaxSize " + isEnableRevertMaxSize);
+        //LLog.d(TAG, "appear -> isEnableRevertMaxSize " + isEnableRevertMaxSize);
         if (!isEnableRevertMaxSize) {
             headerView.setScaleX(1f);
             headerView.setScaleY(1f);
