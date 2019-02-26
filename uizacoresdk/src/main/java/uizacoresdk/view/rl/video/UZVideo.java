@@ -658,6 +658,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (UZUtil.getClickedPip(activity)) {
             UZUtil.stopMiniPlayer(activity);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.stopService(new Intent(activity, LConectifyService.class));
+        }
         activity = null;
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
@@ -670,9 +673,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         cdnHost = null;
         //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
         EventBus.getDefault().unregister(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.stopService(new Intent(activity, LConectifyService.class));
-        }
     }
 
     public void onResume() {
