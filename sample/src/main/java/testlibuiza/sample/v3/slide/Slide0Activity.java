@@ -82,30 +82,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 vdhv.minimizeTopLeft();
             }
         });
-        findViewById(R.id.bt_alpha).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.setEnableAlpha(!vdhv.isEnableAlpha());
-            }
-        });
-        findViewById(R.id.bt_show_hide_header).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.toggleShowHideHeaderView();
-            }
-        });
-        findViewById(R.id.bt_show_hide_body).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.toggleShowHideBodyView();
-            }
-        });
-        findViewById(R.id.bt_slide_to_position).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.smoothSlideTo(300, 600);
-            }
-        });
         findViewById(R.id.bt_revert_max).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

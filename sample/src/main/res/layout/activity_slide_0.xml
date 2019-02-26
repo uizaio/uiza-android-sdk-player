@@ -92,24 +92,6 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/bt_slide_to_position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Slide to position" />
-
-                <Button
-                    android:id="@+id/bt_show_hide_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Show/Hide header" />
-
-                <Button
-                    android:id="@+id/bt_show_hide_body"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Show/Hide body" />
-
-                <Button
                     android:id="@+id/bt_appear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

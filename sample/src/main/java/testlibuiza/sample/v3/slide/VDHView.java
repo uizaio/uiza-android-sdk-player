@@ -30,7 +30,6 @@ public class VDHView extends LinearLayout {
     //private float mInitialMotionY;
     private int mDragRange;
     private float mDragOffset;
-    private boolean isEnableAlpha = true;
     private boolean isEnableRevertMaxSize = true;
     private boolean isMinimizedAtLeastOneTime;//header view is scaled at least 1
     private int sizeWHeaderViewOriginal;
@@ -122,13 +121,7 @@ public class VDHView extends LinearLayout {
             int x = 0;
             int y = headerView.getHeight() + top;
             bodyView.layout(x, y, x + bodyView.getMeasuredWidth(), y + bodyView.getMeasuredHeight());
-            if (isEnableAlpha) {
-                bodyView.setAlpha(1 - mDragOffset / 2);
-            } else {
-                if (bodyView.getAlpha() != 1f) {
-                    bodyView.setAlpha(1f);
-                }
-            }
+            bodyView.setAlpha(1 - mDragOffset / 2);
 
             if (isMinimizedAtLeastOneTime) {
                 if (isEnableRevertMaxSize) {
@@ -437,14 +430,6 @@ public class VDHView extends LinearLayout {
         return isMinimizedAtLeastOneTime;
     }
 
-    public boolean isEnableAlpha() {
-        return isEnableAlpha;
-    }
-
-    public void setEnableAlpha(boolean enableAlpha) {
-        isEnableAlpha = enableAlpha;
-    }
-
     public boolean isEnableRevertMaxSize() {
         return isEnableRevertMaxSize;
     }
@@ -456,7 +441,7 @@ public class VDHView extends LinearLayout {
         }
     }
 
-    public void toggleShowHideHeaderView() {
+    /*private void toggleShowHideHeaderView() {
         if (headerView.getVisibility() == VISIBLE) {
             headerView.setVisibility(INVISIBLE);
         } else {
@@ -464,31 +449,75 @@ public class VDHView extends LinearLayout {
         }
     }
 
-    public void toggleShowHideBodyView() {
+    private void toggleShowHideBodyView() {
         if (bodyView.getVisibility() == VISIBLE) {
-            bodyView.setVisibility(GONE);
+            bodyView.setVisibility(INVISIBLE);
         } else {
             bodyView.setVisibility(VISIBLE);
         }
-    }
+    }*/
 
     public void onPause() {
         if (!isEnableRevertMaxSize) {
             minimizeBottomRight();
             headerView.setVisibility(INVISIBLE);
-            bodyView.setVisibility(GONE);
+            bodyView.setVisibility(INVISIBLE);
         }
     }
 
+    private Part partBeforeDissappear;
+
     public void dissappear() {
+        partBeforeDissappear = part;
+        LLog.d(TAG, "fuck dissappear: " + partBeforeDissappear);
+        switch (part) {
+            case TOP_RIGHT:
+                smoothSlideTo(newSizeWHeaderView, 0);
+                break;
+            case TOP_LEFT:
+                smoothSlideTo(-newSizeWHeaderView, 0);
+                break;
+            case BOTTOM_RIGHT:
+                smoothSlideTo(newSizeWHeaderView, screenH);
+                break;
+            case BOTTOM_LEFT:
+                smoothSlideTo(-newSizeWHeaderView, screenH);
+                break;
+        }
         headerView.setVisibility(INVISIBLE);
-        bodyView.setVisibility(GONE);
-        maximize();
+        bodyView.setVisibility(INVISIBLE);
     }
 
     public void appear() {
+        if (partBeforeDissappear == null) {
+            return;
+        }
+        LLog.d(TAG, "fuck appear: " + partBeforeDissappear);
         headerView.setVisibility(VISIBLE);
         bodyView.setVisibility(VISIBLE);
+        switch (partBeforeDissappear) {
+            case TOP_RIGHT:
+                if (isEnableRevertMaxSize) {
+                    maximize();
+                } else {
+                    minimizeTopRight();
+                }
+                break;
+            case TOP_LEFT:
+                if (isEnableRevertMaxSize) {
+                    maximize();
+                } else {
+                    minimizeTopLeft();
+                }
+                break;
+            case BOTTOM_RIGHT:
+                minimizeBottomRight();
+                break;
+            case BOTTOM_LEFT:
+                minimizeBottomLeft();
+                break;
+        }
+        partBeforeDissappear = null;
     }
 
     private boolean isEnableSlide;
