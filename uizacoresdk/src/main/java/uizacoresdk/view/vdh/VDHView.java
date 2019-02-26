@@ -514,6 +514,10 @@ public class VDHView extends LinearLayout {
 
     private boolean isAppear = true;
 
+    public boolean isAppear() {
+        return isAppear;
+    }
+
     public void appear() {
         headerView.setVisibility(VISIBLE);
         bodyView.setVisibility(VISIBLE);
