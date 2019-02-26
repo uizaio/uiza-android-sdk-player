@@ -150,7 +150,7 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
+            //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
 
             if (mDragOffset == 0) {
                 //top_left, top, top_right
@@ -246,6 +246,11 @@ public class VDHView extends LinearLayout {
         @Override
         public void onEdgeDragStarted(int edgeFlags, int pointerId) {
         }
+
+        /*@Override
+        public void onViewDragStateChanged(int state) {
+            super.onViewDragStateChanged(state);
+        }*/
     };
 
     private void changeState(State newState) {
@@ -432,7 +437,7 @@ public class VDHView extends LinearLayout {
         }
         int posX = -sizeWHeaderViewMin / 2;
         int posY = -sizeHHeaderViewMin;
-        //LLog.d(TAG, "minimizeTopRight " + posX + "x" + posY);
+        LLog.d(TAG, "fuck minimizeTopLeft " + posX + "x" + posY);
         smoothSlideTo(posX, posY);
     }
 
@@ -443,6 +448,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
+            //LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 
@@ -497,16 +503,20 @@ public class VDHView extends LinearLayout {
     //private State stateBeforeDissappear;
 
     public void dissappear() {
-        /*if (state == null) {
+        if (state == null) {
             return;
         }
         stateBeforeDissappear = state;
-        LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeWHeaderView: " + newSizeWHeaderView + ", newSizeHHeaderView: " + newSizeHHeaderView);
+        //LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeWHeaderView: " + newSizeWHeaderView + ", newSizeHHeaderView: " + newSizeHHeaderView);
         switch (stateBeforeDissappear) {
             case TOP:
+            case TOP_RIGHT:
+            case TOP_LEFT:
                 smoothSlideTo(newSizeWHeaderView * 3 / 2, -newSizeHHeaderView);
                 break;
             case BOTTOM:
+            case BOTTOM_RIGHT:
+            case BOTTOM_LEFT:
                 //smoothSlideTo(getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2, getHeight() - sizeHHeaderViewOriginal);
 
                 //int x = screenW - newSizeWHeaderView * 3 / 2;
@@ -520,12 +530,10 @@ public class VDHView extends LinearLayout {
                 //int y = screenH - sizeHHeaderViewOriginal;
                 //int y = getHeight() - sizeHHeaderViewOriginal;
                 int y = screenH - sizeHHeaderViewOriginal;
-                LLog.d(TAG, "fuck " + x + " x " + y);
+                //LLog.d(TAG, "fuck " + x + " x " + y);
                 smoothSlideTo(x, y);
                 break;
-        }*/
-        headerView.setVisibility(INVISIBLE);
-        bodyView.setVisibility(INVISIBLE);
+        }
         isAppear = false;
         if (callback != null) {
             callback.onAppear(isAppear);
@@ -534,13 +542,17 @@ public class VDHView extends LinearLayout {
 
     private boolean isAppear = true;
 
+    private State stateBeforeDissappear;
+
     public void appear() {
-        /*if (stateBeforeDissappear == null) {
+        if (stateBeforeDissappear == null) {
             return;
         }
         LLog.d(TAG, "fuck appear: " + stateBeforeDissappear);
         switch (stateBeforeDissappear) {
             case TOP:
+            case TOP_LEFT:
+            case TOP_RIGHT:
                 if (isEnableRevertMaxSize) {
                     maximize();
                 } else {
@@ -548,6 +560,8 @@ public class VDHView extends LinearLayout {
                 }
                 break;
             case BOTTOM:
+            case BOTTOM_LEFT:
+            case BOTTOM_RIGHT:
                 if (isEnableRevertMaxSize) {
                     maximize();
                 } else {
@@ -555,12 +569,7 @@ public class VDHView extends LinearLayout {
                 }
                 break;
         }
-        stateBeforeDissappear = null;*/
-        headerView.setVisibility(VISIBLE);
-        //maximize();
-        if (isEnableRevertMaxSize) {
-            bodyView.setVisibility(VISIBLE);
-        }
+        stateBeforeDissappear = null;
         isAppear = true;
         if (callback != null) {
             callback.onAppear(isAppear);
