@@ -3794,7 +3794,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusData.ConnectEvent event) {
         if (event != null) {
-            LLog.d(TAG, "fuck onMessageEventConnectEvent isConnected: " + event.isConnected());
+            //LLog.d(TAG, "onMessageEventConnectEvent isConnected: " + event.isConnected());
             if (event.isConnected()) {
                 if (uzPlayerManager != null) {
                     LDialogUtil.clearAll();
