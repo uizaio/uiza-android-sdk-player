@@ -42,24 +42,6 @@
                     android:textSize="@dimen/txt_8" />
 
                 <Button
-                    android:id="@+id/bt_toast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Show toast" />
-
-                <Button
-                    android:id="@+id/bt_alpha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Enable/Disable alpha" />
-
-                <Button
-                    android:id="@+id/bt_revert_max"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Enable/Disable isEnableRevertMaxSize" />
-
-                <Button
                     android:id="@+id/bt_maximize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

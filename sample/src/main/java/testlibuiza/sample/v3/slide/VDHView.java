@@ -250,6 +250,9 @@ public class VDHView extends LinearLayout {
         if (state != newState) {
             state = newState;
             //LLog.d(TAG, "changeState: " + newState);
+            if (state == VDHView.State.BOTTOM || state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT) {
+                setEnableRevertMaxSize(false);
+            }
             if (callback != null) {
                 callback.onStateChange(state);
             }
@@ -259,7 +262,7 @@ public class VDHView extends LinearLayout {
     private void changePart(Part newPart) {
         if (part != newPart) {
             part = newPart;
-            //LLog.d(TAG, "changePart: " + part);
+            LLog.d(TAG, "fuck changePart: " + part);
             if (callback != null) {
                 callback.onPartChange(part);
             }
@@ -434,7 +437,7 @@ public class VDHView extends LinearLayout {
         return isEnableRevertMaxSize;
     }
 
-    public void setEnableRevertMaxSize(boolean enableRevertMaxSize) {
+    private void setEnableRevertMaxSize(boolean enableRevertMaxSize) {
         this.isEnableRevertMaxSize = enableRevertMaxSize;
         if (isEnableRevertMaxSize) {
             setVisibilityBodyView(VISIBLE);
@@ -474,55 +477,46 @@ public class VDHView extends LinearLayout {
         }
     }
 
-    private Part partBeforeDissappear;
+    private State stateBeforeDissappear;
 
     public void dissappear() {
-        partBeforeDissappear = part;
-        //LLog.d(TAG, "dissappear: " + partBeforeDissappear);
-        switch (part) {
-            case TOP_RIGHT:
-                smoothSlideTo(newSizeWHeaderView, 0);
+        if (state == null) {
+            return;
+        }
+        stateBeforeDissappear = state;
+        LLog.d(TAG, "fuck dissappear: " + stateBeforeDissappear + ", newSizeHHeaderView: " + newSizeHHeaderView);
+        switch (stateBeforeDissappear) {
+            case TOP:
+                smoothSlideTo(newSizeWHeaderView * 3 / 2, -newSizeHHeaderView);
                 break;
-            case TOP_LEFT:
-                smoothSlideTo(-newSizeWHeaderView, 0);
-                break;
-            case BOTTOM_RIGHT:
-                smoothSlideTo(newSizeWHeaderView, screenH);
-                break;
-            case BOTTOM_LEFT:
-                smoothSlideTo(-newSizeWHeaderView, screenH);
+            case BOTTOM:
+                smoothSlideTo(newSizeWHeaderView, screenH - newSizeHHeaderView * 5 / 2);
                 break;
         }
     }
 
     public void appear() {
-        if (partBeforeDissappear == null) {
+        if (stateBeforeDissappear == null) {
             return;
         }
-        //LLog.d(TAG, "appear: " + partBeforeDissappear);
-        switch (partBeforeDissappear) {
-            case TOP_RIGHT:
+        LLog.d(TAG, "fuck appear: " + stateBeforeDissappear);
+        switch (stateBeforeDissappear) {
+            case TOP:
                 if (isEnableRevertMaxSize) {
                     maximize();
                 } else {
                     minimizeTopRight();
                 }
                 break;
-            case TOP_LEFT:
+            case BOTTOM:
                 if (isEnableRevertMaxSize) {
                     maximize();
                 } else {
-                    minimizeTopLeft();
+                    minimizeBottomRight();
                 }
                 break;
-            case BOTTOM_RIGHT:
-                minimizeBottomRight();
-                break;
-            case BOTTOM_LEFT:
-                minimizeBottomLeft();
-                break;
         }
-        partBeforeDissappear = null;
+        stateBeforeDissappear = null;
     }
 
     private boolean isEnableSlide;
@@ -553,6 +547,13 @@ public class VDHView extends LinearLayout {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
+            if (isEnableRevertMaxSize) {
+            } else {
+                setEnableRevertMaxSize(true);
+            }
+            if (state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT || state == VDHView.State.BOTTOM) {
+                maximize();
+            }
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -46,12 +45,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
-        findViewById(R.id.bt_toast).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(activity, "Click", Toast.LENGTH_SHORT).show();
-            }
-        });
         findViewById(R.id.bt_maximize).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,12 +73,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             @Override
             public void onClick(View view) {
                 vdhv.minimizeTopLeft();
-            }
-        });
-        findViewById(R.id.bt_revert_max).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.setEnableRevertMaxSize(!vdhv.isEnableRevertMaxSize());
             }
         });
         findViewById(R.id.bt_appear).setOnClickListener(new View.OnClickListener() {
@@ -137,9 +124,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onStateChange(VDHView.State state) {
         tv0.setText("onStateChange: " + state.name());
-        if (state == VDHView.State.BOTTOM || state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT) {
-            vdhv.setEnableRevertMaxSize(false);
-        }
     }
 
     @Override
@@ -237,21 +221,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        if (vdhv.isEnableRevertMaxSize()) {
-            if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
-                vdhv.maximize();
-            } else {
-                uzVideo.toggleShowHideController();
-            }
-        } else {
-            vdhv.setEnableRevertMaxSize(true);
-            if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
-                vdhv.maximize();
-            } else {
-                uzVideo.toggleShowHideController();
-            }
-            //vdhv.setEnableRevertMaxSize(false);
-        }
+        uzVideo.toggleShowHideController();
     }
 
     @Override
