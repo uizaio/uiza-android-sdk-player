@@ -469,7 +469,7 @@ public class VDHView extends LinearLayout {
 
     public void dissappear() {
         partBeforeDissappear = part;
-        LLog.d(TAG, "fuck dissappear: " + partBeforeDissappear);
+        //LLog.d(TAG, "dissappear: " + partBeforeDissappear);
         switch (part) {
             case TOP_RIGHT:
                 smoothSlideTo(newSizeWHeaderView, 0);
@@ -492,7 +492,7 @@ public class VDHView extends LinearLayout {
         if (partBeforeDissappear == null) {
             return;
         }
-        LLog.d(TAG, "fuck appear: " + partBeforeDissappear);
+        //LLog.d(TAG, "appear: " + partBeforeDissappear);
         headerView.setVisibility(VISIBLE);
         bodyView.setVisibility(VISIBLE);
         switch (partBeforeDissappear) {
