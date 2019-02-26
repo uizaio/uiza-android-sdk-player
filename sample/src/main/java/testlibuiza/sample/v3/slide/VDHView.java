@@ -66,6 +66,8 @@ public class VDHView extends LinearLayout {
         public void onOverScroll(State state, Part part);
 
         public void onEnableRevertMaxSize(boolean isEnableRevertMaxSize);
+
+        public void onAppear(boolean isAppear);
     }
 
     private Callback callback;
@@ -365,7 +367,7 @@ public class VDHView extends LinearLayout {
         return part;
     }
 
-    public void maximize() {
+    private void maximize() {
         if (isEnableRevertMaxSize) {
             smoothSlideTo(0, 0);
         } else {
@@ -379,6 +381,9 @@ public class VDHView extends LinearLayout {
     }*/
 
     public void minimizeBottomLeft() {
+        if (!isAppear) {
+            return;
+        }
         int posX = getWidth() - sizeWHeaderViewOriginal - sizeWHeaderViewMin / 2;
         int posY = getHeight() - sizeHHeaderViewOriginal;
         //LLog.d(TAG, "minimize " + posX + "x" + posY);
@@ -386,6 +391,9 @@ public class VDHView extends LinearLayout {
     }
 
     public void minimizeBottomRight() {
+        if (!isAppear) {
+            return;
+        }
         int posX = getWidth() - sizeWHeaderViewOriginal + sizeWHeaderViewMin / 2;
         int posY = getHeight() - sizeHHeaderViewOriginal;
         //LLog.d(TAG, "minimize " + posX + "x" + posY);
@@ -393,6 +401,9 @@ public class VDHView extends LinearLayout {
     }
 
     public void minimizeTopRight() {
+        if (!isAppear) {
+            return;
+        }
         if (isEnableRevertMaxSize) {
             Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
@@ -408,6 +419,9 @@ public class VDHView extends LinearLayout {
     }
 
     public void minimizeTopLeft() {
+        if (!isAppear) {
+            return;
+        }
         if (isEnableRevertMaxSize) {
             Log.e(TAG, "Error: cannot minimizeTopRight because isEnableRevertMaxSize is true");
             return;
@@ -423,6 +437,9 @@ public class VDHView extends LinearLayout {
     }
 
     public void smoothSlideTo(int positionX, int positionY) {
+        if (!isAppear) {
+            return;
+        }
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
@@ -477,10 +494,10 @@ public class VDHView extends LinearLayout {
         }
     }
 
-    private State stateBeforeDissappear;
+    //private State stateBeforeDissappear;
 
     public void dissappear() {
-        if (state == null) {
+        /*if (state == null) {
             return;
         }
         stateBeforeDissappear = state;
@@ -506,11 +523,19 @@ public class VDHView extends LinearLayout {
                 LLog.d(TAG, "fuck " + x + " x " + y);
                 smoothSlideTo(x, y);
                 break;
+        }*/
+        headerView.setVisibility(INVISIBLE);
+        bodyView.setVisibility(INVISIBLE);
+        isAppear = false;
+        if (callback != null) {
+            callback.onAppear(isAppear);
         }
     }
 
+    private boolean isAppear = true;
+
     public void appear() {
-        if (stateBeforeDissappear == null) {
+        /*if (stateBeforeDissappear == null) {
             return;
         }
         LLog.d(TAG, "fuck appear: " + stateBeforeDissappear);
@@ -530,7 +555,16 @@ public class VDHView extends LinearLayout {
                 }
                 break;
         }
-        stateBeforeDissappear = null;
+        stateBeforeDissappear = null;*/
+        headerView.setVisibility(VISIBLE);
+        //maximize();
+        if (isEnableRevertMaxSize) {
+            bodyView.setVisibility(VISIBLE);
+        }
+        isAppear = true;
+        if (callback != null) {
+            callback.onAppear(isAppear);
+        }
     }
 
     private boolean isEnableSlide;

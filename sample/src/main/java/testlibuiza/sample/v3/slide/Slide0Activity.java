@@ -45,12 +45,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
-        findViewById(R.id.bt_maximize).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.maximize();
-            }
-        });
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,14 +73,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             @Override
             public void onClick(View view) {
                 vdhv.appear();
-                uzVideo.resumeVideo();
-            }
-        });
-        findViewById(R.id.bt_disappear).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vdhv.dissappear();
-                uzVideo.pauseVideo();
             }
         });
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -109,13 +95,11 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
         if (isEnableRevertMaxSize) {
-            findViewById(R.id.bt_maximize).setVisibility(View.INVISIBLE);
             if (vdhv.isMinimizedAtLeastOneTime()) {
                 findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
                 findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
             }
         } else {
-            findViewById(R.id.bt_maximize).setVisibility(View.VISIBLE);
             findViewById(R.id.bt_minimize_top_right).setVisibility(View.INVISIBLE);
             findViewById(R.id.bt_minimize_top_left).setVisibility(View.INVISIBLE);
         }
@@ -145,6 +129,19 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onEnableRevertMaxSize(boolean isEnableRevertMaxSize) {
         updateUIRevertMaxChange(!isEnableRevertMaxSize);
+    }
+
+    @Override
+    public void onAppear(boolean isAppear) {
+        if (isAppear) {
+            findViewById(R.id.bt_appear).setVisibility(View.INVISIBLE);
+        } else {
+            findViewById(R.id.bt_appear).setVisibility(View.VISIBLE);
+            findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_top_left).setVisibility(View.INVISIBLE);
+            findViewById(R.id.bt_minimize_top_right).setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -224,6 +221,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         if (vdhv.getState() == VDHView.State.BOTTOM_LEFT || vdhv.getState() == VDHView.State.BOTTOM_RIGHT || vdhv.getState() == VDHView.State.BOTTOM) {
         } else {
             uzVideo.toggleShowHideController();
+            //updateUIRevertMaxChange(vdhv.isEnableRevertMaxSize());
         }
     }
 

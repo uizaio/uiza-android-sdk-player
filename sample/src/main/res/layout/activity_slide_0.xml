@@ -42,12 +42,6 @@
                     android:textSize="@dimen/txt_8" />
 
                 <Button
-                    android:id="@+id/bt_maximize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Maximize" />
-
-                <Button
                     android:id="@+id/bt_minimize_bottom_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,26 +58,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minimize Top Right"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/bt_minimize_top_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minimize Top Left"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/bt_appear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:text="Appear" />
-
-                <Button
-                    android:id="@+id/bt_disappear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Disappear" />
 
                 <TextView
                     android:layout_width="match_parent"
