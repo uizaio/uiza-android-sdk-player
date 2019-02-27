@@ -485,7 +485,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (player != null) {
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
         }
