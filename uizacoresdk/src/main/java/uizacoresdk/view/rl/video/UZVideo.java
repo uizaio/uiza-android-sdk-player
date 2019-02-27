@@ -650,7 +650,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         isCastingChromecast = false;
         isCastPlayerPlayingFirst = false;
         cdnHost = null;
-        //LLog.d(TAG, "onDestroy -> set activityIsPausing = true");
         EventBus.getDefault().unregister(this);
     }
 
@@ -672,22 +671,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             //LLog.d(TAG, "onResume uzPlayerManager == null -> do nothing");
         }
     }
-
-    /*public void onStart() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent startServiceIntent = new Intent(activity, LConectifyService.class);
-            activity.startService(startServiceIntent);
-        }
-    }
-
-    public void onStop() {
-        if (activity == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.stopService(new Intent(activity, LConectifyService.class));
-        }
-    }*/
 
     public boolean isPlaying() {
         if (uzPlayerManager == null || uzPlayerManager.getPlayer() == null) {
@@ -711,7 +694,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //LLog.d(TAG, "onActivityResult " + requestCode + " - " + resultCode);
         if (activity == null) {
             return;
         }
@@ -728,7 +710,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onStartPreview(PreviewView previewView, int progress) {
-        //LLog.d(TAG, "PreviewView onStartPreview");
         timestampOnStartPreview = System.currentTimeMillis();
         addTrackingMuiza(Constants.MUIZA_EVENT_SEEKING);
         if (callbackUZTimebar != null) {
@@ -740,7 +721,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
-        //LLog.d(TAG, "PreviewView onPreview progress " + progress + " - " + uzTimebar.getMax());
         isOnPreview = true;
         if (isCastingChromecast) {
             UZData.getInstance().getCasty().getPlayer().seek(progress);
@@ -755,7 +735,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
-        //LLog.d(TAG, "PreviewView onStopPreview");
         TmpParamData.getInstance().addViewSeekCount();
         long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
         TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
@@ -817,8 +796,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    //current screen is landscape or portrait
-    private boolean isLandscape;
+    private boolean isLandscape;//current screen is landscape or portrait
 
     public boolean isLandscape() {
         return isLandscape;
@@ -948,9 +926,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         }
-
         /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này ta có thể xử lý khi click vào control thì reset count down để ẩn control ko
-        default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn, cái này mình sẽ reset cout và update bản mới.*/
+        default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn*/
         if (isDefaultUseController) {
             if (rlMsg != null && rlMsg.getVisibility() == View.VISIBLE) {
             } else {
@@ -1030,7 +1007,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void seekTo(long positionMs) {
         if (uzPlayerManager != null) {
-            //LLog.d(TAG, "seekTo positionMs: " + positionMs);
             uzPlayerManager.seekTo(positionMs);
         }
     }
@@ -1064,8 +1040,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isPlayerControllerAlwayVisible) {
             return;
         }
-        if (isCastingChromecast) {
-            //dont hide if is casting chromecast
+        if (isCastingChromecast) {//dont hide if is casting chromecast
         } else {
             if (uzPlayerView != null) {
                 uzPlayerView.hideController();
@@ -1089,11 +1064,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return false;
     }
 
-    /*
-     **Cho phep su dung controller hay khong
-     * Default: true
-     * Neu truyen false se an tat ca cac component
-     */
     private boolean isDefaultUseController = true;
 
     public boolean isDefaultUseController() {
@@ -2076,8 +2046,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError + ", isInitCustomLinkPlay: " + isInitCustomLinkPlay);
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
-            ivVideoCover.invalidate();
-            //LLog.d(TAG, "removeVideoCover invalidate");
+            ivVideoCover.invalidate();//quyen
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
