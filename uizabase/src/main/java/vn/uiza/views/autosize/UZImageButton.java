@@ -15,7 +15,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.utils.util.ConvertUtils;
 
 /**
- * Created by loitp on 4/19/2018.
+ * Created by loitp on 2/27/2019.
  */
 
 public class UZImageButton extends AppCompatImageButton {
@@ -35,18 +35,12 @@ public class UZImageButton extends AppCompatImageButton {
         initSizeScreenW(attrs);
     }
 
-    /*public UZImageButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initSizeScreenW(attrs);
-    }*/
     private Drawable drawableEnabled;
     private Drawable drawableDisabled;
     private int screenWPortrait;
     private int screenWLandscape;
-
     private boolean isTablet;
     private boolean isUseDefault;
-
     private boolean isSetSrcDrawableEnabled;
 
     public boolean isSetSrcDrawableEnabled() {
@@ -94,13 +88,9 @@ public class UZImageButton extends AppCompatImageButton {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZImageButton);
         isUseDefault = a.getBoolean(R.styleable.UZImageButton_useDefaultIB, true);
         drawableDisabled = a.getDrawable(R.styleable.UZImageButton_srcDisabled);
-        //LLog.d(TAG, "initSizeScreenW isUseDefault " + isUseDefault);
-
         //disable click sound of a particular button in android app
         setSoundEffectsEnabled(false);
-
         if (!isUseDefault) {
-            //LLog.d(TAG, "initSizeScreenW -> return");
             a.recycle();
             drawableEnabled = getDrawable();
             return;
@@ -113,17 +103,11 @@ public class UZImageButton extends AppCompatImageButton {
             ratioLand = Constants.RATIO_LAND_MOBILE;
             ratioPort = Constants.RATIO_PORTRAIT_MOBILE;
         }
-
         screenWPortrait = LScreenUtil.getScreenWidth();
         screenWLandscape = LScreenUtil.getScreenHeightIncludeNavigationBar(this.getContext());
-
-        //LLog.d(TAG, ">>>screenWPortrait " + screenWPortrait);
-        //LLog.d(TAG, ">>>screenWLandscape " + screenWLandscape);
-
         //set padding 5dp
         int px = ConvertUtils.dp2px(5);
         setPadding(px, px, px, px);
-
         post(new Runnable() {
             @Override
             public void run() {
@@ -137,38 +121,6 @@ public class UZImageButton extends AppCompatImageButton {
         a.recycle();
         drawableEnabled = getDrawable();
     }
-
-    /*private boolean isFullScreen;
-    private boolean isSetSize;
-    private int screenWidth;
-    private int size;
-
-    public void onMeasure(int widthSpec, int heightSpec) {
-        //super.onMeasure(widthSpec, heightSpec);
-        if (isSetSize && isFullScreen == LScreenUtil.isFullScreen(this.getContext())) {
-            //LLog.d(TAG, "return isSetSize: " + isSetSize + " -> " + size + "x" + size);
-            setMeasuredDimension(size, size);
-            return;
-        }
-        isSetSize = false;
-        isFullScreen = LScreenUtil.isFullScreen(this.getContext());
-
-        //LLog.d(TAG, "isFullScreen " + isFullScreen);
-        if (isFullScreen) {
-            screenWidth = screenWLandscape;
-        } else {
-            screenWidth = screenWPortrait;
-        }
-        //LLog.d(TAG, "screenWidth " + screenWidth);
-        if (isFullScreen) {
-            size = screenWidth / getRatioLand();
-        } else {
-            size = screenWidth / getRatioPort();
-        }
-        //LLog.d(TAG, "onMeasure: " + size + "x" + size);
-        setMeasuredDimension(size, size);
-        isSetSize = true;
-    }*/
 
     private int ratioLand = 7;
     private int ratioPort = 5;
@@ -203,28 +155,22 @@ public class UZImageButton extends AppCompatImageButton {
 
     private void updateSizePortrait() {
         if (!isUseDefault) {
-            //LLog.d(TAG, "updateSizePortrait isUseDefault false -> return");
             return;
         }
         size = screenWPortrait / ratioPort;
-        //LLog.d(TAG, "updateSizePortrait sizePortrait " + size);
-
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
-        this.requestLayout();
+        this.requestLayout();//quyen
     }
 
     private void updateSizeLandscape() {
         if (!isUseDefault) {
-            //LLog.d(TAG, "updateSizeLandscape isUseDefault false -> return");
             return;
         }
         size = screenWLandscape / ratioLand;
-        //LLog.d(TAG, "updateSizeLandscape sizeLandscape " + size);
-
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
-        this.requestLayout();
+        this.requestLayout();//quyen
     }
 
     public int getSize() {
@@ -240,60 +186,13 @@ public class UZImageButton extends AppCompatImageButton {
         }
     }
 
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (isClickable()) {
-            int maskedAction = event.getActionMasked();
-            if (maskedAction == MotionEvent.ACTION_DOWN) {
-                //setColorTint(ContextCompat.getColor(getContext(), R.color.Gray));
-                this.setBackgroundResource(R.drawableEnabled.circle_effect);
-            } else if (maskedAction == MotionEvent.ACTION_UP) {
-                //clearColorTint();
-                this.setBackgroundResource(0);
-            }
-            //LDeviceUtil.vibrate(getContext(), 100);
-        }
-        return super.onTouchEvent(event);
-    }*/
-
-    /*public void setColorTint(int color) {
-        getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-    }
-
-    public void clearColorTint() {
-        getDrawable().clearColorFilter();
-    }*/
-
-    /*@Override
-    protected void onFocusChanged(boolean gainFocus, int direction, @Nullable Rect previouslyFocusedRect) {
-        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-        if (gainFocus) {
-            this.setBackgroundResource(R.drawableEnabled.bt_rate);
-        } else {
-            this.setBackgroundResource(0);
-        }
-    }*/
-
     public void setUIVisible(final boolean isVisible) {
-        //LLog.d(TAG, "setUIVisible isVisible " + isVisible);
         setClickable(isVisible);
         setFocusable(isVisible);
         if (isVisible) {
-            //LLog.d(TAG, "setUIVisible isVisible " + size);
             setSrcDrawableEnabled();
-
-            /*setBackgroundColor(Color.TRANSPARENT);
-            getLayoutParams().width = size;
-            getLayoutParams().height = size;
-            requestLayout();*/
         } else {
-            //LLog.d(TAG, "setUIVisible !isVisible " + 0);
             setImageResource(0);
-
-            /*setBackgroundColor(Color.RED);
-            getLayoutParams().width = 0;
-            getLayoutParams().height = 0;
-            requestLayout();*/
         }
     }
 }

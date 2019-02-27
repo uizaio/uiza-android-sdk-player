@@ -225,6 +225,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void onCreate() {
         activity = (Activity) getContext();
         EventBus.getDefault().register(this);
+        //register LConectifyService
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent startServiceIntent = new Intent(activity, LConectifyService.class);
             activity.startService(startServiceIntent);
@@ -249,7 +250,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             addUIChromecastLayer();
         }
         updateUISizeThumnail();
-        scheduleJob();
+        scheduleJob();//for LConnectifyService
     }
 
     //========================================================================START CONFIG
@@ -1850,10 +1851,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, progressBarColor);
-        if (uzPlayerView != null) {
-            uzPlayerView.setControllerStateCallback(UZVideo.this);
-        }
         updateUIPositionOfProgressBar();
+        uzPlayerView.setControllerStateCallback(this);
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
         previewFrameLayout = uzPlayerView.findViewById(R.id.preview_frame_layout);
         if (uzTimebar != null) {
@@ -1881,7 +1880,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
         ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
-        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_play_uiza);//If auto start true, show button play and gone button pause
+        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_play_uiza);
+        //If auto start true, show button play and gone button pause
         if (ibPlayIcon != null) {
             ibPlayIcon.setVisibility(GONE);
         }
@@ -2019,10 +2019,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    //If auto start true, show button play and gone button pause
+    //if not, gone button play and show button pause
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
-        //LLog.d(TAG, "updateUIButtonPlayPauseDependOnIsAutoStart isAutoStart: " + isAutoStart + ", isPlaying() " + isPlaying());
-        //If auto start true, show button play and gone button pause
-        //if not, gone button play and show button pause
         if (isAutoStart) {
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
@@ -2030,8 +2029,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibPauseIcon != null) {
                 ibPauseIcon.setVisibility(VISIBLE);
                 if (!isSetFirstRequestFocusDone) {
-                    //set first request focus if using player for TV
-                    ibPauseIcon.requestFocus();
+                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
                     isSetFirstRequestFocusDone = true;
                 }
             }
@@ -2043,8 +2041,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (ibPauseIcon != null) {
                     ibPauseIcon.setVisibility(VISIBLE);
                     if (!isSetFirstRequestFocusDone) {
-                        //set first request focus if using player for TV
-                        ibPauseIcon.requestFocus();
+                        ibPauseIcon.requestFocus();//set first request focus if using player for TV
                         isSetFirstRequestFocusDone = true;
                     }
                 }
@@ -2052,8 +2049,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (ibPlayIcon != null) {
                     ibPlayIcon.setVisibility(VISIBLE);
                     if (!isSetFirstRequestFocusDone) {
-                        //set first request focus if using player for TV
-                        ibPlayIcon.requestFocus();
+                        ibPlayIcon.requestFocus();//set first request focus if using player for TV
                         isSetFirstRequestFocusDone = true;
                     }
                 }
@@ -2126,7 +2122,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void updateUIEachSkin() {
         int currentPlayerId = UZData.getInstance().getCurrentPlayerId();
         if (currentPlayerId == R.layout.uz_player_skin_2 || currentPlayerId == R.layout.uz_player_skin_3) {
-            //LLog.d(TAG, "updateUIEachSkin uz_player_skin_2 || uz_player_skin_3 -> edit size of ibPlayIcon ibPauseIcon");
             if (ibPlayIcon != null) {
                 ibPlayIcon.setRatioLand(7);
                 ibPlayIcon.setRatioPort(5);
@@ -2152,41 +2147,37 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             public void run() {
                 int marginL = uzPlayerView.getMeasuredWidth() / 2 - progressBar.getMeasuredWidth() / 2;
                 int marginT = uzPlayerView.getMeasuredHeight() / 2 - progressBar.getMeasuredHeight() / 2;
-                //LLog.d(TAG, "updateUIPositionOfProgressBar " + marginL + "x" + marginT);
                 LUIUtil.setMarginPx(progressBar, marginL, marginT, 0, 0);
             }
         });
     }
 
     //tự tạo layout chromecast và background đen
+    //Gen layout chromecast with black backgroudn programmatically
     private void addUIChromecastLayer() {
         //listener check state of chromecast
         CastContext castContext = null;
         try {
             castContext = CastContext.getSharedInstance(activity);
         } catch (Exception e) {
-            LLog.e(TAG, "addUIChromecastLayer error " + e.toString());
+            Log.e(TAG, "Error addUIChromecastLayer: " + e.toString());
         }
         if (castContext == null) {
             uzMediaRouteButton.setVisibility(View.GONE);
             return;
         }
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
-            //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
             uzMediaRouteButton.setVisibility(View.GONE);
         } else {
-            //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
             uzMediaRouteButton.setVisibility(View.VISIBLE);
         }
         castContext.addCastStateListener(new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
                 if (state == CastState.NO_DEVICES_AVAILABLE) {
-                    //LLog.d(TAG, "addUIChromecastLayer setVisibility GONE");
                     uzMediaRouteButton.setVisibility(View.GONE);
                 } else {
                     if (uzMediaRouteButton.getVisibility() != View.VISIBLE) {
-                        //LLog.d(TAG, "addUIChromecastLayer setVisibility VISIBLE");
                         uzMediaRouteButton.setVisibility(View.VISIBLE);
                     }
                 }
@@ -2225,13 +2216,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         uzPlayerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
-        //setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         uzPlayerView.setLayoutParams(lp);
-
         rootView.addView(uzPlayerView);
         setControllerAutoShow(isAutoShow);
     }
@@ -2418,16 +2406,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             layoutParams.width = widthIv;
             layoutParams.height = (int) (widthIv * Constants.RATIO_9_16);
             previewFrameLayout.setLayoutParams(layoutParams);
-            previewFrameLayout.requestLayout();
-            //LLog.d(TAG, "requestLayout updateUISizeThumnail");
+            previewFrameLayout.requestLayout();//quyen
         }
     }
 
+    //quyen
     private void setMarginPreviewTimeBar() {
-        if (uzTimebar == null) {
-            Log.e(TAG, "setMarginPreviewTimeBar uzTimebar == null");
-            return;
-        }
         if (isLandscape) {
             LUIUtil.setMarginDimen(uzTimebar, 5, 0, 5, 0);
         } else {
@@ -2435,6 +2419,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    //quyen
     private void setMarginRlLiveInfo() {
         if (isLandscape) {
             LUIUtil.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
@@ -3912,7 +3897,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
             @Override
             public void onConnected() {
-                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onConnected");
                 if (uzPlayerManager != null) {
                     lastCurrentPosition = uzPlayerManager.getCurrentPosition();
                 }
@@ -3921,7 +3905,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
             @Override
             public void onDisconnected() {
-                //LLog.d(TAG, "setUpMediaRouteButton setOnConnectChangeListener onDisconnected");
                 handleDisconnectedChromecast();
             }
         });
@@ -4126,7 +4109,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     .setPersisted(true)
                     .build();
             JobScheduler jobScheduler = (JobScheduler) activity.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            jobScheduler.schedule(myJob);
+            if (jobScheduler != null) {
+                jobScheduler.schedule(myJob);
+            }
         }
     }
 }

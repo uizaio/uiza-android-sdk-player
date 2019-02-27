@@ -77,6 +77,7 @@ public class UZUtil {
             return;
         }*/
         //LLog.d(TAG, "resizeLayout");
+        //quyen
         if (viewGroup == null) {
             return;
         }
