@@ -854,8 +854,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIPositionOfProgressBar();
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom) {
-            View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
-            setMarginDependOnUZTimeBar(videoSurfaceView);
+            setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
         }
         if (uzCallback != null) {
             uzCallback.onScreenRotate(isLandscape);
@@ -1779,9 +1778,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
                     isSetUZTimebarBottom = true;
                     setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
-                    uzPlayerView.setVisibility(INVISIBLE);
                 } else {
                     isSetUZTimebarBottom = false;
+                    rootView.setVisibility(VISIBLE);
                 }
             }
             uzTimebar.addOnPreviewChangeListener(this);
@@ -2127,10 +2126,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView = null;
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         uzPlayerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
+        rootView.setVisibility(INVISIBLE);
         setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         uzPlayerView.setLayoutParams(lp);
         rootView.addView(uzPlayerView);
         setControllerAutoShow(isAutoShowController);
@@ -3253,11 +3252,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateTvDuration();
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
-        //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
-        if (isSetUZTimebarBottom && uzPlayerView != null) {
-            uzPlayerView.setVisibility(VISIBLE);
+        if (isSetUZTimebarBottom) {
+            rootView.setVisibility(VISIBLE);
         }
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {
             ibSkipPreviousIcon.setClickable(true);
