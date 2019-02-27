@@ -1,8 +1,8 @@
 package uizacoresdk.view.dlg.playlistfolder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +29,7 @@ import vn.uiza.views.recyclerview.snappysmoothscroller.SnappyLinearLayoutManager
 
 public class UZDlgPlaylistFolder extends Dialog {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    private Context context;
     private AlertDialog dialog;
     private boolean isLandscape;
     private RecyclerView recyclerView;
@@ -38,10 +38,10 @@ public class UZDlgPlaylistFolder extends Dialog {
     private int currentPositionOfDataList;
     private CallbackPlaylistFolder callbackPlaylistFolder;
 
-    public UZDlgPlaylistFolder(Activity activity, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
-        super(activity);
+    public UZDlgPlaylistFolder(Context context, boolean isLandscape, List<Data> dataList, int currentPositionOfDataList, CallbackPlaylistFolder callbackPlaylistFolder) {
+        super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.activity = activity;
+        this.context = context;
         this.isLandscape = isLandscape;
         this.dataList = dataList;
         this.currentPositionOfDataList = currentPositionOfDataList;
@@ -78,13 +78,13 @@ public class UZDlgPlaylistFolder extends Dialog {
 
     private void setupUI() {
         //recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-        SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+        SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setSnapType(SnapType.CENTER);
         layoutManager.setSnapInterpolator(new DecelerateInterpolator());
         recyclerView.setLayoutManager(layoutManager);
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
-        adapterPlaylistFolder = new AdapterPlaylistFolder(activity, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
+        adapterPlaylistFolder = new AdapterPlaylistFolder(context, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
             @Override
             public void onClickItem(Data data, int position) {
                 //LLog.d(TAG, "onClickItem position: " + position);

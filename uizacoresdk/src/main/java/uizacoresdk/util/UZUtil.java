@@ -211,11 +211,11 @@ public class UZUtil {
         return subtitleList;
     }
 
-    public static void showUizaDialog(Activity activity, Dialog dialog) {
-        if (activity == null || dialog == null) {
+    public static void showUizaDialog(Context context, Dialog dialog) {
+        if (context == null || dialog == null) {
             return;
         }
-        boolean isFullScreen = LScreenUtil.isFullScreen(activity);
+        boolean isFullScreen = LScreenUtil.isFullScreen(context);
         if (isFullScreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -245,11 +245,11 @@ public class UZUtil {
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.5);
             } else {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
+                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.3);
             }
             dialog.getWindow().setLayout(width, height);
         } catch (Exception e) {
@@ -367,17 +367,17 @@ public class UZUtil {
     }*/
 
     //stop service pip FUZVideoService
-    public static void stopMiniPlayer(Activity activity) {
-        if (activity == null) {
+    public static void stopMiniPlayer(Context context) {
+        if (context == null) {
             return;
         }
         //LLog.d(TAG, "stopMiniPlayer");
-        boolean isSvPipRunning = isMiniPlayerRunning(activity);
+        boolean isSvPipRunning = isMiniPlayerRunning(context);
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
-            Intent intent = new Intent(activity, FUZVideoService.class);
-            activity.stopService(intent);
+            Intent intent = new Intent(context, FUZVideoService.class);
+            context.stopService(intent);
         }
     }
 
@@ -434,8 +434,8 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(activity, entityId, callback);
+    public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDetailEntity(context, entityId, callback);
     }
 
     public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {
@@ -752,34 +752,22 @@ public class UZUtil {
 
     /////////////////////////////////STRING
     public static String getApiTrackEndPoint(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(API_TRACK_END_POINT, null);
     }
 
     public static void setApiTrackEndPoint(Context context, String value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(API_TRACK_END_POINT, value);
         editor.apply();
     }
 
     public static String getToken(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return pref.getString(TOKEN, null);
     }
 
     public static void setToken(Context context, String value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(TOKEN, value);
         editor.apply();
@@ -798,119 +786,77 @@ public class UZUtil {
 
     /////////////////////////////////BOOLEAN
     public static Boolean isInitPlaylistFolder(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(IS_INIT_PLAYLIST_FOLDER, false);
     }
 
     public static void setIsInitPlaylistFolder(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(IS_INIT_PLAYLIST_FOLDER, value);
         editor.apply();
     }
 
     public static Boolean getClickedPip(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(CLICKED_PIP, false);
     }
 
     public static void setClickedPip(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(CLICKED_PIP, value);
         editor.apply();
     }
 
     public static Boolean getMiniPlayerEzDestroy(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_EZ_DESTROY, false);
     }
 
     public static void setMiniPlayerEzDestroy(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_EZ_DESTROY, value);
         editor.apply();
     }
 
     public static Boolean getMiniPlayerEnableVibration(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_ENABLE_VIBRATION, true);
     }
 
     public static void setMiniPlayerEnableVibration(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_ENABLE_VIBRATION, value);
         editor.apply();
     }
 
     public static Boolean getMiniPlayerTapToFullPlayer(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_TAP_TO_FULL_PLAYER, true);
     }
 
     public static void setMiniPlayerTapToFullPlayer(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_TAP_TO_FULL_PLAYER, value);
         editor.apply();
     }
 
     public static Boolean getMiniPlayerEnableSmoothSwitch(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, true);
     }
 
     public static void setMiniPlayerEnableSmoothSwitch(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_ENABLE_SMOOTH_SWITCH, value);
         editor.apply();
     }
 
     public static Boolean getMiniPlayerAutoSize(Context context) {
-        if (context == null) {
-            return null;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getBoolean(MINI_PLAYER_AUTO_SIZE, true);
     }
 
     private static void setMiniPlayerAutoSize(Context context, Boolean value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putBoolean(MINI_PLAYER_AUTO_SIZE, value);
         editor.apply();
@@ -918,204 +864,132 @@ public class UZUtil {
 
     /////////////////////////////////INT
     public static int getVideoWidth(Context context) {
-        if (context == null) {
-            return 16;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(VIDEO_WIDTH, 16);
     }
 
     public static void setVideoWidth(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(VIDEO_WIDTH, value);
         editor.apply();
     }
 
     public static int getVideoHeight(Context context) {
-        if (context == null) {
-            return 9;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(VIDEO_HEIGHT, 9);
     }
 
     public static void setVideoHeight(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(VIDEO_HEIGHT, value);
         editor.apply();
     }
 
     public static int getMiniPlayerColorViewDestroy(Context context) {
-        if (context == null) {
-            return ContextCompat.getColor(context, R.color.black_65);
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_COLOR_VIEW_DESTROY, ContextCompat.getColor(context, R.color.black_65));
     }
 
     public static void setMiniPlayerColorViewDestroy(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_COLOR_VIEW_DESTROY, value);
         editor.apply();
     }
 
     public static int getMiniPlayerFirstPositionX(Context context) {
-        if (context == null) {
-            return Constants.NOT_FOUND;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_FIRST_POSITION_X, Constants.NOT_FOUND);
     }
 
     private static void setMiniPlayerFirstPositionX(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_FIRST_POSITION_X, value);
         editor.apply();
     }
 
     public static int getMiniPlayerFirstPositionY(Context context) {
-        if (context == null) {
-            return Constants.NOT_FOUND;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_FIRST_POSITION_Y, Constants.NOT_FOUND);
     }
 
     private static void setMiniPlayerFirstPositionY(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_FIRST_POSITION_Y, value);
         editor.apply();
     }
 
     public static void setMiniPlayerFirstPosition(Context context, int firstPositionX, int firstPositionY) {
-        if (context == null) {
-            return;
-        }
         setMiniPlayerFirstPositionX(context, firstPositionX);
         setMiniPlayerFirstPositionY(context, firstPositionY);
     }
 
     public static int getMiniPlayerMarginL(Context context) {
-        if (context == null) {
-            return 0;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_MARGIN_L, 0);
     }
 
     private static void setMiniPlayerMarginL(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_MARGIN_L, value);
         editor.apply();
     }
 
     public static int getMiniPlayerMarginT(Context context) {
-        if (context == null) {
-            return 0;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_MARGIN_T, 0);
     }
 
     private static void setMiniPlayerMarginT(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_MARGIN_T, value);
         editor.apply();
     }
 
     public static int getMiniPlayerMarginR(Context context) {
-        if (context == null) {
-            return 0;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_MARGIN_R, 0);
     }
 
     private static void setMiniPlayerMarginR(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_MARGIN_R, value);
         editor.apply();
     }
 
     public static int getMiniPlayerMarginB(Context context) {
-        if (context == null) {
-            return 0;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_MARGIN_B, 0);
     }
 
     private static void setMiniPlayerMarginB(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_MARGIN_B, value);
         editor.apply();
     }
 
     public static int getMiniPlayerSizeWidth(Context context) {
-        if (context == null) {
-            return Constants.W_320;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_SIZE_WIDTH, Constants.W_320);
     }
 
     private static void setMiniPlayerSizeWidth(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_SIZE_WIDTH, value);
         editor.apply();
     }
 
     public static int getMiniPlayerSizeHeight(Context context) {
-        if (context == null) {
-            return Constants.W_180;
-        }
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return prefs.getInt(MINI_PLAYER_SIZE_HEIGHT, Constants.W_180);
     }
 
     private static void setMiniPlayerSizeHeight(Context context, int value) {
-        if (context == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putInt(MINI_PLAYER_SIZE_HEIGHT, value);
         editor.apply();
     }
 
     public static boolean setMiniPlayerMarginDp(Context context, float marginL, float marginT, float marginR, float marginB) {
-        if (context == null) {
-            return false;
-        }
         int pxL = ConvertUtils.dp2px(marginL);
         int pxT = ConvertUtils.dp2px(marginT);
         int pxR = ConvertUtils.dp2px(marginR);
@@ -1124,9 +998,6 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
-        if (context == null) {
-            return false;
-        }
         int screenW = LScreenUtil.getScreenWidth();
         int screenH = LScreenUtil.getScreenHeight();
         int rangeMarginW = screenW / 5;
@@ -1151,18 +1022,12 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerSizeDp(Context context, boolean isAutoSize, int videoWidthDp, int videoHeightDp) {
-        if (context == null) {
-            return false;
-        }
         int pxW = ConvertUtils.dp2px(videoWidthDp);
         int pxH = ConvertUtils.dp2px(videoHeightDp);
         return setMiniPlayerSizePixel(context, isAutoSize, pxW, pxH);
     }
 
     public static boolean setMiniPlayerSizePixel(Context context, boolean isAutoSize, int videoWidthPx, int videoHeightPx) {
-        if (context == null) {
-            return false;
-        }
         //LLog.d(TAG, "setMiniPlayerSizePixel " + isAutoSize + " -> " + videoWidthPx + " x " + videoHeightPx);
         setMiniPlayerAutoSize(context, isAutoSize);
         if (isAutoSize) {
@@ -1185,18 +1050,12 @@ public class UZUtil {
 
     /////////////////////////////////OBJECT
     public static Auth getAuth(Context context, Gson gson) {
-        if (context == null || gson == null) {
-            return null;
-        }
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         String json = pref.getString(AUTH, null);
         return gson.fromJson(json, Auth.class);
     }
 
     public static void setAuth(Context context, Auth auth, Gson gson) {
-        if (context == null || gson == null) {
-            return;
-        }
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_FILE_NAME, 0).edit();
         editor.putString(AUTH, gson.toJson(auth));
         editor.apply();

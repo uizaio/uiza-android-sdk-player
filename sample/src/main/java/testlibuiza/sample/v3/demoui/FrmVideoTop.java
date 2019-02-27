@@ -1,7 +1,7 @@
 package testlibuiza.sample.v3.demoui;
 
 /**
- * Created by www.muathu@gmail.com on 9/1/2018.
+ * Created by www.muathu@gmail.com on 27/2/2019.
  */
 
 import android.content.Intent;
@@ -58,20 +58,20 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -142,11 +142,9 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
-        //LLog.d(TAG, "onScreenRotate isLandscape " + isLandscape);
         if (!isLandscape) {
             int width = uzVideo.getVideoW();
             int height = uzVideo.getVideoH();
-            //LLog.d(TAG, "onScreenRotate " + width + "x" + height);
             calSize(width, height);
         }
     }
@@ -173,12 +171,10 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (width >= height) {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = height * screenW / width;
-            //LLog.d(TAG, "calSize >=: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         } else {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = screenW;
-            //LLog.d(TAG, "calSize <: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         }
     }

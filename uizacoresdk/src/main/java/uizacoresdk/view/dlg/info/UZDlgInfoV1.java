@@ -1,8 +1,8 @@
 package uizacoresdk.view.dlg.info;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -19,17 +19,17 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class UZDlgInfoV1 extends Dialog {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    private Context context;
     private AlertDialog dialog;
     private ProgressBar progressBar;
     private TextView tvTitle;
     private String title;
     private String msg;
 
-    public UZDlgInfoV1(Activity activity, String title, String msg) {
-        super(activity);
+    public UZDlgInfoV1(Context context, String title, String msg) {
+        super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.activity = activity;
+        this.context = context;
         this.title = title;
         this.msg = msg;
     }
@@ -40,7 +40,7 @@ public class UZDlgInfoV1 extends Dialog {
         setContentView(R.layout.dlg_info);
 
         progressBar = (ProgressBar) findViewById(R.id.pb);
-        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
+        LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(context, R.color.colorPrimary));
 
         tvTitle = (TextView) findViewById(R.id.tv_title);
         final TextView tvContent = (TextView) findViewById(R.id.tv_content);
