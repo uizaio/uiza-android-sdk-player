@@ -20,14 +20,13 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 27/2/2019.
  */
 
 public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
@@ -70,18 +69,15 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
         uzVideo.addProgressCallback(new ProgressCallback() {
             @Override
             public void onAdEnded() {
-                //LLog.d(TAG, "onAdEnded");
                 seekBar.setMax((int) uzVideo.getDuration());
             }
 
             @Override
             public void onAdProgress(int s, int duration, int percent) {
-                //LLog.d(TAG, "onAdProgress currentMls " + currentMls);
             }
 
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                //LLog.d(TAG, "onVideoProgress currentMls " + currentMls);
                 seekBar.setProgress((int) currentMls);
             }
 
@@ -153,35 +149,24 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
         if (e == null) {
             return;
         }
-        LDialogUtil.showDialog1(activity, e.getMessage(), new LDialogUtil.Callback1() {
-            @Override
-            public void onClick1() {
-                onBackPressed();
-            }
-
-            @Override
-            public void onCancel() {
-                onBackPressed();
-            }
-        });
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override

@@ -1785,6 +1785,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             uzTimebar.addOnPreviewChangeListener(this);
             uzTimebar.setOnFocusChangeListener(this);
+        } else {
+            if (rootView != null) {
+                rootView.setVisibility(VISIBLE);
+            }
         }
         ivThumbnail = (ImageView) uzPlayerView.findViewById(R.id.image_view_thumnail);
         tvPosition = (UZTextView) uzPlayerView.findViewById(R.id.uz_position);
