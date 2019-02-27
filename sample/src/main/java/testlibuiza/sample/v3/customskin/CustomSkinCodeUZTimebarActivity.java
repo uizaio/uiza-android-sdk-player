@@ -2,7 +2,6 @@ package testlibuiza.sample.v3.customskin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,7 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 27/2/2019.
  */
 
 public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
@@ -47,8 +46,8 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
+        //uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
+        //uzVideo.setUzTimebarBottom();
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
@@ -119,20 +118,20 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override

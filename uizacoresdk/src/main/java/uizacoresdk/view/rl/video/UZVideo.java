@@ -1778,8 +1778,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
                     isSetUZTimebarBottom = true;
-                    uzPlayerView.setVisibility(INVISIBLE);
                     setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
+                    uzPlayerView.setVisibility(INVISIBLE);
                 } else {
                     isSetUZTimebarBottom = false;
                 }
@@ -3256,7 +3256,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom && uzPlayerView != null) {
-            //setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
             uzPlayerView.setVisibility(VISIBLE);
         }
         //enable from playPlaylistPosition() prvent double click
