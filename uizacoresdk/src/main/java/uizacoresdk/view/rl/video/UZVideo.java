@@ -829,22 +829,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (getContext() != null) {
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                LScreenUtil.hideDefaultControls(getContext());
-                isLandscape = true;
-                UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
+        if(getContext()==null){
+            return;
+        }
+        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            LScreenUtil.hideDefaultControls(getContext());
+            isLandscape = true;
+            UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, true);
+            if (ibPictureInPictureIcon != null) {
+                ibPictureInPictureIcon.setVisibility(GONE);
+            }
+        } else {
+            LScreenUtil.showDefaultControls(getContext());
+            isLandscape = false;
+            UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
+            if (!isCastingChromecast()) {
                 if (ibPictureInPictureIcon != null) {
-                    ibPictureInPictureIcon.setVisibility(GONE);
-                }
-            } else {
-                LScreenUtil.showDefaultControls(getContext());
-                isLandscape = false;
-                UZUtil.setUIFullScreenIcon(getContext(), ibFullscreenIcon, false);
-                if (!isCastingChromecast()) {
-                    if (ibPictureInPictureIcon != null) {
-                        ibPictureInPictureIcon.setVisibility(VISIBLE);
-                    }
+                    ibPictureInPictureIcon.setVisibility(VISIBLE);
                 }
             }
         }
@@ -853,7 +855,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
-        UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
+        //UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom) {
             setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
         }
