@@ -1774,6 +1774,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzTimebar != null) {
             if (uzTimebar.getTag() == null) {
                 isSetUZTimebarBottom = false;
+                rootView.setVisibility(VISIBLE);
             } else {
                 if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
                     isSetUZTimebarBottom = true;
@@ -1786,9 +1787,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzTimebar.addOnPreviewChangeListener(this);
             uzTimebar.setOnFocusChangeListener(this);
         } else {
-            if (rootView != null) {
-                rootView.setVisibility(VISIBLE);
-            }
+            rootView.setVisibility(VISIBLE);
         }
         ivThumbnail = (ImageView) uzPlayerView.findViewById(R.id.image_view_thumnail);
         tvPosition = (UZTextView) uzPlayerView.findViewById(R.id.uz_position);

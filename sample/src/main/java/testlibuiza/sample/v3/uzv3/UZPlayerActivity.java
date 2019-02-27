@@ -23,7 +23,7 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 27/2/2019.
  */
 
 public class UZPlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
@@ -44,7 +44,6 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v3_cannot_slide_player);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        //uzVideo.setDefaultUseController(false);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
         tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
@@ -55,7 +54,6 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
@@ -178,20 +176,20 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -212,13 +210,11 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
 
             @Override
             public void onAdProgress(int s, int duration, int percent) {
-                //LLog.d(TAG, TAG + " ad progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 tvProgressAd.setText("Ad: " + s + "/" + duration + " (s) => " + percent + "%");
             }
 
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                //LLog.d(TAG, TAG + " video progress: " + currentMls + "/" + duration + " -> " + percent + "%");
                 tvProgressVideo.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
             }
 
