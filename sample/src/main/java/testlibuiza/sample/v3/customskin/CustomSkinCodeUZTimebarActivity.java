@@ -41,13 +41,11 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_uiza_custom_skin_code_uz_timebar);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         ll = (LinearLayout) findViewById(R.id.ll);
+        LUIUtil.setMarginDimen(ll, 0, -uzVideo.getPixelAdded() / 2, 0, 0);
         pb = (ProgressBar) findViewById(R.id.p);
-        ll.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-        //uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        //uzVideo.setUzTimebarBottom();
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
@@ -82,8 +80,6 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             pb.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
         }
     }
 

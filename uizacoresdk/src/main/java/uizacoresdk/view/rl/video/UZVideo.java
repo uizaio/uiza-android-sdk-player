@@ -313,7 +313,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     //Lay pixel dung cho custom UI like youtube, uzTimebar bottom of player controller
-    private int getPixelAdded() {
+    public int getPixelAdded() {
         if (isSetUZTimebarBottom) {
             return getHeightUZTimeBar() / 2;
         }
