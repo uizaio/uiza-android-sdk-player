@@ -11,13 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -27,6 +26,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  */
 
 public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
     private View shadow;
@@ -57,8 +57,31 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
 
-        final String entityId = LSApplication.entityIdDefaultVOD;
-        UZUtil.initEntity(activity, uzVideo, entityId);
+        checkId(getIntent());
+    }
+
+    private void checkId(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        uzVideo.setUrlImgThumbnail(thumb);
+        String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+        if (metadataId == null) {
+            String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            if (entityId == null) {
+                boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+                if (isInitWithPlaylistFolder) {
+                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                } else {
+                    UZUtil.initEntity(activity, uzVideo, null);
+                }
+            } else {
+                UZUtil.initEntity(activity, uzVideo, entityId);
+            }
+        } else {
+            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+        }
     }
 
     @Override
@@ -125,7 +148,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

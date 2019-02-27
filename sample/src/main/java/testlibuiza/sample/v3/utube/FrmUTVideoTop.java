@@ -117,8 +117,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override

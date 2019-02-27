@@ -162,12 +162,6 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
                 uzVideo.showSpeed();
             }
         });
-        findViewById(R.id.bt_share).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uzVideo.showSharePopup();
-            }
-        });
         findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

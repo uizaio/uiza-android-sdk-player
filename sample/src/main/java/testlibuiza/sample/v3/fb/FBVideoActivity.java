@@ -17,7 +17,6 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LImageUtil;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -89,10 +88,8 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
-                    LLog.d(TAG, "called from mini player -> playlist/folder");
                     UZUtil.initPlaylistFolder(activity, uzVideo, null);
                 } else {
-                    LLog.d(TAG, "called from mini player -> entity");
                     UZUtil.initEntity(activity, uzVideo, null);
                 }
             } else {
@@ -105,20 +102,20 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
