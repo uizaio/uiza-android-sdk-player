@@ -2762,7 +2762,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         boolean isDataExist = UZData.getInstance().getData() != null;
         if (isDataExist) {
             //init player khi user click vào fullscreen của floating view (pic)
-            LLog.d(TAG, "isDataExist -> dont callAPIGetDetailEntity");
+            //LLog.d(TAG, "isDataExist -> dont callAPIGetDetailEntity");
             isCalledApiGetDetailEntity = true;
             data = UZData.getInstance().getData();
             handleDataCallAPI();
@@ -2770,7 +2770,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             UZUtil.getDetailEntity(getContext(), entityId, new CallbackGetDetailEntity() {
                 @Override
                 public void onSuccess(Data d) {
-                    LLog.d(TAG, "!isDataExist -> callAPIGetDetailEntity onSuccess");
+                    //LLog.d(TAG, "!isDataExist -> callAPIGetDetailEntity onSuccess");
                     isCalledApiGetDetailEntity = true;
                     data = d;
                     //set video cover o moi case, ngoai tru
@@ -2792,7 +2792,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
                 @Override
                 public void onError(Throwable e) {
-                    LLog.e(TAG, "getDetailEntity onError " + e.toString());
+                    //LLog.e(TAG, "getDetailEntity onError " + e.toString());
                     UZData.getInstance().setSettingPlayer(false);
                     handleError(UZExceptionUtil.getExceptionCannotGetDetailEntitity());
                 }
