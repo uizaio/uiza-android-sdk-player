@@ -25,7 +25,6 @@ import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 /**
  * Created by loitp on 9/1/2019.
@@ -128,7 +127,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
 
     private void onVisibilityChange(boolean isShow) {
         this.isShowingController = isShow;
-        LToast.show(activity, "isShowingController " + isShowingController);
     }
 
     private void showController() {

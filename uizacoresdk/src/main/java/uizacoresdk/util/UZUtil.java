@@ -70,13 +70,6 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
-        /*boolean isUseWithVDHView = UZData.getInstance().isUseWithVDHView();
-        LLog.d(TAG, "resizeLayout isUseWithVDHView: " + isUseWithVDHView);
-        if (isUseWithVDHView) {
-            LLog.d(TAG, "resizeLayout isUseWithVDHView -> return");
-            return;
-        }*/
-        //LLog.d(TAG, "resizeLayout");
         //quyen
         if (viewGroup == null) {
             return;
@@ -124,7 +117,7 @@ public class UZUtil {
         }
         if (ivVideoCover != null) {
             ivVideoCover.getLayoutParams().width = widthSurfaceView;
-            ivVideoCover.getLayoutParams().height = heightSurfaceView;
+            ivVideoCover.getLayoutParams().height = heightSurfaceView - pixelAdded;
             ivVideoCover.requestLayout();
         }
         //edit size of imageview thumnail

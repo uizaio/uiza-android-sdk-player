@@ -1778,6 +1778,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzTimebar.getTag().toString().equals(activity.getString(R.string.use_bottom_uz_timebar))) {
                     isSetUZTimebarBottom = true;
+                    uzPlayerView.setVisibility(INVISIBLE);
+                    setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
                 } else {
                     isSetUZTimebarBottom = false;
                 }
@@ -3254,8 +3256,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "onStateReadyFirst isSetUZTimebarBottom: " + isSetUZTimebarBottom);
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom && uzPlayerView != null) {
-            View videoSurfaceView = uzPlayerView.getVideoSurfaceView();
-            setMarginDependOnUZTimeBar(videoSurfaceView);
+            //setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
+            uzPlayerView.setVisibility(VISIBLE);
         }
         //enable from playPlaylistPosition() prvent double click
         if (ibSkipPreviousIcon != null) {

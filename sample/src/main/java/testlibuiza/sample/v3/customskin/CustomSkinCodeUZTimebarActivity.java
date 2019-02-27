@@ -47,16 +47,11 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-
-        //config uztimebar bottom
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
-
-        //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-
         checkId(getIntent());
     }
 
