@@ -131,7 +131,7 @@ import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
 
 /**
- * Created by loitp on 1/4/2019.
+ * Created by loitp on 2/27/2019.
  */
 
 public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChangeListener, View.OnClickListener, View.OnFocusChangeListener, UZPlayerView.ControllerStateCallback, SensorOrientationChangeNotifier.Listener {
