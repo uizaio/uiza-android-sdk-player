@@ -218,12 +218,10 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (width >= height) {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = height * screenW / width;
-            //LLog.d(TAG, "calSize >=: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         } else {
             int screenW = LScreenUtil.getScreenWidth();
             int screenH = screenW;
-            //LLog.d(TAG, "calSize <: " + screenW + "x" + screenH);
             resizeView(screenW, screenH);
         }
     }

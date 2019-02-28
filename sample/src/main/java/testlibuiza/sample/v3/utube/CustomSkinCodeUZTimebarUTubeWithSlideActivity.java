@@ -147,9 +147,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_container);
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
-            /*if (draggablePanel != null) {
-                draggablePanel.setVisibility(View.INVISIBLE);
-            }*/
             super.onBackPressed();
         }
     }
@@ -194,7 +191,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         }
     }
 
-    //this method will be called when entity is ready to play
     public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (frmUTVideoBottom != null && isGetDataSuccess) {
             frmUTVideoBottom.updateUI(resultGetLinkPlay, data);

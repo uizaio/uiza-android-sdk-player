@@ -122,7 +122,6 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
         });
     }
 
-    //listerner controller visibility state
     private boolean isShowingController = true;
 
     private void onVisibilityChange(boolean isShow) {
