@@ -28,7 +28,8 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
+public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZPlayerView.ControllerStateCallback {
+    private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
@@ -41,13 +42,14 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
+        uzVideo.addItemClick(this);
+        uzVideo.addControllerStateCallback(this);
         uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
                 calSize(width, height);
             }
         });
-        uzVideo.addItemClick(this);
     }
 
     @Nullable
@@ -80,35 +82,10 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setListener() {
-        if (uzVideo == null || uzVideo.getPlayer() == null) {
-            return;
-        }
-        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
-            @Override
-            public void onVisibilityChange(boolean isShow) {
-                if (((HomeCanSlideActivity) getActivity()).getDraggablePanel() != null
-                        && !((HomeCanSlideActivity) getActivity()).isLandscapeScreen()) {
-                    if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        if (isShow) {
-                            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
-                        } else {
-                            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
-                        }
-                    } else {
-                        ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
-                    }
-                }
-            }
-        });
-    }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
-        if (isInitSuccess) {
-            setListener();
-        }
     }
 
     @Override
@@ -140,13 +117,17 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onSkinChange() {
     }
 
+    public boolean isLandscape;
+
     @Override
     public void onScreenRotate(boolean isLandscape) {
-        if (!isLandscape) {
-            int width = uzVideo.getVideoW();
-            int height = uzVideo.getVideoH();
-            calSize(width, height);
+        this.isLandscape = isLandscape;
+        if (isLandscape) {
+            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+        } else {
+            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
         }
+        calSize(uzVideo.getVideoW(), uzVideo.getVideoH());
     }
 
     @Override
@@ -157,6 +138,9 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         int w = LScreenUtil.getScreenWidth();
         int h = (int) (w * Constants.RATIO_9_16);
         resizeView(w, h);
+        if (uzVideo != null) {
+            uzVideo.pauseVideo();
+        }
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
@@ -164,19 +148,28 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         int w = LScreenUtil.getScreenWidth();
         int h = (int) (w * Constants.RATIO_9_16);
         resizeView(w, h);
+        if (uzVideo != null) {
+            uzVideo.pauseVideo();
+        }
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 
     private void calSize(int width, int height) {
-        if (width >= height) {
-            int screenW = LScreenUtil.getScreenWidth();
-            int screenH = height * screenW / width;
-            resizeView(screenW, screenH);
+        int screenW;
+        int screenH;
+        if (isLandscape) {
+            screenW = LScreenUtil.getScreenWidth();
+            screenH = LScreenUtil.getScreenHeight();
         } else {
-            int screenW = LScreenUtil.getScreenWidth();
-            int screenH = screenW;
-            resizeView(screenW, screenH);
+            if (width >= height) {
+                screenW = LScreenUtil.getScreenWidth();
+                screenH = height * screenW / width;
+            } else {
+                screenW = LScreenUtil.getScreenWidth();
+                screenH = screenW;
+            }
         }
+        resizeView(screenW, screenH);
     }
 
     private void resizeView(int w, int h) {
@@ -186,11 +179,26 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
                 ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(h);
             }
         });
-        uzVideo.post(new Runnable() {
+        /*uzVideo.post(new Runnable() {
             @Override
             public void run() {
                 uzVideo.setSize(w, h);
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void onVisibilityChange(boolean isShow) {
+        if (((HomeCanSlideActivity) getActivity()).getDraggablePanel() != null && !isLandscape) {
+            if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+                if (isShow) {
+                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                } else {
+                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                }
+            } else {
+                ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+            }
+        }
     }
 }

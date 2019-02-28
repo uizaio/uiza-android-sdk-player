@@ -1,7 +1,6 @@
 package testlibuiza.sample.v3.demoui;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -105,28 +104,6 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         draggablePanel.setVisibility(View.GONE);
     }
 
-    private boolean isLandscape;
-
-    public boolean isLandscapeScreen() {
-        return isLandscape;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (activity != null) {
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                isLandscape = true;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(false);
-            } else {
-                isLandscape = false;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(true);
-            }
-        }
-    }
-
     private int topFragmentHeight;
 
     public void setTopViewHeightApllyNow(int topFragmentHeight) {
@@ -137,7 +114,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
     }
 
     private void setSizeFrmTop() {
-        if (isLandscape) {
+        if (frmVideoTop.isLandscape) {
             draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
         } else {
             draggablePanel.setTopViewHeightApllyNow(topFragmentHeight == 0 ? LScreenUtil.getScreenWidth() * 9 / 16 : topFragmentHeight);
@@ -192,7 +169,6 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
     }
 
-    //this method will be called when entity is ready to play
     public void isInitResult(boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(resultGetLinkPlay, data);
