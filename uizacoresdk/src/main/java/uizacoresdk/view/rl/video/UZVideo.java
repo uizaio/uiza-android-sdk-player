@@ -645,7 +645,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         UZData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
-        activityIsPausing = true;
         isCastingChromecast = false;
         isCastPlayerPlayingFirst = false;
         cdnHost = null;
@@ -679,10 +678,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private boolean activityIsPausing = false;
-
-    private boolean isActivityIsPausing() {
-        return activityIsPausing;
-    }
 
     public void onPause() {
         activityIsPausing = true;
