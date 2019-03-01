@@ -2,7 +2,6 @@ package testlibuiza.sample.v3.customskin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,22 +10,22 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import testlibuiza.R;
-import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
+import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 27/2/2019.
  */
 
 public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
     private View shadow;
@@ -42,31 +41,45 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_uiza_custom_skin_code_uz_timebar);
         uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         ll = (LinearLayout) findViewById(R.id.ll);
+        LUIUtil.setMarginDimen(ll, 0, -uzVideo.getPixelAdded() / 2, 0, 0);
         pb = (ProgressBar) findViewById(R.id.p);
-        ll.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.VISIBLE);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
-
-        //config uztimebar bottom
-        uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
-        uzVideo.setUzTimebarBottom();
-
-        //shadow background
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
+        checkId(getIntent());
+    }
 
-        final String entityId = LSApplication.entityIdDefaultVOD;
-        UZUtil.initEntity(activity, uzVideo, entityId);
+    private void checkId(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
+        uzVideo.setUrlImgThumbnail(thumb);
+        String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
+        if (metadataId == null) {
+            String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            if (entityId == null) {
+                boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+                if (isInitWithPlaylistFolder) {
+                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                } else {
+                    UZUtil.initEntity(activity, uzVideo, null);
+                }
+            } else {
+                UZUtil.initEntity(activity, uzVideo, entityId);
+            }
+        } else {
+            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+        }
     }
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             pb.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            LUIUtil.setMarginPx(ll, 0, uzVideo.getHeightUZVideo(), 0, 0);
         }
     }
 
@@ -101,20 +114,20 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -125,7 +138,7 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
 
     @Override
     public void onBackPressed() {
-        if (LScreenUtil.isFullScreen(activity)) {
+        if (uzVideo.isLandscape()) {
             uzVideo.toggleFullscreen();
         } else {
             super.onBackPressed();

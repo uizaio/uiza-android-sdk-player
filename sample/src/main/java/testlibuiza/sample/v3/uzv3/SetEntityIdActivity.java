@@ -43,7 +43,6 @@ public class SetEntityIdActivity extends AppCompatActivity {
         btStart = (Button) findViewById(R.id.bt_start);
         etInputMetadataId = (EditText) findViewById(R.id.et_input_metadata_id);
         btStartPf = (Button) findViewById(R.id.bt_start_pf);
-
         findViewById(R.id.bt_demo_ui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

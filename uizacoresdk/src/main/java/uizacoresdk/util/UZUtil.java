@@ -70,13 +70,7 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
-        /*boolean isUseWithVDHView = UZData.getInstance().isUseWithVDHView();
-        LLog.d(TAG, "resizeLayout isUseWithVDHView: " + isUseWithVDHView);
-        if (isUseWithVDHView) {
-            LLog.d(TAG, "resizeLayout isUseWithVDHView -> return");
-            return;
-        }*/
-        LLog.d(TAG, "resizeLayout");
+        //quyen
         if (viewGroup == null) {
             return;
         }
@@ -108,7 +102,7 @@ public class UZUtil {
                 }
             }
         }
-        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
         TmpParamData.getInstance().setPlayerWidth(widthSurfaceView);
         TmpParamData.getInstance().setPlayerHeight(heightSurfaceView);
         viewGroup.getLayoutParams().width = widthSurfaceView;
@@ -123,7 +117,7 @@ public class UZUtil {
         }
         if (ivVideoCover != null) {
             ivVideoCover.getLayoutParams().width = widthSurfaceView;
-            ivVideoCover.getLayoutParams().height = heightSurfaceView;
+            ivVideoCover.getLayoutParams().height = heightSurfaceView - pixelAdded;
             ivVideoCover.requestLayout();
         }
         //edit size of imageview thumnail
@@ -217,11 +211,11 @@ public class UZUtil {
         return subtitleList;
     }
 
-    public static void showUizaDialog(Activity activity, Dialog dialog) {
-        if (activity == null || dialog == null) {
+    public static void showUizaDialog(Context context, Dialog dialog) {
+        if (context == null || dialog == null) {
             return;
         }
-        boolean isFullScreen = LScreenUtil.isFullScreen(activity);
+        boolean isFullScreen = LScreenUtil.isFullScreen(context);
         if (isFullScreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -251,11 +245,11 @@ public class UZUtil {
             int width = 0;
             int height = 0;
             if (isFullScreen) {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.5);
             } else {
-                width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1.0);
-                height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
+                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
+                height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.3);
             }
             dialog.getWindow().setLayout(width, height);
         } catch (Exception e) {
@@ -373,17 +367,17 @@ public class UZUtil {
     }*/
 
     //stop service pip FUZVideoService
-    public static void stopMiniPlayer(Activity activity) {
-        if (activity == null) {
+    public static void stopMiniPlayer(Context context) {
+        if (context == null) {
             return;
         }
         //LLog.d(TAG, "stopMiniPlayer");
-        boolean isSvPipRunning = isMiniPlayerRunning(activity);
+        boolean isSvPipRunning = isMiniPlayerRunning(context);
         //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
             //stop service if running
-            Intent intent = new Intent(activity, FUZVideoService.class);
-            activity.stopService(intent);
+            Intent intent = new Intent(context, FUZVideoService.class);
+            context.stopService(intent);
         }
     }
 
@@ -440,8 +434,8 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(activity, entityId, callback);
+    public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDetailEntity(context, entityId, callback);
     }
 
     public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {
@@ -996,9 +990,6 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerMarginDp(Context context, float marginL, float marginT, float marginR, float marginB) {
-        if (context == null) {
-            return false;
-        }
         int pxL = ConvertUtils.dp2px(marginL);
         int pxT = ConvertUtils.dp2px(marginT);
         int pxR = ConvertUtils.dp2px(marginR);
@@ -1007,9 +998,6 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerMarginPixel(Context context, int marginL, int marginT, int marginR, int marginB) {
-        if (context == null) {
-            return false;
-        }
         int screenW = LScreenUtil.getScreenWidth();
         int screenH = LScreenUtil.getScreenHeight();
         int rangeMarginW = screenW / 5;
@@ -1034,18 +1022,12 @@ public class UZUtil {
     }
 
     public static boolean setMiniPlayerSizeDp(Context context, boolean isAutoSize, int videoWidthDp, int videoHeightDp) {
-        if (context == null) {
-            return false;
-        }
         int pxW = ConvertUtils.dp2px(videoWidthDp);
         int pxH = ConvertUtils.dp2px(videoHeightDp);
         return setMiniPlayerSizePixel(context, isAutoSize, pxW, pxH);
     }
 
     public static boolean setMiniPlayerSizePixel(Context context, boolean isAutoSize, int videoWidthPx, int videoHeightPx) {
-        if (context == null) {
-            return false;
-        }
         //LLog.d(TAG, "setMiniPlayerSizePixel " + isAutoSize + " -> " + videoWidthPx + " x " + videoHeightPx);
         setMiniPlayerAutoSize(context, isAutoSize);
         if (isAutoSize) {

@@ -1,7 +1,7 @@
 package uizacoresdk.view.dlg.speed;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -17,7 +17,7 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
-    private Activity activity;
+    private Context context;
     private ScrollView sv;
     private CheckedTextView ct0;
     private CheckedTextView ct1;
@@ -29,10 +29,10 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
 
     private float currentSpeed;
 
-    public UZDlgSpeed(Activity activity, float currentSpeed, Callback callback) {
-        super(activity);
+    public UZDlgSpeed(Context context, float currentSpeed, Callback callback) {
+        super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.activity = activity;
+        this.context = context;
         this.currentSpeed = currentSpeed;
         //LLog.d(TAG, "currentSpeed " + currentSpeed);
         this.callback = callback;

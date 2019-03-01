@@ -195,8 +195,8 @@ public class LScreenUtil {
         }
     }
 
-    public static void hideDefaultControls(@NonNull final Activity activity) {
-        final Window window = activity.getWindow();
+    public static void hideDefaultControls(@NonNull final Context context) {
+        final Window window = ((Activity)context).getWindow();
         if (window == null) {
             return;
         }
@@ -218,8 +218,8 @@ public class LScreenUtil {
         }
     }
 
-    public static void showDefaultControls(@NonNull final Activity activity) {
-        final Window window = activity.getWindow();
+    public static void showDefaultControls(@NonNull final Context context) {
+        final Window window = ((Activity)context).getWindow();
         if (window == null) {
             return;
         }

@@ -19,6 +19,7 @@ public class LSApplication extends MultiDexApplication {
     public static final int currentPlayerId = R.layout.uz_player_skin_1;
     public static final String entityIdDefaultVODLongtime = "85527b12-ae9a-4102-af60-c83054ffa213";
     public static final String entityIdDefaultVOD = "7699e10e-5ce3-4dab-a5ad-a615a711101e";
+    public static final String thumbEntityIdDefaultVOD = "http://teamplayer-static.uizacdn.net/01e137ad1b534004ad822035bf89b29f-static/2018/09/24/7699e10e-5ce3-4dab-a5ad-a615a711101e/thumbnail-10-8-720.jpeg";
     public static final String entityIdDefaultVOD_21_9 = "85527b12-ae9a-4102-af60-c83054ffa213";
     public static final String entityIdDefaultVODportrait = "2732b570-6dc2-42df-bd58-3f7a0cac5683";
     public static final String entityIdDefaultLIVE = "bbe5b36e-155a-4f77-8e0f-f358c4f1f46a";

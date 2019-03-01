@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 
 import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.data.EventBusData;
 
 /**
@@ -87,8 +88,7 @@ public class LConectifyService extends JobService implements ConnectivityReceive
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        //String message = isConnected ? "Good! Connected to Internet" : "Sorry! Not connected to internet";
-        //LLog.d(TAG, "onNetworkConnectionChanged " + message);
+        LLog.d(TAG, "onNetworkConnectionChanged isConnected: " + isConnected);
         if (isConnected) {
             boolean isConnectedMobile = false;
             boolean isConnectedWifi = false;

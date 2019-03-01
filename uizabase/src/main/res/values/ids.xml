@@ -18,7 +18,6 @@
     <item name="exo_playlist_folder" type="id" />
     <item name="exo_hearing" type="id" />
     <item name="exo_setting" type="id" />
-    <item name="exo_share" type="id" />
     <item name="exo_speed" type="id" />
     <item name="exo_fullscreen_toggle_icon" type="id" />
     <item name="viewHeader" type="id" />

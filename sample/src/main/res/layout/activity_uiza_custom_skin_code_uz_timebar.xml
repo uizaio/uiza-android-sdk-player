@@ -3,13 +3,13 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/WhiteSmoke">
 
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/uiza_video"
         android:orientation="vertical">
 
         <ScrollView

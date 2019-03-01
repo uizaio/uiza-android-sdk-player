@@ -134,7 +134,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.linkPlay = linkPlay;
         this.subtitleList = subtitleList;
         this.isFirstStateReady = false;
-
         if (urlIMAAd == null || urlIMAAd.isEmpty()) {
             //do nothing
         } else {
@@ -144,7 +143,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
             }
         }
-
         //OPTION 1 OK
         /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         mediaDataSourceFactory = new DefaultDataSourceFactory(
@@ -171,7 +169,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.imageView = uzVideo.getIvThumbnail();
         this.uzTimebar = uzVideo.getUZTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
-        //LLog.d(TAG, "UZPlayerManagerV1 thumbnailsUrl " + thumbnailsUrl);
         setRunnable();
     }
 
@@ -309,7 +306,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         player = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector, drmSessionManager);
-        //player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         uzVideo.getUzPlayerView().setPlayer(player);
         MediaSource mediaSourceVideo = createMediaSourceVideo();
         //merge title to media source video
@@ -330,7 +326,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
         player.prepare(mediaSourceWithAds);
         player.setPlayWhenReady(uzVideo.isAutoStart());
-        //LLog.d(TAG, "initSource " + contentPosition + ", isLivestream: " + uzVideo.isLivestream());
         if (uzVideo.isLivestream()) {
             player.seekToDefaultPosition();
         } else {
@@ -351,7 +346,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private MediaSource createMediaSourceVideo() {
-        //Video Source
         MediaSource mediaSourceVideo = buildMediaSource(Uri.parse(linkPlay));
         return mediaSourceVideo;
     }
@@ -485,7 +479,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         if (player != null) {
             player.release();
             player = null;
-
             handler = null;
             runnable = null;
         }
@@ -554,7 +547,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private void onFirstStateReady() {
-        //LLog.d(TAG, ">>>>>>>>>> onFirstStateReady");
         if (uzVideo != null) {
             long durationInS = uzVideo.getDuration() / 1000;
             TmpParamData.getInstance().setEntityDuration(durationInS + "");
@@ -793,7 +785,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         @Override
         public void onSurfaceSizeChanged(int width, int height) {
-            //LLog.d(TAG, "onSurfaceSizeChanged " + width + "x" + height);
             if (uzVideo != null && uzVideo.videoListener != null) {
                 uzVideo.videoListener.onSurfaceSizeChanged(width, height);
             }

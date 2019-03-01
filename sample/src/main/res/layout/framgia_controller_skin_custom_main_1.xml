@@ -4,6 +4,8 @@
     android:id="@id/player_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:keepScreenOn="true"
-    app:auto_show="false"
-    app:controller_layout_id="@layout/framgia_controller_skin_custom_detail_1"/>
+    app:controller_layout_id="@layout/framgia_controller_skin_custom_detail_1"
+    app:shutter_background_color="@color/transparent"
+    app:surface_type="texture_view" />

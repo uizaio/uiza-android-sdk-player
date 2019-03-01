@@ -1,6 +1,5 @@
 package uizacoresdk.view.dlg.hq;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -57,18 +56,18 @@ public class UZTrackSelectionView extends LinearLayout {
     /**
      * Gets a pair consisting of a dialog and the {@link com.google.android.exoplayer2.ui.TrackSelectionView} that will be shown by it.
      *
-     * @param activity      The parent activity.
+     * @param context      The parent activity.
      * @param title         The dialog's title.
      * @param trackSelector The track selector.
      * @param rendererIndex The index of the renderer.
      * @return The dialog and the {@link com.google.android.exoplayer2.ui.TrackSelectionView} that will be shown by it.
      */
     public static Pair<AlertDialog, UZTrackSelectionView> getDialog(
-            Activity activity,
+            Context context,
             CharSequence title,
             DefaultTrackSelector trackSelector,
             int rendererIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Inflate with the builder's context to ensure the correct style is used.
         LayoutInflater dialogInflater = LayoutInflater.from(builder.getContext());
