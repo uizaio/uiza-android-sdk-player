@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.util.List;
 
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
@@ -83,13 +82,13 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public void showController() {
-        LLog.d(TAG, "showController");
+        //LLog.d(TAG, "showController");
         super.showController();
     }
 
     @Override
     public void hideController() {
-        LLog.d(TAG, "hideController");
+        //LLog.d(TAG, "hideController");
         super.hideController();
     }
 
@@ -178,7 +177,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
             if (!controllerVisible) {
                 showController();
             } else if (getControllerHideOnTouch()) {
@@ -192,7 +191,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public void onLongPress(MotionEvent e) {
-            LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onLongPress(e.getX(), e.getY());
             }
@@ -200,7 +199,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
+            //LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onDoubleTap(e.getX(), e.getY());
             }
@@ -209,13 +208,13 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            LLog.d(TAG, "onScroll");
+            //LLog.d(TAG, "onScroll");
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            LLog.d(TAG, "onFling");
+            //LLog.d(TAG, "onFling");
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
