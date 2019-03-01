@@ -1,3 +1,14 @@
+### 3.3.0 (2019-3-1)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.0'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.0'
+
+- Add new [sample for sliding](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/slide/Slide0Activity.java)
+- Removed button share in player controller.
+- Optimized sample [custom skin.](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarActivity.java)
 ### 3.2.8 (2019-2-25)
 
     //for playing video VOD, LIVE  
