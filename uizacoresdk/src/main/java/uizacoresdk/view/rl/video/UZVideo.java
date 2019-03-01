@@ -850,7 +850,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         setMarginRlLiveInfo();
         updateUISizeThumnail();
         updateUIPositionOfProgressBar();
-        //UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
         if (isSetUZTimebarBottom) {
             setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
         }
