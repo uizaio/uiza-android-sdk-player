@@ -141,6 +141,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     public void onDestroy() {
         super.onDestroy();
         uzVideo.onDestroy();
+        UZUtil.setUseWithVDHView(false);
     }
 
     @Override
