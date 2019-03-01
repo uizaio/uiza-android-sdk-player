@@ -1768,7 +1768,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView.setControllerStateCallback(this);
         uzTimebar = uzPlayerView.findViewById(R.id.exo_progress);
         previewFrameLayout = uzPlayerView.findViewById(R.id.preview_frame_layout);
-        LLog.d(TAG, "fuck findViews");
         if (uzTimebar != null) {
             if (uzTimebar.getTag() == null) {
                 isSetUZTimebarBottom = false;
@@ -1776,7 +1775,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             } else {
                 if (uzTimebar.getTag().toString().equals(getContext().getString(R.string.use_bottom_uz_timebar))) {
                     isSetUZTimebarBottom = true;
-                    //setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
+                    setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
                 } else {
                     isSetUZTimebarBottom = false;
                     uzPlayerView.setVisibility(VISIBLE);
@@ -2127,14 +2126,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void addPlayerView() {
-        LLog.d(TAG, "fuck addPlayerView");
         uzPlayerView = null;
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         uzPlayerView = (UZPlayerView) ((Activity) getContext()).getLayoutInflater().inflate(resLayout, null);
         setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        //lp.setMargins(0, 0, 0, 100);
         uzPlayerView.setLayoutParams(lp);
         uzPlayerView.setVisibility(GONE);
         rootView.addView(uzPlayerView);
@@ -2651,7 +2648,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             LUIUtil.setMarginPx(view, 0, 0, 0, 0);
         } else {
             heightUZTimebar = getHeightUZTimeBar();
-            LLog.d(TAG, "fuck heightUZTimebar: " + heightUZTimebar);
             LUIUtil.setMarginPx(view, 0, 0, 0, heightUZTimebar / 2);
         }
     }
@@ -3260,35 +3256,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         updateUIButtonPlayPauseDependOnIsAutoStart();
         updateUIDependOnLivetream();
         if (isSetUZTimebarBottom) {
-            LLog.d(TAG, "fuck onStateReadyFirst");
-
-            //uzPlayerView.getOverlayFrameLayout().setBackgroundColor(Color.RED);
-            //setMarginDependOnUZTimeBar(uzPlayerView.getOverlayFrameLayout());
-
-            //setMarginDependOnUZTimeBar(uzPlayerView);
-
-            //uzPlayerView.getVideoSurfaceView().setBackgroundResource(0);
-
-            /*if (uzPlayerView.getVideoSurfaceView() instanceof SurfaceView) {
-                //co le nhu ko can phai set transparent
-                *//*SurfaceView surfaceView = (SurfaceView) uzPlayerView.getVideoSurfaceView();
-                surfaceView.setZOrderOnTop(true);// necessary
-                SurfaceHolder sfhTrackHolder = surfaceView.getHolder();
-                sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);*//*
-            } else if (uzPlayerView.getVideoSurfaceView() instanceof TextureView) {
-                LLog.d(TAG, "fuck onStateReadyFirst TextureView");
-                TextureView textureView = (TextureView) uzPlayerView.getVideoSurfaceView();
-                textureView.setOpaque(false);
-            }*/
-            //uzPlayerView.getRootView().setBackgroundColor(Color.GREEN);
-
-
-            //uzPlayerView.setBackgroundColor(Color.RED);
-            //setBackgroundColorUZVideoRootView(Color.GREEN);
-            //setBackgroundColorBkg(Color.BLUE);
-            //uzPlayerView.getOverlayFrameLayout().setBackgroundColor(Color.RED);
-            //((View)uzPlayerView.getParent()).setBackgroundColor(Color.BLUE);
-            setMarginDependOnUZTimeBar(uzPlayerView.getVideoSurfaceView());
             uzPlayerView.setVisibility(VISIBLE);
         }
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);

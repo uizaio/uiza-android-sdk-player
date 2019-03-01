@@ -7,6 +7,5 @@
     android:background="@color/transparent"
     android:keepScreenOn="true"
     app:controller_layout_id="@layout/framgia_controller_skin_custom_detail_1"
-    app:surface_type="texture_view"
     app:shutter_background_color="@color/transparent"
-    />
+    app:surface_type="texture_view" />
