@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -150,7 +149,6 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            LLog.d(TAG, "fuck onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
 
             if (mDragOffset == 0) {
                 //top_left, top, top_right
@@ -256,7 +254,7 @@ public class VDHView extends LinearLayout {
     private void changeState(State newState) {
         if (state != newState) {
             state = newState;
-            LLog.d(TAG, "fuck changeState: " + newState);
+            //LLog.d(TAG, "changeState: " + newState);
             if (state == VDHView.State.BOTTOM || state == VDHView.State.BOTTOM_LEFT || state == VDHView.State.BOTTOM_RIGHT) {
                 setEnableRevertMaxSize(false);
             }
@@ -269,7 +267,7 @@ public class VDHView extends LinearLayout {
     private void changePart(Part newPart) {
         if (part != newPart) {
             part = newPart;
-            LLog.d(TAG, "fuck changePart: " + part);
+            //LLog.d(TAG, "changePart: " + part);
             if (callback != null) {
                 callback.onPartChange(part);
             }
@@ -354,15 +352,14 @@ public class VDHView extends LinearLayout {
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
                 state == State.TOP_LEFT) {
-            LLog.d(TAG, "fuck return " + state);
+            //LLog.d(TAG, "onLayout return " + state);
             return;
         }
         super.onLayout(changed, l, t, r, b);
         mDragRange = getHeight() - headerView.getHeight();
         mAutoBackViewX = headerView.getLeft();
         mAutoBackViewY = headerView.getTop();
-        //LLog.d(TAG, "fuck onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
-        LLog.d(TAG, "fuck onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + " -> state: " + state + ", part: " + part);
+        //LLog.d(TAG, "onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
     }
 
     public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
@@ -457,7 +454,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
-            LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
+            //LLog.d(TAG, "smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 
