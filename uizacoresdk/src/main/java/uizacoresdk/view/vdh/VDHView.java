@@ -349,13 +349,20 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (state == State.BOTTOM||
+                state == State.BOTTOM_RIGHT ||
+                state == State.BOTTOM_LEFT ||
+                state == State.TOP_RIGHT ||
+                state == State.TOP_LEFT) {
+            LLog.d(TAG, "fuck return " + state);
+            return;
+        }
         super.onLayout(changed, l, t, r, b);
         mDragRange = getHeight() - headerView.getHeight();
         mAutoBackViewX = headerView.getLeft();
         mAutoBackViewY = headerView.getTop();
         //LLog.d(TAG, "fuck onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
         LLog.d(TAG, "fuck onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + " -> state: " + state + ", part: " + part);
-        //getLayoutParams().height += newSizeHHeaderView;
     }
 
     public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
@@ -450,7 +457,7 @@ public class VDHView extends LinearLayout {
         if (mViewDragHelper.smoothSlideViewTo(headerView, positionX, positionY)) {
             ViewCompat.postInvalidateOnAnimation(this);
             postInvalidate();
-            //LLog.d(TAG, "smoothSlideTo " + positionX + "x" + positionY);
+            LLog.d(TAG, "fuck smoothSlideTo " + positionX + "x" + positionY);
         }
     }
 
