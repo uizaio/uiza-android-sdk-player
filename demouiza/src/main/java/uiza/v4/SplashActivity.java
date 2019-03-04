@@ -129,15 +129,19 @@ public class SplashActivity extends AppCompatActivity {
                     LToast.show(activity, "You must correct your workspace's information first.");
                     return;
                 }
-                progressBar.setVisibility(View.VISIBLE);
-                btStart.setVisibility(View.GONE);
-                llInputInfo.setVisibility(View.GONE);
                 if (domainApi.contains("http://")) {
                     domainApi = domainApi.replace("http://", "");
                 }
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
-                UZUtil.initWorkspace(activity, domainApi, token, appId, environment, currentPlayerId);
+                boolean isSuccess = UZUtil.initWorkspace(activity, domainApi, token, appId, environment, currentPlayerId);
+                if (!isSuccess) {
+                    LToast.show(activity, "Your workspace is incorrect.");
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
+                btStart.setVisibility(View.GONE);
+                llInputInfo.setVisibility(View.GONE);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
                 if (intent != null) {
                     LUIUtil.setDelay(3000, new LUIUtil.DelayCallback() {

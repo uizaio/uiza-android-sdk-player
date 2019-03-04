@@ -555,7 +555,7 @@ public class UZUtil {
         });
     }
 
-    public static void initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
+    public static boolean initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
@@ -571,7 +571,7 @@ public class UZUtil {
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         //UZData.getInstance().setCurrentPlayerId(currentPlayerId);
-        UZData.getInstance().initSDK(domainApi, token, appId, env);
+       return UZData.getInstance().initSDK(domainApi, token, appId, env);
     }
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {

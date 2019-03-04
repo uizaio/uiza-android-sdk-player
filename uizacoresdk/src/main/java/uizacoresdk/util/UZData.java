@@ -74,7 +74,12 @@ public class UZData {
         return casty;
     }
 
-    public void initSDK(String domainAPI, String token, String appId, int environment) {
+    public boolean initSDK(String domainAPI, String token, String appId, int environment) {
+        if (domainAPI == null || domainAPI.isEmpty() || domainAPI.contains(" ")
+                || token == null || token.isEmpty() || token.contains(" ")
+                || appId == null || appId.isEmpty() || appId.contains(" ")) {
+            return false;
+        }
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
@@ -93,8 +98,9 @@ public class UZData {
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_PROD);
             initTracking(Constants.URL_TRACKING_PROD, Constants.TRACKING_ACCESS_TOKEN_PROD);
         } else {
-            throw new IllegalArgumentException("Please init correct environment.");
+            return false;
         }
+        return true;
     }
 
     public String getDomainAPI() {
