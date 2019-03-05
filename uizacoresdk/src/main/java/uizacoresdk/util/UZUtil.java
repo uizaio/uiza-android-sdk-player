@@ -76,25 +76,25 @@ public class UZUtil {
         int widthSurfaceView = 0;
         int heightSurfaceView = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
-        if (isFullScreen) {
-            //landscape
+        if (isFullScreen) {//landscape
             widthSurfaceView = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
             heightSurfaceView = LScreenUtil.getScreenHeight();
-        } else {
-            //portrait
+        } else {//portrait
             widthSurfaceView = LScreenUtil.getScreenWidth();
-            //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
                 if (videoW >= videoH) {
-                    //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
-                    heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    if(isFreeSize){
+                        //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
+                        heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    }else{
+                        heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    }
                 } else {
                     if (isFreeSize) {
                         heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                     } else {
-                        //LLog.d(TAG, "video source is portrait -> scale 1-1");
                         //heightSurfaceView = widthSurfaceView;
                         heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
                     }
