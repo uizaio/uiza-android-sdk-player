@@ -17,6 +17,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -25,9 +26,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
-    private TextView tv0;
-    private TextView tv1;
-    private TextView tv2;
+    private TextView tv0, tv1, tv2, tv3;
     private UZVideo uzVideo;
 
     private void findViews() {
@@ -36,6 +35,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         tv0 = (TextView) findViewById(R.id.tv_0);
         tv1 = (TextView) findViewById(R.id.tv_1);
         tv2 = (TextView) findViewById(R.id.tv_2);
+        tv3 = (TextView) findViewById(R.id.tv_3);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
@@ -98,6 +98,11 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.INVISIBLE);
             findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onViewSizeChange(boolean isMaximizeView) {
+        tv3.setText("onViewSizeChange isMaximizeView: " + isMaximizeView);
     }
 
     @Override
@@ -211,6 +216,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
+        LLog.d(TAG, "fuck onSingleTapConfirmed");
         uzVideo.toggleShowHideController();
     }
 
@@ -241,6 +247,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onVisibilityChange(boolean isShow) {
         vdhv.setVisibilityChange(isShow);
+        LLog.d(TAG, "fuck onVisibilityChange " + isShow);
     }
 
     @Override
@@ -279,7 +286,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
     }
 
     @Override

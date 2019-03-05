@@ -41,6 +41,7 @@ public class VDHView extends LinearLayout {
     private int mCenterX;
     private int screenW;
     private int screenH;
+    private boolean isMaximizeView = true;
 
     public VDHView(@NonNull Context context) {
         this(context, null);
@@ -56,6 +57,8 @@ public class VDHView extends LinearLayout {
     }
 
     public interface Callback {
+        public void onViewSizeChange(boolean isMaximizeView);
+
         public void onStateChange(State state);
 
         public void onPartChange(Part part);
@@ -109,11 +112,25 @@ public class VDHView extends LinearLayout {
             } else {
                 mDragOffset = (float) top / mDragRange;
             }
-            if (mDragOffset > 1) {
+            if (mDragOffset >= 1) {
                 mDragOffset = 1;
+                //LLog.d(TAG, "isMaximizeView false");
+                if (isMaximizeView) {
+                    isMaximizeView = false;
+                    if (callback != null) {
+                        callback.onViewSizeChange(isMaximizeView);
+                    }
+                }
             }
-            if (mDragOffset < 0) {
+            if (mDragOffset <= 0) {
                 mDragOffset = 0;
+                //LLog.d(TAG, "isMaximizeView true");
+                if (!isMaximizeView && isEnableRevertMaxSize) {
+                    isMaximizeView = true;
+                    if (callback != null) {
+                        callback.onViewSizeChange(isMaximizeView);
+                    }
+                }
             }
             if (callback != null) {
                 callback.onViewPositionChanged(left, top, mDragOffset);
@@ -131,7 +148,6 @@ public class VDHView extends LinearLayout {
                     headerView.setScaleX(1 - mDragOffset / 2);
                     headerView.setScaleY(1 - mDragOffset / 2);
                 } else {
-
                 }
             } else {
                 headerView.setPivotX(headerView.getWidth() / 2f);
