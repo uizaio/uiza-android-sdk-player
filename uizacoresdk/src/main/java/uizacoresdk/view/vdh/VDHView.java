@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -299,12 +300,44 @@ public class VDHView extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        boolean b = isTouchOutSideHeaderView(ev.getX(), ev.getY());
+        LLog.d(TAG, "fuck ------------> b: " + b);
+        //return true;
         return mViewDragHelper.shouldInterceptTouchEvent(ev);
+    }
+
+    private boolean isTouchOutSideHeaderView(float touchX, float touchY) {
+        if (isMaximizeView) {
+            return false;
+        }
+        float d2 = newSizeWHeaderView / 2f;
+        float r2 = newSizeHHeaderView / 2f;
+        float topLeftX = mCenterX - d2;
+        float topLeftY = mCenterY - r2;
+        //LLog.d(TAG, "topLeft: " + topLeftX + "x" + topLeftY);
+        float topRightX = mCenterX + d2;
+        float topRightY = mCenterY - r2;
+        //LLog.d(TAG, "topRight: " + topRightX + "x" + topRightY);
+        float bottomLeftX = mCenterX - d2;
+        float bottomLeftY = mCenterY + r2;
+        //LLog.d(TAG, "bottomLeft: " + bottomLeftX + "x" + bottomLeftY);
+        float bottomRightX = mCenterX + d2;
+        float bottomRightY = mCenterY + r2;
+        //LLog.d(TAG, "bottomRight: " + bottomRightX + "x" + bottomRightY);
+        if (touchX < topLeftX || touchX > topRightX) {
+            return false;
+        } else {
+            if (touchY < topLeftY || touchY > bottomLeftY) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //LLog.d(TAG, "onTouchEvent isEnableSlide: " + isEnableSlide);
+        LLog.d(TAG, "fuck onTouchEvent isEnableSlide: " + isEnableSlide);
         if (isEnableSlide) {
             mViewDragHelper.processTouchEvent(event);
         } else {
