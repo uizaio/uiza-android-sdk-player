@@ -100,7 +100,6 @@ public interface UZService {
     @GET("/api/public/v4/media/entity")
     Observable<ResultListEntity> getListAllEntity();
 
-    //TODO delete param appId
     //http://dev-docs.uizadev.io/#list-all-entity
     @GET("/api/public/v4/media/entity")
     Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid,
@@ -148,18 +147,15 @@ public interface UZService {
                                                             @Query("orderType") String orderType,
                                                             @Query("appId") String appId);
 
-    //TODO delete param appId
     @GET("/api/public/v4/live/entity")
     Observable<ResultRetrieveALive> retrieveALiveEvent(@Query("id") String entityId, @Query("appId") String appId);
 
     @POST("/api/public/v4/live/entity/feed")
     Observable<Object> startALiveEvent(@Body BodyStartALiveFeed bodyStartALiveFeed);
 
-    //TODO delete param appId
     @GET("/api/public/v4/live/entity/tracking/current-view")
     Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id, @Query("appId") String appId);
 
-    //TODO delete param appId
     @GET("/api/public/v4/live/entity/tracking/")
     Observable<ResultTimeStartLive> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId, @Query("appId") String appId);
 
@@ -169,7 +165,6 @@ public interface UZService {
     @GET("/api/public/v4/player/info/config/")
     Observable<Object> getSkinConfig(@Query("id") String id);
 
-    //TODO delete param appId
     @GET("/api/public/v4/media/entity/cue-point")
     Observable<AdWrapper> getCuePoint(@Query("entityId") String entityId, @Query("appId") String appId);
 
