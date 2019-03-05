@@ -435,7 +435,7 @@ public class UZUtil {
     }*/
 
     public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(activity, entityId, callback);
+        UZUtilBase.getDetailEntity(activity, entityId, UZData.getInstance().getAppId(), callback);
     }
 
     public static boolean initLinkPlay(Activity activity, UZVideo uzVideo) {

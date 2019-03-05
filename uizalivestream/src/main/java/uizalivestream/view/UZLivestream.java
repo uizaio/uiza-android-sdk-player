@@ -50,6 +50,7 @@ import java.util.Locale;
 
 import retrofit2.HttpException;
 import uizalivestream.R;
+import uizalivestream.data.UZLivestreamData;
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
@@ -885,7 +886,8 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
-        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), entityLiveId, new CallbackGetDetailEntity() {
+        String appId = UZLivestreamData.getInstance().getAppId();
+        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), appId, entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));

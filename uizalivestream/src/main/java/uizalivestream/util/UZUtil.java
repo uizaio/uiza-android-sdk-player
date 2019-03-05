@@ -2,6 +2,7 @@ package uizalivestream.util;
 
 import android.content.Context;
 
+import uizalivestream.data.UZLivestreamData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.utils.util.Utils;
@@ -32,5 +33,6 @@ public class UZUtil {
         //UZData.getInstance().initSDK(domainApi, token, appId, env);
         UZRestClient.init(Constants.PREFIXS + domainApi, token);
         //UZUtil.setToken(Utils.getContext(), token);
+        UZLivestreamData.getInstance().setAppId(appId);
     }
 }

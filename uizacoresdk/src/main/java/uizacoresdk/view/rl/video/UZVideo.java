@@ -2848,10 +2848,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void callAPIGetDetailEntity() {
         //Neu da ton tai Data roi thi no duoc goi tu pip, minh ko can phai call api lay detail entity lam gi nua
+        //LLog.d(TAG, "start callAPIGetDetailEntity");
         boolean isDataExist = UZData.getInstance().getData() != null;
         if (isDataExist) {
             //init player khi user click vào fullscreen của floating view (pic)
-            LLog.d(TAG, "isDataExist -> dont callAPIGetDetailEntity");
+            //LLog.d(TAG, "isDataExist -> dont callAPIGetDetailEntity");
             isCalledApiGetDetailEntity = true;
             data = UZData.getInstance().getData();
             handleDataCallAPI();
@@ -2882,7 +2883,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
                 @Override
                 public void onError(Throwable e) {
-                    LLog.e(TAG, "init onError " + e.toString());
+                    LLog.e(TAG, "callAPIGetDetailEntity onError " + e.toString());
                     UZData.getInstance().setSettingPlayer(false);
                     handleError(UZExceptionUtil.getExceptionCannotGetDetailEntitity());
                 }
@@ -2981,6 +2982,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             //LLog.d(TAG, "!isResultGetLinkPlayExist -> call API getLinkPlay VOD or LIVE -> isLivestream: " + isLivestream);
             String tokenStreaming = mResultGetTokenStreaming.getData().getToken();
+            //LLog.d(TAG, "tokenStreaming " + tokenStreaming);
             UZRestClientGetLinkPlay.addAuthorization(tokenStreaming);
             UZService service = UZRestClientGetLinkPlay.createService(UZService.class);
             if (isLivestream) {

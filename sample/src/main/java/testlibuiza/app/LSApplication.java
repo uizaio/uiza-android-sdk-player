@@ -25,7 +25,7 @@ public class LSApplication extends MultiDexApplication {
     public static String entityIdDefaultLIVE_TRANSCODE = "58240424-62f6-4f2b-9ddb-b3a49a3074a5";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "8ae1be2b-3cd5-478c-94c0-6598d5cad4f8";*/
 
-    public static final String DF_DOMAIN_API = "stag-ap-southeast-1-api.uizadev.io";
+    /*public static final String DF_DOMAIN_API = "stag-ap-southeast-1-api.uizadev.io";
     public static final String DF_TOKEN = "uap-37828391444345ebb02bbb4e95437307-af0c77c0";
     public static final String DF_APP_ID = "37828391444345ebb02bbb4e95437307";
     public static final String entityIdDefaultVOD = "0abef046-a1bc-4f12-9304-2cad3e0f60c4";
@@ -33,7 +33,17 @@ public class LSApplication extends MultiDexApplication {
     public static final String entityIdDefaultVODportrait = "0abef046-a1bc-4f12-9304-2cad3e0f60c4";
     public static final String entityIdDefaultLIVE = "0abef046-a1bc-4f12-9304-2cad3e0f60c4";
     public static final String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cb43371943d1";
-    public static String entityIdDefaultLIVE_NO_TRANSCODE = "8ae1be2b-3cd5-478c-94c0-6598d5cad4f8";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "8ae1be2b-3cd5-478c-94c0-6598d5cad4f8";*/
+
+    public static final String DF_DOMAIN_API = "dev-ap-southeast-1-api.uizadev.io";
+    public static final String DF_TOKEN = "uap-10d71cf534914f38add1a163365f62c5-2d0d0cca";
+    public static final String DF_APP_ID = "10d71cf534914f38add1a163365f62c5";
+    public static final String entityIdDefaultVOD = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultVOD_21_9 = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultVODportrait = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultLIVE = "-";
+    public static final String metadataDefault0 = "-";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "-";
 
     @Override
     public void onCreate() {
@@ -44,7 +54,7 @@ public class LSApplication extends MultiDexApplication {
         }
         Constants.setDebugMode(true);
         //UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_STAG, uizacoresdk.R.layout.uz_player_skin_1);
+        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_DEV, uizacoresdk.R.layout.uz_player_skin_1);
     }
 
     public Gson getGson() {

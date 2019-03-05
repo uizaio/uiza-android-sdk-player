@@ -121,7 +121,6 @@ public interface UZService {
     @GET("/api/public/v4/media/entity")
     Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid);
 
-    //TODO delete param appId
     //http://dev-docs.uizadev.io/#retrieve-an-entity
     @GET("/api/public/v4/media/entity")
     Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Query("id") String id, @Query("appId") String appId);
