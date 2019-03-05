@@ -42,7 +42,7 @@ public class LSApplication extends MultiDexApplication {
         if (gson == null) {
             gson = new Gson();
         }
-        Constants.setDebugMode(false);
+        Constants.setDebugMode(true);
         //UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_STAG, uizacoresdk.R.layout.uz_player_skin_1);
     }
