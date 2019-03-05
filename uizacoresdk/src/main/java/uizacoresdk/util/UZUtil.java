@@ -70,7 +70,6 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
-        //quyen
         if (viewGroup == null) {
             return;
         }
@@ -96,13 +95,13 @@ public class UZUtil {
                         heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                     } else {
                         //LLog.d(TAG, "video source is portrait -> scale 1-1");
-                        heightSurfaceView = widthSurfaceView;
-                        //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                        //heightSurfaceView = widthSurfaceView;
+                        heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
                     }
                 }
             }
         }
-        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
         TmpParamData.getInstance().setPlayerWidth(widthSurfaceView);
         TmpParamData.getInstance().setPlayerHeight(heightSurfaceView);
         viewGroup.getLayoutParams().width = widthSurfaceView;

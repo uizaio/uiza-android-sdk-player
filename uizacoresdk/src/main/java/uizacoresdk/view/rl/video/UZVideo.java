@@ -386,12 +386,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void setResizeMode(int resizeMode) {
         if (uzPlayerView != null) {
             uzPlayerView.setResizeMode(resizeMode);
-            //uzPlayerView.invalidate();
         }
     }
 
     public void setSize(int width, int height) {
-        //quyen
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), width, height, isFreeSize);
     }
 
@@ -399,7 +397,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void setFreeSize(boolean isFreeSize) {
         this.isFreeSize = isFreeSize;
-        //quyen
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
     }
 
@@ -2014,7 +2011,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError + ", isInitCustomLinkPlay: " + isInitCustomLinkPlay);
         if (ivVideoCover.getVisibility() != View.GONE) {
             ivVideoCover.setVisibility(GONE);
-            ivVideoCover.invalidate();//quyen
+            ivVideoCover.invalidate();
             if (isLivestream) {
                 if (tvLiveTime != null) {
                     tvLiveTime.setText("-");
@@ -2315,11 +2312,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             layoutParams.width = widthIv;
             layoutParams.height = (int) (widthIv * Constants.RATIO_9_16);
             previewFrameLayout.setLayoutParams(layoutParams);
-            previewFrameLayout.requestLayout();//quyen
+            previewFrameLayout.requestLayout();
         }
     }
 
-    //quyen
     private void setMarginPreviewTimeBar() {
         if (isLandscape) {
             LUIUtil.setMarginDimen(uzTimebar, 5, 0, 5, 0);
@@ -2328,7 +2324,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    //quyen
     private void setMarginRlLiveInfo() {
         if (isLandscape) {
             LUIUtil.setMarginDimen(rlLiveInfo, 50, 0, 50, 0);
