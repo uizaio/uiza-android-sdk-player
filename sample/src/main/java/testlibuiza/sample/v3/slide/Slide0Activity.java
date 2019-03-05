@@ -247,7 +247,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onVisibilityChange(boolean isShow) {
         vdhv.setVisibilityChange(isShow);
-        LLog.d(TAG, "fuck onVisibilityChange " + isShow);
     }
 
     @Override
