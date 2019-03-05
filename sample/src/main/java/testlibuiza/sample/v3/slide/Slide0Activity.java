@@ -41,6 +41,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
         uzVideo.addProgressCallback(this);
+        //uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -158,9 +159,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            vdhv.setEnableSlide(true);
-        }
+        vdhv.setInitResult(isInitSuccess);
     }
 
     @Override
@@ -187,7 +186,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
-        vdhv.setEnableSlide(!isLandscape);
+        vdhv.setScreenRotate(isLandscape);
+
     }
 
     @Override
@@ -234,7 +234,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onVisibilityChange(boolean isShow) {
-        vdhv.setEnableSlide(!isShow);
+        vdhv.setVisibilityChange(isShow);
     }
 
     @Override

@@ -347,7 +347,7 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (state == State.BOTTOM||
+        if (state == State.BOTTOM ||
                 state == State.BOTTOM_RIGHT ||
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
@@ -540,8 +540,22 @@ public class VDHView extends LinearLayout {
 
     private boolean isEnableSlide;
 
-    public void setEnableSlide(boolean isEnableSlide) {
+    private void setEnableSlide(boolean isEnableSlide) {
         this.isEnableSlide = isEnableSlide;
+    }
+
+    public void setInitResult(boolean isInitSuccess){
+        if (isInitSuccess) {
+            setEnableSlide(true);
+        }
+    }
+
+    public void setScreenRotate(boolean isLandscape){
+        setEnableSlide(!isLandscape);
+    }
+
+    public void setVisibilityChange(boolean isShow){
+        setEnableSlide(!isShow);
     }
 
     private GestureDetector mDetector;
