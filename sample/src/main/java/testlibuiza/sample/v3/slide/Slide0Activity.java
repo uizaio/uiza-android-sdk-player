@@ -17,6 +17,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -37,11 +38,12 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         tv2 = (TextView) findViewById(R.id.tv_2);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
+        vdhv.setScreenRotate(false);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
         uzVideo.addProgressCallback(this);
-        //uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        //uzVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -234,6 +236,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onVisibilityChange(boolean isShow) {
+        LLog.d(TAG, "fuck onVisibilityChange " + isShow);
         vdhv.setVisibilityChange(isShow);
     }
 

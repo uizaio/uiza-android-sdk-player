@@ -386,6 +386,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     public void setResizeMode(int resizeMode) {
         if (uzPlayerView != null) {
             uzPlayerView.setResizeMode(resizeMode);
+            //uzPlayerView.invalidate();
         }
     }
 

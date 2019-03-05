@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -544,17 +545,31 @@ public class VDHView extends LinearLayout {
         this.isEnableSlide = isEnableSlide;
     }
 
-    public void setInitResult(boolean isInitSuccess){
+    public void setInitResult(boolean isInitSuccess) {
         if (isInitSuccess) {
             setEnableSlide(true);
         }
     }
 
-    public void setScreenRotate(boolean isLandscape){
-        setEnableSlide(!isLandscape);
+    public void setScreenRotate(boolean isLandscape) {
+        LLog.d(TAG, "fuck setScreenRotate isLandscape: " + isLandscape);
+        if (isLandscape) {
+            setEnableSlide(false);
+            if (headerView != null) {
+                headerView.getLayoutParams().height = screenH;
+                headerView.requestLayout();
+            }
+        } else {
+            setEnableSlide(true);
+            if (headerView != null) {
+                headerView.getLayoutParams().height = screenW * 9 / 16;
+                LLog.d(TAG, "fuck height " + screenW * 9 / 16);
+                headerView.requestLayout();
+            }
+        }
     }
 
-    public void setVisibilityChange(boolean isShow){
+    public void setVisibilityChange(boolean isShow) {
         setEnableSlide(!isShow);
     }
 
