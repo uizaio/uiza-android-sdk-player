@@ -566,12 +566,19 @@ public class VDHView extends LinearLayout {
         }
     }
 
+    private boolean isLandscape;
+
     public void setScreenRotate(boolean isLandscape) {
+        this.isLandscape = isLandscape;
         setEnableSlide(!isLandscape);
     }
 
     public void setVisibilityChange(boolean isShow) {
-        setEnableSlide(!isShow);
+        if (isLandscape) {
+            setEnableSlide(false);
+        } else {
+            setEnableSlide(!isShow);
+        }
     }
 
     private GestureDetector mDetector;

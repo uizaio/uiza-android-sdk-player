@@ -192,13 +192,13 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onScreenRotate(boolean isLandscape) {
-        vdhv.setScreenRotate(isLandscape);
         if (!isLandscape) {
             int w = LScreenUtil.getScreenWidth();
             int h = w * 9 / 16;
             uzVideo.setFreeSize(false);
             uzVideo.setSize(w, h);
         }
+        vdhv.setScreenRotate(isLandscape);
     }
 
     @Override
