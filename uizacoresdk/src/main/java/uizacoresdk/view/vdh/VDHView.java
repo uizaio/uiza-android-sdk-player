@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -557,10 +558,16 @@ public class VDHView extends LinearLayout {
     private boolean isEnableSlide;
 
     private void setEnableSlide(boolean isEnableSlide) {
-        this.isEnableSlide = isEnableSlide;
+        LLog.d(TAG, "fuck setEnableSlide " + isEnableSlide + ", isInitSuccess: " + isInitSuccess);
+        if (isInitSuccess) {
+            this.isEnableSlide = isEnableSlide;
+        }
     }
 
+    private boolean isInitSuccess;
+
     public void setInitResult(boolean isInitSuccess) {
+        this.isInitSuccess = isInitSuccess;
         if (isInitSuccess) {
             setEnableSlide(true);
         }
