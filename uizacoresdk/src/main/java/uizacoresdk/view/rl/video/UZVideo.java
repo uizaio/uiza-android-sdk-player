@@ -1431,6 +1431,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //chi toggle show hide controller khi video da vao dc onStateReadyFirst();
     public void toggleShowHideController() {
         if (uzPlayerView != null) {
+            if (isOnPlayerEnded) {
+                return;
+            }
             uzPlayerView.toggleShowHideController();
         }
     }
