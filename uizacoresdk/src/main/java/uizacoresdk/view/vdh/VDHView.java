@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 public class VDHView extends LinearLayout {
@@ -299,16 +298,13 @@ public class VDHView extends LinearLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        boolean b = isTouchOutSideHeaderView(ev.getX(), ev.getY());
-        LLog.d(TAG, "fuck ------------> b: " + b);
-        //return true;
-        return mViewDragHelper.shouldInterceptTouchEvent(ev);
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return mViewDragHelper.shouldInterceptTouchEvent(event);
     }
 
-    private boolean isTouchOutSideHeaderView(float touchX, float touchY) {
+    private boolean isTouchInSideHeaderView(float touchX, float touchY) {
         if (isMaximizeView) {
-            return false;
+            return true;
         }
         float d2 = newSizeWHeaderView / 2f;
         float r2 = newSizeHHeaderView / 2f;
@@ -337,9 +333,17 @@ public class VDHView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LLog.d(TAG, "fuck onTouchEvent isEnableSlide: " + isEnableSlide);
+        //LLog.d(TAG, "onTouchEvent isEnableSlide: " + isEnableSlide);
         if (isEnableSlide) {
-            mViewDragHelper.processTouchEvent(event);
+            //mViewDragHelper.processTouchEvent(event);
+            boolean b = isTouchInSideHeaderView(event.getX(), event.getY());
+            //LLog.d(TAG, "onTouchEvent isTouchInSideHeaderView: " + b);
+            if (b) {
+                mViewDragHelper.processTouchEvent(event);
+            } else {
+                mViewDragHelper.cancel();
+                return false;
+            }
         } else {
             mViewDragHelper.cancel();
         }
