@@ -42,6 +42,13 @@
                     android:textColor="@color/Black"
                     android:textSize="@dimen/txt_8" />
 
+                <TextView
+                    android:id="@+id/tv_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/txt_8" />
+
                 <Button
                     android:id="@+id/bt_minimize_bottom_left"
                     android:layout_width="wrap_content"
@@ -91,7 +98,8 @@
         <FrameLayout
             android:id="@id/header_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/Black">
 
             <uizacoresdk.view.rl.video.UZVideo
                 android:id="@id/uiza_video"

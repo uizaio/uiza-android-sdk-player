@@ -41,6 +41,7 @@ public class VDHView extends LinearLayout {
     private int mCenterX;
     private int screenW;
     private int screenH;
+    private boolean isMaximizeView = true;
 
     public VDHView(@NonNull Context context) {
         this(context, null);
@@ -56,6 +57,8 @@ public class VDHView extends LinearLayout {
     }
 
     public interface Callback {
+        public void onViewSizeChange(boolean isMaximizeView);
+
         public void onStateChange(State state);
 
         public void onPartChange(Part part);
@@ -109,11 +112,25 @@ public class VDHView extends LinearLayout {
             } else {
                 mDragOffset = (float) top / mDragRange;
             }
-            if (mDragOffset > 1) {
+            if (mDragOffset >= 1) {
                 mDragOffset = 1;
+                //LLog.d(TAG, "isMaximizeView false");
+                if (isMaximizeView) {
+                    isMaximizeView = false;
+                    if (callback != null) {
+                        callback.onViewSizeChange(isMaximizeView);
+                    }
+                }
             }
-            if (mDragOffset < 0) {
+            if (mDragOffset <= 0) {
                 mDragOffset = 0;
+                //LLog.d(TAG, "isMaximizeView true");
+                if (!isMaximizeView && isEnableRevertMaxSize) {
+                    isMaximizeView = true;
+                    if (callback != null) {
+                        callback.onViewSizeChange(isMaximizeView);
+                    }
+                }
             }
             if (callback != null) {
                 callback.onViewPositionChanged(left, top, mDragOffset);
@@ -131,7 +148,6 @@ public class VDHView extends LinearLayout {
                     headerView.setScaleX(1 - mDragOffset / 2);
                     headerView.setScaleY(1 - mDragOffset / 2);
                 } else {
-
                 }
             } else {
                 headerView.setPivotX(headerView.getWidth() / 2f);
@@ -149,7 +165,6 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> mCenterX: " + mCenterX + ", mCenterY: " + mCenterY);
 
             if (mDragOffset == 0) {
                 //top_left, top, top_right
@@ -283,15 +298,52 @@ public class VDHView extends LinearLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mViewDragHelper.shouldInterceptTouchEvent(ev);
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return mViewDragHelper.shouldInterceptTouchEvent(event);
+    }
+
+    private boolean isTouchInSideHeaderView(float touchX, float touchY) {
+        if (isMaximizeView) {
+            return true;
+        }
+        float d2 = newSizeWHeaderView / 2f;
+        float r2 = newSizeHHeaderView / 2f;
+        float topLeftX = mCenterX - d2;
+        float topLeftY = mCenterY - r2;
+        //LLog.d(TAG, "topLeft: " + topLeftX + "x" + topLeftY);
+        float topRightX = mCenterX + d2;
+        float topRightY = mCenterY - r2;
+        //LLog.d(TAG, "topRight: " + topRightX + "x" + topRightY);
+        float bottomLeftX = mCenterX - d2;
+        float bottomLeftY = mCenterY + r2;
+        //LLog.d(TAG, "bottomLeft: " + bottomLeftX + "x" + bottomLeftY);
+        float bottomRightX = mCenterX + d2;
+        float bottomRightY = mCenterY + r2;
+        //LLog.d(TAG, "bottomRight: " + bottomRightX + "x" + bottomRightY);
+        if (touchX < topLeftX || touchX > topRightX) {
+            return false;
+        } else {
+            if (touchY < topLeftY || touchY > bottomLeftY) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //LLog.d(TAG, "onTouchEvent isEnableSlide: " + isEnableSlide);
         if (isEnableSlide) {
-            mViewDragHelper.processTouchEvent(event);
+            //mViewDragHelper.processTouchEvent(event);
+            boolean b = isTouchInSideHeaderView(event.getX(), event.getY());
+            //LLog.d(TAG, "onTouchEvent isTouchInSideHeaderView: " + b);
+            if (b) {
+                mViewDragHelper.processTouchEvent(event);
+            } else {
+                mViewDragHelper.cancel();
+                return false;
+            }
         } else {
             mViewDragHelper.cancel();
         }
@@ -348,12 +400,19 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (state == State.BOTTOM ||
+                state == State.BOTTOM_RIGHT ||
+                state == State.BOTTOM_LEFT ||
+                state == State.TOP_RIGHT ||
+                state == State.TOP_LEFT) {
+            //LLog.d(TAG, "onLayout return " + state);
+            return;
+        }
         super.onLayout(changed, l, t, r, b);
         mDragRange = getHeight() - headerView.getHeight();
         mAutoBackViewX = headerView.getLeft();
         mAutoBackViewY = headerView.getTop();
         //LLog.d(TAG, "onLayout l:" + l + ", t:" + t + ", r:" + r + ", b:" + b + ", mAutoBackViewX: " + mAutoBackViewX + ", mAutoBackViewY: " + mAutoBackViewY);
-        //getLayoutParams().height += newSizeHHeaderView;
     }
 
     public enum State {TOP, TOP_LEFT, TOP_RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT, MID, MID_LEFT, MID_RIGHT, NULL}
@@ -496,7 +555,7 @@ public class VDHView extends LinearLayout {
         if (!isEnableRevertMaxSize) {
             minimizeBottomRight();
             headerView.setVisibility(INVISIBLE);
-            bodyView.setVisibility(INVISIBLE);
+            setVisibilityBodyView(INVISIBLE);
         }
     }
 
@@ -504,7 +563,7 @@ public class VDHView extends LinearLayout {
 
     public void dissappear() {
         headerView.setVisibility(GONE);
-        bodyView.setVisibility(GONE);
+        setVisibilityBodyView(GONE);
         isAppear = false;
         if (callback != null) {
             callback.onAppear(isAppear);
@@ -519,7 +578,7 @@ public class VDHView extends LinearLayout {
 
     public void appear() {
         headerView.setVisibility(VISIBLE);
-        bodyView.setVisibility(VISIBLE);
+        setVisibilityBodyView(VISIBLE);
         //LLog.d(TAG, "appear -> isEnableRevertMaxSize " + isEnableRevertMaxSize);
         if (!isEnableRevertMaxSize) {
             headerView.setScaleX(1f);
@@ -534,8 +593,41 @@ public class VDHView extends LinearLayout {
 
     private boolean isEnableSlide;
 
-    public void setEnableSlide(boolean isEnableSlide) {
-        this.isEnableSlide = isEnableSlide;
+    private void setEnableSlide(boolean isEnableSlide) {
+        if (isInitSuccess) {
+            this.isEnableSlide = isEnableSlide;
+        }
+    }
+
+    private boolean isInitSuccess;
+
+    public void setInitResult(boolean isInitSuccess) {
+        this.isInitSuccess = isInitSuccess;
+        if (isInitSuccess) {
+            setEnableSlide(true);
+        }
+    }
+
+    private boolean isLandscape;
+
+    public void setScreenRotate(boolean isLandscape) {
+        this.isLandscape = isLandscape;
+        if (isControllerShowing) {
+            setEnableSlide(false);
+        } else {
+            setEnableSlide(!isLandscape);
+        }
+    }
+
+    private boolean isControllerShowing;
+
+    public void setVisibilityChange(boolean isShow) {
+        this.isControllerShowing = isShow;
+        if (isLandscape) {
+            setEnableSlide(false);
+        } else {
+            setEnableSlide(!isShow);
+        }
     }
 
     private GestureDetector mDetector;

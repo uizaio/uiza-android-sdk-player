@@ -70,39 +70,38 @@ public class UZUtil {
     }
 
     public static void resizeLayout(ViewGroup viewGroup, ImageView ivVideoCover, int pixelAdded, int videoW, int videoH, boolean isFreeSize) {
-        //quyen
         if (viewGroup == null) {
             return;
         }
         int widthSurfaceView = 0;
         int heightSurfaceView = 0;
         boolean isFullScreen = LScreenUtil.isFullScreen(viewGroup.getContext());
-        if (isFullScreen) {
-            //landscape
+        if (isFullScreen) {//landscape
             widthSurfaceView = LScreenUtil.getScreenHeightIncludeNavigationBar(viewGroup.getContext());
             heightSurfaceView = LScreenUtil.getScreenHeight();
-        } else {
-            //portrait
+        } else {//portrait
             widthSurfaceView = LScreenUtil.getScreenWidth();
-            //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             if (videoW == 0 || videoH == 0) {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
                 if (videoW >= videoH) {
-                    //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
-                    heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    if(isFreeSize){
+                        //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
+                        heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
+                    }else{
+                        heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                    }
                 } else {
                     if (isFreeSize) {
                         heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
                     } else {
-                        //LLog.d(TAG, "video source is portrait -> scale 1-1");
-                        heightSurfaceView = widthSurfaceView;
-                        //heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
+                        //heightSurfaceView = widthSurfaceView;
+                        heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
                     }
                 }
             }
         }
-        LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
+        //LLog.d(TAG, "resizeLayout isFullScreen " + isFullScreen + ", widthSurfaceView x heightSurfaceView: " + widthSurfaceView + "x" + heightSurfaceView + ", pixelAdded: " + pixelAdded + ", videoW: " + videoW + ", videoH: " + videoH);
         TmpParamData.getInstance().setPlayerWidth(widthSurfaceView);
         TmpParamData.getInstance().setPlayerHeight(heightSurfaceView);
         viewGroup.getLayoutParams().width = widthSurfaceView;
@@ -555,7 +554,7 @@ public class UZUtil {
         });
     }
 
-    public static void initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
+    public static boolean initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
@@ -571,7 +570,7 @@ public class UZUtil {
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         //UZData.getInstance().setCurrentPlayerId(currentPlayerId);
-        UZData.getInstance().initSDK(domainApi, token, appId, env);
+       return UZData.getInstance().initSDK(domainApi, token, appId, env);
     }
 
     public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {

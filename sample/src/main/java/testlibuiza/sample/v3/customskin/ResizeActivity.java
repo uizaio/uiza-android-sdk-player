@@ -17,12 +17,13 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LStoreUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 5/3/2019.
  */
 
 public class ResizeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
@@ -92,6 +93,18 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
                     return;
                 }
                 uzVideo.setFreeSize(true);
+            }
+        });
+        findViewById(R.id.bt_6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (uzVideo == null) {
+                    return;
+                }
+                int w = LScreenUtil.getScreenWidth();
+                int h = w * 9 / 16;
+                uzVideo.setFreeSize(false);
+                uzVideo.setSize(w, h);
             }
         });
     }

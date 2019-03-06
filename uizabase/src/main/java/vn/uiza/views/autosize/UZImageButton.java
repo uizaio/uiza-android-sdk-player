@@ -160,7 +160,7 @@ public class UZImageButton extends AppCompatImageButton {
         size = screenWPortrait / ratioPort;
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
-        this.requestLayout();//quyen
+        this.requestLayout();
     }
 
     private void updateSizeLandscape() {
@@ -170,7 +170,7 @@ public class UZImageButton extends AppCompatImageButton {
         size = screenWLandscape / ratioLand;
         this.getLayoutParams().width = size;
         this.getLayoutParams().height = size;
-        this.requestLayout();//quyen
+        this.requestLayout();
     }
 
     public int getSize() {
