@@ -162,4 +162,12 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
             frmUTVideoBottom.updateUI(resultGetLinkPlay, data);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        if (frmUTVideoTop != null) {
+            frmUTVideoTop.getUZVideo().pauseVideo();
+        }
+        super.onDestroy();
+    }
 }

@@ -48,7 +48,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
-        calSize();
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
@@ -102,6 +101,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
+        calSize();
+        activity.getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);
     }
 
     @Nullable
@@ -145,7 +146,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         activity.isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
-            activity.getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);
             setAutoHideController();
         }
     }
