@@ -1326,9 +1326,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickBackScreen() {
-        if (!isOnPlayerEnded) {
+        /*if (!isOnPlayerEnded) {
             hideController();
-        }
+        }*/
         if (isLandscape) {
             toggleFullscreen();
         }
