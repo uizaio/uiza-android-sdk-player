@@ -1,3 +1,19 @@
+### 3.3.1 (2019-3-6)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.1'
+
+- Update sample [Slide0Activity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/slide/Slide0Activity.java)
+- Update core [VDHView](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizacoresdk/src/main/java/uizacoresdk/view/vdh/VDHView.java):
+	+ Fixed incorrect position when view state changed.
+	+ Fixed touch area.
+	+ Add more listener.
+- Update sample [ResizeActivity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/ResizeActivity.java)
+
+
 ### 3.3.0 (2019-3-1)
 
     //for playing video VOD, LIVE  
