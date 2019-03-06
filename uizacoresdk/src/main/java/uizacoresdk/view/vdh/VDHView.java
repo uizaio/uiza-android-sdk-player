@@ -612,10 +612,17 @@ public class VDHView extends LinearLayout {
 
     public void setScreenRotate(boolean isLandscape) {
         this.isLandscape = isLandscape;
-        setEnableSlide(!isLandscape);
+        if (isControllerShowing) {
+            setEnableSlide(false);
+        } else {
+            setEnableSlide(!isLandscape);
+        }
     }
 
+    private boolean isControllerShowing;
+
     public void setVisibilityChange(boolean isShow) {
+        this.isControllerShowing = isShow;
         if (isLandscape) {
             setEnableSlide(false);
         } else {

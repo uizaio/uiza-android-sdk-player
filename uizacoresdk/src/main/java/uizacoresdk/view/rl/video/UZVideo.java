@@ -469,9 +469,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         LLog.d(TAG, "isPlayWithPlaylistFolder " + UZData.getInstance().isPlayWithPlaylistFolder());
         if (UZData.getInstance().isPlayWithPlaylistFolder()) {
-            setVisibilityOfPlaylistFolderController(View.VISIBLE);
+            setVisibilityOfPlaylistFolderController(VISIBLE);
         } else {
-            setVisibilityOfPlaylistFolderController(View.GONE);
+            setVisibilityOfPlaylistFolderController(GONE);
         }
         isCalledFromChangeSkin = false;
         isInitCustomLinkPlay = false;
@@ -515,7 +515,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         LLog.d(TAG, "init linkPlay " + linkPlay);
         isInitCustomLinkPlay = true;
         isCalledFromChangeSkin = false;
-        setVisibilityOfPlaylistFolderController(View.GONE);
+        setVisibilityOfPlaylistFolderController(GONE);
         isCalledApiGetDetailEntity = false;
         isCalledAPIGetUrlIMAAdTag = false;
         isCalledAPIGetTokenStreaming = false;
@@ -919,7 +919,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này ta có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn*/
         if (isDefaultUseController) {
-            if (rlMsg != null && rlMsg.getVisibility() == View.VISIBLE) {
+            if (rlMsg != null && rlMsg.getVisibility() == VISIBLE) {
             } else {
                 if (isPlayerControllerShowing()) {
                     showController();
@@ -970,7 +970,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (ibPictureInPictureIcon != null) {
-            ibPictureInPictureIcon.setVisibility(View.GONE);
+            ibPictureInPictureIcon.setVisibility(GONE);
         }
         if (uzCallback != null) {
             isInitMiniPlayerSuccess = false;
@@ -1291,9 +1291,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             isOnPlayerEnded = false;
             updateUIEndScreen();
             if (isPlayPlaylistFolder()) {
-                setVisibilityOfPlaylistFolderController(View.VISIBLE);
+                setVisibilityOfPlaylistFolderController(VISIBLE);
             } else {
-                setVisibilityOfPlaylistFolderController(View.GONE);
+                setVisibilityOfPlaylistFolderController(GONE);
             }
             trackUizaEventVideoStarts();
             trackUizaEventDisplay();
@@ -1428,6 +1428,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    //chi toggle show hide controller khi video da vao dc onStateReadyFirst();
     public void toggleShowHideController() {
         if (uzPlayerView != null) {
             uzPlayerView.toggleShowHideController();
@@ -1821,9 +1822,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         debugRootView = findViewById(R.id.controls_root);
         debugTextView = findViewById(R.id.debug_text_view);
         if (Constants.IS_DEBUG) {
-            debugLayout.setVisibility(View.VISIBLE);
+            debugLayout.setVisibility(VISIBLE);
         } else {
-            debugLayout.setVisibility(View.GONE);
+            debugLayout.setVisibility(GONE);
             debugTextView = null;
         }
         rlLiveInfo = (RelativeLayout) uzPlayerView.findViewById(R.id.rl_live_info);
@@ -1981,14 +1982,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivVideoCover == null) {
             return;
         }
-        if (ivVideoCover.getVisibility() != View.VISIBLE) {
-            ivVideoCover.setVisibility(View.VISIBLE);
+        if (ivVideoCover.getVisibility() != VISIBLE) {
+            ivVideoCover.setVisibility(VISIBLE);
             LImageUtil.load(getContext(), urlImgThumbnail, ivVideoCover, R.drawable.background_black);
         }
     }
 
     private void setVideoCover() {
-        if (ivVideoCover.getVisibility() != View.VISIBLE) {
+        if (ivVideoCover.getVisibility() != VISIBLE) {
             resetCountTryLinkPlayError();
             ivVideoCover.setVisibility(VISIBLE);
             ivVideoCover.invalidate();
@@ -2009,7 +2010,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void removeVideoCover(boolean isFromHandleError) {
         //LLog.d(TAG, "removeVideoCover isFromHandleError " + isFromHandleError + ", isInitCustomLinkPlay: " + isInitCustomLinkPlay);
-        if (ivVideoCover.getVisibility() != View.GONE) {
+        if (ivVideoCover.getVisibility() != GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
             if (isLivestream) {
@@ -2075,22 +2076,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             Log.e(TAG, "Error addUIChromecastLayer: " + e.toString());
         }
         if (castContext == null) {
-            uzMediaRouteButton.setVisibility(View.GONE);
+            uzMediaRouteButton.setVisibility(GONE);
             return;
         }
         if (castContext.getCastState() == CastState.NO_DEVICES_AVAILABLE) {
-            uzMediaRouteButton.setVisibility(View.GONE);
+            uzMediaRouteButton.setVisibility(GONE);
         } else {
-            uzMediaRouteButton.setVisibility(View.VISIBLE);
+            uzMediaRouteButton.setVisibility(VISIBLE);
         }
         castContext.addCastStateListener(new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
                 if (state == CastState.NO_DEVICES_AVAILABLE) {
-                    uzMediaRouteButton.setVisibility(View.GONE);
+                    uzMediaRouteButton.setVisibility(GONE);
                 } else {
-                    if (uzMediaRouteButton.getVisibility() != View.VISIBLE) {
-                        uzMediaRouteButton.setVisibility(View.VISIBLE);
+                    if (uzMediaRouteButton.getVisibility() != VISIBLE) {
+                        uzMediaRouteButton.setVisibility(VISIBLE);
                     }
                 }
             }
