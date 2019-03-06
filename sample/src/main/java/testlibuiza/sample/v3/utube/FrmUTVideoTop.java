@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.github.rubensousa.previewseekbar.PreviewView;
-import com.google.android.exoplayer2.video.VideoListener;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.CallbackUZTimebar;
@@ -29,12 +28,14 @@ import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
     private CustomSkinCodeUZTimebarUTubeWithSlideActivity activity;
     private UZVideo uzVideo;
     private View shadow;
@@ -49,12 +50,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
-        uzVideo.addVideoListener(new VideoListener() {
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                //calSize(width, height);
-            }
-        });
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -123,14 +118,14 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -183,15 +178,19 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onSkinChange() {
     }
 
+    public boolean isLandscape;
+
     @Override
     public void onScreenRotate(boolean isLandscape) {
+        this.isLandscape = isLandscape;
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-        if (!isLandscape) {
-            int width = uzVideo.getVideoW();
-            int height = uzVideo.getVideoH();
-            calSize(width, height);
+        if (isLandscape) {
+            activity.getDraggablePanel().setEnableSlide(false);
+        } else {
+            activity.getDraggablePanel().setEnableSlide(true);
         }
+        calSize();
     }
 
     @Override
@@ -200,38 +199,31 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     public void initEntity(String entityId) {
         showController();
+        uzVideo.pauseVideo();
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
         showController();
+        uzVideo.pauseVideo();
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 
-    private void calSize(int width, int height) {
+    private void calSize() {
         int screenW = LScreenUtil.getScreenWidth();
         int screenH;
-        if (width >= height) {
-            screenH = height * screenW / width;
+        if (isLandscape) {
+            screenH = LScreenUtil.getScreenHeight();
         } else {
             screenH = (int) (screenW * Constants.RATIO_9_16);
         }
-        resizeView(screenW, screenH);
-    }
-
-    private void resizeView(int w, int h) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.setTopViewHeightApllyNow(h + uzVideo.getHeightUZTimeBar() / 2);
+                LLog.d(TAG, "fuck calSize getHeightUZTimeBar/2: " + uzVideo.getHeightUZTimeBar() / 2);
+                activity.setTopViewHeightApllyNow(screenH + uzVideo.getHeightUZTimeBar() / 2);
             }
         });
-        /*uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.setSize(w, h);
-            }
-        });*/
     }
 
     //listerner controller visibility state
@@ -239,7 +231,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     private void onVisibilityChange(boolean isShow) {
         this.isShowingController = isShow;
-        if (activity.getDraggablePanel() != null && !(activity.isLandscapeScreen())) {
+        if (activity.getDraggablePanel() != null && !(uzVideo.isLandscape())) {
             if (activity.getDraggablePanel().isMaximized()) {
                 if (isShow) {
                     activity.getDraggablePanel().setEnableSlide(false);
