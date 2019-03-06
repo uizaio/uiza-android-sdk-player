@@ -48,6 +48,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        calSize();
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {

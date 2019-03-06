@@ -76,7 +76,6 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
         homeCanSlideActivity.isInitResult(isGetDataSuccess, resultGetLinkPlay, data);

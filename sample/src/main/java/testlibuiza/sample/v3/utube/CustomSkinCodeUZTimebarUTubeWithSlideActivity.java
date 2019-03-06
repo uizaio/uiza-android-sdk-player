@@ -10,8 +10,6 @@ import android.view.View;
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import vn.uiza.core.common.Constants;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -101,7 +99,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         draggablePanel.setClickToMaximizeEnabled(true);
         draggablePanel.setClickToMinimizeEnabled(false);
         draggablePanel.setEnableHorizontalAlphaEffect(false);
-        setSizeFrmTop();
         draggablePanel.initializeView();
         draggablePanel.setVisibility(View.GONE);
     }
@@ -109,17 +106,6 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
     public void setTopViewHeightApllyNow(int topFragmentHeight) {
         if (draggablePanel != null) {
             draggablePanel.setTopViewHeightApllyNow(topFragmentHeight);
-        }
-    }
-
-    private void setSizeFrmTop() {
-        if (frmUTVideoTop.isLandscape) {
-            setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
-        } else {
-            //int tmp = (int) (LScreenUtil.getScreenWidth() * Constants.RATIO_9_16 + frmUTVideoTop.getUZVideo().getHeightUZTimeBar() / 2);
-            int tmp = (int) (LScreenUtil.getScreenWidth() * Constants.RATIO_9_16);
-            LLog.d(TAG, "fuck setSizeFrmTop tmp: " + tmp);
-            setTopViewHeightApllyNow(tmp);
         }
     }
 
