@@ -28,7 +28,6 @@ import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
@@ -221,7 +220,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LLog.d(TAG, "fuck calSize getHeightUZTimeBar/2: " + uzVideo.getHeightUZTimeBar() / 2);
                 activity.setTopViewHeightApllyNow(screenH + uzVideo.getHeightUZTimeBar() / 2);
             }
         });
