@@ -53,6 +53,7 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -122,6 +123,8 @@ import vn.uiza.restapi.uiza.model.v3.livestreaming.gettimestartlive.ResultTimeSt
 import vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.ResultGetViewALiveFeed;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
+import vn.uiza.restapi.uiza.model.v4.playerinfo.Logo;
+import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.views.autosize.UZImageButton;
@@ -143,7 +146,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTablet;
     private String cdnHost;
     private boolean isTV;//current device is TV or not (smartphone, tablet)
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();//TODO remove
     private View bkg;
     private RelativeLayout rootView, rlChromeCast;
     private UZPlayerManager uzPlayerManager;
@@ -468,7 +471,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         callAPIGetDetailEntity();
-        callAPIGetConfigSkin();
+        callAPIGetPlayerInfor();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
     }
@@ -2770,14 +2773,37 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    private void callAPIGetConfigSkin() {
-        LLog.d(TAG, "fuck callAPIGetConfigSkin");
+    private void callAPIGetPlayerInfor() {
         int resLayout = UZData.getInstance().getCurrentPlayerId();
-        if (resLayout == R.layout.uz_player_skin_0 || resLayout == R.layout.uz_player_skin_1 || resLayout == R.layout.uz_player_skin_2 || resLayout == R.layout.uz_player_skin_3) {
-            LLog.d(TAG, "fuck callAPIGetConfigSkin -> default skin -> call api config");
+        if (resLayout != R.layout.uz_player_skin_0 && resLayout != R.layout.uz_player_skin_1 && resLayout != R.layout.uz_player_skin_2 && resLayout != R.layout.uz_player_skin_3) {
+            LLog.d(TAG, "fuck callAPIGetConfigSkin skin custom -> do nothing");
             return;
         }
-        LLog.d(TAG, "fuck callAPIGetConfigSkin skin custom -> do nothing");
+        LLog.d(TAG, "fuck callAPIGetConfigSkin -> call api");
+        UZService service = UZRestClient.createService(UZService.class);
+        String playerId = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";
+        UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(playerId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
+            @Override
+            public void onSuccess(PlayerInfor playerInfor) {
+                LLog.d(TAG, "fuck callAPIGetPlayerInfor " + gson.toJson(playerInfor));
+                if (playerInfor == null) {
+                    return;
+                }
+                vn.uiza.restapi.uiza.model.v4.playerinfo.Data data = playerInfor.getData();
+                if (data == null) {
+                    return;
+                }
+                Logo logo = data.getLogo();
+                if (logo == null) {
+                    return;
+                }
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                LLog.e(TAG, "fuck callAPIGetPlayerInfor onFail but ignored (dont care): " + e.getMessage());
+            }
+        });
     }
 
     private void callAPIGetUrlIMAAdTag() {

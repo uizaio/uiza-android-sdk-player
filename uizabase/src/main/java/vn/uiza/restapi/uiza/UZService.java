@@ -35,6 +35,7 @@ import vn.uiza.restapi.uiza.model.v3.usermanagement.createanuser.CreateUser;
 import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePassword;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 
 /**
  * @author loitp
@@ -170,6 +171,9 @@ public interface UZService {
 
     @GET("/api/public/v4/media/entity/cue-point")
     Observable<AdWrapper> getCuePoint(@Query("entityId") String entityId, @Query("appId") String appId);
+
+    @GET("/api/public/v4/player/info/config")
+    Observable<PlayerInfor> getPlayerInfo(@Query("id") String id, @Query("appId") String appId);//id: player id
 
     //=====================================================tracking
     //@Headers("Content-Type: application/json")
