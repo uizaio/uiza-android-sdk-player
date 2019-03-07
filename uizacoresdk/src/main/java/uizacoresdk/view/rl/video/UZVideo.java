@@ -139,51 +139,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private boolean isTV;//current device is TV or not (smartphone, tablet)
     //private Gson gson = new Gson();
     private View bkg;
-    private RelativeLayout rootView;
+    private RelativeLayout rootView, rlChromeCast;
     private UZPlayerManager uzPlayerManager;
     private ProgressBar progressBar;
-    private LinearLayout llTop;
+    private LinearLayout llTop, debugLayout, debugRootView;
+    private RelativeLayout rlMsg, rlLiveInfo, rlEndScreen;
     private FrameLayout previewFrameLayout;
     private UZTimebar uzTimebar;
-    private ImageView ivThumbnail;
-    private UZTextView tvPosition;
-    private UZTextView tvDuration;
-    private RelativeLayout rlMsg;
-    private TextView tvMsg;
-    private ImageView ivVideoCover;
-    private UZImageButton ibFullscreenIcon;
-    private TextView tvTitle;
-    private UZImageButton ibPauseIcon;
-    private UZImageButton ibPlayIcon;
-    private UZImageButton ibReplayIcon;
-    private UZImageButton ibRewIcon;
-    private UZImageButton ibFfwdIcon;
-    private UZImageButton ibBackScreenIcon;
-    private UZImageButton ibVolumeIcon;
-    private UZImageButton ibSettingIcon;
-    private UZImageButton ibCcIcon;
-    private UZImageButton ibPlaylistFolderIcon;//danh sach playlist folder
-    private UZImageButton ibHearingIcon;
-    private UZImageButton ibPictureInPictureIcon;
-    private UZImageButton ibShareIcon;
-    private UZImageButton ibSkipPreviousIcon;
-    private UZImageButton ibSkipNextIcon;
-    private UZImageButton ibSpeedIcon;
-    private RelativeLayout rlLiveInfo;
-    private TextView tvLiveStatus;
-    private TextView tvLiveView;
-    private TextView tvLiveTime;
-    private UZImageButton ivLiveTime;
-    private UZImageButton ivLiveView;
-    private LinearLayout debugLayout;
-    private LinearLayout debugRootView;
-    private TextView debugTextView;
-    private RelativeLayout rlEndScreen;
-    private TextView tvEndScreenMsg;
+    private ImageView ivThumbnail, ivVideoCover, ivLogo;
+    private UZTextView tvPosition, tvDuration;
+    private TextView tvMsg, tvTitle, tvLiveStatus, tvLiveView, tvLiveTime;
+    private UZImageButton ibFullscreenIcon, ibPauseIcon, ibPlayIcon, ibReplayIcon, ibRewIcon, ibFfwdIcon, ibBackScreenIcon, ibVolumeIcon,
+            ibSettingIcon, ibCcIcon, ibPlaylistFolderIcon//danh sach playlist folder
+            , ibHearingIcon, ibPictureInPictureIcon, ibShareIcon, ibSkipPreviousIcon, ibSkipNextIcon, ibSpeedIcon, ivLiveTime, ivLiveView, ibsCast;
+    private TextView debugTextView, tvEndScreenMsg;
     //chromecast https://github.com/DroidsOnRoids/Casty
     private UZMediaRouteButton uzMediaRouteButton;
-    private RelativeLayout rlChromeCast;
-    private UZImageButton ibsCast;
     private UZPlayerView uzPlayerView;
 
     private ResultGetLinkPlay mResultGetLinkPlay;
@@ -217,12 +188,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void onCreate() {
         EventBus.getDefault().register(this);
         activity = (Activity) getContext();
-        //UZUtil.setClassNameOfPlayer(activity, activity.getLocalClassName());
         inflate(getContext(), R.layout.v3_uiza_ima_video_core_rl, this);
         rootView = (RelativeLayout) findViewById(R.id.root_view);
         isTablet = LDeviceUtil.isTablet(activity);
         isTV = LDeviceUtil.isTV(activity);
-        LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
+        //LLog.d(TAG, "onCreate isTablet " + isTablet + ", isTV " + isTV);
         addPlayerView();
         findViews();
         UZUtil.resizeLayout(rootView, ivVideoCover, getPixelAdded(), getVideoW(), getVideoH(), isFreeSize);
@@ -492,9 +462,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         callAPIGetDetailEntity();
+        callAPIGetConfigSkin();
         callAPIGetUrlIMAAdTag();
         callAPIGetTokenStreaming();
-        //TODO api setting config here
+
     }
 
     /**
@@ -1800,6 +1771,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void findViews() {
         //LLog.d(TAG, "findViews");
         bkg = (View) findViewById(R.id.bkg);
+        ivLogo = (ImageView) findViewById(R.id.iv_logo);
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -2192,12 +2164,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         uzPlayerView = (UZPlayerView) activity.getLayoutInflater().inflate(resLayout, null);
         setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
         //setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         uzPlayerView.setLayoutParams(lp);
-
         rootView.addView(uzPlayerView);
         setControllerAutoShow(isAutoShow);
     }
@@ -2889,6 +2859,16 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             });
         }
+    }
+
+    private void callAPIGetConfigSkin() {
+        LLog.d(TAG, "fuck callAPIGetConfigSkin");
+        int resLayout = UZData.getInstance().getCurrentPlayerId();
+        if (resLayout == R.layout.uz_player_skin_0 || resLayout == R.layout.uz_player_skin_1 || resLayout == R.layout.uz_player_skin_2 || resLayout == R.layout.uz_player_skin_3) {
+            LLog.d(TAG, "fuck callAPIGetConfigSkin -> default skin -> call api config");
+            return;
+        }
+        LLog.d(TAG, "fuck callAPIGetConfigSkin skin custom -> do nothing");
     }
 
     private void callAPIGetUrlIMAAdTag() {
