@@ -8,24 +8,24 @@ public class Setting {
 
     @SerializedName("autoStart")
     @Expose
-    private String autoStart;
+    private boolean autoStart;
     @SerializedName("showQuality")
     @Expose
-    private String showQuality;
+    private boolean showQuality;
 
-    public String getAutoStart() {
+    public boolean isAutoStart() {
         return autoStart;
     }
 
-    public void setAutoStart(String autoStart) {
+    public void setAutoStart(boolean autoStart) {
         this.autoStart = autoStart;
     }
 
-    public String getShowQuality() {
+    public boolean isShowQuality() {
         return showQuality;
     }
 
-    public void setShowQuality(String showQuality) {
+    public void setShowQuality(boolean showQuality) {
         this.showQuality = showQuality;
     }
 

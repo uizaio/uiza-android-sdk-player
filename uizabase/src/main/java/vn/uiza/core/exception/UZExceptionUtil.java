@@ -154,4 +154,13 @@ public class UZExceptionUtil {
         uzException.setException(exception);
         return uzException;
     }
+
+    public static UZException getExceptionPlayerInfor() {
+        Exception exception = new Exception(UZException.ERR_27);
+
+        UZException uzException = new UZException();
+        uzException.setErrorCode(UZException.ERR_CODE_27);
+        uzException.setException(exception);
+        return uzException;
+    }
 }

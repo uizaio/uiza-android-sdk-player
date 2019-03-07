@@ -14,7 +14,7 @@ public class Logo {
     private String position;
     @SerializedName("display")
     @Expose
-    private String display;
+    private boolean display;
     @SerializedName("url")
     @Expose
     private String url;
@@ -35,11 +35,11 @@ public class Logo {
         this.position = position;
     }
 
-    public String getDisplay() {
+    public boolean isDisplay() {
         return display;
     }
 
-    public void setDisplay(String display) {
+    public void setDisplay(boolean display) {
         this.display = display;
     }
 

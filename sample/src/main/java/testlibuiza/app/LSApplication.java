@@ -39,7 +39,8 @@ public class LSApplication extends MultiDexApplication {
     public static final String DF_DOMAIN_API = "dev-ap-southeast-1-api.uizadev.io";
     public static final String DF_TOKEN = "uap-10d71cf534914f38add1a163365f62c5-2d0d0cca";
     public static final String DF_APP_ID = "10d71cf534914f38add1a163365f62c5";
-    public static final String entityIdDefaultVOD = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    //public static final String entityIdDefaultVOD = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultVOD = "802585d2-124a-4382-ba40-7546f43a09b0";
     public static final String entityIdDefaultVOD_21_9 = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
     public static final String entityIdDefaultVODportrait = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
     public static final String entityIdDefaultLIVE = "-";

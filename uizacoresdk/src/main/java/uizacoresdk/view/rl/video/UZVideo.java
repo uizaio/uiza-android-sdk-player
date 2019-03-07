@@ -100,6 +100,7 @@ import vn.uiza.core.utilities.LDialogUtil;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.core.utilities.connection.LConectifyService;
 import vn.uiza.data.EventBusData;
@@ -169,7 +170,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ResultGetLinkPlay mResultGetLinkPlay;
     private ResultGetTokenStreaming mResultGetTokenStreaming;
     private String urlIMAAd = null;
-
+    private PlayerInfor playerInfor;
     private long startTime = Constants.UNKNOW;
     private boolean isSetUZTimebarBottom;
 
@@ -890,6 +891,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             showSpeed();
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
+        } else if (v == ivLogo) {
+            if (isPlayerControllerShowing()) {
+                return;
+            }
+            LAnimationUtil.play(v, Techniques.Pulse);
+            if (playerInfor == null || playerInfor.getData() == null || playerInfor.getData().getLogo() == null || playerInfor.getData().getLogo().getUrl() == null) {
+                return;
+            }
+            LSocialUtil.openUrlInBrowser(getContext(), playerInfor.getData().getLogo().getUrl());
         }
         /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này ta có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn*/
@@ -1729,6 +1739,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void findViews() {
         bkg = (View) findViewById(R.id.bkg);
         ivLogo = (ImageView) findViewById(R.id.iv_logo);
+        if (ivLogo != null) {
+            ivLogo.setOnClickListener(this);
+        }
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -2647,6 +2660,27 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private void updateUIPlayerInfo() {
+        if (playerInfor == null) {
+            return;
+        }
+        vn.uiza.restapi.uiza.model.v4.playerinfo.Data data = playerInfor.getData();
+        if (data == null) {
+            return;
+        }
+        Logo logo = data.getLogo();
+        if (logo == null) {
+            return;
+        }
+        boolean isDisplay = logo.isDisplay();
+        if (isDisplay) {
+            LImageUtil.load(getContext(), logo.getLogo(), ivLogo);
+            ivLogo.setVisibility(VISIBLE);
+        } else {
+            ivLogo = null;
+        }
+    }
+
     //=============================================================================================END UI
     //=============================================================================================START EVENT
     private UZLiveContentCallback uzLiveContentCallback;
@@ -2776,7 +2810,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private void callAPIGetPlayerInfor() {
         int resLayout = UZData.getInstance().getCurrentPlayerId();
         if (resLayout != R.layout.uz_player_skin_0 && resLayout != R.layout.uz_player_skin_1 && resLayout != R.layout.uz_player_skin_2 && resLayout != R.layout.uz_player_skin_3) {
-            LLog.d(TAG, "fuck callAPIGetConfigSkin skin custom -> do nothing");
             return;
         }
         LLog.d(TAG, "fuck callAPIGetConfigSkin -> call api");
@@ -2784,24 +2817,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         String playerId = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";
         UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(playerId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
             @Override
-            public void onSuccess(PlayerInfor playerInfor) {
-                LLog.d(TAG, "fuck callAPIGetPlayerInfor " + gson.toJson(playerInfor));
-                if (playerInfor == null) {
-                    return;
-                }
-                vn.uiza.restapi.uiza.model.v4.playerinfo.Data data = playerInfor.getData();
-                if (data == null) {
-                    return;
-                }
-                Logo logo = data.getLogo();
-                if (logo == null) {
-                    return;
-                }
+            public void onSuccess(PlayerInfor pi) {
+                playerInfor = pi;
             }
 
             @Override
             public void onFail(Throwable e) {
-                LLog.e(TAG, "fuck callAPIGetPlayerInfor onFail but ignored (dont care): " + e.getMessage());
+                handleError(UZExceptionUtil.getExceptionPlayerInfor());
             }
         });
     }
@@ -3290,6 +3312,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             handleConnectedChromecast();
             showController();
         }
+        updateUIPlayerInfo();
         TmpParamData.getInstance().setSessionStart(System.currentTimeMillis());
         long playerStartUpTime = System.currentTimeMillis() - timestampInitDataSource;
         TmpParamData.getInstance().setPlayerStartupTime(playerStartUpTime);
