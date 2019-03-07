@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -128,6 +129,7 @@ import vn.uiza.restapi.uiza.model.v4.playerinfo.Logo;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
+import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
@@ -1738,10 +1740,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //=============================================================================================START UI
     private void findViews() {
         bkg = (View) findViewById(R.id.bkg);
-        ivLogo = (ImageView) findViewById(R.id.iv_logo);
-        if (ivLogo != null) {
-            ivLogo.setOnClickListener(this);
-        }
         rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
         rlMsg.setOnClickListener(this);
         tvMsg = (TextView) findViewById(R.id.tv_msg);
@@ -2662,7 +2660,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void updateUIPlayerInfo() {
         LLog.d(TAG, "fuck updateUIPlayerInfo");
-        if (playerInfor == null || ivLogo == null) {
+        if (playerInfor == null || uzPlayerView == null) {
             return;
         }
         vn.uiza.restapi.uiza.model.v4.playerinfo.Data data = playerInfor.getData();
@@ -2676,25 +2674,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         boolean isDisplay = logo.isDisplay();
         if (isDisplay) {
             String position = logo.getPosition();
-            RelativeLayout.LayoutParams rl = (LayoutParams) ivLogo.getLayoutParams();
+            ivLogo = new ImageView(getContext());
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ConvertUtils.dp2px(50f), ViewGroup.LayoutParams.WRAP_CONTENT);
             if (position.equalsIgnoreCase("top-left")) {
-                rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                layoutParams.gravity = Gravity.TOP | Gravity.LEFT;
             } else if (position.equalsIgnoreCase("top-right")) {
-                rl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+                layoutParams.gravity = Gravity.TOP | Gravity.RIGHT;
             } else if (position.equalsIgnoreCase("bottom-left")) {
-                rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                layoutParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
             } else if (position.equalsIgnoreCase("bottom-right")) {
-                rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                rl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+                layoutParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
             } else {
-                rl = null;
+                layoutParams = null;
                 ivLogo = null;
                 return;
             }
-            ivLogo.setLayoutParams(rl);
+            uzPlayerView.getOverlayFrameLayout().addView(ivLogo, layoutParams);
+            ivLogo.setOnClickListener(this);
             LImageUtil.load(getContext(), logo.getLogo(), ivLogo);
-            ivLogo.setVisibility(VISIBLE);
         } else {
             ivLogo = null;
         }
