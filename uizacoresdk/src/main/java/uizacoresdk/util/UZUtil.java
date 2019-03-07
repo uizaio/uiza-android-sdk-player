@@ -433,12 +433,12 @@ public class UZUtil {
         return resultGetToken.getData().getAppId();
     }*/
 
-    public static void getDetailEntity(final Activity activity, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDetailEntity(activity, entityId, UZData.getInstance().getAppId(), callback);
+    public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDetailEntity(context, entityId, UZData.getInstance().getAppId(), callback);
     }
 
-    public static boolean initCustomLinkPlay(Activity activity, UZVideo uzVideo) {
-        if (activity == null) {
+    public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
+        if (context == null) {
             throw new NullPointerException(UZException.ERR_12);
         }
         if (uzVideo == null) {
@@ -448,18 +448,18 @@ public class UZUtil {
             LLog.e(TAG, UZException.ERR_14);
             return false;
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(context)) {
             LLog.e(TAG, UZException.ERR_0);
             return false;
         }
-        if (UZUtil.getClickedPip(activity)) {
+        if (UZUtil.getClickedPip(context)) {
             LLog.d(TAG, "miniplayer STEP 6 initLinkPlay");
             UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         } else {
-            UZUtil.stopMiniPlayer(activity);
+            UZUtil.stopMiniPlayer(context);
             UZUtil.playCustomLinkPlay(uzVideo, UZDataCLP.getInstance().getUzCustomLinkPlay());
         }
-        UZUtil.setIsInitPlaylistFolder(activity, false);
+        UZUtil.setIsInitPlaylistFolder(context, false);
         return true;
     }
 
