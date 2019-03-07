@@ -76,9 +76,9 @@ public class Data {
     @Expose
     private String lastFeedId;
 
-    @SerializedName("linkPublishSocial")
+    /*@SerializedName("linkPublishSocial")
     @Expose
-    private String linkPublishSocial;
+    private String linkPublishSocial;*/
 
     @SerializedName("linkStream")
     @Expose
@@ -355,13 +355,13 @@ public class Data {
         this.lastFeedId = lastFeedId;
     }
 
-    public String getLinkPublishSocial() {
+    /*public String getLinkPublishSocial() {
         return linkPublishSocial;
     }
 
     public void setLinkPublishSocial(String linkPublishSocial) {
         this.linkPublishSocial = linkPublishSocial;
-    }
+    }*/
 
     public LastPullInfo getLastPullInfo() {
         return lastPullInfo;

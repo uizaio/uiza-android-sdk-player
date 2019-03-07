@@ -138,7 +138,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private int DEFAULT_VALUE_CONTROLLER_TIMEOUT = 8000;//8000 mls
     private final int DELAY_FIRST_TO_GET_LIVE_INFORMATION = 100;
     private final int DELAY_TO_GET_LIVE_INFORMATION = 15000;
-    //private Activity activity;
     private boolean isLivestream;
     private boolean isTablet;
     private String cdnHost;
@@ -1431,6 +1430,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //chi toggle show hide controller khi video da vao dc onStateReadyFirst();
     public void toggleShowHideController() {
         if (uzPlayerView != null) {
+            if (isOnPlayerEnded) {
+                return;
+            }
             uzPlayerView.toggleShowHideController();
         }
     }
