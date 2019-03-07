@@ -892,9 +892,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else if (v == tvEndScreenMsg) {
             LAnimationUtil.play(v, Techniques.Pulse);
         } else if (v == ivLogo) {
-            if (isPlayerControllerShowing()) {
-                return;
-            }
             LAnimationUtil.play(v, Techniques.Pulse);
             if (playerInfor == null || playerInfor.getData() == null || playerInfor.getData().getLogo() == null || playerInfor.getData().getLogo().getUrl() == null) {
                 return;
@@ -1713,6 +1710,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onVisibilityChange(boolean isShow) {
+        if (ivLogo != null) {
+            ivLogo.setClickable(!isShow);
+        }
         if (controllerStateCallback != null) {
             controllerStateCallback.onVisibilityChange(isShow);
         }
@@ -2661,7 +2661,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIPlayerInfo() {
-        if (playerInfor == null) {
+        LLog.d(TAG, "fuck updateUIPlayerInfo");
+        if (playerInfor == null || ivLogo == null) {
             return;
         }
         vn.uiza.restapi.uiza.model.v4.playerinfo.Data data = playerInfor.getData();
@@ -2674,6 +2675,24 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         boolean isDisplay = logo.isDisplay();
         if (isDisplay) {
+            String position = logo.getPosition();
+            RelativeLayout.LayoutParams rl = (LayoutParams) ivLogo.getLayoutParams();
+            if (position.equalsIgnoreCase("top-left")) {
+                rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            } else if (position.equalsIgnoreCase("top-right")) {
+                rl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+            } else if (position.equalsIgnoreCase("bottom-left")) {
+                rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            } else if (position.equalsIgnoreCase("bottom-right")) {
+                rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                rl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+            } else {
+                rl = null;
+                ivLogo = null;
+                return;
+            }
+            ivLogo.setLayoutParams(rl);
             LImageUtil.load(getContext(), logo.getLogo(), ivLogo);
             ivLogo.setVisibility(VISIBLE);
         } else {
