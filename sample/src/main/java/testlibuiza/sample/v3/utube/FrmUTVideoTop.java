@@ -198,13 +198,11 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     public void initEntity(String entityId) {
-        showController();
         uzVideo.pauseVideo();
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        showController();
         uzVideo.pauseVideo();
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
