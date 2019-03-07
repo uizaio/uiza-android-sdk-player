@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.List;
 
+import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LUIUtil;
 
 /**
@@ -81,14 +82,18 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public void showController() {
-        //LLog.d(TAG, "showController");
-        super.showController();
+        if (UZData.getInstance().isSettingPlayer()) {
+        } else {
+            super.showController();
+        }
     }
 
     @Override
     public void hideController() {
-        //LLog.d(TAG, "hideController");
-        super.hideController();
+        if (UZData.getInstance().isSettingPlayer()) {
+        } else {
+            super.hideController();
+        }
     }
 
     public void setOnTouchEvent(OnTouchEvent onTouchEvent) {
@@ -134,8 +139,16 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
                     }
                 }
         }*/
-        mDetector.onTouchEvent(ev);
-        return true;
+
+        if (UZData.getInstance().isUseWithVDHView()) {
+            return false;
+        } else {
+            mDetector.onTouchEvent(ev);
+            return true;
+        }
+
+        //mDetector.onTouchEvent(ev);
+        //return true;
     }
 
     public interface OnTouchEvent {

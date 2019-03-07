@@ -443,6 +443,7 @@ public class LUIUtil {
         }
     }
 
+    //return pixel
     public static int getHeightOfView(View view) {
         if (view == null) {
             return 0;

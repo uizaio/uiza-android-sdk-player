@@ -12,7 +12,7 @@ import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetriev
 import vn.uiza.rxandroid.ApiSubscriber;
 
 public class UZUtilBase {
-    public static void getDetailEntity(final Activity activity, final String entityId, final String appId, final CallbackGetDetailEntity callbackGetDetailEntity) {
+    public static void getDetailEntity(final Context context, final String entityId, final String appId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(entityId, appId), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
@@ -36,7 +36,7 @@ public class UZUtilBase {
         });
     }
 
-    public static void getDataFromEntityIdLIVE(final Activity activity, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
+    public static void getDataFromEntityIdLIVE(final Context context, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(entityId, appId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override

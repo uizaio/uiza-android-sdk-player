@@ -1,5 +1,7 @@
 package vn.uiza.restapi.uiza;
 
+import java.util.List;
+
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -10,6 +12,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -176,6 +179,10 @@ public interface UZService {
     //@Headers("Content-Type: application/json")
     @POST("/analytic-tracking/v1/ccu/mobile")
     Observable<Object> trackCCU(@Body UizaTrackingCCU uizaTrackingCCU);
+
+    //@Headers("Content-Type: application/json")
+    @POST("/analytic-tracking/v2/muiza/eventbulk/mobile")
+    Observable<Object> trackMuiza(@Body List<Muiza> muizaList);
     //end =====================================================tracking
 
     //=====================================================heartbeat

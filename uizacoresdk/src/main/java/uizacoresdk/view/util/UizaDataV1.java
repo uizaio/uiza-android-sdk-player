@@ -2,7 +2,6 @@ package uizacoresdk.view.util;
 
 import android.content.Context;
 import android.content.pm.ResolveInfo;
-import android.provider.Settings;
 
 import com.google.gson.Gson;
 
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.util.Loitp;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
@@ -137,7 +137,7 @@ public class UizaDataV1 {
         //referrer
         uizaTracking.setReferrer("");
         //device_id
-        uizaTracking.setDeviceId(Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTracking.setDeviceId(Loitp.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");

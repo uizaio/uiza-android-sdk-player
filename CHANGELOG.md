@@ -1,3 +1,41 @@
+### 3.3.1 (2019-3-6)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.1'
+
+- Update sample [Slide0Activity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/slide/Slide0Activity.java)
+- Update core [VDHView](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizacoresdk/src/main/java/uizacoresdk/view/vdh/VDHView.java):
+	+ Fixed incorrect position when view state changed.
+	+ Fixed touch area.
+	+ Add more listener.
+- Update sample [ResizeActivity](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/ResizeActivity.java)
+
+
+### 3.3.0 (2019-3-1)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.0'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.0'
+
+- Add new [sample for sliding](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/slide/Slide0Activity.java)
+- Removed button share in player controller.
+- Optimized sample [custom skin.](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/customskin/CustomSkinCodeUZTimebarActivity.java)
+### 3.2.8 (2019-2-25)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.2.8'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.2.8'
+
+- Added live tracking.
+- Fixed error cannot play on Android 9.
+
 ### 3.2.5 (2019-1-28)
 
     //for playing video VOD, LIVE  

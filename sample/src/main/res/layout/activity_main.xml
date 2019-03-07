@@ -82,7 +82,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8. Custom skin like Youtube With Slide" />
-
+                <Button
+                    android:id="@+id/bt_slide_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8.1 Slide" />
                 <Button
                     android:id="@+id/bt_resize"
                     android:layout_width="wrap_content"

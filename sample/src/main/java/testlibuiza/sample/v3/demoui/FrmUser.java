@@ -24,7 +24,6 @@ public class FrmUser extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        //LLog.d(TAG, "onBackPressed " + TAG);
         return false;
     }
 }

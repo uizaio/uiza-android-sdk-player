@@ -43,7 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.TmpParamData;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
@@ -61,6 +63,8 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     private FUZVideoAdPlayerListerner FUZVideoAdPlayerListerner = new FUZVideoAdPlayerListerner();
     private Handler handler;
     private Runnable runnable;
+    private boolean isCanAddViewWatchTime;
+    private long timestampPlayed;
     private ProgressCallback progressCallback;
 
     public void setProgressCallback(ProgressCallback progressCallback) {
@@ -68,6 +72,9 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     public FUZPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        this.timestampPlayed = System.currentTimeMillis();
+        isCanAddViewWatchTime = true;
+        //LLog.d(TAG, "timestampPlayed: " + timestampPlayed);
         this.context = fuzVideo.getContext();
         this.fuzVideo = fuzVideo;
         this.linkPlay = linkPlay;
@@ -236,11 +243,24 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
     }
 
     public void resumeVideo() {
-        player.setPlayWhenReady(true);
+        if (player != null) {
+            player.setPlayWhenReady(true);
+        }
+        timestampPlayed = System.currentTimeMillis();
+        isCanAddViewWatchTime = true;
+        //LLog.d(TAG, "resumeVideo timestampPlayed: " + timestampPlayed);
     }
 
     public void pauseVideo() {
-        player.setPlayWhenReady(false);
+        if (player != null) {
+            player.setPlayWhenReady(false);
+            if (isCanAddViewWatchTime) {
+                long durationWatched = System.currentTimeMillis() - timestampPlayed;
+                //LLog.d(TAG, "pauseVideo durationWatched " + durationWatched);
+                TmpParamData.getInstance().addViewWatchTime(durationWatched);
+                isCanAddViewWatchTime = false;
+            }
+        }
     }
 
     public void reset() {
@@ -337,7 +357,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(error);
+                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
             }
         }
 
@@ -425,6 +445,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         @Override
         public void onError() {
             isPlayingAd = false;
+        }
+
+        @Override
+        public void onBuffering() {
         }
 
         public boolean isPlayingAd() {

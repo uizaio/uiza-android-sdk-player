@@ -108,11 +108,11 @@ public class LDeviceUtil {
         return (hasAccelerometer && android.provider.Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
     }
 
-    public static boolean isCanOverlay(Activity activity) {
-        if (activity == null) {
+    public static boolean isCanOverlay(Context context) {
+        if (context == null) {
             return false;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
             return false;
         } else {
             return true;

@@ -7,26 +7,28 @@ package uizacoresdk.view.floatview;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
 import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.util.Loitp;
+import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZTrackingUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
+import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -38,6 +40,7 @@ import vn.uiza.restapi.restclient.UZRestClientTracking;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
+import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
@@ -51,7 +54,7 @@ public class FUZVideo extends RelativeLayout {
     private PlayerView playerView;
     private FUZPlayerManager fuzUizaPlayerManager;
     private ProgressBar progressBar;
-    //private Gson gson = new Gson();
+    private Gson gson = new Gson();//TODO remove gson later
     private String cdnHost;
     private String uuid;
     private String linkPlay;
@@ -215,7 +218,7 @@ public class FUZVideo extends RelativeLayout {
         if (UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
+            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
@@ -226,7 +229,7 @@ public class FUZVideo extends RelativeLayout {
         if (UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
             //da track roi ko can track nua
         } else {
-            trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
+            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
                 @Override
                 public void onTrackingSuccess() {
                     UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
@@ -259,7 +262,9 @@ public class FUZVideo extends RelativeLayout {
             @Override
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 //LLog.d(TAG, TAG + " onVideoProgress video progress currentMls: " + currentMls + ", s:" + s + ", duration: " + duration + ",percent: " + percent + "%");
+                TmpParamData.getInstance().setPlayerPlayheadTime(s);
                 trackProgress(s, percent);
+                callAPITrackMuiza(s);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
                 }
@@ -413,7 +418,7 @@ public class FUZVideo extends RelativeLayout {
             if (UZTrackingUtil.isTrackedEventTypeView(getContext())) {
                 //da track roi ko can track nua
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
@@ -441,7 +446,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought100 again");
                 isTracked100 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "100", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought100(getContext(), true);
@@ -457,7 +462,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought75 again");
                 isTracked75 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "75", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought75(getContext(), true);
@@ -473,7 +478,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought50 again");
                 isTracked50 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "50", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought50(getContext(), true);
@@ -489,7 +494,7 @@ public class FUZVideo extends RelativeLayout {
                 //LLog.d(TAG, "No need to isTrackedEventTypePlayThrought25 again");
                 isTracked25 = true;
             } else {
-                trackUiza(UZData.getInstance().createTrackingInputV3(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
+                trackUiza(UZData.getInstance().createTrackingInput(getContext(), "25", Constants.EVENT_TYPE_PLAY_THROUGHT), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {
                         UZTrackingUtil.setTrackingDoneWithEventTypePlayThrought25(getContext(), true);
@@ -581,7 +586,7 @@ public class FUZVideo extends RelativeLayout {
         uizaTrackingCCU.setHo(cdnHost);
         uizaTrackingCCU.setAi(UZData.getInstance().getAppId());
         uizaTrackingCCU.setSn(UZData.getInstance().getEntityName());
-        uizaTrackingCCU.setDi(Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID));
+        uizaTrackingCCU.setDi(Loitp.getDeviceId(getContext()));
         uizaTrackingCCU.setUa(Constants.USER_AGENT);
         //LLog.d(TAG, "trackUizaCCUForLivestream " + gson.toJson(uizaTrackingCCU));
         UZAPIMaster.getInstance().subscribe(service.trackCCU(uizaTrackingCCU), new ApiSubscriber<Object>() {
@@ -608,6 +613,60 @@ public class FUZVideo extends RelativeLayout {
         });
     }
 
+    protected void addTrackingMuizaError(String event, UZException e) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(getContext(), event, e);
+    }
+
+    protected void addTrackingMuiza(String event) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        UZData.getInstance().addTrackingMuiza(getContext(), event);
+    }
+
+    private boolean isTrackingMuiza;
+
+    private void callAPITrackMuiza(int s) {
+        if (isInitCustomLinkPlay) {
+            return;
+        }
+        if (s <= 0 || s % 10 != 0) {
+            return;
+        }
+        //LLog.d(TAG, "trackMuiza s: " + s + "s");
+        if (isTrackingMuiza) {
+            //LLog.d(TAG, "isTrackingMuiza -> return");
+            return;
+        }
+        if (UZData.getInstance().isMuizaListEmpty()) {
+            //LLog.d(TAG, "no tracking muiza -> return");
+            return;
+        }
+        isTrackingMuiza = true;
+        final List<Muiza> muizaListToTracking = new ArrayList<>();
+        muizaListToTracking.addAll(UZData.getInstance().getMuizaList());
+        //LLog.d(TAG, "call api trackMuiza -> muizaListToTracking.size(): " + muizaListToTracking.size());
+        UZData.getInstance().clearMuizaList();
+        UZService service = UZRestClientTracking.createService(UZService.class);
+        UZAPIMaster.getInstance().subscribe(service.trackMuiza(muizaListToTracking), new ApiSubscriber<Object>() {
+            @Override
+            public void onSuccess(Object result) {
+                //LLog.d(TAG, "trackMuiza onSuccess " + gson.toJson(result));
+                isTrackingMuiza = false;
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                //LLog.e(TAG, "trackMuiza failed: " + e.toString());
+                isTrackingMuiza = false;
+                UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
+            }
+        });
+    }
+
     //=============================================================================================================END TRACKING
     //=============================================================================================================START CALLBACK
     private ProgressCallback progressCallback;
@@ -623,16 +682,29 @@ public class FUZVideo extends RelativeLayout {
 
         public void onVideoSizeChanged(int width, int height);
 
-        public void onPlayerError(ExoPlaybackException error);
+        public void onPlayerError(UZException error);
     }
+
+    private long timestampRebufferStart;
 
     protected void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
                 showProgress();
+                if (playWhenReady) {
+                    TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
+                    timestampRebufferStart = 0;
+                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
+                } else {
+                    timestampRebufferStart = System.currentTimeMillis();
+                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                    TmpParamData.getInstance().addViewRebufferCount();
+                    addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
+                }
                 break;
             case Player.STATE_ENDED:
                 setDefautValueForFlagIsTracked();
+                addTrackingMuiza(Constants.MUIZA_EVENT_VIEWENDED);
                 break;
             case Player.STATE_IDLE:
                 showProgress();
@@ -650,7 +722,8 @@ public class FUZVideo extends RelativeLayout {
         }
     }
 
-    protected void onPlayerError(ExoPlaybackException error) {
+    protected void onPlayerError(UZException error) {
+        addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, error);
         if (callback != null) {
             callback.onPlayerError(error);
         }
@@ -659,7 +732,7 @@ public class FUZVideo extends RelativeLayout {
     private Callback callback;
 
     private void onStateReadyFirst() {
-        LLog.d(TAG, ">>>>>>>>>> onStateReadyFirst");
+        //LLog.d(TAG, ">>>>>>>>>> onStateReadyFirst");
         if (callback != null) {
             callback.isInitResult(true);
         }

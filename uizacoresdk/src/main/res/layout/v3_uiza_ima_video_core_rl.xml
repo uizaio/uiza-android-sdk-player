@@ -3,7 +3,7 @@
     android:id="@id/root_view_uz_video"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="false">
 
     <RelativeLayout
         android:id="@id/root_view"
@@ -77,6 +77,7 @@
             android:layout_width="@dimen/w_40"
             android:layout_height="@dimen/w_40"
             android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/err" />
 
         <TextView
@@ -88,7 +89,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_5"
             android:textColor="@color/White"
-            android:textSize="@dimen/txt_18"
+            android:textSize="@dimen/txt_16"
             android:textStyle="bold" />
     </RelativeLayout>
 </RelativeLayout>

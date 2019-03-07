@@ -119,7 +119,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isInitSuccess = UZUtil.initLinkPlay(activity, uzVideo);
+                boolean isInitSuccess = UZUtil.initCustomLinkPlay(activity, uzVideo);
                 if (!isInitSuccess) {
                     LToast.show(activity, "Init failed");
                 }

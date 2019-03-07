@@ -1,10 +1,16 @@
 package uizacoresdk.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.Settings;
 
 import com.google.gson.Gson;
 
 import org.apache.commons.codec.DecoderException;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import uizacoresdk.R;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
@@ -39,5 +45,27 @@ public class Loitp {
 
     private static String loitp(String loitp) {
         return loitp.replace("loitp", "");
+    }
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId(Context context) {
+        if (context == null) {
+            return "";
+        }
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static int getViewerOsArchitecture() {
+        try {
+            boolean isArm64 = false;
+            BufferedReader localBufferedReader = new BufferedReader(new FileReader("/proc/cpuinfo"));
+            if (localBufferedReader.readLine().contains("aarch64")) {
+                isArm64 = true;
+            }
+            localBufferedReader.close();
+            return isArm64 ? 64 : 32;
+        } catch (IOException e) {
+        }
+        return 0;
     }
 }
