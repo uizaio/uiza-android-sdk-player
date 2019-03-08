@@ -46,6 +46,7 @@ public class LSApplication extends MultiDexApplication {
     public static final String entityIdDefaultLIVE = "-";
     public static final String metadataDefault0 = "-";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "-";
+    public static String PLAYER_INFOR_ID = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";
 
     @Override
     public void onCreate() {
@@ -57,6 +58,7 @@ public class LSApplication extends MultiDexApplication {
         Constants.setDebugMode(true);
         //UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_DEV, uizacoresdk.R.layout.uz_player_skin_1);
+        UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
     }
 
     public Gson getGson() {

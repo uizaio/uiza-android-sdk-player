@@ -569,7 +569,6 @@ public class UZUtil {
         }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
-        //UZData.getInstance().setCurrentPlayerId(currentPlayerId);
        return UZData.getInstance().initSDK(domainApi, token, appId, env);
     }
 
@@ -597,6 +596,10 @@ public class UZUtil {
 
     public static void setCurrentPlayerId(int resLayoutMain) {
         UZData.getInstance().setCurrentPlayerId(resLayoutMain);
+    }
+
+    public static void setCurrentPlayerInforId(String playerInforId) {
+        UZData.getInstance().setPlayerInforId(playerInforId);
     }
 
     public static void updateUIFocusChange(View view, boolean isFocus) {

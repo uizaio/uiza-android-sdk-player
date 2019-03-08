@@ -40,7 +40,8 @@ public class UZData {
     private UZData() {
     }
 
-    private int currentPlayerId = R.layout.uz_player_skin_1;
+    private int currentPlayerId = R.layout.uz_player_skin_1;//id of layout xml
+    private String playerInforId;//player id from workspace uiza
 
     public int getCurrentPlayerId() {
         return currentPlayerId;
@@ -48,6 +49,14 @@ public class UZData {
 
     public void setCurrentPlayerId(int currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
+    }
+
+    public String getPlayerInforId() {
+        return playerInforId;
+    }
+
+    public void setPlayerInforId(String playerInforId) {
+        this.playerInforId = playerInforId;
     }
 
     private String mDomainAPI = "";

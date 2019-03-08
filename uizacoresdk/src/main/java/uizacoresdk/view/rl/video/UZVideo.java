@@ -2151,7 +2151,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             return false;
         }
-        UZData.getInstance().setCurrentPlayerId(skinId);
+        UZUtil.setCurrentPlayerId(skinId);
         isRefreshFromChangeSkin = true;
         isCalledFromChangeSkin = true;
         rootView.removeView(uzPlayerView);
@@ -2659,7 +2659,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIPlayerInfo() {
-        LLog.d(TAG, "fuck updateUIPlayerInfo");
         if (playerInfor == null || uzPlayerView == null) {
             return;
         }
@@ -2828,10 +2827,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (resLayout != R.layout.uz_player_skin_0 && resLayout != R.layout.uz_player_skin_1 && resLayout != R.layout.uz_player_skin_2 && resLayout != R.layout.uz_player_skin_3) {
             return;
         }
-        LLog.d(TAG, "fuck callAPIGetConfigSkin -> call api");
         UZService service = UZRestClient.createService(UZService.class);
-        String playerId = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";
-        UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(playerId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
+        String playerInforId = UZData.getInstance().getPlayerInforId();
+        //LLog.d(TAG, "callAPIGetConfigSkin -> call api -> playerInforId: " + playerInforId);
+        if (playerInforId == null || playerInforId.isEmpty()) {
+            return;
+        }
+        UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(playerInforId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
             @Override
             public void onSuccess(PlayerInfor pi) {
                 playerInfor = pi;
