@@ -18,6 +18,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -49,6 +50,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_minimize_top_left).setOnClickListener(this);
         findViewById(R.id.bt_appear).setOnClickListener(this);
         findViewById(R.id.bt_is_maximize_view).setOnClickListener(this);
+        findViewById(R.id.bt_maximize).setOnClickListener(this);
     }
 
     @Override
@@ -270,6 +272,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 break;
             case R.id.bt_is_maximize_view:
                 Toast.makeText(activity, "isMaximizeView: " + vdhv.isMaximizeView(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bt_maximize:
+                boolean b = vdhv.forceMaximize();
+                LLog.d(TAG, "fuck forceMaximize " + b);
                 break;
         }
     }

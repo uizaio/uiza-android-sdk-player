@@ -19,9 +19,9 @@ import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /*
-***Loitp
-* Im a developer, ive no time, no money, no girl :(
-***Loitp
+ ***Loitp
+ * Im a developer, ive no time, no money, no girl :(
+ ***Loitp
  */
 public class VDHView extends LinearLayout {
     private final String TAG = getClass().getSimpleName();
@@ -140,12 +140,10 @@ public class VDHView extends LinearLayout {
             if (callback != null) {
                 callback.onViewPositionChanged(left, top, mDragOffset);
             }
-
             int x = 0;
             int y = headerView.getHeight() + top;
             bodyView.layout(x, y, x + bodyView.getMeasuredWidth(), y + bodyView.getMeasuredHeight());
             bodyView.setAlpha(1 - mDragOffset / 2);
-
             if (isMinimizedAtLeastOneTime) {
                 if (isEnableRevertMaxSize) {
                     headerView.setPivotX(headerView.getWidth() / 2f);
@@ -160,10 +158,8 @@ public class VDHView extends LinearLayout {
                 headerView.setScaleX(1 - mDragOffset / 2);
                 headerView.setScaleY(1 - mDragOffset / 2);
             }
-
             newSizeWHeaderView = (int) (sizeWHeaderViewOriginal * headerView.getScaleX());
             newSizeHHeaderView = (int) (sizeHHeaderViewOriginal * headerView.getScaleY());
-
             mCenterX = left + sizeWHeaderViewOriginal / 2;
             mCenterY = top + newSizeHHeaderView / 2 + sizeHHeaderViewOriginal - newSizeHHeaderView;
 
@@ -435,12 +431,22 @@ public class VDHView extends LinearLayout {
         return part;
     }
 
-    private void maximize() {
+    private boolean maximize() {
         if (isEnableRevertMaxSize) {
             smoothSlideTo(0, 0);
+            return true;
         } else {
             Log.e(TAG, "Error: cannot maximize because isEnableRevertMaxSize is true");
+            return false;
         }
+    }
+
+    public boolean forceMaximize() {
+        if (isEnableRevertMaxSize) {
+        } else {
+            setEnableRevertMaxSize(true);
+        }
+        return maximize();
     }
 
     /*public void maximizeRevert() {
@@ -657,11 +663,7 @@ public class VDHView extends LinearLayout {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
-            if (isEnableRevertMaxSize) {
-            } else {
-                setEnableRevertMaxSize(true);
-            }
-            maximize();
+            forceMaximize();
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }
