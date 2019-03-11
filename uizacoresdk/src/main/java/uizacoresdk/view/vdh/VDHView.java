@@ -166,7 +166,6 @@ public class VDHView extends LinearLayout {
             //int posX = centerX - newSizeWHeaderView / 2;
             //int posY = centerY - newSizeHHeaderView / 2;
             //LLog.d(TAG, "onViewPositionChanged left: " + left + ", top: " + top + ", mDragOffset: " + mDragOffset + " => newSizeW " + newSizeWHeaderView + "x" + newSizeHHeaderView + "=> centerX: " + centerX + ", centerY: " + centerY + ", posX: " + posX + ", posY: " + posY);
-            LLog.d(TAG, "fuck mDragOffset " + mDragOffset);
             if (mDragOffset == 0) {
                 //top_left, top, top_right
                 if (left <= -headerView.getWidth() / 2) {
@@ -185,6 +184,7 @@ public class VDHView extends LinearLayout {
                 } else {
                     changeState(State.BOTTOM);
                 }
+                LLog.d(TAG, "set isMinimizedAtLeastOneTime true");
                 isMinimizedAtLeastOneTime = true;
             } else {
                 //mid_left, mid, mid_right
@@ -364,13 +364,14 @@ public class VDHView extends LinearLayout {
                 if (state == null) {
                     break;
                 }
-                //LLog.d(TAG, "onTouchEvent ACTION_UP state:" + state.name() + ", mCenterX: " + mCenterX);
+                //LLog.d(TAG, "fuck onTouchEvent ACTION_UP state:" + state.name() + ", mCenterX: " + mCenterX);
                 if (state == State.TOP_LEFT || state == State.TOP_RIGHT || state == State.BOTTOM_LEFT || state == State.BOTTOM_RIGHT) {
                     //LLog.d(TAG, "destroy state: " + state.name());
                     if (callback != null) {
                         callback.onOverScroll(state, part);
                     }
                 } else {
+                    LLog.d(TAG, "fuck onTouchEvent ACTION_UP part " + part.name() + ", state " + state.name());
                     if (part == Part.BOTTOM_LEFT) {
                         minimizeBottomLeft();
                     } else if (part == Part.BOTTOM_RIGHT) {
