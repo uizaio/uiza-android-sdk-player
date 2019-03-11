@@ -3246,6 +3246,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
+        UZData.getInstance().setSettingPlayer(false);
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         addTrackingMuiza(Constants.MUIZA_EVENT_VIEWSTART);
@@ -3272,7 +3273,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.getPlayer().setPlayWhenReady(true);
         }
         if (uzCallback != null) {
-            LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
         }
         if (isCastingChromecast) {
@@ -3287,7 +3287,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
         pingHeartBeat();
-        UZData.getInstance().setSettingPlayer(false);
     }
 
     private void initUizaPlayerManager() {
