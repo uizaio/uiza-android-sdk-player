@@ -50,6 +50,12 @@
                     android:textSize="@dimen/txt_8" />
 
                 <Button
+                    android:id="@+id/bt_is_maximize_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="isMaximizeView" />
+
+                <Button
                     android:id="@+id/bt_minimize_bottom_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

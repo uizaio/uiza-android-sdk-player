@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
@@ -47,6 +48,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_left).setOnClickListener(this);
         findViewById(R.id.bt_appear).setOnClickListener(this);
+        findViewById(R.id.bt_is_maximize_view).setOnClickListener(this);
     }
 
     @Override
@@ -265,6 +267,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
             case R.id.bt_appear:
                 vdhv.appear();
                 uzVideo.resumeVideo();
+                break;
+            case R.id.bt_is_maximize_view:
+                Toast.makeText(activity, "isMaximizeView: " + vdhv.isMaximizeView(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

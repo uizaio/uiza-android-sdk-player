@@ -18,6 +18,11 @@ import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
 
+/*
+***Loitp
+* Im a developer, ive no time, no money, no girl :(
+***Loitp
+ */
 public class VDHView extends LinearLayout {
     private final String TAG = getClass().getSimpleName();
     private View headerView;
@@ -726,5 +731,9 @@ public class VDHView extends LinearLayout {
             }
             return true;
         }
+    }
+
+    public boolean isMaximizeView() {
+        return isMaximizeView;
     }
 }
