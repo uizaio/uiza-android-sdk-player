@@ -39,6 +39,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
+        vdhv.setMarginLeftInPixel(50);
+        vdhv.setMarginTopInPixel(50);
+        vdhv.setMarginRightInPixel(50);
+        vdhv.setMarginBottomInPixel(50);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
@@ -156,7 +160,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        if (vdhv.isAppear()) {
+            uzVideo.onResume();
+        }
     }
 
     @Override
