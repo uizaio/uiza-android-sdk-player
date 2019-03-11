@@ -442,6 +442,9 @@ public class VDHView extends LinearLayout {
     }
 
     public boolean forceMaximize() {
+        if (!isAppear) {
+            return false;
+        }
         if (isEnableRevertMaxSize) {
         } else {
             setEnableRevertMaxSize(true);
@@ -569,8 +572,6 @@ public class VDHView extends LinearLayout {
             setVisibilityBodyView(INVISIBLE);
         }
     }
-
-    //private State stateBeforeDissappear;
 
     public void dissappear() {
         headerView.setVisibility(GONE);
