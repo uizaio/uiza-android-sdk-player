@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /*
@@ -416,14 +415,14 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        LLog.d(TAG, "fuck onLayout " + state);
+        //LLog.d(TAG, "onLayout " + state);
         if (state == State.MID ||
                 state == State.BOTTOM ||
                 state == State.BOTTOM_RIGHT ||
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
                 state == State.TOP_LEFT) {
-            LLog.d(TAG, "fuck onLayout return " + state);
+            //LLog.d(TAG, "onLayout return " + state);
             return;
         }
         super.onLayout(changed, l, t, r, b);
