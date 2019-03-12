@@ -417,7 +417,7 @@ public class VDHView extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //LLog.d(TAG, "onLayout " + state);
-        if (state == State.MID || state == State.BOTTOM ||
+        if (state == State.BOTTOM ||
                 state == State.BOTTOM_RIGHT ||
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
