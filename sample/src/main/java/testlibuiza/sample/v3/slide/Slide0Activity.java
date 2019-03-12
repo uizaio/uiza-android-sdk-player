@@ -8,25 +8,21 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.Player;
-
 import testlibuiza.R;
+import uizacoresdk.interfaces.StateEndCallback;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, StateEndCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -50,7 +46,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addProgressCallback(this);
+        uzVideo.addStateEndCallback(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -294,36 +290,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onAdProgress(int s, int duration, int percent) {
-    }
-
-    @Override
-    public void onAdEnded() {
-    }
-
-    @Override
-    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if(playbackState== Player.STATE_ENDED){
-            LLog.d(TAG, "fuck onPlayerStateChanged STATE_ENDED");
-            if(!vdhv.isMaximizeView()){
-                vdhv.forceMaximize();
-                LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        uzVideo.editUIEndScreen();
-                    }
-                });
-            }else{
-                uzVideo.editUIEndScreen();
-            }
-        }
-    }
-
-    @Override
-    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+    public void onPlayerEnded() {
+        vdhv.onPlayerEnded();
     }
 }

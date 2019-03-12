@@ -65,6 +65,7 @@ import java.util.UUID;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.CallbackUZTimebar;
+import uizacoresdk.interfaces.StateEndCallback;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZLiveContentCallback;
@@ -1224,6 +1225,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onPlayerEnded() {
         if (isPlaying()) {
             isOnPlayerEnded = true;
+            if (stateEndCallback != null) {
+                stateEndCallback.onPlayerEnded();
+            }
             if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
                 hideController();
                 autoSwitchNextVideo();
@@ -2477,29 +2481,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         callAPIUpdateLiveInfoTimeStartLive(DELAY_TO_GET_LIVE_INFORMATION);
     }
 
-    public void editUIEndScreen(){
-        if (rlEndScreen != null && tvEndScreenMsg != null) {
-            rlEndScreen.setVisibility(VISIBLE);
-            //TODO call api skin config to correct this text
-            setTextEndscreen(getContext().getString(R.string.tks_4_watching));
-        }
-        setVisibilityOfPlayPauseReplay(true);
-        showController();
-        if (uzPlayerView != null) {
-            uzPlayerView.setControllerShowTimeoutMs(0);
-            uzPlayerView.setControllerHideOnTouch(false);
-        }
-    }
-
     private void updateUIEndScreen() {
         if (getContext() == null) {
             return;
         }
         if (isOnPlayerEnded) {
-            if (UZData.getInstance().isUseWithVDHView()) {
-                LLog.d(TAG, "fuck rlEndScreen set visibile");
-            } else {
-                editUIEndScreen();
+            if (rlEndScreen != null && tvEndScreenMsg != null) {
+                rlEndScreen.setVisibility(VISIBLE);
+                //TODO call api skin config to correct this text
+                setTextEndscreen(getContext().getString(R.string.tks_4_watching));
+            }
+            setVisibilityOfPlayPauseReplay(true);
+            showController();
+            if (uzPlayerView != null) {
+                uzPlayerView.setControllerShowTimeoutMs(0);
+                uzPlayerView.setControllerHideOnTouch(false);
             }
         } else {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
@@ -2690,6 +2686,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected Player.EventListener eventListener;
     protected VideoListener videoListener;
     protected TextOutput textOutput;
+    private StateEndCallback stateEndCallback;
 
     public void addUZLiveContentCallback(UZLiveContentCallback uzLiveContentCallback) {
         this.uzLiveContentCallback = uzLiveContentCallback;
@@ -2750,6 +2747,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void addVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
         this.videoAdPlayerCallback = videoAdPlayerCallback;
+    }
+
+    public void addStateEndCallback(StateEndCallback stateEndCallback) {
+        this.stateEndCallback = stateEndCallback;
     }
 
     //=============================================================================================END EVENT

@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
-import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /*
@@ -422,7 +421,6 @@ public class VDHView extends LinearLayout {
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
                 state == State.TOP_LEFT) {
-            LLog.d(TAG, "fuck onLayout return " + state);
             return;
         }
         super.onLayout(changed, l, t, r, b);
@@ -799,5 +797,11 @@ public class VDHView extends LinearLayout {
 
     public boolean isMaximizeView() {
         return isMaximizeView;
+    }
+
+    public void onPlayerEnded(){
+        if (!isMaximizeView()) {
+            forceMaximize();
+        }
     }
 }
