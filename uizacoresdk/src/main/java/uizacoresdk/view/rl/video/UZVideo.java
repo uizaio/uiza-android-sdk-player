@@ -1325,9 +1325,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickBackScreen() {
-        /*if (!isOnPlayerEnded) {
-            hideController();
-        }*/
         if (isLandscape) {
             toggleFullscreen();
         }
@@ -2481,15 +2478,17 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIEndScreen() {
-        //LLog.d(TAG, "updateUIEndScreen isOnPlayerEnded " + isOnPlayerEnded);
+        LLog.d(TAG, "fuck updateUIEndScreen isOnPlayerEnded " + isOnPlayerEnded);
         if (getContext() == null) {
             return;
         }
         if (isOnPlayerEnded) {
             if (rlEndScreen != null && tvEndScreenMsg != null) {
+                LLog.d(TAG, "fuck rlEndScreen set visibile");
                 rlEndScreen.setVisibility(VISIBLE);
                 //TODO call api skin config to correct this text
                 setTextEndscreen(getContext().getString(R.string.tks_4_watching));
+                LLog.d(TAG, "fuck rlEndScreen " + (rlEndScreen.getVisibility() == VISIBLE ? "VISIBLE" : "!VISIBLE"));
             }
             setVisibilityOfPlayPauseReplay(true);
             showController();
