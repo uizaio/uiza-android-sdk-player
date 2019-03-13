@@ -65,6 +65,7 @@ import java.util.UUID;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.CallbackUZTimebar;
+import uizacoresdk.interfaces.StateEndCallback;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.interfaces.UZLiveContentCallback;
@@ -1224,6 +1225,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void onPlayerEnded() {
         if (isPlaying()) {
             isOnPlayerEnded = true;
+            if (stateEndCallback != null) {
+                stateEndCallback.onPlayerEnded();
+            }
             if (isPlayPlaylistFolder() && isAutoSwitchItemPlaylistFolder) {
                 hideController();
                 autoSwitchNextVideo();
@@ -1325,9 +1329,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void handleClickBackScreen() {
-        /*if (!isOnPlayerEnded) {
-            hideController();
-        }*/
         if (isLandscape) {
             toggleFullscreen();
         }
@@ -2481,7 +2482,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void updateUIEndScreen() {
-        //LLog.d(TAG, "updateUIEndScreen isOnPlayerEnded " + isOnPlayerEnded);
         if (getContext() == null) {
             return;
         }
@@ -2686,6 +2686,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected Player.EventListener eventListener;
     protected VideoListener videoListener;
     protected TextOutput textOutput;
+    private StateEndCallback stateEndCallback;
 
     public void addUZLiveContentCallback(UZLiveContentCallback uzLiveContentCallback) {
         this.uzLiveContentCallback = uzLiveContentCallback;
@@ -2746,6 +2747,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     public void addVideoAdPlayerCallback(VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback) {
         this.videoAdPlayerCallback = videoAdPlayerCallback;
+    }
+
+    public void addStateEndCallback(StateEndCallback stateEndCallback) {
+        this.stateEndCallback = stateEndCallback;
     }
 
     //=============================================================================================END EVENT
@@ -3246,6 +3251,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     protected void onStateReadyFirst() {
         //LLog.d(TAG, "onStateReadyFirst " + uzPlayerManager.isLIVE() + ", videoW x H: " + uzPlayerManager.getVideoW() + "x" + uzPlayerManager.getVideoH());
+        UZData.getInstance().setSettingPlayer(false);
         long pageLoadTime = System.currentTimeMillis() - timestampBeforeInitNewSession;
         TmpParamData.getInstance().setPageLoadTime(pageLoadTime);
         addTrackingMuiza(Constants.MUIZA_EVENT_VIEWSTART);
@@ -3272,7 +3278,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzPlayerManager.getPlayer().setPlayWhenReady(true);
         }
         if (uzCallback != null) {
-            LLog.d(TAG, "onStateReadyFirst ===> isInitResult");
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
         }
         if (isCastingChromecast) {
@@ -3287,7 +3292,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         trackUizaEventVideoStarts();
         trackUizaCCUForLivestream();
         pingHeartBeat();
-        UZData.getInstance().setSettingPlayer(false);
     }
 
     private void initUizaPlayerManager() {
