@@ -22,7 +22,6 @@
     <string name="genres">Genres:</string>
     <string name="cannot_play_will_try">Cannot play, UizaPlayer will try to play the next link...</string>
     <string name="err_no_internet_tap_to_retry">No internet connection.\nTap to retry.</string>
-    <string name="err_live_is_stopped">This content is not available now</string>
     <string name="no_caption">No captions are available for this video</string>
     <string name="related_list">Related List</string>
     <string name="share_via">Share via</string>

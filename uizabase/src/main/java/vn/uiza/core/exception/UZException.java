@@ -82,6 +82,12 @@ public class UZException {
     public final static int ERR_CODE_26 = 26;
     public final static String ERR_26 = "This is the last item of playlist/folder";
 
+    public final static int ERR_CODE_27 = 27;
+    public final static String ERR_27 = "This content is not available now";
+
+    public final static int ERR_CODE_28 = 28;
+    public final static String ERR_28 = "Error UizaSpeed: You cannot set speed with live content.";
+
     public final static int ERR_CODE_400 = 400;
     public final static String ERR_400 = "Bad Request: The request was unacceptable, often due to missing a required parameter.";
 

@@ -357,7 +357,18 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
+                String type = null;
+                if (error.type == ExoPlaybackException.TYPE_SOURCE) {
+                    type = "TYPE_SOURCE";
+                    //LLog.e(TAG, "onPlayerError TYPE_SOURCE");
+                } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
+                    type = "TYPE_RENDERER";
+                    //LLog.e(TAG, "onPlayerError TYPE_RENDERER");
+                } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+                    type = "TYPE_UNEXPECTED";
+                    //LLog.e(TAG, "onPlayerError TYPE_UNEXPECTED");
+                }
+                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback(type));
             }
         }
 
