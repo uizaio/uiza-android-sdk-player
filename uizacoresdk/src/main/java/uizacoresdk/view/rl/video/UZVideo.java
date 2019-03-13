@@ -1679,6 +1679,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return bkg;
     }
 
+    public FrameLayout getOverlayFrameLayout() {
+        if (uzPlayerView == null) {
+            return null;
+        }
+        return uzPlayerView.getOverlayFrameLayout();
+    }
+
     public List<UZItem> getHQList() {
         View view = UZUtil.getBtVideo(debugRootView);
         if (view == null) {
