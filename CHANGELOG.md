@@ -1,3 +1,18 @@
+### 3.3.2 (2019-3-13)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.2'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.2'
+
+- Edit error message for Chromecast.
+- VDHView: 
+	+ Add func for checking current state is maximize or not.
+	+ Add func set maximize view programmatically.
+	+ Add func set margin of header view.
+	+ Fixed bugs scroll to incorrect position when the player is played finish.
+	
 ### 3.3.1 (2019-3-6)
 
     //for playing video VOD, LIVE  
