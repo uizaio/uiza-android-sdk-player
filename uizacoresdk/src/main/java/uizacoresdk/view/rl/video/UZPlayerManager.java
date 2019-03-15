@@ -631,7 +631,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                         // media actually playing
                         if (uzVideo != null) {
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_PLAYING);
-                            uzVideo.hideLayoutMsg();
                             uzVideo.resetCountTryLinkPlayError();
                         }
                         if (uzTimebar != null) {
@@ -678,11 +677,15 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 return;
             }
             LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
+            String type = null;
             if (error.type == ExoPlaybackException.TYPE_SOURCE) {
+                type = "TYPE_SOURCE";
                 LLog.e(TAG, "onPlayerError TYPE_SOURCE");
             } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
+                type = "TYPE_RENDERER";
                 LLog.e(TAG, "onPlayerError TYPE_RENDERER");
             } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+                type = "TYPE_UNEXPECTED";
                 LLog.e(TAG, "onPlayerError TYPE_UNEXPECTED");
             }
             error.printStackTrace();
@@ -693,8 +696,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo == null) {
                 return;
             }
-            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
-            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
+            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback(type));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {

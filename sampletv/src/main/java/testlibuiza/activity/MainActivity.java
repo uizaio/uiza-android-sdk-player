@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
@@ -18,7 +19,6 @@ import testlibuiza.app.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.views.LToast;
 
 public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -50,10 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         } else {
             btCustom.setVisibility(View.GONE);
         }
-
-        etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
+        etInput.setText(LSApplication.entityIdDefaultVOD);
         LUIUtil.setLastCursorEditText(etInput);
-
         etInput.setOnFocusChangeListener(this);
         btVod.setOnFocusChangeListener(this);
         btLive.setOnFocusChangeListener(this);
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         LUIUtil.setTextShadow(tvVs);
         tvVs.setText("© 2018 Uiza. All rights reserved.\nVersion " + BuildConfig.VERSION_NAME);
 
-        if (LSApplication.getInstance().DF_DOMAIN_API.equals("input")) {
+        if (LSApplication.DF_DOMAIN_API.equals("input")) {
             showDialogInitWorkspace();
         }
     }
@@ -109,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     public void onFocusChange(View view, boolean isFocus) {
         UZUtil.updateUIFocusChange(view, isFocus);
         if (view == etInput) {
-            //LLog.d(TAG, "onFocusChange etInput " + isFocus);
             if (isFocus) {
                 etInput.setTextColor(Color.BLACK);
                 etInput.setHintTextColor(Color.BLACK);
@@ -123,19 +120,19 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     @Override
     public void onClick(View view) {
         if (view == btVod) {
-            etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
+            etInput.setText(LSApplication.entityIdDefaultVOD);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btLive) {
-            etInput.setText(LSApplication.getInstance().entityIdDefaultLIVE);
+            etInput.setText(LSApplication.entityIdDefaultLIVE);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btPlaylistFolder) {
-            etInput.setText(LSApplication.getInstance().metadataDefault0);
+            etInput.setText(LSApplication.metadataDefault0);
             LUIUtil.setLastCursorEditText(etInput);
         } else if (view == btClear) {
             etInput.setText("");
         } else if (view == btStartEntity) {
             if (etInput.getText().toString().isEmpty()) {
-                LToast.show(activity, "Please input the Id");
+                Toast.makeText(activity, "Please input the Id", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, etInput.getText().toString());
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             }
         } else if (view == btStartPlaylistFolder) {
             if (etInput.getText().toString().isEmpty()) {
-                LToast.show(activity, "Please input the Id");
+                Toast.makeText(activity, "Please input the Id", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(activity, PlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, etInput.getText().toString());

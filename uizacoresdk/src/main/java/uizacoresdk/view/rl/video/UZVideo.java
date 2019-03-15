@@ -154,8 +154,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivThumbnail;
     private UZTextView tvPosition;
     private UZTextView tvDuration;
-    private RelativeLayout rlMsg;
-    private TextView tvMsg;
     private ImageView ivVideoCover;
     private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
@@ -482,10 +480,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         mResultGetTokenStreaming = null;
         isHasError = false;
         isOnPlayerEnded = false;
+        isHandleErrorContentNotAvailable = false;
         this.entityId = entityId;
         LLog.d(TAG, "get entityId: " + entityId);
         UZData.getInstance().setSettingPlayer(true);
-        hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         updateUIEndScreen();
         if (!LConnectivityUtil.isConnected(getContext())) {
@@ -523,9 +521,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         mResultGetTokenStreaming = null;
         this.entityId = null;
         UZData.getInstance().setSettingPlayer(true);
-        hideLayoutMsg();
         setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
         isOnPlayerEnded = false;
+        isHandleErrorContentNotAvailable = false;
         updateUIEndScreen();
         isHasError = false;
         this.isLivestream = isLivestream;
@@ -578,14 +576,18 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private int countTryLinkPlayError = 0;
 
+    private boolean isHandleErrorContentNotAvailable;
+
     protected void tryNextLinkPlay() {
         if (isLivestream) {
             //try to play 5 times
             if (countTryLinkPlayError >= 5) {
-                showTvMsg(getContext().getString(R.string.err_live_is_stopped));
+                if (!isHandleErrorContentNotAvailable) {
+                    removeVideoCover(true);
+                    handleError(UZExceptionUtil.getExceptionContentNotAvailable());
+                    isHandleErrorContentNotAvailable = true;
+                }
             }
-            //if entity is livestreaming, dont try to next link play
-            LLog.e(TAG, "tryNextLinkPlay isLivestream true -> try to replay = count " + countTryLinkPlayError);
             if (uzPlayerManager != null) {
                 uzPlayerManager.initWithoutReset();
                 uzPlayerManager.setRunnable();
@@ -594,7 +596,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         countTryLinkPlayError++;
-        Log.e(TAG, getContext().getString(R.string.cannot_play_will_try) + ": " + countTryLinkPlayError);
         uzPlayerManager.release();
         checkToSetUpResouce();
     }
@@ -858,9 +859,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     @Override
     public void onClick(View v) {
-        if (v == rlMsg) {
-            LAnimationUtil.play(v, Techniques.Pulse);
-        } else if (v == ibFullscreenIcon) {
+        if (v == ibFullscreenIcon) {
             toggleFullscreen();
         } else if (v == ibBackScreenIcon) {
             handleClickBackScreen();
@@ -919,11 +918,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này ta có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn*/
         if (isDefaultUseController) {
-            if (rlMsg != null && rlMsg.getVisibility() == VISIBLE) {
-            } else {
-                if (isPlayerControllerShowing()) {
-                    showController();
-                }
+            if (isPlayerControllerShowing()) {
+                showController();
             }
         }
         if (uzItemClick != null) {
@@ -1547,14 +1543,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return uzPlayerManager;
     }
 
-    public TextView getTvMsg() {
-        return tvMsg;
-    }
-
-    public ImageView getIvVideoCover() {
-        return ivVideoCover;
-    }
-
     public UZImageButton getIbFullscreenIcon() {
         return ibFullscreenIcon;
     }
@@ -1691,6 +1679,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return bkg;
     }
 
+    public FrameLayout getOverlayFrameLayout() {
+        if (uzPlayerView == null) {
+            return null;
+        }
+        return uzPlayerView.getOverlayFrameLayout();
+    }
+
     public List<UZItem> getHQList() {
         View view = UZUtil.getBtVideo(debugRootView);
         if (view == null) {
@@ -1741,7 +1736,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             return;
         }
         if (isLivestream) {
-            throw new IllegalArgumentException(getContext().getString(R.string.error_speed_live_content));
+            handleError(UZExceptionUtil.getExceptionSpeed());
+            return;
         }
         if (speed > 3 || speed < -3) {
             throw new IllegalArgumentException(getContext().getString(R.string.error_speed_illegal));
@@ -1756,12 +1752,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     //=============================================================================================START UI
     private void findViews() {
         bkg = (View) findViewById(R.id.bkg);
-        rlMsg = (RelativeLayout) findViewById(R.id.rl_msg);
-        rlMsg.setOnClickListener(this);
-        tvMsg = (TextView) findViewById(R.id.tv_msg);
-        if (tvMsg != null) {
-            LUIUtil.setTextShadow(tvMsg);
-        }
         ivVideoCover = (ImageView) findViewById(R.id.iv_cover);
         llTop = (LinearLayout) findViewById(R.id.ll_top);
         progressBar = (ProgressBar) findViewById(R.id.pb);
@@ -2016,18 +2006,20 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (ivVideoCover.getVisibility() != GONE) {
             ivVideoCover.setVisibility(GONE);
             ivVideoCover.invalidate();
-            if (isLivestream) {
-                if (tvLiveTime != null) {
-                    tvLiveTime.setText("-");
-                }
-                if (tvLiveView != null) {
-                    tvLiveView.setText("-");
-                }
-                callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
-                callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
-            }
-            if (!isFromHandleError) {
+            if (isFromHandleError) {
+                updateUIDependOnLivetream();
+            } else {
                 onStateReadyFirst();
+                if (isLivestream) {
+                    if (tvLiveTime != null) {
+                        tvLiveTime.setText("-");
+                    }
+                    if (tvLiveView != null) {
+                        tvLiveView.setText("-");
+                    }
+                    callAPIUpdateLiveInfoCurrentView(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+                    callAPIUpdateLiveInfoTimeStartLive(DELAY_FIRST_TO_GET_LIVE_INFORMATION);
+                }
             }
         } else {
             //goi changskin realtime thi no ko vao if nen ko update tvDuration dc
@@ -2442,26 +2434,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     debugRootView.addView(button);
                 }
             }
-        }
-    }
-
-    private void showTvMsg(String msg) {
-        if (tvMsg != null) {
-            tvMsg.setText(msg);
-            showLayoutMsg();
-        }
-    }
-
-    protected void showLayoutMsg() {
-        hideController();
-        if (rlMsg.getVisibility() != VISIBLE) {
-            rlMsg.setVisibility(VISIBLE);
-        }
-    }
-
-    protected void hideLayoutMsg() {
-        if (rlMsg.getVisibility() != GONE) {
-            rlMsg.setVisibility(GONE);
         }
     }
 
@@ -3121,21 +3093,25 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }
             }
-            //listLinkPlay.clear();
-            //listLinkPlay.add("https://toanvk-live.uizacdn.net/893db5e8bb3943bfb12894fec56c8875-live/hi-uaqsv9as/manifest.mpd");
-            //listLinkPlay.add("http://112.78.4.162/drm/test/hevc/playlist.mpd");
-            //listLinkPlay.add("http://112.78.4.162/6yEB8Lgd/package/playlist.mpd");
-            //listLinkPlay.add("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+
+            /*listLinkPlay.clear();
+            listLinkPlay.add("error link 0");
+            listLinkPlay.add("error link 1");
+            listLinkPlay.add("error link 2");
+            listLinkPlay.add("error link 3");
+            listLinkPlay.add("error link 4");*/
+
             //LLog.d(TAG, "listLinkPlay toJson: " + gson.toJson(listLinkPlay));
             if (listLinkPlay == null || listLinkPlay.isEmpty()) {
                 handleErrorNoData();
                 return;
             }
-            if (countTryLinkPlayError >= listLinkPlay.size()) {
+            if (countTryLinkPlayError > (listLinkPlay.size() - 1)) {
                 if (LConnectivityUtil.isConnected(getContext())) {
+                    removeVideoCover(true);
                     handleError(UZExceptionUtil.getExceptionTryAllLinkPlay());
                 } else {
-                    showTvMsg(UZException.ERR_0);
+                    handleError(UZExceptionUtil.getExceptionNoConnection());
                 }
                 return;
             }
@@ -3666,7 +3642,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     LDialogUtil.clearAll();
                     if (uzPlayerManager.getExoPlaybackException() == null) {
                         hideController();
-                        hideLayoutMsg();
                     } else {
                         isCalledFromConnectionEventBus = true;
                         uzPlayerManager.setResumeIfConnectionError();
@@ -3681,10 +3656,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     resumeVideo();
                 }
             } else {
-                showTvMsg(UZException.ERR_0);
-                //if current screen is portrait -> do nothing
-                //else current screen is landscape -> change screen to portrait
-                //LActivityUtil.changeScreenPortrait(activity);
+                handleError(UZExceptionUtil.getExceptionNoConnection());
             }
         }
     }

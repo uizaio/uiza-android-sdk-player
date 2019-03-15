@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
@@ -53,19 +54,13 @@ import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
 import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import vn.uiza.views.LToast;
 
 public class LiveLandscapeActivity extends AppCompatActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZLivestream uzLivestream;
-    private Button bStartStop;
-    private Button bStartStopStore;
-    private Button btSwitchCamera;
-    private Button btFilter;
-    private Button btFlash;
-    private TextView tvMainUrl;
-    private TextView tvInfo;
+    private Button bStartStop, bStartStopStore, btSwitchCamera, btFilter, btFlash;
+    private TextView tvMainUrl, tvInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +70,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         if (App.DF_DOMAIN_API.equals("input")) {
-            LToast.show(activity, "Please configure your workspace's information in App.java");
+            showToast("Please configure your workspace's information in App.java");
             return;
         }
         findViews();
@@ -143,28 +138,22 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
             if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
+                showToast("Error preparing stream, This device cant do it");
             }
 
             //SD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
-            }*/
+            } */
 
             //HD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //FULL HD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
         } else {
             bStartStop.setText(R.string.start_button);
@@ -185,28 +174,22 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
             if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
+                showToast("Error preparing stream, This device cant do it");
             }
 
             //SD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoSDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
-            }*/
+            } */
 
             //HD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
 
             //FULL HD
             /*if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoFullHDLandscape()) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
-            } else {
-                LToast.show(activity, "Error preparing stream, This device cant do it");
             }*/
         } else {
             bStartStopStore.setText(R.string.start_button);
@@ -369,9 +352,8 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
             btSwitchCamera.setEnabled(true);
             btFilter.setEnabled(true);
             uzLivestream.setId(App.entityIdDefaultLIVE_TRANSCODE);
-            //uzLivestream.setId(App.entityIdDefaultLIVE_NO_TRANSCODE);
         } else {
-            LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
+            showToast("Cannot use this feature because user does not allow our permissions");
             onBackPressed();
         }
     }
@@ -381,7 +363,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LToast.show(activity, reason);
+                showToast(reason);
                 bStartStop.setEnabled(true);
                 bStartStopStore.setEnabled(true);
                 bStartStop.setText("Start streaming");
@@ -451,5 +433,9 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
                 btFlash.setVisibility(isFrontCamera ? View.GONE : View.VISIBLE);
             }
         });
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
 }
