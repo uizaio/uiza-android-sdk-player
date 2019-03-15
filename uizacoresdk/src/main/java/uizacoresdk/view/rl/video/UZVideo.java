@@ -3106,7 +3106,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 handleErrorNoData();
                 return;
             }
-            if (countTryLinkPlayError >= (listLinkPlay.size() - 1)) {
+            if (countTryLinkPlayError > (listLinkPlay.size() - 1)) {
                 if (LConnectivityUtil.isConnected(getContext())) {
                     removeVideoCover(true);
                     handleError(UZExceptionUtil.getExceptionTryAllLinkPlay());

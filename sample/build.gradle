@@ -53,8 +53,8 @@ dependencies {
     api project(':uizacoresdk')
     api project(':uizalivestream')
 
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.2'
-    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.2'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.2.1_BETA'
+    //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.2.1_BETA'
 
     //FIREBASE CONFIG
     api 'com.google.firebase:firebase-ads:17.1.3'
