@@ -1,3 +1,14 @@
+### 3.3.3 (2019-3-15)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.3'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.3'
+
+- Define new [UZException](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizabase/src/main/java/vn/uiza/core/exception/UZException.java)
+- Removed view group of message in UZVideo.
+
 ### 3.3.2 (2019-3-13)
 
     //for playing video VOD, LIVE  
