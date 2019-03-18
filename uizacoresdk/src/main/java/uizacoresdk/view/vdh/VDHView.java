@@ -415,8 +415,8 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //LLog.d(TAG, "onLayout " + state);
         if (state == State.BOTTOM ||
+                state == State.MID ||
                 state == State.BOTTOM_RIGHT ||
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
@@ -799,7 +799,7 @@ public class VDHView extends LinearLayout {
         return isMaximizeView;
     }
 
-    public void onPlayerEnded(){
+    public void onPlayerEnded() {
         if (!isMaximizeView()) {
             forceMaximize();
         }
