@@ -622,14 +622,6 @@ public class VDHView extends LinearLayout {
         bodyView.setVisibility(visibilityBodyView);
     }
 
-    public void onPause() {
-        if (!isEnableRevertMaxSize) {
-            minimizeBottomRight();
-            headerView.setVisibility(INVISIBLE);
-            setVisibilityBodyView(INVISIBLE);
-        }
-    }
-
     public void dissappear() {
         headerView.setVisibility(GONE);
         setVisibilityBodyView(GONE);
