@@ -161,7 +161,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         super.onResume();
         if (vdhv.isAppear()) {
             uzVideo.onResume();
-            uzVideo.showController();
         }
     }
 

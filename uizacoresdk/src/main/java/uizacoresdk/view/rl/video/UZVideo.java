@@ -997,6 +997,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    public void seekToDefaultPosition(long positionMs) {
+        if (getPlayer() != null) {
+            getPlayer().seekToDefaultPosition();
+        }
+    }
+
     public void setControllerShowTimeoutMs(int controllerShowTimeoutMs) {
         DEFAULT_VALUE_CONTROLLER_TIMEOUT = controllerShowTimeoutMs;
         uzPlayerView.setControllerShowTimeoutMs(DEFAULT_VALUE_CONTROLLER_TIMEOUT);
@@ -3252,6 +3258,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (isGetClickedPip) {
             LLog.d(TAG, "getClickedPip true -> setPlayWhenReady true");
             uzPlayerManager.getPlayer().setPlayWhenReady(true);
+        }
+        if (UZData.getInstance().isUseWithVDHView()) {
+            showController();
         }
         if (uzCallback != null) {
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());

@@ -714,8 +714,12 @@ public class VDHView extends LinearLayout {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
-            forceMaximize();
+            if (!isMaximizeView) {
+                boolean isSuccess = forceMaximize();
+                if (isSuccess) {
+                    isMaximizeView = true;
+                }
+            }
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }
