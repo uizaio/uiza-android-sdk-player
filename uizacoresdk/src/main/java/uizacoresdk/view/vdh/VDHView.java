@@ -415,8 +415,8 @@ public class VDHView extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //LLog.d(TAG, "onLayout " + state);
         if (state == State.BOTTOM ||
+                state == State.MID ||
                 state == State.BOTTOM_RIGHT ||
                 state == State.BOTTOM_LEFT ||
                 state == State.TOP_RIGHT ||
@@ -622,14 +622,6 @@ public class VDHView extends LinearLayout {
         bodyView.setVisibility(visibilityBodyView);
     }
 
-    public void onPause() {
-        if (!isEnableRevertMaxSize) {
-            minimizeBottomRight();
-            headerView.setVisibility(INVISIBLE);
-            setVisibilityBodyView(INVISIBLE);
-        }
-    }
-
     public void dissappear() {
         headerView.setVisibility(GONE);
         setVisibilityBodyView(GONE);
@@ -722,8 +714,12 @@ public class VDHView extends LinearLayout {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
-            forceMaximize();
+            if (!isMaximizeView) {
+                boolean isSuccess = forceMaximize();
+                if (isSuccess) {
+                    isMaximizeView = true;
+                }
+            }
             if (onTouchEvent != null) {
                 onTouchEvent.onSingleTapConfirmed(e.getX(), e.getY());
             }
@@ -799,7 +795,7 @@ public class VDHView extends LinearLayout {
         return isMaximizeView;
     }
 
-    public void onPlayerEnded(){
+    public void onPlayerEnded() {
         if (!isMaximizeView()) {
             forceMaximize();
         }

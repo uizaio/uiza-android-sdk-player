@@ -146,7 +146,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onPause() {
         super.onPause();
-        vdhv.onPause();
         uzVideo.onPause();
     }
 
@@ -224,12 +223,14 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.toggleShowHideController();
-            }
-        });
+        if (vdhv.isMaximizeView()) {
+            uzVideo.post(new Runnable() {
+                @Override
+                public void run() {
+                    uzVideo.toggleShowHideController();
+                }
+            });
+        }
     }
 
     @Override
