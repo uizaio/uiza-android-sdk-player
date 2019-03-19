@@ -1,3 +1,15 @@
+### 3.3.4 (2019-3-19)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.4'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.4'
+
+- Add func `uzvideo.seekToDefaultPosition` for seeking to last position of livestreaming.
+- Fixed behavior of VDHView.
+
+
 ### 3.3.3 (2019-3-15)
 
     //for playing video VOD, LIVE  
