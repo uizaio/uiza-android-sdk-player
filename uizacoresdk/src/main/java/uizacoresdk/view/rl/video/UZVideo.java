@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -53,6 +54,9 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
+import com.mux.stats.sdk.core.model.CustomerPlayerData;
+import com.mux.stats.sdk.core.model.CustomerVideoData;
+import com.mux.stats.sdk.muxstats.MuxStatsExoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -218,7 +222,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     }
 
     private void onCreate() {
-        //activity = (Activity) getContext();
         EventBus.getDefault().register(this);
         //register LConectifyService
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -641,6 +644,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //activity = null;
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
+        }
+        if (muxStatsExoPlayer != null) {
+            muxStatsExoPlayer.release();
         }
         UZData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
@@ -3143,10 +3149,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzCallback.isInitResult(false, true, mResultGetLinkPlay, UZData.getInstance().getData());
             }
             initUizaPlayerManager();
+            CustomerPlayerData customerPlayerData = new CustomerPlayerData();
+            customerPlayerData.setEnvironmentKey("e1mcat6hn6v40kh9gvh9nm6se");
+            CustomerVideoData customerVideoData = new CustomerVideoData();
+            customerVideoData.setVideoTitle("Loitp title test mux " + UZData.getInstance().getEntityName());
+            muxStatsExoPlayer = new MuxStatsExoPlayer(getContext(), getPlayer(), "Loitp test uiza-player", customerPlayerData, customerVideoData);
+            Point size = new Point();
+            ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(size);
+            muxStatsExoPlayer.setScreenSize(size.x, size.y);
+            muxStatsExoPlayer.setPlayerView(uzPlayerView.getVideoSurfaceView());
         } else {
             handleError(UZExceptionUtil.getExceptionSetup());
         }
     }
+
+    protected MuxStatsExoPlayer muxStatsExoPlayer;
 
     private long timestampInitDataSource;
 

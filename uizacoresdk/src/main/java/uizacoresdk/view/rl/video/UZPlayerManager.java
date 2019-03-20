@@ -500,6 +500,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
     private MediaSource buildMediaSource(Uri uri) {
         @ContentType int type = Util.inferContentType(uri);
+        //uzVideo.muxStatsExoPlayer.setStreamType(type);
         switch (type) {
             case C.TYPE_DASH:
                 return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory).createMediaSource(uri);
