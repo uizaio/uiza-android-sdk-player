@@ -2872,7 +2872,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             isEnableMux = false;
         }
-        LLog.d(TAG, "fuck isEnableMux " + isEnableMux);
         if (isResultGetLinkPlayExist) {
             //LLog.d(TAG, "isResultGetLinkPlayExist -> dont call API GetLinkPlay");
             mResultGetLinkPlay = UZData.getInstance().getResultGetLinkPlay();
