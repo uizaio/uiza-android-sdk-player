@@ -1,2 +1,4 @@
 configurations.maybeCreate("default")
 artifacts.add("default", file('mux-r2.8.0.aar'))
+dependencies {
+}

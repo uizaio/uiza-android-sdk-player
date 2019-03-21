@@ -38,8 +38,7 @@ android {
 dependencies {
     api project(':uizabase')
     //api project(':mux-r2.8.0')
-    implementation project(path: ':mux-r2.8.0', configuration: 'default')
-
+    api project(path: ':mux-r2.8.0', configuration: 'default')
     //api fileTree(include: ['*.jar'], dir: 'libs')
     //api(name:'mux-r2.8.0', ext:'aar')
     api 'com.github.bumptech.glide:glide:4.8.0'
