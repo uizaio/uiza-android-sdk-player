@@ -1,3 +1,5 @@
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.tplloi'
 configurations.maybeCreate("default")
 artifacts.add("default", file('mux-r2.8.0.aar'))
 dependencies {
