@@ -27,6 +27,10 @@ allprojects {
         maven { url 'https://jitpack.io' }
         //mavenCentral()
         maven { url 'https://google.bintray.com/exoplayer/' }
+        flatDir {
+            dirs 'libs'
+            dirs project(':uizacoresdk').file('libs')
+        }
     }
 }
 
