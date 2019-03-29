@@ -32,7 +32,7 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Constants.setDebugMode(false);
-        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        UZUtil.initWorkspace(this, Constants.API_VERSION_3, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {

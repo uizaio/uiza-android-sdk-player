@@ -8,6 +8,7 @@ import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
@@ -43,29 +44,29 @@ import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 
 public interface UZService {
     //http://dev-docs.uizadev.io/#get-token
-    @POST("/api/public/v4/admin/user/auth")
-    Observable<ResultGetToken> getToken(@Body UizaWorkspaceInfo uizaWorkspaceInfo);
+    @POST("/api/public/{api_version}/admin/user/auth")
+    Observable<ResultGetToken> getToken(@Path(value = "api_version", encoded = true) String apiVersion, @Body UizaWorkspaceInfo uizaWorkspaceInfo);
 
     //http://dev-docs.uizadev.io/#check-token
     //@Headers("Content-Type: application/json")
-    @POST("/api/public/v4/admin/user/auth/check-token")
-    Observable<Object> checkToken();
+    @POST("/api/public/{api_version}/admin/user/auth/check-token")
+    Observable<Object> checkToken(@Path(value = "api_version", encoded = true) String apiVersion);
 
     //https://docs.uiza.io/#create-an-user
-    @POST("/api/public/v4/admin/user")
-    Observable<Object> createAnUser(@Body CreateUser createUser);
+    @POST("/api/public/{api_version}/admin/user")
+    Observable<Object> createAnUser(@Path(value = "api_version", encoded = true) String apiVersion,@Body CreateUser createUser);
 
     //https://docs.uiza.io/#retrieve-an-user
-    @GET("/api/public/v4/admin/user")
-    Observable<Object> retrieveAnUser(@Query("id") String id);
+    @GET("/api/public/{api_version}/admin/user")
+    Observable<Object> retrieveAnUser(@Path(value = "api_version", encoded = true) String apiVersion,@Query("id") String id);
 
     //https://docs.uiza.io/#list-all-users
-    @GET("/api/public/v4/admin/user")
-    Observable<Object> listAllUser();
+    @GET("/api/public/{api_version}/admin/user")
+    Observable<Object> listAllUser(@Path(value = "api_version", encoded = true) String apiVersion);
 
     //https://docs.uiza.io/#update-an-user
-    @PUT("/api/public/v4/admin/user")
-    Observable<Object> updateAnUser(@Body CreateUser updateUser);
+    @PUT("/api/public/{api_version}/admin/user")
+    Observable<Object> updateAnUser(@Path(value = "api_version", encoded = true) String apiVersion,@Body CreateUser updateUser);
 
     //https://docs.uiza.io/#update-an-user
     @HTTP(method = "DELETE", path = "/api/public/v4/admin/user", hasBody = true)
@@ -73,40 +74,41 @@ public interface UZService {
     Observable<Object> deleteAnUser(@Body CreateUser deleteUser);
 
     //https://docs.uiza.io/#update-password
-    @PUT("/api/public/v4/admin/user/changepassword")
-    Observable<Object> updatePassword(@Body UpdatePassword updatePassword);
+    @PUT("/api/public/{api_version}/admin/user/changepassword")
+    Observable<Object> updatePassword(@Path(value = "api_version", encoded = true) String apiVersion,@Body UpdatePassword updatePassword);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
-    @GET("/api/public/v4/media/metadata")
-    Observable<ResultGetListMetadata> getListMetadata();
+    @GET("/api/public/{api_version}/media/metadata")
+    Observable<ResultGetListMetadata> getListMetadata(@Path(value = "api_version", encoded = true) String apiVersion);
 
     //http://dev-docs.uizadev.io/#get-list-metadata
-    @GET("/api/public/v4/media/metadata")
-    Observable<ResultGetListMetadata> getListMetadata(@Query("limit") int limit, @Query("page") int page);
+    @GET("/api/public/{api_version}/media/metadata")
+    Observable<ResultGetListMetadata> getListMetadata(@Path(value = "api_version", encoded = true) String apiVersion,@Query("limit") int limit, @Query("page") int page);
 
     //http://dev-docs.uizadev.io/#create-metadata
-    @POST("/api/public/v4/media/metadata")
-    Observable<ResultCreateMetadata> createMetadata(@Body CreateMetadata createMetadata);
+    @POST("/api/public/{api_version}/media/metadata")
+    Observable<ResultCreateMetadata> createMetadata(@Path(value = "api_version", encoded = true) String apiVersion,@Body CreateMetadata createMetadata);
 
     //http://dev-docs.uizadev.io/#get-detail-of-metadata
-    @GET("/api/public/v4/media/metadata")
-    Observable<ResultGetDetailOfMetadata> getDetailOfMetadata(@Query("id") String id);
+    @GET("/api/public/{api_version}/media/metadata")
+    Observable<ResultGetDetailOfMetadata> getDetailOfMetadata(@Path(value = "api_version", encoded = true) String apiVersion,@Query("id") String id);
 
     //http://dev-docs.uizadev.io/#update-metadata
-    @PUT("/api/public/v4/media/metadata")
-    Observable<ResultUpdateMetadata> updateMetadata(@Body CreateMetadata createMetadata);
+    @PUT("/api/public/{api_version}/media/metadata")
+    Observable<ResultUpdateMetadata> updateMetadata(@Path(value = "api_version", encoded = true) String apiVersion,@Body CreateMetadata createMetadata);
 
     //http://dev-docs.uizadev.io/#delete-an-metadata
-    @DELETE("/api/public/v4/media/metadata")
-    Observable<ResultDeleteAnMetadata> deleteAnMetadata(@Query("id") String id);
+    @DELETE("/api/public/{api_version}/media/metadata")
+    Observable<ResultDeleteAnMetadata> deleteAnMetadata(@Path(value = "api_version", encoded = true) String apiVersion,@Query("id") String id);
 
     //http://dev-docs.uizadev.io/#list-all-entity
-    @GET("/api/public/v4/media/entity")
-    Observable<ResultListEntity> getListAllEntity();
+    @GET("/api/public/{api_version}/media/entity")
+    Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion);
 
     //http://dev-docs.uizadev.io/#list-all-entity
-    @GET("/api/public/v4/media/entity")
-    Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid,
+    @GET("/api/public/{api_version}/media/entity")
+    Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                  @Query("metadataId") String metadataid,
                                                   @Query("limit") int limit,
                                                   @Query("page") int page,
                                                   @Query("orderBy") String orderBy,
@@ -115,25 +117,30 @@ public interface UZService {
                                                   @Query("appId") String appId);
 
     //http://dev-docs.uizadev.io/#list-all-entity
-    @GET("/api/public/v4/media/entity")
-    Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid,
+    @GET("/api/public/{api_version}/media/entity")
+    Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                  @Query("metadataId") String metadataid,
                                                   @Query("limit") int limit,
                                                   @Query("page") int page);
 
     //http://dev-docs.uizadev.io/#list-all-entity
-    @GET("/api/public/v4/media/entity")
-    Observable<ResultListEntity> getListAllEntity(@Query("metadataId") String metadataid);
+    @GET("/api/public/{api_version}/media/entity")
+    Observable<ResultListEntity> getListAllEntity(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                  @Query("metadataId") String metadataid);
 
     //http://dev-docs.uizadev.io/#retrieve-an-entity
-    @GET("/api/public/v4/media/entity")
-    Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Query("id") String id, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/media/entity")
+    Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                        @Query("id") String id, @Query("appId") String appId);
 
     //http://dev-docs.uizadev.io/#search-entity
-    @GET("/api/public/v4/media/entity/search")
-    Observable<ResultListEntity> searchEntity(@Query("keyword") String keyword);
+    @GET("/api/public/{api_version}/media/entity/search")
+    Observable<ResultListEntity> searchEntity(@Path(value = "api_version", encoded = true) String apiVersion,
+                                              @Query("keyword") String keyword);
 
-    @POST("/api/public/v4/media/entity/playback/token")
-    Observable<ResultGetTokenStreaming> getTokenStreaming(@Body SendGetTokenStreaming sendGetTokenStreaming);
+    @POST("/api/public/{api_version}/media/entity/playback/token")
+    Observable<ResultGetTokenStreaming> getTokenStreaming(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                          @Body SendGetTokenStreaming sendGetTokenStreaming);
 
     @GET("/api/public/v1/cdn/linkplay")
     Observable<ResultGetLinkPlay> getLinkPlay(@Query("app_id") String appId,
@@ -144,36 +151,45 @@ public interface UZService {
     Observable<ResultGetLinkPlay> getLinkPlayLive(@Query("app_id") String appId,
                                                   @Query("stream_name") String streamName);
 
-    @GET("/api/public/v4/live/entity")
-    Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Query("limit") int limit,
+    @GET("/api/public/{api_version}/live/entity")
+    Observable<ResultRetrieveALiveEvent> retrieveALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                            @Query("limit") int limit,
                                                             @Query("page") int page,
                                                             @Query("orderBy") String orderBy,
                                                             @Query("orderType") String orderType,
                                                             @Query("appId") String appId);
 
-    @GET("/api/public/v4/live/entity")
-    Observable<ResultRetrieveALive> retrieveALiveEvent(@Query("id") String entityId, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/live/entity")
+    Observable<ResultRetrieveALive> retrieveALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                       @Query("id") String entityId, @Query("appId") String appId);
 
-    @POST("/api/public/v4/live/entity/feed")
-    Observable<Object> startALiveEvent(@Body BodyStartALiveFeed bodyStartALiveFeed);
+    @POST("/api/public/{api_version}/live/entity/feed")
+    Observable<Object> startALiveEvent(@Path(value = "api_version", encoded = true) String apiVersion,
+                                       @Body BodyStartALiveFeed bodyStartALiveFeed);
 
-    @GET("/api/public/v4/live/entity/tracking/current-view")
-    Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Query("id") String id, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/live/entity/tracking/current-view")
+    Observable<ResultGetViewALiveFeed> getViewALiveFeed(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                        @Query("id") String id, @Query("appId") String appId);
 
-    @GET("/api/public/v4/live/entity/tracking/")
-    Observable<ResultTimeStartLive> getTimeStartLive(@Query("entityId") String entityId, @Query("feedId") String feedId, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/live/entity/tracking/")
+    Observable<ResultTimeStartLive> getTimeStartLive(@Path(value = "api_version", encoded = true) String apiVersion,
+                                                     @Query("entityId") String entityId, @Query("feedId") String feedId, @Query("appId") String appId);
 
-    @GET("/api/public/v4/player/info/")
-    Observable<ResultGetListSkin> getListSkin(@Query("platform") String platform);
+    @GET("/api/public/{api_version}/player/info/")
+    Observable<ResultGetListSkin> getListSkin(@Path(value = "api_version", encoded = true) String apiVersion,
+                                              @Query("platform") String platform);
 
-    @GET("/api/public/v4/player/info/config/")
-    Observable<Object> getSkinConfig(@Query("id") String id);
+    @GET("/api/public/{api_version}/player/info/config/")
+    Observable<Object> getSkinConfig(@Path(value = "api_version", encoded = true) String apiVersion,
+                                     @Query("id") String id);
 
-    @GET("/api/public/v4/media/entity/cue-point")
-    Observable<AdWrapper> getCuePoint(@Query("entityId") String entityId, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/media/entity/cue-point")
+    Observable<AdWrapper> getCuePoint(@Path(value = "api_version", encoded = true) String apiVersion,
+                                      @Query("entityId") String entityId, @Query("appId") String appId);
 
-    @GET("/api/public/v4/player/info/config")
-    Observable<PlayerInfor> getPlayerInfo(@Query("id") String id, @Query("appId") String appId);//id: player id
+    @GET("/api/public/{api_version}/player/info/config")
+    Observable<PlayerInfor> getPlayerInfo(@Path(value = "api_version", encoded = true) String apiVersion,
+                                          @Query("id") String id, @Query("appId") String appId);//id: player id
 
     //=====================================================tracking
     //@Headers("Content-Type: application/json")

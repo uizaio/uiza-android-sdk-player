@@ -71,7 +71,7 @@ public class LSApplication extends MultiDexApplication {
         int apiVersion = Constants.API_VERSION_4;
         UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_PROD, uizacoresdk.R.layout.uz_player_skin_1);
         //UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-        UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
+        //UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
     }
 
     public Gson getGson() {

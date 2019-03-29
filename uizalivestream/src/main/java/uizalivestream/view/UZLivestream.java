@@ -855,7 +855,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
         bodyStartALiveFeed.setId(entityLiveId);
-        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(bodyStartALiveFeed), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.startALiveEvent(UZLivestreamData.getInstance().getAPIVersion(), bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
                 //LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
@@ -887,7 +887,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         String appId = UZLivestreamData.getInstance().getAppId();
-        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), appId, entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), UZLivestreamData.getInstance().getAPIVersion(),appId, entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));

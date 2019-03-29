@@ -24,6 +24,7 @@ import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
 import uizacoresdk.interfaces.IOnBackPressed;
+import uizacoresdk.util.UZData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -106,7 +107,7 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
         tvMsg.setVisibility(View.GONE);
         LUIUtil.showProgressBar(pb);
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListMetadata(limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion(), limit, currentPage), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
                 if (resultGetListMetadata == null || resultGetListMetadata.getData() == null || resultGetListMetadata.getData().isEmpty() || resultGetListMetadata.getMetadata() == null) {

@@ -134,7 +134,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
-                boolean isSuccess = UZUtil.initWorkspace(activity, domainApi, token, appId, environment, currentPlayerId);
+                boolean isSuccess = UZUtil.initWorkspace(activity, LSApplication.API_VERSION, domainApi, token, appId, environment, currentPlayerId);
                 if (!isSuccess) {
                     LToast.show(activity, "Your workspace is incorrect.");
                     return;

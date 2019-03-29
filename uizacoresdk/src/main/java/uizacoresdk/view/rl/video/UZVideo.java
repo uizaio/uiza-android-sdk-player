@@ -1073,7 +1073,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             //LLog.d(TAG, "!isDataListExist -> call getListAllEntity()");
             UZService service = UZRestClient.createService(UZService.class);
-            UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn, UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
+            UZAPIMaster.getInstance().subscribe(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, pfLimit, pfPage, pfOrderBy, pfOrderType, publishToCdn, UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
                 @Override
                 public void onSuccess(ResultListEntity result) {
                     if (result == null || result.getMetadata() == null || result.getData().isEmpty()) {
@@ -2833,7 +2833,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (playerInforId == null || playerInforId.isEmpty()) {
             return;
         }
-        UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(playerInforId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
+        UZAPIMaster.getInstance().subscribe(service.getPlayerInfo(UZData.getInstance().getAPIVersion(), playerInforId, UZData.getInstance().getAppId()), new ApiSubscriber<PlayerInfor>() {
             @Override
             public void onSuccess(PlayerInfor pi) {
                 playerInfor = pi;
@@ -2856,7 +2856,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             //LLog.d(TAG, "!isUrlIMAAdExist -> callAPIGetUrlIMAAdTag()");
             UZService service = UZRestClient.createService(UZService.class);
-            UZAPIMaster.getInstance().subscribe(service.getCuePoint(entityId, UZData.getInstance().getAppId()), new ApiSubscriber<AdWrapper>() {
+            UZAPIMaster.getInstance().subscribe(service.getCuePoint(UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId()), new ApiSubscriber<AdWrapper>() {
                 @Override
                 public void onSuccess(AdWrapper result) {
                     isCalledAPIGetUrlIMAAdTag = true;
@@ -2896,7 +2896,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
             sendGetTokenStreaming.setEntityId(entityId);
             sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-            UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+            UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
                 @Override
                 public void onSuccess(ResultGetTokenStreaming resultGetTokenStreaming) {
                     if (resultGetTokenStreaming == null || resultGetTokenStreaming.getData() == null || resultGetTokenStreaming.getData().getToken() == null || resultGetTokenStreaming.getData().getToken().isEmpty()) {
@@ -3015,7 +3015,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     //LLog.d(TAG, "callAPIUpdateLiveInfoCurrentView isShowing -> call API to get View count");
                     UZService service = UZRestClient.createService(UZService.class);
                     String id = UZData.getInstance().getEntityId();
-                    UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultGetViewALiveFeed>() {
+                    UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultGetViewALiveFeed>() {
                         @Override
                         public void onSuccess(ResultGetViewALiveFeed result) {
                             //LLog.d(TAG, "getViewALiveFeed onSuccess: " + gson.toJson(result));
@@ -3059,7 +3059,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                         UZService service = UZRestClient.createService(UZService.class);
                         String entityId = UZData.getInstance().getEntityId();
                         String feedId = UZData.getInstance().getLastFeedId();
-                        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId, UZData.getInstance().getAppId()), new ApiSubscriber<ResultTimeStartLive>() {
+                        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()), new ApiSubscriber<ResultTimeStartLive>() {
                             @Override
                             public void onSuccess(ResultTimeStartLive result) {
                                 //LLog.d(TAG, "getTimeStartLive onSuccess: " + gson.toJson(result));

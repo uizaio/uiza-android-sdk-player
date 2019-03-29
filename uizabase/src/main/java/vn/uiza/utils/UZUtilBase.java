@@ -12,13 +12,13 @@ import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetriev
 import vn.uiza.rxandroid.ApiSubscriber;
 
 public class UZUtilBase {
-    public static void getDetailEntity(final Context context, final String entityId, final String appId, final CallbackGetDetailEntity callbackGetDetailEntity) {
+    public static void getDetailEntity(final Context context, final String apiVersion, final String entityId, final String appId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(entityId, appId), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(apiVersion, entityId, appId), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
-                    getDataFromEntityIdLIVE(context, entityId, appId, callbackGetDetailEntity);
+                    getDataFromEntityIdLIVE(context, apiVersion, entityId, appId, callbackGetDetailEntity);
                 } else {
                     if (callbackGetDetailEntity != null) {
                         Data d = result.getData();
@@ -36,9 +36,9 @@ public class UZUtilBase {
         });
     }
 
-    public static void getDataFromEntityIdLIVE(final Context context, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
+    public static void getDataFromEntityIdLIVE(final Context context, final String apiVersion, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(entityId, appId), new ApiSubscriber<ResultRetrieveALive>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(apiVersion, entityId, appId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override
             public void onSuccess(ResultRetrieveALive result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {

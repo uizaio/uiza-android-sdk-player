@@ -59,7 +59,7 @@ public class UZData {
         this.playerInforId = playerInforId;
     }
 
-    private int mAPIVersion;
+    private int mAPIVersion = Constants.API_VERSION_3;
     private String mDomainAPI = "";
     private String mDomainAPITracking = "";
     private String mToken = "";
@@ -114,8 +114,8 @@ public class UZData {
         return true;
     }
 
-    public int getmAPIVersion() {
-        return mAPIVersion;
+    public String getAPIVersion() {
+        return "v" + mAPIVersion;
     }
 
     public String getDomainAPI() {

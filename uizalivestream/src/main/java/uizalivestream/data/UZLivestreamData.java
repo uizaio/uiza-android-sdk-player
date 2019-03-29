@@ -1,5 +1,7 @@
 package uizalivestream.data;
 
+import vn.uiza.core.common.Constants;
+
 public class UZLivestreamData {
     private static final UZLivestreamData ourInstance = new UZLivestreamData();
 
@@ -10,13 +12,22 @@ public class UZLivestreamData {
     private UZLivestreamData() {
     }
 
-    private String appId;
+    private String mAppId;
+    private int mAPIVersion = Constants.API_VERSION_3;
 
     public String getAppId() {
-        return appId;
+        return mAppId;
     }
 
     public void setAppId(String appId) {
-        this.appId = appId;
+        this.mAppId = appId;
+    }
+
+    public String getAPIVersion() {
+        return "v" + mAPIVersion;
+    }
+
+    public void setAPIVersion(int APIVersion) {
+        this.mAPIVersion = APIVersion;
     }
 }

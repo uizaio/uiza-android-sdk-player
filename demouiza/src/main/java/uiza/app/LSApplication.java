@@ -17,6 +17,7 @@ public class LSApplication extends MultiDexApplication {
     public static final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";
     public static final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
     public final static int ENVIRONMENT = Constants.ENVIRONMENT_PROD;
+    public final static int API_VERSION = Constants.API_VERSION_3;
 
     @Override
     public void onCreate() {
@@ -31,7 +32,7 @@ public class LSApplication extends MultiDexApplication {
             return;
         }
         LeakCanary.install(this);*/
-        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, ENVIRONMENT);
+        UZUtil.initWorkspace(this, API_VERSION, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, ENVIRONMENT);
     }
 
     public Gson getGson() {

@@ -14,7 +14,7 @@ import vn.uiza.utils.util.Utils;
 public class UZUtil {
     private final static String TAG = UZUtil.class.getSimpleName();
 
-    public static void initWorkspace(Context context, String domainApi, String token, String appId) {
+    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
         if (context == null) {
             throw new NullPointerException("Error: Context cannot be null");
         }
@@ -34,5 +34,6 @@ public class UZUtil {
         UZRestClient.init(Constants.PREFIXS + domainApi, token);
         //UZUtil.setToken(Utils.getContext(), token);
         UZLivestreamData.getInstance().setAppId(appId);
+        UZLivestreamData.getInstance().setAPIVersion(apiVersion);
     }
 }

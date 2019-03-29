@@ -26,6 +26,7 @@ import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
 import uizacoresdk.interfaces.IOnBackPressed;
+import uizacoresdk.util.UZData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
@@ -147,7 +148,7 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         }
         LLog.d(TAG, "search " + page + "/" + totalPage);
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 if (result == null || result.getData().isEmpty()) {

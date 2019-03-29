@@ -179,7 +179,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createUser.setDob("11/11/1111");
         createUser.setFullname("fullname");
         createUser.setAvatar("path");
-        UZAPIMaster.getInstance().subscribe(service.createAnUser(createUser), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.createAnUser(UZData.getInstance().getAPIVersion(), createUser), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
@@ -196,7 +196,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void retrieveAnUser() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.retrieveAnUser("9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveAnUser(UZData.getInstance().getAPIVersion(), "9fd8984b-497f-4f7c-85af-e6abfcd5c83e"), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
@@ -213,7 +213,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void listAllUser() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.listAllUser(), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.listAllUser(UZData.getInstance().getAPIVersion()), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
@@ -239,7 +239,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         user.setDob("11/11/1111");
         user.setFullname("fullname");
         user.setAvatar("path");
-        UZAPIMaster.getInstance().subscribe(service.updateAnUser(user), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.updateAnUser(UZData.getInstance().getAPIVersion(), user), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
@@ -279,7 +279,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         updatePassword.setId("9fd8984b-497f-4f7c-85af-e6abfcd5c83e");
         updatePassword.setOldPassword("oldpassword");
         updatePassword.setNewPassword("newpassword");
-        UZAPIMaster.getInstance().subscribe(service.updatePassword(updatePassword), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.updatePassword(UZData.getInstance().getAPIVersion(), updatePassword), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object o) {
                 LLog.d(TAG, "createAnUser onSuccess: " + LSApplication.getInstance().getGson().toJson(o));
@@ -296,7 +296,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getListMetadata() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion()), new ApiSubscriber<ResultGetListMetadata>() {
             @Override
             public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
                 LLog.d(TAG, "getListMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetListMetadata));
@@ -319,7 +319,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createMetadata.setDescription("This is a description sentences");
         createMetadata.setOrderNumber(1);
         createMetadata.setIcon("/exemple.com/icon.png");
-        UZAPIMaster.getInstance().subscribe(service.createMetadata(createMetadata), new ApiSubscriber<ResultCreateMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.createMetadata(UZData.getInstance().getAPIVersion(), createMetadata), new ApiSubscriber<ResultCreateMetadata>() {
             @Override
             public void onSuccess(ResultCreateMetadata resultCreateMetadata) {
                 LLog.d(TAG, "createMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultCreateMetadata));
@@ -337,7 +337,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getDetailOfMetadata() {
         UZService service = UZRestClient.createService(UZService.class);
         String metadataId = "ce1a4735-99f4-4968-bf2a-3ba8063441f4";
-        UZAPIMaster.getInstance().subscribe(service.getDetailOfMetadata(metadataId), new ApiSubscriber<ResultGetDetailOfMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.getDetailOfMetadata(UZData.getInstance().getAPIVersion(), metadataId), new ApiSubscriber<ResultGetDetailOfMetadata>() {
             @Override
             public void onSuccess(ResultGetDetailOfMetadata resultGetDetailOfMetadata) {
                 LLog.d(TAG, "getDetailOfMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(resultGetDetailOfMetadata));
@@ -361,7 +361,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         createMetadata.setDescription("Update description");
         createMetadata.setOrderNumber(69);
         createMetadata.setIcon("/exemple.com/icon_002.png");
-        UZAPIMaster.getInstance().subscribe(service.updateMetadata(createMetadata), new ApiSubscriber<ResultUpdateMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.updateMetadata(UZData.getInstance().getAPIVersion(), createMetadata), new ApiSubscriber<ResultUpdateMetadata>() {
             @Override
             public void onSuccess(ResultUpdateMetadata result) {
                 LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -379,7 +379,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void deleteAnMetadata() {
         UZService service = UZRestClient.createService(UZService.class);
         String deleteMetadataId = "37b865b3-cf75-4faa-8507-180a9436d95d";
-        UZAPIMaster.getInstance().subscribe(service.deleteAnMetadata(deleteMetadataId), new ApiSubscriber<ResultDeleteAnMetadata>() {
+        UZAPIMaster.getInstance().subscribe(service.deleteAnMetadata(UZData.getInstance().getAPIVersion(), deleteMetadataId), new ApiSubscriber<ResultDeleteAnMetadata>() {
             @Override
             public void onSuccess(ResultDeleteAnMetadata result) {
                 LLog.d(TAG, "updateMetadata onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -402,7 +402,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -424,7 +424,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit, page, orderBy, orderType, "success", UZData.getInstance().getAppId()), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "getListAllEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -442,7 +442,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void retrieveAnEntity() {
         UZService service = UZRestClient.createService(UZService.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
-        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveAnEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveAnEntity(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveAnEntity>() {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 LLog.d(TAG, "retrieveAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -460,7 +460,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void searchAnEntity() {
         UZService service = UZRestClient.createService(UZService.class);
         String keyword = "a";
-        UZAPIMaster.getInstance().subscribe(service.searchEntity(keyword), new ApiSubscriber<ResultListEntity>() {
+        UZAPIMaster.getInstance().subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword), new ApiSubscriber<ResultListEntity>() {
             @Override
             public void onSuccess(ResultListEntity result) {
                 LLog.d(TAG, "searchAnEntity onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -481,7 +481,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultVOD);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.STREAM);
-        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
                 LLog.d(TAG, "getTokenStreaming onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -529,7 +529,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         int page = 0;
         String orderBy = "createdAt";
         String orderType = "DESC";
-        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(limit, page, orderBy, orderType, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveALiveEvent>() {
+        UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page, orderBy, orderType, UZData.getInstance().getAppId()), new ApiSubscriber<ResultRetrieveALiveEvent>() {
             @Override
             public void onSuccess(ResultRetrieveALiveEvent result) {
                 LLog.d(TAG, "retrieveALiveEvent onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -552,7 +552,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         sendGetTokenStreaming.setAppId(UZData.getInstance().getAppId());
         sendGetTokenStreaming.setEntityId(entityIdDefaultLIVE);
         sendGetTokenStreaming.setContentType(SendGetTokenStreaming.LIVE);
-        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
+        UZAPIMaster.getInstance().subscribe(service.getTokenStreaming(UZData.getInstance().getAPIVersion(), sendGetTokenStreaming), new ApiSubscriber<ResultGetTokenStreaming>() {
             @Override
             public void onSuccess(ResultGetTokenStreaming result) {
                 LLog.d(TAG, "getTokenStreamingLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -595,7 +595,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getViewALiveFeed() {
         UZService service = UZRestClient.createService(UZService.class);
         String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
-        UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultGetViewALiveFeed>() {
+        UZAPIMaster.getInstance().subscribe(service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id, UZData.getInstance().getAppId()), new ApiSubscriber<ResultGetViewALiveFeed>() {
             @Override
             public void onSuccess(ResultGetViewALiveFeed result) {
                 LLog.d(TAG, "getViewALiveFeed onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -614,7 +614,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UZService service = UZRestClient.createService(UZService.class);
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
-        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(entityId, feedId, UZData.getInstance().getAppId()), new ApiSubscriber<ResultTimeStartLive>() {
+        UZAPIMaster.getInstance().subscribe(service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId, UZData.getInstance().getAppId()), new ApiSubscriber<ResultTimeStartLive>() {
             @Override
             public void onSuccess(ResultTimeStartLive result) {
                 LLog.d(TAG, "getTimeStartLive onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -631,7 +631,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getListSkin() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getListSkin(Constants.PLATFORM_ANDROID), new ApiSubscriber<ResultGetListSkin>() {
+        UZAPIMaster.getInstance().subscribe(service.getListSkin(UZData.getInstance().getAPIVersion(), Constants.PLATFORM_ANDROID), new ApiSubscriber<ResultGetListSkin>() {
             @Override
             public void onSuccess(ResultGetListSkin result) {
                 LLog.d(TAG, "getListSkin onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -648,7 +648,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getSkinConfig() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getSkinConfig("645cd2a2-9216-4f5d-a73b-37d3e3034798"), new ApiSubscriber<Object>() {
+        UZAPIMaster.getInstance().subscribe(service.getSkinConfig(UZData.getInstance().getAPIVersion(), "645cd2a2-9216-4f5d-a73b-37d3e3034798"), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
                 LLog.d(TAG, "getSkinConfig onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
@@ -665,7 +665,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
 
     private void getIMAAd() {
         UZService service = UZRestClient.createService(UZService.class);
-        UZAPIMaster.getInstance().subscribe(service.getCuePoint("0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()), new ApiSubscriber<AdWrapper>() {
+        UZAPIMaster.getInstance().subscribe(service.getCuePoint(UZData.getInstance().getAPIVersion(), "0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()), new ApiSubscriber<AdWrapper>() {
             @Override
             public void onSuccess(AdWrapper result) {
                 LLog.d(TAG, "getIMAAd onSuccess: " + LSApplication.getInstance().getGson().toJson(result));
