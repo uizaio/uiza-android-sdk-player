@@ -85,10 +85,10 @@ public class UZUtil {
                 heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
             } else {
                 if (videoW >= videoH) {
-                    if(isFreeSize){
+                    if (isFreeSize) {
                         //LLog.d(TAG, "video source is landscape -> scale depend on videoW, videoH");
                         heightSurfaceView = widthSurfaceView * videoH / videoW + pixelAdded;
-                    }else{
+                    } else {
                         heightSurfaceView = (int) (widthSurfaceView * Constants.RATIO_9_16) + pixelAdded;
                     }
                 } else {
@@ -554,7 +554,7 @@ public class UZUtil {
         });
     }
 
-    public static boolean initWorkspace(Context context, String domainApi, String token, String appId, int env, int currentPlayerId) {
+    public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
@@ -569,15 +569,15 @@ public class UZUtil {
         }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
-       return UZData.getInstance().initSDK(domainApi, token, appId, env);
+        return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);
     }
 
-    public static void initWorkspace(Context context, String domainApi, String token, String appId, int currentPlayerId) {
-        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
+    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int currentPlayerId) {
+        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, currentPlayerId);
     }
 
-    public static void initWorkspace(Context context, String domainApi, String token, String appId) {
-        initWorkspace(context, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
+    public static void initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId) {
+        initWorkspace(context, apiVersion, domainApi, token, appId, Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
     }
 
     public static void setCasty(Activity activity) {

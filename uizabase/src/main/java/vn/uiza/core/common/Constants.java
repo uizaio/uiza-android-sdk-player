@@ -11,6 +11,8 @@ public class Constants {
     public static final String PLAYER_NAME = "UZSDK";
     public static final String USER_AGENT = "Loitp93";
     public static final String PLAYER_SDK_VERSION = "3.1.9";
+    public static final int API_VERSION_3 = 3;
+    public static final int API_VERSION_4 = 4;
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;

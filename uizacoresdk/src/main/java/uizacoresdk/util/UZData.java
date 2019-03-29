@@ -59,6 +59,7 @@ public class UZData {
         this.playerInforId = playerInforId;
     }
 
+    private int mAPIVersion;
     private String mDomainAPI = "";
     private String mDomainAPITracking = "";
     private String mToken = "";
@@ -83,12 +84,13 @@ public class UZData {
         return casty;
     }
 
-    public boolean initSDK(String domainAPI, String token, String appId, int environment) {
+    public boolean initSDK(int apiVersion, String domainAPI, String token, String appId, int environment) {
         if (domainAPI == null || domainAPI.isEmpty() || domainAPI.contains(" ")
                 || token == null || token.isEmpty() || token.contains(" ")
                 || appId == null || appId.isEmpty() || appId.contains(" ")) {
             return false;
         }
+        mAPIVersion = apiVersion;
         mDomainAPI = domainAPI;
         mToken = token;
         mAppId = appId;
@@ -110,6 +112,10 @@ public class UZData {
             return false;
         }
         return true;
+    }
+
+    public int getmAPIVersion() {
+        return mAPIVersion;
     }
 
     public String getDomainAPI() {

@@ -36,13 +36,25 @@ public class LSApplication extends MultiDexApplication {
     public static final String metadataDefault0 = "53c2e63e-6ddf-4259-8159-cb43371943d1";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "8ae1be2b-3cd5-478c-94c0-6598d5cad4f8";*/
 
-    public static final String DF_DOMAIN_API = "dev-ap-southeast-1-api.uizadev.io";
+    /*public static final String DF_DOMAIN_API = "dev-ap-southeast-1-api.uizadev.io";
     public static final String DF_TOKEN = "uap-10d71cf534914f38add1a163365f62c5-2d0d0cca";
     public static final String DF_APP_ID = "10d71cf534914f38add1a163365f62c5";
     //public static final String entityIdDefaultVOD = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
     public static final String entityIdDefaultVOD = "802585d2-124a-4382-ba40-7546f43a09b0";
     public static final String entityIdDefaultVOD_21_9 = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
     public static final String entityIdDefaultVODportrait = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultLIVE = "-";
+    public static final String metadataDefault0 = "-";
+    public static String entityIdDefaultLIVE_NO_TRANSCODE = "-";
+    public static String PLAYER_INFOR_ID = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";*/
+
+    public static final String DF_DOMAIN_API = "ap-southeast-1-api.uiza.co";
+    public static final String DF_TOKEN = "uap-f785bc511967473fbe6048ee5fb7ea59-69fefb79";
+    public static final String DF_APP_ID = "f785bc511967473fbe6048ee5fb7ea59";
+    //public static final String entityIdDefaultVOD = "3a11d84c-8ee4-4d6a-9a75-2ec6a067f9d9";
+    public static final String entityIdDefaultVOD = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
+    public static final String entityIdDefaultVOD_21_9 = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
+    public static final String entityIdDefaultVODportrait = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
     public static final String entityIdDefaultLIVE = "-";
     public static final String metadataDefault0 = "-";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "-";
@@ -56,8 +68,9 @@ public class LSApplication extends MultiDexApplication {
             gson = new Gson();
         }
         Constants.setDebugMode(true);
-        //UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
-        UZUtil.initWorkspace(this, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_DEV, uizacoresdk.R.layout.uz_player_skin_1);
+        int apiVersion = Constants.API_VERSION_4;
+        UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_PROD, uizacoresdk.R.layout.uz_player_skin_1);
+        //UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
         UZUtil.setCurrentPlayerInforId(PLAYER_INFOR_ID);
     }
 
