@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.tplloi'
+group='com.github.uizaio.uiza-android-sdk-player'
 
 android {
     compileSdkVersion 28
@@ -36,16 +36,13 @@ android {
 }
 
 dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     api project(':uizabase')
-    //api project(':mux-r2.8.0')
-    api project(path: ':mux-r2.8.0', configuration: 'default')
-    //api fileTree(include: ['*.jar'], dir: 'libs')
-    //api(name:'mux-r2.8.0', ext:'aar')
     api 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //need for ima Ad https://stackoverflow.com/questions/31833479/didnt-find-class-com-google-android-gms-ads-identifier-advertisingidclient
     api 'com.google.android.gms:play-services-ads:17.1.3'
-    //exoplayer
+    // exoplayer
     api 'com.google.android.exoplayer:exoplayer:2.9.5'
     api 'com.google.android.exoplayer:extension-ima:2.9.5'
     api 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
