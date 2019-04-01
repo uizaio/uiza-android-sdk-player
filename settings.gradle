@@ -1,1 +1,1 @@
-include ':uizacoresdk', ':sample', ':demouiza', ':sampletv', ':uizabase', ':uizalivestream', ':samplelivestream', ':mux-r2.8.0'
+include ':uizacoresdk', ':sample', ':demouiza', ':sampletv', ':uizabase', ':uizalivestream', ':samplelivestream'
