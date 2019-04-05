@@ -53,3 +53,20 @@ dependencies {
     api 'com.github.rubensousa:previewseekbar:2.0.0'
     api 'com.github.rubensousa:previewseekbar-exoplayer:2.8.1.0'
 }
+
+artifacts {
+  archives file: file('libs/mux-r2.8.0.aar'), name: 'core-mux', type: 'aar'
+}
+
+install {
+  repositories {
+    mavenInstaller {
+      addFilter('mux-r2.8.0') { artifact, file ->
+        artifact.name == 'core-mux'
+      }
+      addFilter('uizacoresdk') { artifact, file ->
+        artifact.name == 'uizacoresdk'
+      }
+    }
+  }
+}
