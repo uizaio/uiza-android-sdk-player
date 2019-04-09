@@ -1,3 +1,44 @@
+### 4.0.0 (2019-4-9)
+- Support v4
+
+### 3.3.4 (2019-3-19)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.4'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.4'
+
+- Add func `uzvideo.seekToDefaultPosition` for seeking to last position of livestreaming.
+- Fixed behavior of VDHView.
+
+
+### 3.3.3 (2019-3-15)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.3'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.3'
+
+- Define new [UZException](https://github.com/uizaio/uiza-android-sdk-player/blob/master/uizabase/src/main/java/vn/uiza/core/exception/UZException.java)
+- Removed view group of message in UZVideo.
+
+### 3.3.2 (2019-3-13)
+
+    //for playing video VOD, LIVE  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.2'
+         
+    //for live broadcaster  
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.2'
+
+- Edit error message for Chromecast.
+- VDHView: 
+	+ Add func for checking current state is maximize or not.
+	+ Add func set maximize view programmatically.
+	+ Add func set margin of header view.
+	+ Fixed bugs scroll to incorrect position when the player is played finish.
+	
 ### 3.3.1 (2019-3-6)
 
     //for playing video VOD, LIVE  

@@ -31,7 +31,7 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev
         implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'  
     }
 
-Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
+Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
 
 
 ***Please note if your project uses firebase***:
@@ -47,7 +47,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/mast
 
 1. appId : get in email at registration
 2. token : generate [HERE](https://docs.uiza.io/#get-api-key).
-3. api : get in email at registration
+3. api : get in email at registration, default is `ap-southeast-1-api.uiza.co`
 -
 
 
@@ -55,7 +55,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/mast
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, api, token, appId);
+                UZUtil.initWorkspace(this, 4, api, token, appId);
             }
         }
 
