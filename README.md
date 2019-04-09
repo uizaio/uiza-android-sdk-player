@@ -8,7 +8,7 @@ Simple Streaming at scale.
 
 Uiza is the complete toolkit for building a powerful video streaming application with unlimited scalability. We design Uiza so simple that you only need a few lines of codes to start streaming, but sophisticated enough for you to build complex products on top of it.
 
-Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/CHANGELOG.md).
+Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/CHANGELOG.md).
 
 # Importing the Library
 **Step 1. Add the JitPack repository to your build file**
@@ -41,7 +41,7 @@ Basically, you need to bump all  _Play Services_  and  _Firebase_  libraries to 
 You may use  [https://mvnrepository.com/](https://mvnrepository.com/)  to find the latest version for each library.
 See also:  [https://firebase.google.com/support/release-notes/android#20180523](https://firebase.google.com/support/release-notes/android#20180523)
 
-Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/build.gradle).
+Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/build.gradle).
 
 # Init SDK
 
@@ -86,7 +86,7 @@ Call api by using this function**
 [APIDOC](https://docs.uiza.io/#introduction)
 
 This class help you know how to use all Uiza API, please refer to
-[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
+[THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
 
 # How to play the video?:
 **XML**
@@ -150,26 +150,26 @@ Dont forget to add in activity life cycle event:
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
+If you wanna listen all events of SDK, check the [sample here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java).
 
-This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/master/sample)
+This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample)
 
 **More informations for AndroidTV, AndroidBox:**
 You can use this SDK for AndroidTV, AndroidBox as well, but limited some features.
 We also provide some functions for AndroidTV like:
 
     uzVideo.addUZTVCallback(this);//listen event onFocusChange of components.
-Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sampletv) for more details.
+Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sampletv) for more details.
 # How to customize your skin?:
 Only 3 steps, you can customize everything about player skin.
 
 **Step 1:**
-Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
+Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
 
 Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
 
 **Step 2:**
-Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
+Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
 - In this xml file, you can edit anything you like: position, color, drawable resouces...
 - You can add more view (TextView, Button, ImageView...).
 - You can remove any component which you dont like.
@@ -199,7 +199,7 @@ But if you wanna change the player's skin when the player is playing, please you
 
     uzVideo.changeSkin(R.layout.uiza_controller_skin_custom_main);
 
-This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/v3/customskin)
+This sample help you know how to customize player's skin, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample/src/main/java/testlibuiza/sample/v3/customskin)
 
 ***Note:***
 - You should not change the id of the view.
@@ -274,7 +274,7 @@ Switch camera:
 
     uzLivestream.switchCamera();
 
-This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/livestream)
+This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample/src/main/java/testlibuiza/sample/livestream)
 
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
@@ -287,7 +287,7 @@ For a given use case, we aim to support UizaSDK on all Android devices that sati
 **Note:** Some Android emulators do not properly implement components of Android’s media stack, and as a result do not support UizaSDK. This is an issue with the emulator, not with UizaSDK. Android’s official emulator (“Virtual Devices” in Android Studio) supports UizaSDK provided the system image has an API level of at least 23. System images with earlier API levels do not support UizaSDK. The level of support provided by third party emulators varies. Issues running UizaSDK on third party emulators should be reported to the developer of the emulator rather than to the UizaSDK team. Where possible, we recommend testing media applications on physical devices rather than emulators.
 
 ## Error message
-Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/uizabase/src/main/java/vn/uiza/core/exception/UZException.java) you can know error code and error message when use UizaSDK.
+Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/uizabase/src/main/java/vn/uiza/core/exception/UZException.java) you can know error code and error message when use UizaSDK.
 
 ## Support
 
@@ -302,6 +302,6 @@ Website: _[uiza.io](http://uiza.io/)_
 
 ## License
 
-UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/master/LICENSE)  for details.
+UizaSDK is released under the BSD license. See  [LICENSE](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/LICENSE)  for details.
 
 
