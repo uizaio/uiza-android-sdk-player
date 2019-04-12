@@ -276,6 +276,16 @@ Switch camera:
 
 This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/dev/sample/src/main/java/testlibuiza/sample/livestream)
 
+# Release using proguard
+If you are using proguard for your builds, please ensure these lines are in your proguard config file:
+```
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+```
+
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
 
