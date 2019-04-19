@@ -155,7 +155,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
                 Constants.USER_AGENT,
                 null /* listener */,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                60 * 1000,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true /* allowCrossProtocolRedirects */
         );
@@ -502,7 +502,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
             case C.TYPE_DASH:
-                return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory).createMediaSource(uri);
+                return new DashMediaSource.Factory(
+                  new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
+                  manifestDataSourceFactory).setMinLoadableRetryCount(Integer.MAX_VALUE).createMediaSource(uri);
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(mediaDataSourceFactory), manifestDataSourceFactory).createMediaSource(uri);
             case C.TYPE_HLS:
