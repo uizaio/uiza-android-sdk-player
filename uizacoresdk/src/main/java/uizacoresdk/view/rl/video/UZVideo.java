@@ -3662,7 +3662,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             }
                         }
                     }
-                    resumeVideo();
+//                     resumeVideo();
                 }
             } else {
                 handleError(UZExceptionUtil.getExceptionNoConnection());
