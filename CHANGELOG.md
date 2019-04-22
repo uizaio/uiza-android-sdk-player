@@ -1,3 +1,9 @@
+### 3.3.7 (2019-4-20)
+- Fixed replay when chunk error.
+
+### 3.3.6 (2019-4-20)
+- Fixed auto resume after 10 minutes paused.
+
 ### 3.3.4 (2019-3-19)
 
     //for playing video VOD, LIVE  
