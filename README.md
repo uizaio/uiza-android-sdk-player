@@ -46,7 +46,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
 # Init SDK
 
 1. appId : get in email at registration
-2. token : generate [HERE](https://docs.uiza.io/#get-api-key).
+2. token : generate [HERE](https://docs.uiza.io/v4/#get-api-key).
 3. api : get in email at registration, default is `ap-southeast-1-api.uiza.co`
 -
 
@@ -83,7 +83,7 @@ Call api by using this function**
   Other API can be used with the same function above.
 
 **API doc**
-[APIDOC](https://docs.uiza.io/#introduction)
+[APIDOC](https://docs.uiza.io/v4/#introduction)
 
 This class help you know how to use all Uiza API, please refer to
 [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
@@ -293,11 +293,10 @@ Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/uiz
 
 If you've found an error in this sample, please file an [issue ](https://github.com/uizaio/uiza-android-sdk-player/issues)
 
-Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: loitp@uiza.io for more details.
+Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: developer@uiza.io for more details.
 
 Address: _33 Ubi Avenue 3 #08- 13, Vertex Tower B, Singapore 408868_  
-Cell: _+84 76408 8864_  
-Email: _[loitp@uiza.io](https://www.facebook.com/loitp93)_  
+Email: _developer@uiza.io_  
 Website: _[uiza.io](http://uiza.io/)_
 
 ## License
