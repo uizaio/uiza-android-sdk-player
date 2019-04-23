@@ -309,11 +309,10 @@ Check this [class](https://github.com/uizaio/uiza-android-sdk-player/blob/dev/ui
 
 If you've found an error in this sample, please file an [issue ](https://github.com/uizaio/uiza-android-sdk-player/issues)
 
-Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: loitp@uiza.io for more details.
+Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: developer@uiza.io for more details.
 
 Address: _33 Ubi Avenue 3 #08- 13, Vertex Tower B, Singapore 408868_  
-Cell: _+84 76408 8864_  
-Email: _[loitp@uiza.io](https://www.facebook.com/loitp93)_  
+Email: _developer@uiza.io_  
 Website: _[uiza.io](http://uiza.io/)_
 
 ## License
