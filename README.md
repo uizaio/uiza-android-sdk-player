@@ -47,7 +47,7 @@ Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/s
 
 1. appId : get in email at registration
 2. token : generate [HERE](https://docs.uiza.io/v4/#get-api-key).
-3. api : get in email at registration, default is `ap-southeast-1-api.uiza.co`
+3. api : default is `ap-southeast-1-api.uiza.co`
 -
 
 
