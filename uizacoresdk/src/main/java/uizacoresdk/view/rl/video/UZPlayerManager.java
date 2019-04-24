@@ -86,8 +86,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private Context context;
     private UZVideo uzVideo;
     private ImaAdsLoader adsLoader = null;
-    private final DataSource.Factory manifestDataSourceFactory;
-    private final DataSource.Factory mediaDataSourceFactory;
+    private DataSource.Factory manifestDataSourceFactory;
+    private DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
     private SimpleExoPlayer player;
     private String linkPlay;
@@ -118,6 +118,61 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     public void setProgressCallback(ProgressCallback progressCallback) {
         this.progressCallback = progressCallback;
     }
+
+    public void initUZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+        TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
+        this.timestampPlayed = System.currentTimeMillis();
+        isCanAddViewWatchTime = true;
+        //LLog.d(TAG, "timestampPlayed: " + timestampPlayed);
+        this.context = uzVideo.getContext();
+        this.videoW = 0;
+        this.videoH = 0;
+        this.mls = 0;
+        this.bufferPosition = 0;
+        this.bufferPercentage = 0;
+        this.uzVideo = uzVideo;
+        this.linkPlay = linkPlay;
+        this.subtitleList = subtitleList;
+        this.isFirstStateReady = false;
+        if (urlIMAAd == null || urlIMAAd.isEmpty()) {
+            //do nothing
+        } else {
+            if (UZUtil.getClickedPip(context)) {
+                LLog.e(TAG, "UZPlayerManager don't init urlIMAAd because called from PIP again");
+            } else {
+                adsLoader = new ImaAdsLoader(context, Uri.parse(urlIMAAd));
+            }
+        }
+        //OPTION 1 OK
+        /*manifestDataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
+        mediaDataSourceFactory = new DefaultDataSourceFactory(
+                context,
+                userAgent,
+                new DefaultBandwidthMeter());*/
+
+        //OPTION 2 PLAY LINK REDIRECT
+        // Default parameters, except allowCrossProtocolRedirects is true
+        manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
+                Constants.USER_AGENT,
+                null /* listener */,
+                60 * 1000,
+                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                true /* allowCrossProtocolRedirects */
+        );
+        mediaDataSourceFactory = new DefaultDataSourceFactory(
+                context,
+                null /* listener */,
+                manifestDataSourceFactory
+        );
+
+        //SETUP ORTHER
+        this.imageView = uzVideo.getIvThumbnail();
+        this.uzTimebar = uzVideo.getUZTimeBar();
+        this.thumbnailsUrl = thumbnailsUrl;
+        setRunnable();
+    }
+
+    public UZPlayerManager() {}
 
     public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());

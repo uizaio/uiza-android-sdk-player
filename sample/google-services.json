@@ -1,0 +1,145 @@
+{
+  "project_info": {
+    "project_number": "164209153391",
+    "firebase_url": "https://edumall-2-0.firebaseio.com",
+    "project_id": "edumall-2-0",
+    "storage_bucket": "edumall-2-0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164209153391:android:90b9840692cae29f",
+        "android_client_info": {
+          "package_name": "topica.edumall.edu.vn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164209153391-p20pulpupdjnqr12t560rp89utmrk962.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "topica.edumall.edu.vn",
+            "certificate_hash": "9072d087e03396c6f358be4bcbcd346c3093b6fe"
+          }
+        },
+        {
+          "client_id": "164209153391-pangucih53cee8lu6bjq7vb2qra143ef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "topica.edumall.edu.vn",
+            "certificate_hash": "c01707571ed3485b6d3795f212a5acab32617561"
+          }
+        },
+        {
+          "client_id": "164209153391-ulhvbjj8opfbcuijcoq8j9ld0h1j8ho2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "topica.edumall.edu.vn",
+            "certificate_hash": "985218f107ba23576a6b833e1f46d5ec6220f3ee"
+          }
+        },
+        {
+          "client_id": "164209153391-m28uu874t6ou4vq67vqu2utke34mgov4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "164209153391-ld5lmibqkk15jvni836cjrs27n7hn9at.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "164209153391-ld5lmibqkk15jvni836cjrs27n7hn9at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJeJu_jEQzNjJ8vuVWim1WQGo739oWQwg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164209153391-m28uu874t6ou4vq67vqu2utke34mgov4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164209153391-88nq8fq2dqss0clp37h2r2tmt0a0chju.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.topica-group.edumall"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164209153391:android:49d413fbd82faeb2",
+        "android_client_info": {
+          "package_name": "vn.edu.topica.edumall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164209153391-v0bcj0ha6e2jhdq0jta3i1go892p5l45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.edu.topica.edumall",
+            "certificate_hash": "6934467fb38a3ffece626e1db5827b94e8ce61dd"
+          }
+        },
+        {
+          "client_id": "164209153391-m28uu874t6ou4vq67vqu2utke34mgov4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "164209153391-ld5lmibqkk15jvni836cjrs27n7hn9at.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "164209153391-ld5lmibqkk15jvni836cjrs27n7hn9at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJeJu_jEQzNjJ8vuVWim1WQGo739oWQwg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164209153391-m28uu874t6ou4vq67vqu2utke34mgov4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164209153391-88nq8fq2dqss0clp37h2r2tmt0a0chju.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.topica-group.edumall"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
