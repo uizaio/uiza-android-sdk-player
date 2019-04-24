@@ -646,9 +646,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
         }
-        if (muxStatsExoPlayer != null) {
-            muxStatsExoPlayer.release();
-        }
+//        if (muxStatsExoPlayer != null) {
+//            muxStatsExoPlayer.release();
+//        }
         UZData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         isCastingChromecast = false;
