@@ -3,6 +3,7 @@ package uizacoresdk.view.rl.video;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.Target;
@@ -291,6 +292,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                                 }
                                 s = Math.round(mls / 1000);
                                 //LLog.d(TAG, "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
+                                Log.d("UZPlayerManager", "runnable video mls: " + mls + ", s: " + s + ", duration: " + duration + ", percent: " + percent + "%");
                                 progressCallback.onVideoProgress(mls, s, duration, percent);
                                 //buffer changing
                                 if (bufferPosition != uzVideo.getBufferedPosition() || bufferPercentage != uzVideo.getBufferedPercentage()) {
