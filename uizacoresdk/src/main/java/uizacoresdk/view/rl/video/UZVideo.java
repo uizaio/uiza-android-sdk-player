@@ -1399,14 +1399,22 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.pauseVideo();
             }
         }
+        addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+        // toggle icon
         if (ibPauseIcon != null) {
             ibPauseIcon.setVisibility(GONE);
+        }
+        // need delay 1 ms ?
+        try {
+            (new Thread()).sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         if (ibPlayIcon != null) {
             ibPlayIcon.setVisibility(VISIBLE);
             ibPlayIcon.requestFocus();
         }
-        addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+        
     }
 
     public void setDefaultValueBackwardForward(int mls) {
