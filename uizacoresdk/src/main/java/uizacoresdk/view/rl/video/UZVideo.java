@@ -1400,6 +1400,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
         addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+        if (ibPlayIcon != null) {
+            ibPlayIcon.setVisibility(VISIBLE);
+        }
         // toggle icon
         if (ibPauseIcon != null) {
             ibPauseIcon.setVisibility(GONE);
@@ -1411,7 +1414,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             e.printStackTrace();
         }
         if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(VISIBLE);
+            // ibPlayIcon.setVisibility(VISIBLE);
             ibPlayIcon.requestFocus();
         }
         
