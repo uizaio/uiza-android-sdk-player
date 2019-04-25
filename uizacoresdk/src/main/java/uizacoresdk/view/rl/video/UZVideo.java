@@ -2240,6 +2240,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 
     private void updateUIIbRewIconDependOnProgress(long currentMls, boolean isCalledFromUZTimebarEvent) {
         //LLog.d(TAG, "updateUIIbRewIconDependOnProgress currentMls " + currentMls + ", isCalledFromUZTimebarEvent: " + isCalledFromUZTimebarEvent);
+        Log.d(TAG, "updateUIIbRewIconDependOnProgress currentMls " + currentMls + ", isCalledFromUZTimebarEvent: " + isCalledFromUZTimebarEvent);
         if (isCalledFromUZTimebarEvent) {
             setTextPosition(currentMls);
         } else {
