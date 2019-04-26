@@ -5,4 +5,5 @@
     <string name="error_change_skin_with_vdhview">You cannot change skin because you use UZVideo with VDHView.</string>
     <string name="error_speed_illegal">Error UizaSpeed: Please set speed with the value between -3 and 3.</string>
     <string name="tks_4_watching">Thanks for your watching</string>
+    <string name="mux_environment_key">e1mcat6hn6v40kh9gvh9nm6se</string>
 </resources>
