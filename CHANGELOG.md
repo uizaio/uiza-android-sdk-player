@@ -1,3 +1,9 @@
+### 3.3.12 (2019-4-24)
+- Fixed a bug making video playing with more than one sound
+
+### 3.3.8 (2019-4-23)
+- Enable Mux for Edumall customer
+
 ### 3.3.7 (2019-4-20)
 - Fixed replay when chunk error.
 
