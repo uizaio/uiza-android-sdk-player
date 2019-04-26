@@ -54,9 +54,9 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import com.mux.stats.sdk.core.model.CustomerPlayerData;
-import com.mux.stats.sdk.core.model.CustomerVideoData;
-import com.mux.stats.sdk.muxstats.MuxStatsExoPlayer;
+//import com.mux.stats.sdk.core.model.CustomerPlayerData;
+//import com.mux.stats.sdk.core.model.CustomerVideoData;
+//import com.mux.stats.sdk.muxstats.MuxStatsExoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -647,9 +647,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
         }
-        if (muxStatsExoPlayer != null) {
-            muxStatsExoPlayer.release();
-        }
+//        if (muxStatsExoPlayer != null) {
+//             muxStatsExoPlayer.release();
+//        }
         UZData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         isCastingChromecast = false;
@@ -2870,8 +2870,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         String appId = UZData.getInstance().getAppId();
         String[] appIdsWithMux = getResources().getStringArray(R.array.app_ids_with_mux);
         boolean contained = false;
-        for (int i=0; i < appIdsWithMux.length; i++){
-            if(appIdsWithMux[i].equals(appId)){
+        for (int i=0; i < appIdsWithMux.length; i++) {
+            if(appIdsWithMux[i].equals(appId)) {
                 contained = true;
                 break;
             }
@@ -3168,7 +3168,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
-    protected MuxStatsExoPlayer muxStatsExoPlayer;
+//    protected MuxStatsExoPlayer muxStatsExoPlayer;
 
     private long timestampInitDataSource;
 
@@ -3323,15 +3323,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 isCalledFromConnectionEventBus = false;
             }
             if (isEnableMux) {
-                CustomerPlayerData customerPlayerData = new CustomerPlayerData();
-                customerPlayerData.setEnvironmentKey(getContext().getString(R.string.mux_environment_key));
-                CustomerVideoData customerVideoData = new CustomerVideoData();
-                customerVideoData.setVideoTitle(UZData.getInstance().getEntityName());
-                muxStatsExoPlayer = new MuxStatsExoPlayer(getContext(), getPlayer(), Constants.PLAYER_NAME, customerPlayerData, customerVideoData);
-                Point size = new Point();
-                ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(size);
-                muxStatsExoPlayer.setScreenSize(size.x, size.y);
-                muxStatsExoPlayer.setPlayerView(uzPlayerView.getVideoSurfaceView());
+//                CustomerPlayerData customerPlayerData = new CustomerPlayerData();
+//                customerPlayerData.setEnvironmentKey(getContext().getString(R.string.mux_environment_key));
+//                CustomerVideoData customerVideoData = new CustomerVideoData();
+//                customerVideoData.setVideoTitle(UZData.getInstance().getEntityName());
+//                muxStatsExoPlayer = new MuxStatsExoPlayer(getContext(), getPlayer(), Constants.PLAYER_NAME, customerPlayerData, customerVideoData);
+//                Point size = new Point();
+//                ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(size);
+//                muxStatsExoPlayer.setScreenSize(size.x, size.y);
+//                muxStatsExoPlayer.setPlayerView(uzPlayerView.getVideoSurfaceView());
             }
         }
     }
