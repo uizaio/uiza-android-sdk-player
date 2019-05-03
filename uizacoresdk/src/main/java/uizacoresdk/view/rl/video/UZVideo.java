@@ -438,6 +438,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void init(@NonNull String entityId, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
+        if (uzPlayerManager != null) {
+            uzPlayerManager.release();
+        }
         uuid = UUID.randomUUID();
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
