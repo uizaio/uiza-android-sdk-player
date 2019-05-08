@@ -71,6 +71,7 @@ public final class ProcessUtils {
                     return recentStats == null ? null : recentStats.getPackageName();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
+                    SentryUtils.captureException(e);
                 }
             } else {
             }

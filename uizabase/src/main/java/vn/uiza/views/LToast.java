@@ -13,6 +13,7 @@ import java.util.List;
 
 import vn.uiza.R;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.utils.util.SentryUtils;
 
 public class LToast {
     private final static String TAG = LToast.class.getSimpleName();
@@ -50,6 +51,7 @@ public class LToast {
             toastList.add(toast);
         } catch (Exception e) {
             LLog.d(TAG, "LToast" + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 

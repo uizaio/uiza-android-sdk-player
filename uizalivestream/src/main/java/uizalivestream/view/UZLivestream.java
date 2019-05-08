@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -37,9 +36,6 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.OpenGlView;
-
-import net.ossrs.rtmp.ConnectCheckerRtmp;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -47,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+import net.ossrs.rtmp.ConnectCheckerRtmp;
 import retrofit2.HttpException;
 import uizalivestream.R;
 import uizalivestream.interfaces.CameraCallback;
@@ -71,6 +67,7 @@ import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.AppUtils;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.LToast;
 
 /**
@@ -736,6 +733,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         } catch (IOException e) {
             rtmpCamera1.stopRecord();
             LLog.e(TAG, "Error startRecord " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 
@@ -832,6 +830,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             return true;
         } catch (IOException e) {
             LLog.e(TAG, "Error setGifToStream " + e.toString());
+            SentryUtils.captureException(e);
             return false;
         }
     }
@@ -875,10 +874,12 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     } catch (IOException e1) {
                         Log.e(TAG, "startLivestream IOException catch " + e1.toString());
                         getDetailEntity(entityLiveId, true, e1.getMessage());
+                        SentryUtils.captureException(e1);
                     }
                 } catch (Exception ex) {
                     Log.e(TAG, "startLivestream Exception catch " + ex.toString());
                     getDetailEntity(entityLiveId, true, ex.getMessage());
+                    SentryUtils.captureException(ex);
                 }
             }
         });
@@ -979,6 +980,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             rtmpCamera1.enableLantern();
         } catch (Exception e) {
             LLog.e(TAG, "toggleFlash " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 

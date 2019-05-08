@@ -10,6 +10,7 @@ import android.net.Uri;
 import vn.uiza.R;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.utils.util.AppUtils;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.LToast;
 
 
@@ -30,6 +31,7 @@ public class LSocialUtil {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
         } catch (android.content.ActivityNotFoundException anfe) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
+            SentryUtils.captureException(anfe);
         }
     }
 
@@ -49,6 +51,7 @@ public class LSocialUtil {
             activity.startActivity(Intent.createChooser(intent, "Share via"));
         } catch (Exception e) {
             LLog.d(TAG, "Exception shareApp: " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 
@@ -79,6 +82,7 @@ public class LSocialUtil {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
+            SentryUtils.captureException(e);
         }
 
         return false;
@@ -127,6 +131,7 @@ public class LSocialUtil {
                 return "fb://page/" + FACEBOOK_PAGE_ID;
             }
         } catch (PackageManager.NameNotFoundException e) {
+            SentryUtils.captureException(e);
             return FACEBOOK_URL;
         }
     }
@@ -142,6 +147,7 @@ public class LSocialUtil {
             if (versionCode >= 0) isFBInstalled = true;
         } catch (PackageManager.NameNotFoundException e) {
             LLog.d(TAG, "packageManager com.facebook.orca: " + e.toString());
+            SentryUtils.captureException(e);
         }
         if (!isFBInstalled) {
             LDialogUtil.showDialog1(activity, "Error", UZException.ERR_22, activity.getString(R.string.ok), null);
@@ -153,6 +159,7 @@ public class LSocialUtil {
                 activity.startActivity(intent);
             } catch (Exception e) {
                 LDialogUtil.showDialog1(activity, UZException.ERR_20, UZException.ERR_22, activity.getString(R.string.ok), null);
+                SentryUtils.captureException(e);
             }
         }
     }

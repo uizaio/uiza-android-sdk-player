@@ -68,6 +68,7 @@ public final class ShellUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
         } finally {
             CloseUtils.closeIO(os, successResult, errorResult);
             if (process != null) {

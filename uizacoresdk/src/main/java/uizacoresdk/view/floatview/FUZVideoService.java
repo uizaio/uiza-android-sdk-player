@@ -39,6 +39,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by loitp on 1/28/2019.
@@ -100,6 +101,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+            SentryUtils.captureException(e);
         }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (isInitCustomLinkplay) {

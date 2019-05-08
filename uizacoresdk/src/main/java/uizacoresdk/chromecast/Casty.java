@@ -32,6 +32,7 @@ import java.io.IOException;
 
 import uizacoresdk.R;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Core class of Casty. It manages buttons/widgets and gives access to the media player.
@@ -378,6 +379,7 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             LLog.e(TAG, "IOException setVolume " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 
@@ -391,6 +393,7 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             LLog.e(TAG, "IOException turnOnVolume " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 
@@ -411,6 +414,7 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
             }
         } catch (IOException e) {
             LLog.e(TAG, "IOException setMute " + e.toString());
+            SentryUtils.captureException(e);
             return false;
         }
     }

@@ -63,5 +63,9 @@ dependencies {
     api 'com.nineoldandroids:library:2.4.0'//for draggable view
     //compile 'com.nshmura:snappysmoothscroller:1.0.0'
     api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
+
+    // For Sentry https://docs.sentry.io/clients/java/integrations/#android
+    api 'io.sentry:sentry-android:1.7.16'
+    api 'org.slf4j:slf4j-nop:1.7.25'
 }
 
