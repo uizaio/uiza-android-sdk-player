@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Random;
+import vn.uiza.utils.util.SentryUtils;
 
 public class LStoreUtil {
     static String TAG = LStoreUtil.class.getSimpleName();
@@ -65,6 +66,7 @@ public class LStoreUtil {
                 }
             } catch (Exception e) {
                 LLog.d("TAG", "if getFolderPath: " + e.toString());
+                SentryUtils.captureException(e);
             }
             folderPath = Environment.getExternalStorageDirectory().getPath() + "/" + folderName + "/";
         } else {
@@ -78,6 +80,7 @@ public class LStoreUtil {
                 }
             } catch (Exception e) {
                 LLog.d("TAG", "else getFolderPath: " + e.toString());
+                SentryUtils.captureException(e);
             }
         }
         return folderPath;
@@ -126,6 +129,7 @@ public class LStoreUtil {
         } catch (IOException e) {
             LLog.d(TAG, e.toString());
             isCompelete = false;
+            SentryUtils.captureException(e);
         }
         return isCompelete;
     }
@@ -167,6 +171,7 @@ public class LStoreUtil {
             reader.close();
         } catch (IOException e) {
             LLog.d(TAG, "readTxtFromFolder===" + e.toString());
+            SentryUtils.captureException(e);
         }
         return text.toString();
     }
@@ -225,7 +230,7 @@ public class LStoreUtil {
                 } catch (IOException e) {
                     runTaskSuccess = false;
                     LLog.d(TAG, "readTxtFromFolder===" + e.toString());
-
+                    SentryUtils.captureException(e);
                 }
                 return null;
             }
@@ -258,6 +263,7 @@ public class LStoreUtil {
             inputStream.close();
         } catch (Exception e) {
             LLog.d(TAG, e.toString());
+            SentryUtils.captureException(e);
         }
         return byteArrayOutputStream.toString();
     }
@@ -312,6 +318,7 @@ public class LStoreUtil {
             state = true;
         } catch (Exception e) {
             //LLog.d(TAG, "saveHTMLCodeFromURLToSDCard failed: " + e.toString());
+            SentryUtils.captureException(e);
         }
         return state;
     }

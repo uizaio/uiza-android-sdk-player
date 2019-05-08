@@ -45,6 +45,7 @@ public final class EncodeUtils {
         try {
             return URLEncoder.encode(input, charset);
         } catch (UnsupportedEncodingException e) {
+            SentryUtils.captureException(e);
             return input;
         }
     }
@@ -72,6 +73,7 @@ public final class EncodeUtils {
         try {
             return URLDecoder.decode(input, charset);
         } catch (UnsupportedEncodingException e) {
+            SentryUtils.captureException(e);
             return input;
         }
     }

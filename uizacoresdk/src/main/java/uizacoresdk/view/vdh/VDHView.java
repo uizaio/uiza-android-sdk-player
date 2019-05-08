@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
+import vn.uiza.utils.util.SentryUtils;
 
 public class VDHView extends LinearLayout {
     private final String TAG = getClass().getSimpleName();
@@ -723,6 +724,7 @@ public class VDHView extends LinearLayout {
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
+                SentryUtils.captureException(exception);
             }
             return true;
         }

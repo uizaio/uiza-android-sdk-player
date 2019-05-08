@@ -173,6 +173,7 @@ public final class EncryptUtils {
             return md.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         } finally {
             CloseUtils.closeIO(fis);
@@ -344,6 +345,7 @@ public final class EncryptUtils {
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
@@ -563,6 +565,7 @@ public final class EncryptUtils {
             return mac.doFinal(data);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
@@ -826,6 +829,7 @@ public final class EncryptUtils {
             return cipher.doFinal(data);
         } catch (Throwable e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }

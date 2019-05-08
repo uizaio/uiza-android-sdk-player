@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.uiza.R;
+import vn.uiza.utils.util.SentryUtils;
 
 public class FlowLayout extends ViewGroup {
     private static final String LOG_TAG = FlowLayout.class.getSimpleName();
@@ -77,21 +78,25 @@ public class FlowLayout extends ViewGroup {
                 mChildSpacing = a.getInt(R.styleable.FlowLayout_flChildSpacing, DEFAULT_CHILD_SPACING);
             } catch (NumberFormatException e) {
                 mChildSpacing = a.getDimensionPixelSize(R.styleable.FlowLayout_flChildSpacing, (int) dpToPx(DEFAULT_CHILD_SPACING));
+                SentryUtils.captureException(e);
             }
             try {
                 mMinChildSpacing = a.getInt(R.styleable.FlowLayout_flMinChildSpacing, DEFAULT_CHILD_SPACING);
             } catch (NumberFormatException e) {
                 mMinChildSpacing = a.getDimensionPixelSize(R.styleable.FlowLayout_flMinChildSpacing, (int) dpToPx(DEFAULT_CHILD_SPACING));
+                SentryUtils.captureException(e);
             }
             try {
                 mChildSpacingForLastRow = a.getInt(R.styleable.FlowLayout_flChildSpacingForLastRow, SPACING_UNDEFINED);
             } catch (NumberFormatException e) {
                 mChildSpacingForLastRow = a.getDimensionPixelSize(R.styleable.FlowLayout_flChildSpacingForLastRow, (int) dpToPx(DEFAULT_CHILD_SPACING));
+                SentryUtils.captureException(e);
             }
             try {
                 mRowSpacing = a.getInt(R.styleable.FlowLayout_flRowSpacing, 0);
             } catch (NumberFormatException e) {
                 mRowSpacing = a.getDimension(R.styleable.FlowLayout_flRowSpacing, dpToPx(DEFAULT_ROW_SPACING));
+                SentryUtils.captureException(e);
             }
             mMaxRows = a.getInt(R.styleable.FlowLayout_flMaxRows, DEFAULT_MAX_ROWS);
             mRtl = a.getBoolean(R.styleable.FlowLayout_flRtl, DEFAULT_RTL);

@@ -45,6 +45,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.utils.util.Utils;
 
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
@@ -253,6 +254,7 @@ public class UZUtil {
             dialog.getWindow().setLayout(width, height);
         } catch (Exception e) {
             //do nothing
+            SentryUtils.captureException(e);
         }
         if (isFullScreen) {
             dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -272,6 +274,7 @@ public class UZUtil {
         } catch (Exception e) {
             LLog.e(TAG, "Error setTextDuration " + e.toString());
             textView.setText(" - ");
+            SentryUtils.captureException(e);
         }
     }
 
@@ -638,6 +641,7 @@ public class UZUtil {
                         w = Integer.parseInt(s0);
                         h = Integer.parseInt(s1);
                     } catch (Exception e) {
+                        SentryUtils.captureException(e);
                         return new UZItem.Format();
                     }
                     if (w < h) {

@@ -15,6 +15,7 @@ import java.io.IOException;
 import uizacoresdk.R;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 import vn.uiza.utils.util.Encryptor;
+import vn.uiza.utils.util.SentryUtils;
 
 public class Loitp {
     public static LicenseAcquisitionUrl decrypt(Context context, String input) throws DecoderException {
@@ -65,6 +66,7 @@ public class Loitp {
             localBufferedReader.close();
             return isArm64 ? 64 : 32;
         } catch (IOException e) {
+            SentryUtils.captureException(e);
         }
         return 0;
     }

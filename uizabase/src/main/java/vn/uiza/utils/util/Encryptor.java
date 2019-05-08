@@ -20,6 +20,7 @@ public class Encryptor {
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
         } catch (Exception ex) {
             ex.printStackTrace();
+            SentryUtils.captureException(ex);
         }
         return null;
     }
@@ -34,6 +35,7 @@ public class Encryptor {
             return new String(original);
         } catch (Exception ex) {
             ex.printStackTrace();
+            SentryUtils.captureException(ex);
         }
         return null;
     }

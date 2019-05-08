@@ -13,6 +13,7 @@ import java.util.List;
 
 import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LUIUtil;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by loitp on 6/8/2018.
@@ -253,6 +254,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
+                SentryUtils.captureException(exception);
             }
             return true;
         }
