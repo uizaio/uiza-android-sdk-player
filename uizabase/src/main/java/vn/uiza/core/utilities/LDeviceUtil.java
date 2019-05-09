@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 
 import java.util.Random;
 
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.LToast;
 
 import static android.content.Context.UI_MODE_SERVICE;
@@ -52,6 +53,7 @@ public class LDeviceUtil {
             thisVersion = pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             thisVersion = 1;
+            SentryUtils.captureException(e);
         }
         return thisVersion;
     }

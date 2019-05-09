@@ -17,6 +17,7 @@ public final class CloseUtils {
                     closeable.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    SentryUtils.captureException(e);
                 }
             }
         }
@@ -28,7 +29,8 @@ public final class CloseUtils {
             if (closeable != null) {
                 try {
                     closeable.close();
-                } catch (IOException ignored) {
+                } catch (IOException e) {
+                    SentryUtils.captureException(e);
                 }
             }
         }

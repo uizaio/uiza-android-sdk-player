@@ -130,6 +130,7 @@ import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.util.ConvertUtils;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
@@ -398,6 +399,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             uzCallback.onError(uzException);
         }
+        // Capture by Sentry, in uzException already contains Message, Error Code
+        SentryUtils.captureException(uzException.getException());
         addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, uzException);
         if (isHasError) {
             return;
@@ -433,6 +436,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzCallback != null) {
                     uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
                 }
+                SentryUtils.captureException(e);
                 LLog.e(TAG, "init NullPointerException: " + e.toString());
                 return;
             }
@@ -2061,6 +2065,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             castContext = CastContext.getSharedInstance(getContext());
         } catch (Exception e) {
             Log.e(TAG, "Error addUIChromecastLayer: " + e.toString());
+            SentryUtils.captureException(e);
         }
         if (castContext == null) {
             uzMediaRouteButton.setVisibility(GONE);
@@ -2931,6 +2936,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
             } catch (NullPointerException e) {
                 LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                SentryUtils.captureException(e);
             }
             checkToSetUpResouce();
         } else {
@@ -2958,6 +2964,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                            SentryUtils.captureException(e);
                         }
                         checkToSetUpResouce();
                     }
@@ -2987,6 +2994,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                            SentryUtils.captureException(e);
                         }
                         checkToSetUpResouce();
                     }
@@ -3777,6 +3785,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 getContext().startActivity(intent);
             } catch (ClassNotFoundException e) {
                 LLog.e(TAG, "onMessageEvent open app ClassNotFoundException " + e.toString());
+                SentryUtils.captureException(e);
             }
             return;
         }

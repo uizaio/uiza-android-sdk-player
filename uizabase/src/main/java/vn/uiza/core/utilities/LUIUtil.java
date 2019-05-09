@@ -46,6 +46,7 @@ import java.util.Random;
 
 import vn.uiza.R;
 import vn.uiza.utils.util.ConvertUtils;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * File created on 11/3/2016.
@@ -110,6 +111,7 @@ public class LUIUtil {
             view.setBackgroundDrawable(createGradientDrawableWithColor(colorMain, colorStroke));
         } catch (Exception e) {
             LLog.d(TAG, "setCircleViewWithColor setBkgColor: " + e.toString());
+            SentryUtils.captureException(e);
         }
     }
 
@@ -189,15 +191,17 @@ public class LUIUtil {
                 if (drawable != null) {
                     imageView.setImageDrawable(drawable);
                 }
-            } catch (Exception ignored) {
-                LLog.d(TAG, "setImageFromAsset: " + ignored.toString());
+            } catch (Exception e) {
+                LLog.d(TAG, "setImageFromAsset: " + e.toString());
+                SentryUtils.captureException(e);
             } finally {
                 try {
                     if (stream != null) {
                         stream.close();
                     }
-                } catch (Exception ignored) {
-                    LLog.d(TAG, "setImageFromAsset: " + ignored.toString());
+                } catch (Exception e) {
+                    LLog.d(TAG, "setImageFromAsset: " + e.toString());
+                    SentryUtils.captureException(e);
                 }
             }
         }

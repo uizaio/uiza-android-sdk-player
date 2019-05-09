@@ -53,6 +53,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import vn.uiza.R;
+import vn.uiza.utils.util.SentryUtils;
 
 public class UZVerticalSeekBar extends AppCompatSeekBar {
     public static final int ROTATION_ANGLE_CW_90 = 90;
@@ -294,6 +295,7 @@ public class UZVerticalSeekBar extends AppCompatSeekBar {
                 m.setAccessible(true);
                 mMethodSetProgressFromUser = m;
             } catch (NoSuchMethodException e) {
+                SentryUtils.captureException(e);
             }
         }
 
@@ -301,8 +303,11 @@ public class UZVerticalSeekBar extends AppCompatSeekBar {
             try {
                 mMethodSetProgressFromUser.invoke(this, progress, fromUser);
             } catch (IllegalArgumentException e) {
+                SentryUtils.captureException(e);
             } catch (IllegalAccessException e) {
+                SentryUtils.captureException(e);
             } catch (InvocationTargetException e) {
+                SentryUtils.captureException(e);
             }
         } else {
             super.setProgress(progress);
