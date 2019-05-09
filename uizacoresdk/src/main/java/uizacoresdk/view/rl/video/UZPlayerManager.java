@@ -75,6 +75,7 @@ import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.autosize.UZImageButton;
 
 /**
@@ -349,6 +350,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                     drmSessionManager = buildDrmSessionManagerV18(drmSchemeUuid, drmLicenseUrl, keyRequestPropertiesArray, multiSession);
                 } catch (UnsupportedDrmException e) {
                     LLog.e(TAG, "UnsupportedDrmException " + e.toString());
+                    SentryUtils.captureException(e);
                 }
             }
             if (drmSessionManager == null) {

@@ -26,6 +26,7 @@ import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
+import vn.uiza.utils.util.SentryUtils;
 
 public class UZVideoInfoV1 extends RelativeLayout {
     private final String TAG = getClass().getSimpleName();
@@ -158,6 +159,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
             tvVideoName.setText(mItem.getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
+            SentryUtils.captureException(e);
         }
         tvVideoTime.setText("Dummy Time");
         tvVideoRate.setText("Dummy 18+");
@@ -166,6 +168,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
             tvVideoDescription.setText(mItem.getDescription().isEmpty() ? mItem.getShortDescription().isEmpty() ? emptyS : mItem.getShortDescription() : mItem.getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
+            SentryUtils.captureException(e);
         }
 
         tvVideoStarring.setText("Dummy starring");

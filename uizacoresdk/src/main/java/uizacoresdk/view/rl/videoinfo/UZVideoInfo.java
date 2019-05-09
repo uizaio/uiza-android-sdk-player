@@ -24,6 +24,7 @@ import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * Created by www.muathu@gmail.com on 18/1/2019.
@@ -159,6 +160,7 @@ public class UZVideoInfo extends RelativeLayout {
             tvVideoName.setText(UZData.getInstance().getData().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
+            SentryUtils.captureException(e);
         }
         if (UZData.getInstance().getData().getCreatedAt() != null && !UZData.getInstance().getData().getCreatedAt().isEmpty()) {
             tvVideoTime.setText(LDateUtils.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt()));
@@ -171,6 +173,7 @@ public class UZVideoInfo extends RelativeLayout {
             tvVideoDescription.setText(UZData.getInstance().getData().getDescription().isEmpty() ? UZData.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UZData.getInstance().getData().getShortDescription() : UZData.getInstance().getData().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
+            SentryUtils.captureException(e);
         }
 
         //TODO

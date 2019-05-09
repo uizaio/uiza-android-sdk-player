@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import vn.uiza.R;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * A realtime blurring overlay (like iOS UIVisualEffectView). Just put it above
@@ -155,6 +156,7 @@ public class RealtimeBlurView extends View {
                             throw e;
                         }
                     } else {
+                        SentryUtils.captureException(e);
                         // In release mode, just ignore
                         releaseScript();
                         return false;
@@ -203,6 +205,7 @@ public class RealtimeBlurView extends View {
             } catch (OutOfMemoryError e) {
                 // Bitmap.createBitmap() may cause OOM error
                 // Simply ignore and fallback
+                SentryUtils.captureException(e);
             } finally {
                 if (!r) {
                     releaseBitmap();
@@ -251,6 +254,7 @@ public class RealtimeBlurView extends View {
                     }
                     decor.draw(mBlurringCanvas);
                 } catch (StopException e) {
+                    SentryUtils.captureException(e);
                 } finally {
                     mIsRendering = false;
                     RENDERING_COUNT--;

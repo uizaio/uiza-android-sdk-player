@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -18,7 +17,6 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +61,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -130,6 +127,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
+import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.views.autosize.UZImageButton;
 import vn.uiza.views.autosize.UZTextView;
 import vn.uiza.views.seekbar.UZVerticalSeekBar;
@@ -423,6 +421,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzCallback != null) {
             uzCallback.onError(uzException);
         }
+        // Capture by Sentry, in uzException already contains Message, Error Code
+        SentryUtils.captureException(uzException.getException());
         addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, uzException);
         if (isHasError) {
             return;
@@ -461,6 +461,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzCallback != null) {
                     uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
                 }
+                SentryUtils.captureException(e);
                 LLog.e(TAG, "init NullPointerException: " + e.toString());
                 return;
             }
@@ -2086,6 +2087,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             castContext = CastContext.getSharedInstance(getContext());
         } catch (Exception e) {
             LLog.e(TAG, "Error addUIChromecastLayer: " + e.toString());
+            SentryUtils.captureException(e);
         }
         if (castContext == null) {
             uzMediaRouteButton.setVisibility(GONE);
@@ -2891,6 +2893,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
             } catch (NullPointerException e) {
                 LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                SentryUtils.captureException(e);
             }
             checkToSetUpResouce();
         } else {
@@ -2916,6 +2919,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                            SentryUtils.captureException(e);
                         }
                         checkToSetUpResouce();
                     }
@@ -2944,6 +2948,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                             TmpParamData.getInstance().setEntitySourceHostname(cdnHost);
                         } catch (NullPointerException e) {
                             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
+                            SentryUtils.captureException(e);
                         }
                         checkToSetUpResouce();
                     }
@@ -3752,6 +3757,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 getContext().startActivity(intent);
             } catch (ClassNotFoundException e) {
                 LLog.e(TAG, "onMessageEvent open app ClassNotFoundException " + e.toString());
+                SentryUtils.captureException(e);
             }
             return;
         }

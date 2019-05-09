@@ -169,4 +169,10 @@ public class Constants {
     public static final int W_180 = 180;
 
     public static final boolean DF_PLAYER_IS_AUTO_START = true;
+
+    // FIXME: SentryDSN, try to save dsn more securely
+    public static final String SENTRY_ENVIRONMENT_STAG = "STAG";
+    public static final String SENTRY_ENVIRONMENT_GA = "GA";
+    public static final String RELEASE = "release";
+    public static final String SENTRY_DSN = "https://dcc976635e4c4732a16d984e7dfade70@sentry.io/1453020?environment=";
 }

@@ -26,6 +26,7 @@ import android.view.WindowManager;
 
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
+import vn.uiza.utils.util.SentryUtils;
 
 /**
  * File created on 8/31/2017.
@@ -460,6 +461,7 @@ public class LScreenUtil {
             return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
             LLog.e(TAG, "getCurrentBrightness" + e.toString());
+            SentryUtils.captureException(e);
             return Constants.NOT_FOUND;
         }
     }

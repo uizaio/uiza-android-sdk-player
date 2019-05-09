@@ -161,6 +161,7 @@ public final class ConvertUtils {
             return os;
         } catch (IOException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         } finally {
             CloseUtils.closeIO(is);
@@ -196,6 +197,7 @@ public final class ConvertUtils {
             return os;
         } catch (IOException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         } finally {
             CloseUtils.closeIO(os);
@@ -208,6 +210,7 @@ public final class ConvertUtils {
             return new String(inputStream2Bytes(is), charsetName);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
@@ -218,6 +221,7 @@ public final class ConvertUtils {
             return new ByteArrayInputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
@@ -228,6 +232,7 @@ public final class ConvertUtils {
             return new String(outputStream2Bytes(out), charsetName);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
@@ -238,6 +243,7 @@ public final class ConvertUtils {
             return bytes2OutputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            SentryUtils.captureException(e);
             return null;
         }
     }
