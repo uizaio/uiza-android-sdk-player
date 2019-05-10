@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -75,7 +76,7 @@ import vn.uiza.views.LToast;
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback, View.OnTouchListener {
-    private final String TAG = "TAG" + getClass().getSimpleName();
+    private final String TAG = getClass().getSimpleName();
     private Gson gson = new Gson();
     private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
@@ -226,43 +227,56 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 .check();
     }
 
-    private void showShouldAcceptPermission() {
-        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature.", "Okay", "Cancel", new LDialogUtil.Callback2() {
-            @Override
-            public void onClick1() {
-                checkPermission();
-            }
+    private String getString(@StringRes int resId) {
+        return getContext().getString(resId);
+    }
 
-            @Override
-            public void onClick2() {
-                LLog.d(TAG, "showShouldAcceptPermission onClick2");
-                if (uzLivestreamCallback != null) {
-                    uzLivestreamCallback.onPermission(false);
-                }
-            }
-        });
+    private void showShouldAcceptPermission() {
+        AlertDialog alertDialog =
+                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                        getString(R.string.this_app_needs_permission), getString(R.string.okay),
+                        getString(R.string.cancel), new LDialogUtil.Callback2() {
+                            @Override
+                            public void onClick1() {
+                                checkPermission();
+                            }
+
+                            @Override
+                            public void onClick2() {
+                                LLog.d(TAG, "showShouldAcceptPermission onClick2");
+                                if (uzLivestreamCallback != null) {
+                                    uzLivestreamCallback.onPermission(false);
+                                }
+                            }
+                        });
         alertDialog.setCancelable(false);
     }
 
     private void showSettingsDialog() {
-        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature. You can grant them in app settings.", "GOTO SETTINGS", "Cancel", new LDialogUtil.Callback2() {
-            @Override
-            public void onClick1() {
-                isShowDialogCheck = false;
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", AppUtils.getAppPackageName(), null);
-                intent.setData(uri);
-                ((Activity) getContext()).startActivityForResult(intent, 101);
-            }
+        AlertDialog alertDialog =
+                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                        getString(R.string.this_app_needs_permission_grant_it),
+                        getString(R.string.goto_settings), getString(R.string.cancel),
+                        new LDialogUtil.Callback2() {
+                            @Override
+                            public void onClick1() {
+                                isShowDialogCheck = false;
+                                Intent intent =
+                                        new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts(Constants.PACKAGE,
+                                        AppUtils.getAppPackageName(), null);
+                                intent.setData(uri);
+                                ((Activity) getContext()).startActivityForResult(intent, 101);
+                            }
 
-            @Override
-            public void onClick2() {
-                LLog.d(TAG, "showSettingsDialog onClick2");
-                if (uzLivestreamCallback != null) {
-                    uzLivestreamCallback.onPermission(false);
-                }
-            }
-        });
+                            @Override
+                            public void onClick2() {
+                                LLog.d(TAG, "showSettingsDialog onClick2");
+                                if (uzLivestreamCallback != null) {
+                                    uzLivestreamCallback.onPermission(false);
+                                }
+                            }
+                        });
         alertDialog.setCancelable(false);
     }
 

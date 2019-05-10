@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
+import vn.uiza.core.common.Constants;
 
 /**
  * Created by www.muathu@gmail.com on 1/29/2018.
@@ -21,7 +22,7 @@ public class LSMSUtil {
             String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(activity); // Need to change the build to API 19
 
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
+            sendIntent.setType(Constants.TEXT_TYPE);
             sendIntent.putExtra(Intent.EXTRA_TEXT, text);
 
             if (defaultSmsPackageName != null)// Can be null in case that there is no default, then the user would be able to choose
@@ -33,8 +34,8 @@ public class LSMSUtil {
         } else // For early versions, do what worked for you before.
         {
             Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-            sendIntent.setData(Uri.parse("sms:"));
-            sendIntent.putExtra("sms_body", text);
+            sendIntent.setData(Uri.parse(Constants.SMS_URI));
+            sendIntent.putExtra(Constants.SMS_BODY, text);
             activity.startActivity(sendIntent);
         }
     }

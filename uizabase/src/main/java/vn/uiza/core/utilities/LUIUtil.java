@@ -55,6 +55,7 @@ import vn.uiza.utils.util.SentryUtils;
  */
 public class LUIUtil {
     private static String TAG = LUIUtil.class.getSimpleName();
+    private static final String IMG_FOLDER = "img/";
 
     /*
      * settext marquee
@@ -186,7 +187,7 @@ public class LUIUtil {
             Drawable drawable = null;
             InputStream stream = null;
             try {
-                stream = context.getAssets().open("img/" + fileName);
+                stream = context.getAssets().open(IMG_FOLDER + fileName);
                 drawable = Drawable.createFromStream(stream, null);
                 if (drawable != null) {
                     imageView.setImageDrawable(drawable);

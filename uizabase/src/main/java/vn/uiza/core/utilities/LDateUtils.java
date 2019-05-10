@@ -26,6 +26,18 @@ public class LDateUtils {
     public final static String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String FORMAT_2 = "dd/MM/yyyy";
     public final static String FORMAT_3 = "dd/MM/yyyy HH:mm:ss";
+    public final static String FORMAT_4 = "h:mm a";
+    public static final String FORMAT_5 = "ddMM_HHmm";
+    public static final String FORMAT_6 = "yyyy-MM";
+    public static final String FORMAT_7 = "MM";
+    public static final String FORMAT_8 = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String FORMAT_9 = "dd-MM-yyyy";
+    public static final String FORMAT_10 = "dd/MM/yyyy hh:mm";
+    public static final String FORMAT_11 = "yyyy-MM-dd";
+    public static final String FORMAT_12 = "%d:%02d";
+    public static final String FORMAT_13 = "%d:%02d:%02d";
+    public static final String FORMAT_14 = "dd/MM/yyyy hh:mm aa";
+    public static final String UTC = "UTC";
 
     public static String convertFormatDate(String strDate, String fromFormat, String toFormat) {
         Date date = stringToDate(strDate, fromFormat);
@@ -82,7 +94,7 @@ public class LDateUtils {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, hr);
         cal.set(Calendar.MINUTE, min);
-        Format formatter = new SimpleDateFormat("h:mm a");
+        Format formatter = new SimpleDateFormat(FORMAT_4);
         return formatter.format(cal.getTime());
     }
 
@@ -94,19 +106,19 @@ public class LDateUtils {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("ddMM_HHmm");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_5);
         return df.format(c.getTime());
     }
 
     public static String getCurrentYearMonth() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_6);
         return df.format(c.getTime());
     }
 
     public static String getCurrentMonth() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_7);
         return df.format(c.getTime());
     }
 
@@ -200,16 +212,16 @@ public class LDateUtils {
     }*/
 
     public static String getDate(String dateString) {
-        return getDate(dateString, "dd/MM/yyyy hh:mm aa");
+        return getDate(dateString, FORMAT_14);
     }
 
     public static String getDateWithoutTime(String dateString) {
-        return getDate(dateString, "dd/MM/yyyy");
+        return getDate(dateString, FORMAT_2);
     }
 
     public static String getDate(String dateString, String format) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT_8);
+        formatter.setTimeZone(TimeZone.getTimeZone(UTC));
         Date value = null;
         try {
             value = formatter.parse(dateString);
@@ -224,7 +236,7 @@ public class LDateUtils {
 
     //date ex: 14-09-2017
     public static long convertDateToTimestamp(String d) {
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatter = new SimpleDateFormat(FORMAT_9);
         Date date = null;
         try {
             date = (Date) formatter.parse(d);
@@ -312,7 +324,7 @@ public class LDateUtils {
     private static long convertDateToTimeStamp(String d, int h, int m) {
         //String lstart = dd + "/" + mm + "/" + yyyy + " " + h + ":" + m;
         String lstart = d + " " + h + ":" + m;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT_10);
         try {
             Date date = format.parse(lstart);
             return date.getTime() / 1000;
@@ -347,7 +359,7 @@ public class LDateUtils {
     }
 
     public static Calendar convertStringToCalendar(String yyyymmdd) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_11);
         Calendar cal = Calendar.getInstance();
         Date date = null;
         try {
@@ -382,9 +394,9 @@ public class LDateUtils {
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
         if (h == 0) {
-            return String.format("%d:%02d", m, s);
+            return String.format(FORMAT_12, m, s);
         } else {
-            return String.format("%d:%02d:%02d", h, m, s);
+            return String.format(FORMAT_13, h, m, s);
         }
         //return String.format("%d:%02d", h, m);
     }

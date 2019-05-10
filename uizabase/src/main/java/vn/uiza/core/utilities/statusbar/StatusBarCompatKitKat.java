@@ -6,7 +6,6 @@ package vn.uiza.core.utilities.statusbar;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -19,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import vn.uiza.core.utilities.LScreenUtil;
 
 /**
  * After kitkat add fake status bar
@@ -29,18 +29,6 @@ class StatusBarCompatKitKat {
 
     private static final String TAG_FAKE_STATUS_BAR_VIEW = "statusBarView";
     private static final String TAG_MARGIN_ADDED = "marginAdded";
-
-    /**
-     * return statusBar's Height in pixels
-     */
-    private static int getStatusBarHeight(Context context) {
-        int result = 0;
-        int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resId > 0) {
-            result = context.getResources().getDimensionPixelOffset(resId);
-        }
-        return result;
-    }
 
     /**
      * 1. Add fake statusBarView.
@@ -119,7 +107,7 @@ class StatusBarCompatKitKat {
 
         ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
         View mContentChild = mContentView.getChildAt(0);
-        int statusBarHeight = getStatusBarHeight(activity);
+        int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
 
         removeFakeStatusBarViewIfExist(activity);
         addFakeStatusBarView(activity, statusColor, statusBarHeight);
@@ -146,7 +134,7 @@ class StatusBarCompatKitKat {
         View mContentChild = mContentView.getChildAt(0);
 
         removeFakeStatusBarViewIfExist(activity);
-        removeMarginTopOfContentChild(mContentChild, getStatusBarHeight(activity));
+        removeMarginTopOfContentChild(mContentChild, LScreenUtil.getStatusBarHeight(activity));
         if (mContentChild != null) {
             ViewCompat.setFitsSystemWindows(mContentChild, false);
         }
@@ -178,14 +166,14 @@ class StatusBarCompatKitKat {
         toolbar.setFitsSystemWindows(false);
         if (toolbar.getTag() == null) {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-            int statusBarHeight = getStatusBarHeight(activity);
+            int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
             lp.height += statusBarHeight;
             toolbar.setLayoutParams(lp);
             toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
             toolbar.setTag(true);
         }
 
-        int statusBarHeight = getStatusBarHeight(activity);
+        int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
         removeFakeStatusBarViewIfExist(activity);
         removeMarginTopOfContentChild(mContentChild, statusBarHeight);
         final View statusView = addFakeStatusBarView(activity, statusColor, statusBarHeight);

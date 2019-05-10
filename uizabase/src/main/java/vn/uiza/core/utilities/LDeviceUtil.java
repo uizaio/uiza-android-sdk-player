@@ -27,6 +27,7 @@ import static android.content.Context.UI_MODE_SERVICE;
  */
 public class LDeviceUtil {
     private static String TAG = LDeviceUtil.class.getSimpleName();
+    private static final String COPY_LABEL = "Copy";
 
     public static boolean isTablet(Activity activity) {
         return (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
@@ -64,7 +65,7 @@ public class LDeviceUtil {
             clipboard.setText(text);
         } else {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Copy", text);
+            android.content.ClipData clip = android.content.ClipData.newPlainText(COPY_LABEL, text);
             clipboard.setPrimaryClip(clip);
         }
         LToast.show(context, "Copied!");
