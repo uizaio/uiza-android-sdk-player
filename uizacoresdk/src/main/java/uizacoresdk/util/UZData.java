@@ -32,6 +32,15 @@ import vn.uiza.utils.util.Utils;
 public class UZData {
     private final String TAG = getClass().getSimpleName();
     private static final UZData ourInstance = new UZData();
+    private static final String PAGE_TYPE = "app";
+    private static final String NULL = "null";
+    private static final String ANDROID = "Android ";
+    private static final String API_LEVEL = "Api level ";
+    private static final String TEXT = "text";
+    private static final String VIDEO = "video";
+    private static final String AUDIO = "audio";
+    private static final String CAPTIONS = "captions";
+    private static final String SUBTITLE = "subtitle";
 
     public static UZData getInstance() {
         return ourInstance;
@@ -243,7 +252,7 @@ public class UZData {
         }
         UizaTracking uizaTracking = new UizaTracking();
         uizaTracking.setAppId(getAppId());
-        uizaTracking.setPageType("app");
+        uizaTracking.setPageType(PAGE_TYPE);
         uizaTracking.setViewerUserId(Loitp.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
@@ -256,8 +265,8 @@ public class UZData {
         uizaTracking.setPlayerVersion(Constants.PLAYER_SDK_VERSION);
         //entity_id, entity_name
         if (uzInput == null || uzInput.getData() == null) {
-            uizaTracking.setEntityId("null");
-            uizaTracking.setEntityName("null");
+            uizaTracking.setEntityId(NULL);
+            uizaTracking.setEntityName(NULL);
         } else {
             uizaTracking.setEntityId(uzInput.getData().getId());
             uizaTracking.setEntityName(uzInput.getData().getName());
@@ -313,8 +322,8 @@ public class UZData {
         muiza.setEntityEncodingVariant(TmpParamData.getInstance().getEntityEncodingVariant());
         muiza.setEntityLanguageCode(TmpParamData.getInstance().getEntityLanguageCode());
         if (uzInput == null || uzInput.getData() == null) {
-            muiza.setEntityId("null");
-            muiza.setEntityName("null");
+            muiza.setEntityId(NULL);
+            muiza.setEntityName(NULL);
         } else {
             muiza.setEntityId(uzInput.getData().getId());
             muiza.setEntityName(uzInput.getData().getName());
@@ -333,7 +342,7 @@ public class UZData {
         muiza.setEntityStreamType(TmpParamData.getInstance().getEntityStreamType());
         muiza.setEntityVariantId(TmpParamData.getInstance().getEntityVariantId());
         muiza.setEntityVariantName(TmpParamData.getInstance().getEntityVariantName());
-        muiza.setPageType("app");
+        muiza.setPageType(PAGE_TYPE);
         muiza.setPageUrl(TmpParamData.getInstance().getPageUrl());
         muiza.setPlayerAutoplayOn(TmpParamData.getInstance().isPlayerAutoplayOn());
         muiza.setPlayerHeight(TmpParamData.getInstance().getPlayerHeight());
@@ -360,14 +369,14 @@ public class UZData {
         muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
         muiza.setViewerDeviceName(android.os.Build.MODEL);
         muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
-        muiza.setViewerOsFamily("Android " + Build.VERSION.RELEASE);
-        muiza.setViewerOsVersion("Api level " + Build.VERSION.SDK_INT);
+        muiza.setViewerOsFamily(ANDROID + Build.VERSION.RELEASE);
+        muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
         muiza.setViewerUserId(Loitp.getDeviceId(context));
         muiza.setAppId(getAppId());
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
-        muiza.setPlayerId(currentPlayerId + "");
+        muiza.setPlayerId(String.valueOf(currentPlayerId));
         muiza.setPlayerInitTime(TmpParamData.getInstance().getPlayerInitTime());
         muiza.setPlayerStartupTime(TmpParamData.getInstance().getPlayerStartupTime());
         muiza.setSessionStart(TmpParamData.getInstance().getSessionStart());
@@ -421,19 +430,19 @@ public class UZData {
 
     public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
         int trackType = MediaTrack.TYPE_UNKNOWN;
-        if ("text".equals(type)) {
+        if (TEXT.equals(type)) {
             trackType = MediaTrack.TYPE_TEXT;
-        } else if ("video".equals(type)) {
+        } else if (VIDEO.equals(type)) {
             trackType = MediaTrack.TYPE_VIDEO;
-        } else if ("audio".equals(type)) {
+        } else if (AUDIO.equals(type)) {
             trackType = MediaTrack.TYPE_AUDIO;
         }
 
         int trackSubType = MediaTrack.SUBTYPE_NONE;
         if (subType != null) {
-            if ("captions".equals(type)) {
+            if (CAPTIONS.equals(type)) {
                 trackSubType = MediaTrack.SUBTYPE_CAPTIONS;
-            } else if ("subtitle".equals(type)) {
+            } else if (SUBTITLE.equals(type)) {
                 trackSubType = MediaTrack.SUBTYPE_SUBTITLES;
             }
         }

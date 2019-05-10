@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import vn.uiza.core.common.Constants;
 
 public final class ShellUtils {
 
@@ -56,8 +57,10 @@ public final class ShellUtils {
             if (isNeedResultMsg) {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
-                successResult = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-                errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"));
+                successResult = new BufferedReader(
+                        new InputStreamReader(process.getInputStream(), Constants.UTF_8_CHARSET));
+                errorResult = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream(), Constants.UTF_8_CHARSET));
                 String s;
                 while ((s = successResult.readLine()) != null) {
                     successMsg.append(s);
