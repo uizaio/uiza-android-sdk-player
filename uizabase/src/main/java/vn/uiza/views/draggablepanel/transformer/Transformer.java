@@ -15,6 +15,7 @@
  */
 package vn.uiza.views.draggablepanel.transformer;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 

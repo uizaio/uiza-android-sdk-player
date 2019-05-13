@@ -20,9 +20,11 @@ import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import vn.uiza.R;
+import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 
 /**
@@ -311,16 +313,21 @@ public class DraggablePanel extends FrameLayout {
                     int screenH = LScreenUtil.getScreenHeight();
                     if (isViewInTopPart) {
                         if (currentHeight <= screenH) {
-                            //LLog.d(TAG, "onPartOfView top");
                             draggableView.setTopViewMarginBottom(0);
+                            //NAMND: add this line to fix red draw in bottom
+                            if(currentHeight == screenH){
+                                LLog.d("heightbottom", String.valueOf(bottomUZTimebar));
+                                draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                                LLog.d("end", "1");
+                            }
                         }
                     } else {
                         if (currentHeight >= screenH) {
-                            //LLog.d(TAG, "onPartOfView bottom");
                             draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight();
                             draggableView.setTopViewMarginBottom(bottomUZTimebar * 3);
                         }
                     }
+
                     draggableView.requestLayout();
                 }
             });

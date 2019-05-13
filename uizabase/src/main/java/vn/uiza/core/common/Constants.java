@@ -7,7 +7,7 @@ package vn.uiza.core.common;
 //https://github.com/nshmura/SnappySmoothScroller
 
 public class Constants {
-    public static boolean IS_DEBUG = false;
+    public static boolean IS_DEBUG = true;
     public static final String PLAYER_NAME = "UZSDK";
     public static final String USER_AGENT = "Loitp93";
     public static final String PLAYER_SDK_VERSION = "3.1.9";

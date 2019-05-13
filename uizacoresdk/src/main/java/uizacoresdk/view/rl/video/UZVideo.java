@@ -161,7 +161,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivVideoCover;
     private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
-    private UZImageButton ibPauseIcon;
+//    private UZImageButton ibPauseIcon;
     private UZImageButton ibPlayIcon;
     private UZImageButton ibReplayIcon;
     private UZImageButton ibRewIcon;
@@ -646,9 +646,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         if (uzPlayerManager != null) {
             uzPlayerManager.release();
         }
-//        if (muxStatsExoPlayer != null) {
-//            muxStatsExoPlayer.release();
-//        }
+        if (muxStatsExoPlayer != null) {
+            muxStatsExoPlayer.release();
+        }
         UZData.getInstance().setSettingPlayer(false);
         LDialogUtil.clearAll();
         isCastingChromecast = false;
@@ -907,10 +907,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }
             }
-        } else if (v == ibPauseIcon) {
-            pauseVideo();
+//        } else if (v == ibPauseIcon) {
+//            pauseVideo();
         } else if (v == ibPlayIcon) {
-            resumeVideo();
+            if(isPlaying()){
+                pauseVideo();
+            }else{
+                resumeVideo();
+            }
         } else if (v == ibReplayIcon) {
             replay();
         } else if (v == ibSkipNextIcon) {
@@ -924,6 +928,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         /*có trường hợp đang click vào các control thì bị ẩn control ngay lập tức, trường hợp này ta có thể xử lý khi click vào control thì reset count down để ẩn control ko
         default controller timeout là 8s, vd tới s thứ 7 bạn tương tác thì tới s thứ 8 controller sẽ bị ẩn*/
+
         if (isDefaultUseController) {
             if (isPlayerControllerShowing()) {
                 showController();
@@ -1381,13 +1386,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.resumeVideo();
             }
         }
-        if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(GONE);
-        }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setVisibility(VISIBLE);
-            ibPauseIcon.requestFocus();
-        }
+        updatePlayPauseIcon();
     }
 
     public void pauseVideo() {
@@ -1400,23 +1399,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
         }
         addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
-        if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(VISIBLE);
-        }
-        // toggle icon
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setVisibility(GONE);
-        }
-        // need delay 1 ms ?
-        try {
-            (new Thread()).sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (ibPlayIcon != null) {
-            // ibPlayIcon.setVisibility(VISIBLE);
-            ibPlayIcon.requestFocus();
-        }
+        updatePlayPauseIcon();
         
     }
 
@@ -1467,6 +1450,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         } else {
             resumeVideo();
         }
+
     }
 
     public void toggleVolume() {
@@ -1575,9 +1559,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvTitle;
     }
 
-    public UZImageButton getIbPauseIcon() {
-        return ibPauseIcon;
-    }
+//    public UZImageButton getIbPauseIcon() {
+//        return ibPauseIcon;
+//    }
 
     public UZImageButton getIbPlayIcon() {
         return ibPlayIcon;
@@ -1813,11 +1797,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
-        ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
-        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_play_uiza);
+//        ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(vn.uiza.R.id.exo_pause_uiza);
+        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(vn.uiza.R.id.exo_play_uiza);
         //If auto start true, show button play and gone button pause
         if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(GONE);
+//            ibPlayIcon.setVisibility(GONE);
+            updatePlayPaseIcon(true, false);
         }
         ibReplayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_replay_uiza);
         ibRewIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_rew);
@@ -1915,10 +1900,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibPlayIcon.setOnClickListener(this);
             ibPlayIcon.setOnFocusChangeListener(this);
         }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setOnClickListener(this);
-            ibPauseIcon.setOnFocusChangeListener(this);
-        }
+//        if (ibPauseIcon != null) {
+//            ibPauseIcon.setOnClickListener(this);
+//            ibPauseIcon.setOnFocusChangeListener(this);
+//        }
         if (ibReplayIcon != null) {
             ibReplayIcon.setOnClickListener(this);
             ibReplayIcon.setOnFocusChangeListener(this);
@@ -1948,45 +1933,77 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private void updatePlayPaseIcon(boolean isPlay, boolean isForcus){
+        if(isPlay){
+            ibPlayIcon.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+        }else {
+            ibPlayIcon.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+        }
+        if(isForcus){
+            ibPlayIcon.requestFocus();
+        }
+    }
     //If auto start true, show button play and gone button pause
     //if not, gone button play and show button pause
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
         if (isAutoStart) {
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-                if (!isSetFirstRequestFocusDone) {
-                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
-                    isSetFirstRequestFocusDone = true;
-                }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//                if (!isSetFirstRequestFocusDone) {
+//                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
+//                    isSetFirstRequestFocusDone = true;
+//                }
+//            }
+            updatePlayPaseIcon(true, !isSetFirstRequestFocusDone);
+            if (!isSetFirstRequestFocusDone) {
+                isSetFirstRequestFocusDone = true;
             }
         } else {
-            if (isPlaying()) {
-                if (ibPlayIcon != null) {
-                    ibPlayIcon.setVisibility(GONE);
-                }
-                if (ibPauseIcon != null) {
-                    ibPauseIcon.setVisibility(VISIBLE);
-                    if (!isSetFirstRequestFocusDone) {
-                        ibPauseIcon.requestFocus();//set first request focus if using player for TV
-                        isSetFirstRequestFocusDone = true;
-                    }
-                }
-            } else {
-                if (ibPlayIcon != null) {
-                    ibPlayIcon.setVisibility(VISIBLE);
-                    if (!isSetFirstRequestFocusDone) {
-                        ibPlayIcon.requestFocus();//set first request focus if using player for TV
-                        isSetFirstRequestFocusDone = true;
-                    }
-                }
-                if (ibPauseIcon != null) {
-                    ibPauseIcon.setVisibility(GONE);
-                }
-            }
+            updatePlayPauseIcon();
         }
+    }
+
+    private void updatePlayPauseIcon(){
+        LLog.e(TAG, "updatePlayPauseIcon");
+        updatePlayPaseIcon(isPlaying(), !isSetFirstRequestFocusDone);
+        if (!isSetFirstRequestFocusDone) {
+            isSetFirstRequestFocusDone = true;
+        }
+//        if (isPlaying()) {
+////            if (ibPlayIcon != null) {
+////                ibPlayIcon.setVisibility(GONE);
+////            }
+////            if (ibPauseIcon != null) {
+////                ibPauseIcon.setVisibility(VISIBLE);
+////                if (!isSetFirstRequestFocusDone) {
+////                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
+////                    isSetFirstRequestFocusDone = true;
+////                }
+////            }
+//            updatePlayPaseIcon(true, !isSetFirstRequestFocusDone);
+//            if (!isSetFirstRequestFocusDone) {
+//                isSetFirstRequestFocusDone = true;
+//            }
+//        } else {
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(VISIBLE);
+//                LLog.e(TAG, "ibPlayIcon VISIBLE");
+//                if (!isSetFirstRequestFocusDone) {
+//                    ibPlayIcon.requestFocus();//set first request focus if using player for TV
+//                    isSetFirstRequestFocusDone = true;
+//                }
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(GONE);
+//            }
+//            updatePlayPaseIcon(false, !isSetFirstRequestFocusDone);
+//            if (!isSetFirstRequestFocusDone) {
+//                isSetFirstRequestFocusDone = true;
+//            }
+//        }
     }
 
     private String urlImgThumbnail;
@@ -2058,10 +2075,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPlayIcon.setRatioLand(7);
                 ibPlayIcon.setRatioPort(5);
             }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setRatioLand(7);
-                ibPauseIcon.setRatioPort(5);
-            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setRatioLand(7);
+//                ibPauseIcon.setRatioPort(5);
+//            }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setRatioLand(7);
                 ibReplayIcon.setRatioPort(5);
@@ -2288,6 +2305,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 }
             }
         }
+
     }
 
     //FOR TV
@@ -2518,9 +2536,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
             }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(GONE);
-            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(GONE);
+//            }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
                 ibReplayIcon.requestFocus();
@@ -2879,7 +2897,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         //LLog.d(TAG, "callAPIGetLinkPlay " + gson.toJson(UZData.getInstance().getUzInput()));
         boolean isResultGetLinkPlayExist = UZData.getInstance().getResultGetLinkPlay() != null;
         String appId = UZData.getInstance().getAppId();
-        if (appId.equals("a9383d04d7d0420bae10dbf96bb27d9b")) {
+        if (appId.equals("01e137ad1b534004ad822035bf89b29f")) {
             isEnableMux = true;
         } else {
             isEnableMux = false;
@@ -3328,7 +3346,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             }
             if (isEnableMux) {
 //                CustomerPlayerData customerPlayerData = new CustomerPlayerData();
-//                customerPlayerData.setEnvironmentKey("e1mcat6hn6v40kh9gvh9nm6se");
+//                customerPlayerData.setEnvironmentKey("7cabksotgg288qb5n7gagungp");
 //                CustomerVideoData customerVideoData = new CustomerVideoData();
 //                customerVideoData.setVideoTitle(UZData.getInstance().getEntityName());
 //                muxStatsExoPlayer = new MuxStatsExoPlayer(getContext(), getPlayer(), Constants.PLAYER_NAME, customerPlayerData, customerVideoData);
@@ -3925,12 +3943,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(GONE);
             }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//            }
+            updatePlayPaseIcon(true, false);
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(GONE);
             }
@@ -3958,12 +3977,13 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(VISIBLE);
             }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//            }
+            updatePlayPaseIcon(true, false);
             //TODO iplm volume mute on/off o cast player
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(VISIBLE);
