@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import uizacoresdk.R;
+import vn.uiza.core.common.Constants;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 import vn.uiza.utils.util.Encryptor;
 import vn.uiza.utils.util.SentryUtils;
@@ -33,7 +34,7 @@ public class Loitp {
         input = input.trim();
         String hexIv = input.substring(0, 16);
         //LLog.d(TAG, "hexIv: " + hexIv);
-        String hexText = input.substring(16, input.length());
+        String hexText = input.substring(16);
         //LLog.d(TAG, "hexText: " + hexText);
 
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
@@ -59,8 +60,8 @@ public class Loitp {
     public static int getViewerOsArchitecture() {
         try {
             boolean isArm64 = false;
-            BufferedReader localBufferedReader = new BufferedReader(new FileReader("/proc/cpuinfo"));
-            if (localBufferedReader.readLine().contains("aarch64")) {
+            BufferedReader localBufferedReader = new BufferedReader(new FileReader(Constants.CPU_INFO_FILENAME));
+            if (localBufferedReader.readLine().contains(Constants.AARCH64)) {
                 isArm64 = true;
             }
             localBufferedReader.close();

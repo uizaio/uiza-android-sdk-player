@@ -10,15 +10,15 @@ import android.content.SharedPreferences;
 public class UZTrackingUtil {
     private final static String PREFERENCES_FILE_NAME = "UZTrackingUtil";
 
-    public static final String E_DISPLAY = "E_DISPLAY";
-    public static final String E_PLAYS_REQUESTED = "E_PLAYS_REQUESTED";
-    public static final String E_VIDEO_STARTS = "E_VIDEO_STARTS";
-    public static final String E_VIEW = "E_VIEW";
-    public static final String E_REPLAY = "E_REPLAY";
-    public static final String E_PLAY_THROUGHT_25 = "PLAY_THROUGHT_25";
-    public static final String E_PLAY_THROUGHT_50 = "PLAY_THROUGHT_50";
-    public static final String E_PLAY_THROUGHT_75 = "PLAY_THROUGHT_75";
-    public static final String E_PLAY_THROUGHT_100 = "PLAY_THROUGHT_100";
+    private static final String E_DISPLAY = "E_DISPLAY";
+    private static final String E_PLAYS_REQUESTED = "E_PLAYS_REQUESTED";
+    private static final String E_VIDEO_STARTS = "E_VIDEO_STARTS";
+    private static final String E_VIEW = "E_VIEW";
+    private static final String E_REPLAY = "E_REPLAY";
+    private static final String E_PLAY_THROUGHT_25 = "PLAY_THROUGHT_25";
+    private static final String E_PLAY_THROUGHT_50 = "PLAY_THROUGHT_50";
+    private static final String E_PLAY_THROUGHT_75 = "PLAY_THROUGHT_75";
+    private static final String E_PLAY_THROUGHT_100 = "PLAY_THROUGHT_100";
 
     public static void clearAllValues(Context context) {
         setTrackingDoneWithEventTypeDisplay(context, false);

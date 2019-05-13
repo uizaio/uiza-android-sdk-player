@@ -7,7 +7,6 @@ package vn.uiza.core.utilities.statusbar;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -21,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import vn.uiza.core.utilities.LScreenUtil;
 
 /**
  * After Lollipop use system method.
@@ -28,18 +28,6 @@ import android.view.WindowManager;
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class StatusBarCompatLollipop {
-
-    /**
-     * return statusBar's Height in pixels
-     */
-    private static int getStatusBarHeight(Context context) {
-        int result = 0;
-        int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resId > 0) {
-            result = context.getResources().getDimensionPixelOffset(resId);
-        }
-        return result;
-    }
 
     /**
      * set StatusBarColor
@@ -132,7 +120,7 @@ class StatusBarCompatLollipop {
         toolbar.setFitsSystemWindows(false);
         if (toolbar.getTag() == null) {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-            int statusBarHeight = getStatusBarHeight(activity);
+            int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
             lp.height += statusBarHeight;
             toolbar.setLayoutParams(lp);
             toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());

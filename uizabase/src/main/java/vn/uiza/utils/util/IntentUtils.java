@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
+import vn.uiza.core.common.Constants;
 
 public final class IntentUtils {
 
@@ -53,7 +54,7 @@ public final class IntentUtils {
 
     public static Intent getShareTextIntent(String content) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
+        intent.setType(Constants.TEXT_TYPE);
         intent.putExtra(Intent.EXTRA_TEXT, content);
         return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
@@ -71,7 +72,7 @@ public final class IntentUtils {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, content);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.setType("image/*");
+        intent.setType(Constants.IMAGE_TYPE);
         return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 

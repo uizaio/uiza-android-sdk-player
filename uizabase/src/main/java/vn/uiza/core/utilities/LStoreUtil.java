@@ -28,17 +28,22 @@ public class LStoreUtil {
     public static String FILE_TRANSLATE_FAV_SENTENCE = "Loitp.txt";
 
     private static final String EXTENSION = ".db";
-    public static final String FOLDER_TRUYENTRANHTUAN = "zloitpbestcomic";
-    public static final String FILE_NAME_MAIN_COMICS_LIST_HTML_CODE = "filenamemaincomicslisthtmlcode" + EXTENSION;
+    private static final String FOLDER_TRUYENTRANHTUAN = "zloitpbestcomic";
+    private static final String FILE_NAME_MAIN_COMICS_LIST_HTML_CODE = "filenamemaincomicslisthtmlcode" + EXTENSION;
     public static final String FILE_NAME_MAIN_COMICS_LIST = "filenamemaincomicslist" + EXTENSION;
     public static final String FILE_NAME_MAIN_COMICS_LIST_FAVOURITE = "filenamemaincomicslistfavourite" + EXTENSION;
     public static final String FILE_NAME_TRUYENTRANHTUAN_DOWNLOADED_COMIC = "filenamedownloadedcomic" + EXTENSION;
 
+    private static final String SLASH = "/";
+    private static final String DOT = ".";
+    private static final String COLON = ":";
+    private static final String HYPHEN = "-";
+
     public static String getFileNameComic(String url) {
-        url = url.replace("/", "");
-        url = url.replace(".", "");
-        url = url.replace(":", "");
-        url = url.replace("-", "");
+        url = url.replace(SLASH, "");
+        url = url.replace(DOT, "");
+        url = url.replace(COLON, "");
+        url = url.replace(HYPHEN, "");
         return url + EXTENSION;
     }
 
@@ -57,7 +62,7 @@ public class LStoreUtil {
     public static String getFolderPath(Context context) {
         if (isSdPresent()) {
             try {
-                File sdPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName);
+                File sdPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + SLASH + folderName);
                 if (!sdPath.exists()) {
                     sdPath.mkdirs();
                     folderPath = sdPath.getAbsolutePath();
@@ -68,10 +73,10 @@ public class LStoreUtil {
                 LLog.d("TAG", "if getFolderPath: " + e.toString());
                 SentryUtils.captureException(e);
             }
-            folderPath = Environment.getExternalStorageDirectory().getPath() + "/" + folderName + "/";
+            folderPath = Environment.getExternalStorageDirectory().getPath() + SLASH + folderName + SLASH;
         } else {
             try {
-                File cacheDir = new File(context.getCacheDir(), folderName + "/");
+                File cacheDir = new File(context.getCacheDir(), folderName + SLASH);
                 if (!cacheDir.exists()) {
                     cacheDir.mkdirs();
                     folderPath = cacheDir.getAbsolutePath();
@@ -109,7 +114,7 @@ public class LStoreUtil {
             if (folder != null) {
                 //path = path + "/" + folder;
                 //path = path + folder;
-                path = path + folder + "/";
+                path = path + folder + SLASH;
             }
             LLog.d(TAG, "path: " + path);
             final File dir = new File(path);
@@ -158,7 +163,7 @@ public class LStoreUtil {
        * read text file from folder
        */
     public static String readTxtFromFolder(Activity activity, String folderName, String fileName) {
-        String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? "/" : (folderName + "/")) + fileName;
+        String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH : (folderName + SLASH)) + fileName;
         LLog.d(TAG, "path: " + path);
         File txtFile = new File(path);
         StringBuilder text = new StringBuilder();
@@ -215,8 +220,8 @@ public class LStoreUtil {
 
             @Override
             protected Void doInBackground(Void... params) {
-                String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? "/" :
-                        (folderName + "/")) + fileName;
+                String path = LStoreUtil.getFolderPath(activity) + (folderName == null ? SLASH :
+                        (folderName + SLASH)) + fileName;
                 LLog.d(TAG, "path: " + path);
                 File txtFile = new File(path);
                 text = new StringBuilder();
@@ -429,7 +434,7 @@ public class LStoreUtil {
     }
 
     public static String getPathOfFileNameMainComicsListHTMLCode(Context context) {
-        return getFolderPath(context) + "/" + LStoreUtil.FOLDER_TRUYENTRANHTUAN + "/" + LStoreUtil.FILE_NAME_MAIN_COMICS_LIST_HTML_CODE;
+        return getFolderPath(context) + SLASH + LStoreUtil.FOLDER_TRUYENTRANHTUAN + SLASH + LStoreUtil.FILE_NAME_MAIN_COMICS_LIST_HTML_CODE;
     }
 
     public static int[] getColors() {

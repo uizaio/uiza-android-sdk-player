@@ -36,10 +36,14 @@ import vn.uiza.utils.util.SentryUtils;
 
 public class LScreenUtil {
     private final static String TAG = LScreenUtil.class.getSimpleName();
+    private static final String DIMEN = "dimen";
+    private static final String STATUS_BAR_HEIGHT = "status_bar_height";
+    private static final String DESIGN_BOTTOM_NAVIGATION_HEIGHT = "design_bottom_navigation_height";
+    private static final String ANDROID = "android";
 
     public static int getStatusBarHeight(Context mContext) {
         int result = 0;
-        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = mContext.getResources().getIdentifier(STATUS_BAR_HEIGHT, DIMEN, ANDROID);
         if (resourceId > 0) {
             result = mContext.getResources().getDimensionPixelSize(resourceId);
         }
@@ -53,7 +57,8 @@ public class LScreenUtil {
         if (!hasMenuKey && !hasBackKey) {
             // Do whatever you need to do, this device has a navigation bar
             int result = 0;
-            int resourceId = mContext.getResources().getIdentifier("design_bottom_navigation_height", "dimen", mContext.getPackageName());
+            int resourceId = mContext.getResources().getIdentifier(DESIGN_BOTTOM_NAVIGATION_HEIGHT,
+                    DIMEN, mContext.getPackageName());
             if (resourceId > 0) {
                 result = mContext.getResources().getDimensionPixelSize(resourceId);
             }
