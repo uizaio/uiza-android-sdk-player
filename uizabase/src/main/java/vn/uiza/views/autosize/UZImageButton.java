@@ -39,7 +39,6 @@ public class UZImageButton extends AppCompatImageButton {
     private Drawable drawableDisabled;
     private int screenWPortrait;
     private int screenWLandscape;
-    private boolean isTablet;
     private boolean isUseDefault;
     private boolean isSetSrcDrawableEnabled;
 
@@ -95,7 +94,7 @@ public class UZImageButton extends AppCompatImageButton {
             drawableEnabled = getDrawable();
             return;
         }
-        isTablet = LDeviceUtil.isTablet(getContext());
+        boolean isTablet = LDeviceUtil.isTablet(getContext());
         if (isTablet) {
             ratioLand = Constants.RATIO_LAND_TABLET;
             ratioPort = Constants.RATIO_PORTRAIT_TABLET;

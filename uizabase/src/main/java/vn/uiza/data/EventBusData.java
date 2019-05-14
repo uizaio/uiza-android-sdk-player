@@ -55,15 +55,6 @@ public class EventBusData {
         }
     }
 
-    /*public void sendConnectChange(boolean isConnected, boolean isConnectedFast, boolean isConnectedWifi, boolean isConnectedMobile) {
-        ConnectEvent connectEvent = new ConnectEvent();
-        connectEvent.setConnected(isConnected);
-        connectEvent.setConnectedFast(isConnectedFast);
-        connectEvent.setConnectedWifi(isConnectedWifi);
-        connectEvent.setConnectedMobile(isConnectedMobile);
-        EventBus.getDefault().post(connectEvent);
-    }*/
-
     //postSticky can noti when activity onpause
     public void sendConnectChange(boolean isConnected, boolean isConnectedFast, boolean isConnectedWifi, boolean isConnectedMobile) {
         ConnectEvent connectEvent = new ConnectEvent();

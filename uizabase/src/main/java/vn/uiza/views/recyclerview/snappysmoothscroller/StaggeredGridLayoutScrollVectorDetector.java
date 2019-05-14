@@ -2,6 +2,7 @@ package vn.uiza.views.recyclerview.snappysmoothscroller;
 
 import android.graphics.PointF;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 public class StaggeredGridLayoutScrollVectorDetector implements SnappySmoothScroller.ScrollVectorDetector {
 
@@ -17,7 +18,9 @@ public class StaggeredGridLayoutScrollVectorDetector implements SnappySmoothScro
 
     private int getFirstChildPosition() {
         final int childCount = layoutManager.getChildCount();
-        return childCount == 0 ? 0 : layoutManager.getPosition(layoutManager.getChildAt(0));
+        View firstView = layoutManager.getChildAt(0);
+        if (firstView == null) return 0;
+        return childCount == 0 ? 0 : layoutManager.getPosition(firstView);
     }
 
     private int calculateScrollDirectionForPosition(int position) {

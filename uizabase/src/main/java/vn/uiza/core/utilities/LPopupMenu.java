@@ -11,7 +11,7 @@ import android.widget.PopupMenu;
 
 public class LPopupMenu {
     public interface CallBack {
-        public void clickOnItem(MenuItem menuItem);
+        void clickOnItem(MenuItem menuItem);
     }
 
     public static void show(final Activity activity, View showOnView, int menuRes, final CallBack callBack) {

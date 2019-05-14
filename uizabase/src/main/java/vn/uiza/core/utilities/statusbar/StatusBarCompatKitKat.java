@@ -105,7 +105,7 @@ class StatusBarCompatKitKat {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mContentChild = mContentView.getChildAt(0);
         int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
 
@@ -130,7 +130,7 @@ class StatusBarCompatKitKat {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        ViewGroup mContentView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = activity.findViewById(Window.ID_ANDROID_CONTENT);
         View mContentChild = mContentView.getChildAt(0);
 
         removeFakeStatusBarViewIfExist(activity);
@@ -154,7 +154,7 @@ class StatusBarCompatKitKat {
                                                       Toolbar toolbar, int statusColor) {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
 
         View mContentChild = mContentView.getChildAt(0);
         mContentChild.setFitsSystemWindows(false);
@@ -179,7 +179,7 @@ class StatusBarCompatKitKat {
         final View statusView = addFakeStatusBarView(activity, statusColor, statusBarHeight);
 
         CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams()).getBehavior();
-        if (behavior != null && behavior instanceof AppBarLayout.Behavior) {
+        if (behavior instanceof AppBarLayout.Behavior) {
             int verticalOffset = ((AppBarLayout.Behavior) behavior).getTopAndBottomOffset();
             if (Math.abs(verticalOffset) > appBarLayout.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
                 statusView.setAlpha(1f);

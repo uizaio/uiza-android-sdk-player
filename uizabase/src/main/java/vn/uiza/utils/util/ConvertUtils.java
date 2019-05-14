@@ -27,7 +27,7 @@ public final class ConvertUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     public static String bytes2HexString(byte[] bytes) {
         if (bytes == null) return null;
@@ -42,7 +42,7 @@ public final class ConvertUtils {
     }
 
     public static byte[] hexString2Bytes(String hexString) {
-        if (isSpace(hexString)) return null;
+        if (AppUtils.isSpace(hexString)) return null;
         int len = hexString.length();
         if (len % 2 != 0) {
             hexString = "0" + hexString;
@@ -134,9 +134,11 @@ public final class ConvertUtils {
         int lenMod = bits.length() % 8;
         int byteLen = bits.length() / 8;
         if (lenMod != 0) {
+            StringBuilder bitsBuilder = new StringBuilder(bits);
             for (int i = lenMod; i < 8; i++) {
-                bits = "0" + bits;
+                bitsBuilder.insert(0, "0");
             }
+            bits = bitsBuilder.toString();
             byteLen++;
         }
         byte[] bytes = new byte[byteLen];
@@ -205,7 +207,7 @@ public final class ConvertUtils {
     }
 
     public static String inputStream2String(InputStream is, String charsetName) {
-        if (is == null || isSpace(charsetName)) return null;
+        if (is == null || AppUtils.isSpace(charsetName)) return null;
         try {
             return new String(inputStream2Bytes(is), charsetName);
         } catch (UnsupportedEncodingException e) {
@@ -216,7 +218,7 @@ public final class ConvertUtils {
     }
 
     public static InputStream string2InputStream(String string, String charsetName) {
-        if (string == null || isSpace(charsetName)) return null;
+        if (string == null || AppUtils.isSpace(charsetName)) return null;
         try {
             return new ByteArrayInputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
@@ -227,7 +229,7 @@ public final class ConvertUtils {
     }
 
     public static String outputStream2String(OutputStream out, String charsetName) {
-        if (out == null || isSpace(charsetName)) return null;
+        if (out == null || AppUtils.isSpace(charsetName)) return null;
         try {
             return new String(outputStream2Bytes(out), charsetName);
         } catch (UnsupportedEncodingException e) {
@@ -238,7 +240,7 @@ public final class ConvertUtils {
     }
 
     public static OutputStream string2OutputStream(String string, String charsetName) {
-        if (string == null || isSpace(charsetName)) return null;
+        if (string == null || AppUtils.isSpace(charsetName)) return null;
         try {
             return bytes2OutputStream(string.getBytes(charsetName));
         } catch (UnsupportedEncodingException e) {
@@ -308,15 +310,5 @@ public final class ConvertUtils {
     public static int px2sp(float pxValue) {
         final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
-    }
-
-    private static boolean isSpace(String s) {
-        if (s == null) return true;
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 }

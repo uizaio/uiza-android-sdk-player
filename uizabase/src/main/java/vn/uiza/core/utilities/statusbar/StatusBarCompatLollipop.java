@@ -1,9 +1,5 @@
 package vn.uiza.core.utilities.statusbar;
 
-/**
- * Created by www.muathu@gmail.com on 1/18/2018.
- */
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -20,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
 import vn.uiza.core.utilities.LScreenUtil;
 
 /**
@@ -44,7 +41,7 @@ class StatusBarCompatLollipop {
         window.setStatusBarColor(statusColor);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -73,7 +70,7 @@ class StatusBarCompatLollipop {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -107,7 +104,7 @@ class StatusBarCompatLollipop {
             }
         });
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -128,7 +125,7 @@ class StatusBarCompatLollipop {
         }
 
         CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams()).getBehavior();
-        if (behavior != null && behavior instanceof AppBarLayout.Behavior) {
+        if (behavior instanceof AppBarLayout.Behavior) {
             int verticalOffset = ((AppBarLayout.Behavior) behavior).getTopAndBottomOffset();
             if (Math.abs(verticalOffset) > appBarLayout.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
                 window.setStatusBarColor(statusColor);
@@ -161,7 +158,7 @@ class StatusBarCompatLollipop {
     /**
      * use ValueAnimator to change statusBarColor when using collapsingToolbarLayout
      */
-    static void startColorAnimation(int startColor, int endColor, long duration, final Window window) {
+    private static void startColorAnimation(int startColor, int endColor, long duration, final Window window) {
         if (sAnimator != null) {
             sAnimator.cancel();
         }

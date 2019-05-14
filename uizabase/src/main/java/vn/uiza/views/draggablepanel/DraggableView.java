@@ -52,7 +52,6 @@ public class DraggableView extends RelativeLayout {
     private static final boolean DEFAULT_ENABLE_HORIZONTAL_ALPHA_EFFECT = true;
     private static final boolean DEFAULT_ENABLE_CLICK_TO_MAXIMIZE = false;
     private static final boolean DEFAULT_ENABLE_CLICK_TO_MINIMIZE = false;
-    private static final boolean DEFAULT_ENABLE_TOUCH_LISTENER = true;
     private static final int MIN_SLIDING_DISTANCE_ON_CLICK = 10;
     private static final int ONE_HUNDRED = 100;
     private static final float SENSITIVITY = 1f;
@@ -154,7 +153,6 @@ public class DraggableView extends RelativeLayout {
     private boolean isEnableSlide = true;
 
     public void setEnableSlide(boolean isEnableSlide) {
-        //LLog.d(TAG, "setEnableSlide " + isEnableSlide);
         this.isEnableSlide = isEnableSlide;
     }
 
@@ -354,13 +352,10 @@ public class DraggableView extends RelativeLayout {
         }
         switch (MotionEventCompat.getActionMasked(ev) & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_CANCEL:
-                //LLog.d(TAG, "onInterceptTouchEvent ACTION_CANCEL");
             case MotionEvent.ACTION_UP:
-                //LLog.d(TAG, "onInterceptTouchEvent ACTION_UP");
                 viewDragHelper.cancel();
                 return false;
             case MotionEvent.ACTION_DOWN:
-                //LLog.d(TAG, "onInterceptTouchEvent ACTION_DOWN");
                 int index = MotionEventCompat.getActionIndex(ev);
                 activePointerId = MotionEventCompat.getPointerId(ev, index);
                 if (activePointerId == INVALID_POINTER) {
@@ -370,9 +365,6 @@ public class DraggableView extends RelativeLayout {
             default:
                 break;
         }
-        //boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
-        //return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;
-
         if (isEnableSlide) {
             boolean interceptTap = viewDragHelper.isViewUnder(dragView, (int) ev.getX(), (int) ev.getY());
             return viewDragHelper.shouldInterceptTouchEvent(ev) || interceptTap;
@@ -392,25 +384,20 @@ public class DraggableView extends RelativeLayout {
         int actionMasked = MotionEventCompat.getActionMasked(ev);
         if ((actionMasked & MotionEventCompat.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
             activePointerId = MotionEventCompat.getPointerId(ev, actionMasked);
-            //LLog.d(TAG, "onTouchEvent ACTION_DOWN");
         }
         if (activePointerId == INVALID_POINTER) {
-            //LLog.d(TAG, "onTouchEvent INVALID_POINTER");
             return false;
         }
         viewDragHelper.processTouchEvent(ev);
         if (isClosed()) {
-            //LLog.d(TAG, "onTouchEvent isClosed return false");
             return false;
         }
         boolean isDragViewHit = isViewHit(dragView, (int) ev.getX(), (int) ev.getY());
         boolean isSecondViewHit = isViewHit(secondView, (int) ev.getX(), (int) ev.getY());
         analyzeTouchToMaximizeIfNeeded(ev, isDragViewHit);
         if (isMaximized()) {
-            //LLog.d(TAG, "isMaximized");
             dragView.dispatchTouchEvent(ev);
         } else {
-            //LLog.d(TAG, "!isMaximized");
             dragView.dispatchTouchEvent(cloneMotionEventWithAction(ev, MotionEvent.ACTION_CANCEL));
         }
         return isDragViewHit || isSecondViewHit;
@@ -419,11 +406,9 @@ public class DraggableView extends RelativeLayout {
     private void analyzeTouchToMaximizeIfNeeded(MotionEvent ev, boolean isDragViewHit) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_DOWN");
                 lastTouchActionDownXPosition = ev.getX();
                 break;
             case MotionEvent.ACTION_UP:
-                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_UP");
                 float clickOffset = ev.getX() - lastTouchActionDownXPosition;
                 if (shouldMaximizeOnClick(ev, clickOffset, isDragViewHit)) {
                     if (isMinimized() && isClickToMaximizeEnabled()) {
@@ -434,7 +419,6 @@ public class DraggableView extends RelativeLayout {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                //LLog.d(TAG, "analyzeTouchToMaximizeIfNeeded ACTION_MOVE");
                 break;
             default:
                 break;
@@ -464,26 +448,22 @@ public class DraggableView extends RelativeLayout {
     private int bottomUZTimebar = 0;
 
     public void setBottomUZTimebar(int bottomUZTimebar, Callback callback) {
-        //LLog.d(TAG, "setBottomUZTimebar " + bottomUZTimebar);
         this.bottomUZTimebar = bottomUZTimebar;
         this.callback = callback;
     }
 
     public void onViewPositionChanged(int left, int top, int dx, int dy) {
-        //LLog.d(TAG, "onViewPositionChanged " + left + " - " + top + " - " + dx + " - " + dy + ", isViewInTopPart: " + isViewInTopPart(top));
         if (listener != null) {
             listener.onDrag(left, top, dx, dy);
         }
         if (callback != null) {
             if (isViewInTopPart(top)) {
-                //LLog.d(TAG, "onViewPositionChanged top");
                 if (!isNotifiedPartTop) {
                     callback.onPartOfView(true);
                     isNotifiedPartTop = true;
                 }
                 isNotifiedPartBottom = false;
             } else {
-                //LLog.d(TAG, "onViewPositionChanged bottom");
                 if (!isNotifiedPartBottom) {
                     callback.onPartOfView(false);
                     isNotifiedPartBottom = true;
@@ -497,13 +477,12 @@ public class DraggableView extends RelativeLayout {
     private boolean isNotifiedPartBottom;
 
     public interface Callback {
-        public void onPartOfView(boolean isViewInTopPart);
+        void onPartOfView(boolean isViewInTopPart);
     }
 
     private Callback callback;
 
     private boolean isViewInTopPart(int positionLeft) {
-        //LLog.d(TAG, "isViewInTopPart " + positionLeft + " - " + (screenWidth / 2));
         return positionLeft <= screenWidth / 2;
     }
 
@@ -512,18 +491,14 @@ public class DraggableView extends RelativeLayout {
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        //LLog.d(TAG, "onLayout bottomUZTimebar " + left + " - " + top + " - " + right + " - " + bottom + " = " + transformer.getOriginalHeight());
         if (isInEditMode()) {
             super.onLayout(changed, left, top, right, bottom);
         } else if (isDragViewAtTop()) {
-            //dragView.layout(left, top, right, transformer.getOriginalHeight() - bottomUZTimebar);
             dragView.layout(left, top, right, transformer.getOriginalHeight());
-            //secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
 
             ViewHelper.setY(dragView, top);
             ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
-            //ViewHelper.setY(secondView, transformer.getOriginalHeight());
         } else {
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
         }
@@ -534,7 +509,6 @@ public class DraggableView extends RelativeLayout {
      * displacement while the view is dragged.
      */
     void changeDragViewPosition() {
-        //LLog.d(TAG, "changeDragViewPosition getVerticalDragOffset() " + getVerticalDragOffset());
         transformer.updatePosition(getVerticalDragOffset());
     }
 
@@ -543,7 +517,6 @@ public class DraggableView extends RelativeLayout {
      */
     void changeSecondViewPosition() {
         ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
-        //ViewHelper.setY(secondView, dragView.getBottom());
     }
 
     /**
@@ -774,7 +747,6 @@ public class DraggableView extends RelativeLayout {
      * @return true if the view is slided.
      */
     private boolean smoothSlideTo(float slideOffset) {
-        //LLog.d(TAG, "smoothSlideTo " + slideOffset);
         final int topBound = getPaddingTop();
         int x = (int) (slideOffset * (getWidth() - transformer.getMinWidthPlusMarginRight()));
         int y = (int) (topBound + slideOffset * getVerticalDragRange());
@@ -830,7 +802,6 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is maximized to the DraggableListener
      */
     private void notifyMaximizeToListener() {
-        //LLog.d(TAG, "notifyMaximizeToListener");
         if (listener != null) {
             listener.onMaximized();
         }
@@ -840,7 +811,6 @@ public class DraggableView extends RelativeLayout {
      * Notify te view is minimized to the DraggableListener
      */
     private void notifyMinimizeToListener() {
-        //LLog.d(TAG, "notifyMinimizeToListener");
         if (listener != null) {
             listener.onMinimized();
         }

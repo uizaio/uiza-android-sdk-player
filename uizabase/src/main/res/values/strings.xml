@@ -1,6 +1,7 @@
 <resources>
     <string name="loitp">loitp</string>
     <string name="warning">Warning</string>
+    <string name="error">error</string>
     <string name="ok">OK</string>
     <string name="url_dash">https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd</string>
     <string name="url_thumbnails">https://bitdash-a.akamaihd.net/content/MI201109210084_1/thumbnails/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.jpg</string>
@@ -107,4 +108,5 @@
     <string name="url_sample_subtile">http://112.78.4.162/sub.vtt</string>
     <string name="loitp_best_dev_ever">loitpWloitp7loitpgloitpHloitpsloitpzloitpMloitphloitpKloitp9loitpHloitpKloitprloitpyloitp2loitp9loitpQloitpkloitpyloitp5loitpSloitpaloitpKloitpPloitp7loitpqloitpxloitpBloitpQloitp2loitpbloitpJloitp</string>
     <string name="uiza_introduce">Uiza is the complete toolkit for building a powerful video streaming application with unlimited scalability. We design Uiza so simple that you only need a few lines of codes to start streaming, but sophisticated enough for you to build complex products on top of it.</string>
+    <string name="can_not_find_share_app">Không tìm thấy ứng dụng này trên thiết bị của bạn.</string>
 </resources>

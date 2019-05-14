@@ -35,7 +35,7 @@ public final class FileUtils {
     }
 
     public static File getFileByPath(String filePath) {
-        return isSpace(filePath) ? null : new File(filePath);
+        return AppUtils.isSpace(filePath) ? null : new File(filePath);
     }
 
     public static boolean isFileExists(String filePath) {
@@ -53,7 +53,7 @@ public final class FileUtils {
     public static boolean rename(File file, String newName) {
         if (file == null) return false;
         if (!file.exists()) return false;
-        if (isSpace(newName)) return false;
+        if (AppUtils.isSpace(newName)) return false;
         if (newName.equals(file.getName())) return true;
         File newFile = new File(file.getParent() + File.separator + newName);
         return !newFile.exists()
@@ -458,7 +458,7 @@ public final class FileUtils {
             String line;
             int curLine = 1;
             List<String> list = new ArrayList<>();
-            if (isSpace(charsetName)) {
+            if (AppUtils.isSpace(charsetName)) {
                 reader = new BufferedReader(new FileReader(file));
             } else {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charsetName));
@@ -487,7 +487,7 @@ public final class FileUtils {
         BufferedReader reader = null;
         try {
             StringBuilder sb = new StringBuilder();
-            if (isSpace(charsetName)) {
+            if (AppUtils.isSpace(charsetName)) {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             } else {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charsetName));
@@ -631,12 +631,12 @@ public final class FileUtils {
     }
 
     public static String getFileMD5ToString(String filePath) {
-        File file = isSpace(filePath) ? null : new File(filePath);
+        File file = AppUtils.isSpace(filePath) ? null : new File(filePath);
         return getFileMD5ToString(file);
     }
 
     public static byte[] getFileMD5(String filePath) {
-        File file = isSpace(filePath) ? null : new File(filePath);
+        File file = AppUtils.isSpace(filePath) ? null : new File(filePath);
         return getFileMD5(file);
     }
 
@@ -672,7 +672,7 @@ public final class FileUtils {
     }
 
     public static String getDirName(String filePath) {
-        if (isSpace(filePath)) return filePath;
+        if (AppUtils.isSpace(filePath)) return filePath;
         int lastSep = filePath.lastIndexOf(File.separator);
         return lastSep == -1 ? "" : filePath.substring(0, lastSep + 1);
     }
@@ -683,7 +683,7 @@ public final class FileUtils {
     }
 
     public static String getFileName(String filePath) {
-        if (isSpace(filePath)) return filePath;
+        if (AppUtils.isSpace(filePath)) return filePath;
         int lastSep = filePath.lastIndexOf(File.separator);
         return lastSep == -1 ? filePath : filePath.substring(lastSep + 1);
     }
@@ -694,7 +694,7 @@ public final class FileUtils {
     }
 
     public static String getFileNameNoExtension(String filePath) {
-        if (isSpace(filePath)) return filePath;
+        if (AppUtils.isSpace(filePath)) return filePath;
         int lastPoi = filePath.lastIndexOf('.');
         int lastSep = filePath.lastIndexOf(File.separator);
         if (lastSep == -1) {
@@ -712,7 +712,7 @@ public final class FileUtils {
     }
 
     public static String getFileExtension(String filePath) {
-        if (isSpace(filePath)) return filePath;
+        if (AppUtils.isSpace(filePath)) return filePath;
         int lastPoi = filePath.lastIndexOf('.');
         int lastSep = filePath.lastIndexOf(File.separator);
         if (lastPoi == -1 || lastSep >= lastPoi) return "";
@@ -747,7 +747,7 @@ public final class FileUtils {
         }
     }
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     private static String bytes2HexString(byte[] bytes) {
         if (bytes == null) return null;
@@ -776,13 +776,4 @@ public final class FileUtils {
         }
     }
 
-    private static boolean isSpace(String s) {
-        if (s == null) return true;
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
