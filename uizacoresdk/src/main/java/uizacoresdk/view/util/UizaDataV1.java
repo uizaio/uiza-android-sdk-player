@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.util.Loitp;
+import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
@@ -48,12 +48,7 @@ public class UizaDataV1 {
         return uizaInputV1List;
     }
 
-    /*public void setUizaInputList(List<UizaInputV1> uizaInputV1List) {
-        this.uizaInputV1List = uizaInputV1List;
-    }*/
-
     public UizaInputV1 getUizaInputPrev() {
-        //LLog.d(TAG, "getUizaInputPrev " + uizaInputV1List.size());
         if (uizaInputV1List.isEmpty() || uizaInputV1List.size() <= 1) {
             return null;
         } else {
@@ -97,19 +92,7 @@ public class UizaDataV1 {
         if (uizaInputV1List.size() > 2) {
             uizaInputV1List.remove(0);
         }
-        /*if (Constants.IS_DEBUG) {
-            String x = "";
-            for (UizaInputV1 u : uizaInputV1List) {
-                x += " > " + u.getEntityName();
-            }
-        }*/
     }
-
-    /*public void removeLastUizaInput() {
-        if (uizaInputV1List != null && !uizaInputV1List.isEmpty()) {
-            uizaInputV1List.remove(uizaInputV1List.size() - 1);
-        }
-    }*/
 
     public void clear() {
         uizaInputV1 = null;
@@ -137,7 +120,7 @@ public class UizaDataV1 {
         //referrer
         uizaTracking.setReferrer("");
         //device_id
-        uizaTracking.setDeviceId(Loitp.getDeviceId(context));
+        uizaTracking.setDeviceId(UZOsUtil.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");

@@ -17,6 +17,15 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
+
+    private static final String SPEED_025 = "0.25";
+    private static final String SPEED_050 = "0.5";
+    private static final String SPEED_075 = "0.75";
+    private static final String SPEED_100 = "Normal";
+    private static final String SPEED_125 = "1.25";
+    private static final String SPEED_150 = "1.5";
+    private static final String SPEED_200 = "2.0";
+
     private Context context;
     private ScrollView sv;
     private CheckedTextView ct0;
@@ -34,7 +43,6 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.context = context;
         this.currentSpeed = currentSpeed;
-        //LLog.d(TAG, "currentSpeed " + currentSpeed);
         this.callback = callback;
     }
 
@@ -42,22 +50,22 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dlg_speed);
-        sv = (ScrollView) findViewById(R.id.sv);
-        ct0 = (CheckedTextView) findViewById(R.id.ct_0);
-        ct1 = (CheckedTextView) findViewById(R.id.ct_1);
-        ct2 = (CheckedTextView) findViewById(R.id.ct_2);
-        ct3 = (CheckedTextView) findViewById(R.id.ct_3);
-        ct4 = (CheckedTextView) findViewById(R.id.ct_4);
-        ct5 = (CheckedTextView) findViewById(R.id.ct_5);
-        ct6 = (CheckedTextView) findViewById(R.id.ct_6);
+        sv = findViewById(R.id.sv);
+        ct0 = findViewById(R.id.ct_0);
+        ct1 = findViewById(R.id.ct_1);
+        ct2 = findViewById(R.id.ct_2);
+        ct3 = findViewById(R.id.ct_3);
+        ct4 = findViewById(R.id.ct_4);
+        ct5 = findViewById(R.id.ct_5);
+        ct6 = findViewById(R.id.ct_6);
 
-        Speed speed0 = new Speed("0.25", 0.25f);
-        Speed speed1 = new Speed("0.5", 0.5f);
-        Speed speed2 = new Speed("0.75", 0.75f);
-        Speed speed3 = new Speed("Normal", 1f);
-        Speed speed4 = new Speed("1.25", 1.25f);
-        Speed speed5 = new Speed("1.5", 1.5f);
-        Speed speed6 = new Speed("2.0", 2f);
+        Speed speed0 = new Speed(SPEED_025, 0.25f);
+        Speed speed1 = new Speed(SPEED_050, 0.5f);
+        Speed speed2 = new Speed(SPEED_075, 0.75f);
+        Speed speed3 = new Speed(SPEED_100, 1f);
+        Speed speed4 = new Speed(SPEED_125, 1.25f);
+        Speed speed5 = new Speed(SPEED_150, 1.5f);
+        Speed speed6 = new Speed(SPEED_200, 2f);
 
         ct0.setText(speed0.getName());
         ct1.setText(speed1.getName());
@@ -140,7 +148,7 @@ public class UZDlgSpeed extends Dialog implements View.OnClickListener {
     }
 
     public interface Callback {
-        public void onSelectItem(Speed speed);
+        void onSelectItem(Speed speed);
     }
 
     private Callback callback;

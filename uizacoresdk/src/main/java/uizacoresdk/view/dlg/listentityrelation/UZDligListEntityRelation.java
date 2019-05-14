@@ -52,11 +52,11 @@ public class UZDligListEntityRelation extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.v3_dialog_list_entity_relation);
 
-        progressBar = (ProgressBar) findViewById(R.id.pb);
+        progressBar = findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.colorPrimary));
 
-        tvMsg = (TextView) findViewById(R.id.tv_msg);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        tvMsg = findViewById(R.id.tv_msg);
+        recyclerView = findViewById(R.id.recycler_view);
 
         findViewById(R.id.bt_exit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,36 +71,6 @@ public class UZDligListEntityRelation extends Dialog {
     private void getListAllEntityRelation() {
         //TODO iplm
         LUIUtil.showProgressBar(progressBar);
-        /*UZServiceV1 service = RestClientV2.createService(UZServiceV1.class);
-        //LLog.d(TAG, "entityId: " + UizaDataV1.getInstance().getEntityId());
-
-        JsonBodyListAllEntityRelation jsonBodyListAllEntityRelation = new JsonBodyListAllEntityRelation();
-        jsonBodyListAllEntityRelation.setId(UizaDataV1.getInstance().getUzInput().getEntityId());
-
-        ((BaseActivity) activity).subscribe(service.getListAllEntityRalationV2(jsonBodyListAllEntityRelation), new ApiSubscriber<ListAllEntityRelation>() {
-            @Override
-            public void onSuccess(final ListAllEntityRelation listAllEntityRelation) {
-                //LLog.d(TAG, "getListAllEntityRalationV1 onSuccess " + gson.toJson(listAllEntityRelation));
-                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        setupUI(listAllEntityRelation);
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(Throwable e) {
-                //LLog.e(TAG, "getListAllEntityRelation onFail " + e.toString());
-                LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        LUIUtil.hideProgressBar(progressBar);
-                        tvMsg.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        });*/
 
         //TODO remove hardcode
         LUIUtil.setDelay(700, new LUIUtil.DelayCallback() {
@@ -116,28 +86,13 @@ public class UZDligListEntityRelation extends Dialog {
             tvMsg.setVisibility(View.VISIBLE);
         } else {
             itemList = listAllEntityRelation.getItemList();
-            //LLog.d(TAG, "listAllEntityRelation: " + gson.toJson(listAllEntityRelation));
             if (itemList == null || itemList.isEmpty()) {
-                //LLog.d(TAG, "itemList == null || itemList.isEmpty() -> return");
                 tvMsg.setVisibility(View.VISIBLE);
                 return;
             } else {
                 tvMsg.setVisibility(View.GONE);
             }
-            //LLog.d(TAG, "itemList size: " + itemList.size());
-
-            /*if (isLandscape) {
-                LLog.d(TAG, "isLandscape");
-                recyclerView.setLayoutManager(new GridLayoutManager(activity, 4));
-            } else {
-                LLog.d(TAG, "!isLandscape");
-                recyclerView.setLayoutManager(new GridLayoutManager(activity, 3));
-            }*/
-
             recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-
-            //recyclerView.setItemAnimator(new DefaultItemAnimator());
-            //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
             adapterPlayList = new AdapterPlayList(activity, itemList, new CallbackPlayList() {
                 @Override
                 public void onClickItem(Item item, int position) {
@@ -158,7 +113,6 @@ public class UZDligListEntityRelation extends Dialog {
                 }
             });
             recyclerView.setAdapter(adapterPlayList);
-            //LUIUtil.setPullLikeIOSHorizontal(recyclerView);
         }
         LUIUtil.hideProgressBar(progressBar);
     }

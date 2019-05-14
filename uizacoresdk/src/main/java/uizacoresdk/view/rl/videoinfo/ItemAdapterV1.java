@@ -6,6 +6,7 @@ package uizacoresdk.view.rl.videoinfo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,9 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 public class ItemAdapterV1 extends RecyclerView.Adapter<ItemAdapterV1.ItemViewHolder> {
 
     public interface Callback {
-        public void onClickItemBottom(Item item, int position);
+        void onClickItemBottom(Item item, int position);
 
-        public void onLoadMore();
+        void onLoadMore();
     }
 
     private Callback callback;
@@ -46,9 +47,9 @@ public class ItemAdapterV1 extends RecyclerView.Adapter<ItemAdapterV1.ItemViewHo
 
         public ItemViewHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.imageView);
-            progressBar = (ProgressBar) view.findViewById(R.id.pb);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
+            imageView = view.findViewById(R.id.imageView);
+            progressBar = view.findViewById(R.id.pb);
+            tvName = view.findViewById(R.id.tv_name);
         }
     }
 
@@ -61,13 +62,14 @@ public class ItemAdapterV1 extends RecyclerView.Adapter<ItemAdapterV1.ItemViewHo
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_more_like_this, parent, false);
         return new ItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, final int position) {
         final Item item = itemList.get(position);
         holder.imageView.getLayoutParams().width = mSizeW;
         holder.imageView.getLayoutParams().height = mSizeH;

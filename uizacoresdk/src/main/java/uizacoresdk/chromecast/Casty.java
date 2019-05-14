@@ -159,12 +159,8 @@ public class Casty implements CastyPlayer.OnMediaLoadedListener {
      */
     @UiThread
     public void addMiniController() {
-        ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
+        ViewGroup contentView = activity.findViewById(android.R.id.content);
         View rootView = contentView.getChildAt(0);
-        /*if (rootView == null) {
-            LLog.e(TAG, "addMiniController failed rootView == null");
-            return;
-        }*/
         LinearLayout linearLayout = new LinearLayout(activity);
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         linearLayout.setOrientation(LinearLayout.VERTICAL);

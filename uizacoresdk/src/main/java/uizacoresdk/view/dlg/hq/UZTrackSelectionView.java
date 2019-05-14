@@ -74,19 +74,9 @@ public class UZTrackSelectionView extends LinearLayout {
         View dialogView = dialogInflater.inflate(R.layout.uz_track_selection_dialog, null);
         final UZTrackSelectionView selectionView = dialogView.findViewById(R.id.uz_track_selection_view);
         selectionView.init(trackSelector, rendererIndex);
-        /*Dialog.OnClickListener okClickListener =
-                new Dialog.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selectionView.applySelection();
-                    }
-                };*/
-
         AlertDialog dialog = builder
                 .setTitle(title)
                 .setView(dialogView)
-                //.setPositiveButton(android.R.string.ok, okClickListener)
-                //.setNegativeButton(android.R.string.cancel, null)
                 .create();
         return Pair.create(dialog, selectionView);
     }
@@ -246,7 +236,6 @@ public class UZTrackSelectionView extends LinearLayout {
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
                 trackView.setSoundEffectsEnabled(false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                //LLog.d(TAG, "updateViews " + trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 trackView.setText(trackNameProvider.getTrackName(group.getFormat(trackIndex)));
                 if (trackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex) == RendererCapabilities.FORMAT_HANDLED) {
                     trackView.setFocusable(true);
@@ -267,12 +256,6 @@ public class UZTrackSelectionView extends LinearLayout {
             }
         }
         updateViewStates();
-        //LLog.d(TAG, "checkedTextViewList size " + checkedTextViewList.size());
-        /*if (Constants.IS_DEBUG) {
-            for (int i = 0; i < checkedTextViewList.size(); i++) {
-                LLog.d(TAG, i + " - getText: " + checkedTextViewList.get(i).getText() + " - isChecked: " + checkedTextViewList.get(i).isChecked());
-            }
-        }*/
     }
 
     private void updateViewStates() {
@@ -291,10 +274,10 @@ public class UZTrackSelectionView extends LinearLayout {
         if (defaultView.isChecked()) {
             scrollTo(defaultView);
         }
-        for (int i = 0; i < trackViews.length; i++) {
-            for (int j = 0; j < trackViews[i].length; j++) {
-                if (trackViews[i][j].isChecked()) {
-                    scrollTo(trackViews[i][j]);
+        for (CheckedTextView[] trackView : trackViews) {
+            for (CheckedTextView checkedTextView : trackView) {
+                if (checkedTextView.isChecked()) {
+                    scrollTo(checkedTextView);
                 }
             }
         }
@@ -409,7 +392,7 @@ public class UZTrackSelectionView extends LinearLayout {
     }
 
     public interface Callback {
-        public void onClick();
+        void onClick();
     }
 
     private Callback callback;

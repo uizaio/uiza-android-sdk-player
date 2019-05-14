@@ -4,8 +4,8 @@ package uizacoresdk.view.dlg.playlistfolder;
  * Created by www.muathu@gmail.com on 11/7/2017.
  */
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +19,11 @@ import com.daimajia.androidanimations.library.Techniques;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LAnimationUtil;
 import vn.uiza.core.utilities.LImageUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
-import uizacoresdk.util.UZUtil;
 
 public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistFolder.PlayListHolder> {
     private final String TAG = getClass().getSimpleName();
@@ -46,14 +46,14 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
 
         public PlayListHolder(View view) {
             super(view);
-            rootView = (LinearLayout) view.findViewById(R.id.root_view);
-            tvDuration = (TextView) view.findViewById(R.id.tv_duration);
-            tvDuration2 = (TextView) view.findViewById(R.id.tv_duration_2);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            tvYear = (TextView) view.findViewById(R.id.tv_year);
-            tvRate = (TextView) view.findViewById(R.id.tv_rate);
-            tvDescription = (TextView) view.findViewById(R.id.tv_description);
-            ivCover = (ImageView) view.findViewById(R.id.iv_cover);
+            rootView = view.findViewById(R.id.root_view);
+            tvDuration = view.findViewById(R.id.tv_duration);
+            tvDuration2 = view.findViewById(R.id.tv_duration_2);
+            tvName = view.findViewById(R.id.tv_name);
+            tvYear = view.findViewById(R.id.tv_year);
+            tvRate = view.findViewById(R.id.tv_rate);
+            tvDescription = view.findViewById(R.id.tv_description);
+            ivCover = view.findViewById(R.id.iv_cover);
         }
     }
 
@@ -62,23 +62,19 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         this.dataList = dataList;
         this.currentPositionOfDataList = currentPositionOfDataList;
         this.callbackPlaylistFolder = callbackPlaylistFolder;
-        //sizeW = LScreenUtil.getScreenWidth() / 5;
     }
 
     @Override
-    public PlayListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public PlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.v3_row_playlist_folder, parent, false);
         return new PlayListHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final PlayListHolder playListHolder, final int position) {
-        //updateSizeFocus(playListHolder.rootView, false);
-
+    public void onBindViewHolder(@NonNull final PlayListHolder playListHolder, final int position) {
         final Data data = dataList.get(position);
-        //LLog.d(TAG, "onBindViewHolder" + new Gson().toJson(item));
         UZUtil.setTextDuration(playListHolder.tvDuration, data.getDuration());
-        //LLog.d(TAG, "item.getDuration(): " + item.getDuration());
         playListHolder.tvName.setText(data.getName());
 
         //TODO correct this
@@ -97,12 +93,11 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
         } else {
             playListHolder.tvDescription.setText(data.getShortDescription());
         }
-        LImageUtil.load((Activity) context, data.getThumbnail(), playListHolder.ivCover);
+        LImageUtil.load(context, data.getThumbnail(), playListHolder.ivCover);
 
         playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //LLog.d(TAG, TAG + " click: " + item.getName() + ", position: " + position);
                 LAnimationUtil.play(v, Techniques.Pulse, new LAnimationUtil.Callback() {
                     @Override
                     public void onCancel() {
@@ -133,7 +128,6 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
             @Override
             public void onFocusChange(View view, boolean isFocus) {
                 LLog.d(TAG, "onFocusChange isFocus: " + isFocus);
-                //updateSizeFocus(playListHolder.rootView, isFocus);
                 if (isFocus) {
                     playListHolder.rootView.setBackgroundResource(R.drawable.bkg_item_playlist_folder);
                 } else {
@@ -150,18 +144,4 @@ public class AdapterPlaylistFolder extends RecyclerView.Adapter<AdapterPlaylistF
     public int getItemCount() {
         return dataList == null ? 0 : dataList.size();
     }
-
-    /*private void updateSizeFocus(LinearLayout linearLayout, boolean isFocus) {
-        if (linearLayout == null) {
-            return;
-        }
-        if (isFocus) {
-            linearLayout.getLayoutParams().width = sizeW + sizeW / 3;
-            //linearLayout.getLayoutParams().height = sizeH;
-        } else {
-            linearLayout.getLayoutParams().width = sizeW;
-            //linearLayout.getLayoutParams().height = sizeH / 2;
-        }
-        linearLayout.requestLayout();
-    }*/
 }
