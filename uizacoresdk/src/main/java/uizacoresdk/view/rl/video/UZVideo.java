@@ -160,7 +160,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivVideoCover;
     private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
-    private UZImageButton ibPauseIcon;
+//    private UZImageButton ibPauseIcon;
     private UZImageButton ibPlayIcon;
     private UZImageButton ibReplayIcon;
     private UZImageButton ibRewIcon;
@@ -912,10 +912,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                     }
                 }
             }
-        } else if (v == ibPauseIcon) {
-            pauseVideo();
+//        } else if (v == ibPauseIcon) {
+//            pauseVideo();
         } else if (v == ibPlayIcon) {
-            resumeVideo();
+            if(isPlaying()){
+                pauseVideo();
+            }else{
+                resumeVideo();
+            }
         } else if (v == ibReplayIcon) {
             replay();
         } else if (v == ibSkipNextIcon) {
@@ -1386,13 +1390,14 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.resumeVideo();
             }
         }
-        if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(GONE);
-        }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setVisibility(VISIBLE);
-            ibPauseIcon.requestFocus();
-        }
+//        if (ibPlayIcon != null) {
+//            ibPlayIcon.setVisibility(GONE);
+//        }
+//        if (ibPauseIcon != null) {
+//            ibPauseIcon.setVisibility(VISIBLE);
+//            ibPauseIcon.requestFocus();
+//        }
+        updatePlayPauseIcon();
     }
 
     public void pauseVideo() {
@@ -1404,14 +1409,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 uzPlayerManager.pauseVideo();
             }
         }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setVisibility(GONE);
-        }
-        if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(VISIBLE);
-            ibPlayIcon.requestFocus();
-        }
+//        if (ibPauseIcon != null) {
+//            ibPauseIcon.setVisibility(GONE);
+//        }
+//        if (ibPlayIcon != null) {
+//            ibPlayIcon.setVisibility(VISIBLE);
+//            ibPlayIcon.requestFocus();
+//        }
         addTrackingMuiza(Constants.MUIZA_EVENT_PAUSE);
+        updatePlayPauseIcon();
     }
 
     public void setDefaultValueBackwardForward(int mls) {
@@ -1569,9 +1575,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         return tvTitle;
     }
 
-    public UZImageButton getIbPauseIcon() {
-        return ibPauseIcon;
-    }
+//    public UZImageButton getIbPauseIcon() {
+//        return ibPauseIcon;
+//    }
 
     public UZImageButton getIbPlayIcon() {
         return ibPlayIcon;
@@ -1807,11 +1813,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
-        ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
+//        ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
         ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_play_uiza);
         //If auto start true, show button play and gone button pause
         if (ibPlayIcon != null) {
-            ibPlayIcon.setVisibility(GONE);
+//            ibPlayIcon.setVisibility(GONE);
+            updatePlayPaseIcon(true, false);
         }
         ibReplayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_replay_uiza);
         ibRewIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_rew);
@@ -1909,10 +1916,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             ibPlayIcon.setOnClickListener(this);
             ibPlayIcon.setOnFocusChangeListener(this);
         }
-        if (ibPauseIcon != null) {
-            ibPauseIcon.setOnClickListener(this);
-            ibPauseIcon.setOnFocusChangeListener(this);
-        }
+//        if (ibPauseIcon != null) {
+//            ibPauseIcon.setOnClickListener(this);
+//            ibPauseIcon.setOnFocusChangeListener(this);
+//        }
         if (ibReplayIcon != null) {
             ibReplayIcon.setOnClickListener(this);
             ibReplayIcon.setOnFocusChangeListener(this);
@@ -1942,44 +1949,69 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         }
     }
 
+    private void updatePlayPaseIcon(boolean isPlay, boolean isForcus){
+        if(isPlay){
+            ibPlayIcon.setImageResource(R.drawable.baseline_pause_circle_outline_white_48);
+        }else {
+            ibPlayIcon.setImageResource(R.drawable.baseline_play_circle_outline_white_48);
+        }
+        if(isForcus){
+            ibPlayIcon.requestFocus();
+        }
+    }
     //If auto start true, show button play and gone button pause
     //if not, gone button play and show button pause
     private void updateUIButtonPlayPauseDependOnIsAutoStart() {
         if (isAutoStart) {
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-                if (!isSetFirstRequestFocusDone) {
-                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
-                    isSetFirstRequestFocusDone = true;
-                }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//                if (!isSetFirstRequestFocusDone) {
+//                    ibPauseIcon.requestFocus();//set first request focus if using player for TV
+//                    isSetFirstRequestFocusDone = true;
+//                }
+//            }
+            updatePlayPaseIcon(true, !isSetFirstRequestFocusDone);
+            if (!isSetFirstRequestFocusDone) {
+                isSetFirstRequestFocusDone = true;
             }
         } else {
-            if (isPlaying()) {
-                if (ibPlayIcon != null) {
-                    ibPlayIcon.setVisibility(GONE);
-                }
-                if (ibPauseIcon != null) {
-                    ibPauseIcon.setVisibility(VISIBLE);
-                    if (!isSetFirstRequestFocusDone) {
-                        ibPauseIcon.requestFocus();//set first request focus if using player for TV
-                        isSetFirstRequestFocusDone = true;
-                    }
-                }
-            } else {
-                if (ibPlayIcon != null) {
-                    ibPlayIcon.setVisibility(VISIBLE);
-                    if (!isSetFirstRequestFocusDone) {
-                        ibPlayIcon.requestFocus();//set first request focus if using player for TV
-                        isSetFirstRequestFocusDone = true;
-                    }
-                }
-                if (ibPauseIcon != null) {
-                    ibPauseIcon.setVisibility(GONE);
-                }
-            }
+            updatePlayPauseIcon();
+        }
+//        } else {
+//            if (isPlaying()) {
+//                if (ibPlayIcon != null) {
+//                    ibPlayIcon.setVisibility(GONE);
+//                }
+//                if (ibPauseIcon != null) {
+//                    ibPauseIcon.setVisibility(VISIBLE);
+//                    if (!isSetFirstRequestFocusDone) {
+//                        ibPauseIcon.requestFocus();//set first request focus if using player for TV
+//                        isSetFirstRequestFocusDone = true;
+//                    }
+//                }
+//            } else {
+//                if (ibPlayIcon != null) {
+//                    ibPlayIcon.setVisibility(VISIBLE);
+//                    if (!isSetFirstRequestFocusDone) {
+//                        ibPlayIcon.requestFocus();//set first request focus if using player for TV
+//                        isSetFirstRequestFocusDone = true;
+//                    }
+//                }
+//                if (ibPauseIcon != null) {
+//                    ibPauseIcon.setVisibility(GONE);
+//                }
+//            }
+//        }
+    }
+
+    private void updatePlayPauseIcon() {
+        LLog.e(TAG, "updatePlayPauseIcon");
+        updatePlayPaseIcon(isPlaying(), !isSetFirstRequestFocusDone);
+        if (!isSetFirstRequestFocusDone) {
+            isSetFirstRequestFocusDone = true;
         }
     }
 
@@ -2052,10 +2084,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 ibPlayIcon.setRatioLand(7);
                 ibPlayIcon.setRatioPort(5);
             }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setRatioLand(7);
-                ibPauseIcon.setRatioPort(5);
-            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setRatioLand(7);
+//                ibPauseIcon.setRatioPort(5);
+//            }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setRatioLand(7);
                 ibReplayIcon.setRatioPort(5);
@@ -2512,17 +2544,21 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
             }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(GONE);
-            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(GONE);
+//            }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
                 ibReplayIcon.requestFocus();
-            }
-        } else {
-            updateUIButtonPlayPauseDependOnIsAutoStart();
-            if (ibReplayIcon != null) {
-                ibReplayIcon.setVisibility(GONE);
+            } else {
+                updateUIButtonPlayPauseDependOnIsAutoStart();
+                if (ibReplayIcon != null) {
+                    ibReplayIcon.setVisibility(GONE);
+                }
+                if (ibPlayIcon != null) {
+                    ibPlayIcon.setVisibility(VISIBLE);
+                    ibPlayIcon.requestFocus();
+                }
             }
         }
     }
@@ -3930,12 +3966,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(GONE);
             }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//            }
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(GONE);
             }
@@ -3963,12 +3999,12 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibBackScreenIcon != null) {
                 ibBackScreenIcon.setVisibility(VISIBLE);
             }
-            if (ibPlayIcon != null) {
-                ibPlayIcon.setVisibility(GONE);
-            }
-            if (ibPauseIcon != null) {
-                ibPauseIcon.setVisibility(VISIBLE);
-            }
+//            if (ibPlayIcon != null) {
+//                ibPlayIcon.setVisibility(GONE);
+//            }
+//            if (ibPauseIcon != null) {
+//                ibPauseIcon.setVisibility(VISIBLE);
+//            }
             //TODO iplm volume mute on/off o cast player
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(VISIBLE);
