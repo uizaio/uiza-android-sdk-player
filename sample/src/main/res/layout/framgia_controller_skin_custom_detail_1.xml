@@ -131,14 +131,14 @@
                 android:src="@drawable/baseline_play_circle_outline_white_48"
                 android:tint="@color/Blue" />
 
-            <vn.uiza.views.autosize.UZImageButton
-                android:id="@id/exo_pause_uiza"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_pause_circle_outline_white_48"
-                android:tint="@color/Blue" />
+            <!--<vn.uiza.views.autosize.UZImageButton-->
+                <!--android:id="@id/exo_pause_uiza"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/transparent"-->
+                <!--android:scaleType="centerInside"-->
+                <!--android:src="@drawable/baseline_pause_circle_outline_white_48"-->
+                <!--android:tint="@color/Blue" />-->
 
             <vn.uiza.views.autosize.UZImageButton
                 android:id="@id/exo_replay_uiza"
