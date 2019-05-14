@@ -915,7 +915,11 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 //        } else if (v == ibPauseIcon) {
 //            pauseVideo();
         } else if (v == ibPlayIcon) {
-            resumeVideo();
+            if(isPlaying()){
+                pauseVideo();
+            }else{
+                resumeVideo();
+            }
         } else if (v == ibReplayIcon) {
             replay();
         } else if (v == ibSkipNextIcon) {
