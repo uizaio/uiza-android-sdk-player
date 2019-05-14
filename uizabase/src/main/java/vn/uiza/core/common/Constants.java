@@ -9,7 +9,7 @@ package vn.uiza.core.common;
 public class Constants {
     public static boolean IS_DEBUG = false;
     public static final String PLAYER_NAME = "UZSDK";
-    public static final String USER_AGENT = "Loitp93";
+    public static final String USER_AGENT = "UizaSDK-Android";
     public static final String PLAYER_SDK_VERSION = "3.1.9";
 
     public static void setDebugMode(boolean isDebugEnable) {
@@ -183,7 +183,9 @@ public class Constants {
     public static final String TEXT_TYPE = "text/plain";
     public static final String IMAGE_TYPE = "image/*";
     public static final String SMS_URI = "sms:";
+    public static final String SMSTO_URI = "smsto:";
     public static final String SMS_BODY = "sms_body";
+    public static final String TEL_URI = "tel:";
 
     public static final String UTF_8_CHARSET = "UTF-8";
     public static final String AES_ALGORITHM = "AES";

@@ -33,20 +33,12 @@ public class LDeviceUtil {
         return (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    /*
-    check device has navigation bar
-     */
     public boolean isNavigationBarAvailable() {
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-        //LLog.dialog(TAG, "isNavigationBarAvailable: " + (!(hasBackKey && hasHomeKey)));
         return (!(hasBackKey && hasHomeKey));
     }
 
-    /*
-      get current android version
-      @return int
-       */
     public static int getCurrentAndroidVersion(Activity activity) {
         int thisVersion;
         try {
@@ -73,7 +65,6 @@ public class LDeviceUtil {
 
     public static void vibrate(Context context, int length) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
         v.vibrate(length);
     }
 
@@ -94,11 +85,7 @@ public class LDeviceUtil {
 
     public static boolean isTV(Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
-        if (uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
-            return true;
-        } else {
-            return false;
-        }
+        return uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
     //return true if device is set auto switch rotation on
@@ -115,10 +102,6 @@ public class LDeviceUtil {
         if (context == null) {
             return false;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
-            return false;
-        } else {
-            return true;
-        }
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
     }
 }

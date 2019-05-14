@@ -55,7 +55,6 @@ public class UZRestClientHeartBeat {
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -78,14 +77,11 @@ public class UZRestClientHeartBeat {
     public static void addHeader(String name, String value) {
         if (restRequestInterceptor != null) {
             restRequestInterceptor.addHeader(name, value);
-            //LLog.d(TAG, "addHeader: name: " + name + " value: " + value);
         }
     }
 
     public static void addAuthorization(String token) {
-        //addHeader(AUTHORIZATION, "Token token=" + token);
         addHeader(AUTHORIZATION, token);
-        //LLog.d(TAG, "Add token: " + token);
     }
 
     public static void removeAuthorization() {

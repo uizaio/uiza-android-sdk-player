@@ -325,6 +325,7 @@ public class SnappySmoothScroller extends LinearSmoothScroller {
         }
 
         final View firstChild = layoutManager.getChildAt(0);
+        if (firstChild == null) return 0;
         final int position = layoutManager.getPosition(firstChild);
         if (position == 0) {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) firstChild.getLayoutParams();
@@ -343,6 +344,7 @@ public class SnappySmoothScroller extends LinearSmoothScroller {
         }
 
         final View lastChild = layoutManager.getChildAt(layoutManager.getChildCount() - 1);
+        if (lastChild == null) return 0;
         final int position = layoutManager.getPosition(lastChild);
         if (position == layoutManager.getItemCount() - 1) {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) lastChild.getLayoutParams();
@@ -363,6 +365,7 @@ public class SnappySmoothScroller extends LinearSmoothScroller {
         }
 
         final View firstChild = layoutManager.getChildAt(0);
+        if (firstChild == null) return 0;
         final int position = layoutManager.getPosition(firstChild);
         if (position == 0) {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) firstChild.getLayoutParams();

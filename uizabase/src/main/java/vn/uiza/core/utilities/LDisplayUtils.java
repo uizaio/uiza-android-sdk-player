@@ -34,37 +34,29 @@ public final class LDisplayUtils {
     public static int getDialogW(Activity activity) {
         DisplayMetrics dm;
         dm = activity.getResources().getDisplayMetrics();
-        int w = dm.widthPixels - 100;
-        return w;
+        return dm.widthPixels - 100;
     }
 
     public static int getScreenW(Activity activity) {
         DisplayMetrics dm;
         dm = activity.getResources().getDisplayMetrics();
-        int w = dm.widthPixels;
-        return w;
+        return dm.widthPixels;
     }
 
     public static int getScreenH(Activity activity) {
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = activity.getResources().getDisplayMetrics();
-        int h = dm.heightPixels;
-        return h;
+        DisplayMetrics dm = activity.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 
     /**
      * Toggle keyboard If the keyboard is visible,then hidden it,if it's
      * invisible,then show it
-     *
-     * @param context
      */
     public static void toggleKeyboard(Context context) {
         InputMethodManager imm = (InputMethodManager) context
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
-                    InputMethodManager.HIDE_NOT_ALWAYS);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
 }

@@ -1,9 +1,5 @@
 package vn.uiza.core.utilities.statusbar;
 
-/**
- * Created by www.muathu@gmail.com on 1/18/2018.
- */
-
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -19,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 public class StatusBarCompat {
 
     //Get alpha color
-    static int calculateStatusBarColor(int color, int alpha) {
+    private static int calculateStatusBarColor(int color, int alpha) {
         float a = 1 - alpha / 255f;
         int red = color >> 16 & 0xff;
         int green = color >> 8 & 0xff;

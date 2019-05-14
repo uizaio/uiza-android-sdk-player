@@ -12,7 +12,6 @@ import vn.uiza.utils.util.SentryUtils;
  */
 
 public class LSoundUtil {
-    private static final String TAG = LSoundUtil.class.getSimpleName();
 
     public static void startMusicFromAsset(Context context, String fileName) {
         MediaPlayer mediaPlayer = new MediaPlayer();
@@ -30,16 +29,11 @@ public class LSoundUtil {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     mediaPlayer.stop();
-                    if (mediaPlayer != null) {
-                        //LLog.d(TAG, "onCompletion >>> release");
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
+                    mediaPlayer.reset();
+                    mediaPlayer.release();
                 }
             });
         } catch (IOException e) {
-            //LLog.d(TAG, "startMusicFromAsset: " + e.toString());
             SentryUtils.captureException(e);
         }
     }

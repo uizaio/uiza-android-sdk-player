@@ -35,6 +35,7 @@ import vn.uiza.utils.util.SentryUtils;
  */
 public class RealtimeBlurView extends View {
 
+    private static final String UNSATISFIED_LINK_ERROR = "Error loading RS jni library: java.lang.UnsatisfiedLinkError:";
     private float mDownsampleFactor; // default 4
     private int mOverlayColor; // default #aaffffff
     private float mBlurRadius; // default 10dp (0 < r <= 25)
@@ -150,7 +151,7 @@ public class RealtimeBlurView extends View {
                     mBlurScript = ScriptIntrinsicBlur.create(mRenderScript, Element.U8_4(mRenderScript));
                 } catch (android.support.v8.renderscript.RSRuntimeException e) {
                     if (isDebug(getContext())) {
-                        if (e.getMessage() != null && e.getMessage().startsWith("Error loading RS jni library: java.lang.UnsatisfiedLinkError:")) {
+                        if (e.getMessage() != null && e.getMessage().startsWith(UNSATISFIED_LINK_ERROR)) {
                             throw new RuntimeException("Error loading RS jni library, Upgrade buildToolsVersion=\"24.0.2\" or higher may solve this issue");
                         } else {
                             throw e;
@@ -231,7 +232,6 @@ public class RealtimeBlurView extends View {
             View decor = mDecorView;
             if (decor != null && isShown() && prepare()) {
                 boolean redrawBitmap = mBlurredBitmap != oldBmp;
-                oldBmp = null;
                 decor.getLocationOnScreen(locations);
                 int x = -locations[0];
                 int y = -locations[1];
@@ -274,7 +274,7 @@ public class RealtimeBlurView extends View {
 
     protected View getActivityDecorView() {
         Context ctx = getContext();
-        for (int i = 0; i < 4 && ctx != null && !(ctx instanceof Activity) && ctx instanceof ContextWrapper; i++) {
+        for (int i = 0; i < 4 && !(ctx instanceof Activity) && ctx instanceof ContextWrapper; i++) {
             ctx = ((ContextWrapper) ctx).getBaseContext();
         }
         if (ctx instanceof Activity) {
@@ -328,10 +328,6 @@ public class RealtimeBlurView extends View {
 
     /**
      * Custom draw the blurred bitmap and color to define your own shape
-     *
-     * @param canvas
-     * @param blurredBitmap
-     * @param overlayColor
      */
     protected void drawBlurredBitmap(Canvas canvas, Bitmap blurredBitmap, int overlayColor) {
         if (blurredBitmap != null) {
