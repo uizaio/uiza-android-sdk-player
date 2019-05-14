@@ -253,10 +253,10 @@ public class UZData {
         UizaTracking uizaTracking = new UizaTracking();
         uizaTracking.setAppId(getAppId());
         uizaTracking.setPageType(PAGE_TYPE);
-        uizaTracking.setViewerUserId(Loitp.getDeviceId(context));
+        uizaTracking.setViewerUserId(UZOsUtil.getDeviceId(context));
         uizaTracking.setUserAgent(Constants.USER_AGENT);
         uizaTracking.setReferrer(TmpParamData.getInstance().getReferrer());
-        uizaTracking.setDeviceId(Loitp.getDeviceId(context));
+        uizaTracking.setDeviceId(UZOsUtil.getDeviceId(context));
         //timestamp
         uizaTracking.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //uizaTracking.setTimestamp("2018-01-11T07:46:06.176Z");
@@ -361,18 +361,18 @@ public class UZData {
         muiza.setSessionId(TmpParamData.getInstance().getSessionId());
         muiza.setTimestamp(LDateUtils.getCurrent(LDateUtils.FORMAT_1));
         //muiza.setTimestamp("2018-01-11T07:46:06.176Z");
-        muiza.setViewId(Loitp.getDeviceId(context));
+        muiza.setViewId(UZOsUtil.getDeviceId(context));
         muiza.setViewSequenceNumber(TmpParamData.getInstance().getViewSequenceNumber());
         muiza.setViewerApplicationEngine(TmpParamData.getInstance().getViewerApplicationEngine());
         muiza.setViewerApplicationName(TmpParamData.getInstance().getViewerApplicationName());
         muiza.setViewerApplicationVersion(TmpParamData.getInstance().getViewerApplicationVersion());
         muiza.setViewerDeviceManufacturer(android.os.Build.MANUFACTURER);
         muiza.setViewerDeviceName(android.os.Build.MODEL);
-        muiza.setViewerOsArchitecture(Loitp.getViewerOsArchitecture());
+        muiza.setViewerOsArchitecture(UZOsUtil.getViewerOsArchitecture());
         muiza.setViewerOsFamily(ANDROID + Build.VERSION.RELEASE);
         muiza.setViewerOsVersion(API_LEVEL + Build.VERSION.SDK_INT);
         muiza.setViewerTime(System.currentTimeMillis());
-        muiza.setViewerUserId(Loitp.getDeviceId(context));
+        muiza.setViewerUserId(UZOsUtil.getDeviceId(context));
         muiza.setAppId(getAppId());
         muiza.setReferrer(TmpParamData.getInstance().getReferrer());
         muiza.setPageLoadTime(TmpParamData.getInstance().getPageLoadTime());
@@ -408,13 +408,12 @@ public class UZData {
                     muiza.setViewRebufferFrequency(0);
                     muiza.setViewRebufferPercentage(0);
                 } else {
-                    muiza.setViewRebufferFrequency((float) ((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
-                    muiza.setViewRebufferPercentage((float) ((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                    muiza.setViewRebufferFrequency(((float) TmpParamData.getInstance().getViewRebufferCount() / (float) TmpParamData.getInstance().getViewWatchTime()));
+                    muiza.setViewRebufferPercentage(((float) TmpParamData.getInstance().getViewRebufferDuration() / (float) TmpParamData.getInstance().getViewWatchTime()));
                 }
                 break;
         }
         muizaList.add(muiza);
-        //LLog.d(TAG, "addTrackingMuiza event: " + event);
     }
     //==================================================================================================================END TRACKING
 
@@ -458,25 +457,16 @@ public class UZData {
     private List<Data> dataList;
     private int currentPositionOfDataList = 0;
 
-    /*
-     **true neu playlist folder
+    /**
+     * true neu playlist folder
      * tra ve false neu play entity
      */
     public boolean isPlayWithPlaylistFolder() {
-        if (dataList == null) {
-            //LLog.d(TAG, "isPlayWithPlaylistFolder false");
-            return false;
-        }
-        //LLog.d(TAG, "isPlayWithPlaylistFolder true");
-        return true;
+        return dataList != null;
     }
 
     public void setDataList(List<Data> dataList) {
         this.dataList = dataList;
-        /*LLog.d(TAG, "setDataList " + dataList.size());
-        if (Constants.IS_DEBUG) {
-            isPlayWithPlaylistFolder();
-        }*/
     }
 
     public List<Data> getDataList() {
@@ -499,7 +489,6 @@ public class UZData {
     }
 
     public void clearDataForPlaylistFolder() {
-        //LLog.d(TAG, "clearDataForPlaylistFolder");
         dataList = null;
         currentPositionOfDataList = 0;
     }

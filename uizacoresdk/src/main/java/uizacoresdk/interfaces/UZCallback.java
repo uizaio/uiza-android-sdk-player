@@ -8,18 +8,18 @@ public interface UZCallback {
     //when video init done with result
     //isInitSuccess onStateReadyFirst
     //isGetDataSuccess da co data ResultGetLinkPlay va Data
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
+    void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data);
 
-    //when pip video is inited success
-    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess);
+    //when pip video is init success
+    void onStateMiniPlayer(boolean isInitMiniPlayerSuccess);
 
     //when skin is changed
-    public void onSkinChange();
+    void onSkinChange();
 
     //when screen rotate
-    public void onScreenRotate(boolean isLandscape);
+    void onScreenRotate(boolean isLandscape);
 
     //when uiimavideo had an error
-    public void onError(UZException e);
+    void onError(UZException e);
 
 }

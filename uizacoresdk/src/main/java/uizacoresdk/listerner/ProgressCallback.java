@@ -5,13 +5,13 @@ package uizacoresdk.listerner;
  */
 
 public interface ProgressCallback {
-    public void onAdProgress(int s, int duration, int percent);
+    void onAdProgress(int s, int duration, int percent);
 
-    public void onAdEnded();
+    void onAdEnded();
 
-    public void onVideoProgress(long currentMls, int s, long duration, int percent);
+    void onVideoProgress(long currentMls, int s, long duration, int percent);
 
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState);
+    void onPlayerStateChanged(boolean playWhenReady, int playbackState);
 
-    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration);
+    void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration);
 }

@@ -1,7 +1,7 @@
 package uizacoresdk.interfaces;
 
 public interface UZLiveContentCallback {
-    public void onUpdateLiveInfoTimeStartLive(long duration, String hhmmss);
+    void onUpdateLiveInfoTimeStartLive(long duration, String hhmmss);
 
-    public void onUpdateLiveInfoCurrentView(long watchnow);
+    void onUpdateLiveInfoCurrentView(long watchnow);
 }

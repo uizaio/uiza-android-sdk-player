@@ -25,13 +25,17 @@ import vn.uiza.views.layout.flowlayout.FlowLayout;
  */
 
 public class UZDlgShare extends Dialog {
+
     private final String TAG = getClass().getSimpleName();
+    //TODO correct this
+    private static final String SUBJECT = "Uiza Sharing";
+    private static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
+    private static final String GOOGLE_DOCS_PACKAGE = "com.google.android.apps.docs";
+    private static final String FACEBOOK_PACKAGE = "com.facebook.katana";
+    private static final String CLIPBOARD = "clipboard";
     private Activity activity;
     private AlertDialog dialog;
     private FlowLayout ll;
-    //TODO correct this
-    public static final String SUBJECT = "Uiza Sharing";
-    public static final String MESSAGE = "https://play.google.com/store/apps/details?id=io.uiza.app";
     private boolean isLandscape;
 
     public UZDlgShare(Activity activity, boolean isLandscape) {
@@ -46,7 +50,7 @@ public class UZDlgShare extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dlg_share);
 
-        ll = (FlowLayout) findViewById(R.id.ll);
+        ll = findViewById(R.id.ll);
         ll.setChildSpacing(FlowLayout.SPACING_AUTO);
         ll.setChildSpacingForLastRow(FlowLayout.SPACING_ALIGN);
         ll.setRowSpacing(20f);
@@ -57,9 +61,6 @@ public class UZDlgShare extends Dialog {
                 dismiss();
             }
         });
-
-        //ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_view);
-        //LUIUtil.setPullLikeIOSVertical(scrollView);
 
         genUI();
     }
@@ -75,21 +76,15 @@ public class UZDlgShare extends Dialog {
 
         List<ResolveInfo> resolveInfoList;
         if (UizaDataV1.getInstance().getResolveInfoList() == null) {
-            //LLog.d(TAG, "queryIntentActivities");
             Intent template = new Intent(Intent.ACTION_SEND);
             template.setType("text/plain");
             resolveInfoList = activity.getPackageManager().queryIntentActivities(template, 0);
             UizaDataV1.getInstance().setResolveInfoList(resolveInfoList);
         } else {
-            //LLog.d(TAG, "!queryIntentActivities");
             resolveInfoList = UizaDataV1.getInstance().getResolveInfoList();
         }
 
-        //LLog.d(TAG, "resolveInfoList size: " + resolveInfoList.size());
         for (final ResolveInfo resolveInfo : resolveInfoList) {
-            //LLog.d(TAG, "resolveInfo.activityInfo loadLabel -> " + resolveInfo.loadLabel(activity.getPackageManager()));
-            //LLog.d(TAG, "resolveInfo.activityInfo.packageName -> " + resolveInfo.activityInfo.packageName);
-
             ImageView imageView = new ImageView(activity);
             imageView.setImageDrawable(resolveInfo.loadIcon(activity.getPackageManager()));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -109,11 +104,9 @@ public class UZDlgShare extends Dialog {
     private void click(ResolveInfo resolveInfo) {
         String pkgName = resolveInfo.activityInfo.packageName;
         String label = (String) resolveInfo.loadLabel(activity.getPackageManager());
-        //LLog.d(TAG, "click resolveInfo.activityInfo loadLabel -> " + label);
-        //LLog.d(TAG, "click resolveInfo.activityInfo.packageName -> " + pkgName);
-        if (pkgName.equals("com.google.android.apps.docs") && label.toLowerCase().contains("clipboard")) {
+        if (pkgName.equals(GOOGLE_DOCS_PACKAGE) && label.toLowerCase().contains(CLIPBOARD)) {
             LDeviceUtil.setClipboard(activity, MESSAGE);
-        } else if (pkgName.equals("com.facebook.katana")) {
+        } else if (pkgName.equals(FACEBOOK_PACKAGE)) {
             LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);
         } else {
             LSocialUtil.sharingToSocialMedia(activity, resolveInfo.activityInfo.packageName, SUBJECT, MESSAGE);
