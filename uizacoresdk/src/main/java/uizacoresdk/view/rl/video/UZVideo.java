@@ -1315,6 +1315,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             trackUizaEventVideoStarts();
             trackUizaEventDisplay();
             trackUizaEventPlaysRequested();
+
         }
         return result;
     }
@@ -2536,9 +2537,6 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibPlayIcon != null) {
                 ibPlayIcon.setVisibility(GONE);
             }
-//            if (ibPauseIcon != null) {
-//                ibPauseIcon.setVisibility(GONE);
-//            }
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
                 ibReplayIcon.requestFocus();
@@ -2547,6 +2545,10 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             updateUIButtonPlayPauseDependOnIsAutoStart();
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(GONE);
+            }
+            if (ibPlayIcon != null) {
+                ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
             }
         }
     }
