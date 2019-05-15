@@ -328,19 +328,19 @@ Off: Mini player will be destroyed if user drag it to TOP_LEFT, TOP_RIGHT, BOTTO
                     android:layout_weight="1"
                     android:text="Play" />
 
-                <Button
-                    android:id="@+id/bt_pause"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Pause" />
+                <!--<Button-->
+                    <!--android:id="@+id/bt_pause"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Pause" />-->
 
-                <Button
-                    android:id="@+id/bt_play_pause"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Play/Pause" />
+                <!--<Button-->
+                    <!--android:id="@+id/bt_play_pause"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Play/Pause" />-->
 
                 <Button
                     android:id="@+id/bt_full_screen"
