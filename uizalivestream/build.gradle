@@ -39,4 +39,14 @@ dependencies {
     api project(':uizabase')
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
+
+    // if you want to modify the version of these dependencies, check this link below
+    // https://github.com/powermock/powermock/wiki/Mockito
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.8.9"
+    testImplementation "org.mockito:mockito-inline:2.8.9"
+    testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.4'
 }
