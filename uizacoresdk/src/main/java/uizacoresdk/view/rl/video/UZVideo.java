@@ -423,7 +423,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             uzCallback.onError(uzException);
         }
         // Capture by Sentry, in uzException already contains Message, Error Code
-//        SentryUtils.captureException(uzException.getException());
+        SentryUtils.captureException(uzException.getException());
         addTrackingMuizaError(Constants.MUIZA_EVENT_ERROR, uzException);
         if (isHasError) {
             return;
@@ -439,9 +439,9 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     protected void init(@NonNull String entityId, boolean isClearDataPlaylistFolder) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
-//        if (uzPlayerManager != null) {
-//            uzPlayerManager.release();
-//        }
+        if (uzPlayerManager != null) {
+            uzPlayerManager.release();
+        }
         uuid = UUID.randomUUID();
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
@@ -462,7 +462,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
                 if (uzCallback != null) {
                     uzCallback.onError(UZExceptionUtil.getExceptionEntityId());
                 }
-//                SentryUtils.captureException(e);
+                SentryUtils.captureException(e);
                 LLog.e(TAG, "init NullPointerException: " + e.toString());
                 return;
             }
