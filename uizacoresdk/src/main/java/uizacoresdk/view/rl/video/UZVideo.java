@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -160,7 +161,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
     private ImageView ivVideoCover;
     private UZImageButton ibFullscreenIcon;
     private TextView tvTitle;
-//    private UZImageButton ibPauseIcon;
+    //    private UZImageButton ibPauseIcon;
     private UZImageButton ibPlayIcon;
     private UZImageButton ibReplayIcon;
     private UZImageButton ibRewIcon;
@@ -1814,7 +1815,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         ibFullscreenIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_fullscreen_toggle_icon);
         tvTitle = (TextView) uzPlayerView.findViewById(R.id.tv_title);
 //        ibPauseIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_pause_uiza);
-        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(R.id.exo_play_uiza);
+        ibPlayIcon = (UZImageButton) uzPlayerView.findViewById(vn.uiza.R.id.exo_play_uiza);
         //If auto start true, show button play and gone button pause
         if (ibPlayIcon != null) {
 //            ibPlayIcon.setVisibility(GONE);
@@ -2550,15 +2551,15 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
             if (ibReplayIcon != null) {
                 ibReplayIcon.setVisibility(VISIBLE);
                 ibReplayIcon.requestFocus();
-            } else {
-                updateUIButtonPlayPauseDependOnIsAutoStart();
-                if (ibReplayIcon != null) {
-                    ibReplayIcon.setVisibility(GONE);
-                }
-                if (ibPlayIcon != null) {
-                    ibPlayIcon.setVisibility(VISIBLE);
-                    ibPlayIcon.requestFocus();
-                }
+            }
+        } else {
+            updateUIButtonPlayPauseDependOnIsAutoStart();
+            if (ibReplayIcon != null) {
+                ibReplayIcon.setVisibility(GONE);
+            }
+            if (ibPlayIcon != null) {
+                ibPlayIcon.setVisibility(VISIBLE);
+                ibPlayIcon.requestFocus();
             }
         }
     }
@@ -3972,6 +3973,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 //            if (ibPauseIcon != null) {
 //                ibPauseIcon.setVisibility(VISIBLE);
 //            }
+            updatePlayPaseIcon(true, false);
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(GONE);
             }
@@ -4005,6 +4007,7 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
 //            if (ibPauseIcon != null) {
 //                ibPauseIcon.setVisibility(VISIBLE);
 //            }
+            updatePlayPaseIcon(true, false);
             //TODO iplm volume mute on/off o cast player
             if (ibVolumeIcon != null) {
                 ibVolumeIcon.setVisibility(VISIBLE);
