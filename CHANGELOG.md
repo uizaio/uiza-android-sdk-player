@@ -1,4 +1,18 @@
-### 3.3.12 (2019-4-24)
+### 3.3.18.3_BETA (2019-5-16)
+- Optimize
+- Fix button play was hide when miniplayer back to normal
+- Fix space white at sample utube
+
+### 3.3.17 (2019-5-10)
+- Add Sentry log
+
+### 3.3.16 (2019-5-3)
+- Fix previous session play trigger event after init new session
+
+### 3.3.15 (2019-4-27)
+- Remove mux tracking
+
+### 3.3.14 (2019-4-25)
 - Fixed a bug making video playing with more than one sound
 
 ### 3.3.8 (2019-4-23)
