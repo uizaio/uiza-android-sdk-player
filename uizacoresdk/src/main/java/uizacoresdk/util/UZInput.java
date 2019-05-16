@@ -9,7 +9,6 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  */
 
 public class UZInput {
-    //private final String TAG = getClass().getSimpleName();
     private String urlIMAAd = "";
     private String urlThumnailsPreviewSeekbar = "";
     private Data data;
@@ -41,10 +40,7 @@ public class UZInput {
     }
 
     public boolean isLivestream() {
-        if (data == null || data.getLastFeedId() == null || data.getLastFeedId().isEmpty()) {
-            return false;
-        }
-        return true;
+        return data != null && data.getLastFeedId() != null && !data.getLastFeedId().isEmpty();
     }
 
     public ResultGetTokenStreaming getResultGetTokenStreaming() {

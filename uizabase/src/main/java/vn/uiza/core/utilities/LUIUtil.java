@@ -55,10 +55,8 @@ import vn.uiza.utils.util.SentryUtils;
  */
 public class LUIUtil {
     private static String TAG = LUIUtil.class.getSimpleName();
+    private static final String IMG_FOLDER = "img/";
 
-    /*
-     * settext marquee
-     */
     public static void setMarquee(TextView tv, String text) {
         tv.setText(text);
         setMarquee(tv);
@@ -70,12 +68,6 @@ public class LUIUtil {
         tv.setSingleLine(true);
         tv.setMarqueeRepeatLimit(-1);//no limit loop
     }
-
-  /*public void setAnimation(View v) {
-    Animation mAnimation;
-    mAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_in);
-    v.startAnimation(mAnimation);
-  }*/
 
     public static GradientDrawable createGradientDrawableWithRandomColor() {
         int color = LStoreUtil.getRandomColor();
@@ -94,17 +86,6 @@ public class LUIUtil {
         return gradientDrawable;
     }
 
-    /*@SuppressWarnings("deprecation")
-    public static void setCircleViewWithColor(View arr[]) {
-        try {
-            for (View view : arr) {
-                view.setBackgroundDrawable(createGradientDrawableWithRandomColor());
-            }
-        } catch (Exception e) {
-            LLog.d(TAG, "setCircleViewWithColor setBkgColor: " + e.toString());
-        }
-    }*/
-
     @SuppressWarnings("deprecation")
     public static void setCircleViewWithColor(View view, int colorMain, int colorStroke) {
         try {
@@ -115,23 +96,6 @@ public class LUIUtil {
         }
     }
 
-    /*
-      get screenshot
-       */
-    /*public Bitmap getBitmapFromView(View view) {
-        view.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        Drawable backgroundDrawable = view.getBackground();
-        Canvas canvas = new Canvas(bitmap);
-        if (backgroundDrawable != null) {
-            backgroundDrawable.draw(canvas);
-        } else {
-            canvas.drawColor(Color.WHITE);
-        }
-        view.draw(canvas);
-        return bitmap;
-    }*/
-
     public static void setGradientBackground(View v) {
         final View view = v;
         Drawable[] layers = new Drawable[1];
@@ -139,16 +103,15 @@ public class LUIUtil {
         ShapeDrawable.ShaderFactory sf = new ShapeDrawable.ShaderFactory() {
             @Override
             public Shader resize(int width, int height) {
-                LinearGradient lg = new LinearGradient(0, 0, 0, view.getHeight(), new int[]{LStoreUtil.getRandomColor(), LStoreUtil.getRandomColor(), LStoreUtil.getRandomColor(), LStoreUtil
+                return new LinearGradient(0, 0, 0, view.getHeight(), new int[]{LStoreUtil.getRandomColor(), LStoreUtil.getRandomColor(), LStoreUtil.getRandomColor(), LStoreUtil
                         .getRandomColor()}, new float[]{0, 0.49f, 0.50f, 1}, Shader.TileMode.CLAMP);
-                return lg;
             }
         };
         PaintDrawable p = new PaintDrawable();
         p.setShape(new RectShape());
         p.setShaderFactory(sf);
         p.setCornerRadii(new float[]{5, 5, 5, 5, 0, 0, 0, 0});
-        layers[0] = (Drawable) p;
+        layers[0] = p;
         LayerDrawable composite = new LayerDrawable(layers);
         view.setBackgroundDrawable(composite);
     }
@@ -161,32 +124,12 @@ public class LUIUtil {
         }
     }
 
-    /*public static void removeShiftMode(BottomNavigationView view) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
-            shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
-            shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                item.setShiftingMode(false);
-                // set once again checked value, so view will be updated
-                item.setChecked(item.getItemData().isChecked());
-            }
-        } catch (NoSuchFieldException e) {
-            LLog.d(TAG, "Unable to get shift mode field");
-        } catch (IllegalAccessException e) {
-            LLog.d(TAG, "Unable to change value of shift mode");
-        }
-    }*/
-
     public static void setImageFromAsset(Context context, String fileName, ImageView imageView) {
         {
-            Drawable drawable = null;
+            Drawable drawable;
             InputStream stream = null;
             try {
-                stream = context.getAssets().open("img/" + fileName);
+                stream = context.getAssets().open(IMG_FOLDER + fileName);
                 drawable = Drawable.createFromStream(stream, null);
                 if (drawable != null) {
                     imageView.setImageDrawable(drawable);
@@ -207,19 +150,13 @@ public class LUIUtil {
         }
     }
 
-    public static void fixSizeTabLayout(Context context, TabLayout tabLayout, String titleList[]) {
+    public static void fixSizeTabLayout(TabLayout tabLayout, String[] titleList) {
         if (titleList.length > 3) {
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         } else {
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
             tabLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         }
-        //settext allcap = false
-        /*for (int tabIndex = 0; tabIndex < tabLayout.getTabCount(); tabIndex++) {
-            TextView tabTextView = (TextView) (((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(tabIndex)).getChildAt(1));
-            tabTextView.setAllCaps(false);
-            setTextAppearance(context, tabTextView, android.R.style.TextAppearance_Medium);
-        }*/
     }
 
     public static void setTextAppearance(Context context, TextView textView, int resId) {
@@ -231,7 +168,7 @@ public class LUIUtil {
     }
 
     public interface DelayCallback {
-        public void doAfter(int mls);
+        void doAfter(int mls);
     }
 
     public static void setDelay(final int mls, final DelayCallback delayCallback) {
@@ -247,8 +184,6 @@ public class LUIUtil {
     }
 
     public static void setSoftInputMode(Activity activity, int mode) {
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        //activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         activity.getWindow().setSoftInputMode(mode);
     }
 
@@ -270,12 +205,9 @@ public class LUIUtil {
         View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
 
-        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(Color.WHITE);
         searchEditText.setHintTextColor(ContextCompat.getColor(context, R.color.LightGrey));
-
-        //ImageView imgViewSearchView = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
-        //imgViewSearchView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.search_color));
 
         SpannableStringBuilder ssb = new SpannableStringBuilder("   ");
         if (hintText != null) {
@@ -290,7 +222,7 @@ public class LUIUtil {
         ssb.setSpan(new ImageSpan(searchIcon), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         searchEditText.setHint(ssb);
 
-        ImageView close = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        ImageView close = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         close.setImageResource(R.drawable.ic_close_black_48dp);
 
         return searchView;
@@ -335,7 +267,7 @@ public class LUIUtil {
         textView.setText(json);
     }
 
-    private static int colors[] = {
+    private static int[] colors = {
             R.color.LightBlue,
             R.color.LightCoral,
             R.color.LightCyan,
@@ -358,7 +290,7 @@ public class LUIUtil {
     }
 
     public interface CallbackSearch {
-        public void onSearch();
+        void onSearch();
     }
 
     public static void setImeiActionSearch(EditText editText, final CallbackSearch callbackSearch) {

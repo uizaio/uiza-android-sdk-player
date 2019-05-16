@@ -20,17 +20,12 @@ import vn.uiza.utils.util.SentryUtils;
  */
 
 //https://github.com/google/ExoPlayer/issues/4031
-//I want to to show playback controls only when onTouch event is fired. How to prevent control buttons being showed up when on long pressing, dragging etc.?
-
+//I want to to show playback controls only when onTouch event is fired.
+// How to prevent control buttons being showed up when on long pressing, dragging etc.?
 public final class UZPlayerView extends PlayerView implements PlayerControlView.VisibilityListener {
     private final String TAG = getClass().getSimpleName();
-    private static final float DRAG_THRESHOLD = 10;//original 10
-    private static final long LONG_PRESS_THRESHOLD_MS = 500;//original 500
 
     private boolean controllerVisible;
-    private long tapStartTimeMs;
-    private float tapPositionX;
-    private float tapPositionY;
 
     public UZPlayerView(Context context) {
         this(context, null);
@@ -55,7 +50,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
     }
 
     public interface ControllerStateCallback {
-        public void onVisibilityChange(boolean isShow);
+        void onVisibilityChange(boolean isShow);
     }
 
     private ControllerStateCallback controllerStateCallback;
@@ -83,16 +78,14 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public void showController() {
-        if (UZData.getInstance().isSettingPlayer()) {
-        } else {
+        if (!UZData.getInstance().isSettingPlayer()) {
             super.showController();
         }
     }
 
     @Override
     public void hideController() {
-        if (UZData.getInstance().isSettingPlayer()) {
-        } else {
+        if (!UZData.getInstance().isSettingPlayer()) {
             super.hideController();
         }
     }
@@ -103,69 +96,28 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        /*switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                tapStartTimeMs = SystemClock.elapsedRealtime();
-                tapPositionX = ev.getX();
-                tapPositionY = ev.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (tapStartTimeMs != 0
-                        && (Math.abs(ev.getX() - tapPositionX) > DRAG_THRESHOLD
-                        || Math.abs(ev.getY() - tapPositionY) > DRAG_THRESHOLD)) {
-                    tapStartTimeMs = 0;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (tapStartTimeMs != 0) {
-                    if (SystemClock.elapsedRealtime() - tapStartTimeMs < LONG_PRESS_THRESHOLD_MS) {
-                        if (!controllerVisible) {
-                            //LLog.d(TAG, "showController");
-                            showController();
-                            if (controllerStateCallback != null) {
-                                controllerStateCallback.onVisibilityChange(true);
-                            }
-                        } else if (getControllerHideOnTouch()) {
-                            //LLog.d(TAG, "hideController");
-                            hideController();
-                            if (controllerStateCallback != null) {
-                                controllerStateCallback.onVisibilityChange(false);
-                            }
-                        }
-                    }
-                    tapStartTimeMs = 0;
-                    if (onTouchEvent != null) {
-                        LLog.d(TAG, "onTouchEvent");
-                        onTouchEvent.onClick();
-                    }
-                }
-        }*/
-
         if (UZData.getInstance().isUseWithVDHView()) {
             return false;
         } else {
             mDetector.onTouchEvent(ev);
             return true;
         }
-
-        //mDetector.onTouchEvent(ev);
-        //return true;
     }
 
     public interface OnTouchEvent {
-        public void onSingleTapConfirmed(float x, float y);
+        void onSingleTapConfirmed(float x, float y);
 
-        public void onLongPress(float x, float y);
+        void onLongPress(float x, float y);
 
-        public void onDoubleTap(float x, float y);
+        void onDoubleTap(float x, float y);
 
-        public void onSwipeRight();
+        void onSwipeRight();
 
-        public void onSwipeLeft();
+        void onSwipeLeft();
 
-        public void onSwipeBottom();
+        void onSwipeBottom();
 
-        public void onSwipeTop();
+        void onSwipeTop();
     }
 
     private class UizaGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -174,7 +126,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onDown(MotionEvent event) {
-            //LLog.d(TAG, "onDown");
             // don't return false here or else none of the other
             // gestures will work
             return true;
@@ -182,7 +133,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            //LLog.d(TAG, "onSingleTapConfirmed " + e.getX() + " - " + e.getY());
             if (!controllerVisible) {
                 showController();
             } else if (getControllerHideOnTouch()) {
@@ -196,7 +146,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public void onLongPress(MotionEvent e) {
-            //LLog.d(TAG, "onLongPress " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onLongPress(e.getX(), e.getY());
             }
@@ -204,7 +153,6 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            //LLog.d(TAG, "onDoubleTap " + e.getX() + " - " + e.getY());
             if (onTouchEvent != null) {
                 onTouchEvent.onDoubleTap(e.getX(), e.getY());
             }
@@ -213,13 +161,11 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            //LLog.d(TAG, "onScroll");
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            //LLog.d(TAG, "onFling");
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
@@ -261,10 +207,7 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
     }
 
     public PlayerControlView getPlayerControlView() {
-        //PlayerControlView playerControlView = (PlayerControlView) findViewById(R.id.exo_controller);
-        //return playerControlView;
         for (int i = 0; i < this.getChildCount(); i++) {
-            //LLog.d(TAG, "getPlayerControlView " + i);
             if (this.getChildAt(i) instanceof PlayerControlView) {
                 return (PlayerControlView) getChildAt(i);
             }
@@ -275,11 +218,8 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
     public View[] getAllChild() {
         PlayerControlView playerControlView = getPlayerControlView();
         if (playerControlView == null) {
-            //LLog.e(TAG, "playerControlView == null");
             return null;
         }
-        //LLog.d(TAG, "playerControlView != null");
-        //LLog.d(TAG, "playerControlView.getChildCount() " + playerControlView.getChildCount());
         List<View> viewList = LUIUtil.getAllChildren(playerControlView);
         return viewList.toArray(new View[viewList.size()]);
     }

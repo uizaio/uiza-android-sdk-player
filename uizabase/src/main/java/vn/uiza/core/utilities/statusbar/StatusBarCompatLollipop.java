@@ -1,13 +1,8 @@
 package vn.uiza.core.utilities.statusbar;
 
-/**
- * Created by www.muathu@gmail.com on 1/18/2018.
- */
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -22,24 +17,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import vn.uiza.core.utilities.LScreenUtil;
+
 /**
  * After Lollipop use system method.
  * Created by qiu on 8/27/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class StatusBarCompatLollipop {
-
-    /**
-     * return statusBar's Height in pixels
-     */
-    private static int getStatusBarHeight(Context context) {
-        int result = 0;
-        int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resId > 0) {
-            result = context.getResources().getDimensionPixelOffset(resId);
-        }
-        return result;
-    }
 
     /**
      * set StatusBarColor
@@ -56,7 +41,7 @@ class StatusBarCompatLollipop {
         window.setStatusBarColor(statusColor);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -85,7 +70,7 @@ class StatusBarCompatLollipop {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -119,7 +104,7 @@ class StatusBarCompatLollipop {
             }
         });
 
-        ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+        ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {
             ViewCompat.setFitsSystemWindows(mChildView, false);
@@ -132,7 +117,7 @@ class StatusBarCompatLollipop {
         toolbar.setFitsSystemWindows(false);
         if (toolbar.getTag() == null) {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-            int statusBarHeight = getStatusBarHeight(activity);
+            int statusBarHeight = LScreenUtil.getStatusBarHeight(activity);
             lp.height += statusBarHeight;
             toolbar.setLayoutParams(lp);
             toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
@@ -140,7 +125,7 @@ class StatusBarCompatLollipop {
         }
 
         CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams()).getBehavior();
-        if (behavior != null && behavior instanceof AppBarLayout.Behavior) {
+        if (behavior instanceof AppBarLayout.Behavior) {
             int verticalOffset = ((AppBarLayout.Behavior) behavior).getTopAndBottomOffset();
             if (Math.abs(verticalOffset) > appBarLayout.getHeight() - collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
                 window.setStatusBarColor(statusColor);
@@ -173,7 +158,7 @@ class StatusBarCompatLollipop {
     /**
      * use ValueAnimator to change statusBarColor when using collapsingToolbarLayout
      */
-    static void startColorAnimation(int startColor, int endColor, long duration, final Window window) {
+    private static void startColorAnimation(int startColor, int endColor, long duration, final Window window) {
         if (sAnimator != null) {
             sAnimator.cancel();
         }

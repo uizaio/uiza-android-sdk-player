@@ -497,6 +497,5 @@ public class TmpParamData {
 
     public void addViewWatchTime(long addViewWatchTime) {
         this.viewWatchTime += addViewWatchTime;
-        //LLog.d(TAG, "addViewWatchTime " + addViewWatchTime + " - > total watched: " + viewWatchTime);
     }
 }

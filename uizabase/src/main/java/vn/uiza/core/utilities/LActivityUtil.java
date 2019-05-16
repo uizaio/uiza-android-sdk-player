@@ -44,54 +44,54 @@ public class LActivityUtil {
     public static void tranIn(Context context) {
         int typeActivityTransition = ActivityData.getInstance().getType();
         if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_NO_ANIM) {
-            LActivityUtil.transActivityNoAniamtion((Activity) context);
+            LActivityUtil.transActivityNoAniamtion(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT) {
             //do nothing
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT) {
-            LActivityUtil.slideLeft((Activity) context);
+            LActivityUtil.slideLeft(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDERIGHT) {
-            LActivityUtil.slideRight((Activity) context);
+            LActivityUtil.slideRight(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEDOWN) {
-            LActivityUtil.slideDown((Activity) context);
+            LActivityUtil.slideDown(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEUP) {
-            LActivityUtil.slideUp((Activity) context);
+            LActivityUtil.slideUp(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_FADE) {
-            LActivityUtil.fade((Activity) context);
+            LActivityUtil.fade(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_ZOOM) {
-            LActivityUtil.zoom((Activity) context);
+            LActivityUtil.zoom(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_WINDMILL) {
-            LActivityUtil.windmill((Activity) context);
+            LActivityUtil.windmill(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_DIAGONAL) {
-            LActivityUtil.diagonal((Activity) context);
+            LActivityUtil.diagonal(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SPIN) {
-            LActivityUtil.spin((Activity) context);
+            LActivityUtil.spin(context);
         }
     }
 
     public static void tranOut(Context context) {
         int typeActivityTransition = ActivityData.getInstance().getType();
         if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_NO_ANIM) {
-            LActivityUtil.transActivityNoAniamtion((Activity) context);
+            LActivityUtil.transActivityNoAniamtion(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SYSTEM_DEFAULT) {
             //do nothing
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDELEFT) {
-            LActivityUtil.slideRight((Activity) context);
+            LActivityUtil.slideRight(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDERIGHT) {
-            LActivityUtil.slideLeft((Activity) context);
+            LActivityUtil.slideLeft(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEDOWN) {
-            LActivityUtil.slideUp((Activity) context);
+            LActivityUtil.slideUp(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SLIDEUP) {
-            LActivityUtil.slideDown((Activity) context);
+            LActivityUtil.slideDown(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_FADE) {
-            LActivityUtil.fade((Activity) context);
+            LActivityUtil.fade(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_ZOOM) {
-            LActivityUtil.zoom((Activity) context);
+            LActivityUtil.zoom(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_WINDMILL) {
-            LActivityUtil.windmill((Activity) context);
+            LActivityUtil.windmill(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_DIAGONAL) {
-            LActivityUtil.diagonal((Activity) context);
+            LActivityUtil.diagonal(context);
         } else if (typeActivityTransition == Constants.TYPE_ACTIVITY_TRANSITION_SPIN) {
-            LActivityUtil.spin((Activity) context);
+            LActivityUtil.spin(context);
         }
     }
 
@@ -147,13 +147,10 @@ public class LActivityUtil {
      */
     public static boolean toggleScreenOritation(final Activity activity) {
         int s = getScreenOrientation(activity);
-        //boolean isDeviceAutoRotation = LDeviceUtil.isRotationPossible(activity);
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
-            //LLog.d(TAG, "toggleScreenOritation landscape -> portrait");
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             return true;
         } else if (s == Configuration.ORIENTATION_PORTRAIT) {
-            //LLog.d(TAG, "toggleScreenOritation portrait -> landscape");
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);//xoay qua xoay lai landscape
             //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -180,7 +177,6 @@ public class LActivityUtil {
         }
         int s = getScreenOrientation(activity);
         if (s == Configuration.ORIENTATION_LANDSCAPE) {
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
     }
@@ -191,8 +187,6 @@ public class LActivityUtil {
         }
         int s = getScreenOrientation(activity);
         if (s == Configuration.ORIENTATION_PORTRAIT) {
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
     }
@@ -209,9 +203,6 @@ public class LActivityUtil {
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
     }
 

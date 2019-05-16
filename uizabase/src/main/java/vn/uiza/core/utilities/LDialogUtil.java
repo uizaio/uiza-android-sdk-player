@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
@@ -35,9 +36,9 @@ public class LDialogUtil {
     }
 
     public interface Callback1 {
-        public void onClick1();
+        void onClick1();
 
-        public void onCancel();
+        void onCancel();
     }
 
     public static void showDialog1(Context context, String msg, Callback1 callback1) {
@@ -54,7 +55,6 @@ public class LDialogUtil {
         builder.setPositiveButton(button1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //LLog.d(TAG, "setPositiveButton");
                 dialog.dismiss();
                 if (callback1 != null) {
                     callback1.onClick1();
@@ -65,7 +65,6 @@ public class LDialogUtil {
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                //LLog.d(TAG, "setOnCancelListener");
                 if (callback1 != null) {
                     callback1.onCancel();
                 }
@@ -78,7 +77,6 @@ public class LDialogUtil {
     }
 
     public static void showDialog1Immersive(Context context, String msg, final Callback1 callback1) {
-        //LLog.d(TAG, "showDialog1");
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.warning));
@@ -86,7 +84,6 @@ public class LDialogUtil {
         builder.setPositiveButton(context.getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //LLog.d(TAG, "setPositiveButton");
                 dialog.dismiss();
                 if (callback1 != null) {
                     callback1.onClick1();
@@ -97,17 +94,18 @@ public class LDialogUtil {
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                //LLog.d(TAG, "setOnCancelListener");
                 if (callback1 != null) {
                     callback1.onCancel();
                 }
             }
         });
         boolean isFullScreen = LScreenUtil.isFullScreen(context);
+        Window window = dialog.getWindow();
+        if (window == null) return;
         if (isFullScreen) {
-            dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            dialog.getWindow().getDecorView().setSystemUiVisibility(
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            window.getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -117,7 +115,7 @@ public class LDialogUtil {
         }
         dialog.show();
         if (isFullScreen) {
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
         int color = ContextCompat.getColor(context, R.color.colorPrimary);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
@@ -125,13 +123,12 @@ public class LDialogUtil {
     }
 
     public interface Callback2 {
-        public void onClick1();
+        void onClick1();
 
-        public void onClick2();
+        void onClick2();
     }
 
     public static AlertDialog showDialog2(Context context, String title, String msg, String button1, String button2, final Callback2 callback2) {
-        //LLog.d(TAG, "showDialog2");
         clearAll();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {
@@ -139,7 +136,6 @@ public class LDialogUtil {
         }
         builder.setMessage(msg);
         if (button1 != null && !button1.isEmpty()) {
-            //LLog.d(TAG, "button1");
             builder.setNegativeButton(button1, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -150,7 +146,6 @@ public class LDialogUtil {
             });
         }
         if (button2 != null && !button2.isEmpty()) {
-            //LLog.d(TAG, "button2");
             builder.setPositiveButton(button2, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -170,11 +165,11 @@ public class LDialogUtil {
     }
 
     public interface Callback3 {
-        public void onClick1();
+        void onClick1();
 
-        public void onClick2();
+        void onClick2();
 
-        public void onClick3();
+        void onClick3();
     }
 
     public static void showDialog3(Context context, String title, String msg, String button1, String button2, String button3, final Callback3 callback3) {
@@ -224,7 +219,7 @@ public class LDialogUtil {
     }
 
     public interface CallbackList {
-        public void onClick(int position);
+        void onClick(int position);
     }
 
     public static void showDialogList(Context context, String title, String[] arr, final CallbackList callbackList) {
@@ -233,7 +228,6 @@ public class LDialogUtil {
         if (title != null && !title.isEmpty()) {
             builder.setTitle(title);
         }
-        //String[] arr = {"horse", "cow", "camel", "sheep", "goat"};
         builder.setItems(arr, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

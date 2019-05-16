@@ -5,25 +5,26 @@ import uizalivestream.view.UZLivestream;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public interface UZLivestreamCallback {
-    public void onUICreate();
+    void onUICreate();
 
-    public void onPermission(boolean areAllPermissionsGranted);
+    void onPermission(boolean areAllPermissionsGranted);
 
-    public void onError(String reason);
+    void onError(String reason);
 
-    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed);
+    void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode,
+            PresetLiveStreamingFeed presetLiveStreamingFeed);
 
-    public void onConnectionSuccessRtmp();
+    void onConnectionSuccessRtmp();
 
-    public void onConnectionFailedRtmp(String reason);
+    void onConnectionFailedRtmp(String reason);
 
-    public void onDisconnectRtmp();
+    void onDisconnectRtmp();
 
-    public void onAuthErrorRtmp();
+    void onAuthErrorRtmp();
 
-    public void onAuthSuccessRtmp();
+    void onAuthSuccessRtmp();
 
-    public void surfaceCreated();
+    void surfaceCreated();
 
-    public void surfaceChanged(UZLivestream.StartPreview startPreview);
+    void surfaceChanged(UZLivestream.StartPreview startPreview);
 }

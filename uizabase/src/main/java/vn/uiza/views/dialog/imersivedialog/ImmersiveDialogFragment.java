@@ -6,8 +6,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.WindowManager;
 
+import vn.uiza.R;
 import vn.uiza.views.LToast;
 
 /**
@@ -25,16 +27,16 @@ public class ImmersiveDialogFragment extends DialogFragment {
 
         // Temporarily set the dialogs window to not focusable to prevent the short
         // popup of the navigation bar.
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        Window dialogWindow = alertDialog.getWindow();
+        if (dialogWindow == null) return null;
+        dialogWindow.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LToast.show(getActivity(), "Touch OK");
             }
         });
-        //int color = ContextCompat.getColor(getActivity(), R.color.colorPrimary);
-        //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
         return alertDialog;
     }
 
@@ -51,12 +53,14 @@ public class ImmersiveDialogFragment extends DialogFragment {
         // Hide the navigation bar. It is important to do this after show() was called.
         // If we would do this in onCreateDialog(), we would get a requestFeature()
         // error.
-        getDialog().getWindow().getDecorView().setSystemUiVisibility(
+        Window window = getDialog().getWindow();
+        if (window == null) return;
+        window.getDecorView().setSystemUiVisibility(
                 getActivity().getWindow().getDecorView().getSystemUiVisibility()
         );
 
         // Make the dialogs window focusable again.
-        getDialog().getWindow().clearFlags(
+        window.clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         );
 

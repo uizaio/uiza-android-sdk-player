@@ -36,14 +36,17 @@ import vn.uiza.utils.util.SentryUtils;
 
 public class LScreenUtil {
     private final static String TAG = LScreenUtil.class.getSimpleName();
+    private static final String DIMEN = "dimen";
+    private static final String STATUS_BAR_HEIGHT = "status_bar_height";
+    private static final String DESIGN_BOTTOM_NAVIGATION_HEIGHT = "design_bottom_navigation_height";
+    private static final String ANDROID = "android";
 
     public static int getStatusBarHeight(Context mContext) {
         int result = 0;
-        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = mContext.getResources().getIdentifier(STATUS_BAR_HEIGHT, DIMEN, ANDROID);
         if (resourceId > 0) {
             result = mContext.getResources().getDimensionPixelSize(resourceId);
         }
-        //Log.d(TAG,"result bar height: "+result);
         return result;
     }
 
@@ -53,11 +56,11 @@ public class LScreenUtil {
         if (!hasMenuKey && !hasBackKey) {
             // Do whatever you need to do, this device has a navigation bar
             int result = 0;
-            int resourceId = mContext.getResources().getIdentifier("design_bottom_navigation_height", "dimen", mContext.getPackageName());
+            int resourceId = mContext.getResources().getIdentifier(DESIGN_BOTTOM_NAVIGATION_HEIGHT,
+                    DIMEN, mContext.getPackageName());
             if (resourceId > 0) {
                 result = mContext.getResources().getDimensionPixelSize(resourceId);
             }
-            //Log.d(TAG,"result botbar height: "+result);
             return result;
         }
 
@@ -120,15 +123,7 @@ public class LScreenUtil {
     public static void toggleFullscreen(Activity activity) {
         WindowManager.LayoutParams attrs = activity.getWindow().getAttributes();
         attrs.flags ^= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        //attrs.flags ^= WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-        //attrs.flags ^= WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
         activity.getWindow().setAttributes(attrs);
-
-        /*if (isFullScreen(activity)) {
-            hideNavigationBar(activity);
-        } else {
-            showNavigationBar(activity);
-        }*/
     }
 
     public static void toggleFullscreen(Activity activity, boolean isFullScreen) {
@@ -204,19 +199,17 @@ public class LScreenUtil {
         window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         final View decorView = window.getDecorView();
-        if (decorView != null) {
-            int uiOptions = decorView.getSystemUiVisibility();
-            if (Build.VERSION.SDK_INT >= 14) {
-                uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
-            }
-            if (Build.VERSION.SDK_INT >= 16) {
-                uiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            }
-            if (Build.VERSION.SDK_INT >= 19) {
-                uiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            }
-            decorView.setSystemUiVisibility(uiOptions);
+        int uiOptions = decorView.getSystemUiVisibility();
+        if (Build.VERSION.SDK_INT >= 14) {
+            uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
         }
+        if (Build.VERSION.SDK_INT >= 16) {
+            uiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            uiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     public static void showDefaultControls(@NonNull final Context context) {
@@ -227,98 +220,18 @@ public class LScreenUtil {
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         final View decorView = window.getDecorView();
-        if (decorView != null) {
-            int uiOptions = decorView.getSystemUiVisibility();
-            if (Build.VERSION.SDK_INT >= 14) {
-                uiOptions &= ~View.SYSTEM_UI_FLAG_LOW_PROFILE;
-            }
-            if (Build.VERSION.SDK_INT >= 16) {
-                uiOptions &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            }
-            if (Build.VERSION.SDK_INT >= 19) {
-                uiOptions &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            }
-            decorView.setSystemUiVisibility(uiOptions);
+        int uiOptions = decorView.getSystemUiVisibility();
+        if (Build.VERSION.SDK_INT >= 14) {
+            uiOptions &= ~View.SYSTEM_UI_FLAG_LOW_PROFILE;
         }
+        if (Build.VERSION.SDK_INT >= 16) {
+            uiOptions &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            uiOptions &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+        decorView.setSystemUiVisibility(uiOptions);
     }
-
-    /**
-     * toggles fullscreen mode
-     * <br/>
-     * REQUIRE: android:configChanges="orientation|screenSize"
-     * <pre>
-     * sample:
-     *     private boolean fullscreen;
-     *     ................
-     *     Activity activity = (Activity)context;
-     *     toggleFullscreen(activity, !fullscreen);
-     *     fullscreen = !fullscreen;
-     * </pre>
-     */
-    /*public static void toggleFullscreen(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            // The UI options currently enabled are represented by a bitfield.
-            // getSystemUiVisibility() gives us that bitfield.
-            int uiOptions = activity.getWindow().getDecorView().getSystemUiVisibility();
-            int newUiOptions = uiOptions;
-            boolean isImmersiveModeEnabled =
-                    ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
-            if (isImmersiveModeEnabled) {
-                LLog.d(TAG, "Turning immersive mode mode off. ");
-            } else {
-                LLog.d(TAG, "Turning immersive mode mode on.");
-            }
-
-            // Navigation bar hiding:  Backwards compatible to ICS.
-            if (Build.VERSION.SDK_INT >= 14) {
-                newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            }
-
-            // Status bar hiding: Backwards compatible to Jellybean
-            if (Build.VERSION.SDK_INT >= 16) {
-                newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
-            }
-
-            // Immersive mode: Backward compatible to KitKat.
-            // Note that this flag doesn't do anything by itself, it only augments the behavior
-            // of HIDE_NAVIGATION and FLAG_FULLSCREEN.  For the purposes of this sample
-            // all three flags are being toggled together.
-            // Note that there are two immersive mode UI flags, one of which is referred to as "sticky".
-            // Sticky immersive mode differs in that it makes the navigation and status bars
-            // semi-transparent, and the UI flag does not get cleared when the user interacts with
-            // the screen.
-            if (Build.VERSION.SDK_INT >= 18) {
-                newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            }
-            activity.getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
-        } else {
-            // for android pre 11
-            WindowManager.LayoutParams attrs = activity.getWindow().getAttributes();
-            if (UizaScreenUtil.isFullScreen(activity)) {
-                attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            } else {
-                attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            }
-            activity.getWindow().setAttributes(attrs);
-        }
-
-        *//*try {
-            // hide actionbar
-            if (activity instanceof ActionBarActivity) {
-                if (fullscreen) ((ActionBarActivity) activity).getSupportActionBar().hide();
-                else ((ActionBarActivity) activity).getSupportActionBar().show();
-            } else if (Build.VERSION.SDK_INT >= 11) {
-                if (fullscreen) activity.getActionBar().hide();
-                else activity.getActionBar().show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*//*
-
-        // set landscape
-        // if(fullscreen)  activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        // else activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-    }*/
 
     //rotate screen
     public static void setFullScreen(Context context, boolean isFullScreen) {
@@ -334,7 +247,6 @@ public class LScreenUtil {
         FragmentTransaction transaction = baseFragment.getChildFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
         transaction.replace(containerFrameLayoutIdRes, fragment);
-        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }
@@ -343,9 +255,7 @@ public class LScreenUtil {
 
     public static void replaceFragment(AppCompatActivity activity, int containerFrameLayoutIdRes, Fragment fragment, boolean isAddToBackStack) {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        //transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit, R.anim.fade_enter, R.anim.fade_exit);
         transaction.replace(containerFrameLayoutIdRes, fragment);
-        //transaction.add(containerFrameLayoutIdRes, fragment);
         if (isAddToBackStack) {
             transaction.addToBackStack(null);
         }
@@ -401,7 +311,7 @@ public class LScreenUtil {
             LDialogUtil.showDialog1(context, context.getString(R.string.per_warning), context.getString(R.string.uz_need_per), context.getString(R.string.approve), new LDialogUtil.Callback1() {
                 @Override
                 public void onClick1() {
-                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                     intent.setData(Uri.parse("package:" + context.getPackageName()));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
@@ -457,7 +367,6 @@ public class LScreenUtil {
             return Constants.NOT_FOUND;
         }
         try {
-            //return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
             return android.provider.Settings.System.getInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, Constants.NOT_FOUND);
         } catch (Exception e) {
             LLog.e(TAG, "getCurrentBrightness" + e.toString());
@@ -470,12 +379,6 @@ public class LScreenUtil {
         boolean retVal = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             retVal = Settings.System.canWrite(context);
-            //LLog.d(TAG, "Can Write Settings: " + retVal);
-            /*if (retVal) {
-                LLog.d(TAG, "Write allowed");
-            } else {
-                LLog.d(TAG, "Write not allowed");
-            }*/
         }
         return retVal;
     }

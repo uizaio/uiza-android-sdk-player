@@ -72,10 +72,6 @@ public class ComunicateMng {
     }
 
 
-    //-----------------------------------------------LOITP---Who want to be my lover?
-    //
-    //
-    //
     //================================== SERVICE TO ACTIVITY
     public static class MsgFromService {
         private String msg;

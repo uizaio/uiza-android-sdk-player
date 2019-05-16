@@ -7,7 +7,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
  */
 
 public interface PlayListCallback {
-    public void onClickItem(Item item, int position);
+    void onClickItem(Item item, int position);
 
-    public void onDismiss();
+    void onDismiss();
 }

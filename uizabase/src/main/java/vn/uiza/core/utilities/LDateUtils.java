@@ -1,7 +1,5 @@
 package vn.uiza.core.utilities;
 
-import android.content.Context;
-
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Format;
@@ -26,13 +24,23 @@ public class LDateUtils {
     public final static String FORMAT_1 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String FORMAT_2 = "dd/MM/yyyy";
     public final static String FORMAT_3 = "dd/MM/yyyy HH:mm:ss";
+    public final static String FORMAT_4 = "h:mm a";
+    public static final String FORMAT_5 = "ddMM_HHmm";
+    public static final String FORMAT_6 = "yyyy-MM";
+    public static final String FORMAT_7 = "MM";
+    public static final String FORMAT_8 = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String FORMAT_9 = "dd-MM-yyyy";
+    public static final String FORMAT_10 = "dd/MM/yyyy hh:mm";
+    public static final String FORMAT_11 = "yyyy-MM-dd";
+    public static final String FORMAT_12 = "%d:%02d";
+    public static final String FORMAT_13 = "%d:%02d:%02d";
+    public static final String FORMAT_14 = "dd/MM/yyyy hh:mm aa";
+    public static final String UTC = "UTC";
 
     public static String convertFormatDate(String strDate, String fromFormat, String toFormat) {
         Date date = stringToDate(strDate, fromFormat);
         if (date != null) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(toFormat, Locale.ENGLISH);
-            //simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            DateFormat dateFormat = simpleDateFormat;
+            DateFormat dateFormat = new SimpleDateFormat(toFormat, Locale.ENGLISH);
             return dateFormat.format(date);
         }
         return null;
@@ -58,7 +66,7 @@ public class LDateUtils {
         }
     }
 
-    public static String dateToString(Date date, Context context) {
+    public static String dateToString(Date date) {
         return dateToString(date, FORMAT_2);
     }
 
@@ -73,7 +81,6 @@ public class LDateUtils {
         cal.setTimeInMillis(0);
         cal.set(year, month, day);
         Date date = cal.getTime();
-        //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
@@ -82,7 +89,7 @@ public class LDateUtils {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, hr);
         cal.set(Calendar.MINUTE, min);
-        Format formatter = new SimpleDateFormat("h:mm a");
+        Format formatter = new SimpleDateFormat(FORMAT_4);
         return formatter.format(cal.getTime());
     }
 
@@ -94,122 +101,33 @@ public class LDateUtils {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("ddMM_HHmm");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_5);
         return df.format(c.getTime());
     }
 
     public static String getCurrentYearMonth() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_6);
         return df.format(c.getTime());
     }
 
     public static String getCurrentMonth() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_7);
         return df.format(c.getTime());
     }
 
-    /*public static void getListDayOfMonth(int month, int year) {
-        String TAG = "@@";
-        LLog.d(TAG, ">>>>>>>>>>month: " + month);
-        List<LSchedule> lScheduleArrayList = new ArrayList<>();
-        if (month >= Calendar.JANUARY && month <= Calendar.DECEMBER) {
-            TimeZone timeZone = TimeZone.getTimeZone("UTC");
-            Calendar cal = Calendar.getInstance(timeZone);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            cal.set(Calendar.YEAR, year);
-            SimpleDateFormat dfShort = new SimpleDateFormat("EEE*dd/MM", Locale.getDefault());
-            SimpleDateFormat dfLong = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            while (month == cal.get(Calendar.MONTH)) {
-                LSchedule lSchedule = new LSchedule();
-                //LLog.d(TAG, "genListDayOfMonth>>> " + dfLong.format(cal.getTime()));
-
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                cal.set(Calendar.MILLISECOND, 0);
-
-                lSchedule.setTimestamp(cal.getTimeInMillis());
-                lSchedule.setDayShort(dfShort.format(cal.getTime()).replace("*", "\n"));
-                lSchedule.setDayLong(dfLong.format(cal.getTime()).replace("*", "\n"));
-                lScheduleArrayList.add(lSchedule);
-
-                cal.add(Calendar.DAY_OF_MONTH, 1);//important line
-            }
-        }
-
-        if (!lScheduleArrayList.isEmpty()) {
-            for (int i = 0; i < lScheduleArrayList.size(); i++) {
-                if (DateUtils.isToday(lScheduleArrayList.get(i).getTimestamp())) {
-                    //LLog.d(TAG, lScheduleArrayList.get(i).getDayLong() + " isToday");
-                    LSApplication.getInstance().setTodayTimestamp(lScheduleArrayList.get(i).getTimestamp());
-                } else {
-                    //LLog.d(TAG, lScheduleArrayList.get(i).getDayLong() + " !isToday");
-                }
-            }
-        }
-
-        return lScheduleArrayList;
-    }*/
-
-    /*public static List<LSchedule> genListDayOfMonth(int month, int year) {
-        LLog.d(TAG, ">>>>>>>>>>month: " + month + ", year: " + year);
-        List<LSchedule> lScheduleArrayList = new ArrayList<>();
-        if (month >= Calendar.JANUARY && month <= Calendar.DECEMBER) {
-            TimeZone timeZone = TimeZone.getTimeZone("UTC");
-            Calendar cal = Calendar.getInstance(timeZone);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.YEAR, year);
-            SimpleDateFormat dfShort = new SimpleDateFormat("EEE*dd/MM", Locale.getDefault());
-            SimpleDateFormat dfLong = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            LLog.d(TAG, "cal.get(Calendar.MONTH): " + cal.get(Calendar.MONTH));
-            while (month == cal.get(Calendar.MONTH)) {
-                LSchedule lSchedule = new LSchedule();
-                LLog.d(TAG, "genListDayOfMonth>>> " + dfLong.format(cal.getTime()));
-
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                cal.set(Calendar.MILLISECOND, 0);
-
-                lSchedule.setTimestamp(cal.getTimeInMillis());
-                lSchedule.setDayShort(dfShort.format(cal.getTime()).replace("*", "\n"));
-                lSchedule.setDayLong(dfLong.format(cal.getTime()).replace("*", "\n"));
-                lScheduleArrayList.add(lSchedule);
-
-                cal.add(Calendar.DAY_OF_MONTH, 1);//important line
-            }
-        } else {
-            LLog.d(TAG, "else");
-        }
-
-        if (!lScheduleArrayList.isEmpty()) {
-            for (int i = 0; i < lScheduleArrayList.size(); i++) {
-                if (DateUtils.isToday(lScheduleArrayList.get(i).getTimestamp())) {
-                    //LLog.d(TAG, lScheduleArrayList.get(i).getDayLong() + " isToday");
-                    LSApplication.getInstance().setTodayTimestamp(lScheduleArrayList.get(i).getTimestamp());
-                } else {
-                    //LLog.d(TAG, lScheduleArrayList.get(i).getDayLong() + " !isToday");
-                }
-            }
-        }
-
-        return lScheduleArrayList;
-    }*/
-
     public static String getDate(String dateString) {
-        return getDate(dateString, "dd/MM/yyyy hh:mm aa");
+        return getDate(dateString, FORMAT_14);
     }
 
     public static String getDateWithoutTime(String dateString) {
-        return getDate(dateString, "dd/MM/yyyy");
+        return getDate(dateString, FORMAT_2);
     }
 
     public static String getDate(String dateString, String format) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT_8);
+        formatter.setTimeZone(TimeZone.getTimeZone(UTC));
         Date value = null;
         try {
             value = formatter.parse(dateString);
@@ -224,13 +142,12 @@ public class LDateUtils {
 
     //date ex: 14-09-2017
     public static long convertDateToTimestamp(String d) {
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
+        DateFormat formatter = new SimpleDateFormat(FORMAT_9);
+        Date date;
         try {
-            date = (Date) formatter.parse(d);
+            date = formatter.parse(d);
             return date.getTime() / 1000;
         } catch (ParseException e) {
-            LLog.d(TAG, "convertDateToTimestamp ParseException " + e.toString());
             SentryUtils.captureException(e);
             return Constants.NOT_FOUND;
         }
@@ -256,63 +173,9 @@ public class LDateUtils {
         return gc.getTime();
     }
 
-    /*private static boolean isSetAlarm(long serverTimestamp, ArrayList<Alarm> alarmArrayList) {
-        if (alarmArrayList == null) {
-            return false;
-        }
-        for (int i = 0; i < alarmArrayList.size(); i++) {
-            if (serverTimestamp == alarmArrayList.get(i).getDate()) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
-    //input 2017-09-13T07:11:00.000Z
-    //output [02:11, PM]
-    /*public static LDate convertToAMorPM(String date, ArrayList<Alarm> alarmArrayList) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date valueDate = null;
-        try {
-            valueDate = formatter.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
-        dateFormatter.setTimeZone(TimeZone.getDefault());
-        //dateFormatter.setTimeZone(Locale.ENGLISH);
-        String tmp = dateFormatter.format(valueDate);
-        //LLog.d(TAG, ">>>tmp " + tmp);
-        String arr[] = tmp.split(" ");
-        LDate lDate = new LDate();
-        lDate.setHhmm(arr[0]);
-        lDate.setAmOrPm(arr[1]);
-
-        long serverTimestamp = valueDate.getTime();
-
-        lDate.setIsSetAlarm(isSetAlarm(serverTimestamp, alarmArrayList));
-
-        lDate.setTimestamp(serverTimestamp);
-        Long currentTimestamp = System.currentTimeMillis();
-        lDate.setToday(DateUtils.isToday(serverTimestamp));
-
-        if (serverTimestamp > currentTimestamp) {
-            lDate.setTimeInPast(false);
-            //LLog.d(TAG, "server timestamp " + serverTimestamp + ", current timestamp " + currentTimestamp + " >>> setTimeInPast false, " + DateUtils.isToday(serverTimestamp));
-        } else {
-            lDate.setTimeInPast(true);
-            //LLog.d(TAG, "server timestamp " + serverTimestamp + ", current timestamp " + currentTimestamp + " >>> setTimeInPast true, " + DateUtils.isToday(serverTimestamp));
-        }
-
-        return lDate;
-    }*/
-
     private static long convertDateToTimeStamp(String d, int h, int m) {
-        //String lstart = dd + "/" + mm + "/" + yyyy + " " + h + ":" + m;
         String lstart = d + " " + h + ":" + m;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat(FORMAT_10);
         try {
             Date date = format.parse(lstart);
             return date.getTime() / 1000;
@@ -324,18 +187,14 @@ public class LDateUtils {
     }
 
     public static long convertDateToTimeStamp(String datetime, String format) {
-        //LLog.d(TAG, "convertDateToTimeStamp datetime " + datetime);
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         DateFormat dateFormat = new SimpleDateFormat(format);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = null;
+        dateFormat.setTimeZone(TimeZone.getTimeZone(UTC));
+        Date date;
         try {
             date = dateFormat.parse(datetime);
             long time = date.getTime();
-            LLog.d(TAG, "time:" + time);
             return time;
         } catch (ParseException e) {
-            LLog.e(TAG, "convertDateToTimeStamp " + e.toString());
             SentryUtils.captureException(e);
             return Constants.NOT_FOUND;
         }
@@ -347,9 +206,9 @@ public class LDateUtils {
     }
 
     public static Calendar convertStringToCalendar(String yyyymmdd) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat(FORMAT_11);
         Calendar cal = Calendar.getInstance();
-        Date date = null;
+        Date date;
         try {
             date = df.parse(yyyymmdd);
             cal.setTime(date);
@@ -363,7 +222,7 @@ public class LDateUtils {
     public static Calendar convertStringDate(String yyyymmdd, String format) {
         SimpleDateFormat df = new SimpleDateFormat(format);
         Calendar cal = Calendar.getInstance();
-        Date date = null;
+        Date date;
         try {
             date = df.parse(yyyymmdd);
             cal.setTime(date);
@@ -382,11 +241,10 @@ public class LDateUtils {
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
         if (h == 0) {
-            return String.format("%d:%02d", m, s);
+            return String.format(FORMAT_12, m, s);
         } else {
-            return String.format("%d:%02d:%02d", h, m, s);
+            return String.format(FORMAT_13, h, m, s);
         }
-        //return String.format("%d:%02d", h, m);
     }
 
     public static String convertMlsecondsToHMmSs(long mls) {

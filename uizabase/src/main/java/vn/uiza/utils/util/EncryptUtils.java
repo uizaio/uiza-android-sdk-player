@@ -25,6 +25,20 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class EncryptUtils {
 
+    private static final String HMAC_SHA_384 = "HmacSHA384";
+    private static final String HMAC_SHA_512 = "HmacSHA512";
+    public static final String MD2 = "MD2";
+    public static final String MD5 = "MD5";
+    public static final String SHA_1 = "SHA1";
+    public static final String SHA_224 = "SHA224";
+    public static final String SHA_256 = "SHA256";
+    public static final String SHA_384 = "SHA384";
+    public static final String SHA_512 = "SHA512";
+    public static final String HMAC_MD5 = "HmacMD5";
+    public static final String HMAC_SHA_1 = "HmacSHA1";
+    public static final String HMAC_SHA_224 = "HmacSHA224";
+    public static final String HMAC_SHA_256 = "HmacSHA256";
+
     private EncryptUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -60,7 +74,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptMD2(byte[] data) {
-        return hashTemplate(data, "MD2");
+        return hashTemplate(data, MD2);
     }
 
     /**
@@ -116,7 +130,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptMD5(byte[] data) {
-        return hashTemplate(data, "MD5");
+        return hashTemplate(data, MD5);
     }
 
     /**
@@ -126,7 +140,7 @@ public final class EncryptUtils {
      * @return 文件的16进制密文
      */
     public static String encryptMD5File2String(String filePath) {
-        File file = isSpace(filePath) ? null : new File(filePath);
+        File file = AppUtils.isSpace(filePath) ? null : new File(filePath);
         return encryptMD5File2String(file);
     }
 
@@ -137,7 +151,7 @@ public final class EncryptUtils {
      * @return 文件的MD5校验码
      */
     public static byte[] encryptMD5File(String filePath) {
-        File file = isSpace(filePath) ? null : new File(filePath);
+        File file = AppUtils.isSpace(filePath) ? null : new File(filePath);
         return encryptMD5File(file);
     }
 
@@ -163,7 +177,7 @@ public final class EncryptUtils {
         DigestInputStream digestInputStream;
         try {
             fis = new FileInputStream(file);
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance(MD5);
             digestInputStream = new DigestInputStream(fis, md);
             byte[] buffer = new byte[256 * 1024];
             while (true) {
@@ -207,7 +221,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA1(byte[] data) {
-        return hashTemplate(data, "SHA1");
+        return hashTemplate(data, SHA_1);
     }
 
     /**
@@ -237,7 +251,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA224(byte[] data) {
-        return hashTemplate(data, "SHA224");
+        return hashTemplate(data, SHA_224);
     }
 
     /**
@@ -267,7 +281,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA256(byte[] data) {
-        return hashTemplate(data, "SHA256");
+        return hashTemplate(data, SHA_256);
     }
 
     /**
@@ -297,7 +311,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA384(byte[] data) {
-        return hashTemplate(data, "SHA384");
+        return hashTemplate(data, SHA_384);
     }
 
     /**
@@ -327,7 +341,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptSHA512(byte[] data) {
-        return hashTemplate(data, "SHA512");
+        return hashTemplate(data, SHA_512);
     }
 
     /**
@@ -380,7 +394,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacMD5(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacMD5");
+        return hmacTemplate(data, key, HMAC_MD5);
     }
 
     /**
@@ -413,7 +427,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacSHA1(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA1");
+        return hmacTemplate(data, key, HMAC_SHA_1);
     }
 
     /**
@@ -446,7 +460,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacSHA224(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA224");
+        return hmacTemplate(data, key, HMAC_SHA_224);
     }
 
     /**
@@ -479,7 +493,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacSHA256(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA256");
+        return hmacTemplate(data, key, HMAC_SHA_256);
     }
 
     /**
@@ -512,7 +526,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacSHA384(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA384");
+        return hmacTemplate(data, key, HMAC_SHA_384);
     }
 
     /**
@@ -545,7 +559,7 @@ public final class EncryptUtils {
      * @return 密文字节数组
      */
     public static byte[] encryptHmacSHA512(byte[] data, byte[] key) {
-        return hmacTemplate(data, key, "HmacSHA512");
+        return hmacTemplate(data, key, HMAC_SHA_512);
     }
 
     /**
@@ -834,7 +848,7 @@ public final class EncryptUtils {
         }
     }
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     /**
      * byteArr转hexString
@@ -866,7 +880,7 @@ public final class EncryptUtils {
      * @return 字节数组
      */
     private static byte[] hexString2Bytes(String hexString) {
-        if (isSpace(hexString)) return null;
+        if (AppUtils.isSpace(hexString)) return null;
         int len = hexString.length();
         if (len % 2 != 0) {
             hexString = "0" + hexString;
@@ -914,15 +928,5 @@ public final class EncryptUtils {
      */
     private static byte[] base64Decode(byte[] input) {
         return Base64.decode(input, Base64.NO_WRAP);
-    }
-
-    private static boolean isSpace(String s) {
-        if (s == null) return true;
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 }

@@ -27,25 +27,18 @@ import static android.content.Context.UI_MODE_SERVICE;
  */
 public class LDeviceUtil {
     private static String TAG = LDeviceUtil.class.getSimpleName();
+    private static final String COPY_LABEL = "Copy";
 
     public static boolean isTablet(Activity activity) {
         return (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    /*
-    check device has navigation bar
-     */
     public boolean isNavigationBarAvailable() {
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-        //LLog.dialog(TAG, "isNavigationBarAvailable: " + (!(hasBackKey && hasHomeKey)));
         return (!(hasBackKey && hasHomeKey));
     }
 
-    /*
-      get current android version
-      @return int
-       */
     public static int getCurrentAndroidVersion(Activity activity) {
         int thisVersion;
         try {
@@ -64,7 +57,7 @@ public class LDeviceUtil {
             clipboard.setText(text);
         } else {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Copy", text);
+            android.content.ClipData clip = android.content.ClipData.newPlainText(COPY_LABEL, text);
             clipboard.setPrimaryClip(clip);
         }
         LToast.show(context, "Copied!");
@@ -72,7 +65,6 @@ public class LDeviceUtil {
 
     public static void vibrate(Context context, int length) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
         v.vibrate(length);
     }
 
@@ -93,11 +85,7 @@ public class LDeviceUtil {
 
     public static boolean isTV(Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
-        if (uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
-            return true;
-        } else {
-            return false;
-        }
+        return uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
     //return true if device is set auto switch rotation on
@@ -114,10 +102,6 @@ public class LDeviceUtil {
         if (context == null) {
             return false;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
-            return false;
-        } else {
-            return true;
-        }
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
     }
 }

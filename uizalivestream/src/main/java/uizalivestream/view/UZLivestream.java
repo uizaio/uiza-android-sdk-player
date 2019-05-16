@@ -1,18 +1,19 @@
 package uizalivestream.view;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -36,14 +38,16 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.OpenGlView;
+
+import net.ossrs.rtmp.ConnectCheckerRtmp;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import net.ossrs.rtmp.ConnectCheckerRtmp;
+
 import retrofit2.HttpException;
 import uizalivestream.R;
 import uizalivestream.data.UZLivestreamData;
@@ -75,10 +79,13 @@ import vn.uiza.views.LToast;
  * Created by loitp on 9/1/2019.
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback, View.OnTouchListener {
-    private final String TAG = "TAG" + getClass().getSimpleName();
+public class UZLivestream extends RelativeLayout
+        implements ConnectCheckerRtmp, SurfaceHolder.Callback, View.OnTouchListener {
+
+    private final String TAG = getClass().getSimpleName();
+    private static final String TIME_FORMAT = "yyyyMMdd_HHmmss";
+
     private Gson gson = new Gson();
-    private RtmpCamera1 rtmpCamera1;
     private String currentDateAndTime = "";
     private File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppUtils.getAppName());
     private OpenGlView openGlView;
@@ -88,10 +95,14 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     private TextView tvLiveStatus;
     private UZLivestreamCallback uzLivestreamCallback;
     private String mainStreamUrl;
-    private CameraCallback cameraCallback;
+    private boolean isShowDialogCheck;
+    private RtmpCameraHelper cameraHelper;
+    private boolean isSavedToDevice;
 
     public void setCameraCallback(CameraCallback cameraCallback) {
-        this.cameraCallback = cameraCallback;
+        if (cameraHelper != null) {
+            cameraHelper.setCameraCallback(cameraCallback);
+        }
     }
 
     public SpriteGestureController getSpriteGestureController() {
@@ -110,6 +121,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         super(context, attrs, defStyleAttr);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public UZLivestream(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -130,7 +142,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     public RtmpCamera1 getRtmpCamera() {
-        return rtmpCamera1;
+        return cameraHelper.getRtmpCamera();
     }
 
     public OpenGlView getOpenGlView() {
@@ -143,14 +155,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     private void onCreate() {
         inflate(getContext(), R.layout.layout_uz_livestream, this);
-        tvLiveStatus = (TextView) findViewById(R.id.tv_live_status);
-        progressBar = (ProgressBar) findViewById(R.id.pb);
+        tvLiveStatus = findViewById(R.id.tv_live_status);
+        progressBar = findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, Color.WHITE);
-        openGlView = (OpenGlView) findViewById(R.id.surfaceView);
+        openGlView = findViewById(R.id.surfaceView);
         //Number of filters to use at same time.
         //You must modify it before create rtmp or rtsp object.
         //ManagerRender.numFilters = 2;
-        rtmpCamera1 = new RtmpCamera1(openGlView, this);
+        RtmpCamera1 rtmpCamera1 = new RtmpCamera1(openGlView, this);
+        cameraHelper = new RtmpCameraHelper(rtmpCamera1);
         openGlView.getHolder().addCallback(this);
         openGlView.setOnTouchListener(this);
         if (uzLivestreamCallback != null) {
@@ -185,10 +198,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZAPIMaster.getInstance().destroy();
     }
 
-    private boolean isShowDialogCheck;
-
     private void checkPermission() {
-        //LLog.d(TAG, "checkPermission");
         isShowDialogCheck = true;
         Dexter.withActivity((Activity) getContext())
                 .withPermissions(
@@ -201,17 +211,14 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            //LLog.d(TAG, "onPermissionsChecked do you work now");
                             onCreate();
                             if (uzLivestreamCallback != null) {
                                 uzLivestreamCallback.onPermission(true);
                             }
                         } else {
-                            //LLog.d(TAG, "!areAllPermissionsGranted");
                             showShouldAcceptPermission();
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            //LLog.d(TAG, "onPermissionsChecked permission is denied permenantly, navigate user to app settings");
                             showSettingsDialog();
                         }
                         isShowDialogCheck = true;
@@ -219,7 +226,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        LLog.d(TAG, "onPermissionRationaleShouldBeShown");
                         token.continuePermissionRequest();
                     }
                 })
@@ -227,43 +233,54 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 .check();
     }
 
-    private void showShouldAcceptPermission() {
-        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature.", "Okay", "Cancel", new LDialogUtil.Callback2() {
-            @Override
-            public void onClick1() {
-                checkPermission();
-            }
+    private String getString(@StringRes int resId) {
+        return getContext().getString(resId);
+    }
 
-            @Override
-            public void onClick2() {
-                LLog.d(TAG, "showShouldAcceptPermission onClick2");
-                if (uzLivestreamCallback != null) {
-                    uzLivestreamCallback.onPermission(false);
-                }
-            }
-        });
+    private void showShouldAcceptPermission() {
+        AlertDialog alertDialog =
+                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                        getString(R.string.this_app_needs_permission), getString(R.string.okay),
+                        getString(R.string.cancel), new LDialogUtil.Callback2() {
+                            @Override
+                            public void onClick1() {
+                                checkPermission();
+                            }
+
+                            @Override
+                            public void onClick2() {
+                                if (uzLivestreamCallback != null) {
+                                    uzLivestreamCallback.onPermission(false);
+                                }
+                            }
+                        });
         alertDialog.setCancelable(false);
     }
 
     private void showSettingsDialog() {
-        AlertDialog alertDialog = LDialogUtil.showDialog2(getContext(), "Need Permissions", "This app needs permission to use this feature. You can grant them in app settings.", "GOTO SETTINGS", "Cancel", new LDialogUtil.Callback2() {
-            @Override
-            public void onClick1() {
-                isShowDialogCheck = false;
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", AppUtils.getAppPackageName(), null);
-                intent.setData(uri);
-                ((Activity) getContext()).startActivityForResult(intent, 101);
-            }
+        AlertDialog alertDialog =
+                LDialogUtil.showDialog2(getContext(), getString(R.string.need_permission),
+                        getString(R.string.this_app_needs_permission_grant_it),
+                        getString(R.string.goto_settings), getString(R.string.cancel),
+                        new LDialogUtil.Callback2() {
+                            @Override
+                            public void onClick1() {
+                                isShowDialogCheck = false;
+                                Intent intent =
+                                        new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts(Constants.PACKAGE,
+                                        AppUtils.getAppPackageName(), null);
+                                intent.setData(uri);
+                                ((Activity) getContext()).startActivityForResult(intent, 101);
+                            }
 
-            @Override
-            public void onClick2() {
-                LLog.d(TAG, "showSettingsDialog onClick2");
-                if (uzLivestreamCallback != null) {
-                    uzLivestreamCallback.onPermission(false);
-                }
-            }
-        });
+                            @Override
+                            public void onClick2() {
+                                if (uzLivestreamCallback != null) {
+                                    uzLivestreamCallback.onPermission(false);
+                                }
+                            }
+                        });
         alertDialog.setCancelable(false);
     }
 
@@ -274,7 +291,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         int screenWidth = LScreenUtil.getScreenWidth();
         openGlView.getLayoutParams().width = screenWidth;
         openGlView.getLayoutParams().height = width * screenWidth / height;
-        //LLog.d(TAG, "updateUISurfaceView " + screenWidth + "x" + (width * screenWidth / height));
         openGlView.requestLayout();
     }
 
@@ -284,7 +300,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onConnectionSuccessRtmp() {
-        //LLog.d(TAG, "onConnectionSuccessRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -298,16 +313,11 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onConnectionSuccessRtmp();
         }
-        if (rtmpCamera1 != null) {
-            if (cameraCallback != null) {
-                cameraCallback.onCameraChange(rtmpCamera1.isFrontCamera());
-            }
-        }
+        switchCamera();
     }
 
     @Override
     public void onConnectionFailedRtmp(final String reason) {
-        //LLog.d(TAG, "onConnectionFailedRtmp " + reason);
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -315,7 +325,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     tvLiveStatus.setVisibility(View.GONE);
                     tvLiveStatus.clearAnimation();
                 }
-                rtmpCamera1.stopStream();
+                cameraHelper.stopStream();
             }
         });
         if (uzLivestreamCallback != null) {
@@ -325,7 +335,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onDisconnectRtmp() {
-        //LLog.d(TAG, "onDisconnectRtmp");
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -344,7 +353,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onAuthErrorRtmp() {
-        //LLog.d(TAG, "onAuthErrorRtmp");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onAuthErrorRtmp();
         }
@@ -352,7 +360,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void onAuthSuccessRtmp() {
-        //LLog.d(TAG, "onAuthSuccessRtmp");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onAuthSuccessRtmp();
             LDialogUtil.hide(progressBar);
@@ -361,7 +368,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        //LLog.d(TAG, "surfaceCreated");
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.surfaceCreated();
         }
@@ -369,54 +375,22 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        //rtmpCamera1.startPreview();
-        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT);
-        //rtmpCamera1.startPreview(1280, 720);
-        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_BACK, 1280, 720);
-        //rtmpCamera1.startPreview(Camera.CameraInfo.CAMERA_FACING_FRONT, 1280, 720);
-        //updateUISurfaceView();
-
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.surfaceChanged(new StartPreview() {
                 @Override
                 public void onSizeStartPreview(int width, int height) {
-                    //rtmpCamera1.startPreview();
-                    // optionally:
-                    //rtmpCamera1.startPreview(CameraHelper.Facing.BACK);
-                    //or
-                    //rtmpCamera1.startPreview(CameraHelper.Facing.FRONT);
-
-                    rtmpCamera1.startPreview(CameraHelper.Facing.FRONT, width, height);
+                    cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
                     updateUISurfaceView(width, height);
-                    //LLog.d(TAG, "uzLivestreamCallback surfaceChanged " + width + "x" + height);
                 }
             });
         }
     }
 
-    public interface StartPreview {
-        public void onSizeStartPreview(int width, int height);
-    }
-
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        //LLog.d(TAG, "surfaceDestroyed");
-        if (rtmpCamera1.isRecording()) {
-            rtmpCamera1.stopRecord();
-            LToast.show(getContext(), "File " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
-            currentDateAndTime = "";
-        }
-        if (rtmpCamera1.isStreaming()) {
-            rtmpCamera1.stopStream();
-        }
-        rtmpCamera1.stopPreview();
-    }
-
-    public boolean isStreaming() {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
-        return rtmpCamera1.isStreaming();
+        if (!isCameraValid()) return;
+        stopStream();
+        stopPreview();
     }
 
     public void startStream(String streamUrl) {
@@ -424,11 +398,9 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     public void startStream(String streamUrl, boolean isSavedToDevice) {
-        if (rtmpCamera1 == null) {
-            return;
-        }
+        if (!isCameraValid()) return;
         LDialogUtil.show(progressBar);
-        rtmpCamera1.startStream(streamUrl);
+        cameraHelper.startStream(streamUrl);
         LLog.d(TAG, "startStream streamUrl " + streamUrl + ", isSavedToDevice: " + isSavedToDevice);
         this.isSavedToDevice = isSavedToDevice;
         if (isSavedToDevice) {
@@ -436,21 +408,17 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         }
     }
 
-    private boolean isSavedToDevice;
-
     public boolean isSavedToDevice() {
         return isSavedToDevice;
     }
 
     public void stopStream() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
+        if (!isCameraValid()) return;
         if (isRecording()) {
             stopRecord();
         }
-        if (rtmpCamera1.isStreaming()) {
-            rtmpCamera1.stopStream();
+        if (isStreaming()) {
+            cameraHelper.stopStream();
         }
     }
 
@@ -459,11 +427,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
-        LLog.d(TAG, "prepareAudio ===> bitrate " + bitrate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
-        return rtmpCamera1.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
+        return cameraHelper.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
     public boolean prepareVideoFullHDPortrait() {
@@ -475,22 +439,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private boolean prepareVideoFullHD(boolean isLandscape) {
-        if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
-            return false;
-        }
-        List<Camera.Size> bestResolutionList = getBestResolutionList();
-        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoFullHD false -> bestResolutionList null or empty");
-            return false;
-        }
-        /*for (int i = 0; i < bestResolutionList.size(); i++) {
-            LLog.d(TAG, "prepareVideoFullHD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
-        }*/
-        Camera.Size bestSize = bestResolutionList.get(0);
-        int bestBitrate = getBestBitrate();
-        //return prepareVideo(1920, 1080, 30, presetLiveStreamingFeed.getS1080p(), false, isLandscape ? 0 : 90);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return cameraHelper.prepareVideoFullHD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
     public boolean prepareVideoHDPortrait() {
@@ -502,32 +451,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private boolean prepareVideoHD(boolean isLandscape) {
-        if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoHD false with presetLiveStreamingFeed null");
-            return false;
-        }
-        List<Camera.Size> bestResolutionList = getBestResolutionList();
-        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoHD false -> bestResolutionList null or empty");
-            return false;
-        }
-        /*for (int i = 0; i < bestResolutionList.size(); i++) {
-            LLog.d(TAG, "prepareVideoHD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
-        }*/
-        int sizeList = bestResolutionList.size();
-        int index;
-        if (sizeList > 2) {
-            index = sizeList / 2;
-        } else if (sizeList == 2) {
-            index = 1;
-        } else {
-            index = 0;
-        }
-        //LLog.d(TAG, "index " + index);
-        Camera.Size bestSize = bestResolutionList.get(index);
-        int bestBitrate = getBestBitrate();
-        //return prepareVideo(1280, 720, 30, presetLiveStreamingFeed.getS720p(), false, isLandscape ? 0 : 90);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return cameraHelper.prepareVideoHD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
     public boolean prepareVideoSDPortrait() {
@@ -539,22 +463,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private boolean prepareVideoSD(boolean isLandscape) {
-        if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideoSD false with presetLiveStreamingFeed null");
-            return false;
-        }
-        List<Camera.Size> bestResolutionList = getBestResolutionList();
-        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            Log.e(TAG, "prepareVideoSD false -> bestResolutionList null or empty");
-            return false;
-        }
-        /*for (int i = 0; i < bestResolutionList.size(); i++) {
-            LLog.d(TAG, "prepareVideoSD " + bestResolutionList.get(i).width + "x" + bestResolutionList.get(i).height);
-        }*/
-        Camera.Size bestSize = bestResolutionList.get(bestResolutionList.size() - 1);
-        int bestBitrate = getBestBitrate();
-        //return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return cameraHelper.prepareVideoSD(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
     public boolean prepareVideoPortrait() {
@@ -566,159 +475,19 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
     }
 
     private boolean prepareVideo(boolean isLandscape) {
-        if (presetLiveStreamingFeed == null) {
-            Log.e(TAG, "prepareVideo false with presetLiveStreamingFeed null");
-            return false;
-        }
-        if (rtmpCamera1 == null) {
-            Log.e(TAG, "prepareVideo false -> rtmpCamera1 == null");
-            return false;
-        }
-        //boolean isFrontCamera = rtmpCamera1.isFrontCamera();
-        //LLog.d(TAG, "isFrontCamera " + isFrontCamera);
-        Camera.Size bestSize = getBestResolution();
-        int bestBitrate = getBestBitrate();
-        if (bestSize == null) {
-            Log.e(TAG, "prepareVideo false -> bestSize == null");
-            return false;
-        }
-        //return prepareVideo(640, 360, 30, presetLiveStreamingFeed.getS480p(), false, isLandscape ? 0 : 90);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
-    }
-
-    private List<Camera.Size> getBestResolutionList() {
-        //WORKS FINE
-        /*List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
-        List<Camera.Size> sizeListBack = rtmpCamera1.getResolutionsBack();
-        if (sizeListFront == null || sizeListFront.isEmpty() || sizeListBack == null || sizeListBack.isEmpty()) {
-            return null;
-        }
-        List<Camera.Size> bestList = new ArrayList<>();
-        //scan sizeListFront
-        List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
-        for (int i = 0; i < sizeListFront.size(); i++) {
-            Camera.Size size = sizeListFront.get(i);
-            float w = size.width;
-            float h = size.height;
-            float ratioWH = w / h;
-            LLog.d(TAG, "front " + i + " -> " + w + "x" + h + " -> " + ratioWH);
-            if (ratioWH == 16f / 9f) {
-                bestResolutionFrontList.add(size);
-            }
-        }
-        //scan sizeListBack
-        List<Camera.Size> bestResolutionBackList = new ArrayList<>();
-        for (int i = 0; i < sizeListFront.size(); i++) {
-            Camera.Size size = sizeListFront.get(i);
-            float w = size.width;
-            float h = size.height;
-            float ratioWH = w / h;
-            LLog.d(TAG, "back " + i + " -> " + w + "x" + h + " -> " + ratioWH);
-            if (ratioWH == 16f / 9f) {
-                bestResolutionBackList.add(size);
-            }
-        }
-        //get same size between front and back list
-        for (int i = 0; i < bestResolutionFrontList.size(); i++) {
-            Camera.Size sizeF = bestResolutionFrontList.get(i);
-            for (int j = 0; j < bestResolutionBackList.size(); j++) {
-                Camera.Size sizeB = bestResolutionBackList.get(j);
-                if (sizeF.width == sizeB.width && sizeF.height == sizeB.height) {
-                    bestList.add(sizeF);
-                }
-            }
-        }
-        for (int i = 0; i < bestList.size(); i++) {
-            LLog.d(TAG, "final " + bestList.get(i).width + "x" + bestList.get(i).height);
-        }
-        return bestList;*/
-        List<Camera.Size> sizeListFront = rtmpCamera1.getResolutionsFront();
-        if (sizeListFront == null || sizeListFront.isEmpty()) {
-            return null;
-        }
-        List<Camera.Size> bestResolutionFrontList = new ArrayList<>();
-        for (int i = 0; i < sizeListFront.size(); i++) {
-            Camera.Size size = sizeListFront.get(i);
-            float w = size.width;
-            float h = size.height;
-            float ratioWH = w / h;
-            //LLog.d(TAG, "front " + i + " -> " + w + "x" + h + " -> " + ratioWH);
-            if (ratioWH == 16f / 9f) {
-                bestResolutionFrontList.add(size);
-            }
-        }
-        /*for (int i = 0; i < bestResolutionFrontList.size(); i++) {
-            LLog.d(TAG, "final " + bestResolutionFrontList.get(i).width + "x" + bestResolutionFrontList.get(i).height);
-        }*/
-        return bestResolutionFrontList;
-    }
-
-    private Camera.Size getBestResolution() {
-        List<Camera.Size> bestResolutionList = getBestResolutionList();
-        if (bestResolutionList == null || bestResolutionList.isEmpty()) {
-            return null;
-        }
-        int sizeList = bestResolutionList.size();
-        int index;
-        if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedWifi(getContext())) {
-            index = 0;
-        } else if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedMobile(getContext())) {
-            if (sizeList > 2) {
-                index = sizeList / 2;
-            } else if (sizeList == 2) {
-                index = 1;
-            } else {
-                index = 0;
-            }
-        } else {
-            index = sizeList - 1;
-        }
-        return bestResolutionList.get(index);
-    }
-
-    private int getBestBitrate() {
-        if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedWifi(getContext())) {
-            return presetLiveStreamingFeed.getS1080p();
-        } else if (LConnectivityUtil.isConnectedFast(getContext()) && LConnectivityUtil.isConnectedMobile(getContext())) {
-            return presetLiveStreamingFeed.getS720p();
-        } else {
-            return presetLiveStreamingFeed.getS480p();
-        }
+        return cameraHelper.prepareVideo(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
     public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
-        rtmpCamera1.startPreview(width, height);
-        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
-    }
-
-    public void switchCamera() {
-        if (rtmpCamera1 != null) {
-            rtmpCamera1.switchCamera();
-            if (cameraCallback != null) {
-                cameraCallback.onCameraChange(rtmpCamera1.isFrontCamera());
-            }
-        }
-    }
-
-    public boolean isRecording() {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
-        return rtmpCamera1.isRecording();
+        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
     }
 
     private void startRecord() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
+        if (!isCameraValid()) return;
         if (!isStreaming()) {
             LLog.e(TAG, "startRecord !isStreaming() -> return");
             return;
@@ -727,105 +496,51 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
             if (!folder.exists()) {
                 folder.mkdir();
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT, Locale.getDefault());
             currentDateAndTime = sdf.format(new Date());
-            rtmpCamera1.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
+            cameraHelper.startRecord(folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
             LLog.d(TAG, "Recording...");
         } catch (IOException e) {
-            rtmpCamera1.stopRecord();
+            stopRecord();
             LLog.e(TAG, "Error startRecord " + e.toString());
             SentryUtils.captureException(e);
         }
     }
 
     private void stopRecord() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        rtmpCamera1.stopRecord();
-        LToast.show(getContext(), "file " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
+        if (!isCameraValid()) return;
+        cameraHelper.stopRecord();
+        LToast.show(getContext(), "File " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath());
         currentDateAndTime = "";
     }
 
-    public boolean isAAEnabled() {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
-        return rtmpCamera1.getGlInterface().isAAEnabled();
-    }
-
-    /*
-     **AAEnabled true is AA enabled, false is AA disabled. False by default.
-     */
-    public void enableAA(boolean isEnable) {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        rtmpCamera1.getGlInterface().enableAA(isEnable);
-        //filters. NOTE: You can change filter values on fly without reset the filter.
-        // Example:
-        // ColorFilterRender color = new ColorFilterRender()
-        // rtmpCamera1.setFilter(color);
-        // color.setRGBColor(255, 0, 0); //red tint
-    }
-
-    public void setFilter(BaseFilterRender baseFilterRender) {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        rtmpCamera1.getGlInterface().setFilter(baseFilterRender);
-    }
-
-    public int getStreamWidth() {
-        if (rtmpCamera1 == null) {
-            return 0;
-        }
-        return rtmpCamera1.getStreamWidth();
-    }
-
-    public int getStreamHeight() {
-        if (rtmpCamera1 == null) {
-            return 0;
-        }
-        return rtmpCamera1.getStreamHeight();
-    }
-
     public void setTextToStream(String text, int textSize, int textCorlor, TranslateTo translateTo) {
-        if (rtmpCamera1 == null) {
-            return;
-        }
+        if (!isCameraValid()) return;
         TextObjectFilterRender textObjectFilterRender = new TextObjectFilterRender();
-        rtmpCamera1.getGlInterface().setFilter(textObjectFilterRender);
-        //textObjectFilterRender.setText("Hello world", 22, Color.RED);
+        cameraHelper.setFilter(textObjectFilterRender);
         textObjectFilterRender.setText(text, textSize, textCorlor);
-        textObjectFilterRender.setDefaultScale(rtmpCamera1.getStreamWidth(), rtmpCamera1.getStreamHeight());
-        //textObjectFilterRender.setPosition(TranslateTo.CENTER);
+        textObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
         textObjectFilterRender.setPosition(translateTo);
         spriteGestureController.setBaseObjectFilterRender(textObjectFilterRender); //Optional
     }
 
     public void setImageToStream(int res, TranslateTo translateTo) {
-        if (rtmpCamera1 == null) {
-            return;
-        }
+        if (!isCameraValid()) return;
         ImageObjectFilterRender imageObjectFilterRender = new ImageObjectFilterRender();
-        rtmpCamera1.getGlInterface().setFilter(imageObjectFilterRender);
+        cameraHelper.setFilter(imageObjectFilterRender);
         imageObjectFilterRender.setImage(BitmapFactory.decodeResource(getResources(), res));
-        imageObjectFilterRender.setDefaultScale(rtmpCamera1.getStreamWidth(), rtmpCamera1.getStreamHeight());
+        imageObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
         imageObjectFilterRender.setPosition(translateTo);
         spriteGestureController.setBaseObjectFilterRender(imageObjectFilterRender); //Optional
     }
 
     public boolean setGifToStream(int res, TranslateTo translateTo) {
-        if (rtmpCamera1 == null) {
-            return false;
-        }
+        if (!isCameraValid()) return false;
         try {
             GifObjectFilterRender gifObjectFilterRender = new GifObjectFilterRender();
             gifObjectFilterRender.setGif(getResources().openRawResource(res));
-            rtmpCamera1.getGlInterface().setFilter(gifObjectFilterRender);
-            gifObjectFilterRender.setDefaultScale(rtmpCamera1.getStreamWidth(), rtmpCamera1.getStreamHeight());
-            //gifObjectFilterRender.setPosition(TranslateTo.BOTTOM);
+            cameraHelper.setFilter(gifObjectFilterRender);
+            gifObjectFilterRender.setDefaultScale(getStreamWidth(), getStreamHeight());
             gifObjectFilterRender.setPosition(translateTo);
             spriteGestureController.setBaseObjectFilterRender(gifObjectFilterRender); //Optional
             return true;
@@ -847,8 +562,8 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         startLivestream(entityLiveId);
     }
 
-    //Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
-    //Van tiep tuc goi detail entity de lay streamUrl
+    // Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
+    // Van tiep tuc goi detail entity de lay streamUrl
     private void startLivestream(final String entityLiveId) {
         LDialogUtil.show(progressBar);
         UZService service = UZRestClient.createService(UZService.class);
@@ -857,7 +572,6 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         UZAPIMaster.getInstance().subscribe(service.startALiveEvent(UZLivestreamData.getInstance().getAPIVersion(), bodyStartALiveFeed), new ApiSubscriber<Object>() {
             @Override
             public void onSuccess(Object result) {
-                //LLog.d(TAG, "startLivestream onSuccess " + gson.toJson(result));
                 getDetailEntity(entityLiveId, false, null);
             }
 
@@ -866,7 +580,7 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 Log.e(TAG, ">>>>>>startLivestream onFail " + e.toString() + ", " + e.getMessage());
                 try {
                     HttpException error = (HttpException) e;
-                    String responseBody = null;
+                    String responseBody;
                     try {
                         responseBody = error.response().errorBody().string();
                         Log.e(TAG, "responseBody " + responseBody);
@@ -888,17 +602,15 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         String appId = UZLivestreamData.getInstance().getAppId();
-        UZUtilBase.getDataFromEntityIdLIVE((Activity) getContext(), UZLivestreamData.getInstance().getAPIVersion(),appId, entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLIVE(getContext(), UZLivestreamData.getInstance().getAPIVersion(), appId, entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
-                //LLog.d(TAG, "init getDetailEntity onSuccess: " + gson.toJson(d));
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
                     throw new NullPointerException("Data is null");
                 }
                 String streamKey = d.getLastPushInfo().get(0).getStreamKey();
                 String streamUrl = d.getLastPushInfo().get(0).getStreamUrl();
-                String mainUrl = streamUrl + "/" + streamKey;
-                mainStreamUrl = mainUrl;
+                mainStreamUrl = streamUrl + "/" + streamKey;
                 LLog.d(TAG, ">>>>mainStreamUrl: " + mainStreamUrl);
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
@@ -923,11 +635,9 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
                         if (uzLivestreamCallback != null) {
-                            //LLog.d(TAG, "isErrorStartLive -> onError Last process null");
                             uzLivestreamCallback.onError("Error: Last process null");
                         }
                     } else {
-                        //LLog.d(TAG, "getLastProcess " + d.getLastProcess());
                         if ((d.getLastProcess().toLowerCase().equals(Constants.LAST_PROCESS_STOP))) {
                             LLog.d(TAG, "Start live 400 but last process STOP -> cannot livestream");
                             if (uzLivestreamCallback != null) {
@@ -947,12 +657,10 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
                     }
                 }
                 LUIUtil.hideProgressBar(progressBar);
-                //LLog.d(TAG, "===================finish");
             }
 
             @Override
             public void onError(Throwable e) {
-                //LLog.e(TAG, "setId onError " + e.toString());
                 LUIUtil.hideProgressBar(progressBar);
                 if (uzLivestreamCallback != null) {
                     uzLivestreamCallback.onError(e.getMessage());
@@ -961,63 +669,67 @@ public class UZLivestream extends RelativeLayout implements ConnectCheckerRtmp, 
         });
     }
 
+    public boolean isStreaming() {
+        return cameraHelper.isStreaming();
+    }
+
+    public void switchCamera() {
+        cameraHelper.switchCamera();
+    }
+
+    public boolean isAAEnabled() {
+        return cameraHelper.isAAEnabled();
+    }
+
+    public void enableAA(boolean isEnable) {
+        cameraHelper.enableAA(isEnable);
+    }
+
+    public void setFilter(BaseFilterRender baseFilterRender) {
+        cameraHelper.setFilter(baseFilterRender);
+    }
+
+    public int getStreamWidth() {
+        return cameraHelper.getStreamWidth();
+    }
+
+    public int getStreamHeight() {
+        return cameraHelper.getStreamHeight();
+    }
+
+    public boolean isRecording() {
+        return cameraHelper.isRecording();
+    }
+
     public int[] getBestSizePreview() {
-        List<Camera.Size> sizeList = getBestResolutionList();
-        int[] result = new int[2];
-        if (sizeList == null || sizeList.isEmpty()) {
-            result[0] = LScreenUtil.getScreenWidth();
-            result[1] = LScreenUtil.getScreenHeight();
-        } else {
-            result[0] = sizeList.get(0).width;
-            result[1] = sizeList.get(0).height;
-        }
-        return result;
+        return cameraHelper.getBestSizePreview();
     }
 
     public void enableLantern() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        try {
-            rtmpCamera1.enableLantern();
-        } catch (Exception e) {
-            LLog.e(TAG, "toggleFlash " + e.toString());
-            SentryUtils.captureException(e);
-        }
+        cameraHelper.enableLantern();
     }
 
     public void disableLantern() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        rtmpCamera1.disableLantern();
+        cameraHelper.disableLantern();
     }
 
     public void toggleLantern() {
-        if (rtmpCamera1 == null) {
-            return;
-        }
-        Boolean isLanternEnabled = isLanternEnabled();
-        if (isLanternEnabled == null) {
-            return;
-        }
-        if (isLanternEnabled) {
-            disableLantern();
-        } else {
-            enableLantern();
-        }
+        cameraHelper.toggleLantern();
     }
 
     public Boolean isLanternEnabled() {
-        if (rtmpCamera1 == null) {
-            return null;
-        }
-        return rtmpCamera1.isLanternEnabled();
+        return cameraHelper.isLanternEnabled();
     }
 
     public void stopPreview() {
-        if (rtmpCamera1 != null) {
-            rtmpCamera1.stopPreview();
-        }
+        cameraHelper.stopPreview();
+    }
+
+    private boolean isCameraValid() {
+        return cameraHelper.isCameraValid();
+    }
+
+    public interface StartPreview {
+        void onSizeStartPreview(int width, int height);
     }
 }

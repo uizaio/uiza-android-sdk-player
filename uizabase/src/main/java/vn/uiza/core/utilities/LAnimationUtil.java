@@ -25,13 +25,13 @@ import vn.uiza.core.common.Constants;
 
 public class LAnimationUtil {
     public interface Callback {
-        public void onCancel();
+        void onCancel();
 
-        public void onEnd();
+        void onEnd();
 
-        public void onRepeat();
+        void onRepeat();
 
-        public void onStart();
+        void onStart();
     }
 
     public static void play(View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final Callback callback) {
@@ -131,8 +131,8 @@ public class LAnimationUtil {
         view.clearAnimation();
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 view,
-                PropertyValuesHolder.ofFloat("scaleX", 1.5f),
-                PropertyValuesHolder.ofFloat("scaleY", 1.5f));
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1.5f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.5f));
         scaleDown.setDuration(Constants.ANIMATION_DURATION);
         //scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
         scaleDown.setRepeatCount(2);
@@ -145,9 +145,9 @@ public class LAnimationUtil {
         if (v == null) {
             return;
         }
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(v, "alpha", 1f, .3f);
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(v, View.ALPHA, 1f, .3f);
         fadeOut.setDuration(1000);
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(v, "alpha", .3f, 1f);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(v, View.ALPHA, .3f, 1f);
         fadeIn.setDuration(1000);
         final AnimatorSet mAnimationSet = new AnimatorSet();
         mAnimationSet.play(fadeIn).after(fadeOut);

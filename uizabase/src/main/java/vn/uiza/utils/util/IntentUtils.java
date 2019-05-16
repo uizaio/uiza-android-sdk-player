@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
+import vn.uiza.core.common.Constants;
 
 public final class IntentUtils {
 
@@ -37,7 +39,7 @@ public final class IntentUtils {
 
     public static Intent getUninstallAppIntent(String packageName) {
         Intent intent = new Intent(Intent.ACTION_DELETE);
-        intent.setData(Uri.parse("package:" + packageName));
+        intent.setData(Uri.parse(Constants.PACKAGE + packageName));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -46,14 +48,14 @@ public final class IntentUtils {
     }
 
     public static Intent getAppDetailsSettingsIntent(String packageName) {
-        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
-        intent.setData(Uri.parse("package:" + packageName));
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse(Constants.PACKAGE + packageName));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public static Intent getShareTextIntent(String content) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
+        intent.setType(Constants.TEXT_TYPE);
         intent.putExtra(Intent.EXTRA_TEXT, content);
         return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
@@ -71,7 +73,7 @@ public final class IntentUtils {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, content);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.setType("image/*");
+        intent.setType(Constants.IMAGE_TYPE);
         return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -93,19 +95,19 @@ public final class IntentUtils {
     }
 
     public static Intent getDialIntent(String phoneNumber) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(Constants.TEL_URI + phoneNumber));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public static Intent getCallIntent(String phoneNumber) {
-        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(Constants.TEL_URI + phoneNumber));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public static Intent getSendSmsIntent(String phoneNumber, String content) {
-        Uri uri = Uri.parse("smsto:" + phoneNumber);
+        Uri uri = Uri.parse(Constants.SMSTO_URI + phoneNumber);
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-        intent.putExtra("sms_body", content);
+        intent.putExtra(Constants.SMS_BODY, content);
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 

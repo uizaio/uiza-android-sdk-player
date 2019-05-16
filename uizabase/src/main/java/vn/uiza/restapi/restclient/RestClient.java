@@ -17,7 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.uiza.restapi.DateTypeDeserializer;
 
 public class RestClient {
-    private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;
     private static final String AUTHORIZATION = "Authorization";
     private static Retrofit retrofit;
@@ -33,7 +32,6 @@ public class RestClient {
         }
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         restRequestInterceptor = new RestRequestInterceptor();
@@ -52,7 +50,6 @@ public class RestClient {
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -80,9 +77,7 @@ public class RestClient {
     }
 
     public static void addAuthorization(String token) {
-        //addHeader(AUTHORIZATION, "Token token=" + token);
         addHeader(AUTHORIZATION, token);
-        //Log.d(AUTHORIZATION, "token: " + token);
     }
 
     public static void removeAuthorization() {
