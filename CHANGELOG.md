@@ -1,3 +1,6 @@
+### 3.3.18.4_BETA (2019-5-17)
+- Fix: Re-added missing find views
+
 ### 3.3.18.3_BETA (2019-5-16)
 - Optimize
 - Fix button play was hide when miniplayer back to normal
