@@ -1694,6 +1694,8 @@ public class UZVideo extends RelativeLayout implements PreviewView.OnPreviewChan
         tvLiveStatus = uzPlayerView.findViewById(R.id.tv_live);
         tvLiveView = uzPlayerView.findViewById(R.id.tv_live_view);
         tvLiveTime = uzPlayerView.findViewById(R.id.tv_live_time);
+        ivLiveView = uzPlayerView.findViewById(R.id.iv_live_view);
+        ivLiveTime = uzPlayerView.findViewById(R.id.iv_live_time);
         ViewUtils.setFocusableViews(false, ivLiveView, ivLiveTime);
         rlEndScreen = uzPlayerView.findViewById(R.id.rl_end_screen);
         ViewUtils.goneViews(rlEndScreen);
