@@ -9,9 +9,6 @@ public class LConnectivityUtil {
 
     /**
      * Get the network info
-     *
-     * @param context
-     * @return
      */
     public static NetworkInfo getNetworkInfo(Context context) {
         if (context == null) {
@@ -23,9 +20,6 @@ public class LConnectivityUtil {
 
     /**
      * Check if there is any connectivity
-     *
-     * @param context
-     * @return
      */
     public static boolean isConnected(Context context) {
         NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
@@ -34,9 +28,6 @@ public class LConnectivityUtil {
 
     /**
      * Check if there is any connectivity to a Wifi network
-     *
-     * @param context
-     * @return
      */
     public static boolean isConnectedWifi(Context context) {
         NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
@@ -45,9 +36,6 @@ public class LConnectivityUtil {
 
     /**
      * Check if there is any connectivity to a mobile network
-     *
-     * @param context
-     * @return
      */
     public static boolean isConnectedMobile(Context context) {
         NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
@@ -56,9 +44,6 @@ public class LConnectivityUtil {
 
     /**
      * Check if there is fast connectivity
-     *
-     * @param context
-     * @return
      */
     public static boolean isConnectedFast(Context context) {
         NetworkInfo info = LConnectivityUtil.getNetworkInfo(context);
@@ -67,10 +52,6 @@ public class LConnectivityUtil {
 
     /**
      * Check if the connection is fast
-     *
-     * @param type
-     * @param subType
-     * @return
      */
     public static boolean isConnectionFast(int type, int subType) {
         if (type == ConnectivityManager.TYPE_WIFI) {

@@ -6,6 +6,8 @@ package uizacoresdk.view.rl.videoinfo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -85,6 +87,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
         onCreate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public UZVideoInfoV1(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
@@ -97,20 +100,20 @@ public class UZVideoInfoV1 extends RelativeLayout {
     }
 
     private void findViews() {
-        nestedScrollView = (NestedScrollView) findViewById(R.id.scroll_view);
+        nestedScrollView = findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
-        progressBar = (ProgressBar) findViewById(R.id.pb);
+        progressBar = findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        tvVideoName = (TextView) findViewById(R.id.tv_video_name);
-        tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
-        tvVideoRate = (TextView) findViewById(R.id.tv_video_rate);
-        tvVideoDescription = (TextView) findViewById(R.id.tv_video_description);
-        tvVideoStarring = (TextView) findViewById(R.id.tv_video_starring);
-        tvVideoDirector = (TextView) findViewById(R.id.tv_video_director);
-        tvVideoGenres = (TextView) findViewById(R.id.tv_video_genres);
-        tvDebug = (TextView) findViewById(R.id.tv_debug);
-        tvMoreLikeThisMsg = (TextView) findViewById(R.id.tv_more_like_this_msg);
+        recyclerView = findViewById(R.id.rv);
+        tvVideoName = findViewById(R.id.tv_video_name);
+        tvVideoTime = findViewById(R.id.tv_video_time);
+        tvVideoRate = findViewById(R.id.tv_video_rate);
+        tvVideoDescription = findViewById(R.id.tv_video_description);
+        tvVideoStarring = findViewById(R.id.tv_video_starring);
+        tvVideoDirector = findViewById(R.id.tv_video_director);
+        tvVideoGenres = findViewById(R.id.tv_video_genres);
+        tvDebug = findViewById(R.id.tv_debug);
+        tvMoreLikeThisMsg = findViewById(R.id.tv_more_like_this_msg);
 
         int sizeW = LDisplayUtils.getScreenW(activity) / 2;
         int sizeH = sizeW * 9 / 16;
@@ -147,7 +150,6 @@ public class UZVideoInfoV1 extends RelativeLayout {
         if (getDetailEntity == null) {
             return;
         }
-        //LLog.d(TAG, "getDetailEntityV2 entityId " + UizaDataV1.getInstance().getEntityId() + " -> " + gson.toJson(getDetailEntity));
         mItem = getDetailEntity.getData().get(0);
         updateUI();
     }
@@ -193,7 +195,6 @@ public class UZVideoInfoV1 extends RelativeLayout {
     }
 
     private void setupUIMoreLikeThis(List<Item> itemList) {
-        //LLog.d(TAG, "setupUIMoreLikeThis itemList size: " + itemList.size());
         this.itemList.addAll(itemList);
         notifyViews();
     }

@@ -52,8 +52,8 @@ public class UZDlgPlaylistFolder extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v3_dialog_list_playlist_folder);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        final ImageButton btExit = (ImageButton) findViewById(R.id.bt_exit);
+        recyclerView = findViewById(R.id.recycler_view);
+        final ImageButton btExit = findViewById(R.id.bt_exit);
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,17 +77,13 @@ public class UZDlgPlaylistFolder extends Dialog {
     }
 
     private void setupUI() {
-        //recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         SnappyLinearLayoutManager layoutManager = new SnappyLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setSnapType(SnapType.CENTER);
         layoutManager.setSnapInterpolator(new DecelerateInterpolator());
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //LLog.d(TAG, "--------> " + widthRecyclerView + " x " + heightRecyclerView);
         adapterPlaylistFolder = new AdapterPlaylistFolder(context, dataList, currentPositionOfDataList, new CallbackPlaylistFolder() {
             @Override
             public void onClickItem(Data data, int position) {
-                //LLog.d(TAG, "onClickItem position: " + position);
                 if (UZData.getInstance().isSettingPlayer()) {
                     return;
                 }
@@ -112,7 +108,6 @@ public class UZDlgPlaylistFolder extends Dialog {
             }
         });
         recyclerView.setAdapter(adapterPlaylistFolder);
-        //LLog.d(TAG, "currentPositionOfDataList " + currentPositionOfDataList + "/" + dataList.size());
         recyclerView.scrollToPosition(currentPositionOfDataList);
         recyclerView.requestFocus();
 
@@ -122,7 +117,10 @@ public class UZDlgPlaylistFolder extends Dialog {
                 if (recyclerView == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList) == null || recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView == null) {
                     return;
                 }
-                recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList).itemView.requestFocus();
+                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(currentPositionOfDataList);
+                if (holder != null) {
+                    holder.itemView.requestFocus();
+                }
             }
         }, 50);
     }

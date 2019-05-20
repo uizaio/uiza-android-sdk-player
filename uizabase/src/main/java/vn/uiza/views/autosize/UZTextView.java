@@ -17,6 +17,8 @@ import vn.uiza.core.utilities.LUIUtil;
 
 public class UZTextView extends AppCompatTextView {
     private final String TAG = getClass().getSimpleName();
+    private boolean isUseDefault;
+    private boolean isLandscape;
 
     public UZTextView(Context context) {
         super(context);
@@ -32,17 +34,9 @@ public class UZTextView extends AppCompatTextView {
         init(attrs);
     }
 
-    /*public UZTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(attrs);
-    }*/
-
-    private boolean isUseDefault;
-
     private void init(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UZTextView);
         isUseDefault = a.getBoolean(R.styleable.UZTextView_useDefaultTV, true);
-        //LLog.d(TAG, "init isUseDefault " + isUseDefault);
         LUIUtil.setTextShadow(this);
         updateSize();
         setSingleLine();
@@ -51,29 +45,20 @@ public class UZTextView extends AppCompatTextView {
 
     private void updateSize() {
         if (!isUseDefault) {
-            //LLog.d(TAG, "onConfigurationChanged !isUseDefault -> return");
             return;
         }
         if (isLandscape) {
             int textSize = getTextSizeLand();
-            //LLog.d(TAG, "textSize " + textSize);
             setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         } else {
             int textSize = getTextSizePortrait();
-            //LLog.d(TAG, "textSize " + textSize);
             setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         }
     }
 
-    private boolean isLandscape;
-
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isLandscape = true;
-        } else {
-            isLandscape = false;
-        }
+        isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
         updateSize();
     }
 

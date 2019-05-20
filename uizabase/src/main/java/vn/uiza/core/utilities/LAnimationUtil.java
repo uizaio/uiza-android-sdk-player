@@ -25,13 +25,13 @@ import vn.uiza.core.common.Constants;
 
 public class LAnimationUtil {
     public interface Callback {
-        public void onCancel();
+        void onCancel();
 
-        public void onEnd();
+        void onEnd();
 
-        public void onRepeat();
+        void onRepeat();
 
-        public void onStart();
+        void onStart();
     }
 
     public static void play(View view, int duration, int repeatCount, Techniques techniques, int delayInMls, final Callback callback) {

@@ -3,6 +3,7 @@ package uizacoresdk.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Base64;
 
 import com.google.gson.Gson;
 
@@ -18,6 +19,10 @@ import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 import vn.uiza.utils.util.Encryptor;
 import vn.uiza.utils.util.SentryUtils;
 
+@Deprecated
+/**
+ * Use {@link UZOsUtil} instead
+ */
 public class Loitp {
     public static LicenseAcquisitionUrl decrypt(Context context, String input) throws DecoderException {
         return decrypt(context, input, new Gson());
@@ -33,15 +38,10 @@ public class Loitp {
         String key = loitp(context.getString(R.string.loitp_best_dev_ever));
         input = input.trim();
         String hexIv = input.substring(0, 16);
-        //LLog.d(TAG, "hexIv: " + hexIv);
         String hexText = input.substring(16);
-        //LLog.d(TAG, "hexText: " + hexText);
-
         byte[] decodedHex = org.apache.commons.codec.binary.Hex.decodeHex(hexText.toCharArray());
-        String base64 = android.util.Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
-        //LLog.d(TAG, "base64 " + base64);
+        String base64 = Base64.encodeToString(decodedHex, android.util.Base64.NO_WRAP);
         String decrypt = Encryptor.decrypt(key, hexIv, base64);
-        //LLog.d(TAG, "decrypt " + decrypt);
         return gson.fromJson(decrypt, LicenseAcquisitionUrl.class);
     }
 

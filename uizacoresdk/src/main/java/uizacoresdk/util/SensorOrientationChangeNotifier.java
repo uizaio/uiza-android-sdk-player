@@ -60,7 +60,6 @@ public class SensorOrientationChangeNotifier {
             } else if (x > 5 && y < 5 && y > -5) {
                 newOrientation = 270;
             }
-            //LLog.d(TAG,"mOrientation="+mOrientation+"   ["+event.values[0]+","+event.values[1]+","+event.values[2]+"]");
             if (mOrientation != newOrientation) {
                 mOrientation = newOrientation;
                 notifyListeners();
@@ -83,7 +82,7 @@ public class SensorOrientationChangeNotifier {
 
     public void addListener(SensorOrientationChangeNotifier.Listener listener) {
         if (get(listener) == null) // prevent duplications
-            mListeners.add(new WeakReference<SensorOrientationChangeNotifier.Listener>(listener));
+            mListeners.add(new WeakReference<>(listener));
 
         if (mListeners.size() == 1) {
             onResume(); // this is the first client

@@ -15,6 +15,7 @@
  */
 package vn.uiza.views.draggablepanel;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.View;
 
@@ -54,7 +55,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      * @param dy   change in Y position from the last call.
      */
     @Override
-    public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+    public void onViewPositionChanged(@NonNull View changedView, int left, int top, int dx, int dy) {
         draggableView.onViewPositionChanged(left, top, dx, dy);
         if (draggableView.isDragViewAtBottom()) {
             draggableView.changeDragViewViewAlpha();
@@ -78,7 +79,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      * @param yVel          Y velocity of the pointer as it left the screen in pixels per second.
      */
     @Override
-    public void onViewReleased(View releasedChild, float xVel, float yVel) {
+    public void onViewReleased(@NonNull View releasedChild, float xVel, float yVel) {
         super.onViewReleased(releasedChild, xVel, yVel);
 
         if (draggableView.isDragViewAtBottom() && !draggableView.isDragViewAtRight()) {
@@ -96,7 +97,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      * @return true if capture should be allowed, false otherwise.
      */
     @Override
-    public boolean tryCaptureView(View view, int pointerId) {
+    public boolean tryCaptureView(@NonNull View view, int pointerId) {
         return view.equals(draggedView);
     }
 
@@ -110,7 +111,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      * @return the new clamped position for left.
      */
     @Override
-    public int clampViewPositionHorizontal(View child, int left, int dx) {
+    public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
         int newLeft = draggedView.getLeft();
         if ((draggableView.isMinimized() && Math.abs(dx) > MINIMUM_DX_FOR_HORIZONTAL_DRAG) || (
                 draggableView.isDragViewAtBottom()
@@ -130,7 +131,7 @@ class DraggableViewCallback extends ViewDragHelper.Callback {
      * @return the new clamped position for top.
      */
     @Override
-    public int clampViewPositionVertical(View child, int top, int dy) {
+    public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
         int newTop = draggableView.getHeight() - draggableView.getDraggedViewHeightPlusMarginTop();
         if (draggableView.isMinimized() && Math.abs(dy) >= MINIMUM_DY_FOR_VERTICAL_DRAG
                 || (!draggableView.isMinimized() && !draggableView.isDragViewAtBottom())) {

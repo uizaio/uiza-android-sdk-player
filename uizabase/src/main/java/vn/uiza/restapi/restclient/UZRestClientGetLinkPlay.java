@@ -19,7 +19,6 @@ import vn.uiza.restapi.DateTypeDeserializer;
 
 public class UZRestClientGetLinkPlay {
     private static final String TAG = UZRestClientGetLinkPlay.class.getSimpleName();
-    private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";
     private static Retrofit retrofit;
@@ -55,7 +54,6 @@ public class UZRestClientGetLinkPlay {
                 .baseUrl(baseApiUrl)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -78,14 +76,11 @@ public class UZRestClientGetLinkPlay {
     public static void addHeader(String name, String value) {
         if (restRequestInterceptor != null) {
             restRequestInterceptor.addHeader(name, value);
-            //LLog.d(TAG, "addHeader: name: " + name + " value: " + value);
         }
     }
 
     public static void addAuthorization(String token) {
-        //addHeader(AUTHORIZATION, "Token token=" + token);
         addHeader(AUTHORIZATION, token);
-        //LLog.d(TAG, "Add token: " + token);
     }
 
     public static void removeAuthorization() {

@@ -28,7 +28,8 @@ import java.security.MessageDigest;
 public class GlideThumbnailTransformationPB extends BitmapTransformation {
     public static final int MAX_LINES = 7;
     public static final int MAX_COLUMNS = 7;
-    public static final int THUMBNAILS_EACH = 5000; // millisseconds
+    public static final int CAPACITY = 8;
+    public static final int THUMBNAILS_EACH = 5000; // millis seconds
 
     private int x;
     private int y;
@@ -55,14 +56,14 @@ public class GlideThumbnailTransformationPB extends BitmapTransformation {
     }
 
     @Override
-    public void updateDiskCacheKey(MessageDigest messageDigest) {
-        byte[] data = ByteBuffer.allocate(8).putInt(x).putInt(y).array();
+    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        byte[] data = ByteBuffer.allocate(CAPACITY).putInt(x).putInt(y).array();
         messageDigest.update(data);
     }
 
     @Override
     public int hashCode() {
-        return (String.valueOf(x) + String.valueOf(y)).hashCode();
+        return (String.valueOf(x) + y).hashCode();
     }
 
     @Override

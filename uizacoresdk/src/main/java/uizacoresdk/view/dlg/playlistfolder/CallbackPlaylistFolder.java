@@ -7,9 +7,9 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  */
 
 public interface CallbackPlaylistFolder {
-    public void onClickItem(Data data, int position);
+    void onClickItem(Data data, int position);
 
-    public void onFocusChange(Data data, int position);
+    void onFocusChange(Data data, int position);
 
-    public void onDismiss();
+    void onDismiss();
 }
