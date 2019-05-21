@@ -67,5 +67,15 @@ dependencies {
     // For Sentry https://docs.sentry.io/clients/java/integrations/#android
     api 'io.sentry:sentry-android:1.7.16'
     api 'org.slf4j:slf4j-nop:1.7.25'
+
+    // if you want to modify the version of these dependencies, check this link below
+    // https://github.com/powermock/powermock/wiki/Mockito
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.8.9"
+    testImplementation "org.mockito:mockito-inline:2.8.9"
+    testImplementation 'org.powermock:powermock-api-mockito2:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.7.4'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.4'
 }
 
