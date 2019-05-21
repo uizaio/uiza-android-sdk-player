@@ -9,14 +9,14 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-
+import java.text.DecimalFormat;
+import java.util.Locale;
 import vn.uiza.utils.constant.MemoryConstants;
 import vn.uiza.utils.constant.TimeConstants;
 
@@ -310,5 +310,19 @@ public final class ConvertUtils {
     public static int px2sp(float pxValue) {
         final float fontScale = Utils.getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
+    }
+
+    public static String getFormattedDouble(double value, int precision) {
+        return new DecimalFormat(
+                "#0." + (precision <= 1 ? "0" : precision == 2 ? "00" : "000")).format(value);
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si, boolean isBits) {
+        int unit = !si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " KB";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
+        return isBits ? String.format(Locale.getDefault(), "%.1f %sb", bytes / Math.pow(unit, exp), pre)
+                : String.format(Locale.getDefault(), "%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }
