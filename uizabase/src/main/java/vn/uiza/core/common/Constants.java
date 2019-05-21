@@ -11,6 +11,8 @@ public class Constants {
     public static final String PLAYER_NAME = "UZSDK";
     public static final String USER_AGENT = "UizaSDK-Android";
     public static final String PLAYER_SDK_VERSION = "3.1.9";
+    public static final int API_VERSION_3 = 3;
+    public static final int API_VERSION_4 = 4;
 
     public static void setDebugMode(boolean isDebugEnable) {
         IS_DEBUG = isDebugEnable;
@@ -164,6 +166,7 @@ public class Constants {
     public static final String DRM_SCHEME_NULL = null;
     public static final String DRM_SCHEME_PLAYREADY = "playready";
     public static final String DRM_SCHEME_WIDEVINE = "widevine";
+    public static final String DRM_LICENSE_URL = "https://wv.service.expressplay.com/hms/wv/rights/?ExpressPlayToken=BAAaXbkVKbEAAABg_0gifyfSLlqtjYGc9boiYUIudGi445e5xHzay2CzEazC0uj6GWg79k_yexpv7t2GmjWF10ehecUV2kqV5MBWM-7kURuaQcSJ368ocXFpcoT4l2EXQO8_9R67vZC3Y9lDqLE-9_FTTIqg7C-oWLoXZgWAmJQ";
 
     public static final int W_320 = 320;
     public static final int W_180 = 180;

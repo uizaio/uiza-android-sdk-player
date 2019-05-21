@@ -95,4 +95,10 @@
     <dimen name="small_font_size">14.0sp</dimen>
     <dimen name="watch_while_mini_player_shadow_size">4.0dip</dimen>
     <dimen name="w_113">113dp</dimen>
+
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
 </resources>

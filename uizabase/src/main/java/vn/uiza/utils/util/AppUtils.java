@@ -9,6 +9,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.support.annotation.NonNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -207,6 +209,12 @@ public final class AppUtils {
         }
     }
 
+    public static int getVolumePercentage(@NonNull Context context, int streamType) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        int currentVolume = audioManager.getStreamVolume(streamType);
+        int maxVolume = audioManager.getStreamMaxVolume(streamType);
+        return Math.round(currentVolume * 1f / maxVolume * 100);
+    }
 
     public static Signature[] getAppSignature() {
         return getAppSignature(Utils.getContext().getPackageName());
