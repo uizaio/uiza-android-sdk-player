@@ -430,6 +430,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected void resumeVideo() {
+        if (!isPlayerValid()) return;
         setPlayWhenReady(true);
         timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
@@ -510,7 +511,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     protected void hideProgress() {
-        if (uzVideo.isCastingChromecast()) {
+        if (uzVideo.isCasting()) {
             return;
         }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());
@@ -660,7 +661,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
-                uzVideo.pauseVideo();
+                uzVideo.pause();
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerError(error);
@@ -841,6 +842,19 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    protected void setMuted(boolean mute) {
+        if (!isPlayerValid()) {
+            return;
+        }
+
+        if (mute) {
+            volumeToggle = getVolume();
+            setVolume(0f);
+        } else {
+            setVolume(volumeToggle);
+        }
+    }
+
     protected SimpleExoPlayer getPlayer() {
         return playerHelper.getPlayer();
     }
@@ -875,12 +889,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return playerHelper.seekTo(positionMs);
     }
 
-    //forward  10000mls
     protected void seekToForward(long forward) {
         playerHelper.seekToForward(forward);
     }
 
-    //next 10000mls
     protected void seekToBackward(long backward) {
         playerHelper.seekToBackward(backward);
     }

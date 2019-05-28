@@ -128,7 +128,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onOverScroll(VDHView.State state, VDHView.Part part) {
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         vdhv.dissappear();
     }
 
@@ -279,7 +279,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 break;
             case R.id.bt_appear:
                 vdhv.appear();
-                uzVideo.resumeVideo();
+                uzVideo.play();
                 break;
             case R.id.bt_is_maximize_view:
                 Toast.makeText(activity, "isMaximizeView: " + vdhv.isMaximizeView(), Toast.LENGTH_SHORT).show();

@@ -109,31 +109,31 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.resumeVideo();
+                uzVideo.play();
             }
         });
         findViewById(R.id.bt_pause).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.pauseVideo();
+                uzVideo.pause();
             }
         });
         findViewById(R.id.bt_next_10).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.seekToForward(10000);
+                uzVideo.seek(uzVideo.getCurrentPosition() + 10000);
             }
         });
         findViewById(R.id.bt_prev_10).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.seekToBackward(10000);
+                uzVideo.seek(uzVideo.getCurrentPosition() - 10000);
             }
         });
         findViewById(R.id.bt_volume_on_off).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.toggleVolume();
+                uzVideo.toggleMuted();
             }
         });
         findViewById(R.id.bt_toggle_fullscreen).setOnClickListener(new View.OnClickListener() {
@@ -163,13 +163,13 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         findViewById(R.id.bt_next_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.skipNextVideo();
+                uzVideo.nextVideo();
             }
         });
         findViewById(R.id.bt_prev_video).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.skipPreviousVideo();
+                uzVideo.previousVideo();
             }
         });
 

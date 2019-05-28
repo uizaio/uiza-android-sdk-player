@@ -71,7 +71,7 @@ final class UZPlayerHelper {
         if (player.getCurrentPosition() + forward > player.getDuration()) {
             player.seekTo(player.getDuration());
         } else {
-            player.seekTo(player.getCurrentPosition() + forward);
+            player.seekTo(getCurrentPosition() + forward);
         }
     }
 
@@ -80,7 +80,7 @@ final class UZPlayerHelper {
             return;
         }
         if (player.getCurrentPosition() - backward > 0) {
-            player.seekTo(player.getCurrentPosition() - backward);
+            player.seekTo(getCurrentPosition() - backward);
         } else {
             player.seekTo(0);
         }
