@@ -166,7 +166,7 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
     @Override
     protected void onDestroy() {
         if (frmUTVideoTop != null) {
-            frmUTVideoTop.getUZVideo().pauseVideo();
+            frmUTVideoTop.getUZVideo().pause();
         }
         super.onDestroy();
     }

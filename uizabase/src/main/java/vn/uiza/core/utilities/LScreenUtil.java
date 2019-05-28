@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
-
 import vn.uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.util.SentryUtils;
@@ -286,14 +285,14 @@ public class LScreenUtil {
     }
 
     public static boolean isFullScreen(Context context) {
-        final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        final int rotation =
+                ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch (rotation) {
             case Surface.ROTATION_0:
-                return false;
-            case Surface.ROTATION_90:
-                return true;
             case Surface.ROTATION_180:
                 return false;
+            case Surface.ROTATION_90:
+            case Surface.ROTATION_270:
             default:
                 return true;
         }

@@ -116,7 +116,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
-            uzVideo.pauseVideo();
+            uzVideo.pause();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override

@@ -163,7 +163,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
-            uzVideo.pauseVideo();
+            uzVideo.pause();
             activity.getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
@@ -199,13 +199,13 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     public void initEntity(String entityId) {
         hideController();
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
         hideController();
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 

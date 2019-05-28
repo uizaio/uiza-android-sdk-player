@@ -185,11 +185,11 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_REWIND");
-                uzVideo.seekToBackward(uzVideo.getDefaultValueBackwardForward());
+                uzVideo.seek(uzVideo.getCurrentPosition() - uzVideo.getDefaultValueBackwardForward());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_FAST_FORWARD");
-                uzVideo.seekToForward(uzVideo.getDefaultValueBackwardForward());
+                uzVideo.seek(uzVideo.getCurrentPosition() + uzVideo.getDefaultValueBackwardForward());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_PLAY_PAUSE");
@@ -197,7 +197,7 @@ public class PlayerCustomActivity extends AppCompatActivity implements UZCallbac
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 LLog.d(TAG, "onKeyUp KEYCODE_MEDIA_STOP");
-                uzVideo.pauseVideo();
+                uzVideo.pause();
                 return true;
             case KeyEvent.KEYCODE_BACK:
                 LLog.d(TAG, "onKeyUp KEYCODE_BACK");
