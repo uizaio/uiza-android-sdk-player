@@ -156,6 +156,18 @@
                     android:layout_height="wrap_content"
                     android:text="fullscreen toggle" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_stats_for_nerds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="StatsForNerds toggle" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

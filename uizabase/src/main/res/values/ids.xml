@@ -47,4 +47,5 @@
     <item name="uz_duration" type="id" />
     <item name="header_view" type="id" />
     <item name="body_view" type="id" />
+    <item name="stats_for_nerds" type="id" />
 </resources>

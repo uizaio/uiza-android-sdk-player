@@ -172,6 +172,13 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
                 uzVideo.skipPreviousVideo();
             }
         });
+
+        findViewById(R.id.bt_stats_for_nerds).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uzVideo.toggleStatsForNerds();
+            }
+        });
     }
 
     @Override
