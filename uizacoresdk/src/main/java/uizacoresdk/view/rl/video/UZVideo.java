@@ -8,16 +8,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.ContentObserver;
 import android.graphics.Color;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
@@ -43,10 +38,8 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioListener;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -61,14 +54,12 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.google.android.gms.common.images.WebImage;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import uizacoresdk.BuildConfig;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.CallbackUZTimebar;
@@ -137,8 +128,6 @@ import vn.uiza.restapi.uiza.model.v4.playerinfo.Logo;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
-import vn.uiza.utils.util.AppUtils;
-import vn.uiza.utils.util.ConvertUtils;
 import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.utils.util.ViewUtils;
 import vn.uiza.views.autosize.UZImageButton;
@@ -195,6 +184,9 @@ public class UZVideo extends RelativeLayout
     private long startTime = Constants.UNKNOW;
     private boolean isSetUZTimebarBottom;
     private boolean isEnableMux;
+
+    private StatsForNerdsView statsForNerdsView;
+    private UZVideoVisualizeInfoHelper visualizeInfoHelper;
 
     public UZVideo(Context context) {
         super(context);
@@ -640,13 +632,8 @@ public class UZVideo extends RelativeLayout
     }
 
     public void toggleStatsForNerds() {
-        if (getPlayer() == null || statsForNerdsView == null) return;
-        boolean isHidden = statsForNerdsView.getVisibility() != View.VISIBLE;
-        if (isHidden) {
-            ViewUtils.visibleViews(statsForNerdsView);
-        } else {
-            ViewUtils.goneViews(statsForNerdsView);
-        }
+        if (getPlayer() == null || visualizeInfoHelper == null) return;
+        visualizeInfoHelper.toggleStatsForNerds();
     }
 
     private int countTryLinkPlayError = 0;
@@ -723,10 +710,9 @@ public class UZVideo extends RelativeLayout
     }
 
     private void releasePlayerAnalytic() {
-        if (getPlayer() != null) {
-            getPlayer().removeAnalyticsListener(nerdAnalyticsListener);
+        if (visualizeInfoHelper != null) {
+            visualizeInfoHelper.releaseStatsForNerds();
         }
-        getContext().getContentResolver().unregisterContentObserver(volumeObserver);
     }
 
     private void releaseUzPlayerManager() {
@@ -3183,7 +3169,9 @@ public class UZVideo extends RelativeLayout
         uzPlayerManager.setBufferCallback(new UZBufferCallback() {
             @Override
             public void onBufferChanged(long bufferedDurationUs, float playbackSpeed) {
-                UZVideo.this.bufferedDurationUs = bufferedDurationUs;
+                if (visualizeInfoHelper != null) {
+                    visualizeInfoHelper.setBufferedDurationUs(bufferedDurationUs);
+                }
             }
         });
     }
@@ -3257,7 +3245,10 @@ public class UZVideo extends RelativeLayout
 //                muxStatsExoPlayer.setPlayerView(uzPlayerView.getVideoSurfaceView());
             }
             // Always using this options
-            initStatsForNerds();
+            if (visualizeInfoHelper == null) {
+                visualizeInfoHelper = new UZVideoVisualizeInfoHelper(this, statsForNerdsView);
+            }
+            visualizeInfoHelper.initStatsForNerds();
         }
     }
 
@@ -3792,222 +3783,6 @@ public class UZVideo extends RelativeLayout
             JobScheduler jobScheduler = (JobScheduler) getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
                 jobScheduler.schedule(myJob);
-            }
-        }
-    }
-
-    private StatsForNerdsView statsForNerdsView;
-    private UiUpdateHandler statsUIHandler = new UiUpdateHandler(this);
-    private SettingsContentObserver volumeObserver = new SettingsContentObserver(UZVideo.this, new Handler());
-    private long bufferedDurationUs;
-    private long bitrateEstimate;
-    private long bytesLoaded;
-    private int droppedFrames;
-    private int viewPortWidth, viewPortHeight;
-    private int currentResWidth, currentResHeight;
-    private int optimalResWidth, optimalResHeight;
-    private static final int MSG_UPDATE_STATS = 10005;
-    private static final int MSG_UPDATE_STATS_NW_ONLY = 10006;
-
-    private AnalyticsListener nerdAnalyticsListener = new AnalyticsListener() {
-
-        @Override
-        public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs,
-                long totalBytesLoaded, long bitrateEstimate) {
-            UZVideo.this.bytesLoaded = totalBytesLoaded;
-            UZVideo.this.bitrateEstimate = bitrateEstimate;
-        }
-
-        @Override
-        public void onSurfaceSizeChanged(EventTime eventTime, int width, int height) {
-            viewPortWidth = width;
-            viewPortHeight = height;
-            depictViewPortFrameInfo();
-        }
-
-        @Override
-        public void onLoadCompleted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo,
-                MediaSourceEventListener.MediaLoadData mediaLoadData) {
-            Format downloadFormat = mediaLoadData.trackFormat;
-            if (downloadFormat != null && downloadFormat.width != -1 && downloadFormat.height != -1) {
-                if (downloadFormat.width != optimalResWidth && downloadFormat.height != optimalResHeight) {
-                    optimalResWidth = downloadFormat.width;
-                    optimalResHeight = downloadFormat.height;
-                    depictVideoResolution();
-                }
-            }
-        }
-
-        @Override
-        public void onVideoSizeChanged(EventTime eventTime, int width, int height,
-                int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            if (width <= 0 || height <= 0) return;
-            if (width != currentResWidth && height != currentResHeight) {
-                currentResWidth = width;
-                currentResHeight = height;
-                depictVideoResolution();
-            }
-        }
-
-        @Override
-        public void onVolumeChanged(EventTime eventTime, float volume) {
-            depictVolumeInfo(Math.round(volume * 100));
-        }
-
-        @Override
-        public void onDecoderInputFormatChanged(EventTime eventTime, int trackType, Format format) {
-            depictVideoDetailInfo(format);
-        }
-
-        @Override
-        public void onDroppedVideoFrames(EventTime eventTime, int droppedFrames, long elapsedMs) {
-            UZVideo.this.droppedFrames += droppedFrames;
-            depictViewPortFrameInfo();
-        }
-
-        @Override
-        public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
-            startPlayerStats();
-            getContext().getContentResolver()
-                    .registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, volumeObserver);
-        }
-    };
-
-    // ===== Stats For Nerds =====
-    private void initStatsForNerds() {
-        getPlayer().addAnalyticsListener(nerdAnalyticsListener);
-    }
-
-    private static class UiUpdateHandler extends Handler {
-        private WeakReference<UZVideo> weakUzVideo;
-        UiUpdateHandler(UZVideo uzVideo) {
-            weakUzVideo = new WeakReference<>(uzVideo);
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            UZVideo uzVideo = weakUzVideo.get();
-            if (null == uzVideo) return;
-            switch (msg.what) {
-                case MSG_UPDATE_STATS:
-                    uzVideo.depictPlayerStats();
-                    break;
-                case MSG_UPDATE_STATS_NW_ONLY:
-                    uzVideo.depictPlayerNWStats();
-                    break;
-            }
-        }
-    }
-
-    private void startPlayerStats() {
-        statsUIHandler.removeMessages(MSG_UPDATE_STATS);
-        statsUIHandler.removeMessages(MSG_UPDATE_STATS_NW_ONLY);
-        depictVideoInfo();
-        depictDeviceInfo();
-        depictVersionInfo();
-        depictPlayerStats();
-        depictPlayerNWStats();
-        depictViewPortFrameInfo();
-        depictVolumeInfo(AppUtils.getVolumePercentage(getContext(), AudioManager.STREAM_MUSIC));
-    }
-
-    private void depictVolumeInfo(int volumePercentage) {
-        statsForNerdsView.setTextVolume(getResources().getString(R.string.format_volume, volumePercentage));
-    }
-
-    private void depictVideoDetailInfo(Format format) {
-        if (format == null || TextUtils.isEmpty(format.sampleMimeType)) return;
-        if (format.sampleMimeType.startsWith("audio")) {
-            statsForNerdsView.setTextAudioFormat(
-                    getResources().getString(R.string.format_audio_format, format.sampleMimeType, format.sampleRate));
-        } else if (format.sampleMimeType.startsWith("video")) {
-            statsForNerdsView.setTextVideoFormat(
-                    getResources().getString(R.string.format_video_format, format.sampleMimeType, format.width,
-                            format.height, Math.round(format.frameRate)));
-        }
-    }
-
-    private void depictVideoResolution() {
-        statsForNerdsView.setTextResolution(getResources().getString(R.string.format_resolution,
-                currentResWidth, currentResHeight, optimalResWidth, optimalResHeight));
-    }
-
-    private void depictViewPortFrameInfo() {
-        if (viewPortWidth == 0 && viewPortHeight == 0) {
-            // at first time, surface view size or viewport equals to player size
-            viewPortWidth = getPlayerWidth();
-            viewPortHeight = getPlayerHeight();
-        }
-        statsForNerdsView.setTextViewPortFrame(
-                getResources().getString(R.string.format_viewport_frame, viewPortWidth, viewPortHeight, droppedFrames));
-    }
-
-    private void depictVideoInfo() {
-        statsForNerdsView.setEntityInfo(UZData.getInstance().getEntityId());
-        statsForNerdsView.setTextHost(Constants.PREFIXS + UZData.getInstance().getDomainAPI());
-    }
-
-    private void depictVersionInfo() {
-        statsForNerdsView.setTextVersion(getResources().getString(R.string.format_version,
-                BuildConfig.VERSION_NAME, BuildConfig.EXO_VERSION, Constants.API_VERSION_3));
-    }
-
-    private void depictDeviceInfo() {
-        statsForNerdsView.setTextDeviceInfo(
-                getResources().getString(R.string.format_device_info, Build.MODEL, Build.VERSION.RELEASE));
-    }
-
-    private void depictPlayerStats() {
-        String formattedValue;
-        if (bitrateEstimate < 1e6) {
-            formattedValue = getResources().getString(R.string.format_connection_speed_k,
-                    ConvertUtils.getFormattedDouble((bitrateEstimate / Math.pow(10, 3)), 2));
-        } else {
-            formattedValue = getResources().getString(R.string.format_connection_speed_m,
-                    ConvertUtils.getFormattedDouble((bitrateEstimate / Math.pow(10, 6)), 2));
-        }
-        statsForNerdsView.setTextConnectionSpeed(formattedValue);
-
-        // Re-update after 0.5 second
-        statsUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_STATS, 500);
-    }
-
-    private void depictPlayerNWStats() {
-        statsForNerdsView.setTextNetworkActivity(
-                ConvertUtils.humanReadableByteCount(bytesLoaded, true, false));
-        if (getPlayer() != null) {
-            long remainingUs = (getDuration() - getCurrentPosition()) * 1000;
-            remainingUs = remainingUs >= 0 ? remainingUs : 0;
-            double buffered = bufferedDurationUs >= remainingUs ? remainingUs : bufferedDurationUs;
-            String buffer = ConvertUtils.getFormattedDouble((buffered / Math.pow(10, 6)), 1);
-            statsForNerdsView.setTextBufferHealth(getResources().getString(R.string.format_buffer_health, buffer));
-        }
-
-        // Re-update after 1 second
-        statsUIHandler.sendEmptyMessageDelayed(MSG_UPDATE_STATS_NW_ONLY, 1000);
-    }
-
-    private static class SettingsContentObserver extends ContentObserver {
-        private AudioManager audioManager;
-        private WeakReference<UZVideo> weakUZVideo;
-
-        SettingsContentObserver(UZVideo uzVideo, Handler handler) {
-            super(handler);
-            audioManager = (AudioManager) uzVideo.getContext().getSystemService(Context.AUDIO_SERVICE);
-            weakUZVideo = new WeakReference<>(uzVideo);
-        }
-
-        @Override
-        public boolean deliverSelfNotifications() {
-            return false;
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            UZVideo uzVideo = weakUZVideo.get();
-            if (uzVideo != null && uzVideo.uzPlayerManager != null) {
-                uzVideo.setVolume(currentVolume * 1.0f / maxVolume);
             }
         }
     }

@@ -716,14 +716,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
-    protected int getVideoW() {
-        return videoW;
-    }
-
-    protected int getVideoH() {
-        return videoH;
-    }
-
     private class UZVideoEventListener implements VideoListener {
         //This is called when the video size changes
         @Override
@@ -827,6 +819,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         }
     }
 
+    protected int getVideoW() {
+        return videoW;
+    }
+
+    protected int getVideoH() {
+        return videoH;
+    }
 
     protected void toggleVolumeMute(UZImageButton exoVolume) {
         if (!isPlayerValid() || exoVolume == null) {
