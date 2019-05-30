@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -31,7 +31,8 @@ import vn.uiza.rxandroid.ApiSubscriber;
  * Created by loitp on 4/1/2019.
  */
 
-public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class FBVideoActivity extends AppCompatActivity
+        implements UZItemClickListener, UZVideoStateChangedListener, UZPlayerStateChangedListener {
     private final String TAG = getClass().getSimpleName();
     public final static String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
     private static FBVideoActivity activity;
@@ -47,11 +48,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
-        tv = (TextView) findViewById(R.id.tv);
-        iv = (ImageView) findViewById(R.id.iv);
-        btMini = (Button) findViewById(R.id.bt_mini);
+        uzVideo = findViewById(R.id.uiza_video);
+        tvLoadingMiniPlayer = findViewById(R.id.tv_loading_mini_player);
+        tv = findViewById(R.id.tv);
+        iv = findViewById(R.id.iv);
+        btMini = findViewById(R.id.bt_mini);
     }
 
     @Override
@@ -64,8 +65,9 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         findViews();
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         btMini.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,12 +122,33 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             initDone();
         } else {
             btMini.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
     }
 
     private void initDone() {
@@ -134,12 +157,10 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
     }
 
@@ -165,6 +186,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
             //mini player is init success
@@ -181,17 +207,14 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
+    public void onScreenRotated(boolean isLandscape) {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         uzVideo.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override

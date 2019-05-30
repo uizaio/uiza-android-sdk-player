@@ -10,14 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.github.rubensousa.previewseekbar.PreviewView;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.CallbackUZTimebar;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZTimeBarChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -30,7 +29,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 9/1/2019.
  */
 
-public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity
+        implements UZItemClickListener, UZVideoStateChangedListener, UZPlayerStateChangedListener {
     private UZVideo uzVideo;
     private Activity activity;
     private View shadow;
@@ -42,8 +42,9 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uiza_custom_skin_u_tube);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.addUZCallback(this);
+        uzVideo = findViewById(R.id.uiza_video);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -74,13 +75,15 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
             public void onSwipeTop() {
             }
         });
-        uzVideo.addCallbackUZTimebar(new CallbackUZTimebar() {
+        uzVideo.setUzTimeBarChangedListener(new UZTimeBarChangedListener() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
+
             }
 
             @Override
             public void onStopPreview(PreviewView previewView, int progress) {
+
             }
 
             @Override
@@ -88,10 +91,10 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
                 setAutoHideController();
             }
         });
-        uzVideo.addItemClick(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.setPlayerControllerAlwayVisible();
 
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        shadow = uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
 
@@ -215,22 +218,46 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setAutoHideController();
         }
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onItemClick(View view) {
         setAutoHideController();
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
@@ -238,11 +265,7 @@ public class CustomSkinCodeUZTimebarUTubeActivity extends AppCompatActivity impl
     }
 
     @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
     }
