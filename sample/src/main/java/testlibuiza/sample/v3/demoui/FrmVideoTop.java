@@ -1,7 +1,7 @@
 package testlibuiza.sample.v3.demoui;
 
 /**
- * Created by www.muathu@gmail.com on 27/2/2019.
+ * Created by www.muathu@gmail.com on 6/3/2019.
  */
 
 import android.content.Intent;
@@ -12,12 +12,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.exoplayer2.video.VideoListener;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -28,8 +26,11 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZPlayerView.ControllerStateCallback {
+public class FrmVideoTop extends Fragment
+        implements UZItemClickListener, UZPlayerView.ControllerStateCallback, UZVideoStateChangedListener,
+        UZPlayerStateChangedListener {
     private final String TAG = getClass().getSimpleName();
+    private HomeCanSlideActivity homeCanSlideActivity;
     private UZVideo uzVideo;
 
     public UZVideo getUZVideo() {
@@ -39,22 +40,19 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addVideoListener(new VideoListener() {
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                calSize(width, height);
-            }
-        });
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        homeCanSlideActivity = (HomeCanSlideActivity) getActivity();
         return inflater.inflate(R.layout.v4_frm_top, container, false);
     }
 
@@ -82,10 +80,30 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
+        homeCanSlideActivity.isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+    }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        ((HomeCanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
     }
 
     @Override
@@ -93,41 +111,42 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
         switch (view.getId()) {
             case R.id.exo_back_screen:
                 if (!uzVideo.isLandscape()) {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
+                    homeCanSlideActivity.getDraggablePanel().minimize();
                 }
                 break;
         }
     }
 
     @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
-            uzVideo.pauseVideo();
-            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
+            uzVideo.pause();
+            homeCanSlideActivity.getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                    homeCanSlideActivity.getDraggablePanel().closeToRight();
                 }
             });
         }
     }
 
-    @Override
-    public void onSkinChange() {
-    }
-
     public boolean isLandscape;
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         this.isLandscape = isLandscape;
         if (isLandscape) {
-            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+            homeCanSlideActivity.getDraggablePanel().setEnableSlide(false);
         } else {
-            ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+            homeCanSlideActivity.getDraggablePanel().setEnableSlide(true);
         }
-        calSize(uzVideo.getVideoW(), uzVideo.getVideoH());
+        calSize();
     }
 
     @Override
@@ -135,69 +154,44 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
     }
 
     public void initEntity(String entityId) {
-        int w = LScreenUtil.getScreenWidth();
-        int h = (int) (w * Constants.RATIO_9_16);
-        resizeView(w, h);
-        if (uzVideo != null) {
-            uzVideo.pauseVideo();
-        }
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        int w = LScreenUtil.getScreenWidth();
-        int h = (int) (w * Constants.RATIO_9_16);
-        resizeView(w, h);
-        if (uzVideo != null) {
-            uzVideo.pauseVideo();
-        }
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 
-    private void calSize(int width, int height) {
-        int screenW;
+    private void calSize() {
+        int screenW = LScreenUtil.getScreenWidth();
         int screenH;
         if (isLandscape) {
-            screenW = LScreenUtil.getScreenWidth();
             screenH = LScreenUtil.getScreenHeight();
         } else {
-            if (width >= height) {
-                screenW = LScreenUtil.getScreenWidth();
-                screenH = height * screenW / width;
-            } else {
-                screenW = LScreenUtil.getScreenWidth();
-                screenH = screenW;
-            }
+            screenH = (int) (screenW * Constants.RATIO_9_16);
         }
         resizeView(screenW, screenH);
     }
 
     private void resizeView(int w, int h) {
-        getActivity().runOnUiThread(new Runnable() {
+        homeCanSlideActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(h);
+                homeCanSlideActivity.setTopViewHeightApllyNow(h);
             }
         });
-        /*uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.setSize(w, h);
-            }
-        });*/
     }
 
     @Override
     public void onVisibilityChange(boolean isShow) {
-        if (((HomeCanSlideActivity) getActivity()).getDraggablePanel() != null && !isLandscape) {
-            if (((HomeCanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+        if (homeCanSlideActivity.getDraggablePanel() != null && !isLandscape) {
+            if (homeCanSlideActivity.getDraggablePanel().isMaximized()) {
                 if (isShow) {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                    homeCanSlideActivity.getDraggablePanel().setEnableSlide(false);
                 } else {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                    homeCanSlideActivity.getDraggablePanel().setEnableSlide(true);
                 }
             } else {
-                ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                homeCanSlideActivity.getDraggablePanel().setEnableSlide(true);
             }
         }
     }

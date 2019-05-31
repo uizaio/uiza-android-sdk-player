@@ -14,6 +14,9 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
@@ -26,7 +29,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 5/3/2019.
  */
 
-public class ResizeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class ResizeActivity extends AppCompatActivity implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener {
     private UZVideo uzVideo;
     private Activity activity;
 
@@ -37,9 +41,10 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resize);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo = findViewById(R.id.uiza_video);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
 
         final String entityId = LSApplication.entityIdDefaultVODportrait;
         UZUtil.initEntity(activity, uzVideo, entityId);
@@ -138,14 +143,37 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
@@ -156,11 +184,8 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onSkinChange() {
-    }
+    public void onScreenRotated(boolean isLandscape) {
 
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override

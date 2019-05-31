@@ -20,6 +20,9 @@ import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -37,7 +40,8 @@ import vn.uiza.views.autosize.UZImageButton;
  * Created by loitp on 12/10/2018.
  */
 
-public class CustomHQActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomHQActivity extends AppCompatActivity implements         UZItemClickListener,
+        UZVideoStateChangedListener, UZPlayerStateChangedListener {
     private Activity activity;
     private UZVideo uzVideo;
     private Button btCustomHq;
@@ -52,12 +56,13 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_hq_custom_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uiza_custom_hq);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        btCustomHq = (Button) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
-        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo = findViewById(R.id.uiza_video);
+        btCustomHq = uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = uzVideo.findViewById(R.id.uzib_custom_audio);
+        llListHq = findViewById(R.id.ll_list_hq);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
@@ -150,7 +155,28 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
@@ -161,11 +187,14 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void onSkinChange() {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
+
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
+
     }
 
     @Override
@@ -197,12 +226,10 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
 
     @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
     }
 }

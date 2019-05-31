@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
+    android:background="@color/LightSkyBlue"
     android:orientation="vertical">
 
     <ScrollView
@@ -22,11 +22,6 @@
                 android:padding="@dimen/padding_5"
                 android:text="LOADING..."
                 android:textSize="@dimen/txt_14" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/w_20"
-                android:background="@color/White" />
 
             <TextView
                 android:id="@+id/tv_json_linkplay"

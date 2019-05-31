@@ -319,6 +319,10 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
 
     private class FUZPlayerEventListener implements Player.EventListener {
 
+        static final String TYPE_SOURCE = "TYPE_SOURCE";
+        static final String TYPE_RENDERER = "TYPE_RENDERER";
+        static final String TYPE_UNEXPECTED = "TYPE_UNEXPECTED";
+
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
         }
@@ -349,7 +353,15 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             if (fuzVideo != null) {
-                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback());
+                String type = null;
+                if (error.type == ExoPlaybackException.TYPE_SOURCE) {
+                    type = TYPE_SOURCE;
+                } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
+                    type = TYPE_RENDERER;
+                } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+                    type = TYPE_UNEXPECTED;
+                }
+                fuzVideo.onPlayerError(UZExceptionUtil.getExceptionPlayback(type));
             }
         }
 

@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.StateEndCallback;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -21,7 +22,10 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
+public class Slide0Activity extends AppCompatActivity
+        implements VDHView.Callback, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback,
+        View.OnClickListener, StateEndCallback, UZVideoStateChangedListener, UZPlayerStateChangedListener,
+        UZItemClickListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -29,24 +33,30 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private UZVideo uzVideo;
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        vdhv = (VDHView) findViewById(R.id.vdhv);
-        tv0 = (TextView) findViewById(R.id.tv_0);
-        tv1 = (TextView) findViewById(R.id.tv_1);
-        tv2 = (TextView) findViewById(R.id.tv_2);
-        tv3 = (TextView) findViewById(R.id.tv_3);
+        uzVideo = findViewById(R.id.uiza_video);
+        vdhv = findViewById(R.id.vdhv);
+        tv0 = findViewById(R.id.tv_0);
+        tv1 = findViewById(R.id.tv_1);
+        tv2 = findViewById(R.id.tv_2);
+        tv3 = findViewById(R.id.tv_3);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        vdhv.setMarginLeftInPixel(50);
+        vdhv.setMarginTopInPixel(50);
+        vdhv.setMarginRightInPixel(50);
+        vdhv.setMarginBottomInPixel(50);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addProgressCallback(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_left).setOnClickListener(this);
         findViewById(R.id.bt_appear).setOnClickListener(this);
+        findViewById(R.id.bt_is_maximize_view).setOnClickListener(this);
+        findViewById(R.id.bt_maximize).setOnClickListener(this);
     }
 
     @Override
@@ -121,7 +131,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onOverScroll(VDHView.State state, VDHView.Part part) {
-        uzVideo.pauseVideo();
+        uzVideo.pause();
         vdhv.dissappear();
     }
 
@@ -139,7 +149,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onPause() {
         super.onPause();
-        vdhv.onPause();
         uzVideo.onPause();
     }
 
@@ -153,7 +162,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        if (vdhv.isAppear()) {
+            uzVideo.onResume();
+        }
     }
 
     @Override
@@ -163,19 +174,43 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         vdhv.setInitResult(isInitSuccess);
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
@@ -186,11 +221,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         if (!isLandscape) {
             int w = LScreenUtil.getScreenWidth();
             int h = w * 9 / 16;
@@ -215,7 +246,14 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        uzVideo.toggleShowHideController();
+        if (vdhv.isMaximizeView()) {
+            uzVideo.post(new Runnable() {
+                @Override
+                public void run() {
+                    uzVideo.toggleShowHideController();
+                }
+            });
+        }
     }
 
     @Override
@@ -264,28 +302,20 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 break;
             case R.id.bt_appear:
                 vdhv.appear();
-                uzVideo.resumeVideo();
+                uzVideo.play();
+                break;
+            case R.id.bt_is_maximize_view:
+                Toast.makeText(activity, "isMaximizeView: " + vdhv.isMaximizeView(), Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            case R.id.bt_maximize:
+                vdhv.forceMaximize();
                 break;
         }
     }
 
     @Override
-    public void onAdProgress(int s, int duration, int percent) {
-    }
-
-    @Override
-    public void onAdEnded() {
-    }
-
-    @Override
-    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-    }
-
-    @Override
-    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+    public void onPlayerEnded() {
+        vdhv.onPlayerEnded();
     }
 }

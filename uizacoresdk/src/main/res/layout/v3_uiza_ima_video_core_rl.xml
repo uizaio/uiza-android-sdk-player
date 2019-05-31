@@ -79,7 +79,7 @@
             />
     </LinearLayout>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/rl_msg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -105,6 +105,6 @@
             android:textColor="@color/White"
             android:textSize="@dimen/txt_16"
             android:textStyle="bold" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 </RelativeLayout>
 

@@ -167,12 +167,14 @@ public class UZExceptionUtilTest {
 
     @Test
     public void getExceptionPlayback() {
-        UZException testException = UZExceptionUtil.getExceptionPlayback();
+        String testMessage = "Test Message";
+        UZException testException = UZExceptionUtil.getExceptionPlayback(testMessage);
         assertNotNull(testException);
         assertNotNull(testException.getMessage());
         assertNotNull(testException.getException());
         assertEquals(testException.getErrorCode(), UZException.ERR_CODE_24);
         assertTrue(testException.getMessage().contains(UZException.ERR_24));
+        assertTrue(testException.getMessage().contains(testMessage));
         assertTrue(testException.getMessage().contains(String.valueOf(UZException.ERR_CODE_24)));
     }
 
@@ -196,6 +198,28 @@ public class UZExceptionUtilTest {
         assertEquals(testException.getErrorCode(), UZException.ERR_CODE_26);
         assertTrue(testException.getMessage().contains(UZException.ERR_26));
         assertTrue(testException.getMessage().contains(String.valueOf(UZException.ERR_CODE_26)));
+    }
+
+    @Test
+    public void getExceptionContentNotAvailable() {
+        UZException testException = UZExceptionUtil.getExceptionContentNotAvailable();
+        assertNotNull(testException);
+        assertNotNull(testException.getMessage());
+        assertNotNull(testException.getException());
+        assertEquals(testException.getErrorCode(), UZException.ERR_CODE_27);
+        assertTrue(testException.getMessage().contains(UZException.ERR_27));
+        assertTrue(testException.getMessage().contains(String.valueOf(UZException.ERR_CODE_27)));
+    }
+
+    @Test
+    public void getExceptionSpeed() {
+        UZException testException = UZExceptionUtil.getExceptionSpeed();
+        assertNotNull(testException);
+        assertNotNull(testException.getMessage());
+        assertNotNull(testException.getException());
+        assertEquals(testException.getErrorCode(), UZException.ERR_CODE_28);
+        assertTrue(testException.getMessage().contains(UZException.ERR_28));
+        assertTrue(testException.getMessage().contains(String.valueOf(UZException.ERR_CODE_28)));
     }
 
     @Test

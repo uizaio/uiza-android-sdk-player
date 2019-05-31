@@ -10,10 +10,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
@@ -28,7 +28,8 @@ import vn.uiza.views.LToast;
  * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class PlayerActivity extends AppCompatActivity
+        implements UZItemClickListener, UZVideoStateChangedListener, UZPlayerStateChangedListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
@@ -42,12 +43,13 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        etLinkPlay = (EditText) findViewById(R.id.et_link_play);
-        btPlay = (Button) findViewById(R.id.bt_play);
+        uzVideo = findViewById(R.id.uiza_video);
+        etLinkPlay = findViewById(R.id.et_link_play);
+        btPlay = findViewById(R.id.bt_play);
         btPlay.setEnabled(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
 
         etLinkPlay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,7 +58,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence == null || charSequence.toString() == null || charSequence.toString().isEmpty()) {
+                if (charSequence == null || charSequence.toString() == null || charSequence.toString()
+                        .isEmpty()) {
                     btPlay.setEnabled(false);
                 } else {
                     btPlay.setEnabled(true);
@@ -69,7 +72,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         });
 
         final UZCustomLinkPlay uZCustomLinkPlay0 = new UZCustomLinkPlay();
-        uZCustomLinkPlay0.setLinkPlay("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+        uZCustomLinkPlay0.setLinkPlay(
+                "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
         uZCustomLinkPlay0.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay1 = new UZCustomLinkPlay();
@@ -77,11 +81,13 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8");
+        uZCustomLinkPlay2.setLinkPlay(
+                "http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8");
         uZCustomLinkPlay2.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
-        uZCustomLinkPlay3.setLinkPlay("https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd");
+        uZCustomLinkPlay3.setLinkPlay(
+                "https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd");
         uZCustomLinkPlay3.setLivestream(false);
 
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
@@ -131,18 +137,42 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
     }
 
     @Override
     public void onItemClick(View view) {
-        switch (view.getId()) {
-            case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
-                    onBackPressed();
-                }
-                break;
+        if (view.getId() == R.id.exo_back_screen) {
+            if (!uzVideo.isLandscape()) {
+                onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onSkinChanged() {
+
     }
 
     @Override
@@ -153,11 +183,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onSkinChange() {
-    }
+    public void onScreenRotated(boolean isLandscape) {
 
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
     }
 
     @Override
