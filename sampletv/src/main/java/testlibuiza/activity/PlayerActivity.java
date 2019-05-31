@@ -46,23 +46,10 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         UZUtil.setCasty(this);
-
-        //init skin
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        sv = (ScrollView) findViewById(R.id.sv);
-        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
-
+        findViews();
         uzibCustomHq.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -75,12 +62,10 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
                 uzVideo.updateUIFocusChange(view, b);
             }
         });
-
         uzVideo.addUZCallback(this);
         uzVideo.addUZTVCallback(this);
         uzVideo.addControllerStateCallback(this);
         uzVideo.addItemClick(this);
-
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
             String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
@@ -88,7 +73,6 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
         } else {
             UZUtil.initEntity(activity, uzVideo, entityId);
         }
-
         uzibCustomHq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,11 +87,16 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
         });
     }
 
+    private void findViews() {
+        sv = (ScrollView) findViewById(R.id.sv);
+        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
+        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
+    }
+
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        /*if (isInitSuccess) {
-            uzVideo.setEventBusMsgFromActivityIsInitSuccess();
-        }*/
     }
 
     @Override
@@ -139,20 +128,20 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uzVideo.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -252,7 +241,6 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
         for (int i = 0; i < uzItemList.size(); i++) {
             UZItem uzItem = uzItemList.get(i);
             final CheckedTextView c = uzItem.getCheckedTextView();
-
             //customize here
             final Button bt = new Button(activity);
             bt.setAllCaps(false);
@@ -299,7 +287,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
 
     @Override
     public void onBackPressed() {
-        if (sv.getVisibility() == View.VISIBLE) {
+        if (sv.getVisibility() != View.INVISIBLE) {
             sv.setVisibility(View.INVISIBLE);
         } else {
             super.onBackPressed();
@@ -309,7 +297,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     @Override
     public void onVisibilityChange(boolean isShow) {
         if (!isShow) {
-            if (sv.getVisibility() == View.VISIBLE) {
+            if (sv.getVisibility() != View.INVISIBLE) {
                 sv.setVisibility(View.INVISIBLE);
             }
         }

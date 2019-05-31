@@ -313,6 +313,9 @@ public class DraggablePanel extends FrameLayout {
                         if (currentHeight <= screenH) {
                             //LLog.d(TAG, "onPartOfView top");
                             draggableView.setTopViewMarginBottom(0);
+                            if(currentHeight == screenH){
+                                draggableView.getLayoutParams().height = LScreenUtil.getScreenHeight() + bottomUZTimebar;
+                            }
                         }
                     } else {
                         if (currentHeight >= screenH) {

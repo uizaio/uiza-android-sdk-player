@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import testlibuiza.R;
+import uizacoresdk.interfaces.StateEndCallback;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -21,7 +22,7 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
+public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, StateEndCallback {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -38,15 +39,21 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
+        vdhv.setMarginLeftInPixel(50);
+        vdhv.setMarginTopInPixel(50);
+        vdhv.setMarginRightInPixel(50);
+        vdhv.setMarginBottomInPixel(50);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addProgressCallback(this);
+        uzVideo.addStateEndCallback(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_left).setOnClickListener(this);
         findViewById(R.id.bt_appear).setOnClickListener(this);
+        findViewById(R.id.bt_is_maximize_view).setOnClickListener(this);
+        findViewById(R.id.bt_maximize).setOnClickListener(this);
     }
 
     @Override
@@ -139,7 +146,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onPause() {
         super.onPause();
-        vdhv.onPause();
         uzVideo.onPause();
     }
 
@@ -153,7 +159,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        if (vdhv.isAppear()) {
+            uzVideo.onResume();
+        }
     }
 
     @Override
@@ -215,7 +223,14 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        uzVideo.toggleShowHideController();
+        if (vdhv.isMaximizeView()) {
+            uzVideo.post(new Runnable() {
+                @Override
+                public void run() {
+                    uzVideo.toggleShowHideController();
+                }
+            });
+        }
     }
 
     @Override
@@ -266,26 +281,17 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
                 vdhv.appear();
                 uzVideo.resumeVideo();
                 break;
+            case R.id.bt_is_maximize_view:
+                Toast.makeText(activity, "isMaximizeView: " + vdhv.isMaximizeView(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bt_maximize:
+                vdhv.forceMaximize();
+                break;
         }
     }
 
     @Override
-    public void onAdProgress(int s, int duration, int percent) {
-    }
-
-    @Override
-    public void onAdEnded() {
-    }
-
-    @Override
-    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-    }
-
-    @Override
-    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+    public void onPlayerEnded() {
+        vdhv.onPlayerEnded();
     }
 }

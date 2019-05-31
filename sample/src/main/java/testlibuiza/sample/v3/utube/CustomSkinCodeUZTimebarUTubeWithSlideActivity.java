@@ -1,7 +1,6 @@
 package testlibuiza.sample.v3.utube;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,10 +18,11 @@ import vn.uiza.views.draggablepanel.DraggableListener;
 import vn.uiza.views.draggablepanel.DraggablePanel;
 
 /**
- * Created by loitp on 9/1/2019.
+ * Created by loitp on 6/3/2019.
  */
 
 public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
     private DraggablePanel draggablePanel;
     private Activity activity;
 
@@ -99,47 +99,13 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         draggablePanel.setClickToMaximizeEnabled(true);
         draggablePanel.setClickToMinimizeEnabled(false);
         draggablePanel.setEnableHorizontalAlphaEffect(false);
-        setSizeFrmTop();
         draggablePanel.initializeView();
         draggablePanel.setVisibility(View.GONE);
     }
 
-    private boolean isLandscape;
-
-    public boolean isLandscapeScreen() {
-        return isLandscape;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (activity != null) {
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                isLandscape = true;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(false);
-            } else {
-                isLandscape = false;
-                setSizeFrmTop();
-                draggablePanel.setEnableSlide(true);
-            }
-        }
-    }
-
-    private int topFragmentHeight;
-
     public void setTopViewHeightApllyNow(int topFragmentHeight) {
         if (draggablePanel != null) {
-            this.topFragmentHeight = topFragmentHeight;
             draggablePanel.setTopViewHeightApllyNow(topFragmentHeight);
-        }
-    }
-
-    private void setSizeFrmTop() {
-        if (isLandscape) {
-            draggablePanel.setTopViewHeightApllyNow(LScreenUtil.getScreenHeight());
-        } else {
-            draggablePanel.setTopViewHeightApllyNow(topFragmentHeight == 0 ? LScreenUtil.getScreenWidth() * 9 / 16 : topFragmentHeight);
         }
     }
 
@@ -195,5 +161,13 @@ public class CustomSkinCodeUZTimebarUTubeWithSlideActivity extends AppCompatActi
         if (frmUTVideoBottom != null && isGetDataSuccess) {
             frmUTVideoBottom.updateUI(resultGetLinkPlay, data);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (frmUTVideoTop != null) {
+            frmUTVideoTop.getUZVideo().pauseVideo();
+        }
+        super.onDestroy();
     }
 }

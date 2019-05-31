@@ -1,7 +1,7 @@
 package testlibuiza.sample.v3.utube;
 
 /**
- * Created by www.muathu@gmail.com on 12/24/2017.
+ * Created by www.muathu@gmail.com on 6/3/2019.
  */
 
 import android.content.Intent;
@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.github.rubensousa.previewseekbar.PreviewView;
-import com.google.android.exoplayer2.video.VideoListener;
 
 import testlibuiza.R;
 import uizacoresdk.interfaces.CallbackUZTimebar;
@@ -35,6 +34,8 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
+    private final String TAG = getClass().getSimpleName();
+    private CustomSkinCodeUZTimebarUTubeWithSlideActivity activity;
     private UZVideo uzVideo;
     private View shadow;
 
@@ -48,12 +49,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
         uzVideo.addUZCallback(this);
-        uzVideo.addVideoListener(new VideoListener() {
-            @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-                calSize(width, height);
-            }
-        });
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
@@ -100,18 +95,19 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         });
         uzVideo.addItemClick(this);
         uzVideo.setPlayerControllerAlwayVisible();
-
         shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-
         uzVideo.setBackgroundColorUZVideoRootView(Color.TRANSPARENT);
         uzVideo.setUzTimebarBottom();
+        calSize();
+        activity.getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activity = (CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity();
         return inflater.inflate(R.layout.ut_frm_top, container, false);
     }
 
@@ -123,14 +119,14 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onResume() {
-        super.onResume();
         uzVideo.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         uzVideo.onPause();
+        super.onPause();
     }
 
     @Override
@@ -147,9 +143,8 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
+        activity.isInitResult(isGetDataSuccess, resultGetLinkPlay, data);
         if (isInitSuccess) {
-            ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setBottomUZTimebar(uzVideo.getHeightUZTimeBar() / 2);
             setAutoHideController();
         }
     }
@@ -159,7 +154,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
         switch (view.getId()) {
             case R.id.exo_back_screen:
                 if (!uzVideo.isLandscape()) {
-                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().minimize();
+                    activity.getDraggablePanel().minimize();
                 }
                 break;
         }
@@ -169,11 +164,11 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
-            ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().minimize();
+            activity.getDraggablePanel().minimize();
             LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
-                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().closeToRight();
+                    activity.getDraggablePanel().closeToRight();
                 }
             });
         }
@@ -183,15 +178,19 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     public void onSkinChange() {
     }
 
+    public boolean isLandscape;
+
     @Override
     public void onScreenRotate(boolean isLandscape) {
+        this.isLandscape = isLandscape;
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
-        if (!isLandscape) {
-            int width = uzVideo.getVideoW();
-            int height = uzVideo.getVideoH();
-            calSize(width, height);
+        if (isLandscape) {
+            activity.getDraggablePanel().setEnableSlide(false);
+        } else {
+            activity.getDraggablePanel().setEnableSlide(true);
         }
+        calSize();
     }
 
     @Override
@@ -199,44 +198,29 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     public void initEntity(String entityId) {
-        showController();
-        int w = LScreenUtil.getScreenWidth();
-        int h = (int) (w * Constants.RATIO_9_16);
-        resizeView(w, h);
+        hideController();
+        uzVideo.pauseVideo();
         UZUtil.initEntity(getActivity(), uzVideo, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        showController();
-        int w = LScreenUtil.getScreenWidth();
-        int h = (int) (w * Constants.RATIO_9_16);
-        resizeView(w, h);
+        hideController();
+        uzVideo.pauseVideo();
         UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
     }
 
-    private void calSize(int width, int height) {
-        if (width >= height) {
-            int screenW = LScreenUtil.getScreenWidth();
-            int screenH = height * screenW / width;
-            resizeView(screenW, screenH);
+    private void calSize() {
+        int screenW = LScreenUtil.getScreenWidth();
+        int screenH;
+        if (isLandscape) {
+            screenH = LScreenUtil.getScreenHeight();
         } else {
-            int screenW = LScreenUtil.getScreenWidth();
-            int screenH = screenW;
-            resizeView(screenW, screenH);
+            screenH = (int) (screenW * Constants.RATIO_9_16);
         }
-    }
-
-    private void resizeView(int w, int h) {
-        getActivity().runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).setTopViewHeightApllyNow(h + uzVideo.getHeightUZTimeBar() / 2);
-            }
-        });
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.setSize(w, h);
+                activity.setTopViewHeightApllyNow(screenH + uzVideo.getHeightUZTimeBar() / 2);
             }
         });
     }
@@ -246,16 +230,15 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     private void onVisibilityChange(boolean isShow) {
         this.isShowingController = isShow;
-        if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel() != null
-                && !((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).isLandscapeScreen()) {
-            if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
+        if (activity.getDraggablePanel() != null && !(uzVideo.isLandscape())) {
+            if (activity.getDraggablePanel().isMaximized()) {
                 if (isShow) {
-                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
+                    activity.getDraggablePanel().setEnableSlide(false);
                 } else {
-                    ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                    activity.getDraggablePanel().setEnableSlide(true);
                 }
             } else {
-                ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                activity.getDraggablePanel().setEnableSlide(true);
             }
         }
     }
@@ -317,13 +300,6 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
             showController();
         }
     }
-
-    /*private void hideUZTimebar() {
-        if (uzVideo.getUZTimeBar() == null) {
-            return;
-        }
-        uzVideo.getUZTimeBar().setVisibility(View.INVISIBLE);
-    }*/
 
     private CountDownTimer countDownTimer;
     private final int INTERVAL = 1000;

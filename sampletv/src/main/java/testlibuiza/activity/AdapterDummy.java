@@ -1,7 +1,7 @@
 package testlibuiza.activity;
 
 /**
- * Created by www.muathu@gmail.com on 11/7/2017.
+ * Created by www.muathu@gmail.com on 11/3/2019.
  */
 
 import android.app.Activity;
@@ -60,9 +60,7 @@ public class AdapterDummy extends RecyclerView.Adapter<AdapterDummy.DummyHolder>
     public void onBindViewHolder(final DummyHolder playListHolder, final int position) {
         final Dummy dummy = dummyList.get(position);
         playListHolder.tvName.setText(dummy.getName());
-        //LLog.d(TAG, "dummy.getUrl() position " + position + " -> " + dummy.getUrl());
-        LImageUtil.load((Activity) context, dummy.getUrl(), playListHolder.ivCover, R.drawable.uiza_logo_mini);
-
+        LImageUtil.load((Activity) context, dummy.getUrl(), playListHolder.ivCover);
         playListHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +69,6 @@ public class AdapterDummy extends RecyclerView.Adapter<AdapterDummy.DummyHolder>
                 }
             }
         });
-
         playListHolder.rootView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean isFocus) {

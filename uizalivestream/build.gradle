@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.tplloi'
+group = 'com.github.uizaio.uiza-android-sdk-player'
 
 android {
     compileSdkVersion 28

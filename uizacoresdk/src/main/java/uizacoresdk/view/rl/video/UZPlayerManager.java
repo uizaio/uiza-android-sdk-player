@@ -54,6 +54,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
@@ -86,8 +87,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private Context context;
     private UZVideo uzVideo;
     private ImaAdsLoader adsLoader = null;
-    private final DataSource.Factory manifestDataSourceFactory;
-    private final DataSource.Factory mediaDataSourceFactory;
+    private DataSource.Factory manifestDataSourceFactory;
+    private DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
     private SimpleExoPlayer player;
     private UZPlayerHelper playerHelper;
@@ -136,11 +137,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.bufferCallback = bufferCallback;
     }
 
-    public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public void initUZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd,
+            String thumbnailsUrl, List<Subtitle> subtitleList) {
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         this.timestampPlayed = System.currentTimeMillis();
-        isCanAddViewWatchTime = true;
-        //LLog.d(TAG, "timestampPlayed: " + timestampPlayed);
+        this.isCanAddViewWatchTime = true;
         this.context = uzVideo.getContext();
         this.videoW = 0;
         this.videoH = 0;
@@ -169,8 +170,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         // Default parameters, except allowCrossProtocolRedirects is true
         manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
                 Constants.USER_AGENT,
-                null /* listener */,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                bandwidthMeter /* listener */,
+                60 * 1000,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true /* allowCrossProtocolRedirects */
         );
@@ -185,6 +186,13 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         this.uzTimebar = uzVideo.getUZTimeBar();
         this.thumbnailsUrl = thumbnailsUrl;
         setRunnable();
+    }
+
+    public UZPlayerManager() {}
+
+    public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
+            List<Subtitle> subtitleList) {
+        initUZPlayerManager(uzVideo, linkPlay, urlIMAAd, thumbnailsUrl, subtitleList);
     }
 
     private void onAdEnded() {
@@ -472,7 +480,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         switch (type) {
             case C.TYPE_DASH:
                 return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                        manifestDataSourceFactory).createMediaSource(uri);
+                        manifestDataSourceFactory).setLoadErrorHandlingPolicy(
+                        new DefaultLoadErrorHandlingPolicy(Integer.MAX_VALUE)).createMediaSource(uri);
             case C.TYPE_SS:
                 return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(mediaDataSourceFactory),
                         manifestDataSourceFactory).createMediaSource(uri);
@@ -524,6 +533,9 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     private class UZPlayerEventListener implements Player.EventListener {
+        static final String TYPE_SOURCE = "TYPE_SOURCE";
+        static final String TYPE_RENDERER = "TYPE_RENDERER";
+        static final String TYPE_UNEXPECTED = "TYPE_UNEXPECTED";
         private long timestampRebufferStart;
 
         //This is called when the current playlist changes
@@ -585,7 +597,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                         // media actually playing
                         if (uzVideo != null) {
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_PLAYING);
-                            uzVideo.hideLayoutMsg();
                             uzVideo.resetCountTryLinkPlayError();
                         }
                         if (uzTimebar != null) {
@@ -628,11 +639,15 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 return;
             }
             LLog.e(TAG, "onPlayerError " + error.toString() + " - " + error.getMessage());
+            String type = null;
             if (error.type == ExoPlaybackException.TYPE_SOURCE) {
+                type = TYPE_SOURCE;
                 LLog.e(TAG, "onPlayerError TYPE_SOURCE");
             } else if (error.type == ExoPlaybackException.TYPE_RENDERER) {
+                type = TYPE_RENDERER;
                 LLog.e(TAG, "onPlayerError TYPE_RENDERER");
             } else if (error.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+                type = TYPE_UNEXPECTED;
                 LLog.e(TAG, "onPlayerError TYPE_UNEXPECTED");
             }
             error.printStackTrace();
@@ -641,8 +656,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (uzVideo == null) {
                 return;
             }
-            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
-            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
+            uzVideo.handleError(UZExceptionUtil.getExceptionPlayback(type));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {

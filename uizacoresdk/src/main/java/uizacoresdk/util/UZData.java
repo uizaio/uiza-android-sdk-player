@@ -88,7 +88,7 @@ public class UZData {
         }*/
         if (casty == null) {
             LLog.e(TAG, "getCasty null");
-            throw new NullPointerException("You must init Casty with acitivy before using Chromecast. Tips: put 'UZUtil.setCasty(this);' to your onStart() or onCreate()");
+            throw new NullPointerException("You must init Casty with activity before using Chromecast. Tips: put 'UZUtil.setCasty(this);' to your onCreate(). See example here https://github.com/uizaio/uiza-android-sdk-player/blob/master/sample/src/main/java/testlibuiza/sample/v3/event/EventActivity.java#L64");
         }
         return casty;
     }
