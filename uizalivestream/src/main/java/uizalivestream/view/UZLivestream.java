@@ -478,12 +478,12 @@ public class UZLivestream extends RelativeLayout
         return cameraHelper.prepareVideo(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
-    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
+    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int iFrameInterval, int rotation) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
+        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
     }
 
     private void startRecord() {
