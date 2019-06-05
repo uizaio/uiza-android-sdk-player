@@ -130,12 +130,12 @@ final class RtmpCameraHelper {
     }
 
     boolean prepareVideo(int width, int height, int fps, int bitrate,
-                         boolean hardwareRotation, int rotation) {
+                         boolean hardwareRotation, int iFrameInterval, int rotation) {
         if (!isCameraValid()) return false;
 
         LLog.d(TAG, "prepareVideo ===> " + width + "x" + height + ", bitrate " + bitrate + ", fps: " + fps + ", rotation: " + rotation + ", hardwareRotation: " + hardwareRotation);
         rtmpCamera1.startPreview(width, height);
-        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
+        return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
     }
 
     boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler,
@@ -157,7 +157,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(0);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
     boolean prepareVideoHD(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
@@ -181,7 +181,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(index);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
     boolean prepareVideoSD(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
@@ -196,7 +196,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(bestResolutionList.size() - 1);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
     boolean prepareVideo(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed, boolean isLandscape) {
@@ -214,7 +214,7 @@ final class RtmpCameraHelper {
             Log.e(TAG, "prepareVideo false -> bestSize == null");
             return false;
         }
-        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, isLandscape ? 0 : 90);
+        return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
     void switchCamera() {
