@@ -18,7 +18,7 @@ public class UZUtilBase {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
-                    getDataFromEntityIdLIVE(context, apiVersion, entityId, appId, callbackGetDetailEntity);
+                    getDataFromEntityIdLIVE(context, apiVersion, appId, entityId, callbackGetDetailEntity);
                 } else {
                     if (callbackGetDetailEntity != null) {
                         Data d = result.getData();
