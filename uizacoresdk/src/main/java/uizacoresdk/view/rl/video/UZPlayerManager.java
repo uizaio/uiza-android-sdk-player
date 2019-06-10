@@ -571,28 +571,31 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 case Player.STATE_BUFFERING:
                     showProgress();
                     if (uzVideo != null) {
-                        if (playWhenReady) {
-                            TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
-                            timestampRebufferStart = 0;
-                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
-                        } else {
-                            timestampRebufferStart = System.currentTimeMillis();
-                            uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
-                            TmpParamData.getInstance().addViewRebufferCount();
+                        timestampRebufferStart = System.currentTimeMillis();
+                        uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                        TmpParamData.getInstance().addViewRebufferCount();
+                        if (!playWhenReady) {
                             uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
                         }
                     }
                     break;
                 case Player.STATE_ENDED:
+                    timestampRebufferStart = 0;
                     if (uzVideo != null) {
                         uzVideo.onPlayerEnded();
                     }
                     hideProgress();
                     break;
                 case Player.STATE_IDLE:
+                    timestampRebufferStart = 0;
                     showProgress();
                     break;
                 case Player.STATE_READY:
+                    if (timestampRebufferStart != 0) {
+                        TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
+                        uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
+                    }
+                    timestampRebufferStart = 0;
                     hideProgress();
                     if (playWhenReady) {
                         // media actually playing
