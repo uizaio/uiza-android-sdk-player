@@ -656,25 +656,29 @@ public class FUZVideo extends RelativeLayout {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
                 showProgress();
-                if (playWhenReady) {
-                    TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
-                    timestampRebufferStart = 0;
-                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
-                } else {
-                    timestampRebufferStart = System.currentTimeMillis();
-                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
-                    TmpParamData.getInstance().addViewRebufferCount();
+                timestampRebufferStart = System.currentTimeMillis();
+                addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFERSTART);
+                TmpParamData.getInstance().addViewRebufferCount();
+                if (!playWhenReady) {
                     addTrackingMuiza(Constants.MUIZA_EVENT_WAITING);
                 }
                 break;
             case Player.STATE_ENDED:
+                timestampRebufferStart = 0;
                 setDefaultValueForFlagIsTracked();
                 addTrackingMuiza(Constants.MUIZA_EVENT_VIEWENDED);
                 break;
             case Player.STATE_IDLE:
+                timestampRebufferStart = 0;
                 showProgress();
                 break;
             case Player.STATE_READY:
+                if (timestampRebufferStart != 0) {
+                    TmpParamData.getInstance().setViewRebufferDuration(System.currentTimeMillis() - timestampRebufferStart);
+                    addTrackingMuiza(Constants.MUIZA_EVENT_REBUFFEREND);
+                }
+                timestampRebufferStart = 0;
+
                 if (!isOnStateReadyFirst) {
                     onStateReadyFirst();
                     isOnStateReadyFirst = true;
