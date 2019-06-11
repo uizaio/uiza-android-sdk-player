@@ -497,5 +497,6 @@ public class TmpParamData {
 
     public void addViewWatchTime(long addViewWatchTime) {
         this.viewWatchTime += addViewWatchTime;
+        this.viewTimeToFirstFrame = this.viewWatchTime;
     }
 }
