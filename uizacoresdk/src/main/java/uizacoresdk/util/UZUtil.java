@@ -448,6 +448,16 @@ public class UZUtil {
         });
     }
 
+    public static boolean isDependencyAvailable(String dependencyClass) {
+        try {
+            Class.forName(dependencyClass);
+            return true;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
@@ -461,6 +471,10 @@ public class UZUtil {
         if (appId == null || appId.isEmpty()) {
             throw new NullPointerException(UZException.ERR_18);
         }
+        if (!isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer")) {
+            throw new NoClassDefFoundError(UZException.ERR_504);
+        }
+
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
         return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);
@@ -480,6 +494,10 @@ public class UZUtil {
         }
         if (LDeviceUtil.isTV(activity)) {
             return;
+        }
+        if (!isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
+                || !isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+            throw new NoClassDefFoundError(UZException.ERR_505);
         }
         UZData.getInstance().setCasty(Casty.create(activity));
     }

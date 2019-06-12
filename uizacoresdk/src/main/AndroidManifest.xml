@@ -18,8 +18,7 @@
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="uizacoresdk.chromecast.CastOptionsProvider" />
         <activity
-            android:name=".chromecast.ExpandedControlsActivity"
-            android:theme="@style/Theme.CastVideosDark" />
+            android:name=".chromecast.ExpandedControlsActivity" />
         <!--STOP CHROMECAST-->
     </application>
 
