@@ -103,6 +103,15 @@ public class UZException {
     public final static int ERR_CODE_503 = 503;
     public final static String ERR_503 = "Service Unavailable: The server is overloaded or down for maintenance.";
 
+    public final static int ERR_CODE_504 = 504;
+    public final static String ERR_504 = "Exo Player library is missing";
+
+    public final static int ERR_CODE_505 = 505;
+    public final static String ERR_505 = "Chromecast library is missing";
+
+    public final static int ERR_CODE_506 = 506;
+    public final static String ERR_506 = "IMA ads library is missing";
+
     private Exception exception;
     private int errorCode;
 

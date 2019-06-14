@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -33,6 +32,7 @@ import uizacoresdk.interfaces.UZLiveContentCallback;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
+import uizacoresdk.view.rl.video.UZAdPlayerCallback;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -203,7 +203,7 @@ public class EventActivity extends AppCompatActivity {
                 tvTextOutput.setText("onCues");
             }
         });
-        uzVideo.addVideoAdPlayerCallback(new VideoAdPlayer.VideoAdPlayerCallback() {
+        uzVideo.addVideoAdPlayerCallback(new UZAdPlayerCallback() {
             @Override
             public void onPlay() {
                 tvAd.setText("onPlay");
