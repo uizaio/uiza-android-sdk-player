@@ -33,6 +33,34 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/
 
 Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
 
+If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will need to import dependencies:
+
+    //for playing video VOD, LIVE
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:4.0.9'
+    implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.5'
+
+- Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
+
+        //for Chromecast
+        implementation 'com.android.support:mediarouter-v7:28.0.0'
+        implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
+
+- If advertising support should be enabled, also add the following dependencies to your project:
+
+        //for IMA Ads
+        implementation 'com.google.android.exoplayer:extension-ima:2.9.5'
+        implementation 'com.google.android.gms:play-services-ads:17.1.3'
+
+**Note:**
+- The version of the ExoPlayer Extension IMA must match the version of the ExoPlayer library being used.
+- If you are using both Chromecast and IMA Ads dependencies, we recommend using dependency 'com.google.android.gms:play-services-cast-framework:$version' with version >= 16.0.3 to avoid dependency version conflicts
+
+If you are using uiza_android_sdk_player (Version < 4.0.9), you only need to import dependencies:
+
+    //for playing video VOD, LIVE, Chromecast and advertising support
+    implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:X.X.X'
 
 ***Please note if your project uses firebase***:
 **firebase-core** & **firebase-database** ... should be same version:
@@ -183,9 +211,17 @@ On function onCreate() of Activity, put this code:
 Ex:
 
     @Override  
-    protected void onCreate(@Nullable Bundle savedInstanceState) {  
-        UZUtil.setCasty(this);  
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);  
+        super.onCreate(savedInstanceState);
+    }
+
+**Note:** If you are using Chromecast, please use UZUtil.setCasty(Activity activity) on function onCreate() of Activity
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        UZUtil.setCasty(this);
+        UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
     }
 
