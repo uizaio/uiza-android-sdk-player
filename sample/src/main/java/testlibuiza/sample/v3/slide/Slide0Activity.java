@@ -13,7 +13,7 @@ import uizacoresdk.interfaces.UZItemClick;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZVideoChromeCast;
+import uizacoresdk.view.rl.video.UZVideo;
 import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
@@ -26,10 +26,10 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private Activity activity;
     private VDHView vdhv;
     private TextView tv0, tv1, tv2, tv3;
-    private UZVideoChromeCast uzVideo;
+    private UZVideo uzVideo;
 
     private void findViews() {
-        uzVideo = (UZVideoChromeCast) findViewById(R.id.uiza_video);
+        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
         vdhv = (VDHView) findViewById(R.id.vdhv);
         tv0 = (TextView) findViewById(R.id.tv_0);
         tv1 = (TextView) findViewById(R.id.tv_1);
@@ -52,7 +52,6 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
-        UZUtil.setCasty(this);
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         UZUtil.setUseWithVDHView(true);
         super.onCreate(savedInstanceState);

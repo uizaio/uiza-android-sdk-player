@@ -26,7 +26,6 @@ import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZVideoChromeCast;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -255,7 +254,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (frmVideoTop.getUZVideo() instanceof UZVideoChromeCast && !((UZVideoChromeCast) frmVideoTop.getUZVideo()).isCastingChromecast()) {
+                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
                     draggablePanel.setEnableSlide(true);
                 }
             }
@@ -281,7 +280,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo() instanceof UZVideoChromeCast && ((UZVideoChromeCast) frmVideoTop.getUZVideo()).isCastingChromecast()) {
+                    if (frmVideoTop.getUZVideo().isCastingChromecast()) {
                     } else {
                         if (frmVideoTop.getUZVideo().isLandscape()) {
                             frmVideoTop.getUZVideo().toggleFullscreen();
@@ -313,7 +312,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUZVideo() != null && frmVideoTop.getUZVideo() instanceof UZVideoChromeCast && ((UZVideoChromeCast) frmVideoTop.getUZVideo()).isCastingChromecast()) {
+                        if (frmVideoTop.getUZVideo().isCastingChromecast()) {
                         } else {
                             if (frmVideoTop.getUZVideo().isLandscape()) {
                                 frmVideoTop.getUZVideo().toggleFullscreen();

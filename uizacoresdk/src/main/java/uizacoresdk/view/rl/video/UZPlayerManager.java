@@ -515,7 +515,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
 
     @Override
     protected void hideProgress() {
-        if (uzVideo instanceof  UZVideoChromeCast && ((UZVideoChromeCast) uzVideo).isCastingChromecast()) {
+        if (uzVideo.isCastingChromecast()) {
             return;
         }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());

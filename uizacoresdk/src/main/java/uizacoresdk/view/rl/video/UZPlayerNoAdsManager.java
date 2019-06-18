@@ -426,7 +426,7 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     }
 
     protected void hideProgress() {
-        if (uzVideo instanceof UZVideoChromeCast && ((UZVideoChromeCast) uzVideo).isCastingChromecast()) {
+        if (uzVideo.isCastingChromecast()) {
             return;
         }
         LUIUtil.hideProgressBar(uzVideo.getProgressBar());
