@@ -3522,7 +3522,7 @@ public class UZVideo extends RelativeLayout
             uzPlayerManager.pauseVideo();
             uzPlayerManager.setVolume(0f);
             ViewUtils.visibleViews(rlChromeCast, ibPauseIcon);
-            ViewUtils.goneViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPlayIcon, ibPauseIcon, ibVolumeIcon);
+//            ViewUtils.goneViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPlayIcon, ibPauseIcon, ibVolumeIcon);
             //casting player luôn play first với volume not mute
             //UZData.getInstance().getCasty().setVolume(0.99);
 
@@ -3533,7 +3533,7 @@ public class UZVideo extends RelativeLayout
             uzPlayerManager.resumeVideo();
             uzPlayerManager.setVolume(0.99f);
             ViewUtils.goneViews(rlChromeCast, ibPlayIcon);
-            ViewUtils.visibleViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPauseIcon);
+//            ViewUtils.visibleViews(ibSettingIcon, ibCcIcon, ibBackScreenIcon, ibPauseIcon, ibVolumeIcon);
             //TODO iplm volume mute on/off o cast player
             //khi quay lại exoplayer từ cast player thì mặc định sẽ bật lại âm thanh (dù cast player đang mute hay !mute)
             //uzPlayerManager.setVolume(0.99f);
