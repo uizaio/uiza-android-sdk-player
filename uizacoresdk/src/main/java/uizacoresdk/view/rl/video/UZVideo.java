@@ -1229,7 +1229,16 @@ public class UZVideo extends RelativeLayout
             trackUizaEventDisplay();
             trackUizaEventPlaysRequested();
         }
+        if (isCastingChromecast) {
+            replayChromeCast();
+        }
         return result;
+    }
+
+    private void replayChromeCast() {
+        lastCurrentPosition = 0;
+        handleConnectedChromecast();
+        showController();
     }
 
     //===================================================================END FOR PLAYLIST/FOLDER
@@ -3014,9 +3023,7 @@ public class UZVideo extends RelativeLayout
             uzCallback.isInitResult(true, true, mResultGetLinkPlay, UZData.getInstance().getData());
         }
         if (isCastingChromecast) {
-            lastCurrentPosition = 0;
-            handleConnectedChromecast();
-            showController();
+            replayChromeCast();
         }
         updateUIPlayerInfo();
         TmpParamData.getInstance().setSessionStart(System.currentTimeMillis());
