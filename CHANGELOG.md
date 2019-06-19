@@ -1,3 +1,26 @@
+### 4.0.9 (2019-6-18)
+- Separating dependencies: Google IMA, Google Cast outside SDK’s code base
+
+        //for playing video VOD, LIVE
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:4.0.9'
+        implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
+        implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
+        implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.5'
+
+- Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
+
+        //for Chromecast
+        implementation 'com.android.support:mediarouter-v7:28.0.0'
+        implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
+
+- If advertising support should be enabled, also add the following dependencies to your project:
+
+        //for IMA Ads
+        implementation 'com.google.android.exoplayer:extension-ima:2.9.5'
+        implementation 'com.google.android.gms:play-services-ads:17.1.3'
+
+**Note**: The version of the ExoPlayer Extension IMA must match the version of the ExoPlayer library being used.
+
 ### 4.0.0 (2019-4-9)
 - Support v4
 
