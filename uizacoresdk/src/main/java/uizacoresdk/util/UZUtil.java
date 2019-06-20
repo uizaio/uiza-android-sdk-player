@@ -217,7 +217,7 @@ public class UZUtil {
         Window window = dialog.getWindow();
         if (window == null) return;
         if (isFullScreen) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                 window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
                 window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 window.getDecorView().setSystemUiVisibility(
