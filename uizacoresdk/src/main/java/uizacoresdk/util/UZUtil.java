@@ -242,13 +242,11 @@ public class UZUtil {
             wlp.dimAmount = 0.65f;
             window.setAttributes(wlp);
 
-            int width = 0;
-            int height = 0;
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height;
             if (isFullScreen) {
-                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.5);
             } else {
-                width = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0);
                 height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.3);
             }
             window.setLayout(width, height);
