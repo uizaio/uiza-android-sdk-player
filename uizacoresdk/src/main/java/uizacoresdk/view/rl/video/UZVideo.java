@@ -3835,4 +3835,13 @@ public class UZVideo extends RelativeLayout
             throw new NoClassDefFoundError(UZException.ERR_506);
         }
     }
+
+    protected void updateLiveStreamLatency(long latency) {
+        statsForNerdsView.showTextLiveStreamLatency();
+        statsForNerdsView.setTextLiveStreamLatency(ConvertUtils.groupingSeparatorLong(latency));
+    }
+
+    protected void hideTextLiveStreamLatency() {
+        statsForNerdsView.hideTextLiveStreamLatency();
+    }
 }

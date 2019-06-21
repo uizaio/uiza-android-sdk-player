@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
@@ -545,8 +546,14 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
         //This is called when the current playlist changes
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            if (uzVideo != null && uzVideo.eventListener != null) {
-                uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+            if (uzVideo != null) {
+                if (uzVideo.eventListener != null)
+                    uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+                if (manifest instanceof HlsManifest) {
+                    uzVideo.updateLiveStreamLatency(calculateLiveStreamLatencyInMs(((HlsManifest) manifest).mediaPlaylist.startTimeUs));
+                } else {
+                    uzVideo.hideTextLiveStreamLatency();
+                }
             }
         }
 
@@ -986,5 +993,9 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
 
     public void addAdPlayerCallback(UZAdPlayerCallback uzAdPlayerCallback){
         this.uzAdPlayerCallback = uzAdPlayerCallback;
+    }
+
+    private long calculateLiveStreamLatencyInMs(long startTimeUs) {
+        return System.currentTimeMillis() - startTimeUs / 1000;
     }
 }
