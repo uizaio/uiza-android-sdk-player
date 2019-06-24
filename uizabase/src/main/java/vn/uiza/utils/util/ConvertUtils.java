@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import vn.uiza.utils.constant.MemoryConstants;
 import vn.uiza.utils.constant.TimeConstants;
@@ -315,6 +316,13 @@ public final class ConvertUtils {
     public static String getFormattedDouble(double value, int precision) {
         return new DecimalFormat(
                 "#0." + (precision <= 1 ? "0" : precision == 2 ? "00" : "000")).format(value);
+    }
+
+    public static String groupingSeparatorLong(long value) {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setGroupingSeparator(',');
+        DecimalFormat decimalFormat = new DecimalFormat("###,###", decimalFormatSymbols);
+        return decimalFormat.format(value);
     }
 
     public static String humanReadableByteCount(long bytes, boolean si, boolean isBits) {

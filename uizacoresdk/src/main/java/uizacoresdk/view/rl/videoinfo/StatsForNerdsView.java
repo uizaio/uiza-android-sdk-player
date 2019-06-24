@@ -13,7 +13,7 @@ import vn.uiza.utils.util.ViewUtils;
 public class StatsForNerdsView extends RelativeLayout {
     private TextView textEntityId, textBufferHealth, textNetworkActivity, textVolume, textViewPortFrame,
             textConnectionSpeed, textHost, textVersion, textDeviceInfo, textVideoFormat, textAudioFormat,
-            textResolution;
+            textResolution, textLiveStreamLatency, textLiveStreamLatencyTitle;
 
     public StatsForNerdsView(Context context) {
         super(context);
@@ -50,6 +50,8 @@ public class StatsForNerdsView extends RelativeLayout {
         textVideoFormat = findViewById(R.id.text_video_format);
         textAudioFormat = findViewById(R.id.text_audio_format);
         textResolution = findViewById(R.id.text_current_optimal_res);
+        textLiveStreamLatency = findViewById(R.id.text_live_stream_latency);
+        textLiveStreamLatencyTitle = findViewById(R.id.text_live_stream_latency_title);
 
         // close button
         findViewById(R.id.btn_close).setOnClickListener(new OnClickListener() {
@@ -178,5 +180,29 @@ public class StatsForNerdsView extends RelativeLayout {
      */
     public void setTextResolution(String value) {
         textResolution.setText(value);
+    }
+
+    /**
+     * Depict latency of live stream
+     *
+     * @param value should be formatted like below
+     * Ex: 1000 ms /
+     */
+    public void setTextLiveStreamLatency(String value) {
+        textLiveStreamLatency.setText(getContext().getString(R.string.format_live_stream_latency, value));
+    }
+
+    /**
+     * Hide TextView latency of live stream
+     */
+    public void hideTextLiveStreamLatency() {
+        ViewUtils.goneViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
+    }
+
+    /**
+     * Show TextView latency of live stream
+     */
+    public void showTextLiveStreamLatency() {
+        ViewUtils.visibleViews(textLiveStreamLatency, textLiveStreamLatencyTitle);
     }
 }

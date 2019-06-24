@@ -21,7 +21,7 @@
     <string name="stat_host">Host</string>
     <string name="stat_sdk_player_api_version">SDK / Player / API Version</string>
     <string name="stat_os_device_info">Device Info</string>
-
+    <string name="stat_live_stream_latency">Live stream latency</string>
 
     <string name="format_viewport_frame">%1$dx%2$d / %3$d dropped frames</string>
     <string name="format_audio_format">%1$s %2$dHz</string>
@@ -33,4 +33,5 @@
     <string name="format_device_info">%1$s / Android: %2$s</string>
     <string name="format_buffer_health">%1$s s</string>
     <string name="format_resolution">%1$dx%2$d / %3$dx%4$d</string>
+    <string name="format_live_stream_latency">%s ms</string>
 </resources>
