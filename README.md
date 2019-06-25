@@ -290,15 +290,17 @@ onPermission():
         }
     }
 
-Start a livestream:
+Start a `portrait` livestream:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl());  
     }
 
+To stream in landscape mode, use `uzLivestream.prepareVideoLandscape()` instead.
+
 Start a livestream and save to MP4 file:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD(false)) {  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD()) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
