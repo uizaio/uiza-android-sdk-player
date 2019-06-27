@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.NoiseSuppressor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -421,10 +423,35 @@ public class UZLivestream extends RelativeLayout
         }
     }
 
+    /**
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     *
+     * bitrate AAC in kb.: 96 Kb
+     * sampleRate of audio in hz: 32000
+     * isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     * (1 audio channel).
+     * echoCanceler: check from AcousticEchoCanceler.isAvailable()
+     * noiseSuppressor: check from NoiseSuppressor.isAvailable()
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
+
     public boolean prepareAudio() {
-        return prepareAudio(512 * 1024, 44100, true, true, true);
+        return prepareAudio(96 * 1024, 32000, true, AcousticEchoCanceler.isAvailable(), NoiseSuppressor.isAvailable());
     }
 
+    /**
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     *
+     * @param bitrate AAC in kb.
+     * @param sampleRate of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
+     * @param isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     * (1 audio channel).
+     * @param echoCanceler true enable echo canceler, false disable.
+     * @param noiseSuppressor true enable noise suppressor, false  disable.
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         return cameraHelper.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
