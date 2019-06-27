@@ -41,6 +41,7 @@ import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.text.Cue;
@@ -224,6 +225,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
                 }
                 if (isPlayingAd()) {
                     hideProgress();
+                    isOnAdEnded = false;
                     uzVideo.setUseController(false);
                     if (progressCallback != null) {
                         VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
@@ -550,7 +552,12 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
                 if (uzVideo.eventListener != null)
                     uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
                 if (manifest instanceof HlsManifest) {
-                    uzVideo.updateLiveStreamLatency(calculateLiveStreamLatencyInMs(((HlsManifest) manifest).mediaPlaylist.startTimeUs));
+                    HlsMediaPlaylist hlsMediaPlaylist = ((HlsManifest) manifest).mediaPlaylist;
+                    if (hlsMediaPlaylist.hasProgramDateTime) {
+                        uzVideo.updateLiveStreamLatency(calculateLiveStreamLatencyInMs(hlsMediaPlaylist.startTimeUs));
+                    } else {
+                        uzVideo.hideTextLiveStreamLatency();
+                    }
                 } else {
                     uzVideo.hideTextLiveStreamLatency();
                 }
@@ -819,6 +826,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
         @Override
         public void onResume() {
             isPlayingAd = true;
+            isEnded = false;
             if (uzAdPlayerCallback != null)
                 uzAdPlayerCallback.onResume();
         }
@@ -993,9 +1001,5 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
 
     public void addAdPlayerCallback(UZAdPlayerCallback uzAdPlayerCallback){
         this.uzAdPlayerCallback = uzAdPlayerCallback;
-    }
-
-    private long calculateLiveStreamLatencyInMs(long startTimeUs) {
-        return System.currentTimeMillis() - startTimeUs / 1000;
     }
 }
