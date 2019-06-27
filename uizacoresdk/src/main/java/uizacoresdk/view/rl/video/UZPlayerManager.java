@@ -225,6 +225,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
                 }
                 if (isPlayingAd()) {
                     hideProgress();
+                    isOnAdEnded = false;
                     uzVideo.setUseController(false);
                     if (progressCallback != null) {
                         VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
@@ -825,6 +826,7 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
         @Override
         public void onResume() {
             isPlayingAd = true;
+            isEnded = false;
             if (uzAdPlayerCallback != null)
                 uzAdPlayerCallback.onResume();
         }
