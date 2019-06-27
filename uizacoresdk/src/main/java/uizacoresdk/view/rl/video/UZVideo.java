@@ -668,11 +668,11 @@ public class UZVideo extends RelativeLayout
     }
 
     public void onResume() {
+        SensorOrientationChangeNotifier.getInstance(getContext()).addListener(this);
         if (isCastingChromecast) {
             return;
         }
         activityIsPausing = false;
-        SensorOrientationChangeNotifier.getInstance(getContext()).addListener(this);
         if (uzPlayerManager != null) {
             if (ibPlayIcon == null || ibPlayIcon.getVisibility() != VISIBLE) {
                 uzPlayerManager.resumeVideo();
@@ -726,9 +726,6 @@ public class UZVideo extends RelativeLayout
     @Override
     public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
         isOnPreview = true;
-        if (isCastingChromecast) {
-            UZData.getInstance().getCasty().getPlayer().seek(progress);
-        }
         updateUIIbRewIconDependOnProgress(progress, true);
         if (callbackUZTimebar != null) {
             callbackUZTimebar.onPreview(previewView, progress, fromUser);
@@ -739,6 +736,9 @@ public class UZVideo extends RelativeLayout
 
     @Override
     public void onStopPreview(PreviewView previewView, int progress) {
+        if (isCastingChromecast) {
+            UZData.getInstance().getCasty().getPlayer().seek(progress);
+        }
         TmpParamData.getInstance().addViewSeekCount();
         long seekLastDuration = System.currentTimeMillis() - timestampOnStartPreview;
         TmpParamData.getInstance().setViewSeekDuration(seekLastDuration);
@@ -755,7 +755,7 @@ public class UZVideo extends RelativeLayout
     }
 
     public void onStopPreview(int progress) {
-        if (uzPlayerManager != null) {
+        if (uzPlayerManager != null && !isCastingChromecast) {
             uzPlayerManager.seekTo(progress);
             uzPlayerManager.resumeVideo();
             isOnPlayerEnded = false;

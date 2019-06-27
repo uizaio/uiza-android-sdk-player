@@ -10,6 +10,7 @@ public class CastyPlayer {
     private final String TAG = getClass().getSimpleName();
     private RemoteMediaClient remoteMediaClient;
     private OnMediaLoadedListener onMediaLoadedListener;
+    private MediaInfo currentMedia;
 
     //Needed for NoOp instance
     CastyPlayer() {
@@ -48,7 +49,13 @@ public class CastyPlayer {
      * @param time the number of milliseconds to seek by
      */
     public void seek(long time) {
-        if (remoteMediaClient != null) remoteMediaClient.seek(time);
+        if (remoteMediaClient != null) {
+            if (remoteMediaClient.hasMediaSession()) {
+                remoteMediaClient.seek(time);
+            } else {
+                loadMediaAndPlayInBackground(currentMedia, true, time);
+            }
+        }
     }
 
     //forward  10000mls
@@ -59,7 +66,9 @@ public class CastyPlayer {
         if (remoteMediaClient.getMediaStatus().getStreamPosition() + forward > remoteMediaClient.getMediaStatus().getMediaInfo().getStreamDuration()) {
             seek(remoteMediaClient.getMediaStatus().getMediaInfo().getStreamDuration());
         } else {
-            seek(remoteMediaClient.getMediaStatus().getStreamPosition() + forward);
+            if (remoteMediaClient.hasMediaSession()) {
+                seek(remoteMediaClient.getMediaStatus().getStreamPosition() + forward);
+            }
         }
     }//next 10000mls
 
@@ -70,7 +79,11 @@ public class CastyPlayer {
         if (remoteMediaClient.getMediaStatus().getStreamPosition() - backward > 0) {
             seek(remoteMediaClient.getMediaStatus().getStreamPosition() - backward);
         } else {
-            seek(0);
+            if (!remoteMediaClient.hasMediaSession()) {
+                seek(currentMedia.getStreamDuration() - backward);
+            } else {
+                seek(0);
+            }
         }
     }
 
@@ -196,6 +209,9 @@ public class CastyPlayer {
         }
         if (!inBackground) {
             remoteMediaClient.addListener(createRemoteMediaClientListener());
+        }
+        if (!mediaInfo.equals(currentMedia)) {
+            currentMedia = mediaInfo;
         }
         remoteMediaClient.load(mediaInfo, autoPlay, position);
         return true;
