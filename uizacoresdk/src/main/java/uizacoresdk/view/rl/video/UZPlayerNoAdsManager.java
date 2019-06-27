@@ -34,7 +34,9 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.text.Cue;
@@ -454,8 +456,19 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
         //This is called when the current playlist changes
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            if (uzVideo != null && uzVideo.eventListener != null) {
-                uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+            if (uzVideo != null) {
+                if (uzVideo.eventListener != null)
+                    uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+                if (manifest instanceof HlsManifest) {
+                    HlsMediaPlaylist hlsMediaPlaylist = ((HlsManifest) manifest).mediaPlaylist;
+                    if (hlsMediaPlaylist.hasProgramDateTime) {
+                        uzVideo.updateLiveStreamLatency(calculateLiveStreamLatencyInMs(hlsMediaPlaylist.startTimeUs));
+                    } else {
+                        uzVideo.hideTextLiveStreamLatency();
+                    }
+                } else {
+                    uzVideo.hideTextLiveStreamLatency();
+                }
             }
         }
 
