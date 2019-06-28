@@ -27,6 +27,7 @@ final class RtmpCameraHelper {
     private static final String TAG = RtmpCameraHelper.class.getSimpleName();
     private RtmpCamera1 rtmpCamera1;
     private CameraCallback cameraCallback;
+    private int audioBitRate = 128 * 1024; //kps
 
     RtmpCameraHelper(RtmpCamera1 camera) {
         this.rtmpCamera1 = camera;
@@ -138,6 +139,21 @@ final class RtmpCameraHelper {
         return rtmpCamera1.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
     }
 
+    /**
+      * dynamic audio bitrate, detect via video
+      *
+      * @param sampleRate
+      * @param isStereo
+      * @param echoCanceler
+      * @param noiseSuppressor
+      * @return
+      */
+    boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler,
+                          boolean noiseSuppressor) {
+        LLog.d(TAG, "prepareAudio ===> bitrate " + audioBitRate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
+        return rtmpCamera1.prepareAudio(audioBitRate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
+    }
+
     boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler,
                          boolean noiseSuppressor) {
         if (!isCameraValid()) return false;
@@ -157,6 +173,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(0);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
+        audioBitRate = presetLiveStreamingFeed.getAudioBitRate(bestBitrate);
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
@@ -181,6 +198,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(index);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
+        audioBitRate = presetLiveStreamingFeed.getAudioBitRate(bestBitrate);
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
@@ -196,6 +214,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = bestResolutionList.get(bestResolutionList.size() - 1);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
+        audioBitRate = presetLiveStreamingFeed.getAudioBitRate(bestBitrate);
         return prepareVideo(bestSize.width, bestSize.height, 30, bestBitrate, false, 1, isLandscape ? 0 : 90);
     }
 
@@ -210,6 +229,7 @@ final class RtmpCameraHelper {
         }
         Camera.Size bestSize = getBestResolution(context);
         int bestBitrate = getBestBitrate(context, presetLiveStreamingFeed);
+        audioBitRate = presetLiveStreamingFeed.getAudioBitRate(bestBitrate);
         if (bestSize == null) {
             Log.e(TAG, "prepareVideo false -> bestSize == null");
             return false;
