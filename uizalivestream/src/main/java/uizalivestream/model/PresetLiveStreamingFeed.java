@@ -43,7 +43,7 @@ public class PresetLiveStreamingFeed {
      *
      * @param connectedFast: network quality
      */
-    public void setEntity(boolean connectedFast) {
+    public void setVideoBitRates(boolean connectedFast) {
         if (isTranscode) {
             //Push with Transcode
             setS1080p(connectedFast ? 5000000 : 2500000); // 2.5M - 5M

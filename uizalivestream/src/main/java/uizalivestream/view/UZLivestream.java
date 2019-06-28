@@ -656,7 +656,7 @@ public class UZLivestream extends RelativeLayout
                 boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
-                presetLiveStreamingFeed.setEntity(isConnectedFast);
+                presetLiveStreamingFeed.setVideoBitRates(isConnectedFast);
                 
                 LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
                 if (isErrorStartLive) {
