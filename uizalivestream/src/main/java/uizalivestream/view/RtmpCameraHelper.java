@@ -257,13 +257,15 @@ final class RtmpCameraHelper {
     }
 
     private int getBestBitrate(Context context, PresetLiveStreamingFeed presetLiveStreamingFeed) {
+        int bestBitrate;
         if (LConnectivityUtil.isConnectedFast(context) && LConnectivityUtil.isConnectedWifi(context)) {
-            return presetLiveStreamingFeed.getS1080p();
+            bestBitrate = presetLiveStreamingFeed.getS1080p();
         } else if (LConnectivityUtil.isConnectedFast(context) && LConnectivityUtil.isConnectedMobile(context)) {
-            return presetLiveStreamingFeed.getS720p();
+            bestBitrate = presetLiveStreamingFeed.getS720p();
         } else {
-            return presetLiveStreamingFeed.getS480p();
+            bestBitrate = presetLiveStreamingFeed.getS480p();
         }
+        return Math.min(bestBitrate, rtmpCamera1.getBitrate());
     }
 
     private Camera.Size getBestResolution(@NonNull Context context) {
