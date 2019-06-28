@@ -22,7 +22,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.NoiseSuppressor;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -422,10 +423,47 @@ public class UZLivestream extends RelativeLayout
         }
     }
 
-    public boolean prepareAudio() {
-        return prepareAudio(512 * 1024, 44100, true, true, true);
+    /**
+     * Call this method before use @startStream.
+     *
+     * @param isLandscape:
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
+    public boolean prepareStream(boolean isLandscape) {
+        boolean prepareVideo = prepareVideo(isLandscape);
+        return prepareVideo && prepareAudio();
     }
 
+    /**
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     * audio bitrate is dynamic
+     * sampleRate of audio in hz: 44100
+     * isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     * (1 audio channel).
+     * echoCanceler: check from AcousticEchoCanceler.isAvailable()
+     * noiseSuppressor: check from NoiseSuppressor.isAvailable()
+     *
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
+
+    public boolean prepareAudio() {
+        return prepareAudio(44100, true, AcousticEchoCanceler.isAvailable(), NoiseSuppressor.isAvailable());
+    }
+
+    /**
+      * Call this method before use @startStream. If not you will do a stream without audio.
+      *
+      * @param bitrate AAC in kb.
+      * @param sampleRate of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
+      * @param isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
+      * (1 audio channel).
+      * @param echoCanceler true enable echo canceler, false disable.
+      * @param noiseSuppressor true enable noise suppressor, false  disable.
+      * @return true if success, false if you get a error (Normally because the encoder selected
+      * doesn't support any configuration seated or your device hasn't a AAC encoder).
+      */
     public boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         return cameraHelper.prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
@@ -615,22 +653,11 @@ public class UZLivestream extends RelativeLayout
 
                 boolean isTranscode = d.getEncode() == 1;//1 is Push with Transcode, !1 Push-only, no transcode
                 LLog.d(TAG, "isTranscode " + isTranscode);
-
+                boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
-
-                boolean isConnectedFast = LConnectivityUtil.isConnectedFast(getContext());
-                if (isTranscode) {
-                    //Push with Transcode
-                    presetLiveStreamingFeed.setS1080p(isConnectedFast ? 5000000 : 2500000);
-                    presetLiveStreamingFeed.setS720p(isConnectedFast ? 3000000 : 1500000);
-                    presetLiveStreamingFeed.setS480p(isConnectedFast ? 1500000 : 800000);
-                } else {
-                    //Push-only, no transcode
-                    presetLiveStreamingFeed.setS1080p(isConnectedFast ? 2500000 : 1500000);
-                    presetLiveStreamingFeed.setS720p(isConnectedFast ? 1500000 : 800000);
-                    presetLiveStreamingFeed.setS480p(isConnectedFast ? 800000 : 400000);
-                }
+                presetLiveStreamingFeed.setVideoBitRates(isConnectedFast);
+                
                 LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
