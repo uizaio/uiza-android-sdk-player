@@ -426,10 +426,9 @@ public class UZLivestream extends RelativeLayout
     /**
      * Call this method before use @startStream. If not you will do a stream without audio.
      *
-     * bitrate AAC in kb.: 96 Kb
-     * sampleRate of audio in hz: 32000
-     * isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
-     * (1 audio channel).
+     * bitrate AAC in kb: 96 Kb
+     * sampleRate of audio in hz: 44100.
+     * isStereo is true.
      * echoCanceler: check from AcousticEchoCanceler.isAvailable()
      * noiseSuppressor: check from NoiseSuppressor.isAvailable()
      * @return true if success, false if you get a error (Normally because the encoder selected
@@ -437,7 +436,7 @@ public class UZLivestream extends RelativeLayout
      */
 
     public boolean prepareAudio() {
-        return prepareAudio(96 * 1024, 32000, true, AcousticEchoCanceler.isAvailable(), NoiseSuppressor.isAvailable());
+        return prepareAudio(96 * 1024, 44100, true, AcousticEchoCanceler.isAvailable(), NoiseSuppressor.isAvailable());
     }
 
     /**
