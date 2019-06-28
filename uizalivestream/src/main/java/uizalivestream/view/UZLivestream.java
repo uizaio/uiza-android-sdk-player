@@ -674,7 +674,7 @@ public class UZLivestream extends RelativeLayout
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
                 // namdinh: initial default value in PresetLiveStreamingFeed
-                presetLiveStreamingFeed.setEntity(isConnectedFast);
+                presetLiveStreamingFeed.setVideoBitRates(isConnectedFast);
                 LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
