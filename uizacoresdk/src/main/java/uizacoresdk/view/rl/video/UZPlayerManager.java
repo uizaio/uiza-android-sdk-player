@@ -3,6 +3,7 @@ package uizacoresdk.view.rl.video;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import com.bumptech.glide.request.target.Target;
@@ -72,6 +73,7 @@ import uizacoresdk.view.rl.timebar.UZTimebar;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZExceptionUtil;
 import vn.uiza.core.utilities.LConnectivityUtil;
+import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
@@ -83,6 +85,9 @@ import vn.uiza.views.autosize.UZImageButton;
  */
 //https://medium.com/@takusemba/understands-callbacks-of-exoplayer-c05ac3c322c2
 public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaSource.MediaSourceFactory {
+    private static final String EXT_X_PROGRAM_DATE_TIME = "#EXT-X-PROGRAM-DATE-TIME:";
+    private static final String EXTINF = "#EXTINF:";
+    private static final long INVALID_PROGRAM_DATE_TIME = 0;
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
@@ -548,20 +553,75 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
         //This is called when the current playlist changes
         @Override
         public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-            if (uzVideo != null) {
-                if (uzVideo.eventListener != null)
-                    uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
-                if (manifest instanceof HlsManifest) {
-                    HlsMediaPlaylist hlsMediaPlaylist = ((HlsManifest) manifest).mediaPlaylist;
-                    if (hlsMediaPlaylist.hasProgramDateTime) {
-                        uzVideo.updateLiveStreamLatency(calculateLiveStreamLatencyInMs(hlsMediaPlaylist.startTimeUs));
-                    } else {
-                        uzVideo.hideTextLiveStreamLatency();
-                    }
-                } else {
+            if (uzVideo == null) return;
+            if (uzVideo.eventListener != null) {
+                uzVideo.eventListener.onTimelineChanged(timeline, manifest, reason);
+            }
+            if (manifest instanceof HlsManifest) {
+                HlsMediaPlaylist playlist = ((HlsManifest) manifest).mediaPlaylist;
+                // From the current playing frame to end time of chunk
+                long timeToEndChunk = player.getDuration() - player.getCurrentPosition();
+                long extProgramDateTime = getProgramDateTimeValue(playlist, timeToEndChunk);
+
+                if (extProgramDateTime == INVALID_PROGRAM_DATE_TIME) {
                     uzVideo.hideTextLiveStreamLatency();
+                    return;
+                }
+
+                long elapsedTime = SystemClock.elapsedRealtime() - UZUtil.getLastElapsedTime(context);
+                long currentTime = UZUtil.getLastServerTime(context) + elapsedTime;
+
+                long latency = currentTime - extProgramDateTime;
+                uzVideo.updateLiveStreamLatency(latency);
+            } else {
+                uzVideo.hideTextLiveStreamLatency();
+            }
+        }
+
+        private long getProgramDateTimeValue(HlsMediaPlaylist playlist, long timeToEndChunk) {
+            if (playlist.tags == null) {
+                return INVALID_PROGRAM_DATE_TIME;
+            }
+            final String emptyStr = "";
+            final int tagSize = playlist.tags.size();
+
+            long totalTime = 0;
+            int playingIndex = tagSize;
+
+            // Find the playing frame index
+            while (playingIndex >= 0) {
+                String tag = playlist.tags.get(playingIndex - 1);
+                if (tag.contains(EXTINF)) {
+                    totalTime += Double.parseDouble(tag.replace(",", emptyStr).replace(EXTINF, emptyStr)) * 1000;
+                    if (totalTime >= timeToEndChunk) {
+                        break;
+                    }
+                }
+                playingIndex--;
+            }
+            if (playingIndex >= tagSize) {
+                // That means the livestream latency is larger than 1 segment (duration).
+                // we should skip to calc latency in this case
+                return INVALID_PROGRAM_DATE_TIME;
+            }
+
+            // Find the playing frame EXT_X_PROGRAM_DATE_TIME
+            String playingDateTime = emptyStr;
+            for (int i = playingIndex; i < tagSize; i++) {
+                String tag = playlist.tags.get(i);
+                if (tag.contains(EXT_X_PROGRAM_DATE_TIME)) {
+                    playingDateTime = tag.replace(EXT_X_PROGRAM_DATE_TIME, emptyStr);
+                    break;
                 }
             }
+
+            if (TextUtils.isEmpty(playingDateTime)) {
+                // That means something wrong with the format, check with server
+                // we should skip to calc latency in this case
+                return INVALID_PROGRAM_DATE_TIME;
+            }
+            // int list of frame, we get the EXT_X_PROGRAM_DATE_TIME of current playing frame
+            return LDateUtils.convertUTCMs(playingDateTime);
         }
 
         //This is called when the available or selected tracks change

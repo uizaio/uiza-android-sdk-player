@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -77,7 +76,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8");
+        uZCustomLinkPlay2.setLinkPlay("https://stag-asia-southeast1-live.uizadev.io/998a1a17138644428ce028d2de20c5a0-live/593fd077-313c-4d11-a5ec-fbd66dc43763/playlist_dvr.m3u8");
         uZCustomLinkPlay2.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
@@ -122,6 +121,14 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
                 boolean isInitSuccess = UZUtil.initCustomLinkPlay(activity, uzVideo);
                 if (!isInitSuccess) {
                     LToast.show(activity, "Init failed");
+                }
+            }
+        });
+        findViewById(R.id.bt_stats_for_nerds).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uzVideo != null) {
+                    uzVideo.toggleStatsForNerds();
                 }
             }
         });

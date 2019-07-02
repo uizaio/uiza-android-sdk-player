@@ -11,6 +11,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
@@ -209,4 +210,8 @@ public interface UZService {
     @GET("/v1/cdn/ccu/ping")
     Observable<Object> pingHeartBeat(@Query("cdn_name") String cdnName, @Query("session") String session);
     //end =====================================================heartbeat
+
+    // This free API does not need the base URL
+    @GET("http://worldtimeapi.org/api/timezone/Etc/UTC")
+    Observable<UTCTime> getCurrentUTCTime();
 }

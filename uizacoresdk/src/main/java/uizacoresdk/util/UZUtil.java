@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -21,13 +22,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.Arrays;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
@@ -658,6 +656,8 @@ public class UZUtil {
     private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
     private final static String MINI_PLAYER_SIZE_WIDTH = "MINI_PLAYER_SIZE_WIDTH";
     private final static String MINI_PLAYER_SIZE_HEIGHT = "MINI_PLAYER_SIZE_HEIGHT";
+    private final static String LAST_SYNCED_SERVER_TIME = "LAST_SYNCED_SERVER_TIME";
+    private final static String LAST_ELAPSED_TIME = "LAST_ELAPSED_TIME";
 
     private static SharedPreferences getPrivatePreference(Context context) {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -956,5 +956,24 @@ public class UZUtil {
             ActivityManager tasksManager = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
             tasksManager.moveTaskToFront(activity.getTaskId(), ActivityManager.MOVE_TASK_NO_USER_ACTION);
         }
+    }
+
+    //===================================================================================
+    public static void saveLastServerTime(Context context, long currentTimeMillis) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), LAST_SYNCED_SERVER_TIME, currentTimeMillis);
+    }
+
+    public static long getLastServerTime(Context context) {
+        return (long) SharedPreferenceUtil.get(getPrivatePreference(context), LAST_SYNCED_SERVER_TIME,
+                System.currentTimeMillis());
+    }
+
+    public static void saveLastElapsedTime(Context context, long elapsedTime) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), LAST_ELAPSED_TIME, elapsedTime);
+    }
+
+    public static long getLastElapsedTime(Context context) {
+        return (long) SharedPreferenceUtil.get(getPrivatePreference(context), LAST_ELAPSED_TIME,
+                SystemClock.elapsedRealtime());
     }
 }

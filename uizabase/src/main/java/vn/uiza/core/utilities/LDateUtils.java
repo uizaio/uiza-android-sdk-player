@@ -1,5 +1,6 @@
 package vn.uiza.core.utilities;
 
+import android.text.TextUtils;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Format;
@@ -10,7 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.util.SentryUtils;
 
@@ -249,5 +249,23 @@ public class LDateUtils {
 
     public static String convertMlsecondsToHMmSs(long mls) {
         return convertSecondsToHMmSs(mls / 1000);
+    }
+
+    /**
+     * Convert UTC time string to long value
+     * @param timeStr the time with format <code>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</code>
+     * @return UTC time as long value
+     */
+    public static long convertUTCMs(String timeStr) {
+        if (TextUtils.isEmpty(timeStr)) return -1;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_1);
+        dateFormat.setTimeZone(TimeZone.getTimeZone(UTC));
+        try {
+            Date date = dateFormat.parse(timeStr);
+            return date == null ? -1 : date.getTime();
+        } catch (ParseException e) {
+            SentryUtils.captureException(e);
+            return -1;
+        }
     }
 }

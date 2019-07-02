@@ -69,6 +69,15 @@
     </HorizontalScrollView>
 
     <Button
+        android:id="@+id/bt_stats_for_nerds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_5"
+        android:text="StatsForNerds toggle"
+        android:textSize="@dimen/txt_18"
+        />
+
+    <Button
         android:id="@+id/bt_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
