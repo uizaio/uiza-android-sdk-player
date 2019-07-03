@@ -87,19 +87,16 @@ public class FakeData {
 
     public static Data dataMetadata1() {
         Data data = new Data();
-        data.setId("78a423d4-4511-463e-97df-90affdaf5062");
-        data.setEncode(0);
-        data.setName("Loitp 1562120449221");
-        data.setDescription("This is a description sentences");
+        data.setId("f932aa79-852a-41f7-9adc-19935034f944");
+        data.setName("Playlist sample");
+        data.setDescription("Playlist desciption");
         data.setSlug("playlist-sample");
-        data.setType(CreateMetadata.TYPE_FOLDER);
-        data.setOrderNumber(1);
-        data.setIcon("/exemple.com/icon.png");
+        data.setType("playlist");
+        data.setOrderNumber(3);
+        data.setIcon("/example.com/image002.png");
         data.setStatus(1);
-        data.setView(0);
-        data.setSlug("loitp-1562120449221");
-        data.setCreatedAt("2019-07-03T02:20:50.000Z");
-        data.setUpdatedAt("0000-00-00 00:00:00");
+        data.setCreatedAt("2018-06-18T04:29:05.000Z");
+        data.setUpdatedAt("2018-06-18T04:29:05.000Z");
         return data;
     }
 
@@ -156,8 +153,8 @@ public class FakeData {
 
     public static Metadata metadata() {
         Metadata metadata = new Metadata();
-        metadata.setTotal(4);
-        metadata.setResult(4);
+        metadata.setTotal(2);
+        metadata.setResult(2);
         metadata.setPage(1);
         metadata.setLimit(20);
         return metadata;
@@ -215,7 +212,7 @@ public class FakeData {
     public static ResultGetDetailOfMetadata resultGetDetailOfMetadata() {
         ResultGetDetailOfMetadata result = new ResultGetDetailOfMetadata();
         result.setData(dataMetadata1());
-        result.setVersion(3);
+        result.setVersion(4);
         result.setDatetime("2018-06-18T04:30:26.394Z");
         result.setPolicy("public");
         result.setRequestId("992ecf2d-3ece-44a2-880f-c60d4e6597fa");
@@ -231,7 +228,7 @@ public class FakeData {
         Data data = new Data();
         data.setId("095778fa-7e42-45cc-8a0e-6118e540b61d");
         resultUpdateMetadata.setData(data);
-        resultUpdateMetadata.setVersion(3);
+        resultUpdateMetadata.setVersion(4);
         resultUpdateMetadata.setDatetime("2018-06-18T03:17:07.022Z");
         resultUpdateMetadata.setPolicy("public");
         resultUpdateMetadata.setRequestId("244f6f8f-4fc5-4f20-a535-e8ea4e0cab0e");
@@ -247,7 +244,7 @@ public class FakeData {
         Data data = new Data();
         data.setId("095778fa-7e42-45cc-8a0e-6118e540b61d");
         resultDeleteAnMetadata.setData(data);
-        resultDeleteAnMetadata.setVersion(3);
+        resultDeleteAnMetadata.setVersion(4);
         resultDeleteAnMetadata.setDatetime("2018-06-18T03:17:07.022Z");
         resultDeleteAnMetadata.setPolicy("public");
         resultDeleteAnMetadata.setRequestId("244f6f8f-4fc5-4f20-a535-e8ea4e0cab0e");
@@ -307,7 +304,7 @@ public class FakeData {
         list.add(dataEntity2());
         resultListEntity.setData(list);
         resultListEntity.setMetadata(metadata());
-        resultListEntity.setVersion(3);
+        resultListEntity.setVersion(4);
         resultListEntity.setDatetime("2018-06-22T19:20:19.536Z");
         resultListEntity.setPolicy("public");
         resultListEntity.setRequestId("beac9674-9d87-49eb-9ded-3b8ddc258044");
@@ -323,7 +320,7 @@ public class FakeData {
         Data data = new Data();
         data.setId("8b83886e-9cc3-4eab-9258-ebb16c0c73de");
         resultRetrieveAnEntity.setData(data);
-        resultRetrieveAnEntity.setVersion(3);
+        resultRetrieveAnEntity.setVersion(4);
         resultRetrieveAnEntity.setDatetime("2018-06-15T18:52:45.755Z");
         resultRetrieveAnEntity.setPolicy("public");
         resultRetrieveAnEntity.setRequestId("a27c393d-c90d-44a0-9d44-4d493647889a");
@@ -350,7 +347,7 @@ public class FakeData {
         data.setCreatedAt("2018-06-21T14:33:36.000Z");
         data.setUpdatedAt("2018-06-21T14:33:36.000Z");
         resultRetrieveALive.setData(data);
-        resultRetrieveALive.setVersion(3);
+        resultRetrieveALive.setVersion(4);
         resultRetrieveALive.setDatetime("2018-06-21T14:34:22.335Z");
         resultRetrieveALive.setPolicy("public");
         resultRetrieveALive.setRequestId("088668ec-6046-4310-879a-2e0e72ac1f52");
@@ -367,7 +364,7 @@ public class FakeData {
                 new vn.uiza.restapi.uiza.model.v3.livestreaming.getviewalivefeed.Data();
         data.setWatchnow(1);
         resultGetViewALiveFeed.setData(data);
-        resultGetViewALiveFeed.setVersion(3);
+        resultGetViewALiveFeed.setVersion(4);
         resultGetViewALiveFeed.setDatetime("2018-06-15T18:52:45.755Z");
         resultGetViewALiveFeed.setPolicy("public");
         resultGetViewALiveFeed.setRequestId("a27c393d-c90d-44a0-9d44-4d493647889a");
@@ -384,7 +381,7 @@ public class FakeData {
                 new vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.Data();
         data.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlfaWQiOiJiNzI5N2IyOS1jNmM0LTRiZDYtYTc0Zi1iNjBkMDExOGQyNzUiLCJhcHBfaWQiOiIwMWUxMzdhZDFiNTM0MDA0YWQ4MjIwMzViZjg5YjI5ZiIsImNvbnRlbnRfdHlwZSI6InN0cmVhbSIsImlhdCI6MTU1OTAzMzI4MSwiZXhwIjoxNTU5MDM2ODgxfQ.23zZtk4AzU99GsBJ99eoMs2-bInlq7I7S3TIkuHNQP0");
         tokenStreaming.setData(data);
-        tokenStreaming.setVersion(3);
+        tokenStreaming.setVersion(4);
         tokenStreaming.setDatetime("2019-05-28T08:48:01.663Z");
         tokenStreaming.setPolicy("public");
         tokenStreaming.setRequestId("326f8ede-d4c1-480e-ac37-05b9a84fdeca");
