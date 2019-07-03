@@ -192,6 +192,7 @@ public class UZVideo extends RelativeLayout
     private List<Subtitle> subtitleList = new ArrayList<>();
     private boolean autoMoveToLiveEdge;
     private @LayoutRes int pipControlSkin;
+    private int counterInterval;
 
     public UZVideo(Context context) {
         super(context);
@@ -3016,10 +3017,27 @@ public class UZVideo extends RelativeLayout
             public void onVideoProgress(long currentMls, int s, long duration, int percent) {
                 TmpParamData.getInstance().setPlayerPlayheadTime(s);
                 updateUIIbRewIconDependOnProgress(currentMls, false);
-                trackProgress(s, percent);
-                callAPITrackMuiza(s);
                 if (progressCallback != null) {
                     progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                }
+                if (isInitCustomLinkPlay) return;
+
+                // track progress, VOD only
+                if (!isLivestream && oldPercent != percent) {
+                    oldPercent = percent;
+                    trackProgress(percent);
+                }
+
+                counterInterval++;
+                // track event view
+                if (!UZTrackingUtil.isTrackedEventTypeView(getContext())
+                        && counterInterval == (isLivestream ? 3 : 5)) {
+                    trackEventView();
+                }
+                // track analytic
+                if ((s > 0 && counterInterval % 10 == 0) && !isTrackingMuiza
+                        && !UZData.getInstance().isMuizaListEmpty()) {
+                    callAPITrackMuiza();
                 }
             }
 
@@ -3125,30 +3143,16 @@ public class UZVideo extends RelativeLayout
         isTracked100 = false;
     }
 
-    protected void trackProgress(int s, int percent) {
-        //dont track if user use custom linkplay
-        if (isInitCustomLinkPlay) {
-            return;
-        }
-        //track event view (after video is played 5s)
-        if (s == (isLivestream ? 3 : 5)) {
-            if (!UZTrackingUtil.isTrackedEventTypeView(getContext())) {
-                callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
-                    @Override
-                    public void onTrackingSuccess() {
-                        UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
-                    }
-                });
+    protected void trackEventView() {
+        callAPITrackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
+            @Override
+            public void onTrackingSuccess() {
+                UZTrackingUtil.setTrackingDoneWithEventTypeView(getContext(), true);
             }
-        }
-        //dont track play_throught if entity is live
-        if (isLivestream) {
-            return;
-        }
-        if (oldPercent == percent) {
-            return;
-        }
-        oldPercent = percent;
+        });
+    }
+
+    protected void trackProgress(int percent) {
         if (percent >= Constants.PLAYTHROUGH_100) {
             if (isTracked100) {
                 return;
@@ -3367,10 +3371,7 @@ public class UZVideo extends RelativeLayout
 
     private boolean isTrackingMuiza;
 
-    private void callAPITrackMuiza(int s) {
-        if (isInitCustomLinkPlay || (s <= 0 || s % 10 != 0) || isTrackingMuiza || UZData.getInstance().isMuizaListEmpty()) {
-            return;
-        }
+    private void callAPITrackMuiza() {
         isTrackingMuiza = true;
         final List<Muiza> muizaListToTracking = new ArrayList<>(UZData.getInstance().getMuizaList());
         UZData.getInstance().clearMuizaList();
@@ -3379,11 +3380,13 @@ public class UZVideo extends RelativeLayout
             @Override
             public void onSuccess(Object result) {
                 isTrackingMuiza = false;
+                counterInterval = 0;
             }
 
             @Override
             public void onFail(Throwable e) {
                 isTrackingMuiza = false;
+                counterInterval = 0;
                 UZData.getInstance().addListTrackingMuiza(muizaListToTracking);
             }
         });

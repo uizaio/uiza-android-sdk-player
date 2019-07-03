@@ -10,7 +10,7 @@ public class App extends MultiDexApplication {
     public static final String DF_DOMAIN_API = "ap-southeast-1-api.uiza.co";
     public static final String DF_TOKEN = "uap-f785bc511967473fbe6048ee5fb7ea59-69fefb79";
     public static final String DF_APP_ID = "f785bc511967473fbe6048ee5fb7ea59";
-    public static String entityIdDefaultLIVE_TRANSCODE = "7b1b7cf3-d451-48c9-a57a-73e44e87f032";
+    public static String entityIdDefaultLIVE_TRANSCODE = "d8286085-180d-411e-84b1-935c2ccca1a4";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "34dfc318-9f6a-4540-a382-4574d67ecefc";
 
     @Override

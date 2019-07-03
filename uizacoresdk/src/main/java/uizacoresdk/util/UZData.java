@@ -416,6 +416,9 @@ public class UZData {
         muiza.setViewTimeToFirstFrame(TmpParamData.getInstance().getViewTimeToFirstFrame());
         muiza.setViewAggregateStartupTime(TmpParamData.getInstance().getViewStart() + TmpParamData.getInstance().getViewWatchTime());
         muiza.setViewAggregateStartupTotalTime(TmpParamData.getInstance().getViewTimeToFirstFrame() + (TmpParamData.getInstance().getPlayerInitTime() - TmpParamData.getInstance().getTimeFromInitEntityIdToAllApiCalledSuccess()));
+        if (isLivestream()) {
+            muiza.setViewLivestreamLatency(TmpParamData.getInstance().getLivestreamLatency());
+        }
         muiza.setEvent(event);
         switch (event) {
             case Constants.MUIZA_EVENT_ERROR:
