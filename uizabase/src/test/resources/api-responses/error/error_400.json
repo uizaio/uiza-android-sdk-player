@@ -1,0 +1,30 @@
+{
+  "code": 400,
+  "type": "BAD_REQUEST",
+  "data": {
+    "message": "Can't get info",
+    "error": {
+      "code": 400,
+      "type": "BAD_REQUEST",
+      "data": {
+        "id": "undefined",
+        "message": "Can't get info"
+      },
+      "retryable": false,
+      "message": "Can't get info",
+      "requestId": "29f28c30-19d0-4fa1-8d84-e2d54be0cff8",
+      "version": 1,
+      "datetime": "2019-07-05T03:13:08.046Z",
+      "policy": "control",
+      "serviceName": "uam",
+      "env": "local"
+    }
+  },
+  "retryable": false,
+  "message": "Can't get info",
+  "version": 4,
+  "datetime": "2019-07-05T03:13:09.056Z",
+  "policy": "public",
+  "requestId": "a24055f2-1ec7-4946-82b5-3c6ef6465c97",
+  "serviceName": "api-v4"
+}
