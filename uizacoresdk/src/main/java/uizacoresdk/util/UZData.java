@@ -2,27 +2,30 @@ package uizacoresdk.util;
 
 import android.content.Context;
 import android.os.Build;
-
+import android.os.SystemClock;
+import android.util.Log;
 import com.google.android.gms.cast.MediaTrack;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LDateUtils;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
+import vn.uiza.restapi.uiza.UZService;
+import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
+import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.util.Utils;
 
 /**
@@ -105,6 +108,7 @@ public class UZData {
         mAppId = appId;
         UZRestClient.init(Constants.PREFIXS + domainAPI, token);
         UZUtil.setToken(Utils.getContext(), token);
+        syncCurrentUTCTime();// for synchronize server time
         if (environment == Constants.ENVIRONMENT_DEV) {
             UZRestClientGetLinkPlay.init(Constants.URL_GET_LINK_PLAY_DEV);
             UZRestClientHeartBeat.init(Constants.URL_HEART_BEAT_DEV);
@@ -121,6 +125,32 @@ public class UZData {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Because the time from client is un-trust for calculating the HLS latency, so get & save the UTC time from
+     * <a href=http://worldtimeapi.org/api/timezone/Etc/UTC>this free api</a>
+     */
+    private void syncCurrentUTCTime() {
+        UZService service = UZRestClient.createService(UZService.class);
+        final long startAPICallTime = System.currentTimeMillis();
+        UZAPIMaster.getInstance().subscribe(service.getCurrentUTCTime(), new ApiSubscriber<UTCTime>() {
+            @Override
+            public void onSuccess(UTCTime result) {
+                long apiTime = (System.currentTimeMillis() - startAPICallTime) / 2;
+                long currentTime = result.getCurrentDateTimeMs() + apiTime;
+                Log.i(TAG, "sync server time success " + currentTime);
+                UZUtil.saveLastServerTime(Utils.getContext(), currentTime);
+                UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                Log.e(TAG, "sync server time failed");
+                UZUtil.saveLastServerTime(Utils.getContext(), System.currentTimeMillis());
+                UZUtil.saveLastElapsedTime(Utils.getContext(), SystemClock.elapsedRealtime());
+            }
+        });
     }
 
     public String getAPIVersion() {
