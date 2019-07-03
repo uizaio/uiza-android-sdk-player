@@ -1,0 +1,16 @@
+{
+  "code": 200,
+  "data": {
+    "encode": 0,
+    "id": "4dc1e88f-29d8-401f-a4dd-dd7011a2dc92",
+    "status": 0,
+    "view": 0
+  },
+  "datetime": "2019-07-03T02:02:19.595Z",
+  "message": "OK",
+  "policy": "public",
+  "requestId": "f0a916c2-2b84-4c83-905f-d2d12ec0486b",
+  "serviceName": "api-v4",
+  "type": "SUCCESS",
+  "version": 4
+}

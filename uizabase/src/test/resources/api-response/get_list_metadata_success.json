@@ -1,0 +1,74 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "createdAt": "2019-07-03T02:20:50.000Z",
+      "description": "This is a description sentences",
+      "encode": 0,
+      "icon": "/exemple.com/icon.png",
+      "id": "78a423d4-4511-463e-97df-90affdaf5062",
+      "name": "Loitp 1562120449221",
+      "orderNumber": 1,
+      "slug": "loitp-1562120449221",
+      "status": 1,
+      "type": "folder",
+      "updatedAt": "0000-00-00 00:00:00",
+      "view": 0
+    },
+    {
+      "createdAt": "2019-07-03T02:02:19.000Z",
+      "description": "This is a description sentences",
+      "encode": 0,
+      "icon": "/exemple.com/icon.png",
+      "id": "4dc1e88f-29d8-401f-a4dd-dd7011a2dc92",
+      "name": "Loitp 1562119338575",
+      "orderNumber": 1,
+      "slug": "loitp-1562119338575",
+      "status": 1,
+      "type": "folder",
+      "updatedAt": "0000-00-00 00:00:00",
+      "view": 0
+    },
+    {
+      "createdAt": "2019-06-24T15:28:14.000Z",
+      "description": "This is a description sentences",
+      "encode": 0,
+      "icon": "/exemple.com/icon.png",
+      "id": "b5c700f5-e861-4b56-b147-9ed41a259ef3",
+      "name": "Loitp 1561390093942",
+      "orderNumber": 1,
+      "slug": "loitp-1561390093942",
+      "status": 1,
+      "type": "folder",
+      "updatedAt": "0000-00-00 00:00:00",
+      "view": 0
+    },
+    {
+      "createdAt": "2019-05-31T04:39:26.000Z",
+      "description": "This is a description sentences",
+      "encode": 0,
+      "icon": "/exemple.com/icon.png",
+      "id": "01b53df6-020a-4d07-ad38-e775b3659868",
+      "name": "Loitp 1559277566328",
+      "orderNumber": 1,
+      "slug": "loitp-1559277566328",
+      "status": 1,
+      "type": "folder",
+      "updatedAt": "0000-00-00 00:00:00",
+      "view": 0
+    }
+  ],
+  "datetime": "2019-07-03T02:20:59.423Z",
+  "message": "OK",
+  "metadata": {
+    "limit": 20,
+    "page": 1,
+    "result": 4,
+    "total": 4
+  },
+  "policy": "public",
+  "requestId": "948004bb-f798-4183-b4dd-12559c2975bd",
+  "serviceName": "api-v4",
+  "type": "SUCCESS",
+  "version": 4
+}
