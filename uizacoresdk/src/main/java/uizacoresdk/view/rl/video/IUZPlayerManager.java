@@ -68,8 +68,4 @@ abstract class IUZPlayerManager implements PreviewLoader {
     abstract ExoPlaybackException getExoPlaybackException();
 
     abstract void setResumeIfConnectionError();
-
-    protected long calculateLiveStreamLatencyInMs(long startTimeUs) {
-        return System.currentTimeMillis() - startTimeUs / 1000;
-    }
 }
