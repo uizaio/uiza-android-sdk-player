@@ -10,6 +10,7 @@ import android.view.View;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
+import testlibuiza.sample.download.DLVideoActivity;
 import testlibuiza.sample.guidecallapi.TestAPI;
 import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
@@ -168,6 +169,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, DummyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.bt_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, DLVideoActivity.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
                 startActivity(intent);
             }
         });

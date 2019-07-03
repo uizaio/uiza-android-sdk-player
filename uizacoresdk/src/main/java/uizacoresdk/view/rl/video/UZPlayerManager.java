@@ -4,8 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
+
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
@@ -33,6 +33,8 @@ import com.google.android.exoplayer2.drm.UnsupportedDrmException;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
+import com.google.android.exoplayer2.offline.FilteringManifestParser;
+import com.google.android.exoplayer2.offline.StreamKey;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -40,10 +42,11 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
+import com.google.android.exoplayer2.source.hls.playlist.DefaultHlsPlaylistParserFactory;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifestParser;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -53,16 +56,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import uizacoresdk.cache.UZDownloadHelper;
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
@@ -88,7 +92,6 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     private Context context;
     private UZVideo uzVideo;
     private ImaAdsLoader adsLoader = null;
-    private DataSource.Factory manifestDataSourceFactory;
     private DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
     private SimpleExoPlayer player;
@@ -100,6 +103,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     public List<Subtitle> getSubtitleList() {
         return subtitleList;
     }
+
     public String getLinkPlay() {
         return linkPlay;
     }
@@ -139,7 +143,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
     }
 
     public void initUZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd,
-            String thumbnailsUrl, List<Subtitle> subtitleList) {
+                                    String thumbnailsUrl, List<Subtitle> subtitleList) {
         TmpParamData.getInstance().setPlayerInitTime(System.currentTimeMillis());
         this.timestampPlayed = System.currentTimeMillis();
         this.isCanAddViewWatchTime = true;
@@ -169,18 +173,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         //OPTION 2 PLAY LINK REDIRECT
         // Default parameters, except allowCrossProtocolRedirects is true
-        manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
-                Constants.USER_AGENT,
-                bandwidthMeter /* listener */,
-                60 * 1000,
-                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                true /* allowCrossProtocolRedirects */
-        );
-        mediaDataSourceFactory = new DefaultDataSourceFactory(
-                context,
-                null /* listener */,
-                manifestDataSourceFactory
-        );
+        UZDownloadHelper dh = uzVideo.getDownloadHelper();
+        mediaDataSourceFactory = dh.buildDataSourceFactory();
 
         //SETUP ORTHER
         this.imageView = uzVideo.getIvThumbnail();
@@ -189,10 +183,11 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         setRunnable();
     }
 
-    public UZPlayerManager() {}
+    public UZPlayerManager() {
+    }
 
     public UZPlayerManager(final UZVideo uzVideo, String linkPlay, String urlIMAAd, String thumbnailsUrl,
-            List<Subtitle> subtitleList) {
+                           List<Subtitle> subtitleList) {
         initUZPlayerManager(uzVideo, linkPlay, urlIMAAd, thumbnailsUrl, subtitleList);
     }
 
@@ -369,15 +364,12 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return buildMediaSource(Uri.parse(linkPlay));
     }
 
-    private HttpDataSource.Factory buildHttpDataSourceFactory() {
-        return new DefaultHttpDataSourceFactory(Constants.USER_AGENT);
-    }
 
     private DefaultDrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManagerV18(UUID uuid,
-            String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
+                                                                                     String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
             throws UnsupportedDrmException {
 
-        HttpDataSource.Factory licenseDataSourceFactory = buildHttpDataSourceFactory();
+        HttpDataSource.Factory licenseDataSourceFactory = uzVideo.getDownloadHelper().buildHttpDataSourceFactory();
         HttpMediaDrmCallback drmCallback = new HttpMediaDrmCallback(licenseUrl, licenseDataSourceFactory);
         if (keyRequestPropertiesArray != null) {
             for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
@@ -476,18 +468,26 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
         return new int[]{C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER};
     }
 
+    private List<StreamKey> getOfflineStreamKeys(Uri uri) {
+        return uzVideo.getDownloadTracker().getOfflineStreamKeys(uri);
+    }
+
     private MediaSource buildMediaSource(Uri uri) {
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
             case C.TYPE_DASH:
-                return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                        manifestDataSourceFactory).setLoadErrorHandlingPolicy(
-                        new DefaultLoadErrorHandlingPolicy(Integer.MAX_VALUE)).createMediaSource(uri);
+                return new DashMediaSource.Factory(mediaDataSourceFactory)
+                        .setManifestParser(new FilteringManifestParser<>(new DashManifestParser(), getOfflineStreamKeys(uri)))
+                        .setLoadErrorHandlingPolicy(new DefaultLoadErrorHandlingPolicy(Integer.MAX_VALUE))
+                        .createMediaSource(uri);
             case C.TYPE_SS:
-                return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(mediaDataSourceFactory),
-                        manifestDataSourceFactory).createMediaSource(uri);
+                return new SsMediaSource.Factory(mediaDataSourceFactory)
+                        .setManifestParser(new FilteringManifestParser<>(new SsManifestParser(), getOfflineStreamKeys(uri)))
+                        .createMediaSource(uri);
             case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
+                return new HlsMediaSource.Factory(mediaDataSourceFactory)
+                        .setPlaylistParserFactory(new DefaultHlsPlaylistParserFactory(getOfflineStreamKeys(uri)))
+                        .createMediaSource(uri);
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             default:
@@ -664,7 +664,8 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {
-                uzVideo.pauseVideo();
+                uzVideo.tryNextLinkPlay();
+//                uzVideo.pauseVideo();
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerError(error);

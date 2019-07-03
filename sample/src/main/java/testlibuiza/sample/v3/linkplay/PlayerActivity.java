@@ -21,6 +21,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
+import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.Url;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
@@ -42,9 +43,9 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        etLinkPlay = (EditText) findViewById(R.id.et_link_play);
-        btPlay = (Button) findViewById(R.id.bt_play);
+        uzVideo = findViewById(R.id.uiza_video);
+        etLinkPlay = findViewById(R.id.et_link_play);
+        btPlay = findViewById(R.id.bt_play);
         btPlay.setEnabled(false);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
@@ -69,26 +70,26 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         });
 
         final UZCustomLinkPlay uZCustomLinkPlay0 = new UZCustomLinkPlay();
-        uZCustomLinkPlay0.setLinkPlay("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd");
+        uZCustomLinkPlay0.setUrlPlay(new Url("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd", "mpd"));
         uZCustomLinkPlay0.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay1 = new UZCustomLinkPlay();
-        uZCustomLinkPlay1.setLinkPlay("http://112.78.4.162:8081/live/stream/playlist_dvr.m3u8");
+        uZCustomLinkPlay1.setUrlPlay(new Url("http://112.78.4.162:8081/live/stream/playlist_dvr.m3u8", "hls"));
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8");
+        uZCustomLinkPlay2.setUrlPlay(new Url("http://118.69.82.182:112/this-is-thopp-live-pull-only-live/htv7-hd/playlist_dvr_timeshift-0-1800.m3u8", "hls"));
         uZCustomLinkPlay2.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
-        uZCustomLinkPlay3.setLinkPlay("https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd");
+        uZCustomLinkPlay3.setUrlPlay(new Url("https://s3-ap-southeast-1.amazonaws.com/cdnetwork-test/drm_sample_byterange/manifest.mpd", "mpd"));
         uZCustomLinkPlay3.setLivestream(false);
 
         findViewById(R.id.bt_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay0);
-                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getUrlPlay().getUrl());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
@@ -96,7 +97,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             @Override
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay1);
-                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getUrlPlay().getUrl());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
@@ -104,7 +105,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             @Override
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay2);
-                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getUrlPlay().getUrl());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });
@@ -112,7 +113,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
             @Override
             public void onClick(View view) {
                 UZDataCLP.getInstance().setUzCustomLinkPlay(uZCustomLinkPlay3);
-                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getLinkPlay());
+                etLinkPlay.setText(UZDataCLP.getInstance().getUzCustomLinkPlay().getUrlPlay().getUrl());
                 LUIUtil.setLastCursorEditText(etLinkPlay);
             }
         });

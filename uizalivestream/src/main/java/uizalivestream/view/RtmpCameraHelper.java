@@ -150,8 +150,7 @@ final class RtmpCameraHelper {
      */
     boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler,
                          boolean noiseSuppressor) {
-        LLog.d(TAG, "prepareAudio ===> bitrate " + audioBitRate + ", sampleRate: " + sampleRate + ", isStereo: " + isStereo + ", echoCanceler: " + echoCanceler + ", noiseSuppressor: " + noiseSuppressor);
-        return rtmpCamera1.prepareAudio(audioBitRate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
+        return prepareAudio(audioBitRate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
     boolean prepareAudio(int bitrate, int sampleRate, boolean isStereo, boolean echoCanceler,

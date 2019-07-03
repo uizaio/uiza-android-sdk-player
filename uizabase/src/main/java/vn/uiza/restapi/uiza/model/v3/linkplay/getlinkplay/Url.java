@@ -1,4 +1,3 @@
-
 package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
 import com.google.gson.annotations.Expose;
@@ -26,6 +25,14 @@ public class Url {
     @SerializedName("priority")
     @Expose
     private Integer priority;
+
+    public Url() {
+    }
+
+    public Url(String url, String support) {
+        this.url = url;
+        this.support = support;
+    }
 
     public String getUrl() {
         return url;

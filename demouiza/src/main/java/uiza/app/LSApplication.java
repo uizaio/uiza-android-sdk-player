@@ -45,4 +45,5 @@ public class LSApplication extends MultiDexApplication {
     public static Context getContext() {
         return instance.getApplicationContext();
     }
+
 }
