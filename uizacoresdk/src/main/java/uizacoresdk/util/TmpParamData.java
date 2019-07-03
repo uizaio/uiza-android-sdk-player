@@ -46,6 +46,7 @@ public class TmpParamData {
         viewMaxSeekTime = 0;
         viewRebufferCount = 0;
         viewRebufferDuration = 0;
+        livestreamLatency = 0;
     }
 
     private String entityCnd = "";
@@ -98,6 +99,7 @@ public class TmpParamData {
     private long viewMaxSeekTime = 0;
     private int viewRebufferCount = 0;
     private long viewRebufferDuration = 0;
+    private long livestreamLatency = 0;
 
     public String getEntityCnd() {
         return entityCnd;
@@ -498,5 +500,13 @@ public class TmpParamData {
     public void addViewWatchTime(long addViewWatchTime) {
         this.viewWatchTime += addViewWatchTime;
         this.viewTimeToFirstFrame = this.viewWatchTime;
+    }
+
+    public void setLivestreamLatency(long livestreamLatency) {
+        this.livestreamLatency = livestreamLatency;
+    }
+
+    public long getLivestreamLatency() {
+        return livestreamLatency;
     }
 }

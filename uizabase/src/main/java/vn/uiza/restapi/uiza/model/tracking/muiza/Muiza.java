@@ -255,6 +255,10 @@ public class Muiza {
     @Expose
     private Float viewRebufferPercentage;
 
+    @SerializedName("latency")
+    @Expose
+    private long viewLivestreamLatency;
+
     public String getBeaconDomain() {
         return beaconDomain;
     }
@@ -877,5 +881,13 @@ public class Muiza {
 
     public void setViewRebufferPercentage(float viewRebufferPercentage) {
         this.viewRebufferPercentage = viewRebufferPercentage;
+    }
+
+    public void setViewLivestreamLatency(long viewLivestreamLatency) {
+        this.viewLivestreamLatency = viewLivestreamLatency;
+    }
+
+    public long getViewLivestreamLatency() {
+        return viewLivestreamLatency;
     }
 }

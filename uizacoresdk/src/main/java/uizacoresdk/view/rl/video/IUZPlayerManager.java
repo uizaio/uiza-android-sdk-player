@@ -647,6 +647,9 @@ abstract class IUZPlayerManager implements PreviewLoader {
 
                 long latency = currentTime - extProgramDateTime;
                 uzVideo.updateLiveStreamLatency(latency);
+
+                TmpParamData.getInstance().setLivestreamLatency(latency);
+                uzVideo.addTrackingMuiza(Constants.MUIZA_EVENT_LATENCYCHANGE);
             } else {
                 uzVideo.hideTextLiveStreamLatency();
             }
