@@ -453,6 +453,23 @@ public class UZLivestream extends RelativeLayout
     }
 
     /**
+     * Call this method after use @prepareVideo.
+     * <p>
+     * dynamic bitrate AAC in kb.
+     *
+     * @param sampleRate      of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
+     * @param isStereo        true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     *                        (1 audio channel).
+     * @param echoCanceler    true enable echo canceler, false disable.
+     * @param noiseSuppressor true enable noise suppressor, false  disable.
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
+    private boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
+        return cameraHelper.prepareAudio(sampleRate, isStereo, echoCanceler, noiseSuppressor);
+    }
+
+    /**
       * Call this method before use @startStream. If not you will do a stream without audio.
       *
       * @param bitrate AAC in kb.
