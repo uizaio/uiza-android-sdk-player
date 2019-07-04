@@ -2936,8 +2936,10 @@ public class UZVideo extends RelativeLayout
                     if (videoAdPlayerCallback != null) videoAdPlayerCallback.onBuffering();
                 }
             });
-        } else
-            uzPlayerManager = new UZPlayerNoAdsManager(this, linkPlay, urlThumbnailsPreviewSeekbar, subtitleList);
+        } else {
+            uzPlayerManager =
+                    new UZPlayerNoAdsManager(this, linkPlay, urlThumbnailsPreviewSeekbar, subtitleList);
+        }
         if (uzTimebar != null) {
             if (urlThumbnailsPreviewSeekbar == null || urlThumbnailsPreviewSeekbar.isEmpty()) {
                 uzTimebar.setPreviewEnabled(false);
