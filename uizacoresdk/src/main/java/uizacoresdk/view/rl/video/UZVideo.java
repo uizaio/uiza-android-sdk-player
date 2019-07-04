@@ -74,9 +74,9 @@ import java.util.UUID;
 import rx.Observable;
 import uizacoresdk.BuildConfig;
 import uizacoresdk.R;
-import uizacoresdk.cache.UZCache;
-import uizacoresdk.cache.UZDownloadHelper;
-import uizacoresdk.cache.UZDownloadTracker;
+import uizacoresdk.cache.CacheUtil;
+import uizacoresdk.cache.DownloadTracker;
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.StateEndCallback;
@@ -226,7 +226,7 @@ public class UZVideo extends RelativeLayout
     private boolean isEnableMux;
     private boolean isEnableStatsForNerds;
 
-    private UZDownloadHelper downloadHelper;
+    private UZCacheHelper downloadHelper;
 
     public UZVideo(Context context) {
         super(context);
@@ -264,7 +264,7 @@ public class UZVideo extends RelativeLayout
         setupChromeCast();
         updateUISizeThumbnail();
         scheduleJob();
-        downloadHelper = UZDownloadHelper.get();
+        downloadHelper = UZCacheHelper.get();
     }
 
     private void checkDevices() {
@@ -537,7 +537,7 @@ public class UZVideo extends RelativeLayout
         updateUIEndScreen();
 
         if (!LConnectivityUtil.isConnected(getContext())
-                && !UZCache.get().isCacheEntity(entityId)) {
+                && !CacheUtil.get().isCacheEntity(entityId)) {
             notifyError(UZExceptionUtil.getExceptionNoConnection());
             LLog.d(TAG, "!isConnected return");
             return;
@@ -598,7 +598,7 @@ public class UZVideo extends RelativeLayout
         List<Subtitle> subtitleList = null;
 
         if (!LConnectivityUtil.isConnected(getContext())
-                && !UZCache.get().isCacheEntity(entityId)) {
+                && !CacheUtil.get().isCacheEntity(entityId)) {
             notifyError(UZExceptionUtil.getExceptionNoConnection());
             return;
 
@@ -1590,6 +1590,10 @@ public class UZVideo extends RelativeLayout
         return entityId;
     }
 
+    public boolean isCacheEntity() {
+        return CacheUtil.get().isCacheEntity(entityId);
+    }
+
     public UZTextView getTvPosition() {
         return tvPosition;
     }
@@ -1671,11 +1675,11 @@ public class UZVideo extends RelativeLayout
         return uzPlayerManager.getVolume();
     }
 
-    public UZDownloadHelper getDownloadHelper() {
+    public UZCacheHelper getDownloadHelper() {
         return downloadHelper;
     }
 
-    public UZDownloadTracker getDownloadTracker() {
+    public DownloadTracker getDownloadTracker() {
         if (downloadHelper != null) {
             return downloadHelper.getDownloadTracker();
         }
@@ -2574,13 +2578,13 @@ public class UZVideo extends RelativeLayout
             UZUtil.getDetailEntity(getContext(), entityId, new CallbackGetDetailEntity() {
                 @Override
                 public void onSuccess(Data d) {
-                    UZCache.get().put(entityId, d);
+                    CacheUtil.get().put(entityId, d);
                     handleDetailEntityResponse(d);
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Data d = UZCache.get().getData(entityId);
+                    Data d = CacheUtil.get().getData(entityId);
                     if (d != null) {
                         handleDetailEntityResponse(d);
                     } else {
@@ -2666,7 +2670,7 @@ public class UZVideo extends RelativeLayout
                         handleError(UZExceptionUtil.getExceptionNoTokenStreaming());
                         return;
                     }
-                    UZCache.get().put(entityId, resultGetTokenStreaming);
+                    CacheUtil.get().put(entityId, resultGetTokenStreaming);
                     mResultGetTokenStreaming = resultGetTokenStreaming;
                     isCalledAPIGetTokenStreaming = true;
                     handleDataCallAPI();
@@ -2674,7 +2678,7 @@ public class UZVideo extends RelativeLayout
 
                 @Override
                 public void onFail(Throwable e) {
-                    ResultGetTokenStreaming rtk = UZCache.get().getTokenStreaming(entityId);
+                    ResultGetTokenStreaming rtk = CacheUtil.get().getTokenStreaming(entityId);
                     if (rtk != null) {
                         mResultGetTokenStreaming = rtk;
                         isCalledAPIGetTokenStreaming = true;
@@ -2728,7 +2732,7 @@ public class UZVideo extends RelativeLayout
                 @Override
                 public void onSuccess(ResultGetLinkPlay resultGetLinkPlay) {
                     if (!isLivestream) {
-                        UZCache.get().put(entityId, resultGetLinkPlay);
+                        CacheUtil.get().put(entityId, resultGetLinkPlay);
                     }
                     handleLinkPlayResponse(resultGetLinkPlay);
                 }
@@ -2736,7 +2740,7 @@ public class UZVideo extends RelativeLayout
                 @Override
                 public void onFail(Throwable e) {
                     if (!isLivestream) {
-                        ResultGetLinkPlay rgl = UZCache.get().getResultGetLinkPlay(entityId);
+                        ResultGetLinkPlay rgl = CacheUtil.get().getResultGetLinkPlay(entityId);
                         if (rgl != null) {
                             handleLinkPlayResponse(rgl);
                             return;
@@ -2919,7 +2923,7 @@ public class UZVideo extends RelativeLayout
                 return;
             }
             if (countTryLinkPlayError > (listLinkPlay.size() - 1)) {
-                if (LConnectivityUtil.isConnected(getContext()) || UZCache.get().isCacheEntity(entityId)) {
+                if (LConnectivityUtil.isConnected(getContext()) || CacheUtil.get().isCacheEntity(entityId)) {
                     removeVideoCover(true);
                     handleError(UZExceptionUtil.getExceptionTryAllLinkPlay());
                 } else {

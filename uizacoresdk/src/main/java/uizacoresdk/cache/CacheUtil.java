@@ -20,33 +20,33 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class UZCache {
+public class CacheUtil {
 
-    private static UZCache instance;
+    private static CacheUtil instance;
 
     private WeakReference<Context> context;
     private SharedPreferences shared;
 
-    public static UZCache init(Context context) {
+    public static CacheUtil init(Context context) {
         if (instance == null) {
-            instance = new UZCache(context);
+            instance = new CacheUtil(context);
         }
         return instance;
     }
 
     /**
-     * You should call UZCache#init(Context context) first
+     * You should call CacheUtil#init(Context context) first
      *
-     * @return a {@link UZCache}
+     * @return a {@link CacheUtil}
      */
-    public static UZCache get() {
+    public static CacheUtil get() {
         if (instance == null) {
             throw new NullPointerException("u should init first");
         }
         return instance;
     }
 
-    private UZCache(Context context) {
+    private CacheUtil(Context context) {
         this.context = new WeakReference<>(context);
         this.shared = context.getSharedPreferences(Constants.USER_AGENT, Context.MODE_PRIVATE);
     }
@@ -163,6 +163,14 @@ public class UZCache {
 
         }
         return null;
+    }
+
+    public void removeCache(String entityId) {
+        SharedPreferences.Editor editor = shared.edit();
+        editor.remove("reslinkplay_" + entityId);
+        editor.remove("data_" + entityId);
+        editor.remove("tokenstream_" + entityId);
+        editor.apply();
     }
 
     public boolean isCacheEntity(String entityId) {

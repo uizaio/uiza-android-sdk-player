@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.offline.DownloadManager;
 import com.google.gson.Gson;
 
 import testlibuiza.R;
-import uizacoresdk.cache.UZDownloadHelper;
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 
@@ -53,6 +53,6 @@ public class LSApplication extends MultiDexApplication {
     }
 
     public DownloadManager getDownloadManager(){
-        return UZDownloadHelper.get().getDownloadManager();
+        return UZCacheHelper.get().getDownloadManager();
     }
 }

@@ -52,7 +52,7 @@ import vn.uiza.core.utilities.LLog;
  * it's expected that state will be stored directly in the application's media database, so that it
  * can be queried efficiently together with other information about the media.
  */
-public class UZDownloadTracker implements DownloadManager.Listener {
+public class DownloadTracker implements DownloadManager.Listener {
 
     /**
      * Listens for changes in the tracked downloads.
@@ -65,7 +65,7 @@ public class UZDownloadTracker implements DownloadManager.Listener {
         void onDownloadsChanged();
     }
 
-    private static final String TAG = "UZDownloadTracker";
+    private static final String TAG = "DownloadTracker";
 
     private final Context context;
     private final DataSource.Factory dataSourceFactory;
@@ -75,7 +75,7 @@ public class UZDownloadTracker implements DownloadManager.Listener {
     private final ActionFile actionFile;
     private final Handler actionFileWriteHandler;
 
-    public UZDownloadTracker(
+    public DownloadTracker(
             Context context,
             DataSource.Factory dataSourceFactory,
             File actionFile,
@@ -86,7 +86,7 @@ public class UZDownloadTracker implements DownloadManager.Listener {
         trackNameProvider = new DefaultTrackNameProvider(context.getResources());
         listeners = new CopyOnWriteArraySet<>();
         trackedDownloadStates = new HashMap<>();
-        HandlerThread actionFileWriteThread = new HandlerThread("UZDownloadTracker");
+        HandlerThread actionFileWriteThread = new HandlerThread("DownloadTracker");
         actionFileWriteThread.start();
         actionFileWriteHandler = new Handler(actionFileWriteThread.getLooper());
         loadTrackedActions(

@@ -29,7 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import uizacoresdk.R;
-import uizacoresdk.cache.UZDownloadHelper;
+import uizacoresdk.cache.CacheUtil;
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.ComunicateMng;
@@ -346,7 +347,7 @@ public class UZUtil {
             LLog.e(TAG, UZException.ERR_14);
             return false;
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(activity) && !uzVideo.isCacheEntity()) {
             LLog.e(TAG, UZException.ERR_0);
             return false;
         }
@@ -371,7 +372,7 @@ public class UZUtil {
         if (entityId != null) {
             UZUtil.setClickedPip(activity, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(activity) && !CacheUtil.get().isCacheEntity(entityId)) {
             LLog.e(TAG, UZException.ERR_0);
             return;
         }
@@ -400,7 +401,7 @@ public class UZUtil {
         if (metadataId != null) {
             UZUtil.setClickedPip(activity, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(activity) && !uzVideo.isCacheEntity()) {
             LLog.e(TAG, UZException.ERR_0);
             return;
         }
@@ -464,7 +465,7 @@ public class UZUtil {
         }
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
-        UZDownloadHelper.init(context);
+        UZCacheHelper.init(context);
         return UZData.getInstance().initSDK(domainApi, token, appId, env);
     }
 

@@ -66,7 +66,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import uizacoresdk.cache.UZDownloadHelper;
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
@@ -173,7 +173,7 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
 
         //OPTION 2 PLAY LINK REDIRECT
         // Default parameters, except allowCrossProtocolRedirects is true
-        UZDownloadHelper dh = uzVideo.getDownloadHelper();
+        UZCacheHelper dh = uzVideo.getDownloadHelper();
         mediaDataSourceFactory = dh.buildDataSourceFactory();
 
         //SETUP ORTHER
@@ -661,11 +661,10 @@ public final class UZPlayerManager implements AdsMediaSource.MediaSourceFactory,
                 return;
             }
             uzVideo.handleError(UZExceptionUtil.getExceptionPlayback(type));
-            if (LConnectivityUtil.isConnected(context)) {
+            if (LConnectivityUtil.isConnected(context) || uzVideo.isCacheEntity()) {
                 uzVideo.tryNextLinkPlay();
             } else {
-                uzVideo.tryNextLinkPlay();
-//                uzVideo.pauseVideo();
+                uzVideo.pauseVideo();
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerError(error);

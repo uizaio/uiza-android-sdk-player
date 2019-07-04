@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import testlibuiza.R;
-import uizacoresdk.cache.UZDownloadTracker;
+import uizacoresdk.cache.DownloadTracker;
 import uizacoresdk.interfaces.StateEndCallback;
 import uizacoresdk.interfaces.UZInitDownloadCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -20,7 +20,7 @@ import uizacoresdk.view.vdh.VDHView;
 import vn.uiza.core.common.Constants;
 
 public class DLVideoActivity extends AppCompatActivity implements View.OnClickListener, UZItemClick,
-        UZInitDownloadCallback, UZDownloadTracker.Listener, StateEndCallback,
+        UZInitDownloadCallback, DownloadTracker.Listener, StateEndCallback,
         UZPlayerView.ControllerStateCallback, UZPlayerView.OnTouchEvent {
 
     private final String TAG = "TAG" + getClass().getSimpleName();
@@ -30,7 +30,7 @@ public class DLVideoActivity extends AppCompatActivity implements View.OnClickLi
     String name;
     String extension;
     Button btnDownload;
-    private UZDownloadTracker downloadTracker;
+    private DownloadTracker downloadTracker;
     private String entityId;
 
     private void setupUzVideo() {
