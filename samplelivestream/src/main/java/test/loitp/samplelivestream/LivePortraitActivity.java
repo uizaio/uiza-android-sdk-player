@@ -78,16 +78,16 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void findViews() {
-        uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
+        uzLivestream = findViewById(R.id.uiza_livestream);
         uzLivestream.setUzLivestreamCallback(this);
         uzLivestream.setCameraCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
-        btFilter = (Button) findViewById(R.id.b_filter);
-        btFlash = (Button) findViewById(R.id.b_flash);
-        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
-        tvInfo = (TextView) findViewById(R.id.tv_info);
+        btFilter = findViewById(R.id.b_filter);
+        btFlash = findViewById(R.id.b_flash);
+        tvMainUrl = findViewById(R.id.tv_main_url);
+        tvInfo = findViewById(R.id.tv_info);
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         btSwitchCamera.setEnabled(false);
@@ -136,7 +136,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareStream(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 showToast("Error preparing stream, This device cant do it");
@@ -172,7 +172,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     private void startStopStore() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareStream(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             }
 
