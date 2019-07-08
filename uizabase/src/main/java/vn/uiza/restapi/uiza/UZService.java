@@ -15,6 +15,7 @@ import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.restapi.uiza.model.tracking.UizaTrackingCCU;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.UizaWorkspaceInfo;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.authentication.gettoken.ResultGetToken;
@@ -38,6 +39,7 @@ import vn.uiza.restapi.uiza.model.v3.usermanagement.updatepassword.UpdatePasswor
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
+import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
 
 /**
  * @author loitp
@@ -133,6 +135,9 @@ public interface UZService {
     @GET("/api/public/{api_version}/media/entity")
     Observable<ResultRetrieveAnEntity> retrieveAnEntity(@Path(value = "api_version", encoded = true) String apiVersion,
                                                         @Query("id") String id, @Query("appId") String appId);
+    @GET("/api/public/{api_version}/media/subtitle")
+    Observable<ResultGetSubtitles> getSubtitles(@Path(value = "api_version", encoded = true) String apiVersion,
+            @Query("entityId") String entityId, @Query("appId") String appId);
 
     //http://dev-docs.uizadev.io/#search-entity
     @GET("/api/public/{api_version}/media/entity/search")

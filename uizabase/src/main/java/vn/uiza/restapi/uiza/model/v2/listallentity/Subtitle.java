@@ -4,10 +4,11 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
  * Created by LENOVO on 3/21/2018.
  */
 
+import android.support.annotation.IntDef;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import vn.uiza.core.common.Constants;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class Subtitle {
 
@@ -29,6 +30,18 @@ public class Subtitle {
     @SerializedName("language")
     @Expose
     private String language;
+    @SerializedName("isDefault")
+    @Expose
+    private int isDefault;
+    @SerializedName("status")
+    @Expose
+    private @Status int status;
+    @SerializedName("createAt")
+    @Expose
+    private String createdAt;
+    @SerializedName("updateAt")
+    @Expose
+    private String updatedAt;
 
     public String getId() {
         return id;
@@ -55,9 +68,6 @@ public class Subtitle {
     }
 
     public String getUrl() {
-        if (!url.contains(Constants.PREFIXS)) {
-            return Constants.PREFIXS_SHORT + url;
-        }
         return url;
     }
 
@@ -81,4 +91,43 @@ public class Subtitle {
         this.language = language;
     }
 
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    @Status
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(@Status int status) {
+        this.status = status;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ Status.DISABLE, Status.ENABLE })
+    public @interface Status {
+        int DISABLE = 0;
+        int ENABLE = 1;
+    }
 }
