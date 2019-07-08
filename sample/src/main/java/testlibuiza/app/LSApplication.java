@@ -1,10 +1,13 @@
 package testlibuiza.app;
 
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
 
+import androidx.multidex.MultiDexApplication;
+
+import com.google.android.exoplayer2.offline.DownloadManager;
 import com.google.gson.Gson;
 
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 
@@ -84,5 +87,10 @@ public class LSApplication extends MultiDexApplication {
 
     public static Context getContext() {
         return instance.getApplicationContext();
+    }
+
+    //* for Download
+    public DownloadManager getDownloadManager() {
+        return UZCacheHelper.get().getDownloadManager();
     }
 }

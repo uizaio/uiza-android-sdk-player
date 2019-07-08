@@ -1,11 +1,13 @@
 package uizacoresdk.view.rl.video;
 
 import android.content.Context;
-import android.support.annotation.UiThread;
 import android.util.Log;
+
+import androidx.annotation.UiThread;
+
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
-import com.google.android.gms.cast.framework.CastStateListener;
+
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
@@ -25,8 +27,7 @@ public class UZChromeCast {
     private UZChromeCastListener listener;
 
     {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+        if (!UZUtil.isCastDependencyAvailable()) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
     }
@@ -47,18 +48,22 @@ public class UZChromeCast {
         if (isTV) {
             return;
         }
-        UZData.getInstance().getCasty().setUpMediaRouteButton(uzMediaRouteButton);
-        UZData.getInstance().getCasty().setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
-            @Override
-            public void onConnected() {
-                if (listener != null) listener.onConnected();
-            }
+        Casty casty = UZData.getInstance().getCasty();
+        if (casty != null) {
+            casty.setUpMediaRouteButton(uzMediaRouteButton);
+            casty.setOnConnectChangeListener(new Casty.OnConnectChangeListener() {
+                @Override
+                public void onConnected() {
+                    if (listener != null) listener.onConnected();
+                }
 
-            @Override
-            public void onDisconnected() {
-                if (listener != null) listener.onDisconnected();
-            }
-        });
+                @Override
+                public void onDisconnected() {
+                    if (listener != null) listener.onDisconnected();
+                }
+            });
+        }
+
     }
 
     private void updateMediaRouteButtonVisibility(int state) {
@@ -85,23 +90,13 @@ public class UZChromeCast {
             return;
         }
         updateMediaRouteButtonVisibility(castContext.getCastState());
-        castContext.addCastStateListener(new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                updateMediaRouteButtonVisibility(state);
-            }
-        });
+        castContext.addCastStateListener(this::updateMediaRouteButtonVisibility);
         if (listener != null) listener.addUIChromecast();
     }
 
     public void setTintMediaRouteButton(final int color) {
         if (uzMediaRouteButton != null) {
-            uzMediaRouteButton.post(new Runnable() {
-                @Override
-                public void run() {
-                    uzMediaRouteButton.applyTint(color);
-                }
-            });
+            uzMediaRouteButton.post(() -> uzMediaRouteButton.applyTint(color));
         }
     }
 
@@ -111,7 +106,9 @@ public class UZChromeCast {
 
     public interface UZChromeCastListener {
         void onConnected();
+
         void onDisconnected();
+
         void addUIChromecast();
     }
 }

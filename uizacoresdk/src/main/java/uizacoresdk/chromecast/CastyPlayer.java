@@ -1,7 +1,7 @@
 package uizacoresdk.chromecast;
 
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;

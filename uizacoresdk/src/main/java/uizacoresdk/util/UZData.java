@@ -428,8 +428,8 @@ public class UZData {
     }
 
     public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+
+        if (!UZUtil.isCastDependencyAvailable()) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
         int trackType = MediaTrack.TYPE_UNKNOWN;

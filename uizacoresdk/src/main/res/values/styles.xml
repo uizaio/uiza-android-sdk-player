@@ -9,4 +9,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
     <!--STOP CHROMECAST-->
+    <style name="TrackSelectionDialogThemeOverlay" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="windowNoTitle">false</item>
+    </style>
 </resources>

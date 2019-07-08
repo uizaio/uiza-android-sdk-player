@@ -19,7 +19,7 @@
         app:realtimeBlurRadius="@dimen/round_55"
         app:realtimeOverlayColor="@color/black_65" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -170,6 +170,6 @@
                 android:textSize="@dimen/txt_30"
                 android:textStyle="bold" />
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
 

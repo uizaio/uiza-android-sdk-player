@@ -8,7 +8,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="testlibuiza.sample.MainActivity">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -116,6 +116,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="13. Event" />
+                <Button
+                    android:id="@+id/bt_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14. Download" />
             </LinearLayout>
 
             <LinearLayout
@@ -136,7 +141,7 @@
                     android:id="@+id/bt_guide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="14. Guide" />
+                    android:text="15. Guide" />
             </LinearLayout>
 
             <LinearLayout
@@ -186,6 +191,6 @@
                     android:text="Dummy" />
             </LinearLayout>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

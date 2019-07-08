@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
 import com.bumptech.glide.request.target.Target;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
@@ -27,17 +28,17 @@ import com.google.android.exoplayer2.drm.HttpMediaDrmCallback;
 import com.google.android.exoplayer2.drm.UnsupportedDrmException;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.offline.DownloadHelper;
+import com.google.android.exoplayer2.offline.DownloadRequest;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
-import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
@@ -48,15 +49,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
@@ -76,7 +79,6 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Context context;
     private UZVideo uzVideo;
-    private final DataSource.Factory manifestDataSourceFactory;
     private final DataSource.Factory mediaDataSourceFactory;
     private long contentPosition;
     private SimpleExoPlayer player;
@@ -88,6 +90,7 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     public List<Subtitle> getSubtitleList() {
         return subtitleList;
     }
+
     public String getLinkPlay() {
         return linkPlay;
     }
@@ -147,18 +150,7 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
 
         //OPTION 2 PLAY LINK REDIRECT
         // Default parameters, except allowCrossProtocolRedirects is true
-        manifestDataSourceFactory = new DefaultHttpDataSourceFactory(
-                Constants.USER_AGENT,
-                null /* listener */,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                true /* allowCrossProtocolRedirects */
-        );
-        mediaDataSourceFactory = new DefaultDataSourceFactory(
-                context,
-                null /* listener */,
-                manifestDataSourceFactory
-        );
+        mediaDataSourceFactory = uzVideo.getUzCacheHelper().buildDataSourceFactory();
 
         //SETUP ORTHER
         this.imageView = uzVideo.getIvThumbnail();
@@ -174,40 +166,35 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
 
     public void setRunnable() {
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
-                    return;
+        runnable = () -> {
+            if (uzVideo == null || uzVideo.getUzPlayerView() == null) {
+                return;
+            }
+            if (progressCallback != null && isPlayerValid()) {
+                mls = getCurrentPosition();
+                duration = getDuration();
+                if (mls >= duration) {
+                    mls = duration;
                 }
+                if (duration != 0) {
+                    percent = (int) (mls * 100 / duration);
+                }
+                s = Math.round(mls / 1000.0f);
+                progressCallback.onVideoProgress(mls, s, duration, percent);
+                //buffer changing
+                if (bufferPosition != uzVideo.getBufferedPosition()
+                        || bufferPercentage != uzVideo.getBufferedPercentage()) {
+                    bufferPosition = uzVideo.getBufferedPosition();
+                    bufferPercentage = uzVideo.getBufferedPercentage();
+                    progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                }
+            }
 
-
-                if (progressCallback != null && isPlayerValid()) {
-                    mls = getCurrentPosition();
-                    duration = getDuration();
-                    if (mls >= duration) {
-                        mls = duration;
-                    }
-                    if (duration != 0) {
-                        percent = (int) (mls * 100 / duration);
-                    }
-                    s = Math.round(mls / 1000.0f);
-                    progressCallback.onVideoProgress(mls, s, duration, percent);
-                    //buffer changing
-                    if (bufferPosition != uzVideo.getBufferedPosition()
-                            || bufferPercentage != uzVideo.getBufferedPercentage()) {
-                        bufferPosition = uzVideo.getBufferedPosition();
-                        bufferPercentage = uzVideo.getBufferedPercentage();
-                        progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
-                    }
-                }
-
-                if (uzVideo.getDebugTextView() != null) {
-                    uzVideo.getDebugTextView().setText(getDebugString());
-                }
-                if (handler != null && runnable != null) {
-                    handler.postDelayed(runnable, 1000);
-                }
+            if (uzVideo.getDebugTextView() != null) {
+                uzVideo.getDebugTextView().setText(getDebugString());
+            }
+            if (handler != null && runnable != null) {
+                handler.postDelayed(runnable, 1000);
             }
         };
         handler.postDelayed(runnable, 0);
@@ -216,8 +203,6 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     public DefaultTrackSelector getTrackSelector() {
         return trackSelector;
     }
-
-    private DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 
     private void initSource() {
         //TODO DRM
@@ -314,7 +299,7 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     }
 
     private DefaultDrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManagerV18(UUID uuid,
-            String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
+                                                                                     String licenseUrl, String[] keyRequestPropertiesArray, boolean multiSession)
             throws UnsupportedDrmException {
 
         HttpDataSource.Factory licenseDataSourceFactory = buildHttpDataSourceFactory();
@@ -340,7 +325,7 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
                 continue;
             }
             DefaultDataSourceFactory dataSourceFactory =
-                    new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter);
+                    new DefaultDataSourceFactory(context, Constants.USER_AGENT, new DefaultBandwidthMeter.Builder(context).build());
             //Text Format Initialization
             Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE,
                     Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
@@ -395,18 +380,23 @@ public final class UZPlayerNoAdsManager extends IUZPlayerManager {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
+        DownloadRequest downloadRequest =
+                uzVideo.getDownloadTracker().getDownloadRequest(uri);
+        if (downloadRequest != null) {
+            return DownloadHelper.createMediaSource(downloadRequest, mediaDataSourceFactory);
+        }
         @ContentType int type = Util.inferContentType(uri);
         switch (type) {
             case C.TYPE_DASH:
-                return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                        manifestDataSourceFactory).createMediaSource(uri);
+                return new DashMediaSource.Factory(mediaDataSourceFactory)
+                        .setLoadErrorHandlingPolicy(new DefaultLoadErrorHandlingPolicy(Integer.MAX_VALUE))
+                        .createMediaSource(uri);
             case C.TYPE_SS:
-                return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(mediaDataSourceFactory),
-                        manifestDataSourceFactory).createMediaSource(uri);
+                return new SsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             case C.TYPE_HLS:
                 return new HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
+                return new ProgressiveMediaSource.Factory(mediaDataSourceFactory).createMediaSource(uri);
             default:
                 throw new IllegalStateException("Unsupported type: " + type);
         }

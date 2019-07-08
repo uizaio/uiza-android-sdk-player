@@ -27,6 +27,14 @@ public class Url {
     @Expose
     private Integer priority;
 
+    public Url() {
+    }
+
+    public Url(String url, String support) {
+        this.url = url;
+        this.support = support;
+    }
+
     public String getUrl() {
         return url;
     }

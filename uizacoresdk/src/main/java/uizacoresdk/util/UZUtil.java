@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,6 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import uizacoresdk.R;
+import uizacoresdk.cache.CacheUtil;
+import uizacoresdk.cache.UZCacheHelper;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.view.ComunicateMng;
@@ -343,7 +346,7 @@ public class UZUtil {
             LLog.e(TAG, UZException.ERR_14);
             return false;
         }
-        if (!LConnectivityUtil.isConnected(context)) {
+        if (!LConnectivityUtil.isConnected(context) && !uzVideo.isCacheEntity()) {
             LLog.e(TAG, UZException.ERR_0);
             return false;
         }
@@ -368,7 +371,7 @@ public class UZUtil {
         if (entityId != null) {
             UZUtil.setClickedPip(activity, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(activity) && !CacheUtil.get().isCacheEntity(entityId)) {
             LLog.e(TAG, UZException.ERR_0);
             return;
         }
@@ -397,7 +400,7 @@ public class UZUtil {
         if (metadataId != null) {
             UZUtil.setClickedPip(activity, false);
         }
-        if (!LConnectivityUtil.isConnected(activity)) {
+        if (!LConnectivityUtil.isConnected(activity) && !uzVideo.isCacheEntity()) {
             LLog.e(TAG, UZException.ERR_0);
             return;
         }
@@ -418,32 +421,17 @@ public class UZUtil {
 
     private static void playCustomLinkPlay(final UZVideo uzVideo, final UZCustomLinkPlay uzCustomLinkPlay) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.initCustomLinkPlay(uzCustomLinkPlay.getLinkPlay(), uzCustomLinkPlay.isLivestream());
-            }
-        });
+        uzVideo.post(() -> uzVideo.initCustomLinkPlay(uzCustomLinkPlay.getUrlPlay(), uzCustomLinkPlay.isLivestream()));
     }
 
     private static void play(final UZVideo uzVideo, final String entityId) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.init(entityId);
-            }
-        });
+        uzVideo.post(() -> uzVideo.init(entityId));
     }
 
     private static void playPlaylist(final UZVideo uzVideo, final String metadataId) {
         UZData.getInstance().setSettingPlayer(false);
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.initPlaylistFolder(metadataId);
-            }
-        });
+        uzVideo.post(() -> uzVideo.initPlaylistFolder(metadataId));
     }
 
     public static boolean isDependencyAvailable(String dependencyClass) {
@@ -457,6 +445,10 @@ public class UZUtil {
     }
 
     public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId) {
+        return initWorkspace(context, apiVersion, domainApi, token, appId, env, currentPlayerId, 0L);
+    }
+
+    public static boolean initWorkspace(Context context, int apiVersion, String domainApi, String token, String appId, int env, int currentPlayerId, long cacheSize) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_15);
         }
@@ -475,6 +467,8 @@ public class UZUtil {
 
         Utils.init(context.getApplicationContext());
         UZUtil.setCurrentPlayerId(currentPlayerId);
+        UZCacheHelper.init(context);
+        UZCacheHelper.get().setCacheSize(cacheSize);
         return UZData.getInstance().initSDK(apiVersion, domainApi, token, appId, env);
     }
 
@@ -493,11 +487,16 @@ public class UZUtil {
         if (LDeviceUtil.isTV(activity)) {
             return;
         }
-        if (!isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
+
+        if (!isCastDependencyAvailable()) {
             throw new NoClassDefFoundError(UZException.ERR_505);
         }
         UZData.getInstance().setCasty(Casty.create(activity));
+    }
+
+    public static boolean isCastDependencyAvailable() {
+        return isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
+                && isDependencyAvailable("androidx.mediarouter.app.MediaRouteButton");
     }
 
     public static void setUseWithVDHView(boolean isUseWithVDHView) {

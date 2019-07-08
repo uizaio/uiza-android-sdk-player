@@ -216,9 +216,7 @@ public final class FUZPlayerManager implements AdsMediaSource.MediaSourceFactory
                 mediaSource,
                 this,
                 adsLoader,
-                fuzVideo.getPlayerView().getOverlayFrameLayout(),
-                null,
-                null);
+                fuzVideo.getPlayerView());
     }
 
     //return true if toggleResume

@@ -34,4 +34,7 @@
     <string name="format_buffer_health">%1$s s</string>
     <string name="format_resolution">%1$dx%2$d / %3$dx%4$d</string>
     <string name="format_live_stream_latency">%s ms</string>
+
+    <string name="download_start_error">Failed to start download</string>
+    <string name="track_selection_title">Select tracks</string>
 </resources>
