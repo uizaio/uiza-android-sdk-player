@@ -2,19 +2,19 @@
 <resources>
 
     <!-- ICON -->
-    <dimen name="pdlg_icon_size">48dp</dimen>
-    <dimen name="pdlg_border_size">4dp</dimen>
+    <dimen name="uiza_pdlg_icon_size">48dp</dimen>
+    <dimen name="uiza_pdlg_border_size">4dp</dimen>
 
     <!-- DIALOG -->
-    <dimen name="pdlg_corner_radius">8dp</dimen>
+    <dimen name="uiza_pdlg_corner_radius">8dp</dimen>
 
     <!-- TEXTS -->
-    <dimen name="pdlg_tv_title">18sp</dimen>
-    <dimen name="pdlg_tv_message">16sp</dimen>
+    <dimen name="uiza_pdlg_tv_title">18sp</dimen>
+    <dimen name="uiza_pdlg_tv_message">16sp</dimen>
 
     <!-- BUTTON -->
 
     <!-- SPACING -->
-    <dimen name="pdlg_space_1.0x">12dp</dimen>
+    <dimen name="uiza_pdlg_space_1.0x">12dp</dimen>
 
 </resources>
