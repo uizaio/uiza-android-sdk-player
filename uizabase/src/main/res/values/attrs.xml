@@ -317,7 +317,7 @@
         <enum name="left" value="3" />
     </attr>
 
-    <attr name="scaleType">
+    <attr name="uiza_scaleType">
         <enum name="matrix" value="0" />
         <enum name="fitXy" value="1" />
         <enum name="fitStart" value="2" />
