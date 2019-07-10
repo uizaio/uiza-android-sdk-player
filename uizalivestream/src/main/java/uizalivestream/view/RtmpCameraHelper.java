@@ -245,9 +245,13 @@ final class RtmpCameraHelper {
         }
     }
 
-    void startPreview(CameraHelper.Facing facing, int width, int height) {
-        if (!isCameraValid()) return;
-        rtmpCamera1.startPreview(facing, width, height);
+    boolean startPreview(CameraHelper.Facing facing, int width, int height) {
+        if (!isCameraValid()) return false;
+        if (checkCanOpen(facing, width, height)) {
+            rtmpCamera1.startPreview(facing, width, height);
+            return true;
+        }
+        return false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -375,5 +379,20 @@ final class RtmpCameraHelper {
             }
         }
         return bestResolutionFrontList;
+    }
+
+    private boolean checkCanOpen(CameraHelper.Facing facing, int width, int height) {
+        List<Camera.Size> previews;
+        if (facing == CameraHelper.Facing.BACK) {
+            previews = rtmpCamera1.getResolutionsBack();
+        } else {
+            previews = rtmpCamera1.getResolutionsFront();
+        }
+        for (Camera.Size size : previews) {
+            if (size.width == width && size.height == height) {
+                return true;
+            }
+        }
+        return false;
     }
 }
