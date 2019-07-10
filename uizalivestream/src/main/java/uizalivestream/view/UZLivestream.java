@@ -380,8 +380,12 @@ public class UZLivestream extends RelativeLayout
             uzLivestreamCallback.surfaceChanged(new StartPreview() {
                 @Override
                 public void onSizeStartPreview(int width, int height) {
-                    cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
-                    updateUISurfaceView(width, height);
+                    boolean canStart = cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
+                    if (canStart) {
+                        updateUISurfaceView(width, height);
+                    } else {
+                        uzLivestreamCallback.onError(getString(R.string.camera_not_running_properly));
+                    }
                 }
             });
         }
