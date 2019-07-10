@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ICON -->
+    <dimen name="uiza_pdlg_icon_size">48dp</dimen>
+    <dimen name="uiza_pdlg_border_size">4dp</dimen>
+
+    <!-- DIALOG -->
+    <dimen name="uiza_pdlg_corner_radius">24dp</dimen>
+
+    <!-- TEXTS -->
+    <dimen name="uiza_pdlg_tv_title">54sp</dimen>
+    <dimen name="uiza_pdlg_tv_message">48sp</dimen>
+
+    <!-- BUTTON -->
+
+    <!-- SPACING -->
+    <dimen name="uiza_pdlg_space_1.0x">36dp</dimen>
+
+</resources>
