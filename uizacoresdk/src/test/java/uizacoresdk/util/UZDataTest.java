@@ -10,10 +10,12 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LDateUtils;
+import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.restclient.UZRestClientGetLinkPlay;
 import vn.uiza.restapi.restclient.UZRestClientHeartBeat;
 import vn.uiza.restapi.restclient.UZRestClientTracking;
+import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.tracking.UizaTracking;
 import vn.uiza.utils.util.Utils;
 
@@ -30,7 +32,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest({
         UZRestClient.class, UZRestClientGetLinkPlay.class, UZRestClientHeartBeat.class,
         UZRestClientTracking.class, UZUtil.class, Utils.class, UZOsUtil.class, TmpParamData.class,
-        LDateUtils.class
+        LDateUtils.class, UZAPIMaster.class, UZService.class
 })
 public class UZDataTest {
     private String domain = "domainAPi";
@@ -42,7 +44,7 @@ public class UZDataTest {
     public void setup() {
         PowerMockito.mockStatic(UZRestClient.class, UZRestClientGetLinkPlay.class,
                 UZRestClientHeartBeat.class, UZRestClientTracking.class, UZUtil.class, Utils.class,
-                UZOsUtil.class, TmpParamData.class, LDateUtils.class);
+                UZOsUtil.class, TmpParamData.class, LDateUtils.class, UZAPIMaster.class, UZService.class);
     }
 
     @Test
@@ -53,9 +55,12 @@ public class UZDataTest {
 
         Context mockContext = mock(Context.class);
         PowerMockito.when(Utils.getContext()).thenReturn(mockContext);
+        UZService uzService = mock(UZService.class);
+        PowerMockito.when(UZRestClient.createService(UZService.class)).thenReturn(uzService);
+        UZAPIMaster uzapiMaster = mock(UZAPIMaster.class);
+        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(uzapiMaster);
 
-        UZData.getInstance()
-                .initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_DEV);
+        UZData.getInstance().initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_DEV);
 
         PowerMockito.verifyStatic(UZRestClient.class, times(1));
         UZRestClient.init(arg1.capture(), arg2.capture());
@@ -87,9 +92,12 @@ public class UZDataTest {
 
         Context mockContext = mock(Context.class);
         PowerMockito.when(Utils.getContext()).thenReturn(mockContext);
+        UZService uzService = mock(UZService.class);
+        PowerMockito.when(UZRestClient.createService(UZService.class)).thenReturn(uzService);
+        UZAPIMaster uzapiMaster = mock(UZAPIMaster.class);
+        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(uzapiMaster);
 
-        UZData.getInstance()
-                .initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_STAG);
+        UZData.getInstance().initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_STAG);
 
         PowerMockito.verifyStatic(UZRestClient.class, times(1));
         UZRestClient.init(arg1.capture(), arg2.capture());
@@ -121,9 +129,12 @@ public class UZDataTest {
 
         Context mockContext = mock(Context.class);
         PowerMockito.when(Utils.getContext()).thenReturn(mockContext);
+        UZService uzService = mock(UZService.class);
+        PowerMockito.when(UZRestClient.createService(UZService.class)).thenReturn(uzService);
+        UZAPIMaster uzapiMaster = mock(UZAPIMaster.class);
+        PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(uzapiMaster);
 
-        UZData.getInstance()
-                .initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_PROD);
+        UZData.getInstance().initSDK(API_VERSION_3, domain, token, appId, Constants.ENVIRONMENT_PROD);
 
         PowerMockito.verifyStatic(UZRestClient.class, times(1));
         UZRestClient.init(arg1.capture(), arg2.capture());

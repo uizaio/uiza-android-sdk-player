@@ -1,0 +1,63 @@
+{
+  "data": [
+    {
+      "id": "db84c840-8970-4fb9-a02f-50f203ed744e",
+      "appId": "f785bc511967473fbe6048ee5fb7ea59",
+      "status": 1,
+      "adminUserId": null,
+      "isDeleted": 0,
+      "entityId": "33812ed9-4b02-408d-aab4-e77c12d16bb0",
+      "campaignId": "",
+      "name": "Preroll",
+      "type": "ads",
+      "time": 0,
+      "link": "https://static.uiza.io/media/Uiza-Preroll-20181004.xml",
+      "createdAt": "2019-06-17T04:05:45.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    },
+    {
+      "id": "70b3c81d-4abb-4ce7-bcf5-a5ac709b8054",
+      "appId": "f785bc511967473fbe6048ee5fb7ea59",
+      "status": 1,
+      "adminUserId": null,
+      "isDeleted": 0,
+      "entityId": "33812ed9-4b02-408d-aab4-e77c12d16bb0",
+      "campaignId": "",
+      "name": "10s",
+      "type": "ads",
+      "time": 10,
+      "link": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=",
+      "createdAt": "2019-06-17T04:06:16.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    },
+    {
+      "id": "fe5fef4b-d8c8-4783-a839-f18e1e8f961e",
+      "appId": "f785bc511967473fbe6048ee5fb7ea59",
+      "status": 1,
+      "adminUserId": null,
+      "isDeleted": 0,
+      "entityId": "33812ed9-4b02-408d-aab4-e77c12d16bb0",
+      "campaignId": "",
+      "name": "postroll",
+      "type": "ads",
+      "time": 23,
+      "link": "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=",
+      "createdAt": "2019-06-17T07:26:45.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    }
+  ],
+  "metadata": {
+    "total": 3,
+    "result": 3,
+    "page": 1,
+    "limit": 20
+  },
+  "version": 4,
+  "datetime": "2019-07-05T08:39:15.304Z",
+  "policy": "public",
+  "requestId": "ab35f155-f4ce-498f-a470-2dc387bb1582",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

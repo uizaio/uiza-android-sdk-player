@@ -1,0 +1,13 @@
+{
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlfaWQiOiI0NWE5MDhmNy1hNjJlLTRlYWYtOGNlMi1kYzU2OTlmMzM0MDYiLCJhcHBfaWQiOiI5OThhMWExNzEzODY0NDQyOGNlMDI4ZDJkZTIwYzVhMCIsImNvbnRlbnRfdHlwZSI6ImxpdmUiLCJpYXQiOjE1NjIyOTY4NjksImV4cCI6MTU2MjMwMDQ2OX0.fcdN0vibBqlUxfknTwJy5OlticpyjqsqZz0yiTmek_I"
+  },
+  "version": 4,
+  "datetime": "2019-07-05T03:21:09.536Z",
+  "policy": "public",
+  "requestId": "0a1d31a1-a45c-4fc0-bb5d-9ac1587f50f9",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

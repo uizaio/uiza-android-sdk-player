@@ -1,0 +1,13 @@
+{
+  "data": {
+    "id": "8b83886e-9cc3-4eab-9258-ebb16c0c73de"
+  },
+  "version": 4,
+  "datetime": "2018-06-15T18:52:45.755Z",
+  "policy": "public",
+  "requestId": "a27c393d-c90d-44a0-9d44-4d493647889a",
+  "serviceName": "api",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

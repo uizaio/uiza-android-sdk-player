@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "data": {
+    "status": "received"
+  },
+  "datetime": "2019-07-05 03:42:27.677495299 +0000 UTC m=+86053.428394335",
+  "message": "",
+  "policy": "private",
+  "requestId": "",
+  "serviceName": "uch",
+  "type": "SUCCESS",
+  "version": 1
+}
