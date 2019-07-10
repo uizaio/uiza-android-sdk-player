@@ -4,15 +4,14 @@ group = 'com.github.tplloi'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.3'
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
 
-        renderscriptTargetApi 19
+        renderscriptTargetApi 16
         renderscriptSupportModeEnabled true
         multiDexEnabled true
 

@@ -568,8 +568,9 @@
         <attr name="miniPlayerPadding" format="dimension" />
     </declare-styleable>-->
 
+    <!-- Getting issue here when compile with Sendo seller app: https://github.com/intuit/sdp/issues/48 -->
     <declare-styleable name="FixedAspectRatio">
-        <attr name="aspectRatio" format="fraction" />
+        <attr name="do_not_declare_aspectRatio" format="fraction" />
     </declare-styleable>
 
     <declare-styleable name="FixedAspectRatioRelativeLayout">
