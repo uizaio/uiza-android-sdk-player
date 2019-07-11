@@ -1,0 +1,17 @@
+{
+  "week_number": 27,
+  "utc_offset": "+00:00",
+  "utc_datetime": "2019-07-05T10:59:04.389868+00:00",
+  "unixtime": 1562324344,
+  "timezone": "Etc/UTC",
+  "raw_offset": 0,
+  "dst_until": null,
+  "dst_offset": 0,
+  "dst_from": null,
+  "dst": false,
+  "day_of_year": 186,
+  "day_of_week": 5,
+  "datetime": "2019-07-05T10:59:04.389868+00:00",
+  "client_ip": "14.176.232.181",
+  "abbreviation": "UTC"
+}

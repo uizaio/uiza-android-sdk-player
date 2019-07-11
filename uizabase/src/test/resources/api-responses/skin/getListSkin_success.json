@@ -1,0 +1,11 @@
+{
+  "data": [],
+  "version": 4,
+  "datetime": "2019-07-05T03:25:22.917Z",
+  "policy": "public",
+  "requestId": "a28b58d5-514f-48d7-b11c-d2a56bc5b7a9",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

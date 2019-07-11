@@ -1,0 +1,13 @@
+{
+  "data": {
+    "encode": 0,
+    "status": 0,
+    "type": "SUCCESS",
+    "view": 0
+  },
+  "datetime": "2019-07-05T07:46:50.675Z",
+  "policy": "public",
+  "requestId": "0fd9bb8c-1deb-471e-8d24-f67f44deb0c3",
+  "serviceName": "api-v4",
+  "version": 4
+}

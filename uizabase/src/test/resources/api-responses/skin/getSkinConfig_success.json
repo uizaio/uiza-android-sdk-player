@@ -1,0 +1,35 @@
+{
+  "data": {
+    "newVersion": "1.0.0",
+    "setting": {
+      "autoStart": "false",
+      "showQuality": "true"
+    },
+    "styling": {
+      "title": "true"
+    },
+    "endscreen": {
+      "display": "disabled",
+      "content": ""
+    },
+    "plugin": {
+      "js": [],
+      "css": [],
+      "json": {}
+    },
+    "logo": {
+      "logo": "",
+      "position": "",
+      "display": "",
+      "url": ""
+    }
+  },
+  "version": 4,
+  "datetime": "2019-07-05T03:26:10.046Z",
+  "policy": "public",
+  "requestId": "30c30048-05ac-4813-b162-eaa6d93d3d63",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

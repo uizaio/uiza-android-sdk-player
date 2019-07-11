@@ -1,0 +1,42 @@
+{
+  "data": [
+    {
+      "id": "f932aa79-852a-41f7-9adc-19935034f944",
+      "name": "Playlist sample",
+      "description": "Playlist description",
+      "slug": "playlist-sample",
+      "type": "playlist",
+      "orderNumber": 1,
+      "icon": "/example.com/image002.png",
+      "status": 1,
+      "createdAt": "2018-06-18T04:29:05.000Z",
+      "updatedAt": "2018-06-18T04:29:05.000Z"
+    },
+    {
+      "id": "ab54db88-0c8c-4928-b1be-1e7120ad2c39",
+      "name": "Folder sample",
+      "description": "Folder's description",
+      "slug": "folder-sample",
+      "type": "folder",
+      "orderNumber": 2,
+      "icon": "/example.com/icon.png",
+      "status": 1,
+      "createdAt": "2018-06-18T03:17:07.000Z",
+      "updatedAt": "2018-06-18T03:17:07.000Z"
+    }
+  ],
+  "metadata": {
+    "total": 2,
+    "result": 2,
+    "page": 1,
+    "limit": 20
+  },
+  "version": 4,
+  "datetime": "2019-07-03T02:20:59.423Z",
+  "policy": "public",
+  "requestId": "948004bb-f798-4183-b4dd-12559c2975bd",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

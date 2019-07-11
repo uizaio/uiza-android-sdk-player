@@ -59,7 +59,7 @@ public class FUZVideo extends RelativeLayout {
     private static final int INTERVAL_TRACK_CCU = 3000;
 
     private PlayerView playerView;
-    private FUZPlayerManager fuzUizaPlayerManager;
+    private FUZPlayerManagerAbs fuzUizaPlayerManager;
     private ProgressBar progressBar;
     private String cdnHost;
     private String uuid;
@@ -258,42 +258,46 @@ public class FUZVideo extends RelativeLayout {
     }
 
     private void checkToSetUp() {
-        initData(linkPlay, null, null, null);
+        initData(linkPlay, null, null, null, isAdsDependencyAvailable());
         onResume();
     }
 
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList) {
-        fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-        fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
-            @Override
-            public void onAdEnded() {
-            }
-
-            @Override
-            public void onAdProgress(int s, int duration, int percent) {
-                if (progressCallback != null) {
-                    progressCallback.onAdProgress(s, duration, percent);
+    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAd) {
+        if(includeAd){
+            fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+            fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
+                @Override
+                public void onAdEnded() {
                 }
-            }
 
-            @Override
-            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                TmpParamData.getInstance().setPlayerPlayheadTime(s);
-                trackProgress(s, percent);
-                callAPITrackMuiza(s);
-                if (progressCallback != null) {
-                    progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                @Override
+                public void onAdProgress(int s, int duration, int percent) {
+                    if (progressCallback != null) {
+                        progressCallback.onAdProgress(s, duration, percent);
+                    }
                 }
-            }
 
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
+                @Override
+                public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+                    TmpParamData.getInstance().setPlayerPlayheadTime(s);
+                    trackProgress(s, percent);
+                    callAPITrackMuiza(s);
+                    if (progressCallback != null) {
+                        progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                    }
+                }
 
-            @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
-            }
-        });
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                }
+
+                @Override
+                public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+                }
+            });
+        } else {
+            fuzUizaPlayerManager = new FUZNoAdsPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        }
     }
 
     //=============================================================================================================START LIFE CIRCLE
@@ -739,6 +743,10 @@ public class FUZVideo extends RelativeLayout {
 
     public interface CallbackGetLinkPlay {
         void onSuccess(String linkPlay);
+    }
+
+    protected boolean isAdsDependencyAvailable() {
+        return UZUtil.isDependencyAvailable("com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer");
     }
     //=============================================================================================================END CALLBACK
 }

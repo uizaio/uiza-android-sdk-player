@@ -1,0 +1,31 @@
+{
+  "data": {
+    "id": "8b83886e-9cc3-4eab-9258-ebb16c0c73de",
+    "name": "checking 01",
+    "description": "checking",
+    "mode": "pull",
+    "resourceMode": "single",
+    "encode": 0,
+    "channelName": "checking-01",
+    "lastPresetId": null,
+    "lastFeedId": null,
+    "poster": "https://example.com/poster.jpeg",
+    "thumbnail": "https://example.com/thumbnail.jpeg",
+    "linkPublishSocial": null,
+    "linkStream": "[\"https://www.youtube.com/watch?v=pQzaHPoNX1I\"]",
+    "lastPullInfo": null,
+    "lastPushInfo": null,
+    "lastProcess": null,
+    "eventType": null,
+    "createdAt": "2018-06-21T14:33:36.000Z",
+    "updatedAt": "2018-06-21T14:33:36.000Z"
+  },
+  "version": 4,
+  "datetime": "2018-06-21T14:34:22.335Z",
+  "policy": "public",
+  "requestId": "088668ec-6046-4310-879a-2e0e72ac1f52",
+  "serviceName": "api",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

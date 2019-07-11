@@ -1,0 +1,11 @@
+{
+  "data": [],
+  "requestId": "adf942cd-8c3d-4bde-b3bc-d6125af23cd3",
+  "version": 1,
+  "datetime": "2019-07-05T03:42:43.351Z",
+  "policy": "public",
+  "serviceName": "analytic-tracking",
+  "message": "Success",
+  "code": 200,
+  "type": "SUCCESS"
+}

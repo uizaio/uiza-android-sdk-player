@@ -1,0 +1,66 @@
+{
+  "data": [
+    {
+      "id": "42ceb1ab-18ef-4f2e-b076-14299756d182",
+      "name": "Sample Video 1",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+      "view": 0,
+      "poster": "https://example.com/picture001",
+      "thumbnail": "https://example.com/picture002",
+      "type": "vod",
+      "duration": "237.865215",
+      "publishToCdn": "success",
+      "embedMetadata": {
+        "artist": "John Doe",
+        "album": "Album sample",
+        "genre": "Pop"
+      },
+      "extendMetadata": {
+        "movie_category": "action",
+        "imdb_score": 8.8,
+        "published_year": "2018"
+      },
+      "createdAt": "2018-06-22T19:20:17.000Z",
+      "updatedAt": "2018-06-22T19:20:17.000Z"
+    },
+    {
+      "id": "64b15996-2261-4f41-a3c4-72b652323f67",
+      "name": "Sample Video 2",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+      "view": 0,
+      "poster": "https://example.com/picture001",
+      "thumbnail": "https://example.com/picture002",
+      "type": "vod",
+      "duration": "178.178105",
+      "publishToCdn": "success",
+      "embedMetadata": {
+        "artist": "John Doe",
+        "album": "Album sample",
+        "genre": "Pop"
+      },
+      "extendMetadata": {
+        "movie_category": "action",
+        "imdb_score": 8.8,
+        "published_year": "2018"
+      },
+      "createdAt": "2018-06-22T19:16:22.000Z",
+      "updatedAt": "2018-06-22T19:16:22.000Z"
+    }
+  ],
+  "metadata": {
+    "total": 2,
+    "result": 2,
+    "page": 1,
+    "limit": 20
+  },
+  "version": 4,
+  "datetime": "2018-06-22T19:20:19.536Z",
+  "policy": "public",
+  "requestId": "beac9674-9d87-49eb-9ded-3b8ddc258044",
+  "serviceName": "api",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}

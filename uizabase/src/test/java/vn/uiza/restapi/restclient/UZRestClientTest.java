@@ -66,7 +66,7 @@ public class UZRestClientTest extends BaseRestClientTest {
             UZRestClient.createService(UZService.class);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalStateException);
-            assertEquals(e.getMessage(), "Must call init() before use");
+            assertEquals(e.getMessage(), "Must call init() before using");
         }
     }
 
