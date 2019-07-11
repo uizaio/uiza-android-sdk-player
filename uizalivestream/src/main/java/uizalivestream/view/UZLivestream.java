@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
+
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -99,6 +100,7 @@ public class UZLivestream extends RelativeLayout
     private boolean isShowDialogCheck;
     private RtmpCameraHelper cameraHelper;
     private boolean isSavedToDevice;
+    private boolean isFrontCamera = true;
 
     public void setCameraCallback(CameraCallback cameraCallback) {
         if (cameraHelper != null) {
@@ -314,7 +316,7 @@ public class UZLivestream extends RelativeLayout
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onConnectionSuccessRtmp();
         }
-        switchCamera();
+        // switchCamera(); // why switch camera when connect success
     }
 
     @Override
@@ -380,7 +382,7 @@ public class UZLivestream extends RelativeLayout
             uzLivestreamCallback.surfaceChanged(new StartPreview() {
                 @Override
                 public void onSizeStartPreview(int width, int height) {
-                    boolean canStart = cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
+                    boolean canStart = cameraHelper.startPreview(isFrontCamera ? CameraHelper.Facing.FRONT : CameraHelper.Facing.BACK, width, height);
                     if (canStart) {
                         updateUISurfaceView(width, height);
                     } else {
@@ -457,16 +459,16 @@ public class UZLivestream extends RelativeLayout
     }
 
     /**
-      * Call this method before use @startStream. If not you will do a stream without audio.
-      *
-      * @param sampleRate of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
-      * @param isStereo true if you want Stereo audio (2 audio channels), false if you want Mono audio
-      * (1 audio channel).
-      * @param echoCanceler true enable echo canceler, false disable.
-      * @param noiseSuppressor true enable noise suppressor, false  disable.
-      * @return true if success, false if you get a error (Normally because the encoder selected
-      * doesn't support any configuration seated or your device hasn't a AAC encoder).
-      */
+     * Call this method before use @startStream. If not you will do a stream without audio.
+     *
+     * @param sampleRate      of audio in hz. Can be 8000, 16000, 22500, 32000, 44100.
+     * @param isStereo        true if you want Stereo audio (2 audio channels), false if you want Mono audio
+     *                        (1 audio channel).
+     * @param echoCanceler    true enable echo canceler, false disable.
+     * @param noiseSuppressor true enable noise suppressor, false  disable.
+     * @return true if success, false if you get a error (Normally because the encoder selected
+     * doesn't support any configuration seated or your device hasn't a AAC encoder).
+     */
     public boolean prepareAudio(int sampleRate, boolean isStereo, boolean echoCanceler, boolean noiseSuppressor) {
         return cameraHelper.prepareAudio(sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
@@ -660,7 +662,7 @@ public class UZLivestream extends RelativeLayout
                 presetLiveStreamingFeed = new PresetLiveStreamingFeed();
                 presetLiveStreamingFeed.setTranscode(isTranscode);
                 presetLiveStreamingFeed.setVideoBitRates(isConnectedFast);
-                
+
                 LLog.d(TAG, "isErrorStartLive " + isErrorStartLive);
                 if (isErrorStartLive) {
                     if (d.getLastProcess() == null) {
@@ -705,6 +707,7 @@ public class UZLivestream extends RelativeLayout
 
     public void switchCamera() {
         cameraHelper.switchCamera();
+        isFrontCamera = !isFrontCamera;
     }
 
     public boolean isAAEnabled() {
