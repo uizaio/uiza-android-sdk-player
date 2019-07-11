@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.NoiseSuppressor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -22,8 +24,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.media.audiofx.AcousticEchoCanceler;
-import android.media.audiofx.NoiseSuppressor;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -39,16 +39,13 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.OpenGlView;
-
-import net.ossrs.rtmp.ConnectCheckerRtmp;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+import net.ossrs.rtmp.ConnectCheckerRtmp;
 import retrofit2.HttpException;
 import uizalivestream.R;
 import uizalivestream.data.UZLivestreamData;
@@ -99,6 +96,7 @@ public class UZLivestream extends RelativeLayout
     private boolean isShowDialogCheck;
     private RtmpCameraHelper cameraHelper;
     private boolean isSavedToDevice;
+    private CameraHelper.Facing lastCameraFacing = CameraHelper.Facing.FRONT;
 
     public void setCameraCallback(CameraCallback cameraCallback) {
         if (cameraHelper != null) {
@@ -314,7 +312,6 @@ public class UZLivestream extends RelativeLayout
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onConnectionSuccessRtmp();
         }
-        switchCamera();
     }
 
     @Override
@@ -380,14 +377,18 @@ public class UZLivestream extends RelativeLayout
             uzLivestreamCallback.surfaceChanged(new StartPreview() {
                 @Override
                 public void onSizeStartPreview(int width, int height) {
-                    boolean canStart = cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
-                    if (canStart) {
-                        updateUISurfaceView(width, height);
-                    } else {
-                        uzLivestreamCallback.onError(getString(R.string.camera_not_running_properly));
-                    }
+                    startPreview(lastCameraFacing, width, height);
                 }
             });
+        }
+    }
+
+    private void startPreview(CameraHelper.Facing facing, int width, int height) {
+        boolean canStart = cameraHelper.startPreview(facing, width, height);
+        if (canStart) {
+            updateUISurfaceView(width, height);
+        } else {
+            uzLivestreamCallback.onError(getString(R.string.camera_not_running_properly));
         }
     }
 
@@ -705,6 +706,7 @@ public class UZLivestream extends RelativeLayout
 
     public void switchCamera() {
         cameraHelper.switchCamera();
+        lastCameraFacing = getRtmpCamera().isFrontCamera() ? CameraHelper.Facing.FRONT : CameraHelper.Facing.BACK;
     }
 
     public boolean isAAEnabled() {
