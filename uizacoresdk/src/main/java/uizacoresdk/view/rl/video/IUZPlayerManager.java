@@ -2,6 +2,7 @@ package uizacoresdk.view.rl.video;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -125,7 +126,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         this.bufferPosition = 0;
         this.bufferPercentage = 0;
         this.uzVideo = uzVideo;
-        this.linkPlay = linkPlay;
+        this.linkPlay = processLinkPlay(linkPlay);
         this.subtitleList = subtitleList;
         this.isFirstStateReady = false;
 
@@ -515,6 +516,17 @@ abstract class IUZPlayerManager implements PreviewLoader {
             }
         }
         return mediaSourceWithSubtitle;
+    }
+
+    /**
+     * @return the link play of vod or live, note that we force use http if android device version is below 22
+     * <code>(Build.VERSION_CODES.LOLLIPOP_MR1)</code>
+     */
+    private String processLinkPlay(String linkPlay) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1 && linkPlay.startsWith(Constants.PREFIXS)) {
+            return linkPlay.replace(Constants.PREFIXS, Constants.PREFIX);
+        }
+        return linkPlay;
     }
 
     private void onFirstStateReady() {

@@ -76,7 +76,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
-        uZCustomLinkPlay2.setLinkPlay("https://stag-asia-southeast1-live.uizadev.io/998a1a17138644428ce028d2de20c5a0-live/593fd077-313c-4d11-a5ec-fbd66dc43763/playlist_dvr.m3u8");
+        uZCustomLinkPlay2.setLinkPlay("https://asia-southeast1-live.uizacdn.net/f785bc511967473fbe6048ee5fb7ea59-live/e3a3d39f-6bd7-4a82-9e90-70bfa9e1f92d/playlist_dvr.m3u8");
         uZCustomLinkPlay2.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay3 = new UZCustomLinkPlay();
