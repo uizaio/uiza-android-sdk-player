@@ -72,7 +72,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         uZCustomLinkPlay0.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay1 = new UZCustomLinkPlay();
-        uZCustomLinkPlay1.setLinkPlay("https://vod.straas.net/companyId/100592/1496984341rl74rdlvsh/playlist.m3u8");
+        uZCustomLinkPlay1.setLinkPlay("https://vn-southeast-1-live.uizacdn.net/9521cff34e86473095644ba71cbd0e7f-live/a16a4689-0a56-4256-af7c-b9006354c0f1/playlist_dvr.m3u8");
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();

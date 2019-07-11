@@ -27,4 +27,6 @@ public interface UZLivestreamCallback {
     void surfaceCreated();
 
     void surfaceChanged(UZLivestream.StartPreview startPreview);
+
+    void onBackgroundTooLong();
 }

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -101,6 +102,7 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
         btFlash.setOnClickListener(this);
+        uzLivestream.setBackgroundAllowedDuration(10000);
     }
 
     @Override
@@ -388,6 +390,11 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
                 bStartStopStore.setText("Start stream and Store");
             }
         });
+    }
+
+    @Override
+    public void onBackgroundTooLong() {
+        LToast.show(getApplicationContext(), "You go to background for a long time !", Toast.LENGTH_LONG);
     }
 
     @Override
