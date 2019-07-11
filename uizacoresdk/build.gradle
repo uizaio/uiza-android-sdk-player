@@ -34,6 +34,11 @@ android {
         //release & debug is in project animators
         //matchingFallbacks = ['release', 'debug']
     }
+    compileOptions {
+        // from 2.9.0 need turn on Java 8 support https://exoplayer.dev/hello-world.html#turn-on-java-8-support
+        // https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#290
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {

@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="@dimen/w_25"
             android:layout_height="@dimen/w_25"
-            android:src="@drawable/ic_switch_camera_white_24dp" />
+            app:srcCompat="@drawable/ic_switch_camera_white_24dp" />
 
         <ImageView
             android:layout_width="@dimen/w_25"
@@ -41,7 +41,7 @@
             android:layout_width="@dimen/w_25"
             android:layout_height="@dimen/w_25"
             android:layout_marginLeft="@dimen/margin_10"
-            android:src="@drawable/ic_settings_white_24dp"
+            app:srcCompat="@drawable/ic_settings_white_24dp"
             android:tint="@color/White" />
     </LinearLayout>
 
