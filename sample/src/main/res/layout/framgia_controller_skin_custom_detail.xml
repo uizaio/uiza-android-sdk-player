@@ -32,7 +32,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
-            android:src="@drawable/animation"
+            app:srcCompat="@drawable/animation"
             android:tint="@color/Red"
             app:useDefaultIB="false" />
 
