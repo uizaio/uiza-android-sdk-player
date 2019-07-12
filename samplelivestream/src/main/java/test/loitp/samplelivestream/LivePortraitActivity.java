@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -102,6 +103,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
         btSwitchCamera.setOnClickListener(this);
         btFilter.setOnClickListener(this);
         btFlash.setOnClickListener(this);
+        uzLivestream.setBackgroundAllowedDuration(10000);
     }
 
     @Override
@@ -375,6 +377,11 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
             LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onBackgroundTooLong() {
+        LToast.show(getApplicationContext(), "You go to background for a long time !", Toast.LENGTH_LONG);
     }
 
     @Override
