@@ -17,8 +17,6 @@ package vn.uiza.views.draggablepanel.transformer;
 
 import android.view.View;
 
-import com.nineoldandroids.view.ViewHelper;
-
 /**
  * Transformer extension created to scale the view instead of resize it as the other
  * implementation does. This implementation is based on Nineoldanroids library to scale
@@ -39,8 +37,8 @@ public class ScaleTransformer extends Transformer {
      */
     @Override
     public void updateScale(float verticalDragOffset) {
-        ViewHelper.setScaleX(getView(), 1 - verticalDragOffset / getXScaleFactor());
-        ViewHelper.setScaleY(getView(), 1 - verticalDragOffset / getYScaleFactor());
+        getView().setScaleX(1 - verticalDragOffset / getXScaleFactor());
+        getView().setScaleY(1 - verticalDragOffset / getYScaleFactor());
     }
 
     /**
@@ -50,8 +48,8 @@ public class ScaleTransformer extends Transformer {
      */
     @Override
     public void updatePosition(float verticalDragOffset) {
-        ViewHelper.setPivotX(getView(), getView().getWidth() - getMarginRight());
-        ViewHelper.setPivotY(getView(), getView().getHeight() - getMarginBottom());
+        getView().setPivotX(getView().getWidth() - getMarginRight());
+        getView().setPivotY(getView().getHeight() - getMarginBottom());
     }
 
     /**
@@ -103,5 +101,4 @@ public class ScaleTransformer extends Transformer {
     public int getMinWidthPlusMarginRight() {
         return getOriginalWidth();
     }
-
 }

@@ -32,7 +32,6 @@
     <item name="debug_layout" type="id" />
     <item name="debug_text_view" type="id" />
     <item name="controls_root" type="id" />
-    <!--<item name="fl_bar" type="id" />-->
     <item name="tv_live" type="id" />
     <item name="iv_live_time" type="id" />
     <item name="tv_live_time" type="id" />

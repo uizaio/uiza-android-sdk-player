@@ -1,52 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--<style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-    </style>-->
-
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
-        <!--<item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>-->
-        <!--<item name="android:windowContentOverlay">@null</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>-->
-
-        <!--set color of preview seekbar-->
-        <!--<item name="played_color">@color/White</item>
-        <item name="scrubber_color">@color/White</item>-->
-        <!--<item name="buffered_color">@color/DeepPink</item>
-        <item name="unplayed_color">@color/Blue</item>
-        <item name="ad_marker_color">@color/White</item>
-        <item name="played_ad_marker_color">@color/Gray</item>-->
     </style>
 
     <style name="Theme.Swipe.Back.NoActionBar" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
-    <!--<style name="AppThemeTransparent" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>-->
 
     <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">false</item>
@@ -70,15 +34,6 @@
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@null</item>
     </style>
-
-    <!--<declare-styleable name="AnswerView">
-        <attr name="aw_ShowTextWhenActive" format="boolean" />
-        <attr name="aw_NumberOfAnswers" format="integer" />
-        <attr name="aw_ShowNumber" format="boolean" />
-        <attr name="aw_Number" format="integer" />
-        <attr name="aw_changeOnClick" format="boolean" />
-        <attr name="aw_canCancelAnswer" format="boolean" />
-    </declare-styleable>-->
 
     <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>

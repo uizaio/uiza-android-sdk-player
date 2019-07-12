@@ -43,7 +43,7 @@ dependencies {
     api project(':uizabase')
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.2'
-
+    api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
     testImplementation 'junit:junit:4.12'
