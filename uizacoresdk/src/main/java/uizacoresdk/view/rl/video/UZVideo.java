@@ -190,6 +190,7 @@ public class UZVideo extends RelativeLayout
     private boolean isEnableStatsForNerds;
     private UZChromeCast uZChromeCast;
     private boolean isCastingChromecast = false;
+    private boolean autoMoveToLiveEdge;
 
     public UZVideo(Context context) {
         super(context);
@@ -678,6 +679,10 @@ public class UZVideo extends RelativeLayout
                 uzPlayerManager.resumeVideo();
             }
         }
+        // try to move to the edge of livestream video
+        if (autoMoveToLiveEdge && isLivestream()) {
+            seekToLiveEdge();
+        }
     }
 
     public boolean isPlaying() {
@@ -685,6 +690,23 @@ public class UZVideo extends RelativeLayout
             return false;
         }
         return getPlayer().getPlayWhenReady();
+    }
+
+    /**
+     * Set auto move the the last window of livestream, default is false
+     * @param autoMoveToLiveEdge true if always seek to last livestream video, otherwise false
+     */
+    public void setAutoMoveToLiveEdge(boolean autoMoveToLiveEdge) {
+        this.autoMoveToLiveEdge = autoMoveToLiveEdge;
+    }
+
+    /**
+     * Seek to live edge of a streaming video
+     */
+    public void seekToLiveEdge() {
+        if (isLivestream() && getPlayer() != null) {
+            getPlayer().seekToDefaultPosition();
+        }
     }
 
     private boolean activityIsPausing = false;
