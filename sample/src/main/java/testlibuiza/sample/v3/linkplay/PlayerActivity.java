@@ -47,6 +47,8 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         btPlay.setEnabled(false);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        // If linkplay is livestream, it will auto move to live edge when onResume is called
+        uzVideo.setAutoMoveToLiveEdge(true);
 
         etLinkPlay.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,7 +57,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence == null || charSequence.toString() == null || charSequence.toString().isEmpty()) {
+                if (charSequence == null || charSequence.toString().isEmpty()) {
                     btPlay.setEnabled(false);
                 } else {
                     btPlay.setEnabled(true);
@@ -72,7 +74,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         uZCustomLinkPlay0.setLivestream(false);
 
         final UZCustomLinkPlay uZCustomLinkPlay1 = new UZCustomLinkPlay();
-        uZCustomLinkPlay1.setLinkPlay("https://vn-southeast-1-live.uizacdn.net/9521cff34e86473095644ba71cbd0e7f-live/a16a4689-0a56-4256-af7c-b9006354c0f1/playlist_dvr.m3u8");
+        uZCustomLinkPlay1.setLinkPlay("https://stag-asia-southeast1-live.uizadev.io/998a1a17138644428ce028d2de20c5a0-live/593fd077-313c-4d11-a5ec-fbd66dc43763/playlist_dvr.m3u8");
         uZCustomLinkPlay1.setLivestream(true);
 
         final UZCustomLinkPlay uZCustomLinkPlay2 = new UZCustomLinkPlay();
