@@ -42,6 +42,7 @@ public class Constants {
     public final static String TEST_6 = "13308851AEDCA44443112D80A8D182CA";
 
     public final static String KEY_UIZA_ENTITY_ID = "KEY_UIZA_ENTITY_ID";
+    public final static String KEY_UIZA_IS_LIVE = "KEY_UIZA_IS_LIVE";
     public final static String KEY_UIZA_ENTITY_COVER = "KEY_UIZA_ENTITY_COVER";
     public final static String KEY_UIZA_ENTITY_TITLE = "KEY_UIZA_ENTITY_TITLE";
     public final static String KEY_UIZA_METADATA_ENTITY_ID = "KEY_UIZA_METADATA_ENTITY_ID";

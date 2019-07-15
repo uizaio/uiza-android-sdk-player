@@ -330,6 +330,10 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(context, UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
     }
 
+    public static void getDataFromEntityIdLIVE(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDataFromEntityIdLIVE(context, UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
+    }
+
     public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
         if (context == null) {
             throw new NullPointerException(UZException.ERR_12);
@@ -357,6 +361,14 @@ public class UZUtil {
     }
 
     public static void initEntity(Activity activity, UZVideo uzVideo, String entityId) {
+        initEntity(activity, uzVideo, entityId, false);
+    }
+
+    public static void initLiveEntity(Activity activity, UZVideo uzVideo, String entityId) {
+        initEntity(activity, uzVideo, entityId, true);
+    }
+
+    private static void initEntity(Activity activity, UZVideo uzVideo, String entityId, boolean isLive) {
         if (activity == null) {
             throw new NullPointerException(UZException.ERR_12);
         }
@@ -372,13 +384,12 @@ public class UZUtil {
         }
         if (UZUtil.getClickedPip(activity)) {
             LLog.d(TAG, "miniplayer STEP 6 initEntity");
-            UZUtil.play(uzVideo, null);
+            UZUtil.play(uzVideo, null, isLive);
         } else {
             //check if play entity
             UZUtil.stopMiniPlayer(activity);
             if (entityId != null) {
-                //LLog.d(TAG, "initEntity entityId: " + entityId);
-                UZUtil.play(uzVideo, entityId);
+                UZUtil.play(uzVideo, entityId, isLive);
             }
         }
         UZUtil.setIsInitPlaylistFolder(activity, false);
@@ -424,12 +435,16 @@ public class UZUtil {
         });
     }
 
-    private static void play(final UZVideo uzVideo, final String entityId) {
+    private static void play(final UZVideo uzVideo, final String entityId, final boolean isLive) {
         UZData.getInstance().setSettingPlayer(false);
         uzVideo.post(new Runnable() {
             @Override
             public void run() {
-                uzVideo.init(entityId);
+                if (isLive) {
+                    uzVideo.initLiveEntity(entityId);
+                } else {
+                    uzVideo.init(entityId);
+                }
             }
         });
     }

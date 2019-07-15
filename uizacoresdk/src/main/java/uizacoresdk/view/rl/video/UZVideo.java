@@ -440,10 +440,11 @@ public class UZVideo extends RelativeLayout
     private UUID uuid;
     private long timestampBeforeInitNewSession;
 
-    protected void init(String entityId, boolean isClearDataPlaylistFolder) {
+    protected void init(String entityId, boolean isClearDataPlaylistFolder, boolean isLivestream) {
         LLog.d(TAG, "*****NEW SESSION**********************************************************************************************************************************");
         LLog.d(TAG, "entityId " + entityId);
-        uuid = UUID.randomUUID();
+        this.isLivestream = isLivestream;
+        this.uuid = UUID.randomUUID();
         if (isClearDataPlaylistFolder) {
             UZData.getInstance().clearDataForPlaylistFolder();
         }
@@ -512,7 +513,14 @@ public class UZVideo extends RelativeLayout
      * init player with entity id, ad, seekbar thumnail
      */
     public void init(@NonNull String entityId) {
-        init(entityId, true);
+        init(entityId, true, false);
+    }
+
+    /**
+     * init player with livestream entity id
+     */
+    public void initLiveEntity(@NonNull String entityId) {
+        init(entityId, true, true);
     }
 
     private boolean isInitCustomLinkPlay;//user pass any link (not use entityId or metadataId)
@@ -1156,7 +1164,8 @@ public class UZVideo extends RelativeLayout
             return;
         }
         LLog.d(TAG, "-----------------------> playPlaylistPosition " + position);
-        init(UZData.getInstance().getDataWithPositionOfDataList(position).getId(), false);
+        init(UZData.getInstance().getDataWithPositionOfDataList(position).getId(), false,
+                !TextUtils.isEmpty(data.getLastFeedId()));
     }
 
     private void setSrcDrawableEnabledForViews(UZImageButton... views) {
@@ -2538,35 +2547,54 @@ public class UZVideo extends RelativeLayout
             data = UZData.getInstance().getData();
             handleDataCallAPI();
         } else {
-            UZUtil.getDetailEntity(getContext(), entityId, new CallbackGetDetailEntity() {
-                @Override
-                public void onSuccess(Data d) {
-                    isCalledApiGetDetailEntity = true;
-                    data = d;
-                    //set video cover o moi case, ngoai tru
-                    //click tu pip entity thi ko can show video cover
-                    //click tu pip playlist folder lan dau tien thi ko can show video cover, neu nhan skip next hoac skip prev thi se show video cover
-                    if (isPlayPlaylistFolder()) {
-                        if (isGetClickedPip) {
-                            if (isClickedSkipNextOrSkipPrevious) {
-                                setVideoCover();
-                            }
-                        } else {
-                            setVideoCover();
-                        }
-                    } else {
-                        setVideoCover();
+            if (isLivestream) {
+                UZUtil.getDataFromEntityIdLIVE(getContext(), entityId, new CallbackGetDetailEntity() {
+                    @Override
+                    public void onSuccess(Data data) {
+                        handleDetailEntityResponse(data);
                     }
-                    handleDataCallAPI();
-                }
 
-                @Override
-                public void onError(Throwable e) {
-                    UZData.getInstance().setSettingPlayer(false);
-                    handleError(UZExceptionUtil.getExceptionCannotGetDetailEntitity());
-                }
-            });
+                    @Override
+                    public void onError(Throwable e) {
+                        UZData.getInstance().setSettingPlayer(false);
+                        handleError(UZExceptionUtil.getExceptionCannotGetDetailEntitity());
+                    }
+                });
+            } else {
+                UZUtil.getDetailEntity(getContext(), entityId, new CallbackGetDetailEntity() {
+                    @Override
+                    public void onSuccess(Data data) {
+                        handleDetailEntityResponse(data);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        UZData.getInstance().setSettingPlayer(false);
+                        handleError(UZExceptionUtil.getExceptionCannotGetDetailEntitity());
+                    }
+                });
+            }
         }
+    }
+
+    private void handleDetailEntityResponse(Data data) {
+        isCalledApiGetDetailEntity = true;
+        this.data = data;
+        //set video cover o moi case, ngoai tru
+        //click tu pip entity thi ko can show video cover
+        //click tu pip playlist folder lan dau tien thi ko can show video cover, neu nhan skip next hoac skip prev thi se show video cover
+        if (isPlayPlaylistFolder()) {
+            if (isGetClickedPip) {
+                if (isClickedSkipNextOrSkipPrevious) {
+                    setVideoCover();
+                }
+            } else {
+                setVideoCover();
+            }
+        } else {
+            setVideoCover();
+        }
+        handleDataCallAPI();
     }
 
     private void callAPIGetPlayerInfor() {
