@@ -285,7 +285,7 @@ final class RtmpCameraHelper {
         } else {
             bestBitrate = presetLiveStreamingFeed.getS480p();
         }
-        return Math.min(bestBitrate, rtmpCamera1.getBitrate());
+        return bestBitrate;
     }
 
     private Camera.Size getBestResolution(@NonNull Context context) {
