@@ -224,9 +224,13 @@ public class UZLivestream extends RelativeLayout
         LUIUtil.setDelay((int) SECOND, new LUIUtil.DelayCallback() {
             @Override
             public void doAfter(int mls) {
-                stopStream(); // make sure stop stream and start it again
-                if (prepareAudio() && prepareVideo(isLandscape)) {
-                    startStream(getMainStreamUrl(), isSavedToDevice());
+                try {
+                    stopStream(); // make sure stop stream and start it again
+                    if (prepareAudio() && prepareVideo(isLandscape)) {
+                        startStream(getMainStreamUrl(), isSavedToDevice());
+                    }
+                } catch (Exception ignored) {
+                    Log.e(TAG, "Can not resume livestream right now !");
                 }
             }
         });
