@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.google.android.exoplayer2.C;
@@ -59,7 +60,6 @@ import com.google.android.exoplayer2.video.VideoListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import uizacoresdk.glide.GlideApp;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
 import uizacoresdk.interfaces.UZBufferCallback;
 import uizacoresdk.listerner.ProgressCallback;
@@ -192,7 +192,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         }
         setPlayWhenReady(false);
         if (thumbnailsUrl != null) {
-            GlideApp.with(imageView)
+            Glide.with(imageView)
                     .load(thumbnailsUrl)
                     .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .transform(new GlideThumbnailTransformationPB(currentPosition))
