@@ -2548,7 +2548,7 @@ public class UZVideo extends RelativeLayout
             handleDataCallAPI();
         } else {
             if (isLivestream) {
-                UZUtil.getDataFromEntityIdLIVE(getContext(), entityId, new CallbackGetDetailEntity() {
+                UZUtil.getDataFromEntityIdLive(getContext(), entityId, new CallbackGetDetailEntity() {
                     @Override
                     public void onSuccess(Data data) {
                         handleDetailEntityResponse(data);

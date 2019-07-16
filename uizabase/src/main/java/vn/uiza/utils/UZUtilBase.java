@@ -18,7 +18,7 @@ public class UZUtilBase {
             @Override
             public void onSuccess(ResultRetrieveAnEntity result) {
                 if (result == null || result.getData() == null || result.getData().getId() == null || result.getData().getId().isEmpty()) {
-                    getDataFromEntityIdLIVE(context, apiVersion, appId, entityId, callbackGetDetailEntity);
+                    getDataFromEntityIdLive(context, apiVersion, appId, entityId, callbackGetDetailEntity);
                 } else {
                     if (callbackGetDetailEntity != null) {
                         Data d = result.getData();
@@ -36,7 +36,7 @@ public class UZUtilBase {
         });
     }
 
-    public static void getDataFromEntityIdLIVE(final Context context, final String apiVersion, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
+    public static void getDataFromEntityIdLive(final Context context, final String apiVersion, String appId, String entityId, final CallbackGetDetailEntity callbackGetDetailEntity) {
         UZService service = UZRestClient.createService(UZService.class);
         UZAPIMaster.getInstance().subscribe(service.retrieveALiveEvent(apiVersion, entityId, appId), new ApiSubscriber<ResultRetrieveALive>() {
             @Override

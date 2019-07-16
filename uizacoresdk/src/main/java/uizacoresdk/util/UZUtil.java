@@ -330,8 +330,8 @@ public class UZUtil {
         UZUtilBase.getDetailEntity(context, UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
     }
 
-    public static void getDataFromEntityIdLIVE(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
-        UZUtilBase.getDataFromEntityIdLIVE(context, UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
+    public static void getDataFromEntityIdLive(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
+        UZUtilBase.getDataFromEntityIdLive(context, UZData.getInstance().getAPIVersion(), UZData.getInstance().getAppId(), entityId, callback);
     }
 
     public static boolean initCustomLinkPlay(Context context, UZVideo uzVideo) {
