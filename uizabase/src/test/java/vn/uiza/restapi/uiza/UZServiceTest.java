@@ -26,6 +26,7 @@ import vn.uiza.restapi.restclient.RestClient;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
+import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.restapi.uiza.model.v3.ad.AdWrapper;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.ResultGetTokenStreaming;
 import vn.uiza.restapi.uiza.model.v3.linkplay.gettokenstreaming.SendGetTokenStreaming;
@@ -40,9 +41,11 @@ import vn.uiza.restapi.uiza.model.v3.metadata.updatemetadata.ResultUpdateMetadat
 import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
+import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
 import vn.uiza.utils.util.FileUtils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static vn.uiza.base.FakeData.API_VERSION;
@@ -389,6 +392,29 @@ public class UZServiceTest {
         AdWrapper actual = testSubscriber.getOnNextEvents().get(0);
 
         assertEquals(3, actual.getData().size());
+    }
+
+    @Test
+    public void getSubtitles_Success() {
+        String responseString = getJsonFromResource(FakeData.VIDEO_PATH, "getSubtitles_success.json");
+        MockResponse response = new MockResponse().setResponseCode(200).setBody(responseString);
+        mockServer.enqueue(response);
+
+        TestSubscriber<ResultGetSubtitles> testSubscriber = new TestSubscriber<>();
+        uzService.getSubtitles(API_VERSION, "entityId", "appId").subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        testSubscriber.assertCompleted();
+        testSubscriber.assertNoErrors();
+        ResultGetSubtitles actual = testSubscriber.getOnNextEvents().get(0);
+
+        assertNotNull(actual);
+        assertFalse(actual.getData().isEmpty());
+        assertEquals(3, actual.getData().size());
+
+        Subtitle subtitle0 = actual.getData().get(0);
+        assertNotNull(subtitle0.getLanguage());
+        assertNotNull(subtitle0.getUrl());
     }
 
     /////////////////////////////////////

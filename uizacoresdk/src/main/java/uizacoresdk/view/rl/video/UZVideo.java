@@ -130,6 +130,7 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.Logo;
 import vn.uiza.restapi.uiza.model.v4.playerinfo.PlayerInfor;
+import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
 import vn.uiza.rxandroid.ApiSubscriber;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.util.AppUtils;
@@ -190,6 +191,7 @@ public class UZVideo extends RelativeLayout
     private boolean isEnableStatsForNerds;
     private UZChromeCast uZChromeCast;
     private boolean isCastingChromecast = false;
+    private List<Subtitle> subtitleList = new ArrayList<>();
     private boolean autoMoveToLiveEdge;
 
     public UZVideo(Context context) {
@@ -555,6 +557,7 @@ public class UZVideo extends RelativeLayout
             showProgress();
         }
         updateUIDependOnLivestream();
+        // TODO: Check how to get subtitle of a custom link play, because we have no idea about entityId or appId
         List<Subtitle> subtitleList = null;
 
         if (!LConnectivityUtil.isConnected(getContext())) {
@@ -2727,6 +2730,7 @@ public class UZVideo extends RelativeLayout
                     @Override
                     public void onSuccess(ResultGetLinkPlay resultGetLinkPlay) {
                         handleLinkPlayResponse(resultGetLinkPlay);
+                        callAPIGetSubtitles();
                     }
 
                     @Override
@@ -2751,7 +2755,28 @@ public class UZVideo extends RelativeLayout
             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
             SentryUtils.captureException(e);
         }
-        checkToSetUpResource();
+    }
+
+    private void callAPIGetSubtitles() {
+        if (mResultGetLinkPlay.getData() == null) return;
+
+        UZService service = UZRestClient.createService(UZService.class);
+        UZAPIMaster.getInstance()
+                .subscribe(service.getSubtitles(UZData.getInstance().getAPIVersion(),
+                        mResultGetLinkPlay.getData().getEntityId(),
+                        mResultGetLinkPlay.getData().getAppId()), new ApiSubscriber<ResultGetSubtitles>() {
+                    @Override
+                    public void onSuccess(ResultGetSubtitles result) {
+                        subtitleList.clear();
+                        subtitleList.addAll(result.getData());
+                        checkToSetUpResource();
+                    }
+
+                    @Override
+                    public void onFail(Throwable e) {
+                        checkToSetUpResource();
+                    }
+                });
     }
 
     private void callAPIUpdateLiveInfoCurrentView(final int durationDelay) {
@@ -2915,8 +2940,7 @@ public class UZVideo extends RelativeLayout
                 return;
             }
             String linkPlay = listLinkPlay.get(countTryLinkPlayError);
-            List<Subtitle> subtitleList = null;
-            //TODO iplm v3 chua co subtitle
+
             addTrackingMuiza(Constants.MUIZA_EVENT_READY);
             if (isCalledFromChangeSkin) {
                 //if called from func changeSkin(), dont initDataSource with uilIMA Ad.
@@ -3525,16 +3549,16 @@ public class UZVideo extends RelativeLayout
         movieMetadata.putString(MediaMetadata.KEY_TITLE, UZData.getInstance().getData().getEntityName());
         movieMetadata.addImage(new WebImage(Uri.parse(UZData.getInstance().getData().getThumbnail())));
 
-        //TODO add subtitle vtt to chromecast
-        List<MediaTrack> mediaTrackList = new ArrayList<>();
+        // NOTE: The receiver app (on TV) should Satisfy CORS requirements
+        // https://developers.google.com/cast/docs/android_sender/media_tracks#satisfy_cors_requirements
+        List<MediaTrack> mediaTrackList = buildMediaTracks();
         long duration = getDuration();
         if (duration < 0) {
             LLog.e(TAG, "invalid duration -> cannot play chromecast");
             return;
         }
 
-        MediaInfo mediaInfo = new MediaInfo.Builder(
-                uzPlayerManager.getLinkPlay())
+        MediaInfo mediaInfo = new MediaInfo.Builder(uzPlayerManager.getLinkPlay())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setContentType("videos/mp4")
                 .setMetadata(movieMetadata)
@@ -3564,9 +3588,32 @@ public class UZVideo extends RelativeLayout
 
     }
 
+    private List<MediaTrack> buildMediaTracks() {
+        List<MediaTrack> result = new ArrayList<>();
+        if (subtitleList == null || subtitleList.isEmpty()) return result;
+        for(int i = 0; i < subtitleList.size(); i++) {
+            Subtitle subtitle = subtitleList.get(i);
+            if (subtitle.getStatus() == Subtitle.Status.DISABLE) continue;
+            MediaTrack subtitleTrack = new MediaTrack.Builder(i + 1001/* ID is unique */, MediaTrack.TYPE_TEXT)
+                    .setName(subtitle.getName())
+                    .setContentType("text/vtt")
+                    .setSubtype(MediaTrack.SUBTYPE_SUBTITLES)
+                    .setContentId(subtitle.getUrl())
+                    .setLanguage(subtitle.getLanguage())
+                    .build();
+            // Re-order default subtitle track
+            if (subtitle.getIsDefault() == 1) {
+                result.add(0, subtitleTrack);
+            } else {
+                result.add(subtitleTrack);
+            }
+        }
+        return result;
+    }
+
     private boolean isCastPlayerPlayingFirst;
 
-    /*khi click vào biểu tượng casting
+    /* khi click vào biểu tượng casting
      * thì sẽ pause local player và bắt đầu loading lên cast player
      * khi disconnect thì local player sẽ resume*/
     private void updateUIChromecast() {

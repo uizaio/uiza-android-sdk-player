@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "id": "bf00837a-3e24-4270-b294-e532d7334349",
+      "name": "English",
+      "url": "http://stag-ap-southeast-1-z-01.uizadev.io/b984eb7a457142c9a491fc3246ce6bb3-static/2019/07/05/subtitles-demo-1562042065787-1562327544700.vtt",
+      "type": "subtitle",
+      "mine": "vtt",
+      "language": "EN",
+      "isDefault": 0,
+      "status": 1,
+      "createdAt": "2019-07-05T11:52:34.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    },
+    {
+      "id": "158427d0-28a0-4494-bfab-703e8bbc5383",
+      "name": "China",
+      "url": "http://stag-ap-southeast-1-z-01.uizadev.io/b984eb7a457142c9a491fc3246ce6bb3-static/2019/07/05/subtitles-demo-vi-1562042088295-1562326799652.vtt",
+      "type": "subtitle",
+      "mine": "vtt",
+      "language": "CN",
+      "isDefault": 0,
+      "status": 1,
+      "createdAt": "2019-07-05T11:40:10.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    },
+    {
+      "id": "0b1a8057-52e8-4d9c-b59d-78f9f71993b0",
+      "name": "VTT VI",
+      "url": "http://stag-ap-southeast-1-z-01.uizadev.io/b984eb7a457142c9a491fc3246ce6bb3-static/2019/07/02/subtitles-demo-vi-1562042088295.vtt",
+      "type": "subtitle",
+      "mine": "vtt",
+      "language": "VN",
+      "isDefault": 0,
+      "status": 1,
+      "createdAt": "2019-07-02T04:35:00.000Z",
+      "updatedAt": "0000-00-00 00:00:00"
+    }
+  ],
+  "metadata": {
+    "total": 3,
+    "result": 3,
+    "page": 1,
+    "limit": 20
+  },
+  "version": 4,
+  "datetime": "2019-07-08T05:58:04.615Z",
+  "policy": "public",
+  "requestId": "a80c0e17-42d7-40d0-a40f-209bef2a99a8",
+  "serviceName": "api-v4",
+  "message": "OK",
+  "code": 200,
+  "type": "SUCCESS"
+}
