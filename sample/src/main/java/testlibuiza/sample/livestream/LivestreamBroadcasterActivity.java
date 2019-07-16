@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -46,7 +46,6 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizalivestream.interfaces.UZLivestreamCallback;
@@ -311,6 +310,11 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
                 LToast.show(activity, reason);
             }
         });
+    }
+
+    @Override
+    public void onBackgroundTooLong() {
+        LToast.show(getApplicationContext(), "You go to background for a long time !", Toast.LENGTH_LONG);
     }
 
     @Override

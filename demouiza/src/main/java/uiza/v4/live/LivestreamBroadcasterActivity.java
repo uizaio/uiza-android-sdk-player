@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BeautyFilterRender;
@@ -312,6 +313,11 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
         } else {
             LToast.show(activity, "Cannot use this feature because user does not allow our permissions");
         }
+    }
+
+    @Override
+    public void onBackgroundTooLong() {
+        LToast.show(getApplicationContext(), "You go to background for a long time !", Toast.LENGTH_LONG);
     }
 
     @Override

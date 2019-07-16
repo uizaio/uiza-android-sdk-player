@@ -28,6 +28,8 @@ public class SetEntityIdActivity extends AppCompatActivity {
     private EditText etInputMetadataId;
     private Button btStartPf;
 
+    private boolean isLive;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
@@ -86,6 +88,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
                 String entityId = etInputEntityId.getText().toString();
                 final Intent intent = new Intent(activity, UZPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
+                intent.putExtra(Constants.KEY_UIZA_IS_LIVE, isLive);
                 startActivity(intent);
             }
         });
@@ -94,6 +97,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             public void onClick(View v) {
                 etInputEntityId.setText(LSApplication.entityIdDefaultVOD);
                 LUIUtil.setLastCursorEditText(etInputEntityId);
+                isLive = false;
             }
         });
         findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
@@ -101,12 +105,14 @@ public class SetEntityIdActivity extends AppCompatActivity {
             public void onClick(View v) {
                 etInputEntityId.setText(LSApplication.entityIdDefaultLIVE);
                 LUIUtil.setLastCursorEditText(etInputEntityId);
+                isLive = true;
             }
         });
         findViewById(R.id.bt_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 etInputEntityId.setText("");
+                isLive = false;
             }
         });
     }

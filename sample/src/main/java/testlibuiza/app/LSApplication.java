@@ -52,7 +52,7 @@ public class LSApplication extends MultiDexApplication {
     public static final String entityIdDefaultVOD = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
     public static final String entityIdDefaultVOD_21_9 = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
     public static final String entityIdDefaultVODportrait = "33812ed9-4b02-408d-aab4-e77c12d16bb0";
-    public static final String entityIdDefaultLIVE = "-";
+    public static final String entityIdDefaultLIVE = "7b1b7cf3-d451-48c9-a57a-73e44e87f032";
     public static final String metadataDefault0 = "-";
     public static String entityIdDefaultLIVE_NO_TRANSCODE = "-";
     public static String PLAYER_INFOR_ID = "702ea04c-61d9-42ad-b3e0-5ec376b4d2a4";

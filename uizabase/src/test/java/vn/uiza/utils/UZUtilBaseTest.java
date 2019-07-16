@@ -97,7 +97,7 @@ public class UZUtilBaseTest {
         Mockito.verify(callbackGetDetailEntity, Mockito.never()).onSuccess(result.getData());
 
         PowerMockito.verifyStatic(UZUtilBase.class);
-        UZUtilBase.getDataFromEntityIdLIVE(context, API_VERSION_3, entityId, appId,
+        UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
                 callbackGetDetailEntity);
     }
 
@@ -146,7 +146,7 @@ public class UZUtilBaseTest {
         PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
 
         // Given
-        UZUtilBase.getDataFromEntityIdLIVE(context, API_VERSION_3, entityId, appId,
+        UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
                 callbackGetDetailEntity);
 
         // Then
@@ -173,7 +173,7 @@ public class UZUtilBaseTest {
         PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
 
         // Given
-        UZUtilBase.getDataFromEntityIdLIVE(context, API_VERSION_3, entityId, appId,
+        UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
                 callbackGetDetailEntity);
 
         // Then
@@ -199,7 +199,7 @@ public class UZUtilBaseTest {
         PowerMockito.when(UZAPIMaster.getInstance()).thenReturn(Mockito.mock(UZAPIMaster.class));
 
         // Given
-        UZUtilBase.getDataFromEntityIdLIVE(context, API_VERSION_3, entityId, appId,
+        UZUtilBase.getDataFromEntityIdLive(context, API_VERSION_3, entityId, appId,
                 callbackGetDetailEntity);
 
         // Then

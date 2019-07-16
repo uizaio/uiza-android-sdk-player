@@ -54,9 +54,11 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
+        uzVideo.setAutoMoveToLiveEdge(true);
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
+            boolean isLive = getIntent().getBooleanExtra(Constants.KEY_UIZA_IS_LIVE, false);
             if (entityId == null) {
                 boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
@@ -65,7 +67,11 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
                     UZUtil.initEntity(activity, uzVideo, entityId);
                 }
             } else {
-                UZUtil.initEntity(activity, uzVideo, entityId);
+                if (isLive) {
+                    UZUtil.initLiveEntity(activity, uzVideo, entityId);
+                } else {
+                    UZUtil.initEntity(activity, uzVideo, entityId);
+                }
             }
         } else {
             UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);

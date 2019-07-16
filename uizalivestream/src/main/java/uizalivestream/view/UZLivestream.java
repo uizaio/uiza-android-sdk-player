@@ -725,7 +725,7 @@ public class UZLivestream extends RelativeLayout
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive, final String errorMsg) {
         String appId = UZLivestreamData.getInstance().getAppId();
-        UZUtilBase.getDataFromEntityIdLIVE(getContext(), UZLivestreamData.getInstance().getAPIVersion(), appId, entityLiveId, new CallbackGetDetailEntity() {
+        UZUtilBase.getDataFromEntityIdLive(getContext(), UZLivestreamData.getInstance().getAPIVersion(), appId, entityLiveId, new CallbackGetDetailEntity() {
             @Override
             public void onSuccess(Data d) {
                 if (d == null || d.getLastPushInfo() == null || d.getLastPushInfo().isEmpty() || d.getLastPushInfo().get(0) == null) {
