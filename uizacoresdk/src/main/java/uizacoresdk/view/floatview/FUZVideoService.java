@@ -67,7 +67,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private long contentPosition;
     private int screenWidth;
     private int screenHeight;
-    private int statusBarHeight;
+    private int pipTopPosition;
     private int videoW = 16;
     private int videoH = 9;
     private boolean isEZDestroy;
@@ -111,9 +111,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             SentryUtils.captureException(e);
         }
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
-        if (isInitCustomLinkplay) {
-            // skip it
-        } else {
+        if (!isInitCustomLinkplay) {
             if (UZData.getInstance().getData() == null) {
                 return super.onStartCommand(intent, flags, startId);
             }
@@ -124,7 +122,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             LLog.d(TAG, "onStartCommand isInitCustomLinkplay " + isInitCustomLinkplay + ", contentPosition: " + contentPosition + ", cdnHost: " + cdnHost + ", linkPlay: " + linkPlay);
             setupVideo();
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     private void findViews() {
@@ -183,7 +181,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         videoH = UZUtil.getVideoHeight(getBaseContext());
         screenWidth = LScreenUtil.getScreenWidth();
         screenHeight = LScreenUtil.getScreenHeight();
-        statusBarHeight = LScreenUtil.getStatusBarHeight(getApplicationContext());
+        pipTopPosition = UZUtil.getStablePipTopPosition(getBaseContext());
         marginL = UZUtil.getMiniPlayerMarginL(getBaseContext());
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
         marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
@@ -230,7 +228,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         /*params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = screenWidth - getMoveViewWidth();
         //params.y = screenHeight - getMoveViewHeight();
-        params.y = screenHeight - getMoveViewHeight() - statusBarHeight;
+        params.y = screenHeight - getMoveViewHeight() - pipTopPosition;
         //LLog.d(TAG, "first position: " + params.x + "-" + params.y);*/
         //OPTION 4
         //float view o ben ngoai screen cua device
@@ -411,8 +409,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(getBaseContext());
         int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(getBaseContext());
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
-            firstPositionX = vW;
-            firstPositionY = screenHeight - vH - statusBarHeight;
+            firstPositionX = screenWidth - vW;
+            firstPositionY = screenHeight - vH - pipTopPosition;
         }
         slideToPosition(firstPositionX, firstPositionY);
     }
@@ -682,7 +680,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                             slideToPosition(0, 0);
                         } else {
                             //LLog.d(TAG, "bottom left part");
-                            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                            slideToPosition(0, screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     } else {
                         if (centerPosY < screenHeight / 2) {
@@ -690,7 +688,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                             slideToPosition(screenWidth - getMoveViewWidth(), 0);
                         } else {
                             //LLog.d(TAG, "bottom right part");
-                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     }
                     break;
@@ -730,7 +728,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                             slideToPosition(0, 0);
                         } else {
                             //LLog.d(TAG, "bottom left part");
-                            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+                            slideToPosition(0, screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     } else {
                         if (centerPosY < screenHeight / 2) {
@@ -738,7 +736,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                             slideToPosition(screenWidth - getMoveViewWidth(), 0);
                         } else {
                             //LLog.d(TAG, "bottom right part");
-                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+                            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     }
                     break;
@@ -760,9 +758,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int posX = params.x;
         int centerPosX = posX + getMoveViewWidth() / 2;
         if (centerPosX < screenWidth / 2) {
-            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+            slideToPosition(0, screenHeight - getMoveViewHeight() - pipTopPosition);
         } else {
-            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - pipTopPosition);
         }
     }
 
@@ -772,7 +770,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (centerPosY < screenHeight / 2) {
             slideToPosition(0, 0);
         } else {
-            slideToPosition(0, screenHeight - getMoveViewHeight() - statusBarHeight);
+            slideToPosition(0, screenHeight - getMoveViewHeight() - pipTopPosition);
         }
     }
 
@@ -782,7 +780,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         if (centerPosY < screenHeight / 2) {
             slideToPosition(screenWidth - getMoveViewWidth(), 0);
         } else {
-            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - statusBarHeight);
+            slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - pipTopPosition);
         }
     }
 
