@@ -1,14 +1,15 @@
 package testlibuiza.sample.v3.fb;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import testlibuiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -18,6 +19,7 @@ import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LImageUtil;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
@@ -67,14 +69,29 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
-        btMini.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uzVideo.showPip();
-            }
-        });
+        // Sample for set size PiP
+        UZUtil.setMiniPlayerSizePixel(this, false, 640, 360);
+        btMini.setOnClickListener(view -> uzVideo.showPip());
         checkId(getIntent());
         getDummyData();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                @Override
+                public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                    getWindow().getDecorView().setOnApplyWindowInsetsListener(null);
+                    int stableInsetTop = insets.getStableInsetTop();
+                    UZUtil.setStablePipTopPosition(FBVideoActivity.this, stableInsetTop);
+                    return v.onApplyWindowInsets(insets);
+                }
+            });
+        } else {
+            UZUtil.setStablePipTopPosition(FBVideoActivity.this, LScreenUtil.getStatusBarHeight(this));
+        }
     }
 
     private void checkId(Intent intent) {

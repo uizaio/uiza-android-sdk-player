@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -673,6 +674,7 @@ public class UZUtil {
     private final static String MINI_PLAYER_SIZE_HEIGHT = "MINI_PLAYER_SIZE_HEIGHT";
     private final static String LAST_SYNCED_SERVER_TIME = "LAST_SYNCED_SERVER_TIME";
     private final static String LAST_ELAPSED_TIME = "LAST_ELAPSED_TIME";
+    private final static String STABLE_PIP_TOP_POSITION = "STABLE_PIP_TOP_POSITION";
 
     private static SharedPreferences getPrivatePreference(Context context) {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -902,6 +904,14 @@ public class UZUtil {
         setMiniPlayerSizeWidth(context, videoWidthPx);
         setMiniPlayerSizeHeight(context, videoHeightPx);
         return true;
+    }
+
+    public static void setStablePipTopPosition(Context context, int value) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), STABLE_PIP_TOP_POSITION, value);
+    }
+
+    public static int getStablePipTopPosition(Context context) {
+        return (Integer) SharedPreferenceUtil.get(getPrivatePreference(context), STABLE_PIP_TOP_POSITION, 0);
     }
 
     /////////////////////////////////OBJECT

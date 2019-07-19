@@ -1428,7 +1428,9 @@ public class UZVideo extends RelativeLayout
             LLog.e(TAG, UZException.ERR_19);
             notifyError(UZExceptionUtil.getExceptionShowPip());
         } else {
-            ViewUtils.performClick(ibPictureInPictureIcon);
+            // [Re-check]: Why use performClick?
+            // ViewUtils.performClick(ibPictureInPictureIcon);
+            handleClickPictureInPicture();
         }
     }
 
