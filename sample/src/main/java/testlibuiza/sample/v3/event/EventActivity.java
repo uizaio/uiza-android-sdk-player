@@ -331,6 +331,11 @@ public class EventActivity extends AppCompatActivity {
             public void onUpdateLiveInfoCurrentView(long watchnow) {
                 tvLiveInfo.setText("onUpdateLiveInfoCurrentView watchnow: " + watchnow);
             }
+
+            @Override
+            public void onLivestreamUnAvailable() {
+                tvLiveInfo.setText(R.string.err_live_is_stopped);
+            }
         });
         findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
             @Override
