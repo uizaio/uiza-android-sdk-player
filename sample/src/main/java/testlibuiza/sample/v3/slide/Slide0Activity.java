@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -21,7 +21,10 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
+public class Slide0Activity extends AppCompatActivity
+        implements VDHView.Callback, UZVideoStateChangedListener, UZPlayerStateChangedListener,
+        UZAdStateChangedListener, UZItemClickListener, UZPlayerView.OnTouchEvent,
+        UZPlayerView.ControllerStateCallback, View.OnClickListener {
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
     private VDHView vdhv;
@@ -29,19 +32,20 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     private UZVideo uzVideo;
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        vdhv = (VDHView) findViewById(R.id.vdhv);
-        tv0 = (TextView) findViewById(R.id.tv_0);
-        tv1 = (TextView) findViewById(R.id.tv_1);
-        tv2 = (TextView) findViewById(R.id.tv_2);
-        tv3 = (TextView) findViewById(R.id.tv_3);
+        uzVideo = findViewById(R.id.uiza_video);
+        vdhv = findViewById(R.id.vdhv);
+        tv0 = findViewById(R.id.tv_0);
+        tv1 = findViewById(R.id.tv_1);
+        tv2 = findViewById(R.id.tv_2);
+        tv3 = findViewById(R.id.tv_3);
         vdhv.setCallback(this);
         vdhv.setOnTouchEvent(this);
         vdhv.setScreenRotate(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addProgressCallback(this);
+        uzVideo.setUzAdStateChangedListener(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -162,7 +166,13 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         vdhv.setInitResult(isInitSuccess);
     }
 
@@ -185,11 +195,11 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         if (!isLandscape) {
             int w = LScreenUtil.getScreenWidth();
             int h = w * 9 / 16;

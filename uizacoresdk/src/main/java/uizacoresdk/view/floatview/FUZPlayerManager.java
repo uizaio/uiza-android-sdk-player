@@ -47,7 +47,7 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
                     boolean isPlayingAd = fUZVideoAdPlayerListener.isPlayingAd();
                     if (isPlayingAd) {
                         fuzVideo.hideProgress();
-                        if (progressCallback != null) {
+                        if (uzAdStateChangedListener != null) {
                             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
                             int duration = (int) videoProgressUpdate.getDuration();
                             int s = (int) videoProgressUpdate.getCurrentTime();
@@ -55,10 +55,10 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
                             if (duration != 0) {
                                 percent = s * 100 / duration;
                             }
-                            progressCallback.onAdProgress(s, duration, percent);
+                            uzAdStateChangedListener.onAdProgress(s, duration, percent);
                         }
                     } else {
-                        if (progressCallback != null) {
+                        if (uzVideoStateChangedListener != null) {
                             if (player != null) {
                                 long mls = player.getCurrentPosition();
                                 long duration = player.getDuration();
@@ -66,8 +66,8 @@ public final class FUZPlayerManager extends FUZPlayerManagerAbs implements AdsMe
                                 if (duration != 0) {
                                     percent = (int) (mls * 100 / duration);
                                 }
-                                int s = Math.round(mls / 1000);
-                                progressCallback.onVideoProgress(mls, s, duration, percent);
+                                int s = Math.round(mls / 1000f);
+                                uzVideoStateChangedListener.onVideoProgress(mls, s, duration, percent);
                             }
                         }
                     }

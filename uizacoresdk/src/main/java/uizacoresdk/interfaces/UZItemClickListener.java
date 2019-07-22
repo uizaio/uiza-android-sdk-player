@@ -2,6 +2,6 @@ package uizacoresdk.interfaces;
 
 import android.view.View;
 
-public interface UZItemClick {
+public interface UZItemClickListener {
     void onItemClick(View view);
 }

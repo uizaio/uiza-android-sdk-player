@@ -1,5 +1,5 @@
 package uizacoresdk.interfaces;
 
-public interface UZBufferCallback {
+public interface UZVideoBufferChangedListener {
     void onBufferChanged(long bufferedDurationUs, float playbackSpeed);
 }

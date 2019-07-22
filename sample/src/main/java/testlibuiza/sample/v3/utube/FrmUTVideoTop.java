@@ -21,9 +21,10 @@ import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.video.VideoListener;
 
 import testlibuiza.R;
-import uizacoresdk.interfaces.CallbackUZTimebar;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZTimeBarChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -34,7 +35,8 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
+public class FrmUTVideoTop extends Fragment implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener {
     private UZVideo uzVideo;
     private View shadow;
 
@@ -45,9 +47,10 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.addUZCallback(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
         uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
@@ -84,7 +87,7 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
             public void onSwipeTop() {
             }
         });
-        uzVideo.addCallbackUZTimebar(new CallbackUZTimebar() {
+        uzVideo.setUzTimeBarChangedListener(new UZTimeBarChangedListener() {
             @Override
             public void onStartPreview(PreviewView previewView, int progress) {
             }
@@ -98,10 +101,10 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
                 setAutoHideController();
             }
         });
-        uzVideo.addItemClick(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.setPlayerControllerAlwayVisible();
 
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        shadow = uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
 
@@ -180,11 +183,11 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         if (!isLandscape) {
@@ -196,6 +199,26 @@ public class FrmUTVideoTop extends Fragment implements UZCallback, UZItemClick {
 
     @Override
     public void onError(UZException e) {
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
     }
 
     public void initEntity(String entityId) {

@@ -7,13 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.exoplayer2.Player;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -26,7 +25,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 27/2/2019.
  */
 
-public class UZPlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class UZPlayerActivity extends AppCompatActivity
+        implements UZVideoStateChangedListener, UZPlayerStateChangedListener, UZItemClickListener {
     private Activity activity;
     private UZVideo uzVideo;
     private TextView tvProgressAd;
@@ -43,17 +43,17 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v3_cannot_slide_player);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
+        uzVideo = findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
-        tvProgressAd = (TextView) findViewById(R.id.tv_progress_ad);
-        tvProgressVideo = (TextView) findViewById(R.id.tv_progress_video);
-        tvStateVideo = (TextView) findViewById(R.id.tv_state_video);
-        tvBuffer = (TextView) findViewById(R.id.tv_buffer);
-        tvClickEvent = (TextView) findViewById(R.id.tv_click_event);
-        tvScreenRotate = (TextView) findViewById(R.id.tv_screen_rotate);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        tvProgressAd = findViewById(R.id.tv_progress_ad);
+        tvProgressVideo = findViewById(R.id.tv_progress_video);
+        tvStateVideo = findViewById(R.id.tv_state_video);
+        tvBuffer = findViewById(R.id.tv_buffer);
+        tvClickEvent = findViewById(R.id.tv_click_event);
+        tvScreenRotate = findViewById(R.id.tv_screen_rotate);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
         uzVideo.setAutoMoveToLiveEdge(true);
         String metadataId = getIntent().getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
@@ -215,49 +215,55 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
         if (uzVideo == null || uzVideo.getPlayer() == null) {
             return;
         }
-        uzVideo.addProgressCallback(new ProgressCallback() {
-            @Override
-            public void onAdEnded() {
-                tvProgressAd.setText("onAdEnded");
-            }
 
+        uzVideo.setUzAdStateChangedListener(new UZAdStateChangedListener() {
             @Override
             public void onAdProgress(int s, int duration, int percent) {
                 tvProgressAd.setText("Ad: " + s + "/" + duration + " (s) => " + percent + "%");
             }
 
             @Override
-            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                tvProgressVideo.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == Player.STATE_BUFFERING) {
-                    tvStateVideo.setText("onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
-                } else if (playbackState == Player.STATE_IDLE) {
-                    tvStateVideo.setText("onPlayerStateChanged STATE_IDLE, playWhenReady: " + playWhenReady);
-                } else if (playbackState == Player.STATE_READY) {
-                    tvStateVideo.setText("onPlayerStateChanged STATE_READY, playWhenReady: " + playWhenReady);
-                } else if (playbackState == Player.STATE_ENDED) {
-                    tvStateVideo.setText("onPlayerStateChanged STATE_ENDED, playWhenReady: " + playWhenReady);
-                }
-            }
-
-            @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
-                tvBuffer.setText("onBufferProgress bufferedPosition: " + bufferedPosition + "/" + duration + "(mls), bufferedPercentage: " + bufferedPercentage + "%");
+            public void onAdEnded() {
+                tvProgressAd.setText("onAdEnded");
             }
         });
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             setListener();
         }
     }
 
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+        tvProgressVideo.setText("Video: " + currentMls + "/" + duration + " (mls) => " + percent + "%");
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (playbackState == Player.STATE_BUFFERING) {
+            tvStateVideo.setText("onPlayerStateChanged STATE_BUFFERING, playWhenReady: " + playWhenReady);
+        } else if (playbackState == Player.STATE_IDLE) {
+            tvStateVideo.setText("onPlayerStateChanged STATE_IDLE, playWhenReady: " + playWhenReady);
+        } else if (playbackState == Player.STATE_READY) {
+            tvStateVideo.setText("onPlayerStateChanged STATE_READY, playWhenReady: " + playWhenReady);
+        } else if (playbackState == Player.STATE_ENDED) {
+            tvStateVideo.setText("onPlayerStateChanged STATE_ENDED, playWhenReady: " + playWhenReady);
+        }
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+        tvBuffer.setText("onBufferProgress bufferedPosition: " + bufferedPosition + "/" + duration + "(mls), bufferedPercentage: " + bufferedPercentage + "%");
+    }
     @Override
     public void onItemClick(View view) {
         switch (view.getId()) {
@@ -277,11 +283,11 @@ public class UZPlayerActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         tvScreenRotate.setText("isLandscape " + isLandscape);
     }
 

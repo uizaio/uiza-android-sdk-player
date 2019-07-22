@@ -10,16 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.video.VideoListener;
-
 import java.util.List;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.dlg.hq.UZItem;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -37,7 +35,8 @@ import vn.uiza.views.autosize.UZImageButton;
  * Created by loitp on 12/10/2018.
  */
 
-public class CustomHQActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomHQActivity extends AppCompatActivity
+        implements UZVideoStateChangedListener, UZPlayerStateChangedListener, UZItemClickListener {
     private Activity activity;
     private UZVideo uzVideo;
     private Button btCustomHq;
@@ -52,12 +51,13 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
         UZUtil.setCurrentPlayerId(R.layout.uiza_controller_hq_custom_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uiza_custom_hq);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        btCustomHq = (Button) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
-        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo = findViewById(R.id.uiza_video);
+        btCustomHq = uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = uzVideo.findViewById(R.id.uzib_custom_audio);
+        llListHq = findViewById(R.id.ll_list_hq);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addVideoListener(new VideoListener() {
             @Override
             public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
@@ -106,19 +106,13 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
                 bt.setBackgroundColor(Color.WHITE);
             }
             bt.setSoundEffectsEnabled(true);
-            bt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LAnimationUtil.play(view, Techniques.Pulse);
-                    c.performClick();
-                    LUIUtil.setDelay(300, new LUIUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            llListHq.removeAllViews();
-                            llListHq.invalidate();
-                        }
-                    });
-                }
+            bt.setOnClickListener(view1 -> {
+                LAnimationUtil.play(view1, Techniques.Pulse);
+                c.performClick();
+                LUIUtil.setDelay(300, mls -> {
+                    llListHq.removeAllViews();
+                    llListHq.invalidate();
+                });
             });
             llListHq.addView(bt);
         }
@@ -161,11 +155,31 @@ public class CustomHQActivity extends AppCompatActivity implements UZCallback, U
     }
 
     @Override
-    public void onSkinChange() {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+    }
+
+    @Override
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override

@@ -11,15 +11,13 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.List;
-
 import testlibuiza.app.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.interfaces.UZTVCallback;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
+import uizacoresdk.interfaces.UZVideoTVListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.dlg.hq.UZItem;
@@ -33,7 +31,9 @@ import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.autosize.UZImageButton;
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, UZTVCallback, UZPlayerView.ControllerStateCallback, UZItemClick {
+public class PlayerActivity extends AppCompatActivity implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZVideoTVListener, UZPlayerView.ControllerStateCallback,
+        UZItemClickListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
@@ -49,19 +49,14 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
 
         //init skin
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_custom);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_tv_0);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_0);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_2);
-        //UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_3);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        sv = (ScrollView) findViewById(R.id.sv);
-        llListHq = (LinearLayout) findViewById(R.id.ll_list_hq);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        uzibCustomHq = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_hq);
-        uzibCustomAudio = (UZImageButton) uzVideo.findViewById(R.id.uzib_custom_audio);
+        sv = findViewById(R.id.sv);
+        llListHq = findViewById(R.id.ll_list_hq);
+        uzVideo = findViewById(R.id.uiza_video);
+        uzibCustomHq = uzVideo.findViewById(R.id.uzib_custom_hq);
+        uzibCustomAudio = uzVideo.findViewById(R.id.uzib_custom_audio);
 
         uzibCustomHq.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -76,10 +71,11 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
             }
         });
 
-        uzVideo.addUZCallback(this);
-        uzVideo.addUZTVCallback(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzVideoTVListener(this);
         uzVideo.addControllerStateCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzItemClickListener(this);
 
         String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
         if (entityId == null) {
@@ -122,15 +118,35 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override
@@ -216,33 +232,7 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZT
     }
 
     @Override
-    public void onFocusChange(View view, boolean isFocus) {
-        //LLog.d(TAG, "onFocusChange isFocus " + isFocus);
-        /*if (isFocus) {
-            if (view == uzVideo.getIbBackScreenIcon()) {
-                LLog.d(TAG, "onFocusChange ibSettingIcon");
-            } else if (view == uzVideo.getIbSettingIcon()) {
-                LLog.d(TAG, "onFocusChange ibSettingIcon");
-            } else if (view == uzVideo.getIbCcIcon()) {
-                LLog.d(TAG, "onFocusChange ibCcIcon");
-            } else if (view == uzVideo.getIbPlaylistRelationIcon()) {
-                LLog.d(TAG, "onFocusChange ibPlaylistRelationIcon");
-            } else if (view == uzVideo.getIbRewIcon()) {
-                LLog.d(TAG, "onFocusChange ibRewIcon");
-            } else if (view == uzVideo.getIbPlayIcon()) {
-                LLog.d(TAG, "onFocusChange ibPlayIcon");
-            } else if (view == uzVideo.getIbPauseIcon()) {
-                LLog.d(TAG, "onFocusChange ibPauseIcon");
-            } else if (view == uzVideo.getIbReplayIcon()) {
-                LLog.d(TAG, "onFocusChange ibReplayIcon");
-            } else if (view == uzVideo.getIbSkipNextIcon()) {
-                LLog.d(TAG, "onFocusChange ibSkipNextIcon");
-            } else if (view == uzVideo.getIbSkipPreviousIcon()) {
-                LLog.d(TAG, "onFocusChange ibSkipPreviousIcon");
-            } else if (view == uzVideo.getUZTimeBar()) {
-                LLog.d(TAG, "onFocusChange uzTimebar");
-            }
-        }*/
+    public void onFocusChanged(View view, boolean isFocus) {
         uzVideo.updateUIFocusChange(view, isFocus);
     }
 

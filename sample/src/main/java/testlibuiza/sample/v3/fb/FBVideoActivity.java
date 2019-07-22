@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -33,7 +34,8 @@ import vn.uiza.rxandroid.ApiSubscriber;
  * Created by loitp on 4/1/2019.
  */
 
-public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class FBVideoActivity extends AppCompatActivity implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener {
     private final String TAG = getClass().getSimpleName();
     public final static String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
     private static FBVideoActivity activity;
@@ -66,8 +68,9 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         findViews();
         uzVideo.setAutoSwitchItemPlaylistFolder(true);
         uzVideo.setAutoStart(true);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         // Sample for set size PiP
         UZUtil.setMiniPlayerSizeDp(this, false, 140, 220);
@@ -208,11 +211,31 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     @Override
-    public void onSkinChange() {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+    }
+
+    @Override
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override

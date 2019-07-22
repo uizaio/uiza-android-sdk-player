@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.model.UZCustomLinkPlay;
 import uizacoresdk.util.UZDataCLP;
 import uizacoresdk.util.UZUtil;
@@ -27,7 +28,8 @@ import vn.uiza.views.LToast;
  * Created by loitp on 9/1/2019.
  */
 
-public class PlayerActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class PlayerActivity extends AppCompatActivity implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
@@ -41,12 +43,13 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        etLinkPlay = (EditText) findViewById(R.id.et_link_play);
-        btPlay = (Button) findViewById(R.id.bt_play);
+        uzVideo = findViewById(R.id.uiza_video);
+        etLinkPlay = findViewById(R.id.et_link_play);
+        btPlay = findViewById(R.id.bt_play);
         btPlay.setEnabled(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         // If linkplay is livestream, it will auto move to live edge when onResume is called
         uzVideo.setAutoMoveToLiveEdge(true);
 
@@ -155,6 +158,26 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
             onBackPressed();
@@ -162,11 +185,11 @@ public class PlayerActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override

@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.common.Constants;
@@ -24,7 +24,8 @@ import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
  * Created by loitp on 27/2/2019.
  */
 
-public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity
+        implements UZVideoStateChangedListener, UZPlayerStateChangedListener, UZItemClickListener {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private UZVideo uzVideo;
@@ -39,14 +40,15 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uiza_custom_skin_code_uz_timebar);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        ll = (LinearLayout) findViewById(R.id.ll);
+        uzVideo = findViewById(R.id.uiza_video);
+        ll = findViewById(R.id.ll);
         LUIUtil.setMarginDimen(ll, 0, -uzVideo.getPixelAdded() / 2, 0, 0);
-        pb = (ProgressBar) findViewById(R.id.p);
+        pb = findViewById(R.id.p);
         pb.setVisibility(View.VISIBLE);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
-        shadow = (View) uzVideo.findViewById(R.id.bkg_shadow);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
+        shadow = uzVideo.findViewById(R.id.bkg_shadow);
         uzVideo.setMarginDependOnUZTimeBar(shadow);
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         checkId(getIntent());
@@ -95,15 +97,35 @@ public class CustomSkinCodeUZTimebarActivity extends AppCompatActivity implement
     }
 
     @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
     }
 
     @Override
-    public void onSkinChange() {
+    public void onSkinChanged() {
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         uzVideo.setMarginDependOnUZTimeBar(uzVideo.getBkg());
         uzVideo.setMarginDependOnUZTimeBar(shadow);
     }

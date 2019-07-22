@@ -10,14 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -25,14 +23,10 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-/**
- * Created by loitp on 27/2/2019.
- */
-
-public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class CustomSkinCodeSeekbarActivity extends AppCompatActivity
+        implements UZPlayerStateChangedListener, UZItemClickListener {
     private UZVideo uzVideo;
     private SeekBar seekBar;
-    private final String TAG = getClass().getSimpleName();
     private Activity activity;
 
     @Override
@@ -42,12 +36,12 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
         UZUtil.setCurrentPlayerId(R.layout.framgia_controller_skin_custom_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uiza_custom_skin_code_seekbar);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        seekBar = (SeekBar) findViewById(R.id.sb);
+        uzVideo = findViewById(R.id.uiza_video);
+        seekBar = findViewById(R.id.sb);
         uzVideo.setAutoStart(true);
         uzVideo.hideUzTimebar();
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         final String entityId = LSApplication.entityIdDefaultVOD;
         UZUtil.initEntity(activity, uzVideo, entityId);
         seekBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -66,14 +60,19 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
                 uzVideo.onStopPreview(seekBar.getProgress());
             }
         });
-        uzVideo.addProgressCallback(new ProgressCallback() {
+        uzVideo.setUzVideoStateChangedListener(new UZVideoStateChangedListener() {
             @Override
-            public void onAdEnded() {
-                seekBar.setMax((int) uzVideo.getDuration());
+            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+                    ResultGetLinkPlay resultGetLinkPlay, Data data) {
+                if (isInitSuccess) {
+                    seekBar.setMax((int) uzVideo.getDuration());
+                    updateUISeekbarPosition(false);
+                }
             }
 
             @Override
-            public void onAdProgress(int s, int duration, int percent) {
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
             }
 
             @Override
@@ -82,41 +81,33 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
             }
 
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
             }
 
             @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+            public void onVideoEnded() {
+
             }
-        });
-        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
+
             @Override
-            public void onVisibilityChange(boolean isShow) {
-                seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
+            public void onError(UZException exception) {
+
             }
         });
+        uzVideo.addControllerStateCallback(
+                isShow -> seekBar.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE));
         uzVideo.setControllerShowTimeoutMs(15000);
     }
 
-    @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-        if (isInitSuccess) {
-            seekBar.setMax((int) uzVideo.getDuration());
-            updateUISeekbarPosition(false);
-        }
-    }
-
     private void updateUISeekbarPosition(final boolean isLandscape) {
-        uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                int huzVideo = LUIUtil.getHeightOfView(uzVideo);
-                int hSeekbar = LUIUtil.getHeightOfView(seekBar);
-                if (isLandscape) {
-                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar, 0, 0);
-                } else {
-                    LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
-                }
+        uzVideo.post(() -> {
+            int huzVideo = LUIUtil.getHeightOfView(uzVideo);
+            int hSeekbar = LUIUtil.getHeightOfView(seekBar);
+            if (isLandscape) {
+                LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar, 0, 0);
+            } else {
+                LUIUtil.setMarginPx(seekBar, 0, huzVideo - hSeekbar / 2, 0, 0);
             }
         });
     }
@@ -133,22 +124,18 @@ public class CustomSkinCodeSeekbarActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
+    public void onSkinChanged() {
+
     }
 
     @Override
-    public void onSkinChange() {
+    public void onStateMiniPlayer(boolean isMiniPlayerInitSuccess) {
+
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
-    }
+    public void onScreenRotated(boolean isLandscape) {
 
-    @Override
-    public void onError(UZException e) {
-        if (e == null) {
-            return;
-        }
     }
 
     @Override

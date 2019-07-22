@@ -8,13 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.google.android.exoplayer2.audio.AudioListener;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
@@ -27,7 +26,8 @@ import vn.uiza.views.seekbar.UZVerticalSeekBar;
  * Created by loitp on 9/1/2019.
  */
 
-public class VolumeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
+public class VolumeActivity extends AppCompatActivity
+        implements UZVideoStateChangedListener, UZPlayerStateChangedListener, UZItemClickListener {
     private Activity activity;
     private UZVideo uzVideo;
     private SeekBar sb;
@@ -42,13 +42,14 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volume);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        sb = (SeekBar) findViewById(R.id.sb);
-        sb1 = (UZVerticalSeekBar) findViewById(R.id.sb_1);
-        sb2 = (UZVerticalSeekBar) findViewById(R.id.sb_2);
-        tv = (TextView) findViewById(R.id.tv);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo = findViewById(R.id.uiza_video);
+        sb = findViewById(R.id.sb);
+        sb1 = findViewById(R.id.sb_1);
+        sb2 = findViewById(R.id.sb_2);
+        tv = findViewById(R.id.tv);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addAudioListener(new AudioListener() {
             @Override
             public void onVolumeChanged(float volume) {
@@ -137,7 +138,8 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
+    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+            ResultGetLinkPlay resultGetLinkPlay, Data data) {
         if (isInitSuccess) {
             sb.setProgress((int) (uzVideo.getVolume() * 100));
             sb1.setProgress((int) (uzVideo.getVolume() * 100));
@@ -165,11 +167,31 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onSkinChange() {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+    }
+
+    @Override
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override

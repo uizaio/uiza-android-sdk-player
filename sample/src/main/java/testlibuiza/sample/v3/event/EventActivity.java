@@ -26,10 +26,11 @@ import java.util.List;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.interfaces.UZLiveContentCallback;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZLiveInfoChangedListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZAdPlayerCallback;
@@ -66,27 +67,22 @@ public class EventActivity extends AppCompatActivity {
         UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvUzCallback = (TextView) findViewById(R.id.tv_uz_callback);
-        tvAudioListener = (TextView) findViewById(R.id.tv_audio_listener);
-        tvVideoListener = (TextView) findViewById(R.id.tv_video_listener);
-        tvPlayerListener = (TextView) findViewById(R.id.tv_player_listener);
-        tvMetadataOutput = (TextView) findViewById(R.id.tv_metadata_output);
-        tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
-        tvController = (TextView) findViewById(R.id.tv_controller);
-        tvAd = (TextView) findViewById(R.id.tv_ad);
-        tvProgress = (TextView) findViewById(R.id.tv_progress);
-        tvTouch = (TextView) findViewById(R.id.tv_touch);
-        tvItemClick = (TextView) findViewById(R.id.tv_item_click);
-        tvLiveInfo = (TextView) findViewById(R.id.tv_live_info);
+        uzVideo = findViewById(R.id.uiza_video);
+        tvUzCallback = findViewById(R.id.tv_uz_callback);
+        tvAudioListener = findViewById(R.id.tv_audio_listener);
+        tvVideoListener = findViewById(R.id.tv_video_listener);
+        tvPlayerListener = findViewById(R.id.tv_player_listener);
+        tvMetadataOutput = findViewById(R.id.tv_metadata_output);
+        tvTextOutput = findViewById(R.id.tv_text_output);
+        tvController = findViewById(R.id.tv_controller);
+        tvAd = findViewById(R.id.tv_ad);
+        tvProgress = findViewById(R.id.tv_progress);
+        tvTouch = findViewById(R.id.tv_touch);
+        tvItemClick = findViewById(R.id.tv_item_click);
+        tvLiveInfo = findViewById(R.id.tv_live_info);
         uzVideo.setControllerShowTimeoutMs(5000);
 
-        uzVideo.addUZCallback(new UZCallback() {
-            @Override
-            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, ResultGetLinkPlay resultGetLinkPlay, Data data) {
-                tvUzCallback.setText("isInitResult " + isInitSuccess);
-            }
-
+        uzVideo.setUzPlayerStateChangedListener(new UZPlayerStateChangedListener() {
             @Override
             public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
                 if (isInitMiniPlayerSuccess) {
@@ -95,22 +91,17 @@ public class EventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSkinChange() {
+            public void onSkinChanged() {
                 tvUzCallback.setText("onSkinChange");
             }
 
             @Override
-            public void onScreenRotate(boolean isLandscape) {
+            public void onScreenRotated(boolean isLandscape) {
                 tvUzCallback.setText("onScreenRotate " + isLandscape);
-            }
-
-            @Override
-            public void onError(UZException e) {
-                tvUzCallback.setText("onError");
             }
         });
 
-        uzVideo.addItemClick(new UZItemClick() {
+        uzVideo.setUzItemClickListener(new UZItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 switch (view.getId()) {
@@ -250,7 +241,7 @@ public class EventActivity extends AppCompatActivity {
                 tvController.setText("onVisibilityChange " + isShow);
             }
         });
-        uzVideo.addProgressCallback(new ProgressCallback() {
+        uzVideo.setUzAdStateChangedListener(new UZAdStateChangedListener() {
             @Override
             public void onAdProgress(int s, int duration, int percent) {
                 tvProgress.setText("onAdProgress " + s + "/" + duration);
@@ -259,6 +250,19 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onAdEnded() {
                 tvProgress.setText("onAdEnded");
+            }
+        });
+        uzVideo.setUzVideoStateChangedListener(new UZVideoStateChangedListener() {
+
+            @Override
+            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+                    ResultGetLinkPlay resultGetLinkPlay, Data data) {
+
+            }
+
+            @Override
+            public void onVideoEnded() {
+
             }
 
             @Override
@@ -274,6 +278,15 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
                 tvProgress.setText("onBufferProgress " + bufferedPosition + "/" + duration);
+            }
+
+            @Override
+            public void onError(UZException exception) {
+                if (uzVideo.isLivestream()) {
+                    tvUzCallback.setText("onError: " + exception.getMessage());
+                } else {
+                    tvUzCallback.setText("onError: " + exception.getMessage());
+                }
             }
         });
         uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
@@ -322,9 +335,9 @@ public class EventActivity extends AppCompatActivity {
             public void onSurfaceSizeChanged(int width, int height) {
             }
         });
-        uzVideo.addUZLiveContentCallback(new UZLiveContentCallback() {
+        uzVideo.setUzLiveInfoChangedListener(new UZLiveInfoChangedListener() {
             @Override
-            public void onUpdateLiveInfoTimeStartLive(long duration, String hhmmss) {
+            public void onUpdateLiveInfoTimeStartLive(long duration, String elapsedTime) {
             }
 
             @Override
@@ -336,10 +349,16 @@ public class EventActivity extends AppCompatActivity {
             public void onLivestreamUnAvailable() {
                 tvLiveInfo.setText(R.string.err_live_is_stopped);
             }
+
+            @Override
+            public void onLivestreamEnded() {
+                tvLiveInfo.setText("This livestream is ended !");
+            }
         });
         findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearInfo();
                 final String entityId = LSApplication.entityIdDefaultVOD;
                 UZUtil.initEntity(activity, uzVideo, entityId);
             }
@@ -347,10 +366,26 @@ public class EventActivity extends AppCompatActivity {
         findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearInfo();
                 final String entityId = LSApplication.entityIdDefaultLIVE;
-                UZUtil.initEntity(activity, uzVideo, entityId);
+                UZUtil.initLiveEntity(activity, uzVideo, entityId);
             }
         });
+    }
+
+    private void clearInfo() {
+        tvUzCallback.setText("");
+        tvAudioListener.setText("");
+        tvVideoListener.setText("");
+        tvPlayerListener.setText("");
+        tvMetadataOutput.setText("");
+        tvTextOutput.setText("");
+        tvController.setText("");
+        tvAd.setText("");
+        tvProgress.setText("");
+        tvTouch.setText("");
+        tvItemClick.setText("");
+        tvLiveInfo.setText("");
     }
 
     @Override

@@ -61,8 +61,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import uizacoresdk.glide.GlideThumbnailTransformationPB;
-import uizacoresdk.interfaces.UZBufferCallback;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZVideoBufferChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.timebar.UZTimebar;
@@ -98,15 +99,16 @@ abstract class IUZPlayerManager implements PreviewLoader {
     protected Runnable runnable;
     private boolean isCanAddViewWatchTime;
     private long timestampPlayed;
-    protected ProgressCallback progressCallback;
-    protected UZBufferCallback bufferCallback;
-    protected long mls = 0;
+    protected UZVideoStateChangedListener uzVideoStateChangedListener;
+    protected UZAdStateChangedListener uzAdStateChangedListener;
+    protected UZVideoBufferChangedListener uzVideoBufferChangedListener;
+    protected long mls;
     protected long duration = 0;
     protected int percent = 0;
     protected int s = 0;
-    private long bufferPosition = 0;
-    private int bufferPercentage = 0;
-    private int videoW = 0;
+    private long bufferPosition;
+    private int bufferPercentage;
+    private int videoW;
     private int videoH = 0;
     protected DefaultTrackSelector trackSelector;
     private float volumeToggle;
@@ -170,12 +172,16 @@ abstract class IUZPlayerManager implements PreviewLoader {
         return linkPlay;
     }
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setUzAdStateChangedListener(UZAdStateChangedListener listener) {
+        this.uzAdStateChangedListener = listener;
     }
 
-    public void setBufferCallback(UZBufferCallback bufferCallback) {
-        this.bufferCallback = bufferCallback;
+    public void setUzVideoStateChangedListener(UZVideoStateChangedListener listener) {
+        this.uzVideoStateChangedListener = listener;
+    }
+
+    public void setUzVideoBufferChangedListener(UZVideoBufferChangedListener listener) {
+        this.uzVideoBufferChangedListener = listener;
     }
 
     public void release() {
@@ -399,7 +405,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
     }
 
     void handleVideoProgress() {
-        if (progressCallback != null && isPlayerValid()) {
+        if (uzVideoStateChangedListener != null && isPlayerValid()) {
             mls = getCurrentPosition();
             duration = getDuration();
             if (mls >= duration) {
@@ -409,13 +415,13 @@ abstract class IUZPlayerManager implements PreviewLoader {
                 percent = (int) (mls * 100 / duration);
             }
             s = Math.round(mls / 1000.0f);
-            progressCallback.onVideoProgress(mls, s, duration, percent);
+            uzVideoStateChangedListener.onVideoProgress(mls, s, duration, percent);
             //buffer changing
             if (bufferPosition != uzVideo.getBufferedPosition()
                     || bufferPercentage != uzVideo.getBufferedPercentage()) {
                 bufferPosition = uzVideo.getBufferedPosition();
                 bufferPercentage = uzVideo.getBufferedPercentage();
-                progressCallback.onBufferProgress(bufferPosition, bufferPercentage, duration);
+                uzVideoStateChangedListener.onBufferProgress(bufferPosition, bufferPercentage, duration);
             }
         }
     }
@@ -442,8 +448,8 @@ abstract class IUZPlayerManager implements PreviewLoader {
                 new DefaultLoadControl() {
                     @Override
                     public boolean shouldContinueLoading(long bufferedDurationUs, float playbackSpeed) {
-                        if (bufferCallback != null) {
-                            bufferCallback.onBufferChanged(bufferedDurationUs, playbackSpeed);
+                        if (uzVideoBufferChangedListener != null) {
+                            uzVideoBufferChangedListener.onBufferChanged(bufferedDurationUs, playbackSpeed);
                         }
                         return super.shouldContinueLoading(bufferedDurationUs, playbackSpeed);
                     }
@@ -801,8 +807,8 @@ abstract class IUZPlayerManager implements PreviewLoader {
                     break;
             }
             notifyUpdateButtonVisibility();
-            if (progressCallback != null) {
-                progressCallback.onPlayerStateChanged(playWhenReady, playbackState);
+            if (uzVideoStateChangedListener != null) {
+                uzVideoStateChangedListener.onPlayerStateChanged(playWhenReady, playbackState);
             }
             if (uzVideo != null && uzVideo.eventListener != null) {
                 uzVideo.eventListener.onPlayerStateChanged(playWhenReady, playbackState);
@@ -844,7 +850,6 @@ abstract class IUZPlayerManager implements PreviewLoader {
                 return;
             }
             uzVideo.handleError(UZExceptionUtil.getExceptionPlayback());
-            //LLog.d(TAG, "onPlayerError isConnected: " + LConnectivityUtil.isConnected(context));
             if (LConnectivityUtil.isConnected(context)) {
                 uzVideo.tryNextLinkPlay();
             } else {

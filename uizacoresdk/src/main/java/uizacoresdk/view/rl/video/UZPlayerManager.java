@@ -46,8 +46,8 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
     private void onAdEnded() {
         if (!isOnAdEnded && uzVideo != null) {
             isOnAdEnded = true;
-            if (progressCallback != null) {
-                progressCallback.onAdEnded();
+            if (uzAdStateChangedListener != null) {
+                uzAdStateChangedListener.onAdEnded();
             }
         }
     }
@@ -92,14 +92,14 @@ public final class UZPlayerManager extends IUZPlayerManager implements AdsMediaS
         hideProgress();
         isOnAdEnded = false;
         uzVideo.setUseController(false);
-        if (progressCallback != null) {
+        if (uzAdStateChangedListener != null) {
             VideoProgressUpdate videoProgressUpdate = adsLoader.getAdProgress();
             duration = (int) videoProgressUpdate.getDuration();
             s = (int) (videoProgressUpdate.getCurrentTime()) + 1;//add 1 second
             if (duration != 0) {
                 percent = (int) (s * 100 / duration);
             }
-            progressCallback.onAdProgress(s, (int) duration, percent);
+            uzAdStateChangedListener.onAdProgress(s, (int) duration, percent);
         }
     }
 

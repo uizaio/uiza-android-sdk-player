@@ -16,8 +16,9 @@ import android.view.ViewGroup;
 import com.google.android.exoplayer2.video.VideoListener;
 
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -28,7 +29,8 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZPlayerView.ControllerStateCallback {
+public class FrmVideoTop extends Fragment implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener, UZPlayerView.ControllerStateCallback {
     private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
 
@@ -39,10 +41,11 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = view.findViewById(R.id.uiza_video);
         uzVideo.setAutoSwitchItemPlaylistFolder(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
         uzVideo.addControllerStateCallback(this);
         uzVideo.addVideoListener(new VideoListener() {
             @Override
@@ -104,23 +107,39 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
         if (isInitMiniPlayerSuccess) {
             uzVideo.pauseVideo();
             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().minimize();
-            LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-                }
-            });
+            LUIUtil.setDelay(500,
+                    mls -> ((HomeCanSlideActivity) getActivity()).getDraggablePanel().closeToRight());
         }
     }
 
     @Override
-    public void onSkinChange() {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
     }
 
     public boolean isLandscape;
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onScreenRotated(boolean isLandscape) {
         this.isLandscape = isLandscape;
         if (isLandscape) {
             ((HomeCanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
@@ -173,18 +192,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick, UZ
     }
 
     private void resizeView(int w, int h) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(h);
-            }
-        });
-        /*uzVideo.post(new Runnable() {
-            @Override
-            public void run() {
-                uzVideo.setSize(w, h);
-            }
-        });*/
+        getActivity().runOnUiThread(() -> ((HomeCanSlideActivity) getActivity()).setTopViewHeightApllyNow(h));
     }
 
     @Override

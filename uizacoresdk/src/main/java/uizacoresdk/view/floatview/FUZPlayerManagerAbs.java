@@ -32,7 +32,8 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 import java.util.ArrayList;
 import java.util.List;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.TmpParamData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.exception.UZExceptionUtil;
@@ -52,13 +53,18 @@ abstract class FUZPlayerManagerAbs {
     protected Runnable runnable;
     protected boolean isCanAddViewWatchTime;
     protected long timestampPlayed;
-    protected ProgressCallback progressCallback;
+    protected UZVideoStateChangedListener uzVideoStateChangedListener;
+    protected UZAdStateChangedListener uzAdStateChangedListener;
     protected int videoW;
     protected int videoH;
     protected DefaultTrackSelector trackSelector;
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setUzVideoStateChangedListener(UZVideoStateChangedListener listener) {
+        this.uzVideoStateChangedListener = listener;
+    }
+
+    public void setUzAdStateChangedListener(UZAdStateChangedListener listener) {
+        this.uzAdStateChangedListener = listener;
     }
 
     public DefaultTrackSelector getTrackSelector() {

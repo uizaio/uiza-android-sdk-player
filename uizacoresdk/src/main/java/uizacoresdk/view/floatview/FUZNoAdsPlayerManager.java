@@ -15,8 +15,7 @@ import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 
 public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
 
-    public FUZNoAdsPlayerManager(final FUZVideo fuzVideo, String linkPlay, String urlIMAAd,
-            String thumbnailsUrl, List<Subtitle> subtitleList) {
+    public FUZNoAdsPlayerManager(final FUZVideo fuzVideo, String linkPlay, String thumbnailsUrl, List<Subtitle> subtitleList) {
         this.timestampPlayed = System.currentTimeMillis();
         isCanAddViewWatchTime = true;
         this.context = fuzVideo.getContext();
@@ -35,7 +34,7 @@ public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
             public void run() {
                 if (fuzVideo.getPlayerView() != null) {
 
-                    if (progressCallback != null) {
+                    if (uzVideoStateChangedListener != null) {
                         if (player != null) {
                             long mls = player.getCurrentPosition();
                             long duration = player.getDuration();
@@ -43,8 +42,8 @@ public final class FUZNoAdsPlayerManager extends FUZPlayerManagerAbs {
                             if (duration != 0) {
                                 percent = (int) (mls * 100 / duration);
                             }
-                            int s = Math.round(mls / 1000);
-                            progressCallback.onVideoProgress(mls, s, duration, percent);
+                            int s = Math.round(mls / 1000f);
+                            uzVideoStateChangedListener.onVideoProgress(mls, s, duration, percent);
                         }
                     }
                     if (handler != null && runnable != null) {

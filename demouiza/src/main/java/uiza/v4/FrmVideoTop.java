@@ -12,10 +12,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import uiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
+import uizacoresdk.interfaces.UZItemClickListener;
+import uizacoresdk.interfaces.UZPlayerStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.UZPlayerView;
 import uizacoresdk.view.rl.video.UZVideo;
@@ -24,7 +24,8 @@ import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
+public class FrmVideoTop extends Fragment implements UZVideoStateChangedListener,
+        UZPlayerStateChangedListener, UZItemClickListener {
     private final String TAG = getClass().getSimpleName();
     private UZVideo uzVideo;
 
@@ -35,9 +36,10 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzVideo = view.findViewById(R.id.uiza_video);
+        uzVideo.setUzVideoStateChangedListener(this);
+        uzVideo.setUzPlayerStateChangedListener(this);
+        uzVideo.setUzItemClickListener(this);
     }
 
     @Nullable
@@ -128,12 +130,32 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     }
 
     @Override
-    public void onSkinChange() {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
     }
 
     @Override
-    public void onScreenRotate(boolean isLandscape) {
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
+    public void onScreenRotated(boolean isLandscape) {
     }
 
     @Override

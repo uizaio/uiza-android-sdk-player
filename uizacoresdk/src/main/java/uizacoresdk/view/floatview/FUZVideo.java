@@ -17,7 +17,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.util.ArrayList;
 import java.util.List;
 import uizacoresdk.R;
-import uizacoresdk.listerner.ProgressCallback;
+import uizacoresdk.interfaces.UZAdStateChangedListener;
+import uizacoresdk.interfaces.UZVideoStateChangedListener;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
 import uizacoresdk.util.UZOsUtil;
@@ -72,7 +73,8 @@ public class FUZVideo extends RelativeLayout {
     private boolean isTracked50;
     private boolean isTracked75;
     private boolean isTracked100;
-    private ProgressCallback progressCallback;
+    private UZVideoStateChangedListener uzVideoStateChangedListener;
+    private UZAdStateChangedListener uzAdStateChangedListener;
     private boolean isTrackingMuiza;
 
     public FUZVideo(Context context) {
@@ -259,45 +261,63 @@ public class FUZVideo extends RelativeLayout {
         onResume();
     }
 
-    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAd) {
+    public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar,
+            List<Subtitle> subtitleList, boolean includeAd) {
         if (includeAd) {
             fuzUizaPlayerManager =
                     new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
-            fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
-                @Override
-                public void onAdEnded() {
-                }
-
+            fuzUizaPlayerManager.setUzAdStateChangedListener(new UZAdStateChangedListener() {
                 @Override
                 public void onAdProgress(int s, int duration, int percent) {
-                    if (progressCallback != null) {
-                        progressCallback.onAdProgress(s, duration, percent);
+                    if (uzAdStateChangedListener != null) {
+                        uzAdStateChangedListener.onAdProgress(s, duration, percent);
                     }
                 }
 
                 @Override
-                public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                    TmpParamData.getInstance().setPlayerPlayheadTime(s);
-                    trackProgress(s, percent);
-                    callAPITrackMuiza(s);
-                    if (progressCallback != null) {
-                        progressCallback.onVideoProgress(currentMls, s, duration, percent);
+                public void onAdEnded() {
+                    if (uzAdStateChangedListener != null) {
+                        uzAdStateChangedListener.onAdEnded();
                     }
-                }
-
-                @Override
-                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                }
-
-                @Override
-                public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
                 }
             });
         } else {
             fuzUizaPlayerManager =
-                    new FUZNoAdsPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar,
-                            subtitleList);
+                    new FUZNoAdsPlayerManager(this, linkPlay, urlThumnailsPreviewSeekbar, subtitleList);
         }
+        fuzUizaPlayerManager.setUzVideoStateChangedListener(new UZVideoStateChangedListener() {
+
+            @Override
+            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess,
+                    ResultGetLinkPlay resultGetLinkPlay, Data data) {
+            }
+
+            @Override
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+                TmpParamData.getInstance().setPlayerPlayheadTime(s);
+                trackProgress(s, percent);
+                callAPITrackMuiza(s);
+                if (uzVideoStateChangedListener != null) {
+                    uzVideoStateChangedListener.onVideoProgress(currentMls, s, duration, percent);
+                }
+            }
+
+            @Override
+            public void onVideoEnded() {
+            }
+
+            @Override
+            public void onError(UZException exception) {
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+            }
+        });
     }
 
     //=============================================================================================================START LIFE CIRCLE
@@ -639,8 +659,12 @@ public class FUZVideo extends RelativeLayout {
     //=============================================================================================================END TRACKING
     //=============================================================================================================START CALLBACK
 
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
+    public void setUzVideoStateChangedListener(UZVideoStateChangedListener listener) {
+        this.uzVideoStateChangedListener = listener;
+    }
+
+    public void setUzAdStateChangedListener(UZAdStateChangedListener listener) {
+        this.uzAdStateChangedListener = listener;
     }
 
     public interface Callback {
