@@ -10,7 +10,6 @@ import org.apache.commons.codec.DecoderException;
 
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.util.Loitp;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
 
 public class DummyActivity extends AppCompatActivity {
@@ -32,7 +31,7 @@ public class DummyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    LicenseAcquisitionUrl licenseAcquisitionUrl = Loitp.decrypt(DummyActivity.this, strIn, LSApplication.getInstance().getGson());
+                    LicenseAcquisitionUrl licenseAcquisitionUrl = DummyUtil.decrypt(DummyActivity.this, strIn, LSApplication.getInstance().getGson());
                     if (licenseAcquisitionUrl != null) {
                         tvOut.setText(licenseAcquisitionUrl.getLicenseAcquisitionUrl());
                     }

@@ -27,9 +27,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-
-import com.nineoldandroids.view.ViewHelper;
-
 import vn.uiza.R;
 import vn.uiza.views.draggablepanel.transformer.Transformer;
 import vn.uiza.views.draggablepanel.transformer.TransformerFactory;
@@ -175,7 +172,8 @@ public class DraggableView extends RelativeLayout {
             minimize();
         }
         setTouchEnabled(slideOffset <= MIN_SLIDE_OFFSET);
-        ViewHelper.setX(this, width - Math.abs(drawerPosition));
+//        ViewHelper.setX(this, width - Math.abs(drawerPosition));
+        this.setX(width - Math.abs(drawerPosition));
     }
 
     /**
@@ -496,9 +494,8 @@ public class DraggableView extends RelativeLayout {
         } else if (isDragViewAtTop()) {
             dragView.layout(left, top, right, transformer.getOriginalHeight());
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
-
-            ViewHelper.setY(dragView, top);
-            ViewHelper.setY(secondView, transformer.getOriginalHeight() - bottomUZTimebar);
+            dragView.setY(top);
+            secondView.setY(transformer.getOriginalHeight() - bottomUZTimebar);
         } else {
             secondView.layout(left, transformer.getOriginalHeight(), right, bottom);
         }
@@ -516,7 +513,7 @@ public class DraggableView extends RelativeLayout {
      * Modify secondView position to be always below dragged view.
      */
     void changeSecondViewPosition() {
-        ViewHelper.setY(secondView, dragView.getBottom() - bottomUZTimebar);
+        secondView.setY(dragView.getBottom() - bottomUZTimebar);
     }
 
     /**
@@ -587,7 +584,7 @@ public class DraggableView extends RelativeLayout {
      * Modify the second view alpha based on dragged view vertical position.
      */
     void changeSecondViewAlpha() {
-        ViewHelper.setAlpha(secondView, 1 - getVerticalDragOffset());
+        secondView.setAlpha(1 - getVerticalDragOffset());
     }
 
     /**
@@ -600,7 +597,7 @@ public class DraggableView extends RelativeLayout {
             if (alpha == 0) {
                 alpha = 1;
             }
-            ViewHelper.setAlpha(dragView, alpha);
+            dragView.setAlpha(alpha);
         }
     }
 
@@ -608,8 +605,8 @@ public class DraggableView extends RelativeLayout {
      * Restore view alpha to 1
      */
     void restoreAlpha() {
-        if (enableHorizontalAlphaEffect && ViewHelper.getAlpha(dragView) < 1) {
-            ViewHelper.setAlpha(dragView, 1);
+        if (enableHorizontalAlphaEffect && dragView.getAlpha() < 1) {
+            dragView.setAlpha(1);
         }
     }
 
