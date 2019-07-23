@@ -11,14 +11,11 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.listerner.ProgressCallback;
 import uizacoresdk.util.TmpParamData;
@@ -234,26 +231,26 @@ public class FUZVideo extends RelativeLayout {
         releasePlayerManager();
         checkToSetUp();
         //track event eventype display
-        if (UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY), new UZTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
-                }
-            });
+        if (!UZTrackingUtil.isTrackedEventTypeDisplay(getContext())) {
+            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_DISPLAY),
+                    new UZTrackingUtil.UizaTrackingCallback() {
+                        @Override
+                        public void onTrackingSuccess() {
+                            UZTrackingUtil.setTrackingDoneWithEventTypeDisplay(getContext(), true);
+                        }
+                    });
         }
+
         //track event plays_requested
-        if (UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
-            //da track roi ko can track nua
-        } else {
-            trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED), new UZTrackingUtil.UizaTrackingCallback() {
-                @Override
-                public void onTrackingSuccess() {
-                    UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
-                }
-            });
+        if (!UZTrackingUtil.isTrackedEventTypePlaysRequested(getContext())) {
+            trackUiza(UZData.getInstance()
+                            .createTrackingInput(getContext(), Constants.EVENT_TYPE_PLAYS_REQUESTED),
+                    new UZTrackingUtil.UizaTrackingCallback() {
+                        @Override
+                        public void onTrackingSuccess() {
+                            UZTrackingUtil.setTrackingDoneWithEventTypePlaysRequested(getContext(), true);
+                        }
+                    });
         }
     }
 
@@ -263,8 +260,9 @@ public class FUZVideo extends RelativeLayout {
     }
 
     public void initData(String linkPlay, String urlIMAAd, String urlThumnailsPreviewSeekbar, List<Subtitle> subtitleList, boolean includeAd) {
-        if(includeAd){
-            fuzUizaPlayerManager = new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+        if (includeAd) {
+            fuzUizaPlayerManager =
+                    new FUZPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
             fuzUizaPlayerManager.setProgressCallback(new ProgressCallback() {
                 @Override
                 public void onAdEnded() {
@@ -296,7 +294,9 @@ public class FUZVideo extends RelativeLayout {
                 }
             });
         } else {
-            fuzUizaPlayerManager = new FUZNoAdsPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar, subtitleList);
+            fuzUizaPlayerManager =
+                    new FUZNoAdsPlayerManager(this, linkPlay, urlIMAAd, urlThumnailsPreviewSeekbar,
+                            subtitleList);
         }
     }
 
@@ -358,7 +358,7 @@ public class FUZVideo extends RelativeLayout {
             @Override
             public void onSuccess(ResultGetLinkPlay result) {
                 LLog.d(TAG, "getLinkPlayVOD onSuccess");
-                checkToSetUpResouce(result, callbackGetLinkPlay);
+                checkToSetUpResource(result, callbackGetLinkPlay);
             }
 
             @Override
@@ -368,7 +368,7 @@ public class FUZVideo extends RelativeLayout {
         });
     }
 
-    private void checkToSetUpResouce(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
+    private void checkToSetUpResource(ResultGetLinkPlay mResultGetLinkPlay, CallbackGetLinkPlay callbackGetLinkPlay) {
         if (mResultGetLinkPlay != null && UZData.getInstance().getData() != null) {
             List<String> listLinkPlay = new ArrayList<>();
             List<Url> urlList = mResultGetLinkPlay.getData().getUrls();
@@ -393,7 +393,7 @@ public class FUZVideo extends RelativeLayout {
             }
 
             if (listLinkPlay.isEmpty()) {
-                LLog.e(TAG, "checkToSetUpResouce listLinkPlay == null || listLinkPlay.isEmpty()");
+                LLog.e(TAG, "checkToSetUpResource listLinkPlay == null || listLinkPlay.isEmpty()");
                 callbackGetLinkPlay.onSuccess(null);
                 return;
             }
@@ -410,9 +410,7 @@ public class FUZVideo extends RelativeLayout {
     private void trackProgress(int s, int percent) {
         //track event view (after video is played 5s), only track if isLivestream false
         if (s == (isLivestream ? 3 : 5)) {
-            if (UZTrackingUtil.isTrackedEventTypeView(getContext())) {
-                //da track roi ko can track nua
-            } else {
+            if (!UZTrackingUtil.isTrackedEventTypeView(getContext())) {
                 trackUiza(UZData.getInstance().createTrackingInput(getContext(), Constants.EVENT_TYPE_VIEW), new UZTrackingUtil.UizaTrackingCallback() {
                     @Override
                     public void onTrackingSuccess() {

@@ -23,56 +23,12 @@
             android:background="@color/black_65"
             android:visibility="gone" />
 
-        <!--<View
+        <ViewStub
+            android:id="@+id/control_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/Red" />-->
-
-        <RelativeLayout
-            android:id="@+id/rl_control"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_player_controller"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/bt_full_screen"
-                android:layout_width="@dimen/w_25"
-                android:layout_height="@dimen/w_25"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:background="@color/transparent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_fullscreen_white_48"
-                android:tint="@color/White" />
-
-            <ImageButton
-                android:id="@+id/bt_play_pause"
-                android:layout_width="@dimen/w_25"
-                android:layout_height="@dimen/w_25"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:background="@color/transparent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
-                android:src="@drawable/baseline_pause_circle_outline_white_48"
-                android:tint="@color/White" />
-
-            <ImageButton
-                android:id="@+id/bt_exit"
-                android:layout_width="@dimen/w_25"
-                android:layout_height="@dimen/w_25"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:background="@color/transparent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_close_black_48dp"
-                android:tint="@color/White" />
-        </RelativeLayout>
+            android:layout="@layout/layout_floating_controls"
+            />
 
         <TextView
             android:id="@+id/tv_msg"
