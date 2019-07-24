@@ -2521,7 +2521,6 @@ public class UZVideo extends RelativeLayout
                     @Override
                     public void onSuccess(Data data) {
                         handleDetailEntityResponse(data);
-                        checkToSetUpResource();
                     }
 
                     @Override
@@ -2682,6 +2681,7 @@ public class UZVideo extends RelativeLayout
                     @Override
                     public void onSuccess(ResultGetLinkPlay resultGetLinkPlay) {
                         handleLinkPlayResponse(resultGetLinkPlay);
+                        checkToSetUpResource();
                     }
 
                     @Override

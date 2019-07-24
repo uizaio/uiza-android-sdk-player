@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="rl_control" type="id" />
+    <item name="view_destroy" type="id"/>
+    <item name="move_view" type="id" />
+    <item name="bt_exit" type="id" />
+    <item name="bt_full_screen" type="id" />
+    <item name="bt_play_pause" type="id" />
+    <item name="tv_msg" type="id" />
+
+</resources>
