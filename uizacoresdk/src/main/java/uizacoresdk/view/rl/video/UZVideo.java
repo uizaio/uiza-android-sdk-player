@@ -3455,7 +3455,7 @@ public class UZVideo extends RelativeLayout
             LLog.d(TAG, "miniplayer STEP 6");
             try {
                 positionMiniPlayer = ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer();
-                Class classNamePfPlayer = Class.forName(((Activity) getContext()).getLocalClassName());
+                Class classNamePfPlayer = Class.forName(((Activity) getContext()).getClass().getName());
                 Intent intent = new Intent(getContext(), classNamePfPlayer);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, UZData.getInstance().getEntityId());

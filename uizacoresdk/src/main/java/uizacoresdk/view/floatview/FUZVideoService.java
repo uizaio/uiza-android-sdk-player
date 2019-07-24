@@ -515,13 +515,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
             if (isTapToFullPlayer) {
                 setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
-                // must delay 100mls
-                LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        openApp();
-                    }
-                });
+                openApp();
             } else {
                 toggleController();
             }
