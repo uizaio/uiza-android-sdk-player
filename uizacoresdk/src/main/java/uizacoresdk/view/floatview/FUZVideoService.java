@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,9 +53,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private View viewDestroy;
     private RelativeLayout rlControl;
     private RelativeLayout moveView;
-    private ImageButton btExit;
-    private ImageButton btFullScreen;
-    private ImageButton btPlayPause;
+    private ImageView btExit;
+    private ImageView btFullScreen;
+    private ImageView btPlayPause;
     private TextView tvMsg;
     private FUZVideo fuzVideo;
     private WindowManager.LayoutParams params;
@@ -86,9 +86,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int positionBeforeDisappearY = Constants.UNKNOW;
     private CountDownTimer countDownTimer;
     private GestureDetector mTapDetector;
-
-    private enum POS {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER}
     private POS pos;
+    private boolean isSendMsgToActivity;
 
     public FUZVideoService() {
     }
@@ -127,6 +126,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     private void findViews() {
         viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
+        if (viewDestroy == null) {
+            throw new NullPointerException("view_destroy not define");
+        }
         int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
         viewDestroy.setBackgroundColor(colorViewDestroy);
         isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
@@ -138,11 +140,29 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             videoHeightFromSettingConfig = UZUtil.getMiniPlayerSizeHeight(getBaseContext());
         }
         rlControl = mFloatingView.findViewById(R.id.rl_control);
+        if (rlControl == null) {
+            throw new NullPointerException("rl_control not define");
+        }
         moveView = mFloatingView.findViewById(R.id.move_view);
+        if (moveView == null) {
+            throw new NullPointerException("move_view not define");
+        }
         btExit = mFloatingView.findViewById(R.id.bt_exit);
+        if (btExit == null) {
+            throw new NullPointerException("bt_exit not define");
+        }
         btFullScreen = mFloatingView.findViewById(R.id.bt_full_screen);
+        if (btFullScreen == null) {
+            throw new NullPointerException("bt_full_screen not define");
+        }
         btPlayPause = mFloatingView.findViewById(R.id.bt_play_pause);
+        if (btPlayPause == null) {
+            throw new NullPointerException("bt_play_pause not define");
+        }
         tvMsg = mFloatingView.findViewById(R.id.tv_msg);
+        if (tvMsg == null) {
+            throw new NullPointerException("tv_msg not define");
+        }
         LUIUtil.setTextShadow(tvMsg);
         tvMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +206,13 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
         marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
         marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
-        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
+
+        int layoutId = UZUtil.getMiniPlayerLayout(getBaseContext());
+
+        mFloatingView = LayoutInflater.from(this).inflate(layoutId == -1
+                ? R.layout.layout_floating_uiza_video
+                : layoutId, null);
+
         findViews();
         //Add the view to the window.
         int LAYOUT_FLAG;
@@ -477,31 +503,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     //==================================================================================================END UI
 
-    private class GestureTap extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
-            if (isTapToFullPlayer) {
-                setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
-                // must delay 100mls
-                LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        openApp();
-                    }
-                });
-            } else {
-                toggleController();
-            }
-            return true;
-        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private void dragAndMove() {
         mTapDetector = new GestureDetector(getBaseContext(), new GestureTap());
@@ -541,7 +542,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         });
     }
-
 
     private void notiPos(POS tmpPos) {
         if (pos != tmpPos) {
@@ -866,8 +866,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         stopSelf();
     }
 
-    private boolean isSendMsgToActivity;
-
     private void setupVideo() {
         if (linkPlay == null || linkPlay.isEmpty()) {
             LLog.e(TAG, "setupVideo linkPlay == null || linkPlay.isEmpty() -> stopSelf");
@@ -1002,6 +1000,34 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             case ComunicateMng.APPEAR:
                 appear();
                 break;
+        }
+    }
+
+    private enum POS {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER}
+
+    private class GestureTap extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
+            if (isTapToFullPlayer) {
+                setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
+                // must delay 100mls
+                openApp();
+//                LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
+//                    @Override
+//                    public void doAfter(int mls) {
+//
+//                    }
+//                });
+            } else {
+                toggleController();
+            }
+            return true;
         }
     }
 }

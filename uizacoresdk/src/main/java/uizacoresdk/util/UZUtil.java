@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
+import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -23,10 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.Arrays;
 import java.util.List;
+
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
@@ -59,6 +62,38 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class UZUtil {
     private final static String TAG = UZUtil.class.getSimpleName();
+    //=============================================================================START PREF
+    private final static String PREFERENCES_FILE_NAME = "loitp";
+    private final static String AUTH = "AUTH";
+    private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
+    private final static String TOKEN = "TOKEN";
+    private final static String CLICKED_PIP = "CLICKED_PIP";
+    //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
+    private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
+    private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
+    private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
+    private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
+    private final static String MINI_PLAYER_TAP_TO_FULL_PLAYER = "MINI_PLAYER_TAP_TO_FULL_PLAYER";
+    private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
+    private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
+
+
+    //=============================================================================START FOR UIZA V3
+    private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
+    private final static String MINI_PLAYER_AUTO_SIZE = "MINI_PLAYER_AUTO_SIZE";
+    //private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
+    private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
+    private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
+    private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";
+    private final static String MINI_PLAYER_MARGIN_T = "MINI_PLAYER_MARGIN_T";
+    private final static String MINI_PLAYER_MARGIN_R = "MINI_PLAYER_MARGIN_R";
+    private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
+    private final static String MINI_PLAYER_SIZE_WIDTH = "MINI_PLAYER_SIZE_WIDTH";
+    private final static String MINI_PLAYER_SIZE_HEIGHT = "MINI_PLAYER_SIZE_HEIGHT";
+    private final static String LAST_SYNCED_SERVER_TIME = "LAST_SYNCED_SERVER_TIME";
+    private final static String LAST_ELAPSED_TIME = "LAST_ELAPSED_TIME";
+    private final static String STABLE_PIP_TOP_POSITION = "STABLE_PIP_TOP_POSITION";
+    private final static String MINI_PLAYER_LAYOUT_ID = "MINI_PLAYER_LAYOUT_ID";
 
     public static void setUIFullScreenIcon(Context context, ImageButton imageButton, boolean isFullScreen) {
         if (imageButton == null) {
@@ -274,6 +309,8 @@ public class UZUtil {
         }
     }
 
+    //=============================================================================END FOR UIZA V3
+
     //return true if app is in foreground
     public static boolean isAppInForeground(Context context) {
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -324,8 +361,6 @@ public class UZUtil {
         }
         return UZUtil.checkServiceRunning(context, FUZVideoService.class.getName());
     }
-
-    //=============================================================================START FOR UIZA V3
 
     public static void getDetailEntity(final Context context, final String entityId, final CallbackGetDetailEntity callback) {
         UZUtilBase.getDetailEntity(context, UZData.getInstance().getAPIVersion(), entityId, UZData.getInstance().getAppId(), callback);
@@ -644,37 +679,6 @@ public class UZUtil {
         f.setProfile(profile);
         return f;
     }
-
-    //=============================================================================END FOR UIZA V3
-
-    //=============================================================================START PREF
-    private final static String PREFERENCES_FILE_NAME = "loitp";
-    private final static String AUTH = "AUTH";
-    private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
-    private final static String TOKEN = "TOKEN";
-    private final static String CLICKED_PIP = "CLICKED_PIP";
-    //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
-    private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
-    private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
-    private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
-    private final static String MINI_PLAYER_COLOR_VIEW_DESTROY = "MINI_PLAYER_COLOR_VIEW_DESTROY";
-    private final static String MINI_PLAYER_TAP_TO_FULL_PLAYER = "MINI_PLAYER_TAP_TO_FULL_PLAYER";
-    private final static String MINI_PLAYER_EZ_DESTROY = "MINI_PLAYER_EZ_DESTROY";
-    private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
-    private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
-    private final static String MINI_PLAYER_AUTO_SIZE = "MINI_PLAYER_AUTO_SIZE";
-    //private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
-    private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
-    private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
-    private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";
-    private final static String MINI_PLAYER_MARGIN_T = "MINI_PLAYER_MARGIN_T";
-    private final static String MINI_PLAYER_MARGIN_R = "MINI_PLAYER_MARGIN_R";
-    private final static String MINI_PLAYER_MARGIN_B = "MINI_PLAYER_MARGIN_B";
-    private final static String MINI_PLAYER_SIZE_WIDTH = "MINI_PLAYER_SIZE_WIDTH";
-    private final static String MINI_PLAYER_SIZE_HEIGHT = "MINI_PLAYER_SIZE_HEIGHT";
-    private final static String LAST_SYNCED_SERVER_TIME = "LAST_SYNCED_SERVER_TIME";
-    private final static String LAST_ELAPSED_TIME = "LAST_ELAPSED_TIME";
-    private final static String STABLE_PIP_TOP_POSITION = "STABLE_PIP_TOP_POSITION";
 
     private static SharedPreferences getPrivatePreference(Context context) {
         return context.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
@@ -1000,5 +1004,13 @@ public class UZUtil {
     public static long getLastElapsedTime(Context context) {
         return (long) SharedPreferenceUtil.get(getPrivatePreference(context), LAST_ELAPSED_TIME,
                 SystemClock.elapsedRealtime());
+    }
+
+    public static void setMiniPlayerLayout(Context context, @LayoutRes int layoutId) {
+        SharedPreferenceUtil.put(getPrivatePreference(context), MINI_PLAYER_LAYOUT_ID, layoutId);
+    }
+
+    public static int getMiniPlayerLayout(Context context) {
+        return (int) SharedPreferenceUtil.get(getPrivatePreference(context), MINI_PLAYER_LAYOUT_ID, -1);
     }
 }
