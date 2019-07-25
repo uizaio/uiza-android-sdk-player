@@ -200,4 +200,8 @@ public class Constants {
     public static final String MB_SIZE_FORMAT = "%.3fMB";
     public static final String GB_SIZE_FORMAT = "%.3fGB";
 
+    // type of subtitle that we support
+    public static final String TYPE_VTT = ".VTT";
+    public static final String TYPE_SRT = ".SRT";
+
 }

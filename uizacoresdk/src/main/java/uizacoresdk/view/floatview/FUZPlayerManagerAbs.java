@@ -3,6 +3,7 @@ package uizacoresdk.view.floatview;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -76,41 +77,62 @@ abstract class FUZPlayerManagerAbs {
         return buildMediaSource(Uri.parse(linkPlay));
     }
 
-    MediaSource createMediaSourceWithSubtitle(MediaSource mediaSource) {
+    // Currently, subtitle is not supported in mini player
+    MediaSource createMediaSourceWithSubtitle(MediaSource videoMediaSource) {
         if (subtitleList == null || subtitleList.isEmpty()) {
-            return mediaSource;
+            return videoMediaSource;
         }
-        List<SingleSampleMediaSource> singleSampleMediaSourceList = new ArrayList<>();
+        List<MediaSource> mergedMediaSource = new ArrayList<>();
+        mergedMediaSource.add(videoMediaSource);
+
+        // Try to add text (subtitle) media source
         for (int i = 0; i < subtitleList.size(); i++) {
+
             Subtitle subtitle = subtitleList.get(i);
-            if (subtitle == null
-                    || subtitle.getLanguage() == null
-                    || subtitle.getUrl() == null
-                    || subtitle.getUrl().isEmpty()) {
+
+            if (subtitle == null || TextUtils.isEmpty(subtitle.getLanguage()) || TextUtils.isEmpty(
+                    subtitle.getUrl()) || subtitle.getStatus() == Subtitle.Status.DISABLE) {
                 continue;
             }
-            DefaultBandwidthMeter bandwidthMeter2 = new DefaultBandwidthMeter();
+
+            DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             DefaultDataSourceFactory dataSourceFactory =
-                    new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter2);
-            //Text Format Initialization
-            Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE,
-                    Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
-            SingleSampleMediaSource textMediaSource =
-                    new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
-                            Uri.parse(subtitle.getUrl()), textFormat, C.TIME_UNSET);
-            singleSampleMediaSourceList.add(textMediaSource);
-        }
-        MediaSource mediaSourceWithSubtitle = null;
-        for (int i = 0; i < singleSampleMediaSourceList.size(); i++) {
-            SingleSampleMediaSource singleSampleMediaSource = singleSampleMediaSourceList.get(i);
-            if (i == 0) {
-                mediaSourceWithSubtitle = new MergingMediaSource(mediaSource, singleSampleMediaSource);
+                    new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter);
+
+            String subLink = subtitle.getUrl();
+            // String type = subtitle.getMine().toUpperCase(); //for future need to get type from Mime.
+            String type = subLink.substring(subLink.lastIndexOf(".")).toUpperCase();
+            String sampleMimeType = null;
+            switch (type) {
+                case Constants.TYPE_VTT:
+                    sampleMimeType = MimeTypes.TEXT_VTT;
+                    break;
+                case Constants.TYPE_SRT:
+                    sampleMimeType = MimeTypes.APPLICATION_SUBRIP;
+                    break;
+            }
+            Format textFormat;
+            if (TextUtils.isEmpty(subtitle.getName())) {
+                textFormat = Format.createTextSampleFormat(null, sampleMimeType, null, Format.NO_VALUE,
+                        Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
             } else {
-                mediaSourceWithSubtitle =
-                        new MergingMediaSource(mediaSourceWithSubtitle, singleSampleMediaSource);
+                // TextFormat with custom label
+                textFormat = Format.createTextContainerFormat(null, subtitle.getName(), null, sampleMimeType, null,
+                        Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
+            }
+            MediaSource textMediaSource =
+                    new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
+                            Uri.parse(subLink), textFormat, C.TIME_UNSET);
+
+            // Re-order default subtitle right after video source
+            if (subtitle.getIsDefault() == 1) {
+                mergedMediaSource.add(1, textMediaSource);
+            } else {
+                mergedMediaSource.add(textMediaSource);
             }
         }
-        return mediaSourceWithSubtitle;
+
+        return new MergingMediaSource(mergedMediaSource.toArray(new MediaSource[0]));
     }
 
     //return true if toggleResume

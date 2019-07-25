@@ -504,12 +504,32 @@ abstract class IUZPlayerManager implements PreviewLoader {
 
             DefaultDataSourceFactory dataSourceFactory =
                     new DefaultDataSourceFactory(context, Constants.USER_AGENT, bandwidthMeter);
-            //Text Format Initialization
-            Format textFormat = Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE,
-                    Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
+
+            String subLink = subtitle.getUrl();
+            // String type = subtitle.getMine().toUpperCase(); //for future need to get type from Mime.
+            String type = subLink.substring(subLink.lastIndexOf(".")).toUpperCase();
+            String sampleMimeType = null;
+            switch (type) {
+                case Constants.TYPE_VTT:
+                    sampleMimeType = MimeTypes.TEXT_VTT;
+                    break;
+                case Constants.TYPE_SRT:
+                    sampleMimeType = MimeTypes.APPLICATION_SUBRIP;
+                    break;
+            }
+            Format textFormat;
+            if (TextUtils.isEmpty(subtitle.getName())) {
+                textFormat = Format.createTextSampleFormat(null, sampleMimeType, null, Format.NO_VALUE,
+                        Format.NO_VALUE, subtitle.getLanguage(), null, Format.OFFSET_SAMPLE_RELATIVE);
+            } else {
+                // TextFormat with custom label
+                textFormat = Format.createTextContainerFormat(null, subtitle.getName(), null, sampleMimeType, null,
+                        Format.NO_VALUE, Format.NO_VALUE, subtitle.getLanguage());
+            }
             MediaSource textMediaSource =
                     new SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(
-                            Uri.parse(subtitle.getUrl()), textFormat, C.TIME_UNSET);
+                            Uri.parse(subLink), textFormat, C.TIME_UNSET);
+
             // Re-order default subtitle right after video source
             if (subtitle.getIsDefault() == 1) {
                 mergedMediaSource.add(1, textMediaSource);
