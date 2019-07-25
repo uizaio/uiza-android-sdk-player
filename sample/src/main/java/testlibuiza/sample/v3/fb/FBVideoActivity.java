@@ -49,11 +49,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvLoadingMiniPlayer = (TextView) findViewById(R.id.tv_loading_mini_player);
-        tv = (TextView) findViewById(R.id.tv);
-        iv = (ImageView) findViewById(R.id.iv);
-        btMini = (Button) findViewById(R.id.bt_mini);
+        uzVideo = findViewById(R.id.uiza_video);
+        tvLoadingMiniPlayer = findViewById(R.id.tv_loading_mini_player);
+        tv = findViewById(R.id.tv);
+        iv = findViewById(R.id.iv);
+        btMini = findViewById(R.id.bt_mini);
     }
 
     @Override
@@ -70,7 +70,11 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         uzVideo.addItemClick(this);
         LUIUtil.setTextShadow(tvLoadingMiniPlayer);
         // Sample for set size PiP
-        UZUtil.setMiniPlayerSizePixel(this, false, 640, 360);
+        UZUtil.setMiniPlayerSizeDp(this, false, 140, 220);
+        // Sample for single click to full player
+        // UZUtil.setMiniPlayerTapToFullPlayer(this, false);
+        // Sample for control buttons skin
+        uzVideo.setPipControlSkin(R.layout.layout_floating_controls_skin);
         btMini.setOnClickListener(view -> uzVideo.showPip());
         checkId(getIntent());
         getDummyData();

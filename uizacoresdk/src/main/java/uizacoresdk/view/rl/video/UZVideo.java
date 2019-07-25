@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -190,6 +191,7 @@ public class UZVideo extends RelativeLayout
     private boolean isCastingChromecast = false;
     private List<Subtitle> subtitleList = new ArrayList<>();
     private boolean autoMoveToLiveEdge;
+    private @LayoutRes int pipControlSkin;
 
     public UZVideo(Context context) {
         super(context);
@@ -971,6 +973,7 @@ public class UZVideo extends RelativeLayout
         intent.putExtra(Constants.FLOAT_LINK_PLAY, uzPlayerManager.getLinkPlay());
         intent.putExtra(Constants.FLOAT_IS_LIVESTREAM, isLivestream);
         intent.putExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, progressBarColor);
+        intent.putExtra(Constants.FLOAT_CONTROL_SKIN_ID, pipControlSkin);
         getContext().startService(intent);
     }
 
@@ -1417,6 +1420,10 @@ public class UZVideo extends RelativeLayout
             // ViewUtils.performClick(ibPictureInPictureIcon);
             handleClickPictureInPicture();
         }
+    }
+
+    public void setPipControlSkin(@LayoutRes int skinId) {
+        this.pipControlSkin = skinId;
     }
 
     public void showSpeed() {
@@ -3448,7 +3455,7 @@ public class UZVideo extends RelativeLayout
             LLog.d(TAG, "miniplayer STEP 6");
             try {
                 positionMiniPlayer = ((ComunicateMng.MsgFromServiceOpenApp) msg).getPositionMiniPlayer();
-                Class classNamePfPlayer = Class.forName(((Activity) getContext()).getLocalClassName());
+                Class classNamePfPlayer = Class.forName(((Activity) getContext()).getClass().getName());
                 Intent intent = new Intent(getContext(), classNamePfPlayer);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, UZData.getInstance().getEntityId());

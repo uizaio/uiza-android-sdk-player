@@ -124,6 +124,7 @@ public class Constants {
     public final static String FLOAT_PROGRESS_BAR_COLOR = "FLOAT_PROGRESS_BAR_COLOR";
     public final static String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public final static String FLOAT_UUID = "FLOAT_UUID";
+    public final static String FLOAT_CONTROL_SKIN_ID = "FLOAT_CONTROL_SKIN_ID";
     //public final static String FLOAT_IS_FREE_SIZE = "FLOAT_IS_FREE_SIZE";
 
     public static final String EVENT_TYPE_DISPLAY = "display";

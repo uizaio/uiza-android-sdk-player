@@ -14,18 +14,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.exoplayer2.Player;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import uizacoresdk.R;
 import uizacoresdk.util.TmpParamData;
 import uizacoresdk.util.UZData;
@@ -53,11 +51,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private View viewDestroy;
     private RelativeLayout rlControl;
     private RelativeLayout moveView;
-    private ImageButton btExit;
-    private ImageButton btFullScreen;
-    private ImageButton btPlayPause;
+    private ImageView btExit;
+    private ImageView btFullScreen;
+    private ImageView btPlayPause;
     private TextView tvMsg;
     private FUZVideo fuzVideo;
+    private ViewStub controlStub;
     private WindowManager.LayoutParams params;
     private String linkPlay;
     private boolean isLivestream;
@@ -104,6 +103,15 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         isInitCustomLinkplay = intent.getBooleanExtra(Constants.FLOAT_USER_USE_CUSTOM_LINK_PLAY, false);
         contentPosition = intent.getLongExtra(Constants.FLOAT_CONTENT_POSITION, 0);
         progressBarColor = intent.getIntExtra(Constants.FLOAT_PROGRESS_BAR_COLOR, Color.WHITE);
+        int pipControlSkin = intent.getIntExtra(Constants.FLOAT_CONTROL_SKIN_ID, 0);
+        if (controlStub != null && rlControl == null) {
+            // this means control is not inflated yet
+            if (pipControlSkin != 0) {
+                controlStub.setLayoutResource(pipControlSkin);
+            }
+            inflateControls();
+        }
+
         try {
             cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
@@ -113,7 +121,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         uuid = intent.getStringExtra(Constants.FLOAT_UUID);
         if (!isInitCustomLinkplay) {
             if (UZData.getInstance().getData() == null) {
-                return super.onStartCommand(intent, flags, startId);
+                return START_NOT_STICKY;
             }
         }
         if (intent.getExtras() != null) {
@@ -126,22 +134,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void findViews() {
-        viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
-        int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
-        viewDestroy.setBackgroundColor(colorViewDestroy);
-        isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
-        isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
-        isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
-        isAutoSize = UZUtil.getMiniPlayerAutoSize(getBaseContext());
-        if (!isAutoSize) {
-            videoWidthFromSettingConfig = UZUtil.getMiniPlayerSizeWidth(getBaseContext());
-            videoHeightFromSettingConfig = UZUtil.getMiniPlayerSizeHeight(getBaseContext());
-        }
-        rlControl = mFloatingView.findViewById(R.id.rl_control);
         moveView = mFloatingView.findViewById(R.id.move_view);
-        btExit = mFloatingView.findViewById(R.id.bt_exit);
-        btFullScreen = mFloatingView.findViewById(R.id.bt_full_screen);
-        btPlayPause = mFloatingView.findViewById(R.id.bt_play_pause);
+        fuzVideo = mFloatingView.findViewById(R.id.uiza_video);
+        controlStub = mFloatingView.findViewById(R.id.control_stub);
+
         tvMsg = mFloatingView.findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
         tvMsg.setOnClickListener(new View.OnClickListener() {
@@ -167,6 +163,31 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 });
             }
         });
+
+        viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
+        int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
+        viewDestroy.setBackgroundColor(colorViewDestroy);
+        isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
+        isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
+        isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
+
+        isAutoSize = UZUtil.getMiniPlayerAutoSize(getBaseContext());
+        if (!isAutoSize) {
+            videoWidthFromSettingConfig = UZUtil.getMiniPlayerSizeWidth(getBaseContext());
+            videoHeightFromSettingConfig = UZUtil.getMiniPlayerSizeHeight(getBaseContext());
+        }
+        //Drag and move floating view using user's touch action.
+        dragAndMove();
+    }
+
+    private void inflateControls() {
+        controlStub.inflate();
+        // inflate controls from skin
+        rlControl = mFloatingView.findViewById(R.id.controls_root);
+        btExit = mFloatingView.findViewById(R.id.uiza_mini_exit);
+        btFullScreen = mFloatingView.findViewById(R.id.uiza_mini_full_screen);
+        btPlayPause = mFloatingView.findViewById(R.id.uiza_mini_pause_resume);
+        setControlsClickListener();
     }
 
     @Override
@@ -186,7 +207,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
         marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
         marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
-        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null);
+        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
         findViews();
         //Add the view to the window.
         int LAYOUT_FLAG;
@@ -206,8 +227,9 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                LAYOUT_FLAG, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
 
         setSizeMoveView(true, false);
@@ -236,31 +258,38 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         params.x = screenWidth - 1;
         params.y = screenHeight - 1;
 
-        fuzVideo = mFloatingView.findViewById(R.id.uiza_video);
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mFloatingView, params);
-        //Drag and move floating view using user's touch action.
-        dragAndMove();
 
-        btExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopSelf();
-            }
-        });
-        btFullScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openApp();
-            }
-        });
-        btPlayPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleResumePause();
-            }
-        });
+    }
+
+    private void setControlsClickListener() {
+        if (btExit != null) {
+            btExit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stopSelf();
+                }
+            });
+        }
+        if (btFullScreen != null) {
+            btFullScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openApp();
+                }
+            });
+        }
+        if (btPlayPause != null) {
+            btPlayPause.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleResumePause();
+                }
+            });
+        }
+
     }
 
     //==================================================================================================START CONFIG
@@ -315,9 +344,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             return;
         }
         //stop video
-        if (isEnableSmoothSwitch) {
-            //do nothing
-        } else {
+        if (!isEnableSmoothSwitch) {
             fuzVideo.getPlayer().setPlayWhenReady(false);
         }
         //moveView.setOnTouchListener(null);//disabled move view
@@ -440,7 +467,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         final int b = Math.abs(mGoToPosY - currentPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
-                float step = (300 - t) / 3;
+                float step = (300.f - t) / 3;
                 int tmpX;
                 int tmpY;
                 if (currentPosX > mGoToPosX) {
@@ -488,13 +515,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(getBaseContext());
             if (isTapToFullPlayer) {
                 setSizeMoveView(false, true);//remove this line make animation switch from mini-player to full-player incorrectly
-                // must delay 100mls
-                LUIUtil.setDelay(100, new LUIUtil.DelayCallback() {
-                    @Override
-                    public void doAfter(int mls) {
-                        openApp();
-                    }
-                });
+                openApp();
             } else {
                 toggleController();
             }
