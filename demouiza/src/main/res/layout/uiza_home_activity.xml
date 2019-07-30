@@ -13,11 +13,10 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/uiza_logo_512" />
 
-    <vn.uiza.views.realtimeblurview.RealtimeBlurView
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:realtimeBlurRadius="@dimen/round_55"
-        app:realtimeOverlayColor="@color/black_65" />
+        android:background="@color/black_65"/>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerLayout"
@@ -45,13 +44,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@color/black_65">
-
-            <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
-                android:id="@+id/blur_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:realtimeBlurRadius="@dimen/round_55"
-                app:realtimeOverlayColor="@color/black_5" />-->
 
             <vn.uiza.views.placeholderview.lib.placeholderview.PlaceHolderView
                 android:id="@+id/drawerView"

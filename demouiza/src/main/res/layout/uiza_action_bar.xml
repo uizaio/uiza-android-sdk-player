@@ -9,13 +9,6 @@
         android:layout_height="match_parent"
         android:background="@color/black_65">
 
-        <!--<vn.loitp.views.realtimeblurview.RealtimeBlurView
-            android:id="@+id/blur_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:realtimeBlurRadius="@dimen/round_55"
-            app:realtimeOverlayColor="@color/black_33" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -5,20 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/black_85">
 
-    <!--<ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/uiza_logo_512" />
-
-    <vn.loitp.views.realtimeblurview.RealtimeBlurView
-        android:id="@+id/blur_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:realtimeBlurRadius="@dimen/round_55"
-        app:realtimeOverlayColor="@color/black_65" />-->
-
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
