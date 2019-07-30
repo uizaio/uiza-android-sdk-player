@@ -24,7 +24,7 @@ public class UZExceptionUtilTest {
 
     @Test
     public void getExceptionCannotGetDetailEntity() {
-        UZException testException = UZExceptionUtil.getExceptionCannotGetDetailEntitity();
+        UZException testException = UZExceptionUtil.getExceptionCannotGetDetailEntity();
         assertNotNull(testException);
         assertNotNull(testException.getMessage());
         assertNotNull(testException.getException());

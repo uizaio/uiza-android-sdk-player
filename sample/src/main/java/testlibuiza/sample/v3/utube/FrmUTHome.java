@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.IOnBackPressed;
@@ -91,7 +90,7 @@ public class FrmUTHome extends Fragment implements IOnBackPressed {
         } else {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(getActivity());
             if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOritation(getActivity());
+                LActivityUtil.toggleScreenOrientation(getActivity());
             } else {
                 if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().getVisibility() == View.VISIBLE) {
                     if (((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {

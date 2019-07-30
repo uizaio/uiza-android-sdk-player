@@ -11,9 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import uiza.R;
-import uizacoresdk.view.rl.videoinfo.UZVideoInfo;
+import uiza.v4.videoinfo.UZVideoInfo;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -30,7 +29,7 @@ public class FrmVideoBottom extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uizaIMAVideoInfo = (UZVideoInfo) view.findViewById(R.id.uiza_video_info);
+        uizaIMAVideoInfo = view.findViewById(R.id.uiza_video_info);
     }
 
     public void updateUI(ResultGetLinkPlay resultGetLinkPlay, Data data) {

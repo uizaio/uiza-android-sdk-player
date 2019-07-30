@@ -13,11 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LAnimationUtil;

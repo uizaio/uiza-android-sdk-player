@@ -17,24 +17,6 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="AVLoadingIndicatorView">
-        <item name="minWidth">48dip</item>
-        <item name="maxWidth">48dip</item>
-        <item name="minHeight">48dip</item>
-        <item name="maxHeight">48dip</item>
-        <item name="indicatorName">BallPulseIndicator</item>
-    </style>
-
-    <style name="pdlg_default_animation">
-        <item name="android:windowEnterAnimation">@anim/pdlg_anim_fade_in</item>
-        <item name="android:windowExitAnimation">@anim/pdlg_anim_fade_out</item>
-    </style>
-
-    <style name="pdlg_no_animation">
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>
-    </style>
-
     <style name="UizaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/White</item>

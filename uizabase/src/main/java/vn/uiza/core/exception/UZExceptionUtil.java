@@ -11,7 +11,7 @@ public class UZExceptionUtil {
         return uzException;
     }
 
-    public static UZException getExceptionCannotGetDetailEntitity() {
+    public static UZException getExceptionCannotGetDetailEntity() {
         Exception exception = new Exception(UZException.ERR_1);
 
         UZException uzException = new UZException();

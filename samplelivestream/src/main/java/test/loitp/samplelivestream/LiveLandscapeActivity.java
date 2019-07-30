@@ -6,12 +6,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import android.widget.Toast;
 import com.pedro.encoder.input.gl.render.filters.AndroidViewFilterRender;
 import com.pedro.encoder.input.gl.render.filters.BasicDeformationFilterRender;
@@ -47,12 +47,10 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
-
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.interfaces.UZLivestreamCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import uizalivestream.view.UZLivestream;
-import vn.uiza.core.utilities.LPopupMenu;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
@@ -126,12 +124,13 @@ public class LiveLandscapeActivity extends AppCompatActivity implements View.OnC
                 uzLivestream.switchCamera();
                 break;
             case R.id.b_filter:
-                LPopupMenu.show(activity, btFilter, R.menu.gl_menu, new LPopupMenu.CallBack() {
-                    @Override
-                    public void clickOnItem(MenuItem menuItem) {
-                        handleFilterClick(menuItem);
-                    }
+                PopupMenu popup = new PopupMenu(activity, btFilter);
+                popup.getMenuInflater().inflate(R.menu.gl_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(menuItem -> {
+                    handleFilterClick(menuItem);
+                    return true;
                 });
+                popup.show();
                 break;
             case R.id.b_flash:
                 toggleFlash();

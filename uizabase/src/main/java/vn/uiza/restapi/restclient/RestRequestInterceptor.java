@@ -3,7 +3,6 @@ package vn.uiza.restapi.restclient;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;

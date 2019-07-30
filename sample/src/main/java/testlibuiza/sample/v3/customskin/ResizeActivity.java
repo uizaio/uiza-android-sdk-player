@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-
+import java.util.Random;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import uizacoresdk.interfaces.UZCallback;
@@ -18,7 +17,6 @@ import uizacoresdk.util.UZUtil;
 import uizacoresdk.view.rl.video.UZVideo;
 import vn.uiza.core.exception.UZException;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LStoreUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
@@ -47,7 +45,7 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
         findViewById(R.id.bt_bkg_ran).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uzVideo.setBackgroundColorBkg(LStoreUtil.getRandomColor());
+                uzVideo.setBackgroundColorBkg(getRandomColor());
             }
         });
         findViewById(R.id.bt_bkg_red).setOnClickListener(new View.OnClickListener() {
@@ -107,6 +105,11 @@ public class ResizeActivity extends AppCompatActivity implements UZCallback, UZI
                 uzVideo.setSize(w, h);
             }
         });
+    }
+
+    private int getRandomColor() {
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
     @Override

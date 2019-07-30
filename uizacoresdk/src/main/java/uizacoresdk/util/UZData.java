@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
-import com.google.android.gms.cast.MediaTrack;
 import java.util.ArrayList;
 import java.util.List;
 import uizacoresdk.R;
@@ -455,36 +454,6 @@ public class UZData {
 
     public void setSettingPlayer(boolean settingPlayer) {
         isSettingPlayer = settingPlayer;
-    }
-
-    public MediaTrack buildTrack(long id, String type, String subType, String contentId, String name, String language) {
-        if (!UZUtil.isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
-                || !UZUtil.isDependencyAvailable("android.support.v7.app.MediaRouteButton")) {
-            throw new NoClassDefFoundError(UZException.ERR_505);
-        }
-        int trackType = MediaTrack.TYPE_UNKNOWN;
-        if (TEXT.equals(type)) {
-            trackType = MediaTrack.TYPE_TEXT;
-        } else if (VIDEO.equals(type)) {
-            trackType = MediaTrack.TYPE_VIDEO;
-        } else if (AUDIO.equals(type)) {
-            trackType = MediaTrack.TYPE_AUDIO;
-        }
-
-        int trackSubType = MediaTrack.SUBTYPE_NONE;
-        if (subType != null) {
-            if (CAPTIONS.equals(type)) {
-                trackSubType = MediaTrack.SUBTYPE_CAPTIONS;
-            } else if (SUBTITLE.equals(type)) {
-                trackSubType = MediaTrack.SUBTYPE_SUBTITLES;
-            }
-        }
-
-        return new MediaTrack.Builder(id, trackType)
-                .setName(name)
-                .setSubtype(trackSubType)
-                .setContentId(contentId)
-                .setLanguage(language).build();
     }
 
     //start singleton data if play playlist folder

@@ -1,4 +1,4 @@
-package uizacoresdk.view.util;
+package uiza.v4.videoinfo.util;
 
 /**
  * Created by loitp on 5/18/2018.

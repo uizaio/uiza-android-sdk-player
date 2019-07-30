@@ -1,7 +1,9 @@
-package uizacoresdk.view.rl.videoinfo;
+package uiza.v4.videoinfo;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,15 +14,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LDateUtils;
-import vn.uiza.core.utilities.LDisplayUtils;
 import vn.uiza.core.utilities.LLog;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -84,6 +84,7 @@ public class UZVideoInfo extends RelativeLayout {
         onCreate();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public UZVideoInfo(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         onCreate();
@@ -96,22 +97,22 @@ public class UZVideoInfo extends RelativeLayout {
     }
 
     private void findViews() {
-        nestedScrollView = (NestedScrollView) findViewById(R.id.scroll_view);
+        nestedScrollView = findViewById(R.id.scroll_view);
         //nestedScrollView.setNestedScrollingEnabled(false);
-        progressBar = (ProgressBar) findViewById(R.id.pb);
+        progressBar = findViewById(R.id.pb);
         LUIUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        tvVideoName = (TextView) findViewById(R.id.tv_video_name);
-        tvVideoTime = (TextView) findViewById(R.id.tv_video_time);
-        tvVideoRate = (TextView) findViewById(R.id.tv_video_rate);
-        tvVideoDescription = (TextView) findViewById(R.id.tv_video_description);
-        tvVideoStarring = (TextView) findViewById(R.id.tv_video_starring);
-        tvVideoDirector = (TextView) findViewById(R.id.tv_video_director);
-        tvVideoGenres = (TextView) findViewById(R.id.tv_video_genres);
-        tvDebug = (TextView) findViewById(R.id.tv_debug);
-        tvMoreLikeThisMsg = (TextView) findViewById(R.id.tv_more_like_this_msg);
+        recyclerView = findViewById(R.id.rv);
+        tvVideoName = findViewById(R.id.tv_video_name);
+        tvVideoTime = findViewById(R.id.tv_video_time);
+        tvVideoRate = findViewById(R.id.tv_video_rate);
+        tvVideoDescription = findViewById(R.id.tv_video_description);
+        tvVideoStarring = findViewById(R.id.tv_video_starring);
+        tvVideoDirector = findViewById(R.id.tv_video_director);
+        tvVideoGenres = findViewById(R.id.tv_video_genres);
+        tvDebug = findViewById(R.id.tv_debug);
+        tvMoreLikeThisMsg = findViewById(R.id.tv_more_like_this_msg);
 
-        int sizeW = LDisplayUtils.getScreenW(activity) / 2;
+        int sizeW = LScreenUtil.getScreenWidth() / 2;
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
             @Override

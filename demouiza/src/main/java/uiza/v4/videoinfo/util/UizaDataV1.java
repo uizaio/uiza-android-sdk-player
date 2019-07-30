@@ -1,13 +1,10 @@
-package uizacoresdk.view.util;
+package uiza.v4.videoinfo.util;
 
 import android.content.Context;
 import android.content.pm.ResolveInfo;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.util.UZOsUtil;
 import uizacoresdk.util.UZUtil;

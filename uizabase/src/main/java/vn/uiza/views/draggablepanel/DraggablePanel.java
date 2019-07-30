@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-
 import vn.uiza.R;
 import vn.uiza.core.utilities.LScreenUtil;
 

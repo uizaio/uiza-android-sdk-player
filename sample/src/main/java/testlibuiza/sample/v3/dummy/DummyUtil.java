@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.DecoderException;
 import testlibuiza.R;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;
-import vn.uiza.utils.util.Encryptor;
 
 public class DummyUtil {
     public static LicenseAcquisitionUrl decrypt(Context context, String input) throws DecoderException {

@@ -3,9 +3,7 @@ package vn.uiza.restapi.uiza.model.v3.skin.listskin;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-
 import vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent.Metadata;
 
 public class ResultGetListSkin {

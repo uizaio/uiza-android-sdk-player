@@ -1,7 +1,6 @@
 package vn.uiza.utils;
 
 import android.content.Context;
-
 import vn.uiza.core.exception.UZException;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;

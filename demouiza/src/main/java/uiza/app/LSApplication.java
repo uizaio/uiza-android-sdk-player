@@ -2,9 +2,7 @@ package uiza.app;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
-
 import com.google.gson.Gson;
-
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 
@@ -13,11 +11,11 @@ public class LSApplication extends MultiDexApplication {
     private static LSApplication instance;
     private Gson gson;
     //TODO input information of your workspace
-    public static final String DF_DOMAIN_API = "teamplayer-api.uiza.co";
-    public static final String DF_TOKEN = "uap-01e137ad1b534004ad822035bf89b29f-b9b31f29";
-    public static final String DF_APP_ID = "01e137ad1b534004ad822035bf89b29f";
+    public static final String DF_DOMAIN_API = "ap-southeast-1-api.uiza.co";
+    public static final String DF_TOKEN = "uap-0dba39c3ea9d44d9b6b4e016ce10a703-46605f92";
+    public static final String DF_APP_ID = "0dba39c3ea9d44d9b6b4e016ce10a703";
     public final static int ENVIRONMENT = Constants.ENVIRONMENT_PROD;
-    public final static int API_VERSION = Constants.API_VERSION_3;
+    public final static int API_VERSION = Constants.API_VERSION_4;
 
     @Override
     public void onCreate() {

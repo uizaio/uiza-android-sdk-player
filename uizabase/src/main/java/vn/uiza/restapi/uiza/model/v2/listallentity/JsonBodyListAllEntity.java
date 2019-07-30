@@ -6,7 +6,6 @@ package vn.uiza.restapi.uiza.model.v2.listallentity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class JsonBodyListAllEntity {

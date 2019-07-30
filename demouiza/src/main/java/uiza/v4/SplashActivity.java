@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;

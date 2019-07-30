@@ -2,9 +2,7 @@ package testlibuiza.app;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
-
 import com.google.gson.Gson;
-
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;
 

@@ -15,13 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
+import uiza.v4.helper.utils.KeyboardUtils;
 import uizacoresdk.interfaces.IOnBackPressed;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LUIUtil;
-import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
 public class FrmLogin extends Fragment implements View.OnClickListener, IOnBackPressed {

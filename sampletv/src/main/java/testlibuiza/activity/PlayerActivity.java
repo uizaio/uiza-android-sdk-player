@@ -11,11 +11,8 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.List;
-
 import testlibuiza.app.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
