@@ -13,11 +13,10 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/uiza_logo_512" />
 
-    <vn.uiza.views.realtimeblurview.RealtimeBlurView
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:realtimeBlurRadius="@dimen/round_55"
-        app:realtimeOverlayColor="@color/black_65" />
+        android:background="@color/black_65"/>
 
     <TextView
         android:id="@+id/tv"
