@@ -11,14 +11,6 @@ android {
         versionCode 1
         versionName "1.0.0"
 
-        /*renderscriptTargetApi 19
-        renderscriptSupportModeEnabled true
-        multiDexEnabled true
-
-        //https://stackoverflow.com/questions/41098015/how-to-set-vectordrawable-as-an-image-for-imageview-programmatically
-        //https://stackoverflow.com/questions/49014416/set-vector-drawable-to-imageview-in-xml
-        //https://stackoverflow.com/questions/34417843/how-to-use-vector-drawables-in-android-api-lower-21
-        vectorDrawables.useSupportLibrary = true*/
         def EXO_VERSION = "2.9.5"
         buildConfigField "String", "EXO_VERSION", "\"${EXO_VERSION}\""
     }
