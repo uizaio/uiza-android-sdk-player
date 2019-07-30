@@ -24,7 +24,7 @@ public final class Utils {
 
     public static Context getContext() {
         if (context != null) return context;
-        throw new NullPointerException("u should init first");
+        throw new NullPointerException("context should be init first");
     }
 
     private static void initSentry(@NonNull Context context, boolean isReleaseBuild) {

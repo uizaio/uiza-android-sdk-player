@@ -14,10 +14,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.SplashActivity;

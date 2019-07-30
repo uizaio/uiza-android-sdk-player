@@ -13,9 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.List;
-
 import uiza.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LImageUtil;

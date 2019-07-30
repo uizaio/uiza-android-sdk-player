@@ -3,7 +3,6 @@ package vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Data {

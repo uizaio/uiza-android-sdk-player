@@ -3,9 +3,7 @@ package vn.uiza.restapi.uiza.model.v3.ad;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-
 import vn.uiza.restapi.uiza.model.v2.listallentity.Metadata;
 
 public class AdWrapper {

@@ -1,4 +1,4 @@
-package uizacoresdk.view.rl.videoinfo;
+package uiza.v4.videoinfo;
 
 /**
  * Created by www.muathu@gmail.com on 12/24/2017.
@@ -18,13 +18,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import uiza.v4.videoinfo.util.UizaDataV1;
 import uizacoresdk.R;
-import uizacoresdk.view.util.UizaDataV1;
-import vn.uiza.core.utilities.LDisplayUtils;
+import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v2.getdetailentity.GetDetailEntity;
 import vn.uiza.restapi.uiza.model.v2.listallentity.Item;
@@ -115,7 +113,7 @@ public class UZVideoInfoV1 extends RelativeLayout {
         tvDebug = findViewById(R.id.tv_debug);
         tvMoreLikeThisMsg = findViewById(R.id.tv_more_like_this_msg);
 
-        int sizeW = LDisplayUtils.getScreenW(activity) / 2;
+        int sizeW = LScreenUtil.getScreenWidth() / 2;
         int sizeH = sizeW * 9 / 16;
         mAdapter = new ItemAdapterV1(activity, itemList, sizeW, sizeH, new ItemAdapterV1.Callback() {
             @Override

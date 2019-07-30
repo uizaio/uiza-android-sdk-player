@@ -3,11 +3,9 @@ package uizacoresdk.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import vn.uiza.core.common.Constants;
 import vn.uiza.utils.util.SentryUtils;
 

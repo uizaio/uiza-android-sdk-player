@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import uizacoresdk.R;
 import vn.uiza.core.utilities.LUIUtil;
 

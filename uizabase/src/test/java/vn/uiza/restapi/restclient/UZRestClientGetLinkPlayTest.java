@@ -1,12 +1,9 @@
 package vn.uiza.restapi.restclient;
 
 import android.text.TextUtils;
-
+import java.security.InvalidParameterException;
 import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
-
-import java.security.InvalidParameterException;
-
 import vn.uiza.restapi.uiza.UZService;
 
 import static org.junit.Assert.assertEquals;

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import testlibuiza.sample.guidecallapi.TestAPI;

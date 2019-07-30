@@ -1,7 +1,6 @@
-package vn.uiza.utils.util;
+package testlibuiza.sample.v3.dummy;
 
 import android.util.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +19,6 @@ public class Encryptor {
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
         } catch (Exception ex) {
             ex.printStackTrace();
-            SentryUtils.captureException(ex);
         }
         return null;
     }
@@ -35,7 +33,6 @@ public class Encryptor {
             return new String(original);
         } catch (Exception ex) {
             ex.printStackTrace();
-            SentryUtils.captureException(ex);
         }
         return null;
     }

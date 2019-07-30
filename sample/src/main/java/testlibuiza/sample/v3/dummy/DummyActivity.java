@@ -5,9 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import org.apache.commons.codec.DecoderException;
-
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
 import vn.uiza.restapi.uiza.model.v3.drm.LicenseAcquisitionUrl;

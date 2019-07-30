@@ -16,10 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.github.rubensousa.previewseekbar.PreviewView;
 import com.google.android.exoplayer2.video.VideoListener;
-
 import testlibuiza.R;
 import uizacoresdk.interfaces.CallbackUZTimebar;
 import uizacoresdk.interfaces.UZCallback;

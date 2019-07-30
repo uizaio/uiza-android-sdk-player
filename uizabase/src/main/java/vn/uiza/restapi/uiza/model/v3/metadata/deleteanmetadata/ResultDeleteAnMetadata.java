@@ -3,7 +3,6 @@ package vn.uiza.restapi.uiza.model.v3.metadata.deleteanmetadata;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultDeleteAnMetadata {

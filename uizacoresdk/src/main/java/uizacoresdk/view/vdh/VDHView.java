@@ -13,7 +13,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import uizacoresdk.R;
 import uizacoresdk.view.UZPlayerView;
 import vn.uiza.core.utilities.LScreenUtil;
@@ -48,11 +47,6 @@ public class VDHView extends LinearLayout {
 
     private State state = State.NULL;
     private Part part;
-
-    private int marginBottomInPixel = 0;
-    private int marginTopInPixel = 0;
-    private int marginLeftInPixel = 0;
-    private int marginRightInPixel = 0;
 
     private GestureDetector mDetector;
     private UZPlayerView.OnTouchEvent onTouchEvent;

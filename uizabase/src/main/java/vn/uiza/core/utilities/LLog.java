@@ -1,7 +1,6 @@
 package vn.uiza.core.utilities;
 
 import android.util.Log;
-
 import vn.uiza.core.common.Constants;
 
 public class LLog {

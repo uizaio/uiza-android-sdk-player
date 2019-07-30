@@ -18,10 +18,8 @@ package uizacoresdk.glide;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 

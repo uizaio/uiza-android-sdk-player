@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-
 import testlibuiza.R;
 import uizacoresdk.util.UZUtil;
 import vn.uiza.core.common.Constants;

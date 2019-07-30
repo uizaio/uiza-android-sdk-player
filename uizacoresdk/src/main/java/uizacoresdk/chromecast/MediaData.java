@@ -3,11 +3,9 @@ package uizacoresdk.chromecast;
 import android.net.Uri;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
-
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;

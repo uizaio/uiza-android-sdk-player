@@ -6,15 +6,12 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
 import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import uizalivestream.interfaces.CameraCallback;
 import uizalivestream.model.PresetLiveStreamingFeed;
 import vn.uiza.core.utilities.LConnectivityUtil;

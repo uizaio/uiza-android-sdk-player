@@ -3,13 +3,11 @@ package uizacoresdk.util;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -24,9 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.util.Arrays;
-import java.util.List;
 import uizacoresdk.R;
 import uizacoresdk.chromecast.Casty;
 import uizacoresdk.model.UZCustomLinkPlay;
@@ -41,7 +36,6 @@ import vn.uiza.core.utilities.LDeviceUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.restapi.uiza.model.v2.auth.Auth;
-import vn.uiza.restapi.uiza.model.v2.listallentity.Subtitle;
 import vn.uiza.utils.CallbackGetDetailEntity;
 import vn.uiza.utils.UZUtilBase;
 import vn.uiza.utils.util.ConvertUtils;
@@ -49,8 +43,6 @@ import vn.uiza.utils.util.SentryUtils;
 import vn.uiza.utils.util.SharedPreferenceUtil;
 import vn.uiza.utils.util.Utils;
 
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
@@ -182,32 +174,6 @@ public class UZUtil {
         return null;
     }
 
-    public static List<Subtitle> createDummySubtitle(Gson gson) {
-        String json = "[\n" +
-                "                {\n" +
-                "                    \"id\": \"18414566-c0c8-4a51-9d60-03f825bb64a9\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_en_1522812430080.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"en\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"id\": \"271787a0-5d23-4a35-a10a-5c43fdcb71a8\",\n" +
-                "                    \"name\": \"\",\n" +
-                "                    \"type\": \"subtitle\",\n" +
-                "                    \"url\": \"//dev-static.uiza.io/subtitle_56a4f990-17e6-473c-8434-ef6c7e40bba1_vi_1522812445904.vtt\",\n" +
-                "                    \"mine\": \"vtt\",\n" +
-                "                    \"language\": \"vi\",\n" +
-                "                    \"isDefault\": \"0\"\n" +
-                "                }\n" +
-                "            ]";
-        Subtitle[] subtitles = gson.fromJson(json, new TypeToken<Subtitle[]>() {
-        }.getType());
-        return Arrays.asList(subtitles);
-    }
-
     public static void showUizaDialog(Context context, Dialog dialog) {
         if (context == null || dialog == null) {
             return;
@@ -274,25 +240,6 @@ public class UZUtil {
         }
     }
 
-    //return true if app is in foreground
-    public static boolean isAppInForeground(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-            ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
-            String foregroundTaskPackageName = foregroundTaskInfo.topActivity.getPackageName();
-            return foregroundTaskPackageName.toLowerCase().equals(context.getPackageName().toLowerCase());
-        } else {
-            ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
-            ActivityManager.getMyMemoryState(appProcessInfo);
-            if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
-                return true;
-            }
-            KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-            // App is foreground, but screen is locked, so show notification
-            return km.inKeyguardRestrictedInputMode();
-        }
-    }
-
     public static boolean checkServiceRunning(Context context, String serviceName) {
         ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -308,11 +255,8 @@ public class UZUtil {
         if (context == null) {
             return;
         }
-        //LLog.d(TAG, "stopMiniPlayer");
         boolean isSvPipRunning = isMiniPlayerRunning(context);
-        //LLog.d(TAG, "isSvPipRunning " + isSvPipRunning);
         if (isSvPipRunning) {
-            //stop service if running
             Intent intent = new Intent(context, FUZVideoService.class);
             context.stopService(intent);
         }
@@ -653,7 +597,6 @@ public class UZUtil {
     private final static String API_TRACK_END_POINT = "API_TRACK_END_POINT";
     private final static String TOKEN = "TOKEN";
     private final static String CLICKED_PIP = "CLICKED_PIP";
-    //private final static String CLASS_NAME_OF_PLAYER = "CLASS_NAME_OF_PLAYER";
     private final static String IS_INIT_PLAYLIST_FOLDER = "IS_INIT_PLAYLIST_FOLDER";
     private final static String VIDEO_WIDTH = "VIDEO_WIDTH";
     private final static String VIDEO_HEIGHT = "VIDEO_HEIGHT";
@@ -663,7 +606,6 @@ public class UZUtil {
     private final static String MINI_PLAYER_ENABLE_VIBRATION = "MINI_PLAYER_ENABLE_VIBRATION";
     private final static String MINI_PLAYER_ENABLE_SMOOTH_SWITCH = "MINI_PLAYER_ENABLE_SMOOTH_SWITCH";
     private final static String MINI_PLAYER_AUTO_SIZE = "MINI_PLAYER_AUTO_SIZE";
-    //private final static String MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER = "MINI_PLAYER_CONTENT_POSITION_WHEN_SWITCH_TO_FULL_PLAYER";
     private final static String MINI_PLAYER_FIRST_POSITION_X = "MINI_PLAYER_FIRST_POSITION_X";
     private final static String MINI_PLAYER_FIRST_POSITION_Y = "MINI_PLAYER_FIRST_POSITION_Y";
     private final static String MINI_PLAYER_MARGIN_L = "MINI_PLAYER_MARGIN_L";

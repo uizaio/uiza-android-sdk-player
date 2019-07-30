@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
@@ -29,7 +29,6 @@ import uizacoresdk.util.UZUtil;
 import vn.uiza.core.utilities.LActivityUtil;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.core.utilities.LScreenUtil;
-import vn.uiza.core.utilities.LSocialUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
@@ -85,7 +84,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.ll_browser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LSocialUtil.openUrlInBrowser(activity, "https://uiza.io/");
+                AppUtils.openUrlInBrowser(activity, "https://uiza.io/");
                 drawerLayout.closeDrawer(Gravity.START, true);
             }
         });
@@ -205,11 +204,21 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
 
     public void replaceFragment(Fragment baseFragment) {
         if (baseFragment instanceof FrmEntities) {
-            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, false);
+            replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, false);
         } else {
-            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, true);
+            replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, true);
         }
         tvTitle.setText(baseFragment.getClass().getSimpleName());
+    }
+
+    private void replaceFragment(AppCompatActivity activity, int containerFrameLayoutIdRes, Fragment fragment,
+            boolean isAddToBackStack) {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        if (isAddToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     private void initializeDraggablePanel() {
@@ -308,7 +317,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
             boolean isLandscapeScreen = LScreenUtil.isFullScreen(activity);
             if (isLandscapeScreen) {
-                LActivityUtil.toggleScreenOritation(activity);
+                LActivityUtil.toggleScreenOrientation(activity);
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {

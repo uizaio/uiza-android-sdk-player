@@ -48,10 +48,8 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ProgressBar;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import vn.uiza.R;
 import vn.uiza.utils.util.SentryUtils;
 

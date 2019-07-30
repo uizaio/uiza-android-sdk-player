@@ -1,10 +1,8 @@
 package uizacoresdk.chromecast;
 
 import android.view.Menu;
-
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.media.widget.ExpandedControllerActivity;
-
 import uizacoresdk.R;
 
 /**

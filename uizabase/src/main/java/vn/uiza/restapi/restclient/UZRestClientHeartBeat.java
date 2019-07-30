@@ -1,14 +1,11 @@
 package vn.uiza.restapi.restclient;
 
 import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -19,7 +16,6 @@ import vn.uiza.restapi.DateTypeDeserializer;
 
 public class UZRestClientHeartBeat {
     private static final String TAG = UZRestClientHeartBeat.class.getSimpleName();
-    private static final int TIMEOUT_TIME = 1;
     private static final int CONNECT_TIMEOUT_TIME = 20;//20s
     private static final String AUTHORIZATION = "Authorization";
     private static Retrofit retrofit;
