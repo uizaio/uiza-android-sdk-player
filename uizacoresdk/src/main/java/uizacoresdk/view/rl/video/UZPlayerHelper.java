@@ -177,22 +177,22 @@ final class UZPlayerHelper {
 
     int getVideoProfileW() {
         if (!isPlayerValid()) {
-            return Constants.UNKNOW;
+            return Constants.UNKNOWN;
         }
         Format format = player.getVideoFormat();
         if (format == null) {
-            return Constants.UNKNOW;
+            return Constants.UNKNOWN;
         }
         return format.width;
     }
 
     int getVideoProfileH() {
         if (!isPlayerValid()) {
-            return Constants.UNKNOW;
+            return Constants.UNKNOWN;
         }
         Format format = player.getVideoFormat();
         if (format == null) {
-            return Constants.UNKNOW;
+            return Constants.UNKNOWN;
         }
         return format.height;
     }

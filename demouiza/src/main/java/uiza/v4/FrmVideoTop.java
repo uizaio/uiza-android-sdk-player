@@ -12,7 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import uiza.R;
 import uizacoresdk.interfaces.UZCallback;
 import uizacoresdk.interfaces.UZItemClick;
@@ -35,7 +35,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = (UZVideo) view.findViewById(R.id.uiza_video);
+        uzVideo = view.findViewById(R.id.uiza_video);
         uzVideo.addUZCallback(this);
         uzVideo.addItemClick(this);
     }
@@ -141,13 +141,7 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
         if (e == null) {
             return;
         }
-        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-        LUIUtil.setDelay(500, new LUIUtil.DelayCallback() {
-            @Override
-            public void doAfter(int mls) {
-                ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-            }
-        });
+        Toast.makeText(getContext(), "Error while playing this video !", Toast.LENGTH_LONG).show();
     }
 
     public void initEntity(String entityId) {

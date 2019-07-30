@@ -11,11 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.utilities.LAnimationUtil;

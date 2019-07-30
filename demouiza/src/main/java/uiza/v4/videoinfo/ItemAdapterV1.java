@@ -1,4 +1,4 @@
-package uizacoresdk.view.rl.videoinfo;
+package uiza.v4.videoinfo;
 
 /**
  * Created by www.muathu@gmail.com on 12/8/2017.
@@ -14,11 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.List;
-
 import uizacoresdk.R;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LAnimationUtil;

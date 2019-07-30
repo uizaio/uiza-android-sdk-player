@@ -1,7 +1,6 @@
 package vn.uiza.restapi.restclient;
 
 import android.text.TextUtils;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;

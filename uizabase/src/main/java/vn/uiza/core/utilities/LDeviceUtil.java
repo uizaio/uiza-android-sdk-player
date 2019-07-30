@@ -1,107 +1,90 @@
 package vn.uiza.core.utilities;
 
-import android.app.Activity;
 import android.app.UiModeManager;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
+import android.support.annotation.NonNull;
 
-import java.util.Random;
-
-import vn.uiza.utils.util.SentryUtils;
-import vn.uiza.views.LToast;
-
-import static android.content.Context.UI_MODE_SERVICE;
-
-
-/**
- * File created on 11/14/2016.
- *
- * @author loitp
- */
 public class LDeviceUtil {
-    private static String TAG = LDeviceUtil.class.getSimpleName();
-    private static final String COPY_LABEL = "Copy";
 
-    public static boolean isTablet(Activity activity) {
-        return (activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
-
-    public boolean isNavigationBarAvailable() {
-        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-        boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-        return (!(hasBackKey && hasHomeKey));
-    }
-
-    public static int getCurrentAndroidVersion(Activity activity) {
-        int thisVersion;
-        try {
-            PackageInfo pi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            thisVersion = pi.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            thisVersion = 1;
-            SentryUtils.captureException(e);
-        }
-        return thisVersion;
-    }
-
-    public static void setClipboard(Context context, String text) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(text);
-        } else {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText(COPY_LABEL, text);
-            clipboard.setPrimaryClip(clip);
-        }
-        LToast.show(context, "Copied!");
-    }
-
-    public static void vibrate(Context context, int length) {
+    /**
+     * Vibrate the device in specific duration
+     * @param context the context
+     * @param duration the duration in milliseconds
+     */
+    public static void vibrate(Context context, long duration) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(length);
+        v.vibrate(duration);
     }
 
+    /**
+     * Vibrate device in 300 milliseconds
+     * @see LDeviceUtil#vibrate(Context, long)
+     */
     public static void vibrate(Context context) {
         vibrate(context, 300);
     }
 
-    public static int getRandomNumber(int max) {
-        Random r = new Random();
-        return r.nextInt(max);
-    }
-
+    /**
+     * Check if device is tablet or not
+     * @param context the context
+     * @return true if device is tablet, otherwise false
+     */
     public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+    /**
+     * Check if device is Television or not
+     * @param context the context
+     * @return true if device is Television, otherwise false
+     */
     public static boolean isTV(Context context) {
-        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
+        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
         return uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
-    //return true if device is set auto switch rotation on
-    //return false if device is set auto switch rotation off
+    /**
+     * Check if the device is set auto rotation or not
+     * @param context the context
+     * @return true if device is set auto rotation, otherwise false
+     */
     public static boolean isRotationPossible(Context context) {
         if (context == null) {
             return false;
         }
         boolean hasAccelerometer = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER);
-        return (hasAccelerometer && android.provider.Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
+        return (hasAccelerometer && Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
     }
 
+    /**
+     * Check if the app has Overlay permission or not
+     * @param context the context
+     * @return true if app has Overlay permission, otherwise false
+     */
     public static boolean isCanOverlay(Context context) {
         if (context == null) {
             return false;
         }
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
+    }
+
+    /**
+     * Get current device's volume percentage
+     * @param context the context
+     * @param streamType the stream type whose volume index is returned. Ex. {@link AudioManager#STREAM_MUSIC}
+     * @return the current device's volume percentage
+     */
+    public static int getVolumePercentage(@NonNull Context context, int streamType) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        int currentVolume = audioManager.getStreamVolume(streamType);
+        int maxVolume = audioManager.getStreamMaxVolume(streamType);
+        return Math.round(currentVolume * 1f / maxVolume * 100);
     }
 }

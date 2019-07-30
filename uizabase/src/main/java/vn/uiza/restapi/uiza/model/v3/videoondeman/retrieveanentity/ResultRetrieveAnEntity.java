@@ -6,7 +6,6 @@ package vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultRetrieveAnEntity {

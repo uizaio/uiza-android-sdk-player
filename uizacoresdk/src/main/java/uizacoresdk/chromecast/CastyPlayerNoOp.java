@@ -1,7 +1,6 @@
 package uizacoresdk.chromecast;
 
 import android.support.annotation.NonNull;
-
 import com.google.android.gms.cast.MediaInfo;
 
 class CastyPlayerNoOp extends CastyPlayer {

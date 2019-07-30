@@ -3,8 +3,11 @@ package vn.uiza.restapi.uiza;
 import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import retrofit2.HttpException;
 import rx.observers.TestSubscriber;
 import vn.uiza.base.FakeData;
-import vn.uiza.restapi.restclient.RestClient;
+import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.model.ErrorBody;
 import vn.uiza.restapi.uiza.model.UTCTime;
 import vn.uiza.restapi.uiza.model.tracking.muiza.Muiza;
@@ -42,7 +45,7 @@ import vn.uiza.restapi.uiza.model.v3.skin.listskin.ResultGetListSkin;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.retrieveanentity.ResultRetrieveAnEntity;
 import vn.uiza.restapi.uiza.model.v4.subtitle.ResultGetSubtitles;
-import vn.uiza.utils.util.FileUtils;
+import vn.uiza.utils.util.AppUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -66,8 +69,8 @@ public class UZServiceTest {
         gson = new Gson();
         mockServer = new MockWebServer();
         String mockServerBaseURL = mockServer.url(FakeData.BASE_URL).toString();
-        RestClient.init(mockServerBaseURL, FakeData.TOKEN);
-        uzService = RestClient.createService(UZService.class);
+        UZRestClient.init(mockServerBaseURL, FakeData.TOKEN);
+        uzService = UZRestClient.createService(UZService.class);
     }
 
     @After
@@ -591,6 +594,35 @@ public class UZServiceTest {
     private String getJsonFromResource(String path, String responseFileName) {
         URL url = Objects.requireNonNull(getClass().getClassLoader()).getResource(path + responseFileName);
         File file = new File(url.getPath());
-        return FileUtils.readFile2String(file, "UTF-8");
+        return readFile2String(file, "UTF-8");
+    }
+
+    private static String readFile2String(File file, String charsetName) {
+        if (file == null) return null;
+        BufferedReader reader = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            if (AppUtils.hasSpace(charsetName)) {
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charsetName));
+            }
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\r\n");
+            }
+            return sb.delete(sb.length() - 2, sb.length()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

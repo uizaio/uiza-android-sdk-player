@@ -5,14 +5,9 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-
-import java.util.List;
-
 import uizacoresdk.util.UZData;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.utils.util.SentryUtils;
 
 /**
@@ -213,14 +208,5 @@ public final class UZPlayerView extends PlayerView implements PlayerControlView.
             }
         }
         return null;
-    }
-
-    public View[] getAllChild() {
-        PlayerControlView playerControlView = getPlayerControlView();
-        if (playerControlView == null) {
-            return null;
-        }
-        List<View> viewList = LUIUtil.getAllChildren(playerControlView);
-        return viewList.toArray(new View[viewList.size()]);
     }
 }

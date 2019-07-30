@@ -1,7 +1,6 @@
 package vn.uiza.utils.constant;
 
 import android.support.annotation.IntDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

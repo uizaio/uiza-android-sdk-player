@@ -3,9 +3,9 @@ package testlibuiza.sample.v3.demoui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
 import testlibuiza.R;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZUtil;
@@ -69,10 +69,20 @@ public class HomeCanSlideActivity extends AppCompatActivity {
 
     public void replaceFragment(Fragment baseFragment) {
         if (baseFragment instanceof FrmHome) {
-            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, false);
+            replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, false);
         } else {
-            LScreenUtil.replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, true);
+            replaceFragment((AppCompatActivity) activity, R.id.fl_container, baseFragment, true);
         }
+    }
+
+    private void replaceFragment(AppCompatActivity activity, int containerFrameLayoutIdRes, Fragment fragment,
+            boolean isAddToBackStack) {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerFrameLayoutIdRes, fragment);
+        if (isAddToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     private FrmVideoTop frmVideoTop;

@@ -7,9 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import uiza.R;
 import vn.uiza.core.utilities.LAnimationUtil;
 

@@ -15,28 +15,26 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
+import uiza.v4.helper.utils.KeyboardUtils;
 import uizacoresdk.interfaces.IOnBackPressed;
 import uizacoresdk.util.UZData;
 import vn.uiza.core.common.Constants;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.UZAPIMaster;
 import vn.uiza.restapi.restclient.UZRestClient;
 import vn.uiza.restapi.uiza.UZService;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.restapi.uiza.model.v3.videoondeman.listallentity.ResultListEntity;
 import vn.uiza.rxandroid.ApiSubscriber;
-import vn.uiza.utils.util.KeyboardUtils;
 import vn.uiza.views.LToast;
 
 public class FrmSearch extends Fragment implements View.OnClickListener, IOnBackPressed {
@@ -65,13 +63,13 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv);
-        ivBack = (ImageView) view.findViewById(R.id.iv_back);
-        ivClearText = (ImageView) view.findViewById(R.id.iv_clear_text);
-        etSearch = (EditText) view.findViewById(R.id.et_search);
+        recyclerView = view.findViewById(R.id.rv);
+        recyclerView = view.findViewById(R.id.rv);
+        ivBack = view.findViewById(R.id.iv_back);
+        ivClearText = view.findViewById(R.id.iv_clear_text);
+        etSearch = view.findViewById(R.id.et_search);
         etSearch.requestFocus();
-        tv = (TextView) view.findViewById(R.id.tv);
+        tv = view.findViewById(R.id.tv);
         ivBack.setOnClickListener(this);
         ivClearText.setOnClickListener(this);
         mAdapter = new EntitiesAdapter(getActivity(), dataList, new EntitiesAdapter.Callback() {
@@ -112,13 +110,25 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
             }
         });
 
-        LUIUtil.setImeiActionSearch(etSearch, new LUIUtil.CallbackSearch() {
-            @Override
-            public void onSearch() {
-                search(etSearch.getText().toString());
-            }
-        });
         KeyboardUtils.showSoftInput(etSearch);
+        if (etSearch == null) {
+            return;
+        }
+        setImeiActionSearch(etSearch);
+    }
+
+    private void setImeiActionSearch(EditText editText) {
+        if (etSearch == null) {
+            return;
+        }
+        editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search(etSearch.getText().toString());
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override

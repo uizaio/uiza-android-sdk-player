@@ -3,9 +3,7 @@ package vn.uiza.restapi.uiza.model.v3.livestreaming.retrievealiveevent;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
 public class ResultRetrieveALiveEvent {

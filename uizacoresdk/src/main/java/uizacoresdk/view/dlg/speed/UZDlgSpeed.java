@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckedTextView;
 import android.widget.ScrollView;
-
 import uizacoresdk.R;
 import vn.uiza.core.utilities.LUIUtil;
 

@@ -1,7 +1,6 @@
 package test.loitp.samplelivestream;
 
 import android.support.multidex.MultiDexApplication;
-
 import uizalivestream.util.UZUtil;
 import vn.uiza.core.common.Constants;
 

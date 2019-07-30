@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -22,11 +21,9 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
 import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.util.Assertions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import uizacoresdk.R;
 import uizacoresdk.util.UZUtil;
 

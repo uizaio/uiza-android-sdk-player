@@ -2,9 +2,7 @@ package vn.uiza.restapi.uiza.model.v2.getlinkplay;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-
 import vn.uiza.restapi.uiza.model.v2.getlinkdownload.Hl;
 import vn.uiza.restapi.uiza.model.v2.getlinkdownload.HlsT;
 import vn.uiza.restapi.uiza.model.v2.getlinkdownload.Mpd;

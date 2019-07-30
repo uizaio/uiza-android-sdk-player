@@ -81,8 +81,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginB;
     private int progressBarColor;
     private ResultGetLinkPlay mResultGetLinkPlay;
-    private int positionBeforeDisappearX = Constants.UNKNOW;
-    private int positionBeforeDisappearY = Constants.UNKNOW;
+    private int positionBeforeDisappearX = Constants.UNKNOWN;
+    private int positionBeforeDisappearY = Constants.UNKNOWN;
     private CountDownTimer countDownTimer;
     private GestureDetector mTapDetector;
 
@@ -331,12 +331,12 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void appear() {
-        if (positionBeforeDisappearX == Constants.UNKNOW || positionBeforeDisappearY == Constants.UNKNOW) {
+        if (positionBeforeDisappearX == Constants.UNKNOWN || positionBeforeDisappearY == Constants.UNKNOWN) {
             return;
         }
         updateUISlide(positionBeforeDisappearX, positionBeforeDisappearY);
-        positionBeforeDisappearX = Constants.UNKNOW;
-        positionBeforeDisappearY = Constants.UNKNOW;
+        positionBeforeDisappearX = Constants.UNKNOWN;
+        positionBeforeDisappearY = Constants.UNKNOWN;
     }
 
     private void openApp() {

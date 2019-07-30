@@ -10,12 +10,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
-
 import com.daimajia.androidanimations.library.Techniques;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
 import uizacoresdk.interfaces.UZCallback;

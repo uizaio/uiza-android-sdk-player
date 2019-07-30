@@ -7,16 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
-
+import org.greenrobot.eventbus.EventBus;
 import vn.uiza.core.utilities.LConnectivityUtil;
 import vn.uiza.core.utilities.LLog;
-import vn.uiza.data.EventBusData;
 
-/**
- * Created by Loitp on 5/6/2017.
- */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class LConectifyService extends JobService implements ConnectivityReceiver.ConnectivityReceiverListener {
+public class LConectifyService extends JobService
+        implements ConnectivityReceiver.ConnectivityReceiverListener {
 
     private final String TAG = LConectifyService.class.getSimpleName();
 
@@ -48,10 +45,10 @@ public class LConectifyService extends JobService implements ConnectivityReceive
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         LLog.d(TAG, "onNetworkConnectionChanged isConnected: " + isConnected);
+        boolean isConnectedMobile = false;
+        boolean isConnectedWifi = false;
+        boolean isConnectedFast = false;
         if (isConnected) {
-            boolean isConnectedMobile = false;
-            boolean isConnectedWifi = false;
-            boolean isConnectedFast = false;
             if (LConnectivityUtil.isConnectedMobile(this)) {
                 isConnectedMobile = true;
             }
@@ -61,9 +58,14 @@ public class LConectifyService extends JobService implements ConnectivityReceive
             if (LConnectivityUtil.isConnectedFast(this)) {
                 isConnectedFast = true;
             }
-            EventBusData.getInstance().sendConnectChange(true, isConnectedFast, isConnectedWifi, isConnectedMobile);
-        } else {
-            EventBusData.getInstance().sendConnectChange(false, false, false, false);
         }
+
+        ConnectivityEvent event = new ConnectivityEvent();
+        event.setConnected(isConnected);
+        event.setConnectedMobile(isConnectedMobile);
+        event.setConnectedWifi(isConnectedWifi);
+        event.setConnectedFast(isConnectedFast);
+
+        EventBus.getDefault().postSticky(event);
     }
 }

@@ -11,10 +11,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import vn.uiza.R;
 import vn.uiza.utils.util.SentryUtils;
 
