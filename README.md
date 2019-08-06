@@ -1,8 +1,5 @@
 
-
-
-
-# Welcome to UizaSDK
+## Welcome to UizaSDK
 
 Simple Streaming at scale.
 
@@ -10,8 +7,8 @@ Uiza is the complete toolkit for building a powerful video streaming application
 
 Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/CHANGELOG.md).
 
-# Importing the Library
-**Step 1. Add the JitPack repository to your build file**
+## Importing the Library
+**Step 1. Add the `JitPack` repository to your `build.gradle` file**
 
     allprojects {
           repositories {
@@ -24,18 +21,18 @@ Read [CHANGELOG here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/
         multiDexEnabled  true
     }  
     dependencies {  
-        //for playing video VOD, LIVE  
-        implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[lasted-release-number]'        
+        // for playing VOD, LIVE video  
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:[latest-release-number]'        
         
-        //for live broadcaster  
-        implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[lasted-release-number]'  
+        // for broadcasting / live streaming
+        implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:[latest-release-number]'  
     }
 
-Get lasted release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
+Get latest release number [HERE](https://github.com/uizaio/uiza-android-sdk-player/releases).
 
 If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will need to import dependencies:
 
-    //for playing video VOD, LIVE
+    // for playing VOD, LIVE video
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:4.0.9'
     implementation 'com.google.android.exoplayer:exoplayer:2.9.5'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
@@ -43,23 +40,23 @@ If you are using uiza_android_sdk_player (Version 4.0.9 and above), you will nee
 
 - Additionally, if you want to use the Chromecast feature, add the following dependencies to your project:
 
-        //for Chromecast
+        // for ChromeCast
         implementation 'com.android.support:mediarouter-v7:28.0.0'
         implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
 
 - If advertising support should be enabled, also add the following dependencies to your project:
 
-        //for IMA Ads
+        // for IMA Ads
         implementation 'com.google.android.exoplayer:extension-ima:2.9.5'
         implementation 'com.google.android.gms:play-services-ads:17.1.3'
 
 **Note:**
 - The version of the ExoPlayer Extension IMA must match the version of the ExoPlayer library being used.
-- If you are using both Chromecast and IMA Ads dependencies, we recommend using dependency 'com.google.android.gms:play-services-cast-framework:$version' with version >= 16.0.3 to avoid dependency version conflicts
+- If you are using both ChromeCast and IMA Ads dependencies, we recommend using dependency 'com.google.android.gms:play-services-cast-framework:$version' with version >= 16.0.3 to avoid dependency version conflicts
 
 If you are using uiza_android_sdk_player (Version < 4.0.9), you only need to import dependencies:
 
-    //for playing video VOD, LIVE, Chromecast and advertising support
+    // for playing video VOD, LIVE, ChromeCast and advertising support
     implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:X.X.X'
 
 ***Please note if your project uses firebase***:
@@ -71,41 +68,39 @@ See also:  [https://firebase.google.com/support/release-notes/android#20180523](
 
 Check [example here](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/build.gradle).
 
-# Init SDK
+## Init SDK
 
 1. appId : get in email at registration
 2. token : generate [HERE](https://docs.uiza.io/v4/#get-api-key).
 3. api : default is `ap-southeast-1-api.uiza.co`
--
 
-
+     ```
      public class App extends MultiDexApplication {
             @Override
             public void onCreate() {
                 super.onCreate();
-                UZUtil.initWorkspace(this, 4, api, token, appId);
+                UZUtil.initWorkspace(this, Constants.API_VERSION_4, api, token, appId);
             }
-        }
+     }
+     ```
 
   Manifest
-
 
     <application
       android:name=".App "  <!-- important -->
     >
 
-
-# How to call API?:
-Call api by using this function**
+## How to call API?:
+Call api by using this function
 
     UZService service = UZRestClient.createService(UZService.class);
     UZAPIMaster.getInstance().subscribe(service.getListMetadata(), new ApiSubscriber<ResultGetListMetadata>() {
         @Override
-      public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
+        public void onSuccess(ResultGetListMetadata resultGetListMetadata) {
         }
 
         @Override
-      public void onFail(Throwable e) {
+        public void onFail(Throwable e) {
         }
     });
   Other API can be used with the same function above.
@@ -116,7 +111,7 @@ Call api by using this function**
 This class help you know how to use all Uiza API, please refer to
 [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/java/testlibuiza/sample/v3/api/UZTestAPIActivity.java)
 
-# How to play the video?:
+## How to play the video?:
 **XML**
 
     <uizacoresdk.view.rl.video.UZVideo
@@ -128,7 +123,7 @@ This class help you know how to use all Uiza API, please refer to
 
 Create java file MainActivity:
 
-    public class MainActivity extends AppCompatActivity implements UZCallback{
+    public class MainActivity extends AppCompatActivity implements UZCallback {
        ...
     }
 Manifest
@@ -137,22 +132,24 @@ Manifest
       android:name=".MainActivity "
       android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
 
+In your `activity` or `fragment`
 
-
-In onCreate()
-Play with entity:
-
+- Play with entity:
+    ```
     uzVideo = (UZVideo) findViewById(R.id.uiza_video);
     uzVideo.setUZCallback(this);
     UZUtil.initEntity(activity, uzVideo, "put the entity id here");
-
-Play with playlist/folder:
-
+    ```
+- Play with playlist/folder:
+    ```
     UZUtil.initPlaylistFolder(activity, uzVideo, "put the playlist/folder id here");
+    ```
+- Play with livestream entity:
+    ```
+    UZUtil.initLiveEntity(activity, uzVideo, "put the livestream entity id here");
+    ```
 
-
-
-Dont forget to add in activity life cycle event:
+Don't forget to add in activity life cycle event:
 
     @Override
     public void onDestroy() {
@@ -182,29 +179,32 @@ If you wanna listen all events of SDK, check the [sample here](https://github.co
 
 This sample help you know how to use all Uiza SDK, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample)
 
-**More informations for AndroidTV, AndroidBox:**
-You can use this SDK for AndroidTV, AndroidBox as well, but limited some features.
-We also provide some functions for AndroidTV like:
+**More information for AndroidTV, AndroidBox:**
 
-    uzVideo.addUZTVCallback(this);//listen event onFocusChange of components.
+You can use this SDK for `AndroidTV`, `AndroidBox` as well, but limited some features.
+We also provide some functions for `AndroidTV` like:
+
+    uzVideo.addUZTVCallback(this); // listen event onFocusChange of components.
+
 Please take a look at module [sampletv](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sampletv) for more details.
-# How to customize your skin?:
+
+## How to customize your skin?
 Only 3 steps, you can customize everything about player skin.
 
 **Step 1:**
 Create layout ***uiza_controller_skin_custom_main.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/res/layout/uiza_controller_skin_custom_main.xml):
 
-Please note *app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"*
+Please note *`app:controller_layout_id="@layout/uiza_controller_skin_custom_detail"`*
 
 **Step 2:**
 Create layout ***uiza_controller_skin_custom_detail.xml*** like [THIS](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/sample/src/main/res/layout/uiza_controller_skin_custom_detail.xml):
 - In this xml file, you can edit anything you like: position, color, drawable resouces...
 - You can add more view (TextView, Button, ImageView...).
 - You can remove any component which you dont like.
-- Please note: Dont change any id's view if you are using it.
+- Please note: Don't change any view `id`s  if you are using it.
 
-**Step 3:**'
-On function onCreate() of Activity, put this code:
+**Step 3:**
+On function `onCreate()` of `Activity`, put this code:
 
     UZUtil.setCurrentPlayerId(R.layout.uiza_controller_skin_custom_main); 
 
@@ -242,7 +242,7 @@ This sample help you know how to customize player's skin, please refer to  [THIS
 Ex: android:id="@id/player_view"
 Do not change android:id="@id/player_view_0" or android:id="@+id/player_view_0"...
 
-# How to livestream with UizaSDK?:
+## How to livestream with UizaSDK?:
 It's very easy, plz follow these steps below to implement:
 
 XML:
@@ -252,21 +252,21 @@ XML:
       android:layout_width="match_parent"  
       android:layout_height="match_parent" />
 
-In class LivestreamBroadcasterActivity:
+In class [`LivePortraitActivity`](https://github.com/uizaio/uiza-android-sdk-player/blob/v4/samplelivestream/src/main/java/test/loitp/samplelivestream/LivePortraitActivity.java):
 
-    public class LivestreamBroadcasterActivity extends AppCompatActivity implements UZLivestreamCallback {
-    ...
+    public class LivePortraitActivity extends AppCompatActivity implements UZLivestreamCallback {
+        // ...
     }
 
-func onCreate():
+In `onCreate()`:
 
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
     uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);  
-    uzLivestream.setCallback(this);
+    uzLivestream.setUzLivestreamCallback(this);
     
 
-onResume():
+In `onResume()`:
 
     @Override  
     protected void onResume() {  
@@ -274,14 +274,14 @@ onResume():
         super.onResume();  
     }
 
-Then put this line on surfaceChanged(UZLivestream.StartPreview startPreview);
+Then put this line on `surfaceChanged(UZLivestream.StartPreview startPreview);`
 
     int[] result = uzLivestream.getBestSizePreview();  
     int width = result[0];  
     int height = result[1];  
     startPreview.onSizeStartPreview(width, height);
 
-onPermission():
+In `onPermission()`:
 
     @Override  
     public void onPermission(boolean areAllPermissionsGranted) {  
@@ -311,8 +311,39 @@ Stop streaming (It auto saves mp4 file in your gallery if you start a livestream
 Switch camera:
 
     uzLivestream.switchCamera();
+    
+Allows streaming again after back from background:
 
-This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/sample/src/main/java/testlibuiza/sample/livestream)
+    uzLivestream.setBackgroundAllowedDuration(YOUR_ALLOW_TIME); // default time is 2 minutes
+
+This sample help you know how to use all Uiza SDK for livestream, please refer to  [THIS](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/samplelivestream/src/main/java/test/loitp/samplelivestream)
+
+## For contributors
+
+ Uiza Checkstyle configuration is based on the Google coding conventions from Google Java Style
+ that can be found at https://google.github.io/styleguide/javaguide.html.
+ 
+ Your code must be followed the rules that defined in our [`uiza_style.xml` rules](https://github.com/uizaio/uiza-android-sdk-player/tree/v4/configs/codestyle/uiza_style.xml)
+ 
+ You can setting the rules after import project to Android Studio follow below steps:
+ 
+ 1. **File** > **Settings** > **Editor** > **Code Style**
+ 2. Right on the `Scheme`, select the setting icon > **Import Scheme** > **Intellij IDEA code style XML**
+ 3. Select the `uiza_style.xml` file path
+ 4. Click **Apply** > **OK**, then ready to go
+ 
+ For apply check style, install [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea), then 
+ 
+ 1. **File** > **Settings** > **Other Settings** > **Checkstyle**
+ 2. In Configuration file, select the **`+`** icon
+ 3. Check `Use local checkstyle file` & select path to `uiza_check.xml` file
+ 4. Select **OK** & you're ready to go
+
+ To run checkstyle for project
+ 
+ 1. Right click on project
+ 2. Select **Analyze** > **Inspect Code**     
+
 
 ## Docs
 [Docs](https://uizaio.github.io/uiza-android-sdk-player/)
@@ -333,8 +364,8 @@ If you've found an error in this sample, please file an [issue ](https://github.
 
 Patches are encouraged, and may be submitted by forking this project and submitting a pull request through GitHub. Please feel free to contact me anytime: developer@uiza.io for more details.
 
-Address: _33 Ubi Avenue 3 #08- 13, Vertex Tower B, Singapore 408868_  
-Email: _developer@uiza.io_  
+Address: _33 Ubi Avenue 3 #08- 13, Vertex Tower B, Singapore 408868_
+Email: _developer@uiza.io_
 Website: _[uiza.io](http://uiza.io/)_
 
 ## License
