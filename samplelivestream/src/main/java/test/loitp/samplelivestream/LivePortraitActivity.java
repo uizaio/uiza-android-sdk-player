@@ -47,18 +47,21 @@ import com.pedro.encoder.input.gl.render.filters.TemperatureFilterRender;
 import com.pedro.encoder.input.gl.render.filters.ZebraFilterRender;
 import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
-import uizalivestream.interfaces.CameraCallback;
-import uizalivestream.interfaces.UZLivestreamCallback;
-import uizalivestream.model.PresetLiveStreamingFeed;
-import uizalivestream.view.UZLivestream;
+import io.uiza.broadcast.UzLiveCameraCallback;
+import io.uiza.broadcast.UzLivestream;
+import io.uiza.broadcast.UzLivestreamCallback;
+import io.uiza.broadcast.util.UzLivestreamError;
+import io.uiza.broadcast.config.PresetLiveFeed;
 import vn.uiza.core.utilities.LLog;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 import vn.uiza.views.LToast;
 
-public class LivePortraitActivity extends AppCompatActivity implements View.OnClickListener, UZLivestreamCallback, CameraCallback {
+public class LivePortraitActivity extends AppCompatActivity implements View.OnClickListener,
+        UzLivestreamCallback,
+        UzLiveCameraCallback {
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
-    private UZLivestream uzLivestream;
+    private UzLivestream uzLivestream;
     private Button bStartStop;
     private Button bStartStopStore;
     private Button btSwitchCamera;
@@ -82,16 +85,16 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void findViews() {
-        uzLivestream = (UZLivestream) findViewById(R.id.uiza_livestream);
+        uzLivestream = findViewById(R.id.uiza_livestream);
         uzLivestream.setUzLivestreamCallback(this);
         uzLivestream.setCameraCallback(this);
         bStartStop = findViewById(R.id.b_start_stop);
         bStartStopStore = findViewById(R.id.b_start_stop_store);
         btSwitchCamera = findViewById(R.id.b_switch_camera);
-        btFilter = (Button) findViewById(R.id.b_filter);
-        btFlash = (Button) findViewById(R.id.b_flash);
-        tvMainUrl = (TextView) findViewById(R.id.tv_main_url);
-        tvInfo = (TextView) findViewById(R.id.tv_info);
+        btFilter = findViewById(R.id.b_filter);
+        btFlash = findViewById(R.id.b_flash);
+        tvMainUrl = findViewById(R.id.tv_main_url);
+        tvInfo = findViewById(R.id.tv_info);
         bStartStop.setEnabled(false);
         bStartStopStore.setEnabled(false);
         btSwitchCamera.setEnabled(false);
@@ -142,7 +145,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     private void startStop() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl());
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
@@ -184,7 +187,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     private void startStopStore() {
         if (!uzLivestream.isStreaming()) {
             //AUTO
-            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {
+            if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {
                 uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);
             } else {
                 LToast.show(activity, "Error preparing stream, This device cant do it");
@@ -227,7 +230,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
         uzLivestream.setBaseObjectFilterRender();
         switch (item.getItemId()) {
             case R.id.e_d_fxaa:
-                uzLivestream.enableAA(!uzLivestream.isAAEnabled());
+                uzLivestream.enableAntiAliasing(!uzLivestream.isAntiAliasingEnabled());
                 break;
             case R.id.no_filter:
                 uzLivestream.setFilter(new NoFilterRender());
@@ -360,7 +363,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onUICreate() {
+    public void onUiCreated() {
     }
 
     @Override
@@ -384,21 +387,18 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onError(final String reason) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LToast.show(activity, reason);
-                bStartStop.setEnabled(true);
-                bStartStopStore.setEnabled(true);
-                bStartStop.setText("Start streaming");
-                bStartStopStore.setText("Start stream and Store");
-            }
+    public void onError(UzLivestreamError error) {
+        runOnUiThread(() -> {
+            LToast.show(activity, error.getReason());
+            bStartStop.setEnabled(true);
+            bStartStopStore.setEnabled(true);
+            bStartStop.setText("Start streaming");
+            bStartStopStore.setText("Start stream and Store");
         });
     }
 
     @Override
-    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveStreamingFeed presetLiveStreamingFeed) {
+    public void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
         bStartStop.setEnabled(true);
         bStartStopStore.setEnabled(true);
         btSwitchCamera.setEnabled(true);
@@ -417,16 +417,13 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onDisconnectRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                bStartStop.setEnabled(true);
-                bStartStopStore.setEnabled(true);
-                btSwitchCamera.setEnabled(true);
-                btFilter.setEnabled(true);
-                bStartStop.setText("Start streaming");
-                bStartStopStore.setText("Start stream and Store");
-            }
+        runOnUiThread(() -> {
+            bStartStop.setEnabled(true);
+            bStartStopStore.setEnabled(true);
+            btSwitchCamera.setEnabled(true);
+            btFilter.setEnabled(true);
+            bStartStop.setText("Start streaming");
+            bStartStopStore.setText("Start stream and Store");
         });
     }
 
@@ -443,7 +440,7 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void surfaceChanged(UZLivestream.StartPreview startPreview) {
+    public void surfaceChanged(UzLivestream.StartPreview startPreview) {
         int[] result = uzLivestream.getBestSizePreview();
         int width = result[0];
         int height = result[1];
@@ -451,13 +448,10 @@ public class LivePortraitActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onCameraChange(boolean isFrontCamera) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvInfo.setText("isFrontCamera " + isFrontCamera);
-                btFlash.setVisibility(isFrontCamera ? View.GONE : View.VISIBLE);
-            }
+    public void onCameraChanged(boolean isFrontCamera) {
+        runOnUiThread(() -> {
+            tvInfo.setText("isFrontCamera " + isFrontCamera);
+            btFlash.setVisibility(isFrontCamera ? View.GONE : View.VISIBLE);
         });
     }
 }

@@ -72,7 +72,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         // Sample for set size PiP
         UZUtil.setMiniPlayerSizeDp(this, false, 140, 220);
         // Sample for single click to full player
-        // UZUtil.setMiniPlayerTapToFullPlayer(this, false);
+        // UzLivestreamUtil.setMiniPlayerTapToFullPlayer(this, false);
         // Sample for control buttons skin
         uzVideo.setPipControlSkin(R.layout.layout_floating_controls_skin);
         btMini.setOnClickListener(view -> uzVideo.showPip());

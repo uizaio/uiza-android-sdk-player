@@ -35,6 +35,6 @@ android {
 }
 
 dependencies {
-    api project(':uizalivestream')
+    api project(':uizabroadcast')
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizalivestream:3.3.1'
 }

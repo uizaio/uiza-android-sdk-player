@@ -1,18 +1,19 @@
-package uizalivestream.interfaces;
+package io.uiza.broadcast;
 
-import uizalivestream.model.PresetLiveStreamingFeed;
-import uizalivestream.view.UZLivestream;
+import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.util.UzLivestreamError;
 import vn.uiza.restapi.uiza.model.v3.metadata.getdetailofmetadata.Data;
 
-public interface UZLivestreamCallback {
-    void onUICreate();
+public interface UzLivestreamCallback {
+
+    void onUiCreated();
 
     void onPermission(boolean areAllPermissionsGranted);
 
-    void onError(String reason);
+    void onError(UzLivestreamError error);
 
     void onGetDataSuccess(Data d, String mainUrl, boolean isTranscode,
-            PresetLiveStreamingFeed presetLiveStreamingFeed);
+                          PresetLiveFeed presetLiveFeed);
 
     void onConnectionSuccessRtmp();
 
@@ -26,7 +27,7 @@ public interface UZLivestreamCallback {
 
     void surfaceCreated();
 
-    void surfaceChanged(UZLivestream.StartPreview startPreview);
+    void surfaceChanged(UzLivestream.StartPreview startPreview);
 
     void onBackgroundTooLong();
 }

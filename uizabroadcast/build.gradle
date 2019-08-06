@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.tplloi'
+group = 'io.uiza'
 
 android {
     compileSdkVersion 28
@@ -11,17 +11,9 @@ android {
         versionCode 1
         versionName "1.0.0"
     }
-    /*buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }*/
     dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
-        //release & debug is in project animators
-        //matchingFallbacks = ['release', 'debug']
     }
     compileOptions {
         // from 2.9.0 need turn on Java 8 support https://exoplayer.dev/hello-world.html#turn-on-java-8-support
@@ -31,10 +23,11 @@ android {
 }
 
 dependencies {
+
     api project(':uizabase')
-    //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.2'
     api 'com.karumi:dexter:4.2.0'//runtime permission https://github.com/Karumi/Dexter
+
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
     testImplementation 'junit:junit:4.12'

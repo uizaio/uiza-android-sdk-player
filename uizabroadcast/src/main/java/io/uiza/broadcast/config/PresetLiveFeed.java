@@ -1,6 +1,6 @@
-package uizalivestream.model;
+package io.uiza.broadcast.config;
 
-public class PresetLiveStreamingFeed {
+public final class PresetLiveFeed {
     private boolean isTranscode;
     private int s1080p;
     private int s720p;
@@ -39,9 +39,12 @@ public class PresetLiveStreamingFeed {
     }
 
     /**
-     * initial values
+     * Initial bitrate values for each condition. Based on 3 things: <br>
+     * 1. Camera resolution <br>
+     * 2. Network bandwidth <br>
+     * 3. Live mode is transcode or not
      *
-     * @param connectedFast: network quality
+     * @param connectedFast true if network bandwidth is fast, otherwise false
      */
     public void setVideoBitRates(boolean connectedFast) {
         if (isTranscode) {
@@ -58,20 +61,28 @@ public class PresetLiveStreamingFeed {
     }
 
     /**
-     * get Audio bitrate from video sampleRate
-     * @param videoBitrate: video Bitrate see setEntity
-     * @return audio Bitrate
+     * Gets Audio bitrate based on video bitrate & is transcode mode.
+     *
+     * @param videoBitrate video bitrate
+     * @return audio bitrate
      */
     public int getAudioBitRate(int videoBitrate) {
         if (isTranscode) {
-            if (videoBitrate >= 2500000) return 192 * 1024; // 1080p => 192kps
-            if (videoBitrate >= 1500000) return 128 * 1024; // 720p => 128kps
-            else return 96 * 1024; // 480p => 96kps
+            if (videoBitrate >= 2500000) {
+                return 192 * 1024; // 1080p => 192kps
+            } else if (videoBitrate >= 1500000) {
+                return 128 * 1024; // 720p => 128kps
+            } else {
+                return 96 * 1024; // 480p => 96kps
+            }
         } else {
-            if (videoBitrate >= 1500000) return 192 * 1024; // 1080p => 192kps
-            if (videoBitrate >= 800000) return 128 * 1024; // 720p => 128kps
-            else return 96 * 1024; // 480p => 96kps
+            if (videoBitrate >= 1500000) {
+                return 192 * 1024; // 1080p => 192kps
+            } else if (videoBitrate >= 800000) {
+                return 128 * 1024; // 720p => 128kps
+            } else {
+                return 96 * 1024; // 480p => 96kps
+            }
         }
-
     }
 }

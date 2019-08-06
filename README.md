@@ -247,7 +247,7 @@ It's very easy, plz follow these steps below to implement:
 
 XML:
 
-    <uizalivestream.view.UZLivestream
+    <io.uiza.broadcast.UzLivestream
       android:id="@+id/uiza_livestream"  
       android:layout_width="match_parent"  
       android:layout_height="match_parent" />
@@ -292,15 +292,15 @@ In `onPermission()`:
 
 Start a `portrait` livestream:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoPortrait()) {  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl());  
     }
 
-To stream in landscape mode, use `uzLivestream.prepareVideoLandscape()` instead.
+To stream in landscape mode, use `uzLivestream.prepareVideo(true)` instead.
 
 Start a livestream and save to MP4 file:
 
-    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideoHD()) {  
+    if (uzLivestream.prepareAudio() && uzLivestream.prepareVideo(false)) {  
         uzLivestream.startStream(uzLivestream.getMainStreamUrl(), true);  
     }
 
