@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -39,15 +41,12 @@ import vn.uiza.core.utilities.LScreenUtil;
 import vn.uiza.core.utilities.LUIUtil;
 import vn.uiza.restapi.uiza.model.v3.linkplay.getlinkplay.ResultGetLinkPlay;
 import vn.uiza.utils.util.SentryUtils;
-
-/**
- * Created by loitp on 1/28/2019.
- */
+import vn.uiza.utils.util.ViewUtils;
 
 public class FUZVideoService extends Service implements FUZVideo.Callback {
-    private final String TAG = "TAG" + getClass().getSimpleName();
-    private WindowManager mWindowManager;
-    private View mFloatingView;
+    private static final String TAG = FUZVideoService.class.getSimpleName();
+    private WindowManager windowManager;
+    private View floatingView;
     private View viewDestroy;
     private RelativeLayout rlControl;
     private RelativeLayout moveView;
@@ -69,7 +68,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int pipTopPosition;
     private int videoW = 16;
     private int videoH = 9;
-    private boolean isEZDestroy;
+    private boolean isEzDestroy;
     private boolean isEnableVibration;
     private boolean isEnableSmoothSwitch;
     private boolean isAutoSize;
@@ -80,14 +79,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private int marginR;
     private int marginB;
     private int progressBarColor;
-    private ResultGetLinkPlay mResultGetLinkPlay;
+    private ResultGetLinkPlay resultGetLinkPlay;
     private int positionBeforeDisappearX = Constants.UNKNOW;
     private int positionBeforeDisappearY = Constants.UNKNOW;
     private CountDownTimer countDownTimer;
-    private GestureDetector mTapDetector;
+    private GestureDetector gestureDetector;
 
-    private enum POS {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER}
-    private POS pos;
+    private enum MiniPosition { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER_LEFT, CENTER_RIGHT, CENTER_TOP, CENTER_BOTTOM, LEFT, RIGHT, TOP, BOTTOM, CENTER }
+    private MiniPosition pos;
 
     public FUZVideoService() {
     }
@@ -113,7 +112,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
 
         try {
-            cdnHost = mResultGetLinkPlay.getData().getCdn().get(0).getHost();
+            cdnHost = resultGetLinkPlay.getData().getCdn().get(0).getHost();
         } catch (NullPointerException e) {
             LLog.e(TAG, "Error cannot find cdnHost " + e.toString());
             SentryUtils.captureException(e);
@@ -134,11 +133,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
     private void findViews() {
-        moveView = mFloatingView.findViewById(R.id.move_view);
-        fuzVideo = mFloatingView.findViewById(R.id.uiza_video);
-        controlStub = mFloatingView.findViewById(R.id.control_stub);
+        moveView = floatingView.findViewById(R.id.move_view);
+        fuzVideo = floatingView.findViewById(R.id.uiza_video);
+        controlStub = floatingView.findViewById(R.id.control_stub);
 
-        tvMsg = mFloatingView.findViewById(R.id.tv_msg);
+        tvMsg = floatingView.findViewById(R.id.tv_msg);
         LUIUtil.setTextShadow(tvMsg);
         tvMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,10 +163,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             }
         });
 
-        viewDestroy = mFloatingView.findViewById(R.id.view_destroy);
+        viewDestroy = floatingView.findViewById(R.id.view_destroy);
         int colorViewDestroy = UZUtil.getMiniPlayerColorViewDestroy(getBaseContext());
         viewDestroy.setBackgroundColor(colorViewDestroy);
-        isEZDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
+        isEzDestroy = UZUtil.getMiniPlayerEzDestroy(getBaseContext());
         isEnableVibration = UZUtil.getMiniPlayerEnableVibration(getBaseContext());
         isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(getBaseContext());
 
@@ -183,10 +182,10 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void inflateControls() {
         controlStub.inflate();
         // inflate controls from skin
-        rlControl = mFloatingView.findViewById(R.id.controls_root);
-        btExit = mFloatingView.findViewById(R.id.uiza_mini_exit);
-        btFullScreen = mFloatingView.findViewById(R.id.uiza_mini_full_screen);
-        btPlayPause = mFloatingView.findViewById(R.id.uiza_mini_pause_resume);
+        rlControl = floatingView.findViewById(R.id.controls_root);
+        btExit = floatingView.findViewById(R.id.uiza_mini_exit);
+        btFullScreen = floatingView.findViewById(R.id.uiza_mini_full_screen);
+        btPlayPause = floatingView.findViewById(R.id.uiza_mini_pause_resume);
         setControlsClickListener();
     }
 
@@ -194,8 +193,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        mResultGetLinkPlay = UZData.getInstance().getResultGetLinkPlay();
-        if (mResultGetLinkPlay == null) {
+        resultGetLinkPlay = UZData.getInstance().getResultGetLinkPlay();
+        if (resultGetLinkPlay == null) {
             stopSelf();
         }
         videoW = UZUtil.getVideoWidth(getBaseContext());
@@ -207,27 +206,27 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         marginT = UZUtil.getMiniPlayerMarginT(getBaseContext());
         marginR = UZUtil.getMiniPlayerMarginR(getBaseContext());
         marginB = UZUtil.getMiniPlayerMarginB(getBaseContext());
-        mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
+        floatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_uiza_video, null, false);
         findViews();
         //Add the view to the window.
-        int LAYOUT_FLAG;
+        int layoutFlag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            layoutFlag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutFlag = WindowManager.LayoutParams.TYPE_PHONE;
         }
         //OPTION 1: floatview se neo vao 1 goc cua device
         /*params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG,
+                layoutFlag,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);*/
         //OPTION 2: floatview se ko neo vao 1 goc cua device
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                layoutFlag, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
@@ -259,8 +258,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         params.y = screenHeight - 1;
 
         //Add the view to the window
-        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        mWindowManager.addView(mFloatingView, params);
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        windowManager.addView(floatingView, params);
 
     }
 
@@ -327,14 +326,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         }
         positionBeforeDisappearX = params.x;
         positionBeforeDisappearY = params.y;
-        updateUISlide(screenWidth, screenHeight);
+        updateUiSlide(screenWidth, screenHeight);
     }
 
     private void appear() {
         if (positionBeforeDisappearX == Constants.UNKNOW || positionBeforeDisappearY == Constants.UNKNOW) {
             return;
         }
-        updateUISlide(positionBeforeDisappearX, positionBeforeDisappearY);
+        updateUiSlide(positionBeforeDisappearX, positionBeforeDisappearY);
         positionBeforeDisappearX = Constants.UNKNOW;
         positionBeforeDisappearY = Constants.UNKNOW;
     }
@@ -423,7 +422,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     //==================================================================================================END CONFIG
     //==================================================================================================START UI
-    private void updateUIVideoSizeOneTime(int videoW, int videoH) {
+    private void updateUiVideoSizeOneTime(int videoW, int videoH) {
         int vW;
         int vH;
         if (isAutoSize) {
@@ -445,33 +444,33 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     private void slideToPosition(int goToPosX, int goToPosY) {
         final int currentPosX = params.x;
         final int currentPosY = params.y;
-        final int mGoToPosX;
-        final int mGoToPosY;
+        final int gotoPosX;
+        final int gotoPosY;
         int videoW = getVideoW();
         int videoH = getVideoH();
         if (goToPosX <= 0) {
-            mGoToPosX = marginL;
+            gotoPosX = marginL;
         } else if (goToPosX >= screenWidth - videoW) {
-            mGoToPosX = goToPosX - marginR;
+            gotoPosX = goToPosX - marginR;
         } else {
-            mGoToPosX = goToPosX;
+            gotoPosX = goToPosX;
         }
         if (goToPosY <= 0) {
-            mGoToPosY = marginT;
+            gotoPosY = marginT;
         } else if (goToPosY >= screenHeight - videoH) {
-            mGoToPosY = goToPosY - marginB;
+            gotoPosY = goToPosY - marginB;
         } else {
-            mGoToPosY = goToPosY;
+            gotoPosY = goToPosY;
         }
-        final int a = Math.abs(mGoToPosX - currentPosX);
-        final int b = Math.abs(mGoToPosY - currentPosY);
+        final int a = Math.abs(gotoPosX - currentPosX);
+        final int b = Math.abs(gotoPosY - currentPosY);
         countDownTimer = new CountDownTimer(300, 3) {
             public void onTick(long t) {
                 float step = (300.f - t) / 3;
                 int tmpX;
                 int tmpY;
-                if (currentPosX > mGoToPosX) {
-                    if (currentPosY > mGoToPosY) {
+                if (currentPosX > gotoPosX) {
+                    if (currentPosY > gotoPosY) {
                         tmpX = currentPosX - (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -479,7 +478,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 } else {
-                    if (currentPosY > mGoToPosY) {
+                    if (currentPosY > gotoPosY) {
                         tmpX = currentPosX + (int) (a * step / 100);
                         tmpY = currentPosY - (int) (b * step / 100);
                     } else {
@@ -487,19 +486,28 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         tmpY = currentPosY + (int) (b * step / 100);
                     }
                 }
-                updateUISlide(tmpX, tmpY);
+                updateUiSlide(tmpX, tmpY);
             }
 
             public void onFinish() {
-                updateUISlide(mGoToPosX, mGoToPosY);
+                updateUiSlide(gotoPosX, gotoPosY);
             }
         }.start();
     }
 
-    private void updateUISlide(int x, int y) {
+    private void updateUiSlide(int x, int y) {
         params.x = x;
         params.y = y;
-        mWindowManager.updateViewLayout(mFloatingView, params);
+        if (isFloatingViewValid()) {
+            windowManager.updateViewLayout(floatingView, params);
+        }
+    }
+
+    private boolean isFloatingViewValid() {
+        if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+            return floatingView != null && floatingView.isAttachedToWindow();
+        }
+        return floatingView != null;
     }
 
     //==================================================================================================END UI
@@ -525,7 +533,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @SuppressLint("ClickableViewAccessibility")
     private void dragAndMove() {
-        mTapDetector = new GestureDetector(getBaseContext(), new GestureTap());
+        gestureDetector = new GestureDetector(getBaseContext(), new GestureTap());
         moveView.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
@@ -534,7 +542,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                mTapDetector.onTouchEvent(event);
+                gestureDetector.onTouchEvent(event);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         //remember the initial position.
@@ -550,12 +558,11 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         //Calculate the X and Y coordinates of the view.
-                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
-                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
+                        int tmpX = initialX + (int) (event.getRawX() - initialTouchX);
+                        int tmpY = initialY + (int) (event.getRawY() - initialTouchY);
 
-                        //Update the layout with new X & Y coordinate
-                        mWindowManager.updateViewLayout(mFloatingView, params);
-                        getLocationOnScreen(mFloatingView);
+                        updateUiSlide(tmpX, tmpY);
+                        getLocationOnScreen(floatingView);
                         return true;
                 }
                 return false;
@@ -564,47 +571,44 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     }
 
 
-    private void notiPos(POS tmpPos) {
-        if (pos != tmpPos) {
-            pos = tmpPos;
-            if (isEZDestroy) {
-                switch (pos) {
-                    case TOP_LEFT:
-                    case TOP_RIGHT:
-                    case BOTTOM_LEFT:
-                    case BOTTOM_RIGHT:
-                    case CENTER_LEFT:
-                    case CENTER_RIGHT:
-                    case CENTER_TOP:
-                    case CENTER_BOTTOM:
-                        if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
-                        }
-                        viewDestroy.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        if (viewDestroy.getVisibility() != View.GONE) {
-                            viewDestroy.setVisibility(View.GONE);
-                        }
-                        break;
-                }
-            } else {
-                switch (pos) {
-                    case TOP_LEFT:
-                    case TOP_RIGHT:
-                    case BOTTOM_LEFT:
-                    case BOTTOM_RIGHT:
-                        if (isEnableVibration) {
-                            LDeviceUtil.vibrate(getBaseContext());
-                        }
-                        viewDestroy.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        if (viewDestroy.getVisibility() != View.GONE) {
-                            viewDestroy.setVisibility(View.GONE);
-                        }
-                        break;
-                }
+    private void notiPos(MiniPosition tmpPos) {
+        if (pos == tmpPos) {
+            return;
+        }
+        pos = tmpPos;
+        if (isEzDestroy) {
+            switch (pos) {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                case CENTER_LEFT:
+                case CENTER_RIGHT:
+                case CENTER_TOP:
+                case CENTER_BOTTOM:
+                    if (isEnableVibration) {
+                        LDeviceUtil.vibrate(getBaseContext());
+                    }
+                    ViewUtils.visibleViews(viewDestroy);
+                    break;
+                default:
+                    ViewUtils.goneViews(viewDestroy);
+                    break;
+            }
+        } else {
+            switch (pos) {
+                case TOP_LEFT:
+                case TOP_RIGHT:
+                case BOTTOM_LEFT:
+                case BOTTOM_RIGHT:
+                    if (isEnableVibration) {
+                        LDeviceUtil.vibrate(getBaseContext());
+                    }
+                    ViewUtils.visibleViews(viewDestroy);
+                    break;
+                default:
+                    ViewUtils.goneViews(viewDestroy);
+                    break;
             }
         }
     }
@@ -620,37 +624,37 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int centerY = (posTop + posBottom) / 2;
         if (centerX < 0) {
             if (centerY < 0) {
-                notiPos(POS.TOP_LEFT);
+                notiPos(MiniPosition.TOP_LEFT);
             } else if (centerY > screenHeight) {
-                notiPos(POS.BOTTOM_LEFT);
+                notiPos(MiniPosition.BOTTOM_LEFT);
             } else {
-                notiPos(POS.CENTER_LEFT);
+                notiPos(MiniPosition.CENTER_LEFT);
             }
         } else if (centerX > screenWidth) {
             if (centerY < 0) {
-                notiPos(POS.TOP_RIGHT);
+                notiPos(MiniPosition.TOP_RIGHT);
             } else if (centerY > screenHeight) {
-                notiPos(POS.BOTTOM_RIGHT);
+                notiPos(MiniPosition.BOTTOM_RIGHT);
             } else {
-                notiPos(POS.CENTER_RIGHT);
+                notiPos(MiniPosition.CENTER_RIGHT);
             }
         } else {
             if (centerY < 0) {
-                notiPos(POS.CENTER_TOP);
+                notiPos(MiniPosition.CENTER_TOP);
             } else if (centerY > screenHeight) {
-                notiPos(POS.CENTER_BOTTOM);
+                notiPos(MiniPosition.CENTER_BOTTOM);
             } else {
                 if (posLeft < 0) {
-                    notiPos(POS.LEFT);
+                    notiPos(MiniPosition.LEFT);
                 } else if (posRight > screenWidth) {
-                    notiPos(POS.RIGHT);
+                    notiPos(MiniPosition.RIGHT);
                 } else {
                     if (posTop < 0) {
-                        notiPos(POS.TOP);
+                        notiPos(MiniPosition.TOP);
                     } else if (posBottom > screenHeight) {
-                        notiPos(POS.BOTTOM);
+                        notiPos(MiniPosition.BOTTOM);
                     } else {
-                        notiPos(POS.CENTER);
+                        notiPos(MiniPosition.CENTER);
                     }
                 }
             }
@@ -666,7 +670,7 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
         int posY;
         int centerPosX;
         int centerPosY;
-        if (isEZDestroy) {
+        if (isEzDestroy) {
             switch (pos) {
                 case TOP_LEFT:
                 case TOP_RIGHT:
@@ -745,18 +749,14 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                     centerPosY = posY + getMoveViewHeight() / 2;
                     if (centerPosX < screenWidth / 2) {
                         if (centerPosY < screenHeight / 2) {
-                            //LLog.d(TAG, "top left part");
                             slideToPosition(0, 0);
                         } else {
-                            //LLog.d(TAG, "bottom left part");
                             slideToPosition(0, screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     } else {
                         if (centerPosY < screenHeight / 2) {
-                            //LLog.d(TAG, "top right part");
                             slideToPosition(screenWidth - getMoveViewWidth(), 0);
                         } else {
-                            //LLog.d(TAG, "bottom right part");
                             slideToPosition(screenWidth - getMoveViewWidth(), screenHeight - getMoveViewHeight() - pipTopPosition);
                         }
                     }
@@ -808,8 +808,8 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        if (mFloatingView != null) {
-            mWindowManager.removeView(mFloatingView);
+        if (floatingView != null) {
+            windowManager.removeView(floatingView);
         }
         if (fuzVideo != null) {
             fuzVideo.onDestroy();
@@ -823,21 +823,19 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
 
     @Override
     public void isInitResult(boolean isInitSuccess) {
-        if (isInitSuccess && fuzVideo != null) {
-            if (mFloatingView == null) {
-                return;
-            }
-            LLog.d(TAG, "miniplayer STEP 2 isInitResult true");
-            editSizeOfMoveView();
-            //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
-            updateUIVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
-            if (!isSendMsgToActivity) {
-                //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
-                ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
-                msgFromServiceIsInitSuccess.setInitSuccess(true);
-                ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
-                isSendMsgToActivity = true;
-            }
+        if (!isInitSuccess || fuzVideo == null || floatingView == null) {
+            return;
+        }
+        LLog.d(TAG, "miniplayer STEP 2 isInitResult true");
+        editSizeOfMoveView();
+        //sau khi da play thanh cong thi chuyen mini player ben ngoai screen vao trong screen
+        updateUiVideoSizeOneTime(fuzVideo.getVideoW(), fuzVideo.getVideoH());
+        if (!isSendMsgToActivity) {
+            //LLog.d(TAG, "state finish loading PIP -> send msg to UZVideo");
+            ComunicateMng.MsgFromServiceIsInitSuccess msgFromServiceIsInitSuccess = new ComunicateMng.MsgFromServiceIsInitSuccess(null);
+            msgFromServiceIsInitSuccess.setInitSuccess(true);
+            ComunicateMng.postFromService(msgFromServiceIsInitSuccess);
+            isSendMsgToActivity = true;
         }
     }
 
@@ -859,7 +857,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
             if (fuzVideo == null) {
                 return;
             }
-            //LLog.d(TAG, "Dang play o che do playlist/folder -> play next item");
             fuzVideo.getLinkPlayOfNextItem(new FUZVideo.CallbackGetLinkPlay() {
                 @Override
                 public void onSuccess(String lp) {
@@ -872,7 +869,6 @@ public class FUZVideoService extends Service implements FUZVideo.Callback {
                 }
             });
         } else {
-            //LLog.d(TAG, "Dang play o che do entity -> stopSelf()");
             stopSelf();
         }
     }
