@@ -688,7 +688,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
         }
 
         private long getProgramDateTimeValue(HlsMediaPlaylist playlist, long timeToEndChunk) {
-            if (playlist.tags == null) {
+            if (playlist == null || playlist.tags == null || playlist.tags.isEmpty()) {
                 return INVALID_PROGRAM_DATE_TIME;
             }
             final String emptyStr = "";
