@@ -46,12 +46,12 @@ public class PresetLiveStreamingFeed {
     public void setVideoBitRates(boolean connectedFast) {
         if (isTranscode) {
             //Push with Transcode
-            setS1080p(connectedFast ? 5000000 : 2500000); // 2.5M - 5M
+            setS1080p(connectedFast ? 5500000 : 3500000); // 2.5M - 5.5M
             setS720p(connectedFast ? 3000000 : 1500000); // 1.5M - 3M
             setS480p(connectedFast ? 1500000 : 800000); // 0.8M - 1.5M
         } else {
             //Push-only, no transcode
-            setS1080p(connectedFast ? 2500000 : 1500000); // 1.5M - 2.5M
+            setS1080p(connectedFast ? 3500000 : 1500000); // 1.5M - 2.5M
             setS720p(connectedFast ? 1500000 : 800000); // 0.8M - 1.5M
             setS480p(connectedFast ? 800000 : 400000); // 0.4M - 0.8M
         }
