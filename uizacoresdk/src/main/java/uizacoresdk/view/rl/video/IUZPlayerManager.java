@@ -698,7 +698,7 @@ abstract class IUZPlayerManager implements PreviewLoader {
             int playingIndex = tagSize;
 
             // Find the playing frame index
-            while (playingIndex >= 0) {
+            while (playingIndex > 0) {
                 String tag = playlist.tags.get(playingIndex - 1);
                 if (tag.contains(EXTINF)) {
                     totalTime +=
