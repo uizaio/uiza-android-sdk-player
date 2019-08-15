@@ -26,13 +26,13 @@ import io.uiza.core.util.LLog;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.interfaces.IOnBackPressed;
+import io.uiza.player.util.UzPlayerData;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZData;
 
 public class FrmCategories extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -105,7 +105,7 @@ public class FrmCategories extends Fragment implements IOnBackPressed {
         tvMsg.setVisibility(View.GONE);
         UzDisplayUtil.showProgressBar(pb);
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
-        UzApiMaster.getInstance().subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion(), limit, currentPage), new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
+        UzApiMaster.getInstance().subscribe(service.getListMetadata(UzPlayerData.getInstance().getApiVersion(), limit, currentPage), new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
             @Override
             public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
                 if (response == null || response.getData() == null || response.getData().isEmpty() || response.getMetadata() == null) {

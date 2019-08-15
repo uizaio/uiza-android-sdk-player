@@ -1,9 +1,5 @@
 package uiza.v4;
 
-/**
- * Created by www.muathu@gmail.com on 12/24/2017.
- */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,97 +12,139 @@ import android.widget.Toast;
 import io.uiza.core.api.response.linkplay.LinkPlay;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.exception.UzException;
-import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.UzCommonUtil;
+import io.uiza.player.UzPlayer;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.UzItemClickListener;
+import io.uiza.player.interfaces.UzPlayerEventListener;
+import io.uiza.player.interfaces.UzPlayerUiEventListener;
 import uiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZVideo;
 
-public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
-    private final String TAG = getClass().getSimpleName();
-    private UZVideo uzVideo;
+public class FrmVideoTop extends Fragment implements UzPlayerEventListener, UzPlayerUiEventListener,
+        UzItemClickListener {
 
-    public UZVideo getUZVideo() {
-        return uzVideo;
+    private UzPlayer uzPlayer;
+
+    public UzPlayer getUZVideo() {
+        return uzPlayer;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        uzVideo = view.findViewById(R.id.uiza_video);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzPlayer = view.findViewById(R.id.uiza_video);
+        uzPlayer.setUzPlayerEventListener(this);
+        uzPlayer.setUzPlayerUiEventListener(this);
+        uzPlayer.setUzItemClickListener(this);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.v4_frm_top, container, false);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideo.onDestroy();
+        uzPlayer.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        uzPlayer.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uzVideo.onPause();
+        uzPlayer.onPause();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setListener() {
-        if (uzVideo == null || uzVideo.getPlayer() == null) {
+        if (uzPlayer == null || uzPlayer.getExoPlayer() == null) {
             return;
         }
-        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
-            @Override
-            public void onVisibilityChange(boolean isShow) {
-                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
-                        && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
-                    if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().isMaximized()) {
-                        if (isShow) {
-                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(false);
-                        } else {
-                            ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
-                        }
+        uzPlayer.setControllerStateCallback(isShow -> {
+            if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel() != null
+                    && !((HomeV4CanSlideActivity) getActivity()).isLandscapeScreen()) {
+                if (((HomeV4CanSlideActivity) getActivity()).getDraggablePanel()
+                        .isMaximized()) {
+                    if (isShow) {
+                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel()
+                                .setEnableSlide(false);
                     } else {
-                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().setEnableSlide(true);
+                        ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel()
+                                .setEnableSlide(true);
                     }
+                } else {
+                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel()
+                            .setEnableSlide(true);
                 }
             }
         });
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-        ((HomeV4CanSlideActivity) getActivity()).isInitResult(isGetDataSuccess, linkPlay, data);
-        if (isInitSuccess) {
+    public void onDataInitialized(boolean initSuccess, boolean getDataSuccess, LinkPlay linkPlay,
+            VideoData data) {
+        ((HomeV4CanSlideActivity) getActivity()).isInitResult(getDataSuccess, linkPlay, data);
+        if (initSuccess) {
             setListener();
-            //uzVideo.setEventBusMsgFromActivityIsInitSuccess();
         }
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onPlayerError(UzException exception) {
+        if (exception == null) {
+            return;
+        }
+        Toast.makeText(getContext(), "Error while playing this video !", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
+    public void onPlayerRotated(boolean isLandscape) {
+
     }
 
     @Override
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
+                if (!uzPlayer.isLandscape()) {
                     ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
                 }
                 break;
@@ -116,39 +154,20 @@ public class FrmVideoTop extends Fragment implements UZCallback, UZItemClick {
     @Override
     public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
         if (isInitMiniPlayerSuccess) {
-            uzVideo.pauseVideo();
+            uzPlayer.pause();
             ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().minimize();
-            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
-                @Override
-                public void doAfter(int mls) {
-                    ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel().closeToRight();
-                }
-            });
+            UzCommonUtil.actionWithDelayed(500,
+                    mls -> ((HomeV4CanSlideActivity) getActivity()).getDraggablePanel()
+                            .closeToRight());
         }
     }
 
-    @Override
-    public void onSkinChange() {
-
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
-    }
-
-    @Override
-    public void onError(UzException e) {
-        if (e == null) {
-            return;
-        }
-        Toast.makeText(getContext(), "Error while playing this video !", Toast.LENGTH_LONG).show();
-    }
 
     public void initEntity(String entityId) {
-        UZUtil.initEntity(getActivity(), uzVideo, entityId);
+        UzPlayerConfig.initVodEntity(uzPlayer, entityId);
     }
 
     public void initPlaylistFolder(String metadataId) {
-        UZUtil.initPlaylistFolder(getActivity(), uzVideo, metadataId);
+        UzPlayerConfig.initPlaylistFolder(uzPlayer, metadataId);
     }
 }

@@ -14,7 +14,7 @@ import testlibuiza.sample.livestream.LivestreamBroadcasterActivity;
 import testlibuiza.sample.v3.api.UZTestAPIActivity;
 import testlibuiza.sample.v3.customhq.CustomHQActivity;
 import testlibuiza.sample.v3.customskin.CustomSkinCodeSeekbarActivity;
-import testlibuiza.sample.v3.customskin.CustomSkinCodeUZTimebarActivity;
+import testlibuiza.sample.v3.customskin.CustomSkinCodeUzTimebarActivityListener;
 import testlibuiza.sample.v3.customskin.CustomSkinXMLActivity;
 import testlibuiza.sample.v3.customskin.ResizeActivity;
 import testlibuiza.sample.v3.error.ErrorActivity;
@@ -23,7 +23,7 @@ import testlibuiza.sample.v3.fb.FBListVideoActivity;
 import testlibuiza.sample.v3.fullscreen.PortraitFullScreenActivity;
 import testlibuiza.sample.v3.linkplay.PlayerActivity;
 import testlibuiza.sample.v3.slide.Slide0Activity;
-import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity;
+import testlibuiza.sample.v3.utube.CustomSkinCodeUzTimebarUTubeActivityListener;
 import testlibuiza.sample.v3.utube.CustomSkinCodeUZTimebarUTubeWithSlideActivity;
 import testlibuiza.sample.v3.uzv3.SetEntityIdActivity;
 import testlibuiza.sample.v3.volume.VolumeActivity;
@@ -71,43 +71,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        findViewById(R.id.bt_uiza_custom_skin_code_seekbar)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
-                        startActivity(intent);
-                    }
-                });
-        findViewById(R.id.bt_uiza_custom_skin_code_uz_timebar)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity, CustomSkinCodeUZTimebarActivity.class);
-                        intent.putExtra(Constants.KEY_UIZA_ENTITY_ID,
-                                LSApplication.entityIdDefaultVOD);
-                        //intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, LSApplication.thumbEntityIdDefaultVOD);
-                        startActivity(intent);
-                    }
-                });
-        findViewById(R.id.bt_uiza_custom_skin_u_tube)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity,
-                                CustomSkinCodeUZTimebarUTubeActivity.class);
-                        startActivity(intent);
-                    }
-                });
-        findViewById(R.id.bt_uiza_custom_skin_u_tube_with_slide)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(activity,
-                                CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
-                        startActivity(intent);
-                    }
-                });
+        findViewById(R.id.bt_uiza_custom_skin_code_seekbar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeSeekbarActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.bt_uiza_custom_skin_code_uz_timebar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeUzTimebarActivityListener.class);
+                intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, LSApplication.entityIdDefaultVOD);
+                //intent.putExtra(Constants.KEY_UIZA_THUMBNAIL, LSApplication.thumbEntityIdDefaultVOD);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.bt_uiza_custom_skin_u_tube).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeUzTimebarUTubeActivityListener.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.bt_uiza_custom_skin_u_tube_with_slide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CustomSkinCodeUZTimebarUTubeWithSlideActivity.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.bt_slide_0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

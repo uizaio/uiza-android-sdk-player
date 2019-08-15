@@ -14,15 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import io.uiza.core.util.UzCommonUtil;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.UzPlayerConfig;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.option.OptionActivity;
-import uizacoresdk.util.UZUtil;
 
 public class SplashActivity extends AppCompatActivity {
+
     private final String TAG = getClass().getSimpleName();
     private Activity activity;
     private int currentPlayerId = R.layout.uz_player_skin_1;
@@ -42,8 +44,10 @@ public class SplashActivity extends AppCompatActivity {
         llInputInfo = (LinearLayout) findViewById(R.id.ll_input_info);
         progressBar = (ProgressBar) findViewById(R.id.pb);
         progressBar.setVisibility(View.GONE);
-        UzDisplayUtil.setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
-        currentPlayerId = getIntent().getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
+        UzDisplayUtil
+                .setColorProgressBar(progressBar, ContextCompat.getColor(activity, R.color.White));
+        currentPlayerId = getIntent()
+                .getIntExtra(OptionActivity.KEY_SKIN, R.layout.uz_player_skin_1);
         etApiDomain = (EditText) findViewById(R.id.et_api_domain);
         etKey = (EditText) findViewById(R.id.et_key);
         etAppId = (EditText) findViewById(R.id.et_app_id);
@@ -133,7 +137,9 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 String token = etKey.getText().toString().trim();
                 String appId = etAppId.getText().toString().trim();
-                boolean isSuccess = UZUtil.initWorkspace(activity, LSApplication.API_VERSION, domainApi, token, appId, environment, currentPlayerId);
+                boolean isSuccess = UzPlayerConfig
+                        .initWorkspace(activity, LSApplication.API_VERSION, domainApi, token, appId,
+                                environment, currentPlayerId);
                 if (!isSuccess) {
                     LToast.show(activity, "Your workspace is incorrect.");
                     return;
@@ -142,15 +148,10 @@ public class SplashActivity extends AppCompatActivity {
                 btStart.setVisibility(View.GONE);
                 llInputInfo.setVisibility(View.GONE);
                 final Intent intent = new Intent(activity, HomeV4CanSlideActivity.class);
-                if (intent != null) {
-                    UzDisplayUtil.setDelay(3000, new UzDisplayUtil.DelayCallback() {
-                        @Override
-                        public void doAfter(int mls) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                }
+                UzCommonUtil.actionWithDelayed(3000, mls -> {
+                    startActivity(intent);
+                    finish();
+                });
             }
         });
     }
@@ -159,7 +160,7 @@ public class SplashActivity extends AppCompatActivity {
         String domainApi = etApiDomain.getText().toString();
         String token = etKey.getText().toString();
         String appId = etAppId.getText().toString();
-        if (domainApi == null || domainApi.isEmpty() || token == null || token.isEmpty() || appId == null || appId.isEmpty()) {
+        if (domainApi.isEmpty() || token.isEmpty() || appId.isEmpty()) {
             btStart.setClickable(false);
             btStart.setBackgroundResource(R.drawable.bt_login_disabled);
         } else {

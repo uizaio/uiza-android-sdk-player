@@ -200,23 +200,6 @@ public final class UzDisplayUtil {
         return context.getResources().getConfiguration().orientation;
     }
 
-    public interface DelayCallback {
-
-        void doAfter(int mls);
-    }
-
-    public static void setDelay(final int mls, final UzDisplayUtil.DelayCallback delayCallback) {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (delayCallback != null) {
-                    delayCallback.doAfter(mls);
-                }
-            }
-        }, mls);
-    }
-
     public static void setLastCursorEditText(EditText editText) {
         if (editText == null) {
             return;

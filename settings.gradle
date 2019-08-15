@@ -1,1 +1,1 @@
-include ':uizacoresdk', ':sample', ':demouiza', ':sampletv', ':uizacore', ':uizabroadcast', ':samplelivestream'
+include ':uizaplayer', ':uizacore', ':uizabroadcast', ':samplelivestream', ':sample', ':demouiza', ':sampletv'

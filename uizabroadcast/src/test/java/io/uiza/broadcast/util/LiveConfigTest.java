@@ -3,9 +3,10 @@ package io.uiza.broadcast.util;
 import static org.mockito.Mockito.times;
 
 import android.content.Context;
-import io.uiza.broadcast.config.LiveConfig;
+import io.uiza.broadcast.config.UzLiveConfig;
 import io.uiza.core.api.client.UzRestClient;
 import io.uiza.core.util.UzCoreUtil;
+import io.uiza.core.util.constant.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,6 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import io.uiza.core.util.constant.Constants;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({UzRestClient.class, UzCoreUtil.class})
@@ -37,7 +37,7 @@ public class LiveConfigTest {
         Mockito.when(context.getApplicationContext()).thenReturn(context);
 
         // Call the method need to test
-        LiveConfig.initWorkspace(context, API_VERSION_4, domainApi, token, appId);
+        UzLiveConfig.initWorkspace(context, API_VERSION_4, domainApi, token, appId);
 
         // To verify these below static methods are called if all params are correct
         PowerMockito.verifyStatic(UzCoreUtil.class, times(1));
@@ -49,7 +49,7 @@ public class LiveConfigTest {
     @Test(expected = NullPointerException.class)
     public void initWorkspace_withNullContext_error() {
         // Call the method need to test
-        LiveConfig.initWorkspace(null, API_VERSION_4, domainApi, token, appId);
+        UzLiveConfig.initWorkspace(null, API_VERSION_4, domainApi, token, appId);
     }
 
     @Test(expected = NullPointerException.class)
@@ -59,7 +59,7 @@ public class LiveConfigTest {
         Mockito.when(context.getApplicationContext()).thenReturn(context);
 
         // Call the method need to test
-        LiveConfig.initWorkspace(context, API_VERSION_4, null, token, appId);
+        UzLiveConfig.initWorkspace(context, API_VERSION_4, null, token, appId);
     }
 
     @Test(expected = NullPointerException.class)
@@ -69,7 +69,7 @@ public class LiveConfigTest {
         Mockito.when(context.getApplicationContext()).thenReturn(context);
 
         // Call the method need to test
-        LiveConfig.initWorkspace(context, API_VERSION_4, domainApi, null, appId);
+        UzLiveConfig.initWorkspace(context, API_VERSION_4, domainApi, null, appId);
     }
 
     @Test(expected = NullPointerException.class)
@@ -79,6 +79,6 @@ public class LiveConfigTest {
         Mockito.when(context.getApplicationContext()).thenReturn(context);
 
         // Call the method need to test
-        LiveConfig.initWorkspace(context, API_VERSION_4, domainApi, token, null);
+        UzLiveConfig.initWorkspace(context, API_VERSION_4, domainApi, token, null);
     }
 }

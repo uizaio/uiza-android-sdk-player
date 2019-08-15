@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -169,5 +170,66 @@ public final class UzCommonUtil {
         int currentVolume = audioManager.getStreamVolume(streamType);
         int maxVolume = audioManager.getStreamMaxVolume(streamType);
         return Math.round(currentVolume * 1f / maxVolume * 100);
+    }
+
+    /**
+     * Check the dependency class is available from application side.
+     *
+     * @param dependencyClass the dependency class
+     * @return true if dependency class found, otherwise false
+     */
+    public static boolean isDependencyAvailable(String dependencyClass) {
+        try {
+            Class.forName(dependencyClass);
+            return true;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Check that IMA dependency is added from application side.
+     *
+     * @return true if IMA has imported, otherwise false
+     */
+    public static boolean isAdsDependencyAvailable() {
+        return isDependencyAvailable("com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer");
+    }
+
+    /**
+     * Check that Cast dependency is added from application side.
+     *
+     * @return true if Cast has imported, otherwise false
+     */
+    public static boolean isCastDependencyAvailable() {
+        return isDependencyAvailable("com.google.android.gms.cast.framework.OptionsProvider")
+                && isDependencyAvailable("android.support.v7.app.MediaRouteButton");
+    }
+
+    /**
+     * Check that ExoPlayer dependency is added from application side.
+     *
+     * @return true if ExoPlayer has imported, otherwise false
+     */
+    public static boolean isExoDependencyAvailable() {
+        return isDependencyAvailable("com.google.android.exoplayer2.SimpleExoPlayer");
+    }
+
+    public static void actionWithDelayed(final int mls, final DelayCallback delayCallback) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (delayCallback != null) {
+                    delayCallback.doAfter(mls);
+                }
+            }
+        }, mls);
+    }
+
+    public interface DelayCallback {
+
+        void doAfter(int mls);
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,26 +17,25 @@ import io.uiza.core.api.response.linkplay.LinkPlay;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.api.util.ApiSubscriber;
 import io.uiza.core.exception.UzException;
-import io.uiza.core.util.UzImageUtil;
 import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.UzImageUtil;
 import io.uiza.core.util.constant.Constants;
+import io.uiza.player.UzPlayer;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.UzItemClickListener;
+import io.uiza.player.interfaces.UzPlayerEventListener;
+import io.uiza.player.interfaces.UzPlayerUiEventListener;
+import io.uiza.player.mini.pip.PipHelper;
+import io.uiza.player.util.UzPlayerData;
 import java.util.List;
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZVideo;
 
-/**
- * Created by loitp on 4/1/2019.
- */
+public class FBVideoActivity extends AppCompatActivity implements UzPlayerUiEventListener,
+        UzPlayerEventListener, UzItemClickListener {
 
-public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZItemClick {
-    private final String TAG = getClass().getSimpleName();
-    public final static String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
+    public static final String TAG_IS_MINI_PLAYER_INIT_SUCCESS = "TAG_IS_MINI_PLAYER_INIT_SUCCESS";
     private static FBVideoActivity activity;
-    private UZVideo uzVideo;
+    private UzPlayer uzPlayer;
     private Button btMini;
     private TextView tvLoadingMiniPlayer;
     private TextView tv;
@@ -49,7 +47,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     }
 
     private void findViews() {
-        uzVideo = findViewById(R.id.uiza_video);
+        uzPlayer = findViewById(R.id.uiza_video);
         tvLoadingMiniPlayer = findViewById(R.id.tv_loading_mini_player);
         tv = findViewById(R.id.tv);
         iv = findViewById(R.id.iv);
@@ -58,24 +56,25 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
+        UzPlayerConfig.setCasty(this);
         activity = this;
-        UZUtil.setCurrentPlayerId(R.layout.fb_skin_main);
+        UzPlayerConfig.setCurrentSkinRes(R.layout.fb_skin_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
         findViews();
-        uzVideo.setAutoSwitchItemPlaylistFolder(true);
-        uzVideo.setAutoStart(true);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
+        uzPlayer.setAutoSwitchItemPlaylistFolder(true);
+        uzPlayer.setAutoStart(true);
+        uzPlayer.setUzPlayerUiEventListener(this);
+        uzPlayer.setUzPlayerEventListener(this);
+        uzPlayer.setUzItemClickListener(this);
         UzDisplayUtil.setTextShadow(tvLoadingMiniPlayer);
         // Sample for set size PiP
-        UZUtil.setMiniPlayerSizeDp(this, false, 140, 220);
+        PipHelper.setMiniPlayerSizeDp(this, false, 140, 220);
         // Sample for single click to full player
         // UzLivestreamUtil.setMiniPlayerTapToFullPlayer(this, false);
         // Sample for control buttons skin
-        uzVideo.setPipControlSkin(R.layout.layout_floating_controls_skin);
-        btMini.setOnClickListener(view -> uzVideo.showPip());
+        uzPlayer.setPipControlSkin(R.layout.layout_floating_controls_skin);
+        btMini.setOnClickListener(view -> uzPlayer.showPip());
         checkId(getIntent());
         getDummyData();
     }
@@ -84,17 +83,16 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                @Override
-                public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                    getWindow().getDecorView().setOnApplyWindowInsetsListener(null);
-                    int stableInsetTop = insets.getStableInsetTop();
-                    UZUtil.setStablePipTopPosition(FBVideoActivity.this, stableInsetTop);
-                    return v.onApplyWindowInsets(insets);
-                }
-            });
+            getWindow().getDecorView()
+                    .setOnApplyWindowInsetsListener((v, insets) -> {
+                        getWindow().getDecorView().setOnApplyWindowInsetsListener(null);
+                        int stableInsetTop = insets.getStableInsetTop();
+                        PipHelper.setStablePipTopPosition(FBVideoActivity.this, stableInsetTop);
+                        return v.onApplyWindowInsets(insets);
+                    });
         } else {
-            UZUtil.setStablePipTopPosition(FBVideoActivity.this, UzDisplayUtil.getStatusBarHeight(this));
+            PipHelper.setStablePipTopPosition(FBVideoActivity.this,
+                    UzDisplayUtil.getStatusBarHeight(this));
         }
     }
 
@@ -103,50 +101,86 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
             return;
         }
         String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
-        uzVideo.setUrlImgThumbnail(thumb);
+        uzPlayer.setUrlImgThumbnail(thumb);
         String metadataId = intent.getStringExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID);
         if (metadataId == null) {
             String entityId = intent.getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             if (entityId == null) {
-                boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+                boolean isInitWithPlaylistFolder = UzPlayerData.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
-                    UZUtil.initPlaylistFolder(activity, uzVideo, null);
+                    UzPlayerConfig.initPlaylistFolder(uzPlayer, null);
                 } else {
-                    UZUtil.initEntity(activity, uzVideo, null);
+                    UzPlayerConfig.initVodEntity(uzPlayer, null);
                 }
             } else {
-                UZUtil.initEntity(activity, uzVideo, entityId);
+                UzPlayerConfig.initVodEntity(uzPlayer, entityId);
             }
         } else {
-            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+            UzPlayerConfig.initPlaylistFolder(uzPlayer, metadataId);
         }
     }
 
     @Override
     public void onDestroy() {
-        uzVideo.onDestroy();
+        uzPlayer.onDestroy();
         super.onDestroy();
     }
 
     @Override
     public void onResume() {
-        uzVideo.onResume();
+        uzPlayer.onResume();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        uzVideo.onPause();
+        uzPlayer.onPause();
         super.onPause();
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-        if (isInitSuccess) {
+    public void onDataInitialized(boolean initSuccess, boolean getDataSuccess, LinkPlay linkPlay,
+            VideoData data) {
+        if (initSuccess) {
             initDone();
         } else {
             btMini.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onPlayerError(UzException exception) {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
+    public void onPlayerRotated(boolean isLandscape) {
+
     }
 
     private void initDone() {
@@ -157,7 +191,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
+                if (!uzPlayer.isLandscape()) {
                     onBackPressed();
                 }
                 break;
@@ -169,7 +203,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         super.onNewIntent(intent);
         btMini.setVisibility(View.INVISIBLE);
         String thumb = intent.getStringExtra(Constants.KEY_UIZA_THUMBNAIL);
-        if (uzVideo.isInitNewItem(thumb)) {
+        if (uzPlayer.isInitNewItem(thumb)) {
             checkId(intent);
         } else {
             initDone();
@@ -182,7 +216,7 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
     @Override
     public void finish() {
         super.finish();
-        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
+        PipHelper.moveTaskToFront(activity, mIsRestoredToTop);
     }
 
     @Override
@@ -203,26 +237,14 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
-    }
-
-    @Override
-    public void onError(UzException e) {
-    }
-
-    @Override
     public void onBackPressed() {
-        if (uzVideo.isLandscape()) {
-            uzVideo.toggleFullscreen();
+        if (uzPlayer.isLandscape()) {
+            uzPlayer.toggleFullscreen();
         } else {
             super.onBackPressed();
         }
@@ -237,8 +259,9 @@ public class FBVideoActivity extends AppCompatActivity implements UZCallback, UZ
         String orderBy = "createdAt";
         String orderType = "DESC";
         UzApiMaster.getInstance().subscribe(
-                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
-                        page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                service.getListAllEntity(UzPlayerData.getInstance().getApiVersion(), metadataId,
+                        limit,
+                        page, orderBy, orderType, "success", UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {

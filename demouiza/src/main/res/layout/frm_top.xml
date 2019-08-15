@@ -5,7 +5,7 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <uizacoresdk.view.rl.video.UZVideoV1
+    <io.uiza.player.view.rl.video.UZVideoV1
         android:id="@id/uiza_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

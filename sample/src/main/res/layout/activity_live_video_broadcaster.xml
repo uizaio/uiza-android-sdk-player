@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <uizacoresdk.view.rl.livestream.derecated.UizaLivestream
+    <io.uiza.player.view.rl.livestream.derecated.UizaLivestream
         android:id="@+id/uiza_livestream"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.mini.pip.PipHelper;
 import testlibuiza.R;
-import uizacoresdk.util.UZUtil;
 
 public class MiniPlayerSettingActivity extends AppCompatActivity implements View.OnClickListener {
     private Activity activity;
@@ -100,7 +100,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_mini_player);
         findViews();
-        int currentViewDestroyColor = UZUtil.getMiniPlayerColorViewDestroy(activity);
+        int currentViewDestroyColor = PipHelper.getMiniPlayerColorViewDestroy(activity);
         if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.black_65)) {
             btColor0.setText("Default");
         } else if (currentViewDestroyColor == ContextCompat.getColor(activity, R.color.RedTrans)) {
@@ -109,7 +109,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             btColor2.setText("GreenTran");
         }
 
-        boolean isTapToFullPlayer = UZUtil.getMiniPlayerTapToFullPlayer(activity);
+        boolean isTapToFullPlayer = PipHelper.getMiniPlayerTapToFullPlayer(activity);
         swTapToFullPlayer.setChecked(isTapToFullPlayer);
         setSwTapToFullPlayer(isTapToFullPlayer);
         swTapToFullPlayer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -118,7 +118,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
-        boolean isEZDestroy = UZUtil.getMiniPlayerEzDestroy(activity);
+        boolean isEZDestroy = PipHelper.getMiniPlayerEzDestroy(activity);
         swEzDestroy.setChecked(isEZDestroy);
         setSwEzDestroy(isEZDestroy);
         swEzDestroy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -127,7 +127,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
-        boolean isEnableVibration = UZUtil.getMiniPlayerEnableVibration(activity);
+        boolean isEnableVibration = PipHelper.getMiniPlayerEnableVibration(activity);
         swVibrateDestroy.setChecked(isEnableVibration);
         setSwVibrateDestroy(isEnableVibration);
         swVibrateDestroy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -136,7 +136,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
-        boolean isEnableSmoothSwitch = UZUtil.getMiniPlayerEnableSmoothSwitch(activity);
+        boolean isEnableSmoothSwitch = PipHelper.getMiniPlayerEnableSmoothSwitch(activity);
         swSmoothSwitch.setChecked(isEnableSmoothSwitch);
         setSwSmoothSwitch(isEnableVibration);
         swSmoothSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -145,10 +145,10 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
-        boolean isAutoSize = UZUtil.getMiniPlayerAutoSize(activity);
+        boolean isAutoSize = PipHelper.getMiniPlayerAutoSize(activity);
         swAutoSize.setChecked(isAutoSize);
-        etSizeW.setText("" + UZUtil.getMiniPlayerSizeWidth(activity));
-        etSizeH.setText("" + UZUtil.getMiniPlayerSizeHeight(activity));
+        etSizeW.setText("" + PipHelper.getMiniPlayerSizeWidth(activity));
+        etSizeH.setText("" + PipHelper.getMiniPlayerSizeHeight(activity));
         if (isAutoSize) {
             swAutoSize.setText("Auto: Value width and height will be ignored");
         } else {
@@ -164,18 +164,18 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
         });
 
-        int firstPositionX = UZUtil.getMiniPlayerFirstPositionX(activity);
-        int firstPositionY = UZUtil.getMiniPlayerFirstPositionY(activity);
+        int firstPositionX = PipHelper.getMiniPlayerFirstPositionX(activity);
+        int firstPositionY = PipHelper.getMiniPlayerFirstPositionY(activity);
         if (firstPositionX == Constants.NOT_FOUND || firstPositionY == Constants.NOT_FOUND) {
             //default: BOTTOM_RIGHT of device screen
         } else {
             etPositionX.setText(firstPositionX + "");
             etPositionY.setText(firstPositionY + "");
         }
-        int marginL = UZUtil.getMiniPlayerMarginL(activity);
-        int marginT = UZUtil.getMiniPlayerMarginT(activity);
-        int marginR = UZUtil.getMiniPlayerMarginR(activity);
-        int marginB = UZUtil.getMiniPlayerMarginB(activity);
+        int marginL = PipHelper.getMiniPlayerMarginL(activity);
+        int marginT = PipHelper.getMiniPlayerMarginT(activity);
+        int marginR = PipHelper.getMiniPlayerMarginR(activity);
+        int marginB = PipHelper.getMiniPlayerMarginB(activity);
         etMarginLeft.setText(marginL + "");
         etMarginTop.setText(marginT + "");
         etMarginRight.setText(marginR + "");
@@ -186,19 +186,19 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_color_0:
-                UZUtil.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.black_65));
+                PipHelper.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.black_65));
                 btColor0.setText("Default");
                 btColor1.setText("");
                 btColor2.setText("");
                 break;
             case R.id.bt_color_1:
-                UZUtil.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.RedTrans));
+                PipHelper.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.RedTrans));
                 btColor0.setText("");
                 btColor1.setText("RedTrans");
                 btColor2.setText("");
                 break;
             case R.id.bt_color_2:
-                UZUtil.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.GreenTran));
+                PipHelper.setMiniPlayerColorViewDestroy(activity, ContextCompat.getColor(activity, R.color.GreenTran));
                 btColor0.setText("");
                 btColor1.setText("");
                 btColor2.setText("GreenTran");
@@ -210,37 +210,37 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
                 saveConfigMarginDp();
                 break;
             case R.id.bt_show_controller:
-                UZUtil.showMiniPlayerController(activity);
+                PipHelper.showMiniPlayerController(activity);
                 break;
             case R.id.bt_hide_controller:
-                UZUtil.hideMiniPlayerController(activity);
+                PipHelper.hideMiniPlayerController(activity);
                 break;
             case R.id.bt_toggle_controller:
-                UZUtil.toggleMiniPlayerController(activity);
+                PipHelper.toggleMiniPlayerController(activity);
                 break;
             case R.id.bt_play:
-                UZUtil.resumeVideo(activity);
+                PipHelper.resumeVideo(activity);
                 break;
             case R.id.bt_pause:
-                UZUtil.pauseVideo(activity);
+                PipHelper.pauseVideo(activity);
                 break;
             case R.id.bt_play_pause:
-                UZUtil.toggleResumePauseVideo(activity);
+                PipHelper.toggleResumePauseVideo(activity);
                 break;
             case R.id.bt_full_screen:
-                UZUtil.openAppFromMiniPlayer(activity);
+                PipHelper.openAppFromMiniPlayer(activity);
                 break;
             case R.id.bt_stop_mini_player:
-                UZUtil.stopMiniPlayer(activity);
+                PipHelper.stopMiniPlayer(activity);
                 break;
             case R.id.bt_save_size_config:
                 saveConfigSize();
                 break;
             case R.id.bt_appear:
-                UZUtil.appearMiniplayer(activity);
+                PipHelper.appearMiniplayer(activity);
                 break;
             case R.id.bt_disapper:
-                UZUtil.disappearMiniplayer(activity);
+                PipHelper.disappearMiniplayer(activity);
                 break;
         }
     }
@@ -251,7 +251,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         } else {
             swTapToFullPlayer.setText("Off");
         }
-        UZUtil.setMiniPlayerTapToFullPlayer(activity, isChecked);
+        PipHelper.setMiniPlayerTapToFullPlayer(activity, isChecked);
     }
 
     private void setSwEzDestroy(boolean isChecked) {
@@ -260,7 +260,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         } else {
             swEzDestroy.setText("Off");
         }
-        UZUtil.setMiniPlayerEzDestroy(activity, isChecked);
+        PipHelper.setMiniPlayerEzDestroy(activity, isChecked);
     }
 
     private void setSwVibrateDestroy(boolean isChecked) {
@@ -269,7 +269,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         } else {
             swVibrateDestroy.setText("Off");
         }
-        UZUtil.setMiniPlayerEnableVibration(activity, isChecked);
+        PipHelper.setMiniPlayerEnableVibration(activity, isChecked);
     }
 
     private void setSwSmoothSwitch(boolean isChecked) {
@@ -278,7 +278,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         } else {
             swSmoothSwitch.setText("Off");
         }
-        UZUtil.setMiniPlayerEnableSmoothSwitch(activity, isChecked);
+        PipHelper.setMiniPlayerEnableSmoothSwitch(activity, isChecked);
     }
 
     private void saveConfigFirstPosition() {
@@ -290,7 +290,7 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
         }
         int firstPositionX = Integer.parseInt(x);
         int firstPositionY = Integer.parseInt(y);
-        UZUtil.setMiniPlayerFirstPosition(activity, firstPositionX, firstPositionY);
+        PipHelper.setMiniPlayerFirstPosition(activity, firstPositionX, firstPositionY);
         LToast.show(activity, "First position of mini player: " + firstPositionX + "x" + firstPositionY);
     }
 
@@ -308,7 +308,8 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             int marginT = Integer.parseInt(t);
             int marginR = Integer.parseInt(r);
             int marginB = Integer.parseInt(b);
-            boolean isSuccess = UZUtil.setMiniPlayerMarginDp(activity, marginL, marginT, marginR, marginB);
+            boolean isSuccess = PipHelper
+                    .setMiniPlayerMarginDp(activity, marginL, marginT, marginR, marginB);
             LToast.show(activity, "Set margin: " + isSuccess);
         } catch (Exception e) {
             LToast.show(activity, "Invalid value: " + e.toString());
@@ -328,7 +329,8 @@ public class MiniPlayerSettingActivity extends AppCompatActivity implements View
             }
             int widthVideo = Integer.parseInt(width);
             int heightVideo = Integer.parseInt(height);
-            boolean isSuccess = UZUtil.setMiniPlayerSizePixel(activity, isAutoSize, widthVideo, heightVideo);
+            boolean isSuccess = PipHelper
+                    .setMiniPlayerSizePixel(activity, isAutoSize, widthVideo, heightVideo);
             LToast.show(activity, "saveConfigSize isSuccess: " + isSuccess);
         } catch (Exception e) {
             LToast.show(activity, "Invalid value: " + e.toString());

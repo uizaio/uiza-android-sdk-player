@@ -21,10 +21,13 @@ import io.uiza.core.api.response.linkplay.LinkPlay;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.util.LLog;
 import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.UzCommonUtil.DelayCallback;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.view.LToast;
 import io.uiza.core.view.draggablepanel.DraggableListener;
 import io.uiza.core.view.draggablepanel.DraggablePanel;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.IOnBackPressed;
 import uiza.R;
 import uiza.v4.categories.FrmCategories;
 import uiza.v4.entities.FrmEntities;
@@ -32,8 +35,6 @@ import uiza.v4.home.FrmHome;
 import uiza.v4.live.FrmLive;
 import uiza.v4.login.FrmLogin;
 import uiza.v4.search.FrmSearch;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 
 public class HomeV4CanSlideActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -60,7 +61,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
+        UzPlayerConfig.setCasty(this);
         activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v4_home_canslide_activity);
@@ -261,7 +262,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 isLandscape = false;
                 setSizeFrmTop();
-                if (!frmVideoTop.getUZVideo().isCastingChromecast()) {
+                if (!frmVideoTop.getUZVideo().isCasting()) {
                     draggablePanel.setEnableSlide(true);
                 }
             }
@@ -287,7 +288,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         if (fragment instanceof FrmEntities) {
             if (draggablePanel.getVisibility() == View.VISIBLE) {
                 if (draggablePanel.isMaximized()) {
-                    if (frmVideoTop.getUZVideo().isCastingChromecast()) {
+                    if (frmVideoTop.getUZVideo().isCasting()) {
                     } else {
                         if (frmVideoTop.getUZVideo().isLandscape()) {
                             frmVideoTop.getUZVideo().toggleFullscreen();
@@ -319,7 +320,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
             } else {
                 if (draggablePanel.getVisibility() == View.VISIBLE) {
                     if (draggablePanel.isMaximized()) {
-                        if (frmVideoTop.getUZVideo().isCastingChromecast()) {
+                        if (frmVideoTop.getUZVideo().isCasting()) {
                         } else {
                             if (frmVideoTop.getUZVideo().isLandscape()) {
                                 frmVideoTop.getUZVideo().toggleFullscreen();
@@ -344,7 +345,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
+            UzCommonUtil.actionWithDelayed(500, new DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -367,7 +368,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
+            UzCommonUtil.actionWithDelayed(500, new DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -383,7 +384,7 @@ public class HomeV4CanSlideActivity extends AppCompatActivity {
 
     //this method will be called when entity is ready to play
     public void isInitResult(boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-        LLog.d(TAG, "isInitResult: this method will be called when entity is ready to play");
+        LLog.d(TAG, "onDataInitialized: this method will be called when entity is ready to play");
         if (frmVideoBottom != null && isGetDataSuccess) {
             frmVideoBottom.updateUI(linkPlay, data);
         }

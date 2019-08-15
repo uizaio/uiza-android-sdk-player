@@ -14,7 +14,7 @@ public final class UzDialogUtil {
 
     private static List<AlertDialog> alertDialogList = new ArrayList<>();
 
-    public static void clearAll() {
+    public static void hideAllDialog() {
         if (alertDialogList == null) {
             return;
         }
@@ -40,7 +40,7 @@ public final class UzDialogUtil {
 
     public static void showDialog1(Context context, String title, String msg, String button1,
             final Callback1 callback1) {
-        clearAll();
+        hideAllDialog();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {
             builder.setTitle(title);
@@ -79,7 +79,7 @@ public final class UzDialogUtil {
 
     public static AlertDialog showDialog2(Context context, String title, String msg, String button1,
             String button2, final Callback2 callback2) {
-        clearAll();
+        hideAllDialog();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty()) {
             builder.setTitle(title);

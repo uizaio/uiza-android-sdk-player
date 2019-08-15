@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    api project(':uizacoresdk')
+    api project(':uizaplayer')
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'
     api 'com.google.android.exoplayer:exoplayer:2.9.5'
     api 'com.google.android.exoplayer:exoplayer-dash:2.9.5'

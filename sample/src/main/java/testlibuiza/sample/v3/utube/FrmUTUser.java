@@ -11,8 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import io.uiza.player.interfaces.IOnBackPressed;
 import testlibuiza.R;
-import uizacoresdk.interfaces.IOnBackPressed;
 
 public class FrmUTUser extends Fragment implements IOnBackPressed {
     @Nullable

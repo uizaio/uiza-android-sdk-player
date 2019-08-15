@@ -27,7 +27,7 @@
             android:name=".sample.v3.uzv3.SetEntityIdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.uzv3.UZPlayerActivity"
+            android:name=".sample.v3.uzv3.UzPlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.demoui.HomeCanSlideActivity"
@@ -48,7 +48,7 @@
             android:name=".sample.v3.linkplay.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.customskin.CustomSkinCodeUZTimebarActivity"
+            android:name=".sample.v3.customskin.CustomSkinCodeUzTimebarActivityListener"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.error.ErrorActivity"
@@ -57,7 +57,7 @@
             android:name=".sample.v3.volume.VolumeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
-            android:name=".sample.v3.utube.CustomSkinCodeUZTimebarUTubeActivity"
+            android:name=".sample.v3.utube.CustomSkinCodeUzTimebarUTubeActivityListener"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".sample.v3.event.EventActivity"

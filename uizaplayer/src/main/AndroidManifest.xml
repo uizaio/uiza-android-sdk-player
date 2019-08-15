@@ -1,0 +1,26 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.uiza.player">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
+
+    <application
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:name=".mini.pip.UzPipService"/>
+
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="io.uiza.player.cast.CastOptionsProvider"/>
+        <activity
+            android:name=".cast.ExpandedControlsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+    </application>
+
+</manifest>

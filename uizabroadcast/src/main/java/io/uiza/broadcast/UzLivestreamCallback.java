@@ -1,6 +1,6 @@
 package io.uiza.broadcast;
 
-import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.config.UzPresetLiveFeed;
 import io.uiza.broadcast.util.UzLivestreamError;
 import io.uiza.core.api.response.video.VideoData;
 
@@ -13,7 +13,7 @@ public interface UzLivestreamCallback {
     void onError(UzLivestreamError error);
 
     void onGetDataSuccess(VideoData d, String mainUrl, boolean isTranscode,
-                          PresetLiveFeed presetLiveFeed);
+                          UzPresetLiveFeed presetLiveFeed);
 
     void onConnectionSuccessRtmp();
 

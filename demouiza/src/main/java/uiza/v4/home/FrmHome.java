@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import io.uiza.core.util.UzImageUtil;
 import io.uiza.core.util.constant.Constants;
+import io.uiza.player.interfaces.IOnBackPressed;
 import uiza.R;
-import uizacoresdk.interfaces.IOnBackPressed;
 
 public class FrmHome extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();

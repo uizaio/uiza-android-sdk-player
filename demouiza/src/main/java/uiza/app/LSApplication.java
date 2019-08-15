@@ -4,9 +4,10 @@ import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import com.google.gson.Gson;
 import io.uiza.core.util.constant.Constants;
-import uizacoresdk.util.UZUtil;
+import io.uiza.player.UzPlayerConfig;
 
 public class LSApplication extends MultiDexApplication {
+
     private final String TAG = LSApplication.class.getSimpleName();
     private static LSApplication instance;
     private Gson gson;
@@ -30,7 +31,8 @@ public class LSApplication extends MultiDexApplication {
             return;
         }
         LeakCanary.install(this);*/
-        UZUtil.initWorkspace(this, API_VERSION, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, ENVIRONMENT);
+        UzPlayerConfig
+                .initWorkspace(this, API_VERSION, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, ENVIRONMENT);
     }
 
     public Gson getGson() {

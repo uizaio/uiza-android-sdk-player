@@ -149,7 +149,7 @@
                 android:textColor="@color/White"
                 android:textStyle="bold" />
 
-            <uizacoresdk.view.rl.timebar.UZTimebar
+            <io.uiza.player.view.UzTimeBar
                 android:id="@id/exo_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

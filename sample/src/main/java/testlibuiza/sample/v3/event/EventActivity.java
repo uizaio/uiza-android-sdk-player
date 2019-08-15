@@ -13,36 +13,28 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.audio.AudioListener;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoListener;
 import io.uiza.core.api.response.linkplay.LinkPlay;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.exception.UzException;
 import io.uiza.core.util.UzDisplayUtil;
-import java.util.List;
+import io.uiza.player.UzPlayer;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.ads.UzAdPlayerCallback;
+import io.uiza.player.interfaces.UzAdEventListener;
+import io.uiza.player.interfaces.UzLiveInfoListener;
+import io.uiza.player.interfaces.UzPlayerEventListener;
+import io.uiza.player.interfaces.UzPlayerUiEventListener;
+import io.uiza.player.view.UzPlayerView;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.interfaces.UZLiveContentCallback;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZAdPlayerCallback;
-import uizacoresdk.view.rl.video.UZVideo;
-
-/**
- * Created by loitp on 1/9/2019.
- */
 
 public class EventActivity extends AppCompatActivity {
+
     private Activity activity;
-    private UZVideo uzVideo;
+    private UzPlayer uzPlayer;
     private TextView tvUzCallback;
     private TextView tvAudioListener;
     private TextView tvVideoListener;
@@ -58,70 +50,92 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        UZUtil.setCasty(this);
+        UzPlayerConfig.setCasty(this);
         activity = this;
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        UzPlayerConfig.setCurrentSkinRes(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        tvUzCallback = (TextView) findViewById(R.id.tv_uz_callback);
-        tvAudioListener = (TextView) findViewById(R.id.tv_audio_listener);
-        tvVideoListener = (TextView) findViewById(R.id.tv_video_listener);
-        tvPlayerListener = (TextView) findViewById(R.id.tv_player_listener);
-        tvMetadataOutput = (TextView) findViewById(R.id.tv_metadata_output);
-        tvTextOutput = (TextView) findViewById(R.id.tv_text_output);
-        tvController = (TextView) findViewById(R.id.tv_controller);
-        tvAd = (TextView) findViewById(R.id.tv_ad);
-        tvProgress = (TextView) findViewById(R.id.tv_progress);
-        tvTouch = (TextView) findViewById(R.id.tv_touch);
-        tvItemClick = (TextView) findViewById(R.id.tv_item_click);
-        tvLiveInfo = (TextView) findViewById(R.id.tv_live_info);
-        uzVideo.setControllerShowTimeoutMs(5000);
+        uzPlayer = findViewById(R.id.uiza_video);
+        tvUzCallback = findViewById(R.id.tv_uz_callback);
+        tvAudioListener = findViewById(R.id.tv_audio_listener);
+        tvVideoListener = findViewById(R.id.tv_video_listener);
+        tvPlayerListener = findViewById(R.id.tv_player_listener);
+        tvMetadataOutput = findViewById(R.id.tv_metadata_output);
+        tvTextOutput = findViewById(R.id.tv_text_output);
+        tvController = findViewById(R.id.tv_controller);
+        tvAd = findViewById(R.id.tv_ad);
+        tvProgress = findViewById(R.id.tv_progress);
+        tvTouch = findViewById(R.id.tv_touch);
+        tvItemClick = findViewById(R.id.tv_item_click);
+        tvLiveInfo = findViewById(R.id.tv_live_info);
+        uzPlayer.setControllerShowTimeoutMs(5000);
 
-        uzVideo.addUZCallback(new UZCallback() {
+        uzPlayer.setUzPlayerEventListener(new UzPlayerEventListener() {
             @Override
-            public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-                tvUzCallback.setText("isInitResult " + isInitSuccess);
+            public void onDataInitialized(boolean initSuccess, boolean getDataSuccess,
+                    LinkPlay linkPlay, VideoData data) {
+                tvUzCallback.setText("onDataInitialized " + initSuccess);
             }
 
             @Override
-            public void onStateMiniPlayer(boolean isInitMiniPlayerSuccess) {
-                if (isInitMiniPlayerSuccess) {
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                tvProgress.setText("onPlayerStateChanged " + playWhenReady + " - " + playbackState);
+            }
+
+            @Override
+            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+                tvProgress.setText("onVideoProgress " + currentMls + "/" + duration);
+            }
+
+            @Override
+            public void onBufferProgress(long bufferedPosition, int bufferedPercentage,
+                    long duration) {
+                tvProgress.setText("onBufferProgress " + bufferedPosition + "/" + duration);
+            }
+
+            @Override
+            public void onVideoEnded() {
+
+            }
+
+            @Override
+            public void onPlayerError(UzException exception) {
+                tvUzCallback.setText("onPlayerError " + exception.getMessage());
+            }
+
+        });
+
+        uzPlayer.setUzPlayerUiEventListener(new UzPlayerUiEventListener() {
+            @Override
+            public void onSkinChanged() {
+                tvUzCallback.setText("onSkinChanged");
+            }
+
+            @Override
+            public void onStateMiniPlayer(boolean success) {
+                if (success) {
                     onBackPressed();
                 }
             }
 
             @Override
-            public void onSkinChange() {
-                tvUzCallback.setText("onSkinChange");
-            }
-
-            @Override
-            public void onScreenRotate(boolean isLandscape) {
-                tvUzCallback.setText("onScreenRotate " + isLandscape);
-            }
-
-            @Override
-            public void onError(UzException e) {
-                tvUzCallback.setText("onError");
+            public void onPlayerRotated(boolean isLandscape) {
+                tvUzCallback.setText("onPlayerRotated " + isLandscape);
             }
         });
 
-        uzVideo.addItemClick(new UZItemClick() {
-            @Override
-            public void onItemClick(View view) {
-                switch (view.getId()) {
-                    case R.id.exo_back_screen:
-                        if (!uzVideo.isLandscape()) {
-                            onBackPressed();
-                        }
-                        break;
-                }
-                tvItemClick.setText("onItemClick " + view.getId());
+        uzPlayer.setUzItemClickListener(view -> {
+            switch (view.getId()) {
+                case R.id.exo_back_screen:
+                    if (!uzPlayer.isLandscape()) {
+                        onBackPressed();
+                    }
+                    break;
             }
+            tvItemClick.setText("onItemClick " + view.getId());
         });
 
-        uzVideo.addAudioListener(new AudioListener() {
+        uzPlayer.addAudioListener(new AudioListener() {
             @Override
             public void onAudioSessionId(int audioSessionId) {
                 tvAudioListener.setText("onAudioSessionId " + audioSessionId);
@@ -137,14 +151,16 @@ public class EventActivity extends AppCompatActivity {
                 tvAudioListener.setText("onVolumeChanged " + volume);
             }
         });
-        uzVideo.addPlayerEventListener(new Player.EventListener() {
+        uzPlayer.addPlayerEventListener(new Player.EventListener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest,
+                    int reason) {
                 tvPlayerListener.setText("onTimelineChanged");
             }
 
             @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            public void onTracksChanged(TrackGroupArray trackGroups,
+                    TrackSelectionArray trackSelections) {
                 tvPlayerListener.setText("");
             }
 
@@ -155,7 +171,8 @@ public class EventActivity extends AppCompatActivity {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                tvPlayerListener.setText("onPlayerStateChanged " + playWhenReady + " - " + playbackState);
+                tvPlayerListener
+                        .setText("onPlayerStateChanged " + playWhenReady + " - " + playbackState);
             }
 
             @Override
@@ -188,27 +205,17 @@ public class EventActivity extends AppCompatActivity {
                 tvPlayerListener.setText("onSeekProcessed");
             }
         });
-        uzVideo.addMetadataOutput(new MetadataOutput() {
-            @Override
-            public void onMetadata(Metadata metadata) {
-                tvMetadataOutput.setText("onMetadata");
-            }
-        });
-        uzVideo.addTextOutput(new TextOutput() {
-            @Override
-            public void onCues(List<Cue> cues) {
-                tvTextOutput.setText("onCues");
-            }
-        });
-        uzVideo.addVideoAdPlayerCallback(new UZAdPlayerCallback() {
+        uzPlayer.addMetadataOutput(metadata -> tvMetadataOutput.setText("onMetadata"));
+        uzPlayer.addTextOutput(cues -> tvTextOutput.setText("onCues"));
+        uzPlayer.addVideoAdPlayerCallback(new UzAdPlayerCallback() {
             @Override
             public void onPlay() {
                 tvAd.setText("onPlay");
             }
 
             @Override
-            public void onVolumeChanged(int i) {
-                tvAd.setText("onVolumeChanged " + i);
+            public void onVolumeChanged(int level) {
+                tvAd.setText("onVolumeChanged " + level);
             }
 
             @Override
@@ -241,13 +248,10 @@ public class EventActivity extends AppCompatActivity {
                 tvAd.setText("onBuffering");
             }
         });
-        uzVideo.addControllerStateCallback(new UZPlayerView.ControllerStateCallback() {
-            @Override
-            public void onVisibilityChange(boolean isShow) {
-                tvController.setText("onVisibilityChange " + isShow);
-            }
-        });
-        uzVideo.addProgressCallback(new ProgressCallback() {
+        uzPlayer.setControllerStateCallback(
+                isShow -> tvController.setText("onVisibilityChanged " + isShow));
+
+        uzPlayer.setUzAdEventListener(new UzAdEventListener() {
             @Override
             public void onAdProgress(int s, int duration, int percent) {
                 tvProgress.setText("onAdProgress " + s + "/" + duration);
@@ -257,23 +261,9 @@ public class EventActivity extends AppCompatActivity {
             public void onAdEnded() {
                 tvProgress.setText("onAdEnded");
             }
-
-            @Override
-            public void onVideoProgress(long currentMls, int s, long duration, int percent) {
-                tvProgress.setText("onVideoProgress " + currentMls + "/" + duration);
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                tvProgress.setText("onPlayerStateChanged " + playWhenReady + " - " + playbackState);
-            }
-
-            @Override
-            public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
-                tvProgress.setText("onBufferProgress " + bufferedPosition + "/" + duration);
-            }
         });
-        uzVideo.addOnTouchEvent(new UZPlayerView.OnTouchEvent() {
+
+        uzPlayer.setOnTouchEvent(new UzPlayerView.OnTouchEvent() {
             @Override
             public void onSingleTapConfirmed(float x, float y) {
                 tvTouch.setText("onSingleTapConfirmed");
@@ -309,9 +299,10 @@ public class EventActivity extends AppCompatActivity {
                 tvTouch.setText("onSwipeTop");
             }
         });
-        uzVideo.addVideoListener(new VideoListener() {
+        uzPlayer.addVideoListener(new VideoListener() {
             @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
+                    float pixelWidthHeightRatio) {
                 tvVideoListener.setText("Current profile " + width + "x" + height);
             }
 
@@ -319,14 +310,14 @@ public class EventActivity extends AppCompatActivity {
             public void onSurfaceSizeChanged(int width, int height) {
             }
         });
-        uzVideo.addUZLiveContentCallback(new UZLiveContentCallback() {
+        uzPlayer.setUzLiveInfoListener(new UzLiveInfoListener() {
             @Override
-            public void onUpdateLiveInfoTimeStartLive(long duration, String hhmmss) {
+            public void onStartTimeUpdate(long duration, String elapsedTime) {
             }
 
             @Override
-            public void onUpdateLiveInfoCurrentView(long watchnow) {
-                tvLiveInfo.setText("onUpdateLiveInfoCurrentView watchnow: " + watchnow);
+            public void onCurrentViewUpdate(long watchNow) {
+                tvLiveInfo.setText("onCurrentViewUpdate watchnow: " + watchNow);
             }
 
             @Override
@@ -334,50 +325,44 @@ public class EventActivity extends AppCompatActivity {
                 tvLiveInfo.setText(R.string.err_live_is_stopped);
             }
         });
-        findViewById(R.id.bt_vod).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String entityId = LSApplication.entityIdDefaultVOD;
-                UZUtil.initEntity(activity, uzVideo, entityId);
-            }
+        findViewById(R.id.bt_vod).setOnClickListener(view -> {
+            final String entityId = LSApplication.entityIdDefaultVOD;
+            UzPlayerConfig.initVodEntity(uzPlayer, entityId);
         });
-        findViewById(R.id.bt_live).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String entityId = LSApplication.entityIdDefaultLIVE;
-                UZUtil.initEntity(activity, uzVideo, entityId);
-            }
+        findViewById(R.id.bt_live).setOnClickListener(view -> {
+            final String entityId = LSApplication.entityIdDefaultLIVE;
+            UzPlayerConfig.initVodEntity(uzPlayer, entityId);
         });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideo.onDestroy();
+        uzPlayer.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        uzPlayer.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uzVideo.onPause();
+        uzPlayer.onPause();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onBackPressed() {
         if (UzDisplayUtil.isFullScreen(activity)) {
-            uzVideo.toggleFullscreen();
+            uzPlayer.toggleFullscreen();
         } else {
             super.onBackPressed();
         }

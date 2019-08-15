@@ -14,20 +14,19 @@ import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.exception.UzException;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.view.seekbar.UzVerticalSeekBar;
+import io.uiza.player.UzPlayer;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.UzItemClickListener;
+import io.uiza.player.interfaces.UzPlayerEventListener;
+import io.uiza.player.interfaces.UzPlayerUiEventListener;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.rl.video.UZVideo;
 
-/**
- * Created by loitp on 9/1/2019.
- */
+public class VolumeActivity extends AppCompatActivity implements UzPlayerEventListener,
+        UzPlayerUiEventListener, UzItemClickListener {
 
-public class VolumeActivity extends AppCompatActivity implements UZCallback, UZItemClick {
     private Activity activity;
-    private UZVideo uzVideo;
+    private UzPlayer uzPlayer;
     private SeekBar sb;
     private UzVerticalSeekBar sb1;
     private UzVerticalSeekBar sb2;
@@ -36,18 +35,19 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         activity = this;
-        UZUtil.setCasty(this);
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
+        UzPlayerConfig.setCasty(this);
+        UzPlayerConfig.setCurrentSkinRes(R.layout.uz_player_skin_1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volume);
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        sb = (SeekBar) findViewById(R.id.sb);
-        sb1 = (UzVerticalSeekBar) findViewById(R.id.sb_1);
-        sb2 = (UzVerticalSeekBar) findViewById(R.id.sb_2);
-        tv = (TextView) findViewById(R.id.tv);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
-        uzVideo.addAudioListener(new AudioListener() {
+        uzPlayer = findViewById(R.id.uiza_video);
+        sb = findViewById(R.id.sb);
+        sb1 = findViewById(R.id.sb_1);
+        sb2 = findViewById(R.id.sb_2);
+        tv = findViewById(R.id.tv);
+        uzPlayer.setUzPlayerEventListener(this);
+        uzPlayer.setUzPlayerUiEventListener(this);
+        uzPlayer.setUzItemClickListener(this);
+        uzPlayer.addAudioListener(new AudioListener() {
             @Override
             public void onVolumeChanged(float volume) {
                 sb.setProgress((int) (volume * 100));
@@ -57,7 +57,7 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
         });
 
         final String entityId = LSApplication.entityIdDefaultVOD;
-        UZUtil.initEntity(activity, uzVideo, entityId);
+        UzPlayerConfig.initVodEntity(uzPlayer, entityId);
 
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -70,7 +70,7 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                uzPlayer.setVolume(seekBar.getProgress() / 100f);
                 print();
             }
         });
@@ -85,7 +85,7 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                uzPlayer.setVolume(seekBar.getProgress() / 100f);
                 print();
             }
         });
@@ -100,55 +100,91 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                uzVideo.setVolume(seekBar.getProgress() / 100f);
+                uzPlayer.setVolume(seekBar.getProgress() / 100f);
                 print();
             }
         });
     }
 
     private void print() {
-        tv.setText(uzVideo.getVolume() * 100 + "%");
+        tv.setText(uzPlayer.getVolume() * 100 + "%");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideo.onDestroy();
+        uzPlayer.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        uzPlayer.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        uzVideo.onPause();
+        uzPlayer.onPause();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-        if (isInitSuccess) {
-            sb.setProgress((int) (uzVideo.getVolume() * 100));
-            sb1.setProgress((int) (uzVideo.getVolume() * 100));
-            sb2.setProgress((int) (uzVideo.getVolume() * 100));
+    public void onDataInitialized(boolean initSuccess, boolean getDataSuccess, LinkPlay linkPlay,
+            VideoData data) {
+        if (initSuccess) {
+            sb.setProgress((int) (uzPlayer.getVolume() * 100));
+            sb1.setProgress((int) (uzPlayer.getVolume() * 100));
+            sb2.setProgress((int) (uzPlayer.getVolume() * 100));
             print();
         }
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+    }
+
+    @Override
+    public void onVideoProgress(long currentMls, int s, long duration, int percent) {
+
+    }
+
+    @Override
+    public void onBufferProgress(long bufferedPosition, int bufferedPercentage, long duration) {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onPlayerError(UzException exception) {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
+    public void onPlayerRotated(boolean isLandscape) {
+
     }
 
     @Override
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
+                if (!uzPlayer.isLandscape()) {
                     onBackPressed();
                 }
                 break;
@@ -163,21 +199,9 @@ public class VolumeActivity extends AppCompatActivity implements UZCallback, UZI
     }
 
     @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
-    }
-
-    @Override
-    public void onError(UzException e) {
-    }
-
-    @Override
     public void onBackPressed() {
         if (UzDisplayUtil.isFullScreen(activity)) {
-            uzVideo.toggleFullscreen();
+            uzPlayer.toggleFullscreen();
         } else {
             super.onBackPressed();
         }

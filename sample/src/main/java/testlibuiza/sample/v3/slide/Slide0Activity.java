@@ -11,36 +11,42 @@ import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.exception.UzException;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
+import io.uiza.player.UzPlayer;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.UzAdEventListener;
+import io.uiza.player.interfaces.UzItemClickListener;
+import io.uiza.player.interfaces.UzPlayerEventListener;
+import io.uiza.player.interfaces.UzPlayerUiEventListener;
+import io.uiza.player.mini.draggable.UzDraggableLayout;
+import io.uiza.player.util.UzPlayerData;
+import io.uiza.player.view.UzPlayerView;
 import testlibuiza.R;
-import uizacoresdk.interfaces.UZCallback;
-import uizacoresdk.interfaces.UZItemClick;
-import uizacoresdk.listerner.ProgressCallback;
-import uizacoresdk.util.UZUtil;
-import uizacoresdk.view.UZPlayerView;
-import uizacoresdk.view.rl.video.UZVideo;
-import uizacoresdk.view.vdh.VDHView;
 
-public class Slide0Activity extends AppCompatActivity implements VDHView.Callback, UZCallback, UZItemClick, UZPlayerView.OnTouchEvent, UZPlayerView.ControllerStateCallback, View.OnClickListener, ProgressCallback {
+public class Slide0Activity extends AppCompatActivity implements UzDraggableLayout.Callback,
+        UzPlayerUiEventListener, UzPlayerEventListener, UzItemClickListener, UzAdEventListener,
+        UzPlayerView.OnTouchEvent, UzPlayerView.ControllerStateCallback, View.OnClickListener {
+
     private final String TAG = "TAG" + getClass().getSimpleName();
     private Activity activity;
-    private VDHView vdhv;
+    private UzDraggableLayout draggableLayout;
     private TextView tv0, tv1, tv2, tv3;
-    private UZVideo uzVideo;
+    private UzPlayer uzPlayer;
 
     private void findViews() {
-        uzVideo = (UZVideo) findViewById(R.id.uiza_video);
-        vdhv = (VDHView) findViewById(R.id.vdhv);
-        tv0 = (TextView) findViewById(R.id.tv_0);
-        tv1 = (TextView) findViewById(R.id.tv_1);
-        tv2 = (TextView) findViewById(R.id.tv_2);
-        tv3 = (TextView) findViewById(R.id.tv_3);
-        vdhv.setCallback(this);
-        vdhv.setOnTouchEvent(this);
-        vdhv.setScreenRotate(false);
-        uzVideo.addUZCallback(this);
-        uzVideo.addItemClick(this);
-        uzVideo.addControllerStateCallback(this);
-        uzVideo.addProgressCallback(this);
+        uzPlayer = findViewById(R.id.uiza_video);
+        draggableLayout = findViewById(R.id.vdhv);
+        tv0 = findViewById(R.id.tv_0);
+        tv1 = findViewById(R.id.tv_1);
+        tv2 = findViewById(R.id.tv_2);
+        tv3 = findViewById(R.id.tv_3);
+        draggableLayout.setCallback(this);
+        draggableLayout.setOnTouchEvent(this);
+        draggableLayout.setScreenRotate(false);
+        uzPlayer.setUzPlayerUiEventListener(this);
+        uzPlayer.setUzPlayerEventListener(this);
+        uzPlayer.setUzAdEventListener(this);
+        uzPlayer.setUzItemClickListener(this);
+        uzPlayer.setControllerStateCallback(this);
         findViewById(R.id.bt_minimize_bottom_left).setOnClickListener(this);
         findViewById(R.id.bt_minimize_bottom_right).setOnClickListener(this);
         findViewById(R.id.bt_minimize_top_right).setOnClickListener(this);
@@ -51,8 +57,8 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        UZUtil.setUseWithVDHView(true);
+        UzPlayerConfig.setCurrentSkinRes(R.layout.uz_player_skin_1);
+        UzPlayerConfig.setUseDraggableLayout(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_0);
         findViews();
@@ -64,25 +70,25 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
         if (metadataId == null) {
             String entityId = getIntent().getStringExtra(Constants.KEY_UIZA_ENTITY_ID);
             if (entityId == null) {
-                boolean isInitWithPlaylistFolder = UZUtil.isInitPlaylistFolder(activity);
+                boolean isInitWithPlaylistFolder = UzPlayerData.isInitPlaylistFolder(activity);
                 if (isInitWithPlaylistFolder) {
-                    UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+                    UzPlayerConfig.initPlaylistFolder(uzPlayer, metadataId);
                 } else {
-                    UZUtil.initEntity(activity, uzVideo, entityId);
+                    UzPlayerConfig.initVodEntity(uzPlayer, entityId);
                 }
             } else {
-                UZUtil.initEntity(activity, uzVideo, entityId);
+                UzPlayerConfig.initVodEntity(uzPlayer, entityId);
             }
         } else {
-            UZUtil.initPlaylistFolder(activity, uzVideo, metadataId);
+            UzPlayerConfig.initPlaylistFolder(uzPlayer, metadataId);
         }
     }
 
     private void updateUIRevertMaxChange(boolean isEnableRevertMaxSize) {
-        if (isEnableRevertMaxSize && vdhv.isAppear()) {
+        if (isEnableRevertMaxSize && draggableLayout.isAppear()) {
             findViewById(R.id.bt_minimize_bottom_left).setVisibility(View.VISIBLE);
             findViewById(R.id.bt_minimize_bottom_right).setVisibility(View.VISIBLE);
-            if (vdhv.isMinimizedAtLeastOneTime()) {
+            if (draggableLayout.isMinimizedAtLeastOneTime()) {
                 findViewById(R.id.bt_minimize_top_right).setVisibility(View.VISIBLE);
                 findViewById(R.id.bt_minimize_top_left).setVisibility(View.VISIBLE);
             } else {
@@ -103,24 +109,25 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onStateChange(VDHView.State state) {
+    public void onStateChange(UzDraggableLayout.State state) {
         tv0.setText("onStateChange: " + state.name());
     }
 
     @Override
-    public void onPartChange(VDHView.Part part) {
+    public void onPartChange(UzDraggableLayout.Part part) {
         tv2.setText("onPartChange: " + part.name());
     }
 
     @Override
     public void onViewPositionChanged(int left, int top, float dragOffset) {
-        tv1.setText("onViewPositionChanged left: " + left + ", top: " + top + ", dragOffset: " + dragOffset);
+        tv1.setText("onViewPositionChanged left: " + left + ", top: " + top + ", dragOffset: "
+                + dragOffset);
     }
 
     @Override
-    public void onOverScroll(VDHView.State state, VDHView.Part part) {
-        uzVideo.pauseVideo();
-        vdhv.dissappear();
+    public void onOverScroll(UzDraggableLayout.State state, UzDraggableLayout.Part part) {
+        uzPlayer.pause();
+        draggableLayout.disAppear();
     }
 
     @Override
@@ -131,45 +138,72 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     @Override
     public void onAppear(boolean isAppear) {
         findViewById(R.id.bt_appear).setVisibility(isAppear ? View.INVISIBLE : View.VISIBLE);
-        updateUIRevertMaxChange(vdhv.isEnableRevertMaxSize());
+        updateUIRevertMaxChange(draggableLayout.isEnableRevertMaxSize());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        vdhv.onPause();
-        uzVideo.onPause();
+        draggableLayout.onPause();
+        uzPlayer.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        uzVideo.onDestroy();
-        UZUtil.setUseWithVDHView(false);
+        uzPlayer.onDestroy();
+        UzPlayerConfig.setUseDraggableLayout(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        uzVideo.onResume();
+        uzPlayer.onResume();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        uzVideo.onActivityResult(resultCode, resultCode, data);
+        uzPlayer.onActivityResult(resultCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void isInitResult(boolean isInitSuccess, boolean isGetDataSuccess, LinkPlay linkPlay, VideoData data) {
-        vdhv.setInitResult(isInitSuccess);
+    public void onDataInitialized(boolean initSuccess, boolean getDataSuccess, LinkPlay linkPlay,
+            VideoData data) {
+        draggableLayout.setInitResult(initSuccess);
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+    }
+
+    @Override
+    public void onPlayerError(UzException exception) {
+
+    }
+
+    @Override
+    public void onSkinChanged() {
+
+    }
+
+    @Override
+    public void onPlayerRotated(boolean isLandscape) {
+        if (!isLandscape) {
+            int w = UzDisplayUtil.getScreenWidth();
+            int h = w * 9 / 16;
+            uzPlayer.setFreeSize(false);
+            uzPlayer.setSize(w, h);
+        }
+        draggableLayout.setScreenRotate(isLandscape);
     }
 
     @Override
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.exo_back_screen:
-                if (!uzVideo.isLandscape()) {
+                if (!uzPlayer.isLandscape()) {
                     onBackPressed();
                 }
                 break;
@@ -184,28 +218,9 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onSkinChange() {
-    }
-
-    @Override
-    public void onScreenRotate(boolean isLandscape) {
-        if (!isLandscape) {
-            int w = UzDisplayUtil.getScreenWidth();
-            int h = w * 9 / 16;
-            uzVideo.setFreeSize(false);
-            uzVideo.setSize(w, h);
-        }
-        vdhv.setScreenRotate(isLandscape);
-    }
-
-    @Override
-    public void onError(UzException e) {
-    }
-
-    @Override
     public void onBackPressed() {
-        if (uzVideo.isLandscape()) {
-            uzVideo.getIbBackScreenIcon().performClick();
+        if (uzPlayer.isLandscape()) {
+            uzPlayer.getIbBackScreenIcon().performClick();
         } else {
             super.onBackPressed();
         }
@@ -213,7 +228,7 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
 
     @Override
     public void onSingleTapConfirmed(float x, float y) {
-        uzVideo.toggleShowHideController();
+        uzPlayer.toggleShowHideController();
     }
 
     @Override
@@ -241,28 +256,28 @@ public class Slide0Activity extends AppCompatActivity implements VDHView.Callbac
     }
 
     @Override
-    public void onVisibilityChange(boolean isShow) {
-        vdhv.setVisibilityChange(isShow);
+    public void onVisibilityChanged(boolean isShow) {
+        draggableLayout.setVisibilityChange(isShow);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_minimize_bottom_left:
-                vdhv.minimizeBottomLeft();
+                draggableLayout.minimizeBottomLeft();
                 break;
             case R.id.bt_minimize_bottom_right:
-                vdhv.minimizeBottomRight();
+                draggableLayout.minimizeBottomRight();
                 break;
             case R.id.bt_minimize_top_right:
-                vdhv.minimizeTopRight();
+                draggableLayout.minimizeTopRight();
                 break;
             case R.id.bt_minimize_top_left:
-                vdhv.minimizeTopLeft();
+                draggableLayout.minimizeTopLeft();
                 break;
             case R.id.bt_appear:
-                vdhv.appear();
-                uzVideo.resumeVideo();
+                draggableLayout.appear();
+                uzPlayer.resume();
                 break;
         }
     }

@@ -55,7 +55,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        UzDialogUtil.clearAll();
+        UzDialogUtil.hideAllDialog();
         super.onDestroy();
     }
 
@@ -85,7 +85,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String entityId = etInputEntityId.getText().toString();
-                final Intent intent = new Intent(activity, UZPlayerActivity.class);
+                final Intent intent = new Intent(activity, UzPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_ENTITY_ID, entityId);
                 intent.putExtra(Constants.KEY_UIZA_IS_LIVE, isLive);
                 startActivity(intent);
@@ -141,7 +141,7 @@ public class SetEntityIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String metadataId = etInputMetadataId.getText().toString();
-                final Intent intent = new Intent(activity, UZPlayerActivity.class);
+                final Intent intent = new Intent(activity, UzPlayerActivity.class);
                 intent.putExtra(Constants.KEY_UIZA_METADATA_ENTITY_ID, metadataId);
                 startActivity(intent);
             }

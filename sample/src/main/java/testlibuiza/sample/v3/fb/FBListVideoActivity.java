@@ -16,12 +16,12 @@ import io.uiza.core.api.response.BasePaginationResponse;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.api.util.ApiSubscriber;
 import io.uiza.core.util.constant.Constants;
+import io.uiza.player.mini.pip.PipHelper;
+import io.uiza.player.util.UzPlayerData;
 import java.util.ArrayList;
 import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
 
 public class FBListVideoActivity extends AppCompatActivity {
     private Activity activity;
@@ -93,7 +93,7 @@ public class FBListVideoActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        UZUtil.moveTaskToFront(activity, mIsRestoredToTop);
+        PipHelper.moveTaskToFront(activity, mIsRestoredToTop);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class FBListVideoActivity extends AppCompatActivity {
         String orderBy = "createdAt";
         String orderType = "DESC";
         UzApiMaster.getInstance().subscribe(
-                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
-                        page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                service.getListAllEntity(UzPlayerData.getInstance().getApiVersion(), metadataId, limit,
+                        page, orderBy, orderType, "success", UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
@@ -133,7 +133,7 @@ public class FBListVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        UZUtil.stopMiniPlayer(activity);//stop mini player
+        PipHelper.stopMiniPlayer(activity);//stop mini player
         super.onDestroy();
     }
 }

@@ -1,13 +1,12 @@
 package testlibuiza.app;
 
-import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import com.google.gson.Gson;
 import io.uiza.core.util.constant.Constants;
-import uizacoresdk.util.UZUtil;
+import io.uiza.player.UzPlayerConfig;
 
 public class LSApplication extends MultiDexApplication {
-    private static LSApplication instance;
+
     private Gson gson;
     //TODO input information of your workspace
     public static final String DF_DOMAIN_API = "teamplayer.uiza.co";
@@ -25,23 +24,15 @@ public class LSApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
         if (gson == null) {
             gson = new Gson();
         }
         Constants.setDebugMode(false);
-        UZUtil.initWorkspace(this, Constants.API_VERSION_3, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        UzPlayerConfig
+                .initWorkspace(this, Constants.API_VERSION_3, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {
         return gson;
-    }
-
-    public static LSApplication getInstance() {
-        return instance;
-    }
-
-    public static Context getContext() {
-        return instance.getApplicationContext();
     }
 }

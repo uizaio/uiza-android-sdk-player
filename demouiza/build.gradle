@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    api project(':uizacoresdk')
+    api project(':uizaplayer')
     api project(':uizabroadcast')
 
     //implementation 'com.github.uizaio.uiza-android-sdk-player:uizacoresdk:3.3.1'

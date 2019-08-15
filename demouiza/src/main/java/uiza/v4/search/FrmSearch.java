@@ -28,14 +28,14 @@ import io.uiza.core.api.util.ApiSubscriber;
 import io.uiza.core.util.LLog;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.interfaces.IOnBackPressed;
+import io.uiza.player.util.UzPlayerData;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.entities.EntitiesAdapter;
 import uiza.v4.helper.utils.KeyboardUtils;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZData;
 
 public class FrmSearch extends Fragment implements View.OnClickListener, IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -159,7 +159,7 @@ public class FrmSearch extends Fragment implements View.OnClickListener, IOnBack
         LLog.d(TAG, "search " + page + "/" + totalPage);
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance()
-                .subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword),
+                .subscribe(service.searchEntity(UzPlayerData.getInstance().getApiVersion(), keyword),
                         new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                             @Override
                             public void onSuccess(BasePaginationResponse<List<VideoData>> reponse) {

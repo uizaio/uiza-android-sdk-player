@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<uizacoresdk.view.UZPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+<io.uiza.player.view.UzPlayerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/player_view"
     android:layout_width="match_parent"

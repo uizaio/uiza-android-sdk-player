@@ -48,23 +48,6 @@ public class Constants {
     public static final String URL_DEV_UIZA_VERSION_2_STAG = "https://uqc-api.uiza.io/";
     public static final String URL_DEV_UIZA_VERSION_2_DEMO = "https://demo-api.uiza.io/";
 
-    public static final String MUIZA_EVENT_READY = "ready";//là thời điểm player init xong
-    public static final String MUIZA_EVENT_LOADSTART = "loadstart";//là thời điểm player bắt đầu tải video
-    public static final String MUIZA_EVENT_VIEWSTART = "viewstart";//là thời điểm frame đầu tiên của video được play
-    public static final String MUIZA_EVENT_PAUSE = "pause";//là thời điểm user nhấn pause / khách hàng của mình gọi function pause
-    public static final String MUIZA_EVENT_PLAY = "play";//là thời điểm user nhấn play / khách hàng của mình gọi function play
-    public static final String MUIZA_EVENT_PLAYING = "playing";//là thời điểm video bắt đầu play (ngay sau khi play)
-    public static final String MUIZA_EVENT_SEEKING = "seeking";//là thời điểm user bắt đầu click để seek
-    public static final String MUIZA_EVENT_SEEKED = "seeked";//là thời điểm video bắt đầu play sau khi click seek
-    public static final String MUIZA_EVENT_WAITING = "waiting";//là thời điểm player phải tạm dừng để chờ buffer tải về
-    public static final String MUIZA_EVENT_RATECHANGE = "ratechange";//là thời điểm rate được thay đổi
-    public static final String MUIZA_EVENT_REBUFFERSTART = "rebufferstart";//là thời điểm sau khi play hết đoạn buffer, và player bắt đầu tạm dừng để tải tiếp buffer từ server
-    public static final String MUIZA_EVENT_REBUFFEREND = "rebufferend";//là thời điểm sau khi rebufferstart xảy ra, lượng buffer tải về đủ để play và player bắt đầu play tiếp
-    public static final String MUIZA_EVENT_VOLUMECHANGE = "volumechange";//là thời điểm user thay đổi âm lượng
-    public static final String MUIZA_EVENT_FULLSCREENCHANGE = "fullscreenchange";//là thời điểm user thay đổi chế độ fullscreen
-    public static final String MUIZA_EVENT_VIEWENDED = "viewended";//là thời điểm user play hết video
-    public static final String MUIZA_EVENT_ERROR = "error";//là thời điểm player phải ngưng play hoàn toàn do lỗi
-
     public static final int ENVIRONMENT_DEV = 1;
     public static final int ENVIRONMENT_STAG = 2;
     public static final int ENVIRONMENT_PROD = 3;
@@ -81,12 +64,6 @@ public class Constants {
     public static final String FLOAT_IS_LIVESTREAM = "FLOAT_IS_LIVESTREAM";
     public static final String FLOAT_UUID = "FLOAT_UUID";
     public static final String FLOAT_CONTROL_SKIN_ID = "FLOAT_CONTROL_SKIN_ID";
-
-    public static final String EVENT_TYPE_DISPLAY = "display";
-    public static final String EVENT_TYPE_PLAYS_REQUESTED = "plays_requested";
-    public static final String EVENT_TYPE_VIDEO_STARTS = "video_starts";
-    public static final String EVENT_TYPE_VIEW = "view";
-    public static final String EVENT_TYPE_PLAY_THROUGHT = "play_through";
 
     public static final int ANIMATION_DURATION = 200;
 

@@ -9,7 +9,7 @@ import android.util.Log;
 import com.pedro.encoder.input.gl.render.filters.BaseFilterRender;
 import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
-import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.config.UzPresetLiveFeed;
 import io.uiza.broadcast.util.UzLiveVideoMode;
 import io.uiza.core.util.LLog;
 import io.uiza.core.util.SentryUtil;
@@ -156,7 +156,7 @@ final class UzLiveCameraHelper {
                 .prepareAudio(bitrate, sampleRate, isStereo, echoCanceler, noiseSuppressor);
     }
 
-    boolean prepareVideo(Context context, PresetLiveFeed presetLiveFeed, UzLiveVideoMode mode,
+    boolean prepareVideo(Context context, UzPresetLiveFeed presetLiveFeed, UzLiveVideoMode mode,
             boolean isLandscape) {
         if (presetLiveFeed == null) {
             Log.e(TAG, "prepareVideo false with presetLiveFeed null");
@@ -177,7 +177,7 @@ final class UzLiveCameraHelper {
                 isLandscape ? 0 : 90);
     }
 
-    boolean prepareVideo(Context context, PresetLiveFeed presetLiveFeed, boolean isLandscape) {
+    boolean prepareVideo(Context context, UzPresetLiveFeed presetLiveFeed, boolean isLandscape) {
         if (presetLiveFeed == null) {
             Log.e(TAG, "prepareVideo false with presetLiveFeed null");
             return false;
@@ -274,7 +274,7 @@ final class UzLiveCameraHelper {
      * @param presetLiveFeed the preset live feed
      * @return the best bitrate
      */
-    private int getBestBitrate(Context context, PresetLiveFeed presetLiveFeed) {
+    private int getBestBitrate(Context context, UzPresetLiveFeed presetLiveFeed) {
         int bestBitrate;
         if (UzConnectivityUtil.isConnectedFast(context)
                 && UzConnectivityUtil.isConnectedWifi(context)) {

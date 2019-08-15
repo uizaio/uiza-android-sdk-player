@@ -84,7 +84,7 @@ public class UzException {
     public static final String ERR_26 = "This is the first item of playlist/folder";
 
     public static final int ERR_CODE_27 = 27;
-    public static final String ERR_27 = "Cannot get player infor";
+    public static final String ERR_27 = "Cannot get player info";
 
     public static final int ERR_CODE_400 = 400;
     public static final String ERR_400 = "Bad Request: The request was unacceptable, often due to missing a required parameter.";
@@ -96,7 +96,7 @@ public class UzException {
     public static final String ERR_404 = "Not Found: The requested resource does not exist.";
 
     public static final int ERR_CODE_422 = 422;
-    public static final String ERR_422 = "Unprocessable: The syntax of the request entity is incorrect (often is wrong parameter).";
+    public static final String ERR_422 = "UnProcessable: The syntax of the request entity is incorrect (often is wrong parameter).";
 
     public static final int ERR_CODE_500 = 500;
     public static final String ERR_500 = "Internal Server Error: We had a problem with our server. Try again later.";
@@ -108,7 +108,7 @@ public class UzException {
     public static final String ERR_504 = "Exo Player library is missing";
 
     public static final int ERR_CODE_505 = 505;
-    public static final String ERR_505 = "Chromecast library is missing";
+    public static final String ERR_505 = "ChromeCast library is missing";
 
     public static final int ERR_CODE_506 = 506;
     public static final String ERR_506 = "IMA ads library is missing";

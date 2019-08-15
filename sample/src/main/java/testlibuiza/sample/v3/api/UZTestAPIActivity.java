@@ -23,10 +23,10 @@ import io.uiza.core.util.LLog;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.util.UzPlayerData;
 import java.util.List;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.util.UZData;
 
 public class UZTestAPIActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -123,7 +123,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getListMetadata() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance()
-                .subscribe(service.getListMetadata(UZData.getInstance().getAPIVersion(), 100, 1),
+                .subscribe(service.getListMetadata(UzPlayerData.getInstance().getApiVersion(), 100, 1),
                         new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                             @Override
                             public void onSuccess(
@@ -150,8 +150,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         String orderBy = "createdAt";
         String orderType = "DESC";
         UzApiMaster.getInstance().subscribe(
-                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
-                        page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                service.getListAllEntity(UzPlayerData.getInstance().getApiVersion(), metadataId, limit,
+                        page, orderBy, orderType, "success", UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
@@ -176,8 +176,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         String orderBy = "createdAt";
         String orderType = "DESC";
         UzApiMaster.getInstance().subscribe(
-                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
-                        page, orderBy, orderType, "success", UZData.getInstance().getAppId()),
+                service.getListAllEntity(UzPlayerData.getInstance().getApiVersion(), metadataId, limit,
+                        page, orderBy, orderType, "success", UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
@@ -198,8 +198,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         String id = "7789b7cc-9fd8-499b-bd35-745d133b6089";
         UzApiMaster.getInstance().subscribe(
-                service.retrieveAnEntity(UZData.getInstance().getAPIVersion(), id,
-                        UZData.getInstance().getAppId()),
+                service.retrieveAnEntity(UzPlayerData.getInstance().getApiVersion(), id,
+                        UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BaseResponse<VideoData>>() {
                     @Override
                     public void onSuccess(BaseResponse<VideoData> response) {
@@ -220,7 +220,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         String keyword = "a";
         UzApiMaster.getInstance()
-                .subscribe(service.searchEntity(UZData.getInstance().getAPIVersion(), keyword),
+                .subscribe(service.searchEntity(UzPlayerData.getInstance().getApiVersion(), keyword),
                         new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                             @Override
                             public void onSuccess(
@@ -242,11 +242,11 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getTokenStreaming() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         StreamingTokenRequest streamingTokenRequest = new StreamingTokenRequest();
-        streamingTokenRequest.setAppId(UZData.getInstance().getAppId());
+        streamingTokenRequest.setAppId(UzPlayerData.getInstance().getAppId());
         streamingTokenRequest.setEntityId(entityIdDefaultVOD);
         streamingTokenRequest.setContentType(StreamingTokenRequest.STREAM);
         UzApiMaster.getInstance().subscribe(
-                service.getTokenStreaming(UZData.getInstance().getAPIVersion(),
+                service.getTokenStreaming(UzPlayerData.getInstance().getApiVersion(),
                         streamingTokenRequest), new ApiSubscriber<BaseResponse<StreamingToken>>() {
                     @Override
                     public void onSuccess(BaseResponse<StreamingToken> response) {
@@ -273,7 +273,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         }
         UzRestClientGetLinkPlay.addAuthorization(tokenStreaming);
         UzServiceApi service = UzRestClientGetLinkPlay.createService(UzServiceApi.class);
-        String appId = UZData.getInstance().getAppId();
+        String appId = UzPlayerData.getInstance().getAppId();
         String typeContent = StreamingTokenRequest.STREAM;
         UzApiMaster.getInstance()
                 .subscribe(service.getLinkPlay(appId, entityIdDefaultVOD, typeContent),
@@ -300,8 +300,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         String orderBy = "createdAt";
         String orderType = "DESC";
         UzApiMaster.getInstance().subscribe(
-                service.retrieveALiveEvent(UZData.getInstance().getAPIVersion(), limit, page,
-                        orderBy, orderType, UZData.getInstance().getAppId()),
+                service.retrieveALiveEvent(UzPlayerData.getInstance().getApiVersion(), limit, page,
+                        orderBy, orderType, UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {
@@ -323,11 +323,11 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getTokenStreamingLive() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         StreamingTokenRequest streamingTokenRequest = new StreamingTokenRequest();
-        streamingTokenRequest.setAppId(UZData.getInstance().getAppId());
+        streamingTokenRequest.setAppId(UzPlayerData.getInstance().getAppId());
         streamingTokenRequest.setEntityId(entityIdDefaultLIVE);
         streamingTokenRequest.setContentType(StreamingTokenRequest.LIVE);
         UzApiMaster.getInstance().subscribe(
-                service.getTokenStreaming(UZData.getInstance().getAPIVersion(),
+                service.getTokenStreaming(UzPlayerData.getInstance().getApiVersion(),
                         streamingTokenRequest), new ApiSubscriber<BaseResponse<StreamingToken>>() {
                     @Override
                     public void onSuccess(BaseResponse<StreamingToken> response) {
@@ -354,7 +354,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         }
         UzRestClientGetLinkPlay.addAuthorization(tokenStreamingLive);
         UzServiceApi service = UzRestClientGetLinkPlay.createService(UzServiceApi.class);
-        String appId = UZData.getInstance().getAppId();
+        String appId = UzPlayerData.getInstance().getAppId();
         String streamName = "ffdfdfdfd";
         UzApiMaster.getInstance().subscribe(service.getLinkPlayLive(appId, streamName),
                 new ApiSubscriber<BaseResponse<LinkPlay>>() {
@@ -377,8 +377,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         String id = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         UzApiMaster.getInstance().subscribe(
-                service.getViewALiveFeed(UZData.getInstance().getAPIVersion(), id,
-                        UZData.getInstance().getAppId()),
+                service.getViewALiveFeed(UzPlayerData.getInstance().getApiVersion(), id,
+                        UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BaseResponse<LiveFeedViews>>() {
                     @Override
                     public void onSuccess(BaseResponse<LiveFeedViews> response) {
@@ -403,8 +403,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
         String entityId = "8e133d0d-5f67-45e8-8812-44b2ddfd9fe2";
         String feedId = "46fc46f4-8bc0-4d7f-a380-9515d8259af3";
         UzApiMaster.getInstance().subscribe(
-                service.getTimeStartLive(UZData.getInstance().getAPIVersion(), entityId, feedId,
-                        UZData.getInstance().getAppId()),
+                service.getTimeStartLive(UzPlayerData.getInstance().getApiVersion(), entityId, feedId,
+                        UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BaseResponse<VideoData>>() {
                     @Override
                     public void onSuccess(BaseResponse<VideoData> result) {
@@ -424,7 +424,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getListSkin() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance().subscribe(
-                service.getListSkin(UZData.getInstance().getAPIVersion(),
+                service.getListSkin(UzPlayerData.getInstance().getApiVersion(),
                         Constants.PLATFORM_ANDROID),
                 new ApiSubscriber<BasePaginationResponse<List<Skin>>>() {
                     @Override
@@ -446,7 +446,7 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getSkinConfig() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance().subscribe(
-                service.getSkinConfig(UZData.getInstance().getAPIVersion(),
+                service.getSkinConfig(UzPlayerData.getInstance().getApiVersion(),
                         "645cd2a2-9216-4f5d-a73b-37d3e3034798"), new ApiSubscriber<Object>() {
                     @Override
                     public void onSuccess(Object result) {
@@ -467,8 +467,8 @@ public class UZTestAPIActivity extends AppCompatActivity implements View.OnClick
     private void getIMAAd() {
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance().subscribe(
-                service.getCuePoint(UZData.getInstance().getAPIVersion(),
-                        "0e8254fa-afa1-491f-849b-5aa8bc7cce52", UZData.getInstance().getAppId()),
+                service.getCuePoint(UzPlayerData.getInstance().getApiVersion(),
+                        "0e8254fa-afa1-491f-849b-5aa8bc7cce52", UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<Ad>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<Ad>> response) {

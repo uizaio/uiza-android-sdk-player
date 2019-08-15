@@ -18,10 +18,10 @@ import android.widget.TextView;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.interfaces.IOnBackPressed;
 import uiza.R;
 import uiza.v4.HomeV4CanSlideActivity;
 import uiza.v4.helper.utils.KeyboardUtils;
-import uizacoresdk.interfaces.IOnBackPressed;
 
 public class FrmLogin extends Fragment implements View.OnClickListener, IOnBackPressed {
     private final String TAG = getClass().getSimpleName();

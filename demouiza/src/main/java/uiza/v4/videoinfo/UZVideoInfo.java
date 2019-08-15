@@ -19,8 +19,8 @@ import io.uiza.core.util.LLog;
 import io.uiza.core.util.SentryUtil;
 import io.uiza.core.util.UzDateTimeUtil;
 import io.uiza.core.util.UzDisplayUtil;
-import uizacoresdk.R;
-import uizacoresdk.util.UZData;
+import io.uiza.player.R;
+import io.uiza.player.util.UzPlayerData;
 
 /**
  * Created by www.muathu@gmail.com on 18/1/2019.
@@ -112,7 +112,8 @@ public class UZVideoInfo extends RelativeLayout {
             LLog.e(TAG, "setup resultRetrieveAnEntity == null");
             return;
         }
-        if (UZData.getInstance().getData() == null || UZData.getInstance().getData().getId() == null || UZData.getInstance().getData().getId() == null) {
+        if (UzPlayerData.getInstance().getVideoData() == null || UzPlayerData.getInstance().getVideoData().getId() == null || UzPlayerData
+                .getInstance().getVideoData().getId() == null) {
             LLog.e(TAG, "setup data is null");
         }
         updateUI();
@@ -122,20 +123,23 @@ public class UZVideoInfo extends RelativeLayout {
         final String emptyS = "Empty string";
         final String nullS = "LinkPlay is null";
         try {
-            tvVideoName.setText(UZData.getInstance().getData().getName());
+            tvVideoName.setText(UzPlayerData.getInstance().getVideoData().getName());
         } catch (NullPointerException e) {
             tvVideoName.setText(nullS);
             SentryUtil.captureException(e);
         }
-        if (UZData.getInstance().getData().getCreatedAt() != null && !UZData.getInstance().getData().getCreatedAt().isEmpty()) {
-            tvVideoTime.setText(UzDateTimeUtil.getDateWithoutTime(UZData.getInstance().getData().getCreatedAt()));
+        if (UzPlayerData.getInstance().getVideoData().getCreatedAt() != null && !UzPlayerData.getInstance().getVideoData().getCreatedAt().isEmpty()) {
+            tvVideoTime.setText(UzDateTimeUtil.getDateWithoutTime(
+                    UzPlayerData.getInstance().getVideoData().getCreatedAt()));
         } else {
             tvVideoTime.setText(nullS);
         }
         //TODO
         tvVideoRate.setText("12+");
         try {
-            tvVideoDescription.setText(UZData.getInstance().getData().getDescription().isEmpty() ? UZData.getInstance().getData().getShortDescription().isEmpty() ? emptyS : UZData.getInstance().getData().getShortDescription() : UZData.getInstance().getData().getDescription());
+            tvVideoDescription.setText(
+                    UzPlayerData.getInstance().getVideoData().getDescription().isEmpty() ? UzPlayerData.getInstance().getVideoData().getShortDescription().isEmpty() ? emptyS : UzPlayerData
+                            .getInstance().getVideoData().getShortDescription() : UzPlayerData.getInstance().getVideoData().getDescription());
         } catch (NullPointerException e) {
             tvVideoDescription.setText(nullS);
             SentryUtil.captureException(e);

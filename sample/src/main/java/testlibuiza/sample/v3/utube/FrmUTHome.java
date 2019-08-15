@@ -13,10 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.view.LToast;
+import io.uiza.player.interfaces.IOnBackPressed;
+import io.uiza.player.mini.pip.PipHelper;
+import io.uiza.player.util.UzPlayerData;
 import testlibuiza.R;
 import testlibuiza.app.LSApplication;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 
 public class FrmUTHome extends Fragment implements IOnBackPressed {
     private final String entityIdDefaultVOD = LSApplication.entityIdDefaultVOD;
@@ -65,8 +66,8 @@ public class FrmUTHome extends Fragment implements IOnBackPressed {
             }
         });
 
-        if (UZUtil.getClickedPip(getActivity())) {
-            if (UZUtil.isInitPlaylistFolder(getActivity())) {
+        if (PipHelper.getClickedPip(getActivity())) {
+            if (UzPlayerData.isInitPlaylistFolder(getActivity())) {
                 ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
                 ((CustomSkinCodeUZTimebarUTubeWithSlideActivity) getActivity()).playEntityId(null);

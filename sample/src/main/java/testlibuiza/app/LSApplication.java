@@ -3,11 +3,13 @@ package testlibuiza.app;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import com.google.gson.Gson;
-import io.uiza.broadcast.config.LiveConfig;
+import io.uiza.broadcast.config.UzLiveConfig;
 import io.uiza.core.util.constant.Constants;
-import uizacoresdk.util.UZUtil;
+import io.uiza.player.R;
+import io.uiza.player.UzPlayerConfig;
 
 public class LSApplication extends MultiDexApplication {
+
     private static LSApplication instance;
     private Gson gson;
     //TODO input information of your workspace
@@ -67,8 +69,10 @@ public class LSApplication extends MultiDexApplication {
         }
         Constants.setDebugMode(true);
         int apiVersion = Constants.API_VERSION_4;
-        UZUtil.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID, Constants.ENVIRONMENT_PROD, uizacoresdk.R.layout.uz_player_skin_1);
-        LiveConfig.initWorkspace(this, Constants.API_VERSION_4, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        UzPlayerConfig.initWorkspace(this, apiVersion, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID,
+                Constants.ENVIRONMENT_PROD, R.layout.uz_player_skin_1);
+        UzLiveConfig
+                .initWorkspace(this, Constants.API_VERSION_4, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 
     public Gson getGson() {

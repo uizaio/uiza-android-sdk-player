@@ -89,7 +89,7 @@
         </ScrollView>
     </LinearLayout>
 
-    <uizacoresdk.view.vdh.VDHView
+    <io.uiza.player.mini.draggable.UzDraggableLayout
         android:id="@+id/vdhv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:background="@color/Black">
 
-            <uizacoresdk.view.rl.video.UZVideo
+            <io.uiza.player.UzPlayer
                 android:id="@id/uiza_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -120,6 +120,6 @@
                 android:text="@string/large_text"
                 android:textColor="@color/White" />
         </ScrollView>
-    </uizacoresdk.view.vdh.VDHView>
+    </io.uiza.player.mini.draggable.UzDraggableLayout>
 </RelativeLayout>
 

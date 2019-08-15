@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import io.uiza.core.api.response.video.VideoData;
-import io.uiza.core.util.UzImageUtil;
 import io.uiza.core.util.UzDisplayUtil;
+import io.uiza.core.util.UzImageUtil;
 import java.util.List;
 import uiza.R;
 

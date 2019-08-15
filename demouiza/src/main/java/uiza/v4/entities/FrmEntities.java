@@ -22,19 +22,19 @@ import io.uiza.core.api.client.UzRestClient;
 import io.uiza.core.api.response.BasePaginationResponse;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.api.util.ApiSubscriber;
-import io.uiza.core.util.UzDialogUtil;
 import io.uiza.core.util.LLog;
+import io.uiza.core.util.UzDialogUtil;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.interfaces.IOnBackPressed;
+import io.uiza.player.mini.pip.PipHelper;
+import io.uiza.player.util.UzPlayerData;
 import java.util.ArrayList;
 import java.util.List;
 import uiza.R;
 import uiza.app.LSApplication;
 import uiza.v4.HomeV4CanSlideActivity;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZData;
-import uizacoresdk.util.UZUtil;
 
 public class FrmEntities extends Fragment implements IOnBackPressed {
     private final String TAG = getClass().getSimpleName();
@@ -54,8 +54,8 @@ public class FrmEntities extends Fragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (UZUtil.getClickedPip(getActivity())) {
-            if (UZData.getInstance().isPlayWithPlaylistFolder()) {
+        if (PipHelper.getClickedPip(getActivity())) {
+            if (UzPlayerData.getInstance().isPlayWithPlaylistFolder()) {
                 LLog.d(TAG, "Called if user click pip fullscreen playPlaylistFolder");
                 ((HomeV4CanSlideActivity) getActivity()).playPlaylistFolder(null);
             } else {
@@ -120,8 +120,8 @@ public class FrmEntities extends Fragment implements IOnBackPressed {
         tvMsg.setVisibility(View.GONE);
         UzServiceApi service = UzRestClient.createService(UzServiceApi.class);
         UzApiMaster.getInstance().subscribe(
-                service.getListAllEntity(UZData.getInstance().getAPIVersion(), metadataId, limit,
-                        page, orderBy, orderType, publishToCdn, UZData.getInstance().getAppId()),
+                service.getListAllEntity(UzPlayerData.getInstance().getApiVersion(), metadataId, limit,
+                        page, orderBy, orderType, publishToCdn, UzPlayerData.getInstance().getAppId()),
                 new ApiSubscriber<BasePaginationResponse<List<VideoData>>>() {
                     @Override
                     public void onSuccess(BasePaginationResponse<List<VideoData>> response) {

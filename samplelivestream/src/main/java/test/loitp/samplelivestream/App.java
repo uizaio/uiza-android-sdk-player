@@ -1,7 +1,7 @@
 package test.loitp.samplelivestream;
 
 import android.support.multidex.MultiDexApplication;
-import io.uiza.broadcast.config.LiveConfig;
+import io.uiza.broadcast.config.UzLiveConfig;
 import io.uiza.core.util.constant.Constants;
 
 public class App extends MultiDexApplication {
@@ -17,6 +17,6 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Constants.setDebugMode(false);
-        LiveConfig.initWorkspace(this, Constants.API_VERSION_4, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
+        UzLiveConfig.initWorkspace(this, Constants.API_VERSION_4, DF_DOMAIN_API, DF_TOKEN, DF_APP_ID);
     }
 }

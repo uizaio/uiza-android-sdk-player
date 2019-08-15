@@ -49,7 +49,7 @@ import com.pedro.encoder.input.gl.render.filters.object.SurfaceFilterRender;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import io.uiza.broadcast.UzLivestream;
 import io.uiza.broadcast.UzLivestreamCallback;
-import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.config.UzPresetLiveFeed;
 import io.uiza.broadcast.util.UzLivestreamError;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.util.UzDialogUtil;
@@ -338,7 +338,7 @@ public class LivestreamBroadcasterActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void onGetDataSuccess(VideoData d, String mainUrl, boolean isTranscode, PresetLiveFeed presetLiveFeed) {
+    public void onGetDataSuccess(VideoData d, String mainUrl, boolean isTranscode, UzPresetLiveFeed presetLiveFeed) {
         bStartStop.setVisibility(View.VISIBLE);
         bStartStopStore.setVisibility(View.VISIBLE);
         btSwitchCamera.show();

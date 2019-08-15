@@ -39,8 +39,8 @@ import com.pedro.encoder.input.video.CameraHelper;
 import com.pedro.encoder.utils.gl.TranslateTo;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.pedro.rtplibrary.view.OpenGlView;
-import io.uiza.broadcast.config.LiveConfig;
-import io.uiza.broadcast.config.PresetLiveFeed;
+import io.uiza.broadcast.config.UzLiveConfig;
+import io.uiza.broadcast.config.UzPresetLiveFeed;
 import io.uiza.broadcast.util.UzLiveVideoMode;
 import io.uiza.broadcast.util.UzLivestreamError;
 import io.uiza.core.api.CallbackGetDetailEntity;
@@ -52,11 +52,12 @@ import io.uiza.core.api.request.streaming.StartALiveFeedRequest;
 import io.uiza.core.api.response.video.VideoData;
 import io.uiza.core.api.util.ApiSubscriber;
 import io.uiza.core.exception.UzException;
-import io.uiza.core.util.UzDialogUtil;
 import io.uiza.core.util.LLog;
 import io.uiza.core.util.SentryUtil;
 import io.uiza.core.util.UzAnimationUtil;
 import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.UzCommonUtil.DelayCallback;
+import io.uiza.core.util.UzDialogUtil;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.connection.UzConnectivityUtil;
 import io.uiza.core.util.constant.Constants;
@@ -86,7 +87,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     private final SpriteGestureController spriteGestureController = new SpriteGestureController();
     private String currentDateAndTime = "";
     private OpenGlView openGlView;
-    private PresetLiveFeed presetLiveFeed;
+    private UzPresetLiveFeed presetLiveFeed;
     private ProgressBar progressBar;
     private TextView tvLiveStatus;
     private UzLivestreamCallback uzLivestreamCallback;
@@ -152,7 +153,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         return cameraHelper.getRtmpCamera();
     }
 
-    public PresetLiveFeed getPresetLiveFeed() {
+    public UzPresetLiveFeed getPresetLiveFeed() {
         return presetLiveFeed;
     }
 
@@ -216,7 +217,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         isBroadcastingBeforeGoingBackground = false;
         // We delay a second because the surface need to be resumed before we can prepare something
         // Improve this method whenever you can
-        UzDisplayUtil.setDelay((int) SECOND, new UzDisplayUtil.DelayCallback() {
+        UzCommonUtil.actionWithDelayed((int) SECOND, new DelayCallback() {
             @Override
             public void doAfter(int mls) {
                 try {
@@ -727,7 +728,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         StartALiveFeedRequest bodyStartALiveFeed = new StartALiveFeedRequest();
         bodyStartALiveFeed.setId(entityLiveId);
 
-        String apiVersion = LiveConfig.getConfig().getApiVersion();
+        String apiVersion = UzLiveConfig.getConfig().getApiVersion();
         UzApiMaster.getInstance().subscribe(service.startALiveEvent(apiVersion, bodyStartALiveFeed),
                 new ApiSubscriber<Object>() {
                     @Override
@@ -756,8 +757,8 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
     }
 
     private void getDetailEntity(String entityLiveId, final boolean isErrorStartLive) {
-        String appId = LiveConfig.getConfig().getAppId();
-        String apiVersion = LiveConfig.getConfig().getApiVersion();
+        String appId = UzLiveConfig.getConfig().getAppId();
+        String apiVersion = UzLiveConfig.getConfig().getApiVersion();
         UzUtilBase.getDataFromEntityIdLive(getContext(), apiVersion, appId, entityLiveId,
                 new CallbackGetDetailEntity() {
                     @Override
@@ -788,7 +789,7 @@ public class UzLivestream extends RelativeLayout implements ConnectCheckerRtmp,
         LLog.d(TAG, "isTranscode " + isTranscode);
 
         boolean isConnectedFast = UzConnectivityUtil.isConnectedFast(getContext());
-        presetLiveFeed = new PresetLiveFeed();
+        presetLiveFeed = new UzPresetLiveFeed();
         presetLiveFeed.setTranscode(isTranscode);
         presetLiveFeed.setVideoBitRates(isConnectedFast);
 

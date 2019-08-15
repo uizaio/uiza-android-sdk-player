@@ -14,10 +14,10 @@ import android.widget.TextView;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.util.constant.Constants;
 import io.uiza.core.view.LToast;
+import io.uiza.player.UzPlayerConfig;
 import testlibuiza.app.BuildConfig;
 import testlibuiza.app.LSApplication;
 import testlibuiza.app.R;
-import uizacoresdk.util.UZUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             btCustom.setVisibility(View.GONE);
         }
 
-        etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
+        etInput.setText(LSApplication.entityIdDefaultVOD);
         UzDisplayUtil.setLastCursorEditText(etInput);
 
         etInput.setOnFocusChangeListener(this);
@@ -62,14 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         btStartPlaylistFolder.setOnFocusChangeListener(this);
         btCustom.setOnFocusChangeListener(this);
 
-        UZUtil.updateUIFocusChange(etInput, true);
-        UZUtil.updateUIFocusChange(btVod, false);
-        UZUtil.updateUIFocusChange(btLive, false);
-        UZUtil.updateUIFocusChange(btPlaylistFolder, false);
-        UZUtil.updateUIFocusChange(btClear, false);
-        UZUtil.updateUIFocusChange(btStartEntity, false);
-        UZUtil.updateUIFocusChange(btStartPlaylistFolder, false);
-        UZUtil.updateUIFocusChange(btCustom, false);
+        UzPlayerConfig.updateUiFocusChange(etInput, true);
+        UzPlayerConfig.updateUiFocusChange(btVod, false);
+        UzPlayerConfig.updateUiFocusChange(btLive, false);
+        UzPlayerConfig.updateUiFocusChange(btPlaylistFolder, false);
+        UzPlayerConfig.updateUiFocusChange(btClear, false);
+        UzPlayerConfig.updateUiFocusChange(btStartEntity, false);
+        UzPlayerConfig.updateUiFocusChange(btStartPlaylistFolder, false);
+        UzPlayerConfig.updateUiFocusChange(btCustom, false);
 
         btVod.setOnClickListener(this);
         btLive.setOnClickListener(this);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         UzDisplayUtil.setTextShadow(tvVs);
         tvVs.setText("© 2018 Uiza. All rights reserved.\nVersion " + BuildConfig.VERSION_NAME);
 
-        if (LSApplication.getInstance().DF_DOMAIN_API.equals("input")) {
+        if (LSApplication.DF_DOMAIN_API.equals("input")) {
             showDialogInitWorkspace();
         }
     }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
     @Override
     public void onFocusChange(View view, boolean isFocus) {
-        UZUtil.updateUIFocusChange(view, isFocus);
+        UzPlayerConfig.updateUiFocusChange(view, isFocus);
         if (view == etInput) {
             //LLog.d(TAG, "onFocusChange etInput " + isFocus);
             if (isFocus) {
@@ -122,13 +122,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     @Override
     public void onClick(View view) {
         if (view == btVod) {
-            etInput.setText(LSApplication.getInstance().entityIdDefaultVOD);
+            etInput.setText(LSApplication.entityIdDefaultVOD);
             UzDisplayUtil.setLastCursorEditText(etInput);
         } else if (view == btLive) {
-            etInput.setText(LSApplication.getInstance().entityIdDefaultLIVE);
+            etInput.setText(LSApplication.entityIdDefaultLIVE);
             UzDisplayUtil.setLastCursorEditText(etInput);
         } else if (view == btPlaylistFolder) {
-            etInput.setText(LSApplication.getInstance().metadataDefault0);
+            etInput.setText(LSApplication.metadataDefault0);
             UzDisplayUtil.setLastCursorEditText(etInput);
         } else if (view == btClear) {
             etInput.setText("");

@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import io.uiza.core.api.response.linkplay.LinkPlay;
 import io.uiza.core.api.response.video.VideoData;
+import io.uiza.core.util.UzCommonUtil;
+import io.uiza.core.util.UzCommonUtil.DelayCallback;
 import io.uiza.core.util.UzDisplayUtil;
 import io.uiza.core.view.draggablepanel.DraggableListener;
 import io.uiza.core.view.draggablepanel.DraggablePanel;
+import io.uiza.player.UzPlayerConfig;
+import io.uiza.player.interfaces.IOnBackPressed;
 import testlibuiza.R;
-import uizacoresdk.interfaces.IOnBackPressed;
-import uizacoresdk.util.UZUtil;
 
 public class HomeCanSlideActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -27,8 +29,8 @@ public class HomeCanSlideActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
-        UZUtil.setCurrentPlayerId(R.layout.uz_player_skin_1);
-        UZUtil.setCasty(this);
+        UzPlayerConfig.setCurrentSkinRes(R.layout.uz_player_skin_1);
+        UzPlayerConfig.setCasty(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.v4_home_canslide_activity);
         draggablePanel = (DraggablePanel) findViewById(R.id.draggable_panel);
@@ -144,7 +146,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
+            UzCommonUtil.actionWithDelayed(500, new DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
@@ -164,7 +166,7 @@ public class HomeCanSlideActivity extends AppCompatActivity {
         }
         if (draggablePanel.isClosedAtLeft() || draggablePanel.isClosedAtRight()) {
             draggablePanel.minimize();
-            UzDisplayUtil.setDelay(500, new UzDisplayUtil.DelayCallback() {
+            UzCommonUtil.actionWithDelayed(500, new DelayCallback() {
                 @Override
                 public void doAfter(int mls) {
                     draggablePanel.maximize();
